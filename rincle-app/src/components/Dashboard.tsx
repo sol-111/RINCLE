@@ -5,13 +5,15 @@ import type { User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import ScreensTab from './tabs/ScreensTab'
+import FlowTab from './tabs/FlowTab'
 import EmailsTab from './tabs/EmailsTab'
 import DbTab from './tabs/DbTab'
 
-type Tab = 'screens' | 'emails' | 'db'
+type Tab = 'screens' | 'flow' | 'emails' | 'db'
 
 const TABS = [
   { id: 'screens' as Tab, label: '画面設計書', icon: '📊' },
+  { id: 'flow'    as Tab, label: '画面遷移図', icon: '📐' },
   { id: 'emails'  as Tab, label: 'メール一覧', icon: '✉️' },
   { id: 'db'      as Tab, label: 'DB設計書',   icon: '🗄️' },
 ]
@@ -77,6 +79,7 @@ export default function Dashboard({ user }: { user: User }) {
       {/* Content */}
       <div style={{ flex: 1, overflow: 'hidden' }}>
         {tab === 'screens' && <ScreensTab />}
+        {tab === 'flow'    && <FlowTab />}
         {tab === 'emails'  && <EmailsTab />}
         {tab === 'db'      && <DbTab />}
       </div>
