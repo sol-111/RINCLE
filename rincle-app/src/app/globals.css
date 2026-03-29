@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; background: #212124; color: #c0c0cc; }
+body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; font-size: 13px; }
