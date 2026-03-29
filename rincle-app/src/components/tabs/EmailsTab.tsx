@@ -374,13 +374,14 @@ export default function EmailsTab() {
                     >{row.no}</td>
 
                     {/* Status — full-cell select */}
-                    <td style={{ padding: 0, borderRight: '1px solid rgba(255,255,255,.04)', verticalAlign: 'middle' }}>
+                    <td style={{ padding: 0, borderRight: '1px solid rgba(255,255,255,.04)', verticalAlign: 'middle', height: '1px' }}>
                       <div style={{
                         position: 'relative', display: 'flex', alignItems: 'center',
-                        minHeight: 28, padding: '5px 20px 5px 7px', fontWeight: 600, fontSize: 13,
+                        width: '100%', height: '100%', minHeight: 28,
+                        padding: '5px 20px 5px 7px', fontWeight: 600, fontSize: 13,
                         background: STATUS_STYLE[row.status]?.bg ?? '#252528',
                         color: STATUS_STYLE[row.status]?.color ?? '#888898',
-                        userSelect: 'none', cursor: 'pointer',
+                        userSelect: 'none', cursor: 'pointer', boxSizing: 'border-box',
                       }}>
                         {row.status}
                         <span style={{ position: 'absolute', right: 5, fontSize: 8, opacity: .5, pointerEvents: 'none' }}>▼</span>
@@ -404,13 +405,14 @@ export default function EmailsTab() {
                     >{row.timing}</td>
 
                     {/* Recipient — full-cell select */}
-                    <td style={{ padding: 0, borderRight: '1px solid rgba(255,255,255,.04)', verticalAlign: 'middle' }}>
+                    <td style={{ padding: 0, borderRight: '1px solid rgba(255,255,255,.04)', verticalAlign: 'middle', height: '1px' }}>
                       <div style={{
                         position: 'relative', display: 'flex', alignItems: 'center',
-                        minHeight: 28, padding: '5px 20px 5px 7px', fontWeight: 600, fontSize: 13,
+                        width: '100%', height: '100%', minHeight: 28,
+                        padding: '5px 20px 5px 7px', fontWeight: 600, fontSize: 13,
                         background: RCPT_STYLE[row.recipient]?.bg ?? '#252528',
                         color: RCPT_STYLE[row.recipient]?.color ?? '#888898',
-                        userSelect: 'none', cursor: 'pointer',
+                        userSelect: 'none', cursor: 'pointer', boxSizing: 'border-box',
                       }}>
                         {row.recipient}
                         <span style={{ position: 'absolute', right: 5, fontSize: 8, opacity: .5, pointerEvents: 'none' }}>▼</span>
