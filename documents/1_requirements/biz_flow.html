@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rincle 業務フロー図</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Hiragino Sans','Segoe UI',-apple-system,sans-serif;font-size:13px;background:#212124;color:#c0c0cc;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+#topbar{background:#2a2a2f;padding:6px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #38383f;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+#topbar h1{font-size:15px;font-weight:700;color:#d0d0d8;white-space:nowrap}
+.sep{width:1px;height:18px;background:#38383f}
+.btn{padding:3px 10px;border:1px solid #444450;border-radius:4px;background:#38383f;color:#a0a0b8;font-size:11px;cursor:pointer}
+.btn:hover{background:#444450;color:#d0d0d8}
+#hint{font-size:11px;color:#666678;margin-left:auto}
+.sec-bar{height:28px;display:flex;align-items:center;gap:8px;padding:0 14px;flex-shrink:0;border-bottom:1px solid #303040}
+.sec-bar-1{background:#192030;border-top:2px solid #2a4080}
+.sec-bar-2{background:#201a08;border-top:2px solid #605020}
+.sec-label{font-size:12px;font-weight:700}
+.lbl-1{color:#6088d0}
+.lbl-2{color:#c8a030}
+.badge{font-size:10px;padding:1px 7px;border-radius:10px;background:#3a2a10;border:1px solid #c8a030;color:#ffe066}
+.diagram-wrap{flex:1;min-height:0;overflow:hidden;cursor:grab;background:#1a1a1f}
+.diagram-wrap:active{cursor:grabbing}
+svg{width:100%;height:100%}
+#legend{position:fixed;bottom:16px;left:16px;background:#2a2a2f;border:1px solid #38383f;border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:6px;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+#legend .leg-title{font-size:11px;font-weight:700;color:#888898;margin-bottom:2px}
+#legend .leg-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#a0a0b8}
+.leg-box{width:22px;height:13px;border-radius:3px;border-width:1.5px;border-style:solid;flex-shrink:0}
+.leg-dia{width:11px;height:11px;transform:rotate(45deg);border-width:1.5px;border-style:solid;flex-shrink:0}
+
+/* ── PAGE TABS ── */
+#page-tabs{display:flex;align-items:stretch;background:#252528;border-bottom:1px solid #38383f;padding:0 14px;gap:2px;flex-shrink:0}
+.ptab{display:flex;align-items:center;gap:6px;padding:0 16px;height:34px;border:none;background:transparent;color:#686880;font-size:12px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;white-space:nowrap}
+.ptab:hover{color:#b0b0cc}
+.ptab.active{color:#90b8f0;border-bottom-color:#4a8ad8}
+.tab-section{display:none;flex:1;flex-direction:column;min-height:0;overflow:hidden}
+.tab-section.active{display:flex}
+
+/* ── STATUS DIAGRAM ── */
+.status-wrap{padding:14px 18px;overflow-y:auto;flex:1}
+.status-section{margin-bottom:28px}
+.status-title{font-size:12px;font-weight:700;color:#888898;margin-bottom:10px;padding-bottom:4px;border-bottom:1px solid #2e2e38}
+.st-flow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.st-node{padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700;border:1.5px solid;white-space:nowrap}
+.st-arrow{color:#555568;font-size:13px}
+.st-label{font-size:10px;color:#6a7a6a;margin-top:-2px;text-align:center}
+.st-group{display:flex;flex-direction:column;align-items:center;gap:2px}
+.st-row{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:4px}
+
+/* ── STATUS LIST TABLE ── */
+.sl-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.sl-table thead th{background:#1e1e28;color:#7878a0;font-size:11px;font-weight:700;padding:6px 10px;text-align:left;border-bottom:1px solid #2e2e3a;white-space:nowrap}
+.sl-table tbody tr{border-bottom:1px solid rgba(255,255,255,.04)}
+.sl-table tbody tr:hover{background:rgba(255,255,255,.03)}
+.sl-table tbody td{padding:7px 10px;vertical-align:middle;line-height:1.5}
+.sl-badge{display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;border:1.5px solid;white-space:nowrap}
+.sl-desc{color:#9090a8}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <h1>📋 Rincle 業務フロー図</h1>
+  <div class="sep"></div>
+  <span id="hint">マウスホイールでズーム / ドラッグでパン（上下それぞれ独立）</span>
+</div>
+
+<div id="page-tabs">
+  <button class="ptab active" data-ptab="zen" onclick="switchBizTab('zen')">全体</button>
+  <button class="ptab" data-ptab="kessai" onclick="switchBizTab('kessai')">決済</button>
+  <button class="ptab" data-ptab="yoyaku" onclick="switchBizTab('yoyaku')">予約</button>
+</div>
+
+<div id="legend">
+  <div class="leg-title">凡例</div>
+  <div class="leg-row">
+    <div class="leg-item"><div class="leg-box" style="background:#1a3a28;border-color:#34a853"></div>ユーザー</div>
+    <div class="leg-item"><div class="leg-box" style="background:#1e1a38;border-color:#8060d8"></div>店舗</div>
+    <div class="leg-item"><div class="leg-box" style="background:#3a1818;border-color:#d05050"></div>管理者</div>
+    <div class="leg-item"><div class="leg-box" style="background:#3a3010;border-color:#c8a030"></div>ポップアップ</div>
+    <div class="leg-item"><div class="leg-box" style="background:#181e3a;border-color:#3878d0"></div>外部</div>
+    <div class="leg-item"><div class="leg-box" style="background:#182030;border-color:#3090b0"></div>通知</div>
+    <div class="leg-item"><div class="leg-box" style="background:#301e10;border-color:#a07030"></div>エラー</div>
+    <div class="leg-item"><div class="leg-dia" style="background:#151e38;border-color:#4a72c0"></div>分岐</div>
+  </div>
+  <div class="leg-row">
+    <div class="leg-item"><svg width="28" height="10"><defs><marker id="la" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto"><polygon points="0 0,5 2,0 4" fill="#7a8a9a"/></marker></defs><line x1="0" y1="5" x2="22" y2="5" stroke="#7a8a9a" stroke-width="1.5" marker-end="url(#la)"/></svg>通常</div>
+    <div class="leg-item"><svg width="28" height="10"><defs><marker id="lb" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto"><polygon points="0 0,5 2,0 4" fill="#3090b0"/></marker></defs><line x1="0" y1="5" x2="22" y2="5" stroke="#3090b0" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#lb)"/></svg>アクター間</div>
+    <div class="leg-item"><svg width="28" height="10"><defs><marker id="lc" markerWidth="5" markerHeight="4" refX="4" refY="2" orient="auto"><polygon points="0 0,5 2,0 4" fill="#8060a0"/></marker></defs><line x1="0" y1="5" x2="22" y2="5" stroke="#8060a0" stroke-width="1.2" stroke-dasharray="3,3" marker-end="url(#lc)"/></svg>ループバック</div>
+  </div>
+</div>
+
+<div id="tab-zen" class="tab-section active">
+
+<!-- ═══════════════ 全体フロー ═══════════════ -->
+<div class="sec-bar sec-bar-2">
+  <span class="sec-label lbl-2">📋 全体フロー</span>
+  <div class="sep"></div>
+  <button class="btn" onclick="D2.fitView()">全体表示</button>
+</div>
+<div class="diagram-wrap" id="wrap2">
+  <svg id="svg2"><defs>
+    <marker id="m2"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
+    <marker id="m2c" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3090b0"/></marker>
+    <marker id="m2n" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#a07030"/></marker>
+    <marker id="m2l" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#8060a0"/></marker>
+  </defs><g id="vp2"></g></svg>
+</div>
+
+</div><!-- /tab-zen -->
+
+<!-- ═══════════════ 決済タブ ═══════════════ -->
+<div id="tab-kessai" class="tab-section">
+  <div class="sec-bar" style="background:#201828;border-top:2px solid #7040b0">
+    <span class="sec-label" style="color:#b080e0">💳 決済フロー（詳細）</span>
+    <div class="sep"></div>
+    <button class="btn" onclick="D3.fitView()">全体表示</button>
+  </div>
+  <div class="diagram-wrap" id="wrap3" style="flex:1.4">
+    <svg id="svg3"><defs>
+      <marker id="m3"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
+      <marker id="m3x" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3090b0"/></marker>
+      <marker id="m3n" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#a07030"/></marker>
+      <marker id="m3l" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#8060a0"/></marker>
+    </defs><g id="vp3"></g></svg>
+  </div>
+  <div class="sec-bar" style="background:#181828;border-top:2px solid #304880">
+    <span class="sec-label" style="color:#6088c0">📊 決済ステータス</span>
+  </div>
+  <div class="status-wrap" style="flex:0 0 auto;max-height:260px">
+    <div class="status-section">
+      <div class="status-title">ステータス一覧</div>
+      <table class="sl-table">
+        <thead><tr><th>ステータス名</th><th>詳細</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="sl-badge" style="background:#282010;border-color:#a07030;color:#f0c060">未決済</span></td>
+            <td class="sl-desc">ユーザーが決済画面に進んだ直後に設定される初期状態。Pay.JP へのチャージ処理が完了しておらず、予約はまだ仮の状態。決済成功 or 失敗／放棄で次のステータスへ遷移する。</td>
+          </tr>
+          <tr>
+            <td><span class="sl-badge" style="background:#102818;border-color:#40a860;color:#80e8a0">決済済み</span></td>
+            <td class="sl-desc">Pay.JP チャージ API が正常完了した際に設定。予約が正式に確定し、ユーザー・店舗それぞれに確認メールが自動送信される。通常の予約サイクルにおける「確定」状態。</td>
+          </tr>
+          <tr>
+            <td><span class="sl-badge" style="background:#102028;border-color:#3080b0;color:#70c0e0">返金済み</span></td>
+            <td class="sl-desc">期限内のキャンセル申請が承認され、Pay.JP 返金 API の処理が正常に完了した際に設定。ユーザーへの返金が確定した終端状態。</td>
+          </tr>
+          <tr>
+            <td><span class="sl-badge" style="background:#281018;border-color:#a03050;color:#e08080">キャンセル</span></td>
+            <td class="sl-desc">①決済を3回失敗した場合、②予約を途中放棄した場合、③期限外キャンセル（返金なし）の場合に設定。いずれも予約が無効になる終端状態。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="status-section">
+      <div class="status-title">ステータス遷移（reservation.決済ステータス）</div>
+      <div class="st-row">
+        <div class="st-group">
+          <div class="st-node" style="background:#282010;border-color:#a07030;color:#f0c060">未決済</div>
+          <div class="st-label">予約直後</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:2px">
+          <div class="st-group">
+            <div style="color:#5a6a5a;font-size:10px">Pay.JP決済成功</div>
+            <div class="st-arrow">→</div>
+          </div>
+        </div>
+        <div class="st-group">
+          <div class="st-node" style="background:#102818;border-color:#40a860;color:#80e8a0">決済済み</div>
+          <div class="st-label">予約確定</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin:0 4px">
+          <div class="st-group">
+            <div style="color:#5a6a5a;font-size:10px">返金申請承認</div>
+            <div class="st-arrow">→</div>
+          </div>
+          <div class="st-group" style="margin-top:14px">
+            <div style="color:#8a4a4a;font-size:10px">返金なしキャンセル</div>
+            <div class="st-arrow">→</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="st-group">
+            <div class="st-node" style="background:#102028;border-color:#3080b0;color:#70c0e0">返金済み</div>
+            <div class="st-label">Pay.JP返金完了</div>
+          </div>
+          <div class="st-group">
+            <div class="st-node" style="background:#281018;border-color:#a03050;color:#e08080">キャンセル</div>
+            <div class="st-label">返金なし確定</div>
+          </div>
+        </div>
+      </div>
+      <div class="st-row" style="margin-top:8px">
+        <div class="st-group">
+          <div class="st-node" style="background:#282010;border-color:#a07030;color:#f0c060">未決済</div>
+        </div>
+        <div class="st-group" style="margin:0 4px">
+          <div style="color:#8a4a4a;font-size:10px">決済失敗3回 / 放棄</div>
+          <div class="st-arrow">→</div>
+        </div>
+        <div class="st-group">
+          <div class="st-node" style="background:#281018;border-color:#a03050;color:#e08080">キャンセル</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /tab-kessai -->
+
+<!-- ═══════════════ 予約タブ ═══════════════ -->
+<div id="tab-yoyaku" class="tab-section">
+  <div class="sec-bar" style="background:#182818;border-top:2px solid #308050">
+    <span class="sec-label" style="color:#60b878">📅 予約フロー（詳細）</span>
+    <div class="sep"></div>
+    <button class="btn" onclick="D4.fitView()">全体表示</button>
+  </div>
+  <div class="diagram-wrap" id="wrap4" style="flex:1.4">
+    <svg id="svg4"><defs>
+      <marker id="m4"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
+      <marker id="m4x" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3090b0"/></marker>
+      <marker id="m4n" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#a07030"/></marker>
+    </defs><g id="vp4"></g></svg>
+  </div>
+  <div class="sec-bar" style="background:#181828;border-top:2px solid #304880">
+    <span class="sec-label" style="color:#6088c0">📊 予約ステータス</span>
+  </div>
+  <div class="status-wrap" style="flex:0 0 auto;max-height:280px">
+    <div class="status-section">
+      <div class="status-title">ステータス一覧</div>
+      <table class="sl-table">
+        <thead><tr><th>ステータス名</th><th>詳細</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="sl-badge" style="background:#202028;border-color:#6060a0;color:#a0a0e0">仮情報</span></td>
+            <td class="sl-desc">ユーザーがカートに自転車を追加し決済画面に進んだ際に作成される仮の予約レコード。決済が完了していないため、在庫には影響しない。決済成功で「来客待ち」へ、失敗で「キャンセル」へ遷移する。</td>
+          </tr>
+          <tr>
+            <td><span class="sl-badge" style="background:#102818;border-color:#40a860;color:#80e8a0">来客待ち</span></td>
+            <td class="sl-desc">決済が完了し予約が正式確定した状態。ユーザーの来店と貸出開始を待っている。店舗側は予約通知を受け取り、自転車の準備を行う。キャンセル申請が来た場合は期限の有無で次のステータスが分岐する。</td>
+          </tr>
+          <tr>
+            <td><span class="sl-badge" style="background:#102030;border-color:#3090c0;color:#70c8e8">貸出中</span></td>
+            <td class="sl-desc">店舗スタッフがユーザーの来店を確認し貸出開始操作を行った際に設定される。自転車がユーザーの手元にある利用中の状態。返却手続きが完了するまでこのステータスが続く。</td>
+          </tr>
+          <tr>
+            <td><span class="sl-badge" style="background:#183020;border-color:#50a870;color:#90d8a8">返却済み</span></td>
+            <td class="sl-desc">店舗スタッフが返却を確認し返却完了操作を行った際に設定される。予約サイクルの正常完了を示す終端状態。売上レポートの集計対象となる。</td>
+          </tr>
+          <tr>
+            <td><span class="sl-badge" style="background:#281018;border-color:#a03050;color:#e08080">キャンセル</span></td>
+            <td class="sl-desc">①決済失敗による予約中断、②キャンセル期限内にユーザーが申請し返金処理が完了した場合に設定。返金あり・なし問わず予約が無効になった際のキャンセル全般を指す。</td>
+          </tr>
+          <tr>
+            <td><span class="sl-badge" style="background:#302010;border-color:#904020;color:#d07840">キャンセル（返金なし）</span></td>
+            <td class="sl-desc">キャンセル期限を過ぎた申請、またはノーショー（予約当日に来店なし）の場合に設定。Pay.JP への返金処理は行われず、決済金額はそのまま確定する。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="status-section">
+      <div class="status-title">ステータス遷移（reservation.予約ステータス）</div>
+      <div class="st-row">
+        <div class="st-group">
+          <div class="st-node" style="background:#202028;border-color:#6060a0;color:#a0a0e0">仮情報</div>
+          <div class="st-label">カート投入直後</div>
+        </div>
+        <div class="st-group" style="margin:0 4px">
+          <div style="color:#5a6a5a;font-size:10px">決済完了</div>
+          <div class="st-arrow">→</div>
+        </div>
+        <div class="st-group">
+          <div class="st-node" style="background:#102818;border-color:#40a860;color:#80e8a0">来客待ち</div>
+          <div class="st-label">予約確定・貸出前</div>
+        </div>
+        <div class="st-group" style="margin:0 4px">
+          <div style="color:#5a6a5a;font-size:10px">貸出開始</div>
+          <div class="st-arrow">→</div>
+        </div>
+        <div class="st-group">
+          <div class="st-node" style="background:#102030;border-color:#3090c0;color:#70c8e8">貸出中</div>
+          <div class="st-label">利用中</div>
+        </div>
+        <div class="st-group" style="margin:0 4px">
+          <div style="color:#5a6a5a;font-size:10px">返却確認</div>
+          <div class="st-arrow">→</div>
+        </div>
+        <div class="st-group">
+          <div class="st-node" style="background:#183020;border-color:#50a870;color:#90d8a8">返却済み</div>
+          <div class="st-label">完了</div>
+        </div>
+      </div>
+      <div class="st-row" style="margin-top:10px">
+        <div class="st-group">
+          <div class="st-node" style="background:#102818;border-color:#40a860;color:#80e8a0">来客待ち</div>
+        </div>
+        <div class="st-group" style="margin:0 4px">
+          <div style="color:#5a6a5a;font-size:10px">キャンセル（期限内）</div>
+          <div class="st-arrow">→</div>
+        </div>
+        <div class="st-group">
+          <div class="st-node" style="background:#281018;border-color:#a03050;color:#e08080">キャンセル</div>
+          <div class="st-label">返金あり</div>
+        </div>
+      </div>
+      <div class="st-row" style="margin-top:6px">
+        <div class="st-group">
+          <div class="st-node" style="background:#102818;border-color:#40a860;color:#80e8a0">来客待ち</div>
+        </div>
+        <div class="st-group" style="margin:0 4px">
+          <div style="color:#8a4a4a;font-size:10px">期限外・ノーショー</div>
+          <div class="st-arrow">→</div>
+        </div>
+        <div class="st-group">
+          <div class="st-node" style="background:#302010;border-color:#904020;color:#d07840">キャンセル（返金なし）</div>
+          <div class="st-label">返金なし</div>
+        </div>
+      </div>
+      <div class="st-row" style="margin-top:6px">
+        <div class="st-group">
+          <div class="st-node" style="background:#202028;border-color:#6060a0;color:#a0a0e0">仮情報</div>
+        </div>
+        <div class="st-group" style="margin:0 4px">
+          <div style="color:#8a4a4a;font-size:10px">決済失敗</div>
+          <div class="st-arrow">→</div>
+        </div>
+        <div class="st-group">
+          <div class="st-node" style="background:#281018;border-color:#a03050;color:#e08080">キャンセル</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /tab-yoyaku -->
+
+<script>
+// ── Shared ───────────────────────────────────────────────────────────────────
+const C={user:{fill:'#1a3a28',stroke:'#34a853',tc:'#a0e8b8'},store:{fill:'#1e1a38',stroke:'#8060d8',tc:'#c0a8f8'},admin:{fill:'#3a1818',stroke:'#d05050',tc:'#f0a8a8'},decision:{fill:'#151e38',stroke:'#4a72c0',tc:'#88b0e0'},startend:{fill:'#222230',stroke:'#686890',tc:'#b0b0d0'},popup:{fill:'#3a3010',stroke:'#c8a030',tc:'#ffe066'},external:{fill:'#181e3a',stroke:'#3878d0',tc:'#80b0f0'},notify:{fill:'#182030',stroke:'#3090b0',tc:'#80c8d8'},io:{fill:'#301e10',stroke:'#a07030',tc:'#d8a060'}};
+const SD={rect:{hw:70,hh:24},diamond:{hw:62,hh:34},ellipse:{hw:52,hh:20}};
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mText(cx,cy,lines,color,fs=11){const a=Array.isArray(lines)?lines:lines.split('\n');return a.map((l,i)=>{const dy=cy+(i-(a.length-1)/2)*(fs+3)+1;return`<text x="${cx}" y="${dy}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-size="${fs}" font-family="'Hiragino Sans',sans-serif">${esc(l)}</text>`;}).join('');}
+function nEl(n){const c=C[n.ck],lines=n.lines.flatMap(l=>l.split('\n'));if(n.shape==='ellipse'){const d=SD.ellipse;return`<ellipse cx="${n.cx}" cy="${n.cy}" rx="${d.hw}" ry="${d.hh}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>${mText(n.cx,n.cy,lines,c.tc)}`;}if(n.shape==='diamond'){const{hw,hh}=SD.diamond,pts=`${n.cx},${n.cy-hh} ${n.cx+hw},${n.cy} ${n.cx},${n.cy+hh} ${n.cx-hw},${n.cy}`;return`<polygon points="${pts}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>${mText(n.cx,n.cy,lines,c.tc,10)}`;}const{hw,hh}=SD.rect;return`<rect x="${n.cx-hw}" y="${n.cy-hh}" width="${hw*2}" height="${hh*2}" rx="8" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>${mText(n.cx,n.cy,lines,c.tc)}`;}
+
+// ── Drag coordinator ─────────────────────────────────────────────────────────
+let _drag=null;
+window.addEventListener('mousemove',e=>{if(!_drag)return;_drag.set(e.clientX-_drag.sx,e.clientY-_drag.sy);});
+window.addEventListener('mouseup',()=>{_drag=null;});
+
+// ── Diagram factory ──────────────────────────────────────────────────────────
+function makeDiagram(wrapId,vpId,svgW,svgH,nodes,lanesF,renderF){
+  const NM={};
+  nodes.forEach(n=>{NM[n[0]]={id:n[0],cx:n[1],cy:n[2],ck:n[3],shape:n[4],lines:n.slice(5)};});
+  function pt(id,side){const n=NM[id],d=SD[n.shape];return{r:[n.cx+d.hw,n.cy],l:[n.cx-d.hw,n.cy],t:[n.cx,n.cy-d.hh],b:[n.cx,n.cy+d.hh]}[side];}
+  let vx=0,vy=0,vscale=1;
+  function applyT(){document.getElementById(vpId).setAttribute('transform',`translate(${vx},${vy}) scale(${vscale})`);}
+  function fitView(){const w=document.getElementById(wrapId),pw=w.clientWidth,ph=w.clientHeight;vscale=Math.min(pw/svgW,ph/svgH)*0.92;vx=(pw-svgW*vscale)/2;vy=(ph-svgH*vscale)/2;applyT();}
+  function resetZoom(){vx=40;vy=20;vscale=1;applyT();}
+  function render(){const vp=document.getElementById(vpId);let h=lanesF();h+=renderF(pt);nodes.forEach(([id])=>{h+=nEl(NM[id]);});vp.innerHTML=h;}
+  const wrap=document.getElementById(wrapId);
+  wrap.addEventListener('wheel',e=>{e.preventDefault();const f=e.deltaY<0?1.12:0.88,r=wrap.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;vx=mx-(mx-vx)*f;vy=my-(my-vy)*f;vscale*=f;applyT();},{passive:false});
+  wrap.addEventListener('mousedown',e=>{_drag={sx:e.clientX-vx,sy:e.clientY-vy,set:(x,y)=>{vx=x;vy=y;applyT();}};});
+  return{render,fitView,resetZoom};
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// D2 — あるべき姿
+// ════════════════════════════════════════════════════════════════════════════
+const D2_NODES=[
+  ['u_start',110,250,'startend','ellipse','開始'],['u_new_q',275,250,'decision','diamond','新規\n登録?'],
+  ['u_login',450,190,'user','rect','ログイン\nフォーム'],['u_auth_ok',650,190,'decision','diamond','認証\nOK?'],['u_auth_err',650,305,'io','rect','エラー表示\n(再入力)'],['u_mypage',840,190,'user','rect','マイページ\n確認'],
+  ['u_signup',450,320,'user','rect','新規登録\nフォーム'],['u_mail_out',650,320,'notify','rect','確認メール\n送信'],['u_verified',840,320,'user','rect','メール\n本人確認'],
+  ['u_pw_req',450,415,'user','rect','PW\nリセット申請'],['u_pw_mail',650,415,'notify','rect','リセットメール\n送信'],['u_pw_done',840,415,'user','rect','新PW\n設定完了'],
+  ['s_start',110,560,'startend','ellipse','開始'],['s_form',290,560,'store','rect','店舗登録\nフォーム'],['s_submit',470,560,'store','rect','申請送信'],
+  ['a_start',110,775,'startend','ellipse','開始'],['a_login',290,775,'admin','rect','ログイン'],['a_dash',470,775,'admin','rect','ダッシュ\nボード'],
+  ['s_wait',975,560,'store','rect','審査\n待ち'],['a_rev',1180,775,'decision','diamond','店舗\n審査'],['a_approve',1375,715,'admin','rect','承認'],['a_reject',1375,845,'io','rect','却下'],['n_rej_m',1560,845,'notify','rect','却下通知\nメール(店舗)'],['n_app_m',1375,635,'notify','rect','承認メール\n送信(店舗)'],['s_activate',1560,560,'store','rect','アカウント\n有効化'],['s_login',1750,560,'store','rect','ログイン\n(shop_admin)'],
+  ['s_bike',1940,505,'store','rect','自転車\n登録・編集'],['s_status',1940,615,'store','rect','在庫\nステータス管理'],['s_price',2130,505,'store','rect','料金\nプラン設定'],['s_cal',2320,560,'store','rect','カレンダー\n(休業日)設定'],
+  ['u_search',1930,190,'user','rect','エリア・日時\n選択'],['u_exec',2120,190,'user','rect','検索実行'],['u_has_res',2310,190,'decision','diamond','空車\nあり?'],['u_no_res',2310,305,'io','rect','空車なし\n(条件変更)'],['u_list',2500,190,'user','rect','検索結果\n一覧'],
+  ['u_detail',2700,190,'user','rect','自転車詳細\n日時選択'],['u_inv_q',2890,190,'decision','diamond','在庫\n最終確認'],['u_inv_ng',2890,305,'io','rect','在庫切れ\n(別の自転車)'],['u_cart1',3080,190,'user','rect','予約①\n空車確認'],['u_cart2',3270,190,'user','rect','予約②\n顧客情報'],['u_cart3',3460,190,'user','rect','予約③\n内容確認'],
+  ['u_cart4',3590,190,'user','rect','予約④\n決済'],['u_card',3590,85,'popup','rect','カード情報\n入力'],['u_payjp',3780,85,'external','rect','Pay.JP\n決済処理'],['u_pay_ok',3780,190,'decision','diamond','決済\nOK?'],['u_pay_err',3780,305,'io','rect','決済エラー\n表示'],['u_retry_q',3970,305,'decision','diamond','再試行?\n(3回上限)'],['u_max_err',3970,415,'io','rect','予約中断\n(上限超過)'],['n_fail_u',4170,415,'notify','rect','決済失敗\nメール(ユーザー)'],['u_pay_done',3970,190,'user','rect','決済完了\n予約確定'],
+  ['n_fail_a',4170,870,'notify','rect','決済失敗\nアラート(管理者)'],
+  ['n_conf_u',4480,190,'notify','rect','予約確認\nメール(ユーザー)'],['u_resv',4670,190,'user','rect','予約一覧\n確認'],['n_conf_s',4480,560,'notify','rect','予約通知\nメール(店舗)'],['s_resv',4670,560,'store','rect','予約\n詳細確認'],['s_prep',4860,560,'store','rect','自転車\n準備'],['a_pay_mgmt',4480,775,'admin','rect','決済問題\n対応'],['a_monitor',4670,775,'admin','rect','予約\nモニタリング'],['a_report',4860,775,'admin','rect','売上\nレポート'],
+  ['u_cq',5180,190,'decision','diamond','キャンセル\nする?'],['u_pq',5370,190,'decision','diamond','キャンセル\n期限内?'],['u_refund',5560,140,'user','rect','全額\n返金処理'],['u_noref',5560,250,'io','rect','返金なし\n(規定外)'],['u_cancel',5750,190,'user','rect','キャンセル\n完了'],['n_can_u',5750,85,'notify','rect','キャンセル確認\nメール(ユーザー)'],['n_can_s',5750,480,'notify','rect','キャンセル通知\nメール(店舗)'],['s_cancel',5750,560,'store','rect','キャンセル\n確認・対応'],['a_refund',5560,775,'admin','rect','返金\n処理'],['a_sim',5750,775,'admin','rect','料金\nシミュレーション'],
+];
+
+function d2Edge(pt){
+  function e(fid,fs,tid,ts,{label='',cross=false,ng=false,loop=false}={}){
+    const[fx,fy]=pt(fid,fs),[tx,ty]=pt(tid,ts);
+    const mk=cross?'m2c':ng?'m2n':loop?'m2l':'m2',sc=cross?'#3090b0':ng?'#a07030':loop?'#8060a0':'#5a6a7a',sw=(cross||loop)?'1.2':'1.5',da=(cross||loop)?' stroke-dasharray="5,3"':'';
+    let d;if(Math.abs(fy-ty)<2)d=`M ${fx} ${fy} H ${tx}`;else if(Math.abs(fx-tx)<2)d=`M ${fx} ${fy} V ${ty}`;else if(fs==='t'||fs==='b'){const m=(fy+ty)/2;d=`M ${fx} ${fy} V ${m} H ${tx} V ${ty}`;}else{const m=(fx+tx)/2;d=`M ${fx} ${fy} H ${m} V ${ty} H ${tx}`;}
+    let s=`<path d="${d}" fill="none" stroke="${sc}" stroke-width="${sw}"${da} marker-end="url(#${mk})"/>`;
+    if(label){const lx=(fx+tx)/2,ly=Math.min(fy,ty)-7;s+=`<text x="${lx}" y="${ly}" text-anchor="middle" fill="${sc}" font-size="9" font-family="monospace">${esc(label)}</text>`;}
+    return s;
+  }
+  let h='';
+  h+=e('u_start','r','u_new_q','l');h+=e('u_new_q','t','u_login','l',{label:'No(既存)'});h+=e('u_new_q','b','u_signup','l',{label:'Yes(新規)'});
+  h+=e('u_login','r','u_auth_ok','l');h+=e('u_auth_ok','r','u_mypage','l',{label:'OK'});h+=e('u_auth_ok','b','u_auth_err','t',{label:'NG',ng:true});h+=e('u_auth_err','b','u_pw_req','t',{label:'PW忘れ',ng:true});
+  h+=e('u_signup','r','u_mail_out','l');h+=e('u_mail_out','r','u_verified','l');h+=e('u_pw_req','r','u_pw_mail','l');h+=e('u_pw_mail','r','u_pw_done','l');
+  h+=e('s_start','r','s_form','l');h+=e('s_form','r','s_submit','l');h+=e('s_submit','r','s_wait','l');h+=e('s_submit','b','a_dash','t',{cross:true,label:'申請通知'});
+  h+=e('a_start','r','a_login','l');h+=e('a_login','r','a_dash','l');h+=e('a_dash','r','a_rev','l');h+=e('s_wait','b','a_rev','t',{cross:true});
+  h+=e('a_rev','t','a_approve','b',{label:'承認'});h+=e('a_rev','b','a_reject','t',{label:'却下',ng:true});h+=e('a_reject','r','n_rej_m','l');h+=e('a_approve','t','n_app_m','b');h+=e('n_app_m','t','s_activate','b',{cross:true});h+=e('s_activate','r','s_login','l');h+=e('s_login','r','s_bike','l');h+=e('s_bike','r','s_price','l');h+=e('s_price','r','s_cal','l');
+  h+=e('u_mypage','r','u_search','l');h+=e('u_verified','r','u_search','l');h+=e('u_pw_done','r','u_search','l');h+=e('u_search','r','u_exec','l');h+=e('u_exec','r','u_has_res','l');h+=e('u_has_res','r','u_list','l',{label:'あり'});h+=e('u_has_res','b','u_no_res','t',{label:'なし',ng:true});h+=e('u_list','r','u_detail','l');
+  h+=e('u_detail','r','u_inv_q','l');h+=e('u_inv_q','r','u_cart1','l',{label:'OK'});h+=e('u_inv_q','b','u_inv_ng','t',{label:'NG',ng:true});h+=e('u_cart1','r','u_cart2','l');h+=e('u_cart2','r','u_cart3','l');h+=e('u_cart3','r','u_cart4','l');
+  h+=e('u_cart4','t','u_card','b');h+=e('u_card','r','u_payjp','l');h+=e('u_payjp','b','u_pay_ok','t');h+=e('u_pay_ok','r','u_pay_done','l',{label:'OK'});h+=e('u_pay_ok','b','u_pay_err','t',{label:'NG',ng:true});h+=e('u_pay_err','r','u_retry_q','l');h+=e('u_retry_q','b','u_max_err','t',{label:'上限超過',ng:true});h+=e('u_max_err','r','n_fail_u','l');h+=e('n_fail_u','b','n_fail_a','t',{cross:true});
+  // retry loopback
+  const[rpx,rpy]=pt('u_retry_q','t'),[cpx,cpy]=pt('u_card','t');
+  h+=`<path d="M ${rpx} ${rpy} V 20 H ${cpx} V ${cpy}" fill="none" stroke="#8060a0" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#m2l)"/>`;
+  h+=`<text x="${(rpx+cpx)/2}" y="12" text-anchor="middle" fill="#8060a0" font-size="9" font-family="monospace">Yes→再試行</text>`;
+  h+=e('u_pay_done','r','n_conf_u','l');h+=e('n_conf_u','r','u_resv','l');h+=e('u_pay_done','b','n_conf_s','t',{cross:true});h+=e('n_conf_s','r','s_resv','l');h+=e('s_resv','r','s_prep','l');h+=e('n_fail_a','r','a_pay_mgmt','l',{cross:true});h+=e('a_pay_mgmt','r','a_monitor','l');h+=e('a_monitor','r','a_report','l');
+  h+=e('u_resv','r','u_cq','l');h+=e('u_cq','r','u_pq','l',{label:'する'});h+=e('u_pq','t','u_refund','b',{label:'期限内'});h+=e('u_pq','b','u_noref','t',{label:'期限外',ng:true});h+=e('u_refund','r','u_cancel','l');h+=e('u_noref','r','u_cancel','l');h+=e('u_cancel','t','n_can_u','b');h+=e('u_cancel','b','n_can_s','t',{cross:true});h+=e('n_can_s','b','s_cancel','t',{cross:true});h+=e('u_refund','b','a_refund','t',{cross:true});h+=e('a_refund','r','a_sim','l');
+  return h;
+}
+
+function d2Lanes(){
+  const W=5820,BOTTOM=910;
+  const PH=[{x:60,w:840,label:'アカウント・認証',fill:'#1e2030',stroke:'#4a4a70',tc:'#9090c0'},{x:900,w:940,label:'店舗準備・承認 / マスタ管理',fill:'#1c2820',stroke:'#3a5838',tc:'#70a070'},{x:1840,w:780,label:'自転車検索・閲覧',fill:'#1e2820',stroke:'#385828',tc:'#78a868'},{x:2620,w:860,label:'予約フロー',fill:'#282018',stroke:'#5a4828',tc:'#a08840'},{x:3480,w:940,label:'決済',fill:'#281828',stroke:'#5a3058',tc:'#a068a0'},{x:4420,w:680,label:'完了・通知',fill:'#182028',stroke:'#305060',tc:'#6090a0'},{x:5100,w:720,label:'キャンセル・返金',fill:'#281e10',stroke:'#5a4020',tc:'#a07838'}];
+  let s='';
+  PH.forEach(p=>{s+=`<rect x="${p.x+1}" y="1" width="${p.w-3}" height="38" rx="5" fill="${p.fill}" stroke="${p.stroke}" stroke-width="1.2"/>`;s+=`<text x="${p.x+p.w/2}" y="25" text-anchor="middle" fill="${p.tc}" font-size="12" font-weight="700" font-family="'Hiragino Sans',sans-serif">${p.label}</text>`;});
+  PH.slice(1).map(p=>p.x).forEach(x=>{s+=`<line x1="${x}" y1="0" x2="${x}" y2="${BOTTOM}" stroke="#303040" stroke-width="1" stroke-dasharray="4,4"/>`;});
+  s+=`<rect x="60" y="42" width="${W}" height="398" rx="6" fill="rgba(26,60,40,0.10)" stroke="#2a4a34" stroke-width="1"/><text x="72" y="64" fill="#34a853" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">ユーザー</text>`;
+  s+=`<rect x="60" y="450" width="${W}" height="220" rx="6" fill="rgba(40,26,70,0.12)" stroke="#3a2a54" stroke-width="1"/><text x="72" y="472" fill="#8060d8" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">店舗</text>`;
+  s+=`<rect x="60" y="680" width="${W}" height="225" rx="6" fill="rgba(70,26,26,0.12)" stroke="#542a2a" stroke-width="1"/><text x="72" y="702" fill="#d05050" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">管理者</text>`;
+  return s;
+}
+
+const D2=makeDiagram('wrap2','vp2',5900,960,D2_NODES,d2Lanes,d2Edge);
+
+// ════════════════════════════════════════════════════════════════════════════
+// D3 — 決済フロー（詳細）
+// ════════════════════════════════════════════════════════════════════════════
+const D3_NODES=[
+  // ユーザー行
+  ['u_cart4',  110, 200,'user',    'rect', '予約④\n決済画面'],
+  ['u_card',   300, 120,'popup',   'rect', 'カード情報\n入力(POP)'],
+  ['u_token',  490, 120,'external','rect', 'Pay.JP\nトークン化'],
+  ['u_charge', 700, 200,'external','rect', 'Pay.JP\nチャージ実行'],
+  ['u_pay_ok', 900, 200,'decision','diamond','決済\nOK?'],
+  ['u_pay_err',900, 330,'io',      'rect', '決済エラー\n表示'],
+  ['u_retry_q',1090,330,'decision','diamond','再試行?\n(3回上限)'],
+  ['u_give_up',1090,450,'io',      'rect', '予約中断\n(上限超過)'],
+  ['u_done',   1090,200,'user',    'rect', '決済完了\n予約確定'],
+  ['u_resv',   1280,200,'user',    'rect', '予約一覧\n確認'],
+  ['u_cancel', 1470,200,'user',    'rect', 'キャンセル\n申請'],
+  ['u_refund_q',1660,200,'decision','diamond','期限\n内?'],
+  ['u_ref_ok', 1850,130,'user',    'rect', 'Pay.JP\n返金処理'],
+  ['u_ref_ng', 1850,270,'io',      'rect', '返金なし\n(規定外)'],
+  ['u_cancel_done',2050,200,'user','rect', 'キャンセル\n完了'],
+  // 通知
+  ['n_conf_u', 1090, 90,'notify',  'rect', '確認メール\n(ユーザー)'],
+  ['n_conf_s',  700, 510,'notify', 'rect', '予約通知\n(店舗)'],
+  ['n_fail',   1280,490,'notify',  'rect', '決済失敗メール\n(ユーザー+管理者)'],
+  ['n_refund', 2050, 80,'notify',  'rect', '返金完了メール\n(ユーザー)'],
+  ['n_cancel_s',2050,340,'notify', 'rect', 'キャンセル通知\n(店舗)'],
+  // 管理者
+  ['a_monitor',1280,610,'admin',   'rect', '決済問題\nモニタリング'],
+  ['a_refund', 1850,510,'admin',   'rect', '返金承認\n(管理者)'],
+];
+
+function d3Edge(pt){
+  function e(fid,fs,tid,ts,{label='',cross=false,ng=false,loop=false}={}){
+    const[fx,fy]=pt(fid,fs),[tx,ty]=pt(tid,ts);
+    const mk=cross?'m3x':ng?'m3n':loop?'m3l':'m3',sc=cross?'#3090b0':ng?'#a07030':loop?'#8060a0':'#5a6a7a',sw=(cross||loop)?'1.2':'1.5',da=(cross||loop)?' stroke-dasharray="5,3"':'';
+    let d;if(Math.abs(fy-ty)<2)d=`M ${fx} ${fy} H ${tx}`;else if(Math.abs(fx-tx)<2)d=`M ${fx} ${fy} V ${ty}`;else if(fs==='t'||fs==='b'){const m=(fy+ty)/2;d=`M ${fx} ${fy} V ${m} H ${tx} V ${ty}`;}else{const m=(fx+tx)/2;d=`M ${fx} ${fy} H ${m} V ${ty} H ${tx}`;}
+    let s=`<path d="${d}" fill="none" stroke="${sc}" stroke-width="${sw}"${da} marker-end="url(#${mk})"/>`;
+    if(label){const lx=(fx+tx)/2,ly=Math.min(fy,ty)-7;s+=`<text x="${lx}" y="${ly}" text-anchor="middle" fill="${sc}" font-size="9" font-family="monospace">${esc(label)}</text>`;}
+    return s;
+  }
+  let h='';
+  h+=e('u_cart4','t','u_card','b');
+  h+=e('u_card','r','u_token','l');
+  h+=e('u_token','b','u_charge','t');
+  h+=e('u_charge','r','u_pay_ok','l');
+  h+=e('u_pay_ok','r','u_done','l',{label:'OK'});
+  h+=e('u_pay_ok','b','u_pay_err','t',{label:'NG',ng:true});
+  h+=e('u_pay_err','r','u_retry_q','l');
+  h+=e('u_retry_q','b','u_give_up','t',{label:'上限',ng:true});
+  h+=e('u_give_up','r','n_fail','l');
+  h+=e('n_fail','b','a_monitor','t',{cross:true});
+  // retry loopback
+  const[rpx,rpy]=pt('u_retry_q','t'),[cpx,cpy]=pt('u_card','t');
+  h+=`<path d="M ${rpx} ${rpy} V 50 H ${cpx} V ${cpy}" fill="none" stroke="#8060a0" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#m3l)"/>`;
+  h+=`<text x="${(rpx+cpx)/2}" y="42" text-anchor="middle" fill="#8060a0" font-size="9" font-family="monospace">Yes→再試行</text>`;
+  h+=e('u_done','t','n_conf_u','b');
+  h+=e('u_done','b','n_conf_s','t',{cross:true});
+  h+=e('u_done','r','u_resv','l');
+  h+=e('u_resv','r','u_cancel','l');
+  h+=e('u_cancel','r','u_refund_q','l');
+  h+=e('u_refund_q','t','u_ref_ok','b',{label:'期限内'});
+  h+=e('u_refund_q','b','u_ref_ng','t',{label:'期限外',ng:true});
+  h+=e('u_ref_ok','r','u_cancel_done','l');
+  h+=e('u_ref_ng','r','u_cancel_done','l');
+  h+=e('u_cancel_done','t','n_refund','b');
+  h+=e('u_cancel_done','b','n_cancel_s','t',{cross:true});
+  h+=e('u_ref_ok','b','a_refund','t',{cross:true});
+  return h;
+}
+
+function d3Lanes(){
+  const W=2200,BOTTOM=720;
+  const PH=[
+    {x:60, w:570, label:'カード入力・トークン化',fill:'#1e1828',stroke:'#503060',tc:'#9060b0'},
+    {x:630,w:600, label:'チャージ・決済判定',   fill:'#281828',stroke:'#5a3058',tc:'#a068a0'},
+    {x:1230,w:500,label:'完了・確認',           fill:'#182028',stroke:'#305060',tc:'#6090a0'},
+    {x:1730,w:500,label:'キャンセル・返金',      fill:'#281e10',stroke:'#5a4020',tc:'#a07838'},
+  ];
+  let s='';
+  PH.forEach(p=>{s+=`<rect x="${p.x+1}" y="1" width="${p.w-3}" height="38" rx="5" fill="${p.fill}" stroke="${p.stroke}" stroke-width="1.2"/>`;s+=`<text x="${p.x+p.w/2}" y="25" text-anchor="middle" fill="${p.tc}" font-size="12" font-weight="700" font-family="'Hiragino Sans',sans-serif">${p.label}</text>`;});
+  PH.slice(1).map(p=>p.x).forEach(x=>{s+=`<line x1="${x}" y1="0" x2="${x}" y2="${BOTTOM}" stroke="#303040" stroke-width="1" stroke-dasharray="4,4"/>`;});
+  s+=`<rect x="60" y="42" width="${W}" height="370" rx="6" fill="rgba(26,60,40,0.10)" stroke="#2a4a34" stroke-width="1"/><text x="72" y="64" fill="#34a853" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">ユーザー</text>`;
+  s+=`<rect x="60" y="422" width="${W}" height="270" rx="6" fill="rgba(70,26,26,0.12)" stroke="#542a2a" stroke-width="1"/><text x="72" y="444" fill="#d05050" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">管理者 / 通知</text>`;
+  return s;
+}
+
+const D3=makeDiagram('wrap3','vp3',2260,740,D3_NODES,d3Lanes,d3Edge);
+
+// ════════════════════════════════════════════════════════════════════════════
+// D4 — 予約フロー（詳細）
+// ════════════════════════════════════════════════════════════════════════════
+const D4_NODES=[
+  // ユーザー行
+  ['u_search', 100, 210,'user',    'rect', 'エリア・日時\n選択'],
+  ['u_list',   290, 210,'user',    'rect', '検索結果\n一覧'],
+  ['u_detail', 480, 210,'user',    'rect', '自転車詳細\n日時選択'],
+  ['u_inv_q',  670, 210,'decision','diamond','在庫\n確認'],
+  ['u_inv_ng', 670, 340,'io',      'rect', '在庫切れ\n(別を選択)'],
+  ['u_c1',     860, 210,'user',    'rect', '予約①\n空車確認'],
+  ['u_c2',    1050, 210,'user',    'rect', '予約②\n顧客情報'],
+  ['u_c3',    1240, 210,'user',    'rect', '予約③\n内容確認'],
+  ['u_c4',    1430, 210,'user',    'rect', '予約④\n決済'],
+  ['u_pay_ok',1620, 210,'decision','diamond','決済\nOK?'],
+  ['u_pay_ng',1620, 340,'io',      'rect', '決済失敗\n(再試行)'],
+  ['u_confirmed',1820,210,'user',  'rect', '予約確定\n(来客待ち)'],
+  ['u_lend',  2010, 210,'user',    'rect', '来店・\n貸出開始'],
+  ['u_return',2200, 210,'user',    'rect', '返却\n手続き'],
+  ['u_done',  2390, 210,'user',    'rect', '返却済み\n完了'],
+  ['u_myresv',2010,  80,'user',    'rect', '予約一覧\n確認'],
+  ['u_cancel_q',1820,340,'decision','diamond','キャン\nセル?'],
+  ['u_limit_q',2010,400,'decision','diamond','期限\n内?'],
+  ['u_ref',   2200, 330,'user',    'rect', '返金あり\nキャンセル'],
+  ['u_noref', 2200, 470,'io',      'rect', '返金なし\nキャンセル'],
+  // 店舗行
+  ['s_notify', 1820,560,'store',   'rect', '予約通知\n受信'],
+  ['s_prep',   2010,560,'store',   'rect', '自転車\n準備'],
+  ['s_lend',   2200,560,'store',   'rect', '貸出確認\n(ステータス変更)'],
+  ['s_ret',    2390,560,'store',   'rect', '返却確認\n(ステータス変更)'],
+  ['s_cancel', 2390,460,'store',   'rect', 'キャンセル\n対応'],
+  // 通知
+  ['n_conf',   1820, 80,'notify',  'rect', '予約確認\nメール'],
+  ['n_canc',   2390,340,'notify',  'rect', 'キャンセル\n確認メール'],
+];
+
+function d4Edge(pt){
+  function e(fid,fs,tid,ts,{label='',cross=false,ng=false}={}){
+    const[fx,fy]=pt(fid,fs),[tx,ty]=pt(tid,ts);
+    const mk=cross?'m4x':ng?'m4n':'m4',sc=cross?'#3090b0':ng?'#a07030':'#5a6a7a',sw=cross?'1.2':'1.5',da=cross?' stroke-dasharray="5,3"':'';
+    let d;if(Math.abs(fy-ty)<2)d=`M ${fx} ${fy} H ${tx}`;else if(Math.abs(fx-tx)<2)d=`M ${fx} ${fy} V ${ty}`;else if(fs==='t'||fs==='b'){const m=(fy+ty)/2;d=`M ${fx} ${fy} V ${m} H ${tx} V ${ty}`;}else{const m=(fx+tx)/2;d=`M ${fx} ${fy} H ${m} V ${ty} H ${tx}`;}
+    let s=`<path d="${d}" fill="none" stroke="${sc}" stroke-width="${sw}"${da} marker-end="url(#${mk})"/>`;
+    if(label){const lx=(fx+tx)/2,ly=Math.min(fy,ty)-7;s+=`<text x="${lx}" y="${ly}" text-anchor="middle" fill="${sc}" font-size="9" font-family="monospace">${esc(label)}</text>`;}
+    return s;
+  }
+  let h='';
+  h+=e('u_search','r','u_list','l');
+  h+=e('u_list','r','u_detail','l');
+  h+=e('u_detail','r','u_inv_q','l');
+  h+=e('u_inv_q','r','u_c1','l',{label:'OK'});
+  h+=e('u_inv_q','b','u_inv_ng','t',{label:'NG',ng:true});
+  h+=e('u_c1','r','u_c2','l');
+  h+=e('u_c2','r','u_c3','l');
+  h+=e('u_c3','r','u_c4','l');
+  h+=e('u_c4','r','u_pay_ok','l');
+  h+=e('u_pay_ok','r','u_confirmed','l',{label:'OK'});
+  h+=e('u_pay_ok','b','u_pay_ng','t',{label:'NG',ng:true});
+  h+=e('u_confirmed','t','n_conf','b');
+  h+=e('n_conf','r','u_myresv','l');
+  h+=e('u_confirmed','r','u_lend','l');
+  h+=e('u_lend','r','u_return','l');
+  h+=e('u_return','r','u_done','l');
+  h+=e('u_confirmed','b','u_cancel_q','t');
+  h+=e('u_cancel_q','r','u_limit_q','l',{label:'する'});
+  h+=e('u_limit_q','t','u_ref','b',{label:'期限内'});
+  h+=e('u_limit_q','b','u_noref','t',{label:'期限外',ng:true});
+  h+=e('u_ref','r','n_canc','l');
+  h+=e('u_noref','r','s_cancel','l',{cross:true});
+  h+=e('u_confirmed','b','s_notify','t',{cross:true});
+  h+=e('s_notify','r','s_prep','l');
+  h+=e('s_prep','r','s_lend','l');
+  h+=e('s_lend','r','s_ret','l');
+  h+=e('s_lend','t','u_lend','b',{cross:true});
+  h+=e('s_ret','t','u_return','b',{cross:true});
+  return h;
+}
+
+function d4Lanes(){
+  const W=2480,BOTTOM=680;
+  const PH=[
+    {x:60, w:670,label:'自転車検索・閲覧',  fill:'#1e2820',stroke:'#385828',tc:'#78a868'},
+    {x:730,w:770,label:'予約フロー',         fill:'#282018',stroke:'#5a4828',tc:'#a08840'},
+    {x:1500,w:580,label:'決済・確定',        fill:'#281828',stroke:'#5a3058',tc:'#a068a0'},
+    {x:2080,w:480,label:'利用・返却',        fill:'#182028',stroke:'#305060',tc:'#6090a0'},
+  ];
+  let s='';
+  PH.forEach(p=>{s+=`<rect x="${p.x+1}" y="1" width="${p.w-3}" height="38" rx="5" fill="${p.fill}" stroke="${p.stroke}" stroke-width="1.2"/>`;s+=`<text x="${p.x+p.w/2}" y="25" text-anchor="middle" fill="${p.tc}" font-size="12" font-weight="700" font-family="'Hiragino Sans',sans-serif">${p.label}</text>`;});
+  PH.slice(1).map(p=>p.x).forEach(x=>{s+=`<line x1="${x}" y1="0" x2="${x}" y2="${BOTTOM}" stroke="#303040" stroke-width="1" stroke-dasharray="4,4"/>`;});
+  s+=`<rect x="60" y="42" width="${W}" height="395" rx="6" fill="rgba(26,60,40,0.10)" stroke="#2a4a34" stroke-width="1"/><text x="72" y="64" fill="#34a853" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">ユーザー</text>`;
+  s+=`<rect x="60" y="447" width="${W}" height="200" rx="6" fill="rgba(40,26,70,0.12)" stroke="#3a2a54" stroke-width="1"/><text x="72" y="469" fill="#8060d8" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">店舗</text>`;
+  return s;
+}
+
+const D4=makeDiagram('wrap4','vp4',2560,680,D4_NODES,d4Lanes,d4Edge);
+
+// ── Tab switching ─────────────────────────────────────────────────────────
+function switchBizTab(tab){
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.toggle('active',b.dataset.ptab===tab));
+  ['zen','kessai','yoyaku'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+  });
+  document.getElementById('legend').style.display = tab==='zen' ? '' : 'none';
+  if(tab==='kessai'){ D3.render(); setTimeout(()=>D3.fitView(),50); }
+  if(tab==='yoyaku'){ D4.render(); setTimeout(()=>D4.fitView(),50); }
+}
+
+// ── Init ────────────────────────────────────────────────────────────────────
+D2.render(); D2.fitView();
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# 認証情報
+.env
+.env.*
+
+# 依存パッケージ
+node_modules/
+
+# テスト結果
+test-results/
+playwright-report/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/
