@@ -1,3 +1,6 @@
+# Bubble context (large file)
+.context/
+
 # 認証情報
 .env
 .env.*
