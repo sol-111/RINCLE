@@ -101,7 +101,7 @@ function makeEdgeFn(mk: MkIds) {
 // ════════════════ D2 — 全体フロー ════════════════════════════════════════════
 const D2_NODES: (string|number)[][] = [
   ['u_start',110,250,'startend','ellipse','開始'],['u_new_q',275,250,'decision','diamond','新規\n登録?'],
-  ['u_login',450,190,'user','rect','ログイン\nフォーム'],['u_auth_ok',650,190,'decision','diamond','認証\nOK?'],['u_auth_err',650,305,'io','rect','エラー表示\n(再入力)'],['u_mypage',840,190,'user','rect','マイページ\n確認'],
+  ['u_login',450,190,'user','rect','ログイン\nフォーム'],['u_auth_ok',650,190,'decision','diamond','認証\nOK?'],['u_auth_err',650,260,'io','rect','エラー表示\n(再入力)'],['u_mypage',840,190,'user','rect','マイページ\n確認'],
   ['u_signup',450,320,'user','rect','新規登録\nフォーム'],['u_mail_out',650,320,'notify','rect','確認メール\n送信'],['u_verified',840,320,'user','rect','メール\n本人確認'],
   ['u_pw_req',450,415,'user','rect','PW\nリセット申請'],['u_pw_mail',650,415,'notify','rect','リセットメール\n送信'],['u_pw_done',840,415,'user','rect','新PW\n設定完了'],
   ['s_start',110,560,'startend','ellipse','開始'],['s_form',290,560,'store','rect','店舗登録\nフォーム'],['s_submit',470,560,'store','rect','申請送信'],
