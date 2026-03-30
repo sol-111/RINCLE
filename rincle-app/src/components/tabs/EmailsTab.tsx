@@ -91,7 +91,7 @@ export default function EmailsTab() {
   const dirtyRows = useRef<Map<string, Row>>(new Map())
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const cfgTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
-  const supabase = createClient()
+  const supabase = useRef(createClient()).current
 
   useEffect(() => {
     supabase.from('emails').select('*').order('sort_order').then(({ data }) => {

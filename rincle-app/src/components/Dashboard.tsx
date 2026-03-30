@@ -24,7 +24,13 @@ const TABS = [
 
 export default function Dashboard({ user }: { user: User }) {
   const [tab, setTab] = useState<Tab>('screens')
+  const [visited, setVisited] = useState<Set<Tab>>(new Set(['screens']))
   const router = useRouter()
+
+  function switchTab(t: Tab) {
+    setTab(t)
+    setVisited(prev => { const s = new Set(prev); s.add(t); return s })
+  }
   const supabase = createClient()
 
   async function handleLogout() {
@@ -50,7 +56,7 @@ export default function Dashboard({ user }: { user: User }) {
         </div>
 
         {TABS.map(t => (
-          <button key={t.id} onClick={() => setTab(t.id)} style={{
+          <button key={t.id} onClick={() => switchTab(t.id)} style={{
             display: 'flex', alignItems: 'center', gap: 6, padding: '0 16px',
             border: 'none', background: 'transparent',
             color: tab === t.id ? '#90b8f0' : '#686880',
@@ -80,14 +86,14 @@ export default function Dashboard({ user }: { user: User }) {
         </div>
       </div>
 
-      {/* Content */}
-      <div style={{ flex: 1, overflow: 'hidden' }}>
-        {tab === 'screens' && <ScreensTab />}
-        {tab === 'flow'    && <FlowTab />}
-        {tab === 'bizflow' && <BizFlowTab />}
-        {tab === 'emails'  && <EmailsTab />}
-        {tab === 'db'      && <DbTab />}
-        {tab === 'er'      && <ErTab />}
+      {/* Content — visited tabs stay mounted (display:none) to avoid re-fetching */}
+      <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+        {visited.has('screens') && <div style={{ display: tab === 'screens' ? 'block' : 'none', position: 'absolute', inset: 0 }}><ScreensTab /></div>}
+        {visited.has('flow')    && <div style={{ display: tab === 'flow'    ? 'block' : 'none', position: 'absolute', inset: 0 }}><FlowTab /></div>}
+        {visited.has('bizflow') && <div style={{ display: tab === 'bizflow' ? 'block' : 'none', position: 'absolute', inset: 0 }}><BizFlowTab /></div>}
+        {visited.has('emails')  && <div style={{ display: tab === 'emails'  ? 'block' : 'none', position: 'absolute', inset: 0 }}><EmailsTab /></div>}
+        {visited.has('db')      && <div style={{ display: tab === 'db'      ? 'block' : 'none', position: 'absolute', inset: 0 }}><DbTab /></div>}
+        {visited.has('er')      && <div style={{ display: tab === 'er'      ? 'block' : 'none', position: 'absolute', inset: 0 }}><ErTab /></div>}
       </div>
     </div>
   )

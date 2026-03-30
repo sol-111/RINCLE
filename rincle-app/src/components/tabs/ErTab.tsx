@@ -209,30 +209,40 @@ function drawLines(svg: SVGSVGElement, edges: EdgeDef[], tables: Record<string, 
     const p = pos[id]; if (!p) return null
     const tbl = tables[id]; if (!tbl) return null
     const h = HDR_H + ROW_H + tbl.fields.length * ROW_H
+    // +2 on R/B to account for 1px border on each side (width/height is content-box)
     return {
-      x:p.x, y:p.y, w:BOX_W, h,
-      L:{x:p.x,         y:p.y+h/2},
-      R:{x:p.x+BOX_W,   y:p.y+h/2},
-      T:{x:p.x+BOX_W/2, y:p.y},
-      B:{x:p.x+BOX_W/2, y:p.y+h},
+      x:p.x, y:p.y, w:BOX_W+2, h:h+2,
+      L:{x:p.x,           y:p.y+(h+2)/2},
+      R:{x:p.x+BOX_W+2,   y:p.y+(h+2)/2},
+      T:{x:p.x+(BOX_W+2)/2, y:p.y},
+      B:{x:p.x+(BOX_W+2)/2, y:p.y+h+2},
     }
   }
 
   edges.forEach(({ f, t }) => {
     const s = getBox(f), tg = getBox(t); if (!s || !tg) return
     let x1: number, y1: number, x2: number, y2: number
+    let isHoriz = true
 
-    if (tg.x > s.x + s.w - 10)       { x1=s.R.x; y1=s.R.y; x2=tg.L.x; y2=tg.L.y }
-    else if (tg.x + tg.w < s.x + 10) { x1=s.L.x; y1=s.L.y; x2=tg.R.x; y2=tg.R.y }
-    else if (tg.y > s.y + s.h - 10)  { x1=s.B.x; y1=s.B.y; x2=tg.T.x; y2=tg.T.y }
-    else                               { x1=s.T.x; y1=s.T.y; x2=tg.B.x; y2=tg.B.y }
+    if (tg.x > s.x + s.w - 10)       { x1=s.R.x; y1=s.R.y; x2=tg.L.x; y2=tg.L.y; isHoriz=true }
+    else if (tg.x + tg.w < s.x + 10) { x1=s.L.x; y1=s.L.y; x2=tg.R.x; y2=tg.R.y; isHoriz=true }
+    else if (tg.y > s.y + s.h - 10)  { x1=s.B.x; y1=s.B.y; x2=tg.T.x; y2=tg.T.y; isHoriz=false }
+    else                               { x1=s.T.x; y1=s.T.y; x2=tg.B.x; y2=tg.B.y; isHoriz=false }
 
-    const ddx = Math.abs(x2 - x1) * 0.45 + 20
+    let d: string
+    if (isHoriz) {
+      const midX = (x1 + x2) / 2
+      d = `M${x1},${y1} H${midX} V${y2} H${x2}`
+    } else {
+      const midY = (y1 + y2) / 2
+      d = `M${x1},${y1} V${midY} H${x2} V${y2}`
+    }
+
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
     path.setAttribute('stroke', '#384858')
     path.setAttribute('stroke-width', '1.5')
     path.setAttribute('fill', 'none')
-    path.setAttribute('d', `M${x1},${y1} C${x1+(x2>x1?ddx:-ddx)},${y1} ${x2-(x2>x1?ddx:-ddx)},${y2} ${x2},${y2}`)
+    path.setAttribute('d', d)
     path.setAttribute('marker-end', 'url(#arr)')
     svg.appendChild(path)
   })
