@@ -67,9 +67,11 @@ const OS_DATA = [
 ]
 
 // ── Constants ───────────────────────────────────────────────────────────────────
-const BOX_W = 260, ROW_H = 20, HDR_H = 27
-const GAP_X = 40, GAP_Y = 30
-const COL_MAX_H = 1200
+// ROW_H: minHeight(20) + padding(2+2) + border-bottom(1) = 25 → 26 with buffer
+// HDR_H: font-line-height(~18) + padding(5+5) + border-bottom(1) = 29 → 30 with buffer
+const BOX_W = 260, ROW_H = 26, HDR_H = 30
+const GAP_X = 40, GAP_Y = 40
+const COL_MAX_H = 1600
 
 const TYPE_COLORS: Record<string, string> = {
   text:'#5a90c0', number:'#5a9060', date:'#a07040',
