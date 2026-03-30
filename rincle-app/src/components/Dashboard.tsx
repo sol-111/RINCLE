@@ -6,16 +6,20 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import ScreensTab from './tabs/ScreensTab'
 import FlowTab from './tabs/FlowTab'
+import BizFlowTab from './tabs/BizFlowTab'
 import EmailsTab from './tabs/EmailsTab'
 import DbTab from './tabs/DbTab'
+import ErTab from './tabs/ErTab'
 
-type Tab = 'screens' | 'flow' | 'emails' | 'db'
+type Tab = 'screens' | 'flow' | 'bizflow' | 'emails' | 'db' | 'er'
 
 const TABS = [
-  { id: 'screens' as Tab, label: '画面設計書', icon: '📊' },
-  { id: 'flow'    as Tab, label: '画面遷移図', icon: '📐' },
-  { id: 'emails'  as Tab, label: 'メール一覧', icon: '✉️' },
-  { id: 'db'      as Tab, label: 'DB設計書',   icon: '🗄️' },
+  { id: 'screens' as Tab, label: '画面設計書',  icon: '📊' },
+  { id: 'flow'    as Tab, label: '画面遷移図',  icon: '📐' },
+  { id: 'bizflow' as Tab, label: '業務フロー図', icon: '📋' },
+  { id: 'emails'  as Tab, label: 'メール一覧',  icon: '✉️' },
+  { id: 'db'      as Tab, label: 'DB設計書',    icon: '🗄️' },
+  { id: 'er'      as Tab, label: 'ER図',        icon: '🔗' },
 ]
 
 export default function Dashboard({ user }: { user: User }) {
@@ -80,8 +84,10 @@ export default function Dashboard({ user }: { user: User }) {
       <div style={{ flex: 1, overflow: 'hidden' }}>
         {tab === 'screens' && <ScreensTab />}
         {tab === 'flow'    && <FlowTab />}
+        {tab === 'bizflow' && <BizFlowTab />}
         {tab === 'emails'  && <EmailsTab />}
         {tab === 'db'      && <DbTab />}
+        {tab === 'er'      && <ErTab />}
       </div>
     </div>
   )

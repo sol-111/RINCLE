@@ -15,6 +15,7 @@ type Row = {
   ix: boolean
   dtype: string
   list: boolean
+  ref_target: string
   validation: string
   notes: string
 }
@@ -29,7 +30,8 @@ const FRONT_COLS: { key: keyof Row; label: string; placeholder: string }[] = [
   { key: 'field_name',   label: 'フィールド名', placeholder: 'フィールド' },
   { key: 'display_name', label: '表示名',       placeholder: '表示名' },
 ]
-const BACK_COLS: { key: keyof Row; label: string; placeholder: string }[] = [
+const BACK_COLS: { key: keyof Row; label: string; placeholder: string; select?: boolean }[] = [
+  { key: 'ref_target', label: '参照先',         placeholder: '参照テーブル名', select: true },
   { key: 'validation', label: 'バリデーション', placeholder: 'バリデーション' },
   { key: 'notes',      label: '備考',           placeholder: '備考' },
 ]
@@ -37,14 +39,72 @@ const BACK_COLS: { key: keyof Row; label: string; placeholder: string }[] = [
 const INIT_WIDTHS: Record<string, number> = {
   field_name: 200, display_name: 160,
   required: 48, ix: 64, dtype: 100, list: 44,
-  validation: 200, notes: 200,
+  ref_target: 140, validation: 200, notes: 200,
+}
+
+// ── テーブル説明 (DataType) ────────────────────────────────────────────────────
+const TABLE_DESCRIPTIONS: Record<string, string> = {
+  user:               'ユーザー（事業者・加盟店）。認証・プロフィール・Pay.JP決済情報を管理。アプリの中心テーブル',
+  bicycle:            '自転車情報。加盟店が登録する貸出可能な自転車。料金プランと紐づく',
+  price_menu:         '料金プラン。時間・日・週・月単位の単価を管理。自転車に紐づく',
+  option:             'オプション商品。自転車に追加できるアクセサリ等。加盟店ごとに管理',
+  sub_option:         'サブオプション。オプションの詳細・数量・単価。対応自転車を複数持てる',
+  prefecture:         '都道府県マスタ。ショップのサービスエリア管理',
+  q_a_category:       'FAQカテゴリ。Q&Aの分類に使用',
+  q_a:                'よくある質問と回答。カテゴリに紐づく',
+  news:               'お知らせ。管理者・運営からユーザーへの通知',
+  banner:             'バナー広告。トップページ等に表示する画像+リンク',
+  fv:                 'ファーストビュー。トップページのヒーロー画像・リンク',
+  holidays:           '祝日マスタ。貸出不可日の管理に使用',
+  access_log:         'アクセスログ。ユーザーの訪問日時・IPを記録',
+  webhook_event:      'Webhookイベント。Pay.JPなど外部サービスからの通知を記録',
+  reservation:        '予約情報。貸出・返却・決済の中心テーブル。明細・オプション価格と紐づく',
+  booking_customer:   '予約顧客情報。会員登録なしで予約した顧客の氏名・連絡先',
+  reservation_detail: '予約明細。予約ごとの自転車・料金プラン・金額の詳細',
+  option_price:       'オプション価格。予約に紐づくオプション金額の記録',
+  shop_schedule:      'ショップスケジュール。特定日の営業状態と対象自転車を管理',
+  business_hours:     '営業時間設定。曜日・期間ごとの営業時間ルール',
+  sales_record:       '売上記録。月次集計・振込処理用のデータ',
+  shop_notification:  'ショップ通知。お問い合わせ・請求・キャンセル等の通知',
+  contact_inquiry:    'お問い合わせ。ユーザーからの問い合わせフォームデータ',
+}
+
+// ── OptionSet 説明 ─────────────────────────────────────────────────────────────
+const OS_DESCRIPTIONS: Record<string, string> = {
+  'Rights':                  'ユーザー / 加盟店 / 管理者のアクセス権限',
+  '予約ステータス':           '貸出中・来客待ち・返却済み等、予約の進行状態',
+  '決済ステータス':           '決済済み・未決済・返金済み等、支払い状態',
+  '振り込みステータス':       '振込済 / 未振込',
+  '支払い方法':               '店頭決済 / クレカ決済',
+  '貸し出し可能ステータス':   '自転車のユーザー表示フラグ',
+  'brand_status':            'ブランドレビューの審査状態',
+  'Bicycle Category':        '自転車カテゴリ（ロード・クロス・MTB等）',
+  'yes/no':                  'True/False の汎用フラグ',
+  '営業状態op':              '営業 / 休業',
+  '予約管理並び替え':         '予約一覧の並び順オプション',
+  '管理者/運営_news_type':   'お知らせ種別（お問い合わせ・請求/入金・キャンセル）',
+  'Admin_info':              '管理者メール・サービス名などグローバル設定',
+  'Platform_Fee':            'プラットフォーム手数料率（デフォルト10%）',
+  'index_page':              'インデックスページのパラメータ定義',
+  'Shop_Sidebar_sub':        'ショップ管理画面のサイドバー項目',
+  'Admin_Sidebar_sub':       '管理者画面のサイドバー項目',
+  'pay_jp_key':              'Pay.JP の公開鍵・秘密鍵',
+  '曜日':                    '月〜日・祝日のスラグ定義',
+  '月':                      '1月〜12月',
+  '日付':                    '1〜31の日付マスタ（31件）',
+  'Time':                    '0:00〜23:50の時刻マスタ（10分刻み・144件）',
+  'menu_利用規約':            '利用規約本文（長文テキスト）',
+  'menu_プライバシーポリシー': 'プライバシーポリシー本文（長文テキスト）',
+  'menu_特商法':              '特定商取引法表記（長文テキスト）',
 }
 
 export default function DbTab() {
   const [tab, setTab] = useState<'fields' | 'os'>('fields')
   const [rows, setRows] = useState<Row[]>([])
+  const [osNames, setOsNames] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState<string | null>(null)
   const [selectedTable, setSelectedTable] = useState<string>('')
   const [dtypeFilter, setDtypeFilter] = useState('')
   const [colFilters, setColFilters] = useState<Record<string, string>>({})
@@ -68,12 +128,19 @@ export default function DbTab() {
       })
       setRows(normalized)
       const tables = getTableOrder(normalized)
-      if (tables.length > 0) setSelectedTable(tables[0])
+      if (tables.length > 0) setSelectedTable('__list__')
       setLoading(false)
+    })
+    supabase.from('option_items').select('set_name').neq('set_name', '').order('sort_order').then(({ data }) => {
+      const seen = new Set<string>()
+      const names: string[] = []
+      for (const r of data || []) {
+        if (!seen.has(r.set_name)) { seen.add(r.set_name); names.push(r.set_name) }
+      }
+      setOsNames(names)
     })
   }, [])
 
-  // 変更行のみバッチupsert
   const scheduleSave = useCallback(() => {
     clearTimeout(saveTimer.current)
     saveTimer.current = setTimeout(async () => {
@@ -81,7 +148,9 @@ export default function DbTab() {
       dirtyRows.current.clear()
       if (toSave.length === 0) return
       setSaving(true)
-      await supabase.from('db_fields').upsert(toSave)
+      const { error } = await supabase.from('db_fields').upsert(toSave, { onConflict: 'id' })
+      if (error) setSaveError(error.message)
+      else setSaveError(null)
       setSaving(false)
     }, 800)
   }, [supabase])
@@ -100,12 +169,20 @@ export default function DbTab() {
     const idx = rows.findIndex(r => r.id === rowId)
     const newRow: Row = {
       id: crypto.randomUUID(),
-      sort_order: rows[idx].sort_order + 0.5,
+      sort_order: 0, // renumbered below
       field_id: '', table_name: selectedTable, field_name: '', display_name: '',
-      required: false, ix: false, dtype: 'text', list: false, validation: '', notes: ''
+      required: false, ix: false, dtype: 'text', list: false, ref_target: '', validation: '', notes: ''
     }
-    setRows(prev => [...prev.slice(0, idx + 1), newRow, ...prev.slice(idx + 1)])
-    await supabase.from('db_fields').insert(newRow)
+    // 挿入後に全行を連番で振り直す（sort_order は integer カラムなので小数不可）
+    const next = [...rows.slice(0, idx + 1), newRow, ...rows.slice(idx + 1)]
+    const renumbered = next.map((r, i) => ({ ...r, sort_order: i }))
+    setRows(renumbered)
+
+    const originalOrders = new Map(rows.map(r => [r.id, r.sort_order]))
+    const changed = renumbered.filter(r => r.id === newRow.id || originalOrders.get(r.id) !== r.sort_order)
+    const { error } = await supabase.from('db_fields').upsert(changed, { onConflict: 'id' })
+    if (error) setSaveError(error.message)
+    else setSaveError(null)
   }
 
   async function deleteRow(rowId: string) {
@@ -127,10 +204,12 @@ export default function DbTab() {
     const newRow: Row = {
       id: crypto.randomUUID(), sort_order: maxOrder + 1,
       field_id: '', table_name: name, field_name: '', display_name: '',
-      required: false, ix: false, dtype: 'text', list: false, validation: '', notes: ''
+      required: false, ix: false, dtype: 'text', list: false, ref_target: '', validation: '', notes: ''
     }
     setRows(prev => [...prev, newRow])
-    await supabase.from('db_fields').insert(newRow)
+    const { error } = await supabase.from('db_fields').insert(newRow)
+    if (error) { setSaveError(error.message); return }
+    setSaveError(null)
     setSelectedTable(name)
     setColFilters({})
     setDtypeFilter('')
@@ -157,11 +236,10 @@ export default function DbTab() {
     if (selectedTable === oldName) setSelectedTable(newName)
     const changed = updated.filter(r => r.table_name === newName)
     setSaving(true)
-    await supabase.from('db_fields').upsert(changed)
+    await supabase.from('db_fields').upsert(changed, { onConflict: 'id' })
     setSaving(false)
   }
 
-  // ── 列幅リサイズ ──────────────────────────────────────────────────────────────
   function startResize(col: string, e: React.MouseEvent) {
     e.preventDefault(); e.stopPropagation()
     const startX = e.clientX, startW = colWidths[col]
@@ -172,7 +250,6 @@ export default function DbTab() {
     window.addEventListener('mouseup', onUp)
   }
 
-  // ── 行ドラッグ&ドロップ ────────────────────────────────────────────────────────
   function handleDragStart(e: React.DragEvent, rowId: string) {
     dragSrcId.current = rowId; setDraggingId(rowId); e.dataTransfer.effectAllowed = 'move'
   }
@@ -197,7 +274,7 @@ export default function DbTab() {
     const changed = updated.filter(r => originalOrders.get(r.id) !== r.sort_order)
     if (changed.length > 0) {
       setSaving(true)
-      await supabase.from('db_fields').upsert(changed)
+      await supabase.from('db_fields').upsert(changed, { onConflict: 'id' })
       setSaving(false)
     }
   }
@@ -211,6 +288,7 @@ export default function DbTab() {
     return result
   }
 
+  const LIST_TAB = '__list__'
   const tables = getTableOrder(rows)
   const tableRows = rows.filter(r => r.table_name === selectedTable)
   const filtered = tableRows.filter(r => {
@@ -249,202 +327,316 @@ export default function DbTab() {
         ))}
       </div>
 
-      {tab === 'os' && <OptionSetsTab />}
+      {/* Main area */}
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
-      {tab === 'fields' && (
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
+        {/* ── Content area ── */}
+        <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
 
-          {/* Topbar */}
-          <div style={{
-            padding: '7px 14px', background: '#2a2a2f', borderBottom: '1px solid #38383f',
-            display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0
-          }}>
-            <h1 style={{ fontSize: 15, fontWeight: 700, color: '#d0d0d8', whiteSpace: 'nowrap' }}>
-              DB フィールド一覧
-            </h1>
-            <div style={{ flex: 1 }} />
-            {saving && <span style={{ fontSize: 11, color: '#5588cc' }}>保存中...</span>}
-            <span style={{ fontSize: 11, color: '#666678', whiteSpace: 'nowrap' }}>全 {rows.length} 行</span>
-          </div>
+          {tab === 'os' && <OptionSetsTab />}
 
-          {/* Table content */}
-          {selectedTable ? (
-            <div style={{ flex: 1, overflow: 'auto' }}>
-              <table style={{ borderCollapse: 'collapse', width: '100%', tableLayout: 'fixed' }}>
-                <colgroup>
-                  <col style={{ width: 22 }} />
-                  {FRONT_COLS.map(c => <col key={c.key} style={{ width: colWidths[c.key] }} />)}
-                  <col style={{ width: colWidths.required }} />
-                  <col style={{ width: colWidths.ix }} />
-                  <col style={{ width: colWidths.dtype }} />
-                  <col style={{ width: colWidths.list }} />
-                  {BACK_COLS.map(c => <col key={c.key} style={{ width: colWidths[c.key] }} />)}
-                  <col style={{ width: 68 }} />
-                </colgroup>
-                <thead style={{ position: 'sticky', top: 0, zIndex: 10 }}>
-                  <tr>
-                    <th style={{ ...thStyle, width: 22, background: '#252528' }}></th>
-                    {FRONT_COLS.map(c => <ResizableTh key={c.key} col={c.key}>{c.label}</ResizableTh>)}
-                    <ResizableTh col="required" style={{ textAlign: 'center' }}>必須</ResizableTh>
-                    <ResizableTh col="ix" style={{ textAlign: 'center' }}>index</ResizableTh>
-                    <ResizableTh col="dtype">データ型</ResizableTh>
-                    <ResizableTh col="list" style={{ textAlign: 'center' }}>List</ResizableTh>
-                    {BACK_COLS.map(c => <ResizableTh key={c.key} col={c.key}>{c.label}</ResizableTh>)}
-                    <th style={{ ...thStyle, width: 68, background: '#252528' }}></th>
-                  </tr>
-                  <tr>
-                    <th style={thFilterStyle}></th>
-                    {FRONT_COLS.map(c => (
-                      <th key={c.key} style={thFilterStyle}>
-                        <input placeholder={c.placeholder} value={colFilters[c.key] || ''}
-                          onChange={e => setColFilters(prev => ({ ...prev, [c.key]: e.target.value }))}
-                          style={colFilterInputStyle} />
-                      </th>
-                    ))}
-                    <th style={thFilterStyle}></th>
-                    <th style={thFilterStyle}></th>
-                    <th style={thFilterStyle}>
-                      <select value={dtypeFilter} onChange={e => setDtypeFilter(e.target.value)}
-                        style={{ ...colFilterInputStyle, cursor: 'pointer', color: dtypeFilter ? '#b8b8c8' : '#66667a' }}>
-                        <option value="">データ型</option>
-                        {DTYPES.map(dt => <option key={dt} value={dt}>{dt}</option>)}
-                      </select>
-                    </th>
-                    <th style={thFilterStyle}></th>
-                    {BACK_COLS.map(c => (
-                      <th key={c.key} style={thFilterStyle}>
-                        <input placeholder={c.placeholder} value={colFilters[c.key] || ''}
-                          onChange={e => setColFilters(prev => ({ ...prev, [c.key]: e.target.value }))}
-                          style={colFilterInputStyle} />
-                      </th>
-                    ))}
-                    <th style={thFilterStyle}></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map(row => (
-                    <tr key={row.id} draggable
-                      onDragStart={e => handleDragStart(e, row.id)}
-                      onDragOver={e => handleDragOver(e, row.id)}
-                      onDragLeave={handleDragLeave}
-                      onDrop={e => handleDrop(e, row.id)}
-                      onDragEnd={handleDragEnd}
-                      style={{
-                        borderBottom: '1px solid rgba(255,255,255,.05)',
-                        opacity: draggingId === row.id ? 0.4 : 1,
-                        borderTop: dragOverId === row.id ? '2px solid #5588aa' : undefined,
-                      }}
-                    >
-                      <td style={dragTdStyle}>⠿</td>
-                      {FRONT_COLS.map(c => (
-                        <td key={c.key} contentEditable suppressContentEditableWarning
-                          onBlur={e => updateRow(row.id, { [c.key]: e.currentTarget.textContent || '' })}
-                          style={{ ...tdStyle, ...(c.key === 'field_name' ? { fontFamily: 'monospace', color: '#a0b0c0' } : {}) }}>
-                          {row[c.key] as string}
-                        </td>
-                      ))}
-                      <td style={boolTdStyle} onClick={() => updateRow(row.id, { required: !row.required })}>
-                        <input type="checkbox" checked={row.required} readOnly style={cbStyle} />
-                      </td>
-                      <td style={boolTdStyle} onClick={() => updateRow(row.id, { ix: !row.ix })}>
-                        <input type="checkbox" checked={row.ix} readOnly style={cbStyle} />
-                      </td>
-                      <td style={{ ...tdStyle, padding: '2px 4px' }}>
-                        <select value={row.dtype} onChange={e => updateRow(row.id, { dtype: e.target.value })}
-                          style={{
-                            width: '100%', border: 'none', borderRadius: 3, padding: '2px 4px',
-                            fontSize: 13, cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
-                            fontWeight: 700, background: 'transparent', color: DTYPE_COLORS[row.dtype] || '#c0c0cc'
-                          }}>
-                          {DTYPES.map(dt => <option key={dt} value={dt} style={{ background: '#2a2a2f', color: '#c0c0cc' }}>{dt}</option>)}
-                        </select>
-                      </td>
-                      <td style={boolTdStyle} onClick={() => updateRow(row.id, { list: !row.list })}>
-                        <input type="checkbox" checked={row.list} readOnly style={cbStyle} />
-                      </td>
-                      {BACK_COLS.map(c => (
-                        <td key={c.key} contentEditable suppressContentEditableWarning
-                          onBlur={e => updateRow(row.id, { [c.key]: e.currentTarget.textContent || '' })}
-                          style={tdStyle}>
-                          {row[c.key] as string}
-                        </td>
-                      ))}
-                      <td style={actTdStyle}>
-                        <button onClick={() => addRowAfter(row.id)} style={addBtnStyle}>+</button>
-                        <button onClick={() => deleteRow(row.id)} style={delBtnStyle}>−</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <button onClick={createTable} style={{
-                padding: '10px 20px', background: '#34a853', border: 'none',
-                borderRadius: 6, color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 600
-              }}>+ 最初のテーブルを作成</button>
-            </div>
-          )}
+          {tab === 'fields' && (
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
 
-          {/* Status bar */}
-          <div style={{
-            background: '#2e2e34', borderTop: '1px solid #38383f',
-            padding: '4px 12px', fontSize: 11, color: '#666678',
-            display: 'flex', justifyContent: 'space-between', flexShrink: 0
-          }}>
-            <span>{filtered.length} 件 / {tableRows.length} 行</span>
-            <span>自動保存</span>
-          </div>
-
-          {/* Sheet tabs */}
-          <div style={{
-            display: 'flex', alignItems: 'stretch', background: '#1a1a1f',
-            borderTop: '1px solid #38383f', flexShrink: 0, overflowX: 'auto', minHeight: 34
-          }}>
-            {tables.map(t => (
-              <button key={t}
-                onClick={() => { setSelectedTable(t); setColFilters({}); setDtypeFilter('') }}
-                onDoubleClick={() => { setRenamingTable(t); setRenameValue(t) }}
-                title="ダブルクリックでリネーム"
-                style={{
-                  padding: '0 18px', border: 'none', borderRight: '1px solid #2e2e38',
-                  borderTop: t === selectedTable ? '2px solid #4a8ad8' : '2px solid transparent',
-                  background: t === selectedTable ? '#2a2a2f' : 'transparent',
-                  color: t === selectedTable ? '#90b8f0' : '#686880',
-                  fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap',
-                  minHeight: 34, transition: 'background .1s, color .1s'
-                }}
-              >
-                {renamingTable === t ? (
-                  <input autoFocus value={renameValue}
-                    onChange={e => setRenameValue(e.target.value)}
-                    onBlur={() => commitRename(t)}
-                    onKeyDown={e => { if (e.key === 'Enter') commitRename(t); if (e.key === 'Escape') setRenamingTable(null) }}
-                    onClick={e => e.stopPropagation()}
-                    style={{ background: '#38383f', border: '1px solid #5588aa', borderRadius: 3, color: '#d0d0d8', fontSize: 12, padding: '1px 6px', outline: 'none', width: 120 }}
-                  />
-                ) : (
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    {t}
-                    <span
-                      onClick={e => { e.stopPropagation(); deleteTable(t) }}
-                      title="テーブルを削除"
-                      style={{ fontSize: 11, color: '#555568', lineHeight: 1, cursor: 'pointer', padding: '0 1px' }}
-                    >✕</span>
+              {/* Topbar */}
+              <div style={{
+                padding: '7px 14px', background: '#2a2a2f', borderBottom: '1px solid #38383f',
+                display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0
+              }}>
+                <h1 style={{ fontSize: 15, fontWeight: 700, color: '#d0d0d8', whiteSpace: 'nowrap' }}>
+                  {selectedTable === LIST_TAB ? 'テーブル一覧' : 'DB フィールド一覧'}
+                </h1>
+                <div style={{ flex: 1 }} />
+                {saving && <span style={{ fontSize: 11, color: '#5588cc' }}>保存中...</span>}
+                {saveError && (
+                  <span style={{ fontSize: 11, color: '#ea4335', background: 'rgba(234,67,53,.1)', border: '1px solid rgba(234,67,53,.3)', borderRadius: 4, padding: '2px 8px', maxWidth: 400, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={saveError}>
+                    ⚠ 保存失敗: {saveError}
                   </span>
                 )}
-              </button>
-            ))}
-            <button onClick={createTable} title="新しいテーブルを作成"
-              style={{
-                padding: '0 14px', border: 'none', background: 'transparent',
-                color: '#555568', fontSize: 18, cursor: 'pointer', minHeight: 34,
-                display: 'flex', alignItems: 'center', lineHeight: 1, borderTop: '2px solid transparent'
-              }}>+</button>
-          </div>
+                {selectedTable !== LIST_TAB && <span style={{ fontSize: 11, color: '#666678', whiteSpace: 'nowrap' }}>全 {rows.length} 行</span>}
+              </div>
+
+              {/* テーブル一覧ビュー */}
+              {selectedTable === LIST_TAB && (
+                <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
+                  {/* DataType */}
+                  <div style={{ marginBottom: 28 }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: '#5588cc', letterSpacing: '.6px', textTransform: 'uppercase', marginBottom: 8 }}>
+                      DataType — {tables.length} テーブル
+                    </div>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                      <thead>
+                        <tr>
+                          {['テーブル名', 'フィールド数', '説明'].map(h => (
+                            <th key={h} style={{ background: '#252528', color: '#9090a8', padding: '6px 10px', textAlign: 'left', fontWeight: 700, borderBottom: '1px solid #38383f', whiteSpace: 'nowrap' }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {tables.map(t => {
+                          const count = rows.filter(r => r.table_name === t && (r.field_name || r.display_name)).length
+                          return (
+                            <tr key={t}
+                              onClick={() => setSelectedTable(t)}
+                              style={{ cursor: 'pointer', borderBottom: '1px solid rgba(255,255,255,.05)' }}
+                              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(74,138,216,.07)')}
+                              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                            >
+                              <td style={{ padding: '7px 10px', fontFamily: 'monospace', fontWeight: 700, color: '#90b8f0', whiteSpace: 'nowrap' }}>{t}</td>
+                              <td style={{ padding: '7px 10px', color: '#666678', textAlign: 'center' }}>{count}</td>
+                              <td style={{ padding: '7px 10px', color: '#8888a8' }}>{TABLE_DESCRIPTIONS[t] || '—'}</td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* OptionSet */}
+                  <div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: '#a09050', letterSpacing: '.6px', textTransform: 'uppercase', marginBottom: 8 }}>
+                      OptionSet — {osNames.length} セット
+                    </div>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+                      <thead>
+                        <tr>
+                          {['セット名', '説明'].map(h => (
+                            <th key={h} style={{ background: '#252528', color: '#9090a8', padding: '6px 10px', textAlign: 'left', fontWeight: 700, borderBottom: '1px solid #38383f' }}>{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {osNames.map(name => (
+                          <tr key={name}
+                            onClick={() => setTab('os')}
+                            style={{ cursor: 'pointer', borderBottom: '1px solid rgba(255,255,255,.05)' }}
+                            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(160,144,80,.07)')}
+                            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                          >
+                            <td style={{ padding: '7px 10px', fontFamily: 'monospace', fontWeight: 700, color: '#c8b060', whiteSpace: 'nowrap' }}>{name}</td>
+                            <td style={{ padding: '7px 10px', color: '#8888a8' }}>{OS_DESCRIPTIONS[name] || '—'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* Field editor */}
+              {selectedTable !== LIST_TAB && selectedTable ? (
+                <div style={{ flex: 1, overflow: 'auto' }}>
+                  <table style={{ borderCollapse: 'collapse', width: '100%', tableLayout: 'fixed' }}>
+                    <colgroup>
+                      <col style={{ width: 22 }} />
+                      {FRONT_COLS.map(c => <col key={c.key} style={{ width: colWidths[c.key] }} />)}
+                      <col style={{ width: colWidths.required }} />
+                      <col style={{ width: colWidths.ix }} />
+                      <col style={{ width: colWidths.dtype }} />
+                      <col style={{ width: colWidths.list }} />
+                      {BACK_COLS.map(c => <col key={c.key} style={{ width: colWidths[c.key] }} />)}
+                      <col style={{ width: 68 }} />
+                    </colgroup>
+                    <thead style={{ position: 'sticky', top: 0, zIndex: 10 }}>
+                      <tr>
+                        <th style={{ ...thStyle, width: 22, background: '#252528' }}></th>
+                        {FRONT_COLS.map(c => <ResizableTh key={c.key} col={c.key}>{c.label}</ResizableTh>)}
+                        <ResizableTh col="required" style={{ textAlign: 'center' }}>必須</ResizableTh>
+                        <ResizableTh col="ix" style={{ textAlign: 'center' }}>index</ResizableTh>
+                        <ResizableTh col="dtype">データ型</ResizableTh>
+                        <ResizableTh col="list" style={{ textAlign: 'center' }}>List</ResizableTh>
+                        {BACK_COLS.map(c => <ResizableTh key={c.key} col={c.key}>{c.label}</ResizableTh>)}
+                        <th style={{ ...thStyle, width: 68, background: '#252528' }}></th>
+                      </tr>
+                      <tr>
+                        <th style={thFilterStyle}></th>
+                        {FRONT_COLS.map(c => (
+                          <th key={c.key} style={thFilterStyle}>
+                            <input placeholder={c.placeholder} value={colFilters[c.key] || ''}
+                              onChange={e => setColFilters(prev => ({ ...prev, [c.key]: e.target.value }))}
+                              style={colFilterInputStyle} />
+                          </th>
+                        ))}
+                        <th style={thFilterStyle}></th>
+                        <th style={thFilterStyle}></th>
+                        <th style={thFilterStyle}>
+                          <select value={dtypeFilter} onChange={e => setDtypeFilter(e.target.value)}
+                            style={{ ...colFilterInputStyle, cursor: 'pointer', color: dtypeFilter ? '#b8b8c8' : '#66667a' }}>
+                            <option value="">データ型</option>
+                            {DTYPES.map(dt => <option key={dt} value={dt}>{dt}</option>)}
+                          </select>
+                        </th>
+                        <th style={thFilterStyle}></th>
+                        {BACK_COLS.map(c => (
+                          <th key={c.key} style={thFilterStyle}>
+                            {!c.select && (
+                              <input placeholder={c.placeholder} value={colFilters[c.key] || ''}
+                                onChange={e => setColFilters(prev => ({ ...prev, [c.key]: e.target.value }))}
+                                style={colFilterInputStyle} />
+                            )}
+                          </th>
+                        ))}
+                        <th style={thFilterStyle}></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filtered.map(row => (
+                        <tr key={row.id} draggable
+                          onDragStart={e => handleDragStart(e, row.id)}
+                          onDragOver={e => handleDragOver(e, row.id)}
+                          onDragLeave={handleDragLeave}
+                          onDrop={e => handleDrop(e, row.id)}
+                          onDragEnd={handleDragEnd}
+                          style={{
+                            borderBottom: '1px solid rgba(255,255,255,.05)',
+                            opacity: draggingId === row.id ? 0.4 : 1,
+                            borderTop: dragOverId === row.id ? '2px solid #5588aa' : undefined,
+                          }}
+                        >
+                          <td style={dragTdStyle}>⠿</td>
+                          {FRONT_COLS.map(c => (
+                            <td key={c.key} contentEditable suppressContentEditableWarning
+                              onBlur={e => updateRow(row.id, { [c.key]: e.currentTarget.textContent || '' })}
+                              style={{ ...tdStyle, ...(c.key === 'field_name' ? { fontFamily: 'monospace', color: '#a0b0c0' } : {}) }}>
+                              {row[c.key] as string}
+                            </td>
+                          ))}
+                          <td style={boolTdStyle} onClick={() => updateRow(row.id, { required: !row.required })}>
+                            <input type="checkbox" checked={row.required} readOnly style={cbStyle} />
+                          </td>
+                          <td style={boolTdStyle} onClick={() => updateRow(row.id, { ix: !row.ix })}>
+                            <input type="checkbox" checked={row.ix} readOnly style={cbStyle} />
+                          </td>
+                          <td style={{ ...tdStyle, padding: '2px 4px' }}>
+                            <select value={row.dtype} onChange={e => updateRow(row.id, { dtype: e.target.value })}
+                              style={{
+                                width: '100%', border: 'none', borderRadius: 3, padding: '2px 4px',
+                                fontSize: 13, cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+                                fontWeight: 700, background: 'transparent', color: DTYPE_COLORS[row.dtype] || '#c0c0cc'
+                              }}>
+                              {DTYPES.map(dt => <option key={dt} value={dt} style={{ background: '#2a2a2f', color: '#c0c0cc' }}>{dt}</option>)}
+                            </select>
+                          </td>
+                          <td style={boolTdStyle} onClick={() => updateRow(row.id, { list: !row.list })}>
+                            <input type="checkbox" checked={row.list} readOnly style={cbStyle} />
+                          </td>
+                          {BACK_COLS.map(c => c.select ? (
+                            <td key={c.key} style={{ ...tdStyle, padding: '2px 4px' }}>
+                              <select
+                                value={row[c.key] as string}
+                                onChange={e => updateRow(row.id, { [c.key]: e.target.value })}
+                                style={{
+                                  width: '100%', border: 'none', borderRadius: 3, padding: '2px 4px',
+                                  fontSize: 12, cursor: 'pointer', outline: 'none', fontFamily: 'monospace',
+                                  background: 'transparent',
+                                  color: row[c.key] ? '#80cbc4' : '#444458'
+                                }}>
+                                <option value="" style={{ background: '#2a2a2f', color: '#888898' }}>—</option>
+                                {tables.map(t => (
+                                  <option key={t} value={t} style={{ background: '#2a2a2f', color: '#80cbc4' }}>{t}</option>
+                                ))}
+                              </select>
+                            </td>
+                          ) : (
+                            <td key={c.key} contentEditable suppressContentEditableWarning
+                              onBlur={e => updateRow(row.id, { [c.key]: e.currentTarget.textContent || '' })}
+                              style={tdStyle}>
+                              {row[c.key] as string}
+                            </td>
+                          ))}
+                          <td style={actTdStyle}>
+                            <button onClick={() => addRowAfter(row.id)} style={addBtnStyle}>+</button>
+                            <button onClick={() => deleteRow(row.id)} style={delBtnStyle}>−</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : selectedTable !== LIST_TAB ? (
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <button onClick={createTable} style={{
+                    padding: '10px 20px', background: '#34a853', border: 'none',
+                    borderRadius: 6, color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 600
+                  }}>+ 最初のテーブルを作成</button>
+                </div>
+              ) : null}
+
+              {/* Status bar */}
+              {selectedTable !== LIST_TAB && (
+                <div style={{
+                  background: '#2e2e34', borderTop: '1px solid #38383f',
+                  padding: '4px 12px', fontSize: 11, color: '#666678',
+                  display: 'flex', justifyContent: 'space-between', flexShrink: 0
+                }}>
+                  <span>{filtered.length} 件 / {tableRows.length} 行</span>
+                  <span>自動保存</span>
+                </div>
+              )}
+
+              {/* Sheet tabs */}
+              <div style={{
+                display: 'flex', alignItems: 'stretch', background: '#1a1a1f',
+                borderTop: '1px solid #38383f', flexShrink: 0, overflowX: 'auto', minHeight: 34
+              }}>
+                {/* 固定: テーブル一覧 */}
+                <button
+                  onClick={() => setSelectedTable(LIST_TAB)}
+                  style={{
+                    padding: '0 18px', border: 'none', borderRight: '1px solid #2e2e38',
+                    borderTop: selectedTable === LIST_TAB ? '2px solid #4a8ad8' : '2px solid transparent',
+                    background: selectedTable === LIST_TAB ? '#2a2a2f' : 'transparent',
+                    color: selectedTable === LIST_TAB ? '#90b8f0' : '#686880',
+                    fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap',
+                    minHeight: 34,
+                  }}>
+                  テーブル一覧
+                </button>
+                {tables.map(t => (
+                  <button key={t}
+                    onClick={() => { setSelectedTable(t); setColFilters({}); setDtypeFilter('') }}
+                    onDoubleClick={() => { setRenamingTable(t); setRenameValue(t) }}
+                    title="ダブルクリックでリネーム"
+                    style={{
+                      padding: '0 18px', border: 'none', borderRight: '1px solid #2e2e38',
+                      borderTop: t === selectedTable ? '2px solid #4a8ad8' : '2px solid transparent',
+                      background: t === selectedTable ? '#2a2a2f' : 'transparent',
+                      color: t === selectedTable ? '#90b8f0' : '#686880',
+                      fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap',
+                      minHeight: 34, transition: 'background .1s, color .1s'
+                    }}
+                  >
+                    {renamingTable === t ? (
+                      <input autoFocus value={renameValue}
+                        onChange={e => setRenameValue(e.target.value)}
+                        onBlur={() => commitRename(t)}
+                        onKeyDown={e => { if (e.key === 'Enter') commitRename(t); if (e.key === 'Escape') setRenamingTable(null) }}
+                        onClick={e => e.stopPropagation()}
+                        style={{ background: '#38383f', border: '1px solid #5588aa', borderRadius: 3, color: '#d0d0d8', fontSize: 12, padding: '1px 6px', outline: 'none', width: 120 }}
+                      />
+                    ) : (
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        {t}
+                        <span
+                          onClick={e => { e.stopPropagation(); deleteTable(t) }}
+                          title="テーブルを削除"
+                          style={{ fontSize: 11, color: '#555568', lineHeight: 1, cursor: 'pointer', padding: '0 1px' }}
+                        >✕</span>
+                      </span>
+                    )}
+                  </button>
+                ))}
+                <button onClick={createTable} title="新しいテーブルを作成"
+                  style={{
+                    padding: '0 14px', border: 'none', background: 'transparent',
+                    color: '#555568', fontSize: 18, cursor: 'pointer', minHeight: 34,
+                    display: 'flex', alignItems: 'center', lineHeight: 1, borderTop: '2px solid transparent'
+                  }}>+</button>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   )
 }
