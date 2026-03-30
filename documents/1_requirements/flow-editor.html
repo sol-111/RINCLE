@@ -967,18 +967,43 @@ canvasWrap.addEventListener('mousedown', e=>{
     }
     multiSelected=[];
     pushHistory();
-    if(e.altKey) {
-      // Option+drag: clone frame
-      const clone={...f, id:genId('f')};
-      frames.push(clone);
-      select('frame', clone.id);
-      id=clone.id; f=clone;
-    } else {
-      select('frame',id);
-    }
     const insideFrame = (item, fr) =>
       item.x >= fr.x && item.y >= fr.y &&
       item.x + item.w <= fr.x + fr.w && item.y + item.h <= fr.y + fr.h;
+    if(e.altKey) {
+      // Option+drag: deep-clone frame + contained nodes + internal edges
+      const cloneFrame = {...f, id:genId('f')};
+      frames.push(cloneFrame);
+      // Clone nodes, build old→new id map
+      const nodeIdMap = {};
+      nodes.filter(n => insideFrame(n, f)).forEach(n => {
+        const cn = {...n, id:genId('n'), lines:[...n.lines]};
+        nodeIdMap[n.id] = cn.id;
+        nodes.push(cn);
+      });
+      // Clone sub-frames, track new ids
+      const clonedSubFrames = [];
+      frames.filter(fr => fr.id !== f.id && fr.id !== cloneFrame.id && insideFrame(fr, f)).forEach(fr => {
+        const csf = {...fr, id:genId('f')};
+        frames.push(csf);
+        clonedSubFrames.push({id:csf.id, ox:csf.x, oy:csf.y});
+      });
+      // Clone edges whose both endpoints are cloned nodes
+      const origIds = new Set(Object.keys(nodeIdMap));
+      edges.filter(eg => origIds.has(eg.from) && origIds.has(eg.to)).forEach(eg => {
+        edges.push({...eg, id:genId('e'), from:nodeIdMap[eg.from], to:nodeIdMap[eg.to]});
+      });
+      select('frame', cloneFrame.id);
+      // Drag state uses ONLY cloned items so originals don't move
+      const clonedNodeOffsets = Object.values(nodeIdMap).map(nid => {
+        const cn = getNode(nid); return {id:nid, ox:cn.x, oy:cn.y};
+      });
+      dragState={mode:'drag-frame', id:cloneFrame.id, ox:cloneFrame.x, oy:cloneFrame.y,
+        sx:e.clientX, sy:e.clientY, containedNodes:clonedNodeOffsets, containedFrames:clonedSubFrames};
+      return;
+    }
+    // Normal drag (no clone)
+    select('frame', id);
     const containedNodes = nodes.filter(n => insideFrame(n, f)).map(n => ({id:n.id, ox:n.x, oy:n.y}));
     const containedFrames = frames.filter(fr => fr.id !== id && insideFrame(fr, f)).map(fr => ({id:fr.id, ox:fr.x, oy:fr.y}));
     dragState={mode:'drag-frame', id, ox:f.x, oy:f.y, sx:e.clientX, sy:e.clientY, containedNodes, containedFrames};
