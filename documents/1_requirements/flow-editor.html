@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rincle 画面遷移図 エディタ</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Hiragino Sans','Segoe UI',-apple-system,sans-serif;font-size:13px;background:#212124;color:#c0c0cc;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+#topbar{background:#2a2a2f;padding:6px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #38383f;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.4);z-index:20}
+#topbar h1{font-size:14px;font-weight:700;color:#d0d0d8;white-space:nowrap;margin-right:4px}
+.sep{width:1px;height:18px;background:#38383f;flex-shrink:0}
+.tbtn{padding:4px 10px;border:1px solid #444450;border-radius:4px;background:#38383f;color:#a0a0b8;font-size:11px;cursor:pointer;white-space:nowrap;user-select:none}
+.tbtn:hover{background:#484855;color:#d0d0d8}
+.tbtn.active{background:#3a5a8a;border-color:#5a8abf;color:#b0d0f8}
+#hint{font-size:10px;color:#666678;margin-left:auto;white-space:nowrap}
+#main{display:flex;flex:1;overflow:hidden}
+#canvas-wrap{flex:1;overflow:hidden;background:#1a1a1f;position:relative;cursor:default}
+#panel{width:220px;flex-shrink:0;background:#23232a;border-left:1px solid #38383f;display:flex;flex-direction:column;overflow-y:auto;z-index:10}
+#panel-inner{padding:12px;display:flex;flex-direction:column;gap:10px}
+.panel-section{display:flex;flex-direction:column;gap:6px}
+.panel-label{font-size:10px;color:#888898;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.panel-row{display:flex;align-items:center;gap:6px}
+.panel-row label{font-size:11px;color:#a0a0b8;flex-shrink:0;width:36px}
+.panel-row input[type=number]{flex:1;background:#2a2a33;border:1px solid #444450;border-radius:3px;color:#c0c0cc;padding:3px 5px;font-size:11px}
+.panel-row input[type=text]{flex:1;background:#2a2a33;border:1px solid #444450;border-radius:3px;color:#c0c0cc;padding:3px 5px;font-size:11px}
+textarea.panel-ta{width:100%;background:#2a2a33;border:1px solid #444450;border-radius:3px;color:#c0c0cc;padding:4px 6px;font-size:11px;resize:vertical;min-height:54px;font-family:inherit}
+.swatch-row{display:flex;gap:5px;flex-wrap:wrap}
+.swatch{width:32px;height:22px;border-radius:4px;border:2px solid transparent;cursor:pointer;transition:border-color .15s}
+.swatch.sel{border-color:#fff!important}
+.del-btn{width:100%;padding:5px;border:1px solid #8a2020;border-radius:4px;background:#3a1010;color:#f08080;font-size:11px;cursor:pointer}
+.del-btn:hover{background:#5a1515}
+#panel-empty{padding:18px 12px;font-size:11px;color:#555568;line-height:1.5}
+.cb-row{display:flex;align-items:center;gap:6px;font-size:11px;color:#a0a0b8}
+.cb-row input{cursor:pointer}
+.color-row{display:flex;align-items:center;gap:8px}
+.color-row span{font-size:11px;color:#a0a0b8;width:28px;flex-shrink:0}
+.color-row input[type=color]{flex:1;height:24px;border:1px solid #444450;border-radius:3px;background:#2a2a33;cursor:pointer;padding:2px 3px}
+.seg-row{display:flex}
+.seg-btn{flex:1;padding:4px 0;font-size:11px;color:#888898;background:#2a2a33;border:1px solid #444450;cursor:pointer}
+.seg-btn:first-child{border-radius:3px 0 0 3px}
+.seg-btn:last-child{border-radius:0 3px 3px 0;border-left:none}
+.seg-btn.active{background:#3a5a8a;border-color:#5a8abf;color:#b0d0f8}
+/* Color picker */
+#cpicker{position:fixed;z-index:10000;background:#2a2a33;border:1px solid #444458;border-radius:8px;padding:12px;box-shadow:0 6px 24px rgba(0,0,0,.8);display:none;width:260px}
+#cp-grid{display:grid;grid-template-columns:repeat(9,24px);gap:4px;margin-bottom:10px}
+.cp-sw{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2px solid transparent;flex-shrink:0}
+.cp-sw:hover{transform:scale(1.2)}
+.cp-sw.cp-sel{border-color:#fff}
+.cp-sw.cp-none{border-color:#666;display:flex;align-items:center;justify-content:center;font-size:13px;color:#666;line-height:1}
+#cp-op-row{display:flex;align-items:center;gap:6px;margin-top:2px}
+#cp-op-lbl{font-size:10px;color:#888898;width:44px;flex-shrink:0}
+#cp-opacity{flex:1;accent-color:#5a8abf}
+#cp-op-val{font-size:10px;color:#888898;width:32px;text-align:right}
+.cp-btn{display:flex;align-items:center;gap:5px;padding:4px 8px;border:1px solid #444450;border-radius:4px;background:#2a2a33;cursor:pointer;font-size:11px;color:#a0a0b8;flex:1}
+.cp-btn:hover{background:#38384a}
+.cp-dot{width:16px;height:16px;border-radius:3px;border:1px solid rgba(255,255,255,.25);flex-shrink:0}
+.cp-row{display:flex;gap:6px}
+/* Context menu */
+#ctx-menu{position:fixed;background:#2a2a33;border:1px solid #444458;border-radius:5px;padding:4px 0;z-index:9999;min-width:120px;display:none;box-shadow:0 4px 14px rgba(0,0,0,.6)}
+#ctx-menu div{padding:6px 14px;font-size:12px;cursor:pointer;color:#c0c0cc}
+#ctx-menu div:hover{background:#38384a}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <h1>📐 Rincle 画面遷移図</h1>
+  <div class="sep"></div>
+  <button class="tbtn active" id="btn-select" onclick="setTool('select')">選択</button>
+  <button class="tbtn" id="btn-node" onclick="setTool('node')">ノード追加</button>
+  <button class="tbtn" id="btn-frame" onclick="setTool('frame')">フレーム</button>
+  <div class="sep"></div>
+  <button class="tbtn" onclick="fitView()">全体表示</button>
+  <button class="tbtn" onclick="saveState()">保存</button>
+  <button class="tbtn" onclick="exportJSON()">JSON出力</button>
+  <span id="hint">ホイールでズーム / ドラッグでパン / Delで削除</span>
+</div>
+<div id="main">
+<div id="canvas-wrap">
+  <svg id="svg" style="width:100%;height:100%">
+    <defs>
+      <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
+      <marker id="arr-back" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#5a6a7a"/></marker>
+      <marker id="arr-sel" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#5a8abf"/></marker>
+    </defs>
+    <g id="vp"></g>
+  </svg>
+</div>
+<div id="panel">
+  <div id="panel-empty">要素を選択すると<br>プロパティが表示されます</div>
+  <div id="panel-inner" style="display:none"></div>
+</div>
+</div>
+<div id="cpicker">
+  <div id="cp-grid"></div>
+  <div id="cp-op-row">
+    <span id="cp-op-lbl">不透明度</span>
+    <input type="range" id="cp-opacity" min="0" max="100" value="100">
+    <span id="cp-op-val">100%</span>
+  </div>
+</div>
+<div id="ctx-menu">
+  <div onclick="ctxDuplicate()">複製</div>
+  <div onclick="ctxDelete()">削除</div>
+</div>
+
+<script>
+// ─── TYPE COLORS ──────────────────────────────────────────────────────────────
+const TYPES = {
+  bubble:   { fill:'#1a3a28', stroke:'#34a853', tc:'#a0e8b8' },
+  popup:    { fill:'#3a3010', stroke:'#c8a030', tc:'#ffe066' },
+  external: { fill:'#1a2a4a', stroke:'#4a90d9', tc:'#90b8f8' },
+  custom1:  { fill:'#3a1a2a', stroke:'#c040a0', tc:'#f090d0' },
+  custom2:  { fill:'#1a1a3a', stroke:'#7060e0', tc:'#b0a0f8' },
+};
+
+// ─── PALETTE ──────────────────────────────────────────────────────────────────
+const PALETTE = [
+  // Row 1: dark
+  null,        // ⊘
+  '#111111',   // 黒
+  '#555566',   // グレー濃
+  '#3d2868',   // 紫濃
+  '#2d3d5a',   // 青グレー濃
+  '#2d4a8a',   // 青濃
+  '#1a3d28',   // 緑濃
+  '#4a3a18',   // 黄濃
+  '#4a1a1a',   // 赤濃
+  // Row 2: light/bright
+  '#ffffff',   // 白
+  '#aaaaaa',   // グレー薄
+  '#777788',   // グレー中
+  '#8040d0',   // 紫薄
+  '#2060c0',   // 青薄
+  '#4a90d9',   // 空色
+  '#34a853',   // 緑薄
+  '#d4b000',   // 黄薄
+  '#e03020',   // 赤薄
+];
+
+function hexToRgba(hex, opacity) {
+  if(!hex) return 'none';
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${opacity})`;
+}
+function getContrastColor(hex) {
+  if(!hex) return '#c0c0cc';
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  return (0.299*r+0.587*g+0.114*b) > 140 ? '#1a1a1a' : '#e8e8f0';
+}
+
+// ─── INITIAL DATA ─────────────────────────────────────────────────────────────
+const INIT_NODES = [
+  {id:'top',       x:60,   y:280, w:110, h:52, type:'bubble',   lines:['TOP','(top_search)']},
+  {id:'search',    x:230,  y:280, w:120, h:52, type:'bubble',   lines:['空車検索','(TOP内)']},
+  {id:'results',   x:420,  y:280, w:110, h:52, type:'bubble',   lines:['検索','結果一覧']},
+  {id:'bicycle',   x:600,  y:280, w:110, h:52, type:'bubble',   lines:['自転車','詳細']},
+  {id:'cart1',     x:790,  y:280, w:130, h:52, type:'bubble',   lines:['予約内容①','(空車確認)']},
+  {id:'cart2',     x:990,  y:280, w:130, h:52, type:'bubble',   lines:['予約内容②','(顧客情報)']},
+  {id:'cart3',     x:1190, y:280, w:130, h:52, type:'bubble',   lines:['予約内容③','(内容確認)']},
+  {id:'cart4',     x:1390, y:280, w:130, h:52, type:'bubble',   lines:['予約内容④','(決済)']},
+  {id:'resv',      x:1590, y:280, w:110, h:52, type:'bubble',   lines:['予約','一覧']},
+  {id:'card',      x:1390, y:160, w:130, h:52, type:'popup',    lines:['カード情報','入力']},
+  {id:'payjp',     x:1590, y:160, w:100, h:52, type:'external', lines:['Pay.JP']},
+  {id:'news_top',  x:230,  y:440, w:120, h:52, type:'bubble',   lines:['新着情報','(TOP内)']},
+  {id:'news_dtl',  x:420,  y:440, w:110, h:52, type:'bubble',   lines:['新着情報','詳細']},
+  {id:'topics_top',x:230,  y:510, w:120, h:52, type:'bubble',   lines:['TOPICS','(TOP内)']},
+  {id:'topics_dtl',x:420,  y:510, w:110, h:52, type:'bubble',   lines:['TOPICS','詳細']},
+  {id:'login',     x:230,  y:630, w:120, h:52, type:'popup',    lines:['ログイン','ポップアップ']},
+  {id:'signup',    x:230,  y:698, w:120, h:52, type:'popup',    lines:['新規登録','ポップアップ']},
+  {id:'mypage',    x:420,  y:630, w:110, h:52, type:'bubble',   lines:['マイページ']},
+  {id:'edit',      x:600,  y:630, w:120, h:52, type:'bubble',   lines:['アカウント','編集']},
+  {id:'user_resv', x:600,  y:698, w:120, h:52, type:'bubble',   lines:['予約一覧','(マイページ)']},
+  {id:'guide',     x:240,  y:830, w:100, h:44, type:'bubble',   lines:['ガイド']},
+  {id:'howtopay',  x:355,  y:830, w:110, h:44, type:'bubble',   lines:['料金・','お支払い']},
+  {id:'faq',       x:480,  y:830, w:110, h:44, type:'bubble',   lines:['よくある','質問']},
+  {id:'privacy',   x:605,  y:830, w:130, h:44, type:'bubble',   lines:['プライバシー','ポリシー']},
+  {id:'contact',   x:750,  y:830, w:120, h:44, type:'bubble',   lines:['お問い合わせ']},
+];
+
+const INIT_EDGES = [
+  {id:'e1', from:'top',       fromSide:'r', to:'search',     toSide:'l', label:'',           dashed:false},
+  {id:'e2', from:'search',    fromSide:'r', to:'results',    toSide:'l', label:'検索する',    dashed:false},
+  {id:'e3', from:'results',   fromSide:'r', to:'bicycle',    toSide:'l', label:'詳細を見る',  dashed:false},
+  {id:'e4', from:'bicycle',   fromSide:'r', to:'cart1',      toSide:'l', label:'予約画面へ進む', dashed:false},
+  {id:'e5', from:'cart1',     fromSide:'r', to:'cart2',      toSide:'l', label:'顧客情報入力へ', dashed:false},
+  {id:'e6', from:'cart2',     fromSide:'r', to:'cart3',      toSide:'l', label:'内容確認へ',  dashed:false},
+  {id:'e7', from:'cart3',     fromSide:'r', to:'cart4',      toSide:'l', label:'予約する',    dashed:false},
+  {id:'e8', from:'cart4',     fromSide:'r', to:'resv',       toSide:'l', label:'予約完了',    dashed:false},
+  {id:'e9', from:'cart4',     fromSide:'t', to:'card',       toSide:'b', label:'',           dashed:false},
+  {id:'e10',from:'card',      fromSide:'r', to:'payjp',      toSide:'l', label:'',           dashed:false},
+  {id:'e11',from:'news_top',  fromSide:'r', to:'news_dtl',   toSide:'l', label:'',           dashed:false},
+  {id:'e12',from:'topics_top',fromSide:'r', to:'topics_dtl', toSide:'l', label:'',           dashed:false},
+  {id:'e13',from:'login',     fromSide:'r', to:'mypage',     toSide:'l', label:'',           dashed:false},
+  {id:'e14',from:'mypage',    fromSide:'r', to:'edit',       toSide:'l', label:'',           dashed:false},
+  {id:'e15',from:'mypage',    fromSide:'b', to:'user_resv',  toSide:'t', label:'',           dashed:false},
+  {id:'e16',from:'guide',     fromSide:'r', to:'howtopay',   toSide:'l', label:'',           dashed:true},
+  {id:'e17',from:'howtopay',  fromSide:'r', to:'faq',        toSide:'l', label:'',           dashed:true},
+  {id:'e18',from:'faq',       fromSide:'r', to:'privacy',    toSide:'l', label:'',           dashed:true},
+  {id:'e19',from:'privacy',   fromSide:'r', to:'contact',    toSide:'l', label:'',           dashed:true},
+  // Back arrows (special: route via y=248)
+  {id:'eback1', from:'bicycle',  fromSide:'t', to:'search', toSide:'t', label:'', dashed:true, back:true},
+  {id:'eback2', from:'cart1',    fromSide:'t', to:'search', toSide:'t', label:'', dashed:true, back:true},
+  {id:'eback3', from:'resv',     fromSide:'t', to:'search', toSide:'t', label:'', dashed:true, back:true},
+  // Diagonal from TOP bottom
+  {id:'ediag1', from:'top', fromSide:'b', to:'news_top',   toSide:'l', label:'', dashed:false, diag:true},
+  {id:'ediag2', from:'top', fromSide:'b', to:'topics_top', toSide:'l', label:'', dashed:false, diag:true},
+  {id:'ediag3', from:'top', fromSide:'b', to:'login',      toSide:'l', label:'', dashed:false, diag:true},
+  {id:'ediag4', from:'top', fromSide:'b', to:'signup',     toSide:'l', label:'', dashed:false, diag:true},
+  {id:'ediag5', from:'top', fromSide:'b', to:'guide',      toSide:'l', label:'', dashed:false, diag:true},
+];
+
+const INIT_FRAMES = [
+  {id:'f1', x:30,  y:135, w:1720, h:770, label:'利用者',                            fillHex:'#1e50b4', fillOpacity:0.07, stroke:'#2a3a5a', labelColor:'#4a6a9a', dashed:false},
+  {id:'f2', x:210, y:808, w:700,  h:82,  label:'ヘッダー / フッター（全画面共通）', fillHex:'#3a3010', fillOpacity:0.4,  stroke:'#6a5820', labelColor:'#c8a030', dashed:true},
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let nodes = [], edges = [], frames = [];
+let nextId = 100;
+let selected = null; // {type:'node'|'edge'|'frame', id}
+let tool = 'select';
+
+// Pan/zoom
+let vx=0, vy=0, vscale=1;
+
+// Drag state
+let dragState = null;
+// Connect state
+let connectState = null; // {fromId, fromSide, x, y}
+// Frame draw state
+let frameDrawState = null; // {sx, sy}
+// Multi-select
+let multiSelected = []; // [{type:'node'|'frame', id}]
+let rubberBandState = null; // {sx, sy, ex?, ey?}
+
+function genId(prefix){ return prefix + (nextId++); }
+
+// ─── UNDO HISTORY ─────────────────────────────────────────────────────────────
+const MAX_UNDO = 50;
+let undoHistory = [];
+
+function pushHistory() {
+  undoHistory.push(JSON.stringify({nodes, edges, frames, nextId}));
+  if(undoHistory.length > MAX_UNDO) undoHistory.shift();
+}
+
+function undo() {
+  if(!undoHistory.length) return;
+  const snap = JSON.parse(undoHistory.pop());
+  nodes = snap.nodes; edges = snap.edges; frames = snap.frames; nextId = snap.nextId;
+  selected = null;
+  updatePanel();
+  render();
+  showHint('元に戻しました');
+}
+
+// ─── COLOR PICKER ─────────────────────────────────────────────────────────────
+let cpState = {hex: null, opacity: 1, showOpacity: true, cb: null};
+
+function showCp(anchorEl, currentHex, currentOpacity, showOpacity, cb) {
+  cpState = {hex: currentHex, opacity: currentOpacity??1, showOpacity, cb};
+  renderCp();
+  const el = document.getElementById('cpicker');
+  el.style.display = 'block';
+  // Position: to the left of the right panel
+  const panelEl = document.getElementById('panel');
+  const panelRect = panelEl.getBoundingClientRect();
+  const r = anchorEl.getBoundingClientRect();
+  const pickerW = 260;
+  const left = panelRect.left - pickerW - 8;
+  const top = Math.min(r.top, window.innerHeight - 220);
+  el.style.top = top + 'px';
+  el.style.left = left + 'px';
+  document.getElementById('cp-op-row').style.display = showOpacity ? 'flex' : 'none';
+}
+
+function renderCp() {
+  const grid = document.getElementById('cp-grid');
+  grid.innerHTML = PALETTE.map(c => {
+    if(c === null)
+      return `<div class="cp-sw cp-none${cpState.hex===null?' cp-sel':''}" onclick="cpPick(null)">⊘</div>`;
+    const sel = c === cpState.hex ? ' cp-sel' : '';
+    return `<div class="cp-sw${sel}" style="background:${c}" onclick="cpPick('${c}')"></div>`;
+  }).join('');
+  const pct = Math.round(cpState.opacity * 100);
+  document.getElementById('cp-opacity').value = pct;
+  document.getElementById('cp-op-val').textContent = pct + '%';
+}
+
+function cpPick(hex) {
+  cpState.hex = hex;
+  renderCp();
+  if(cpState.cb) cpState.cb(cpState.hex, cpState.opacity);
+}
+
+document.getElementById('cp-opacity').addEventListener('input', e => {
+  cpState.opacity = e.target.value / 100;
+  document.getElementById('cp-op-val').textContent = e.target.value + '%';
+  if(cpState.cb) cpState.cb(cpState.hex, cpState.opacity);
+});
+
+document.addEventListener('mousedown', e => {
+  if(!e.target.closest('#cpicker') && !e.target.classList.contains('cp-btn') && !e.target.closest('.cp-btn'))
+    document.getElementById('cpicker').style.display = 'none';
+}, true);
+
+// ─── CLIPBOARD ────────────────────────────────────────────────────────────────
+let clipboard = null; // {type, data}
+
+function copySelected() {
+  if(!selected) return;
+  if(selected.type==='node') {
+    const n=getNode(selected.id); if(!n) return;
+    clipboard={type:'node', data:JSON.parse(JSON.stringify(n))};
+  } else if(selected.type==='frame') {
+    const f=getFrame(selected.id); if(!f) return;
+    clipboard={type:'frame', data:JSON.parse(JSON.stringify(f))};
+  }
+}
+
+function pasteClipboard() {
+  if(!clipboard) return;
+  pushHistory();
+  if(clipboard.type==='node') {
+    const nn={...clipboard.data, id:genId('n'), x:clipboard.data.x+24, y:clipboard.data.y+24,
+      lines:[...clipboard.data.lines]};
+    nodes.push(nn);
+    select('node', nn.id);
+  } else if(clipboard.type==='frame') {
+    const nf={...clipboard.data, id:genId('f'), x:clipboard.data.x+24, y:clipboard.data.y+24};
+    frames.push(nf);
+    select('frame', nf.id);
+  }
+  render();
+}
+
+// ─── DEEP COPY ────────────────────────────────────────────────────────────────
+function loadInitial() {
+  nodes  = INIT_NODES.map(n => ({...n, lines:[...n.lines]}));
+  edges  = INIT_EDGES.map(e => ({...e}));
+  frames = INIT_FRAMES.map(f => ({...f}));
+  nextId = 200;
+}
+
+function saveState() {
+  localStorage.setItem('flow-editor-state', JSON.stringify({nodes,edges,frames,nextId,vx,vy,vscale}));
+  showHint('保存しました');
+}
+
+function loadState() {
+  const s = localStorage.getItem('flow-editor-state');
+  if(s) {
+    try {
+      const d = JSON.parse(s);
+      nodes=d.nodes; edges=d.edges; frames=d.frames; nextId=d.nextId||200;
+      vx=d.vx||0; vy=d.vy||0; vscale=d.vscale||1;
+      return true;
+    } catch(e){}
+  }
+  return false;
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify({nodes,edges,frames},null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'flow.json';
+  a.click();
+}
+
+function showHint(msg, ms=1500) {
+  const el = document.getElementById('hint');
+  const prev = el.textContent;
+  el.textContent = msg;
+  setTimeout(()=>el.textContent=prev, ms);
+}
+
+// ─── TOOL SWITCHING ───────────────────────────────────────────────────────────
+function setTool(t) {
+  tool = t;
+  connectState = null;
+  frameDrawState = null;
+  ['select','node','frame'].forEach(n => {
+    document.getElementById('btn-'+n).classList.toggle('active', n===t);
+  });
+  const cw = document.getElementById('canvas-wrap');
+  cw.style.cursor = t==='select' ? 'default' : t==='frame' ? 'crosshair' : 'crosshair';
+  render();
+}
+
+// ─── GEOMETRY HELPERS ─────────────────────────────────────────────────────────
+function nodePt(n, side) {
+  const cx = n.x + n.w/2, cy = n.y + n.h/2;
+  return {r:[n.x+n.w,cy], l:[n.x,cy], t:[cx,n.y], b:[cx,n.y+n.h]}[side];
+}
+
+function getNode(id){ return nodes.find(n=>n.id===id); }
+function getEdge(id){ return edges.find(e=>e.id===id); }
+function getFrame(id){ return frames.find(f=>f.id===id); }
+
+function svgPt(clientX, clientY) {
+  const wrap = document.getElementById('canvas-wrap');
+  const rect = wrap.getBoundingClientRect();
+  return [(clientX-rect.left-vx)/vscale, (clientY-rect.top-vy)/vscale];
+}
+
+// ─── PATH BUILDING ────────────────────────────────────────────────────────────
+const ROUTE_GAP = 40;
+
+function buildPath(e) {
+  const fn=getNode(e.from), tn=getNode(e.to);
+  if(!fn||!tn) return '';
+  const [fx,fy]=nodePt(fn,e.fromSide);
+  const [tx,ty]=nodePt(tn,e.toSide);
+  const fs=e.fromSide, ts=e.toSide;
+  const off=e.offset??null;
+
+  // Opposite horizontal (r↔l)
+  if((fs==='r'&&ts==='l')||(fs==='l'&&ts==='r')) {
+    const fwd=fs==='r'?tx>fx:tx<fx;
+    const midX=off??(fwd?(fx+tx)/2:(fs==='r'?Math.max(fx,tx)+ROUTE_GAP:Math.min(fx,tx)-ROUTE_GAP));
+    // Even if fy≈ty, use Z-shape so stored offset is honored
+    if(!off && Math.abs(fy-ty)<1) return `M ${fx} ${fy} H ${tx}`;
+    return `M ${fx} ${fy} H ${midX} V ${ty} H ${tx}`;
+  }
+  // Opposite vertical (t↔b)
+  if((fs==='t'&&ts==='b')||(fs==='b'&&ts==='t')) {
+    const fwd=fs==='b'?ty>fy:ty<fy;
+    const midY=off??(fwd?(fy+ty)/2:(fs==='b'?Math.max(fy,ty)+ROUTE_GAP:Math.min(fy,ty)-ROUTE_GAP));
+    if(!off && Math.abs(fx-tx)<1) return `M ${fx} ${fy} V ${ty}`;
+    return `M ${fx} ${fy} V ${midY} H ${tx} V ${ty}`;
+  }
+  // Same-side U-routing
+  if(fs==='r'&&ts==='r'){const o=off??Math.max(fx,tx)+ROUTE_GAP;return `M ${fx} ${fy} H ${o} V ${ty} H ${tx}`;}
+  if(fs==='l'&&ts==='l'){const o=off??Math.min(fx,tx)-ROUTE_GAP;return `M ${fx} ${fy} H ${o} V ${ty} H ${tx}`;}
+  if(fs==='b'&&ts==='b'){const o=off??Math.max(fy,ty)+ROUTE_GAP;return `M ${fx} ${fy} V ${o} H ${tx} V ${ty}`;}
+  if(fs==='t'&&ts==='t'){const o=off??Math.min(fy,ty)-ROUTE_GAP;return `M ${fx} ${fy} V ${o} H ${tx} V ${ty}`;}
+  // L-shapes (perpendicular)
+  if((fs==='r'||fs==='l')&&(ts==='t'||ts==='b')) return `M ${fx} ${fy} H ${tx} V ${ty}`;
+  if((fs==='t'||fs==='b')&&(ts==='r'||ts==='l')) return `M ${fx} ${fy} V ${ty} H ${tx}`;
+  return `M ${fx} ${fy} L ${tx} ${ty}`;
+}
+
+// Returns drag handle info for a selected edge.
+// Straight lines also get a handle so users can create a bend by dragging.
+function getEdgeHandles(e) {
+  const fn=getNode(e.from), tn=getNode(e.to);
+  if(!fn||!tn) return [];
+  const [fx,fy]=nodePt(fn,e.fromSide);
+  const [tx,ty]=nodePt(tn,e.toSide);
+  const fs=e.fromSide, ts=e.toSide;
+  const off=e.offset??null;
+
+  if((fs==='r'&&ts==='l')||(fs==='l'&&ts==='r')) {
+    const fwd=fs==='r'?tx>fx:tx<fx;
+    const midX=off??(fwd?(fx+tx)/2:(fs==='r'?Math.max(fx,tx)+ROUTE_GAP:Math.min(fx,tx)-ROUTE_GAP));
+    // For straight lines (fy≈ty), handle is still shown at midpoint so user can drag to add a kink
+    return [{x:midX,y:(fy+ty)/2,axis:'x',cursor:'ew-resize'}];
+  }
+  if((fs==='t'&&ts==='b')||(fs==='b'&&ts==='t')) {
+    const fwd=fs==='b'?ty>fy:ty<fy;
+    const midY=off??(fwd?(fy+ty)/2:(fs==='b'?Math.max(fy,ty)+ROUTE_GAP:Math.min(fy,ty)-ROUTE_GAP));
+    return [{x:(fx+tx)/2,y:midY,axis:'y',cursor:'ns-resize'}];
+  }
+  if(fs==='r'&&ts==='r'){const o=off??Math.max(fx,tx)+ROUTE_GAP;return [{x:o,y:(fy+ty)/2,axis:'x',cursor:'ew-resize'}];}
+  if(fs==='l'&&ts==='l'){const o=off??Math.min(fx,tx)-ROUTE_GAP;return [{x:o,y:(fy+ty)/2,axis:'x',cursor:'ew-resize'}];}
+  if(fs==='b'&&ts==='b'){const o=off??Math.max(fy,ty)+ROUTE_GAP;return [{x:(fx+tx)/2,y:o,axis:'y',cursor:'ns-resize'}];}
+  if(fs==='t'&&ts==='t'){const o=off??Math.min(fy,ty)-ROUTE_GAP;return [{x:(fx+tx)/2,y:o,axis:'y',cursor:'ns-resize'}];}
+  // L-shapes: no handle (path is fixed by both endpoints)
+  return [];
+}
+
+// ─── SVG ESCAPE ───────────────────────────────────────────────────────────────
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render() {
+  const vp = document.getElementById('vp');
+  let h = '';
+
+  // Frames (bottom layer)
+  frames.forEach(f => {
+    const isSel = selected && selected.type==='frame' && selected.id===f.id;
+    const isMultiSelf = multiSelected.some(s=>s.type==='frame'&&s.id===f.id);
+    const dashAttr = f.dashed ? ' stroke-dasharray="4,3"' : '';
+    const selStroke = (isSel||isMultiSelf) ? ' stroke="#5a8abf" stroke-width="2.5"' : ` stroke="${f.stroke}" stroke-width="1"`;
+    h += `<g class="frame-el" data-id="${f.id}">`;
+    const frameFill = f.fillHex ? hexToRgba(f.fillHex, f.fillOpacity??0.1) : (f.fill||'rgba(0,0,0,0.05)');
+    h += `<rect x="${f.x}" y="${f.y}" width="${f.w}" height="${f.h}" rx="12" fill="${frameFill}"${selStroke}${dashAttr}/>`;
+    h += `<text x="${f.x+18}" y="${f.y+18}" fill="${f.labelColor}" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">${esc(f.label)}</text>`;
+    if(isSel) {
+      // Resize handle
+      h += `<rect class="resize-handle" data-id="${f.id}" data-type="frame" x="${f.x+f.w-8}" y="${f.y+f.h-8}" width="10" height="10" rx="2" fill="#5a8abf" style="cursor:se-resize"/>`;
+    }
+    h += `</g>`;
+  });
+
+  // All edges (unified smart routing) — handles rendered separately after nodes
+  edges.forEach(e => {
+    const isSel = selected && selected.type==='edge' && selected.id===e.id;
+    const d = buildPath(e);
+    if(!d) return;
+    const dashAttr = e.dashed ? ' stroke-dasharray="5,3"' : '';
+    const strokeC = isSel ? '#5a8abf' : '#5a6a7a';
+    const markerUrl = isSel ? 'arr-sel' : 'arr';
+    const strokeW = isSel ? '2.5' : '1.5';
+    h += `<path class="edge-hit" data-id="${e.id}" d="${d}" fill="none" stroke="transparent" stroke-width="10"/>`;
+    h += `<path class="edge-el" data-id="${e.id}" d="${d}" fill="none" stroke="${strokeC}" stroke-width="${strokeW}"${dashAttr} marker-end="url(#${markerUrl})"/>`;
+    const efn2=getNode(e.from), etn2=getNode(e.to);
+    if(efn2&&etn2&&e.label) {
+      const [efx2,efy2]=nodePt(efn2,e.fromSide),[etx2,ety2]=nodePt(etn2,e.toSide);
+      const lx=(efx2+etx2)/2, ly=((efy2+ety2)/2)-4;
+      h += `<text x="${lx}" y="${ly}" text-anchor="middle" fill="#4a5a6a" font-size="9" font-family="monospace">${esc(e.label)}</text>`;
+    }
+  });
+
+  // Nodes
+  nodes.forEach(n => {
+    const t = TYPES[n.type]||TYPES.bubble;
+    const cx = n.x+n.w/2;
+    const isSel = selected && selected.type==='node' && selected.id===n.id;
+    const isMultiSeln = multiSelected.some(s=>s.type==='node'&&s.id===n.id);
+    const fillColor = n.fill ? hexToRgba(n.fill, n.fillOpacity??1) : t.fill;
+    const strokeColor = n.stroke || t.stroke;
+    const tcColor = n.fill ? getContrastColor(n.fill) : t.tc;
+    const nodeDash = n.dashed ? ' stroke-dasharray="5,3"' : '';
+    const selAttr = (isSel||isMultiSeln) ? ` stroke="#5a8abf" stroke-width="2.5"${nodeDash}` : ` stroke="${strokeColor}" stroke-width="1.5"${nodeDash}`;
+    let labels = '';
+    if(n.lines.length===1){
+      labels=`<text x="${cx}" y="${n.y+n.h/2+4}" text-anchor="middle" fill="${tcColor}" font-size="11" pointer-events="none">${esc(n.lines[0])}</text>`;
+    } else {
+      n.lines.forEach((l,i)=>{
+        const dy=n.y+n.h/2+(i-(n.lines.length-1)/2)*15+4;
+        labels+=`<text x="${cx}" y="${dy}" text-anchor="middle" fill="${tcColor}" font-size="11" pointer-events="none">${esc(l)}</text>`;
+      });
+    }
+    h += `<g class="node-el" data-id="${n.id}" style="cursor:move">`;
+    h += `<rect x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="8" fill="${fillColor}"${selAttr}/>`;
+    h += labels;
+    if(isSel) {
+      h += `<rect class="resize-handle" data-id="${n.id}" data-type="node" x="${n.x+n.w-8}" y="${n.y+n.h-8}" width="10" height="10" rx="2" fill="#5a8abf" style="cursor:se-resize"/>`;
+    }
+    h += `</g>`;
+
+    // Port dots: selected node always, hover target during connect drag
+    const isHoverTarget = connectState && connectState.hoverNodeId === n.id && n.id !== connectState.fromId;
+    if(isSel || isHoverTarget) {
+      ['t','b','l','r'].forEach(side=>{
+        const [px,py]=nodePt(n,side);
+        const isSnap = isHoverTarget && connectState.snapSide === side;
+        h += `<circle class="port-dot" data-node="${n.id}" data-side="${side}" cx="${px}" cy="${py}" r="${isSnap?8:6}" fill="${isSnap?'#80c0ff':'#5a8abf'}" stroke="#fff" stroke-width="1.5" style="cursor:crosshair" opacity="0.9"/>`;
+      });
+    }
+  });
+
+  // Selected edge handles — rendered last so they appear above all nodes
+  if(selected && selected.type==='edge') {
+    const selE = getEdge(selected.id);
+    if(selE) {
+      // Scale handles to be screen-space fixed size regardless of zoom
+      const s = 1 / vscale;  // canvas units per 1 screen-pixel
+      const efn=getNode(selE.from), etn=getNode(selE.to);
+      if(efn&&etn) {
+        const [efx,efy]=nodePt(efn,selE.fromSide), [etx,ety]=nodePt(etn,selE.toSide);
+        const cr = 6*s, sw = 2*s;
+        h += `<circle cx="${efx}" cy="${efy}" r="${cr}" fill="#5a8abf" stroke="#fff" stroke-width="${sw}" style="pointer-events:none"/>`;
+        h += `<circle cx="${etx}" cy="${ety}" r="${cr}" fill="#5a8abf" stroke="#fff" stroke-width="${sw}" style="pointer-events:none"/>`;
+      }
+      getEdgeHandles(selE).forEach(hdl => {
+        // axis='x' → vertical segment (drag ew) → handle pill is narrow(W)×tall(H)
+        // axis='y' → horizontal segment (drag ns) → handle pill is wide(W)×short(H)
+        const isX = hdl.axis==='x';
+        const vW = isX ? 10*s : 28*s;  // visual pill width
+        const vH = isX ? 28*s : 10*s;  // visual pill height
+        const hW = isX ? 20*s : 40*s;  // hit area width
+        const hH = isX ? 40*s : 20*s;  // hit area height
+        const sw = Math.max(0.5, 1.5*s);
+        // Transparent hit area (actual interactive element)
+        h += `<rect class="edge-handle" data-edge="${selE.id}" data-axis="${hdl.axis}"
+          x="${hdl.x-hW/2}" y="${hdl.y-hH/2}" width="${hW}" height="${hH}"
+          rx="${3*s}" fill="rgba(0,0,0,0.001)" pointer-events="all" style="cursor:${hdl.cursor}"/>`;
+        // Visual pill
+        h += `<rect pointer-events="none"
+          x="${hdl.x-vW/2}" y="${hdl.y-vH/2}" width="${vW}" height="${vH}"
+          rx="${4*s}" fill="#5a8abf" stroke="#fff" stroke-width="${sw}"/>`;
+      });
+    }
+  }
+
+  // Connect preview line (snaps to hovered port)
+  if(connectState && connectState.x2 != null) {
+    let ex=connectState.x2, ey=connectState.y2;
+    if(connectState.hoverNodeId && connectState.snapSide) {
+      const hn=getNode(connectState.hoverNodeId);
+      if(hn) { [ex,ey]=nodePt(hn,connectState.snapSide); }
+    }
+    h += `<line x1="${connectState.x1}" y1="${connectState.y1}" x2="${ex}" y2="${ey}" stroke="#5a8abf" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+  }
+
+  // Frame draw preview
+  if(frameDrawState && frameDrawState.ex != null) {
+    const fx=Math.min(frameDrawState.sx,frameDrawState.ex);
+    const fy=Math.min(frameDrawState.sy,frameDrawState.ey);
+    const fw=Math.abs(frameDrawState.ex-frameDrawState.sx);
+    const fh=Math.abs(frameDrawState.ey-frameDrawState.sy);
+    h += `<rect x="${fx}" y="${fy}" width="${fw}" height="${fh}" rx="8" fill="rgba(30,80,180,0.07)" stroke="#5a8abf" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+  }
+
+  // Rubber band selection preview
+  if(rubberBandState && rubberBandState.ex!=null) {
+    const rbx=Math.min(rubberBandState.sx,rubberBandState.ex);
+    const rby=Math.min(rubberBandState.sy,rubberBandState.ey);
+    const rbw=Math.abs(rubberBandState.ex-rubberBandState.sx);
+    const rbh=Math.abs(rubberBandState.ey-rubberBandState.sy);
+    const rbsw=1/vscale;
+    h += `<rect x="${rbx}" y="${rby}" width="${rbw}" height="${rbh}" fill="rgba(90,138,191,0.12)" stroke="#5a8abf" stroke-width="${rbsw}" stroke-dasharray="${4/vscale},${2/vscale}"/>`;
+  }
+
+  vp.innerHTML = h;
+  applyTransform();
+}
+
+// ─── PAN / ZOOM ───────────────────────────────────────────────────────────────
+function applyTransform() {
+  document.getElementById('vp').setAttribute('transform',`translate(${vx},${vy}) scale(${vscale})`);
+}
+
+function fitView() {
+  const wrap = document.getElementById('canvas-wrap');
+  const pw=wrap.clientWidth, ph=wrap.clientHeight;
+  const SVG_W=1800, SVG_H=960;
+  vscale=Math.min(pw/SVG_W,ph/SVG_H)*0.92;
+  vx=(pw-SVG_W*vscale)/2;
+  vy=(ph-SVG_H*vscale)/2;
+  applyTransform();
+}
+
+// ─── PROPERTIES PANEL ────────────────────────────────────────────────────────
+function updatePanel() {
+  const empty = document.getElementById('panel-empty');
+  const inner = document.getElementById('panel-inner');
+  if(!selected) {
+    empty.style.display=''; inner.style.display='none';
+    empty.innerHTML = multiSelected.length>1
+      ? `${multiSelected.length} 個のオブジェクトを選択中<br><small style="color:#666">Deleteで削除</small>`
+      : '要素を選択すると<br>プロパティが表示されます';
+    return;
+  }
+  empty.style.display='none'; inner.style.display='flex';
+  let h = '';
+  if(selected.type==='node') {
+    const n = getNode(selected.id);
+    if(!n) return;
+    h += `<div class="panel-section"><div class="panel-label">タイプ</div><div class="swatch-row">`;
+    Object.entries(TYPES).forEach(([k,v])=>{
+      const sel = n.type===k ? ' sel' : '';
+      h += `<div class="swatch${sel}" title="${k}" data-action="set-type" data-val="${k}" style="background:${v.fill};border-color:${v.stroke}"></div>`;
+    });
+    h += `</div></div>`;
+    const nFillColor = n.fill || (TYPES[n.type]||TYPES.bubble).fill;
+    const nStrokeColor = n.stroke || (TYPES[n.type]||TYPES.bubble).stroke;
+    h += `<div class="panel-section"><div class="panel-label">カラー</div><div class="cp-row">
+      <button class="cp-btn" id="cp-nbtn-fill"><div class="cp-dot" style="background:${nFillColor}"></div>背景色</button>
+      <button class="cp-btn" id="cp-nbtn-stroke"><div class="cp-dot" style="background:${nStrokeColor}"></div>枠色</button>
+    </div></div>`;
+    h += `<div class="panel-section"><div class="panel-label">線の種類</div>
+      <div class="seg-row">
+        <button class="seg-btn${!n.dashed?' active':''}" data-ndash="solid">実線</button>
+        <button class="seg-btn${n.dashed?' active':''}" data-ndash="dashed">点線</button>
+      </div>
+    </div>`;
+    h += `<div class="panel-section"><div class="panel-label">ラベル（改行区切り）</div><textarea class="panel-ta" id="pi-label">${esc(n.lines.join('\n'))}</textarea></div>`;
+    h += `<button class="del-btn" data-action="delete">削除</button>`;
+  } else if(selected.type==='edge') {
+    const e = getEdge(selected.id);
+    if(!e) return;
+    h += `<div class="panel-section"><div class="panel-label">ラベル</div><input type="text" id="pi-elabel" value="${esc(e.label)}"></div>`;
+    h += `<div class="panel-section"><div class="cb-row"><input type="checkbox" id="pi-edash"${e.dashed?' checked':''}><label for="pi-edash">点線</label></div></div>`;
+    if(e.offset!=null) h += `<button class="seg-btn" id="pi-ereset" style="border-radius:3px">ルートをリセット</button>`;
+    h += `<button class="del-btn" data-action="delete">削除</button>`;
+  } else if(selected.type==='frame') {
+    const f = getFrame(selected.id);
+    if(!f) return;
+    h += `<div class="panel-section"><div class="panel-label">ラベル</div><input type="text" id="pi-flabel" value="${esc(f.label)}"></div>`;
+    const fFillColor = f.fillHex || '#1e50b4';
+    h += `<div class="panel-section"><div class="panel-label">カラー</div><div class="cp-row">
+      <button class="cp-btn" id="cp-fbtn-fill"><div class="cp-dot" style="background:${hexToRgba(fFillColor, f.fillOpacity??0.1)}"></div>背景色</button>
+      <button class="cp-btn" id="cp-fbtn-stroke"><div class="cp-dot" style="background:${f.stroke}"></div>枠色</button>
+      <button class="cp-btn" id="cp-fbtn-label"><div class="cp-dot" style="background:${f.labelColor}"></div>文字</button>
+    </div></div>`;
+    h += `<div class="panel-section"><div class="panel-label">線の種類</div>
+      <div class="seg-row">
+        <button class="seg-btn${!f.dashed?' active':''}" data-dash="solid">実線</button>
+        <button class="seg-btn${f.dashed?' active':''}" data-dash="dashed">点線</button>
+      </div>
+    </div>`;
+    h += `<button class="del-btn" data-action="delete">削除</button>`;
+  }
+  inner.innerHTML = h;
+
+  // Bind panel events
+  const byId = id => document.getElementById(id);
+  if(selected.type==='node') {
+    const n = getNode(selected.id);
+    const taLabel = byId('pi-label');
+    if(taLabel) { taLabel.onfocus=pushHistory; taLabel.oninput=()=>{ n.lines=taLabel.value.split('\n'); render(); }; }
+    inner.querySelectorAll('[data-action="set-type"]').forEach(el=>{
+      el.onclick=()=>{ pushHistory(); n.type=el.dataset.val; updatePanel(); render(); };
+    });
+    const nbFill = byId('cp-nbtn-fill'), nbStroke = byId('cp-nbtn-stroke');
+    if(nbFill) nbFill.onclick=()=>{
+      showCp(nbFill, n.fill, n.fillOpacity??1, true, (hex,op)=>{
+        pushHistory(); n.fill=hex; n.fillOpacity=op; updatePanel(); render();
+      });
+    };
+    if(nbStroke) nbStroke.onclick=()=>{
+      showCp(nbStroke, n.stroke, 1, false, (hex)=>{
+        pushHistory(); n.stroke=hex; updatePanel(); render();
+      });
+    };
+    inner.querySelectorAll('[data-ndash]').forEach(btn=>{
+      btn.onclick=()=>{ pushHistory(); n.dashed=(btn.dataset.ndash==='dashed'); updatePanel(); render(); };
+    });
+  } else if(selected.type==='edge') {
+    const e = getEdge(selected.id);
+    const lIn=byId('pi-elabel'), dCb=byId('pi-edash'), rBtn=byId('pi-ereset');
+    if(lIn) { lIn.onfocus=pushHistory; lIn.oninput=()=>{ e.label=lIn.value; render(); }; }
+    if(dCb) dCb.onchange=()=>{ pushHistory(); e.dashed=dCb.checked; render(); };
+    if(rBtn) rBtn.onclick=()=>{ pushHistory(); e.offset=null; updatePanel(); render(); };
+  } else if(selected.type==='frame') {
+    const f = getFrame(selected.id);
+    const lIn=byId('pi-flabel');
+    if(lIn) { lIn.onfocus=pushHistory; lIn.oninput=()=>{ f.label=lIn.value; render(); }; }
+    inner.querySelectorAll('[data-dash]').forEach(btn=>{
+      btn.onclick=()=>{ pushHistory(); f.dashed=(btn.dataset.dash==='dashed'); updatePanel(); render(); };
+    });
+    const fbFill=byId('cp-fbtn-fill'), fbStroke=byId('cp-fbtn-stroke'), fbLabel=byId('cp-fbtn-label');
+    if(fbFill) fbFill.onclick=()=>{
+      showCp(fbFill, f.fillHex||'#1e50b4', f.fillOpacity??0.1, true, (hex,op)=>{
+        pushHistory(); f.fillHex=hex; f.fillOpacity=op; updatePanel(); render();
+      });
+    };
+    if(fbStroke) fbStroke.onclick=()=>{
+      showCp(fbStroke, f.stroke, 1, false, (hex)=>{
+        pushHistory(); if(hex) f.stroke=hex; updatePanel(); render();
+      });
+    };
+    if(fbLabel) fbLabel.onclick=()=>{
+      showCp(fbLabel, f.labelColor, 1, false, (hex)=>{
+        pushHistory(); if(hex) f.labelColor=hex; updatePanel(); render();
+      });
+    };
+  }
+  inner.querySelector('.del-btn')?.addEventListener('click', deleteSelected);
+}
+
+function select(type, id) {
+  selected = id ? {type,id} : null;
+  if(id) multiSelected = []; // clear multi-selection on single select
+  updatePanel();
+  render();
+}
+
+function deleteSelected() {
+  if(!selected && !multiSelected.length) return;
+  pushHistory();
+  if(multiSelected.length > 0) {
+    const nids = new Set(multiSelected.filter(s=>s.type==='node').map(s=>s.id));
+    const fids = new Set(multiSelected.filter(s=>s.type==='frame').map(s=>s.id));
+    nodes = nodes.filter(n=>!nids.has(n.id));
+    edges = edges.filter(e=>!nids.has(e.from)&&!nids.has(e.to));
+    frames = frames.filter(f=>!fids.has(f.id));
+    multiSelected=[];
+  } else if(selected) {
+    if(selected.type==='node') {
+      nodes = nodes.filter(n=>n.id!==selected.id);
+      edges = edges.filter(e=>e.from!==selected.id&&e.to!==selected.id);
+    } else if(selected.type==='edge') {
+      edges = edges.filter(e=>e.id!==selected.id);
+    } else if(selected.type==='frame') {
+      frames = frames.filter(f=>f.id!==selected.id);
+    }
+  }
+  selected=null;
+  updatePanel();
+  render();
+}
+
+// ─── CONTEXT MENU ─────────────────────────────────────────────────────────────
+let ctxTarget = null;
+function showCtxMenu(e) {
+  const menu = document.getElementById('ctx-menu');
+  menu.style.left = e.clientX+'px';
+  menu.style.top  = e.clientY+'px';
+  menu.style.display='block';
+}
+function hideCtxMenu(){ document.getElementById('ctx-menu').style.display='none'; }
+
+function ctxDuplicate() {
+  hideCtxMenu();
+  if(!selected) return;
+  pushHistory();
+  if(selected.type==='node') {
+    const n=getNode(selected.id);
+    if(!n) return;
+    const nn={...n,id:genId('n'),x:n.x+20,y:n.y+20,lines:[...n.lines]};
+    nodes.push(nn);
+    select('node',nn.id);
+  } else if(selected.type==='frame') {
+    const f=getFrame(selected.id);
+    if(!f) return;
+    const nf={...f,id:genId('f'),x:f.x+20,y:f.y+20};
+    frames.push(nf);
+    select('frame',nf.id);
+  }
+  render();
+}
+function ctxDelete() { hideCtxMenu(); deleteSelected(); }
+
+// ─── EVENTS ───────────────────────────────────────────────────────────────────
+const canvasWrap = document.getElementById('canvas-wrap');
+
+canvasWrap.addEventListener('contextmenu', e=>{
+  e.preventDefault();
+  // Find what was right-clicked
+  const target = e.target.closest('[data-id]');
+  if(target) {
+    const id = target.dataset.id;
+    if(target.classList.contains('node-el') || target.closest('.node-el')) {
+      select('node', id); showCtxMenu(e);
+    } else if(target.classList.contains('frame-el') || target.closest('.frame-el')) {
+      select('frame', id); showCtxMenu(e);
+    }
+  }
+});
+
+document.addEventListener('click', e=>{
+  if(!e.target.closest('#ctx-menu')) hideCtxMenu();
+});
+
+canvasWrap.addEventListener('wheel', e=>{
+  e.preventDefault();
+  if(e.ctrlKey) {
+    // Zoom: pinch gesture (trackpad) or Ctrl+wheel
+    const factor=e.deltaY<0?1.12:0.88;
+    const rect=canvasWrap.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    vx=mx-(mx-vx)*factor;
+    vy=my-(my-vy)*factor;
+    vscale*=factor;
+  } else {
+    // Pan: two-finger swipe on trackpad (or plain mouse wheel)
+    vx-=e.deltaX;
+    vy-=e.deltaY;
+  }
+  applyTransform();
+},{passive:false});
+
+canvasWrap.addEventListener('dblclick', e=>{
+  const edgeHandleDbl = e.target.closest('.edge-handle');
+  if(edgeHandleDbl) {
+    const dblEdge = getEdge(edgeHandleDbl.dataset.edge);
+    if(dblEdge) { pushHistory(); dblEdge.offset=null; render(); return; }
+  }
+  const node = e.target.closest('.node-el');
+  if(node) {
+    select('node', node.dataset.id);
+    setTimeout(()=>document.getElementById('pi-label')?.focus(),50);
+  }
+});
+
+canvasWrap.addEventListener('mousedown', e=>{
+  if(e.button!==0) return;
+  hideCtxMenu();
+
+  const resizeH = e.target.closest('.resize-handle');
+  if(resizeH) {
+    e.stopPropagation();
+    const id=resizeH.dataset.id, type=resizeH.dataset.type;
+    const item = type==='node'?getNode(id):getFrame(id);
+    if(item) {
+      pushHistory();
+      dragState={mode:'resize', type, id, origW:item.w, origH:item.h, sx:e.clientX, sy:e.clientY};
+    }
+    return;
+  }
+
+  const portDot = e.target.closest('.port-dot');
+  if(portDot && (tool==='select'||tool==='connect')) {
+    const nodeId=portDot.dataset.node, side=portDot.dataset.side;
+    const n=getNode(nodeId);
+    const [px,py]=nodePt(n,side);
+    connectState={fromId:nodeId, fromSide:side, x1:px, y1:py};
+    return;
+  }
+
+  if(tool==='frame') {
+    const [sx,sy]=svgPt(e.clientX,e.clientY);
+    frameDrawState={sx,sy};
+    return;
+  }
+
+  const nodeEl = e.target.closest('.node-el');
+  if(nodeEl && tool==='select') {
+    const id=nodeEl.dataset.id;
+    let n=getNode(id);
+    const inMultiN = multiSelected.length>1 && multiSelected.some(s=>s.type==='node'&&s.id===id);
+    if(inMultiN && !e.altKey) {
+      // Drag all multi-selected together
+      pushHistory();
+      const mnOff=multiSelected.filter(s=>s.type==='node').map(s=>{const mn=getNode(s.id);return{id:s.id,ox:mn.x,oy:mn.y};});
+      const mfOff=multiSelected.filter(s=>s.type==='frame').map(s=>{const mf=getFrame(s.id);return{id:s.id,ox:mf.x,oy:mf.y};});
+      dragState={mode:'drag-multi',sx:e.clientX,sy:e.clientY,nodeOffsets:mnOff,frameOffsets:mfOff};
+      return;
+    }
+    if(e.altKey) {
+      // Option+drag: clone node and drag the clone
+      pushHistory();
+      const clone={...n, id:genId('n'), lines:[...n.lines]};
+      nodes.push(clone);
+      select('node', clone.id);
+      n=clone;
+    } else {
+      multiSelected=[];
+      select('node',id);
+      pushHistory();
+    }
+    dragState={mode:'drag-node', id:n.id, ox:n.x, oy:n.y, sx:e.clientX, sy:e.clientY};
+    return;
+  }
+
+  const edgeHandle = e.target.closest('.edge-handle');
+  if(edgeHandle && tool==='select') {
+    const ehEdgeId = edgeHandle.dataset.edge;
+    const ehAxis = edgeHandle.dataset.axis;
+    const ehEdge = getEdge(ehEdgeId);
+    if(ehEdge) {
+      select('edge', ehEdgeId);
+      pushHistory();
+      const [emx,emy] = svgPt(e.clientX, e.clientY);
+      const ehHandles = getEdgeHandles(ehEdge);
+      const ehStart = ehHandles.length ? (ehAxis==='x' ? ehHandles[0].x : ehHandles[0].y) : (ehAxis==='x' ? emx : emy);
+      dragState = {mode:'drag-edge-offset', edgeId:ehEdgeId, axis:ehAxis, startPos:ehAxis==='x'?emx:emy, startOffset:ehStart};
+    }
+    return;
+  }
+
+  const edgeHit = e.target.closest('.edge-hit');
+  if(edgeHit && tool==='select') {
+    select('edge', edgeHit.dataset.id);
+    return;
+  }
+
+  const frameEl = e.target.closest('.frame-el');
+  if(frameEl && tool==='select') {
+    let id=frameEl.dataset.id;
+    let f=getFrame(id);
+    const inMultiF = multiSelected.length>1 && multiSelected.some(s=>s.type==='frame'&&s.id===id);
+    if(inMultiF && !e.altKey) {
+      // Drag all multi-selected together
+      pushHistory();
+      const mnOff=multiSelected.filter(s=>s.type==='node').map(s=>{const mn=getNode(s.id);return{id:s.id,ox:mn.x,oy:mn.y};});
+      const mfOff=multiSelected.filter(s=>s.type==='frame').map(s=>{const mf=getFrame(s.id);return{id:s.id,ox:mf.x,oy:mf.y};});
+      dragState={mode:'drag-multi',sx:e.clientX,sy:e.clientY,nodeOffsets:mnOff,frameOffsets:mfOff};
+      return;
+    }
+    multiSelected=[];
+    pushHistory();
+    if(e.altKey) {
+      // Option+drag: clone frame
+      const clone={...f, id:genId('f')};
+      frames.push(clone);
+      select('frame', clone.id);
+      id=clone.id; f=clone;
+    } else {
+      select('frame',id);
+    }
+    const insideFrame = (item, fr) =>
+      item.x >= fr.x && item.y >= fr.y &&
+      item.x + item.w <= fr.x + fr.w && item.y + item.h <= fr.y + fr.h;
+    const containedNodes = nodes.filter(n => insideFrame(n, f)).map(n => ({id:n.id, ox:n.x, oy:n.y}));
+    const containedFrames = frames.filter(fr => fr.id !== id && insideFrame(fr, f)).map(fr => ({id:fr.id, ox:fr.x, oy:fr.y}));
+    dragState={mode:'drag-frame', id, ox:f.x, oy:f.y, sx:e.clientX, sy:e.clientY, containedNodes, containedFrames};
+    return;
+  }
+
+  if(tool==='node') {
+    const [cx,cy]=svgPt(e.clientX,e.clientY);
+    pushHistory();
+    const nn={id:genId('n'), x:cx-60, y:cy-26, w:120, h:52, type:'bubble', lines:['新しい画面']};
+    nodes.push(nn);
+    select('node',nn.id);
+    setTool('select');
+    return;
+  }
+
+  // Rubber band selection (select tool, no hit)
+  if(tool==='select') {
+    const [rbsx,rbsy]=svgPt(e.clientX,e.clientY);
+    multiSelected=[];
+    selected=null;
+    rubberBandState={sx:rbsx, sy:rbsy};
+    updatePanel();
+    render();
+  }
+});
+
+window.addEventListener('mousemove', e=>{
+  if(dragState) {
+    if(dragState.mode==='drag-node') {
+      const n=getNode(dragState.id);
+      n.x=dragState.ox+(e.clientX-dragState.sx)/vscale;
+      n.y=dragState.oy+(e.clientY-dragState.sy)/vscale;
+      render();
+    } else if(dragState.mode==='drag-frame') {
+      const f=getFrame(dragState.id);
+      const dx=(e.clientX-dragState.sx)/vscale;
+      const dy=(e.clientY-dragState.sy)/vscale;
+      f.x=dragState.ox+dx; f.y=dragState.oy+dy;
+      dragState.containedNodes.forEach(c=>{ const n=getNode(c.id); if(n){ n.x=c.ox+dx; n.y=c.oy+dy; } });
+      dragState.containedFrames.forEach(c=>{ const fr=getFrame(c.id); if(fr){ fr.x=c.ox+dx; fr.y=c.oy+dy; } });
+      render();
+    } else if(dragState.mode==='drag-multi') {
+      const dx=(e.clientX-dragState.sx)/vscale;
+      const dy=(e.clientY-dragState.sy)/vscale;
+      dragState.nodeOffsets.forEach(({id,ox,oy})=>{const n=getNode(id);if(n){n.x=ox+dx;n.y=oy+dy;}});
+      dragState.frameOffsets.forEach(({id,ox,oy})=>{const f=getFrame(id);if(f){f.x=ox+dx;f.y=oy+dy;}});
+      render();
+    } else if(dragState.mode==='drag-edge-offset') {
+      const eoEdge = getEdge(dragState.edgeId);
+      if(eoEdge) {
+        const [eomx,eomy] = svgPt(e.clientX, e.clientY);
+        const eoCur = dragState.axis==='x' ? eomx : eomy;
+        eoEdge.offset = dragState.startOffset + (eoCur - dragState.startPos);
+        render();
+      }
+    } else if(dragState.mode==='resize') {
+      const dx=(e.clientX-dragState.sx)/vscale;
+      const dy=(e.clientY-dragState.sy)/vscale;
+      const item = dragState.type==='node'?getNode(dragState.id):getFrame(dragState.id);
+      if(item){
+        item.w=Math.max(40,dragState.origW+dx);
+        item.h=Math.max(20,dragState.origH+dy);
+        render();
+      }
+    }
+  }
+  if(connectState) {
+    const [mx,my]=svgPt(e.clientX,e.clientY);
+    connectState.x2=mx; connectState.y2=my;
+    // Detect hovered node and snap to nearest port
+    const hEl = document.elementFromPoint(e.clientX, e.clientY);
+    const portDotEl = hEl?.closest('.port-dot');
+    const hNodeEl = hEl?.closest('.node-el');
+    if(portDotEl && portDotEl.dataset.node !== connectState.fromId) {
+      connectState.hoverNodeId = portDotEl.dataset.node;
+      connectState.snapSide = portDotEl.dataset.side;
+    } else if(hNodeEl && hNodeEl.dataset.id !== connectState.fromId) {
+      connectState.hoverNodeId = hNodeEl.dataset.id;
+      connectState.snapSide = null; // show ports, but no snap yet
+    } else {
+      connectState.hoverNodeId = null;
+      connectState.snapSide = null;
+    }
+    render();
+  }
+  if(frameDrawState) {
+    const [ex,ey]=svgPt(e.clientX,e.clientY);
+    frameDrawState.ex=ex; frameDrawState.ey=ey;
+    render();
+  }
+  if(rubberBandState) {
+    const [rbex,rbey]=svgPt(e.clientX,e.clientY);
+    rubberBandState.ex=rbex; rubberBandState.ey=rbey;
+    render();
+  }
+});
+
+window.addEventListener('mouseup', e=>{
+  if(dragState) { dragState=null; }
+
+  // Rubber band: complete selection
+  if(rubberBandState) {
+    if(rubberBandState.ex!=null &&
+       (Math.abs(rubberBandState.ex-rubberBandState.sx)>5 || Math.abs(rubberBandState.ey-rubberBandState.sy)>5)) {
+      const rx1=Math.min(rubberBandState.sx,rubberBandState.ex);
+      const ry1=Math.min(rubberBandState.sy,rubberBandState.ey);
+      const rx2=Math.max(rubberBandState.sx,rubberBandState.ex);
+      const ry2=Math.max(rubberBandState.sy,rubberBandState.ey);
+      multiSelected=[];
+      nodes.forEach(n=>{
+        if(n.x>=rx1&&n.y>=ry1&&n.x+n.w<=rx2&&n.y+n.h<=ry2) multiSelected.push({type:'node',id:n.id});
+      });
+      frames.forEach(f=>{
+        if(f.x>=rx1&&f.y>=ry1&&f.x+f.w<=rx2&&f.y+f.h<=ry2) multiSelected.push({type:'frame',id:f.id});
+      });
+      if(multiSelected.length===1) { selected=multiSelected[0]; updatePanel(); }
+      else { selected=null; updatePanel(); }
+    }
+    rubberBandState=null;
+    render();
+    return;
+  }
+
+  if(connectState && connectState.x2!=null) {
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    const port = el?.closest('.port-dot');
+    if(port && port.dataset.node !== connectState.fromId) {
+      // Released on port dot → connect using that port
+      pushHistory();
+      edges.push({id:genId('e'), from:connectState.fromId, fromSide:connectState.fromSide, to:port.dataset.node, toSide:port.dataset.side, label:'', dashed:false});
+      select('edge', edges[edges.length-1].id);
+    } else if(!port) {
+      const hitNode = el?.closest('.node-el');
+      if(hitNode && hitNode.dataset.id !== connectState.fromId) {
+        // Released on node body → use snapSide if available, else auto-detect
+        const toId = hitNode.dataset.id;
+        let toSide = connectState.snapSide;
+        if(!toSide) {
+          const toNode=getNode(toId), [cx,cy]=svgPt(e.clientX,e.clientY);
+          const dx=cx-(toNode.x+toNode.w/2), dy=cy-(toNode.y+toNode.h/2);
+          toSide = Math.abs(dx)>Math.abs(dy) ? (dx>0?'r':'l') : (dy>0?'b':'t');
+        }
+        pushHistory();
+        edges.push({id:genId('e'), from:connectState.fromId, fromSide:connectState.fromSide, to:toId, toSide, label:'', dashed:false});
+        select('edge', edges[edges.length-1].id);
+      } else if(!hitNode && !el?.closest('.frame-el')) {
+        // Released on empty canvas → create new node + connect
+        const fromNode = getNode(connectState.fromId);
+        const [cx,cy] = svgPt(e.clientX, e.clientY);
+        const opp = {r:'l',l:'r',t:'b',b:'t'}[connectState.fromSide];
+        let nx,ny;
+        if     (connectState.fromSide==='r') { nx=cx;               ny=cy-fromNode.h/2; }
+        else if(connectState.fromSide==='l') { nx=cx-fromNode.w;    ny=cy-fromNode.h/2; }
+        else if(connectState.fromSide==='t') { nx=cx-fromNode.w/2;  ny=cy-fromNode.h;   }
+        else                                 { nx=cx-fromNode.w/2;  ny=cy;              }
+        pushHistory();
+        const nn={id:genId('n'), x:nx, y:ny, w:fromNode.w, h:fromNode.h,
+          type:fromNode.type, lines:['新しい画面'],
+          fill:fromNode.fill||null, fillOpacity:fromNode.fillOpacity, stroke:fromNode.stroke||null};
+        nodes.push(nn);
+        edges.push({id:genId('e'), from:connectState.fromId, fromSide:connectState.fromSide, to:nn.id, toSide:opp, label:'', dashed:false});
+        select('node', nn.id);
+      }
+    }
+    connectState=null;
+    render();
+  }
+
+  if(frameDrawState && frameDrawState.ex!=null) {
+    const fx=Math.min(frameDrawState.sx,frameDrawState.ex);
+    const fy=Math.min(frameDrawState.sy,frameDrawState.ey);
+    const fw=Math.abs(frameDrawState.ex-frameDrawState.sx);
+    const fh=Math.abs(frameDrawState.ey-frameDrawState.sy);
+    if(fw>20&&fh>20) {
+      pushHistory();
+      const nf={id:genId('f'), x:fx, y:fy, w:fw, h:fh, label:'新しいフレーム',
+        fillHex:'#1e50b4', fillOpacity:0.07, stroke:'#2a3a5a', labelColor:'#4a6a9a', dashed:false};
+      frames.push(nf);
+      select('frame',nf.id);
+    }
+    frameDrawState=null;
+    setTool('select');
+    render();
+  }
+});
+
+document.addEventListener('keydown', e=>{
+  if((e.metaKey||e.ctrlKey) && e.key==='z') {
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+    e.preventDefault(); undo(); return;
+  }
+  if((e.metaKey||e.ctrlKey) && e.key==='c') {
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+    e.preventDefault(); copySelected(); return;
+  }
+  if((e.metaKey||e.ctrlKey) && e.key==='v') {
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+    e.preventDefault(); pasteClipboard(); return;
+  }
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='Delete'||e.key==='Backspace') {
+    deleteSelected();
+  }
+  if(e.key==='Escape') {
+    connectState=null;
+    frameDrawState=null;
+    rubberBandState=null;
+    multiSelected=[];
+    select(null,null);
+    setTool('select');
+    render();
+  }
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+if(!loadState()) {
+  loadInitial();
+}
+render();
+fitView();
+</script>
+</body>
+</html>
