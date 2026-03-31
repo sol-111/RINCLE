@@ -115,7 +115,7 @@ export default function DbTab() {
   const [dragOverId, setDragOverId] = useState<string | null>(null)
   const dragSrcId = useRef<string | null>(null)
   const dirtyRows = useRef<Map<string, Row>>(new Map())
-  const supabase = createClient()
+  const supabase = useRef(createClient()).current
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   useEffect(() => {

@@ -133,7 +133,7 @@ export default function ScreensTab() {
   const dragSrcId = useRef<string | null>(null)
   const dirtyRows = useRef<Map<string, Row>>(new Map())
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
-  const supabase = createClient()
+  const supabase = useRef(createClient()).current
 
   useEffect(() => {
     supabase.from('screens').select('*').order('sort_order').then(({ data }) => {

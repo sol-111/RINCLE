@@ -378,19 +378,26 @@ function d4Edges(pt: PtFn): string {
   return h
 }
 
+// ── Comment type ─────────────────────────────────────────────────────────────
+type CommentDef = { id:string; svgX:number; svgY:number; svgW:number; svgH:number; text:string }
+type SelInfo = { diagId:BizTab; startX:number; startY:number; curX:number; curY:number; wrapEl:HTMLElement; diagState:React.MutableRefObject<{vx:number;vy:number;vscale:number}> }
+
 // ── Diagram controller hook ───────────────────────────────────────────────────
 function useDiagram(
   wrapRef: React.RefObject<HTMLDivElement | null>,
   vpRef:   React.RefObject<SVGGElement | null>,
   svgW: number, svgH: number,
   content: string,
+  extRefs?: React.RefObject<SVGGElement | null>[],
 ) {
   const state = useRef({ vx:0, vy:0, vscale:1 })
 
   function applyT() {
     if (!vpRef.current) return
     const { vx, vy, vscale } = state.current
-    vpRef.current.setAttribute('transform', `translate(${vx},${vy}) scale(${vscale})`)
+    const t = `translate(${vx},${vy}) scale(${vscale})`
+    vpRef.current.setAttribute('transform', t)
+    extRefs?.forEach(r => r.current?.setAttribute('transform', t))
   }
 
   function fitView() {
@@ -422,13 +429,53 @@ export default function BizFlowTab() {
   const d4WrapRef = useRef<HTMLDivElement>(null)
   const d4VpRef   = useRef<SVGGElement>(null)
 
+  // Comment layer refs (keep transform in sync with diagram)
+  const d2CmtRef = useRef<SVGGElement>(null)
+  const d3CmtRef = useRef<SVGGElement>(null)
+  const d4CmtRef = useRef<SVGGElement>(null)
+
   const d2Content = buildContent(D2_NODES, d2Lanes, d2Edges)
   const d3Content = buildContent(D3_NODES, d3Lanes, d3Edges)
   const d4Content = buildContent(D4_NODES, d4Lanes, d4Edges)
 
-  const d2 = useDiagram(d2WrapRef, d2VpRef, 5900, 960, d2Content)
-  const d3 = useDiagram(d3WrapRef, d3VpRef, 2260, 740, d3Content)
-  const d4 = useDiagram(d4WrapRef, d4VpRef, 2560, 680, d4Content)
+  const d2 = useDiagram(d2WrapRef, d2VpRef, 5900, 960, d2Content, [d2CmtRef])
+  const d3 = useDiagram(d3WrapRef, d3VpRef, 2260, 740, d3Content, [d3CmtRef])
+  const d4 = useDiagram(d4WrapRef, d4VpRef, 2560, 680, d4Content, [d4CmtRef])
+
+  // Comment state
+  const [d2Cmts, setD2Cmts] = useState<CommentDef[]>([])
+  const [d3Cmts, setD3Cmts] = useState<CommentDef[]>([])
+  const [d4Cmts, setD4Cmts] = useState<CommentDef[]>([])
+
+  // Selection overlay refs
+  const d2SelRef = useRef<HTMLDivElement>(null)
+  const d3SelRef = useRef<HTMLDivElement>(null)
+  const d4SelRef = useRef<HTMLDivElement>(null)
+
+  // Active selection (ref for perf — updated on every mousemove)
+  const selRef = useRef<SelInfo|null>(null)
+
+  // Comment mode
+  const [commentMode, setCommentMode] = useState(false)
+  const commentModeRef = useRef(false)
+  function toggleCommentMode() {
+    const next = !commentModeRef.current
+    commentModeRef.current = next
+    setCommentMode(next)
+  }
+
+  // Pending comment input
+  const [pendingCmt, setPendingCmt] = useState<{svgX:number;svgY:number;svgW:number;svgH:number;screenX:number;screenY:number;diagId:BizTab}|null>(null)
+  const [cmtInput, setCmtInput] = useState('')
+
+  function confirmComment() {
+    if (!pendingCmt || !cmtInput.trim()) { setPendingCmt(null); return }
+    const c: CommentDef = { id: Date.now().toString(), svgX:pendingCmt.svgX, svgY:pendingCmt.svgY, svgW:pendingCmt.svgW, svgH:pendingCmt.svgH, text:cmtInput.trim() }
+    if (pendingCmt.diagId==='zen') setD2Cmts(p=>[...p,c])
+    else if (pendingCmt.diagId==='kessai') setD3Cmts(p=>[...p,c])
+    else setD4Cmts(p=>[...p,c])
+    setPendingCmt(null)
+  }
 
   // Global drag state shared across all diagrams
   const dragRef = useRef<{ sx:number; sy:number; applyT:()=>void; state:React.MutableRefObject<{vx:number;vy:number;vscale:number}> } | null>(null)
@@ -436,20 +483,36 @@ export default function BizFlowTab() {
   function setupDiagramEvents(
     wrap: HTMLDivElement,
     diagState: React.MutableRefObject<{vx:number;vy:number;vscale:number}>,
-    applyT: ()=>void
+    applyT: ()=>void,
+    diagId: BizTab,
   ) {
     function onWheel(ev: WheelEvent) {
       ev.preventDefault()
-      const f = ev.deltaY < 0 ? 1.12 : 0.88
-      const r = wrap.getBoundingClientRect()
-      const mx = ev.clientX - r.left, my = ev.clientY - r.top
-      diagState.current.vx = mx - (mx - diagState.current.vx) * f
-      diagState.current.vy = my - (my - diagState.current.vy) * f
-      diagState.current.vscale *= f
+      if (ev.ctrlKey) {
+        const f = ev.deltaY < 0 ? 1.12 : 0.88
+        const r = wrap.getBoundingClientRect()
+        const mx = ev.clientX - r.left, my = ev.clientY - r.top
+        diagState.current.vx = mx - (mx - diagState.current.vx) * f
+        diagState.current.vy = my - (my - diagState.current.vy) * f
+        diagState.current.vscale *= f
+      } else {
+        diagState.current.vx -= ev.deltaX
+        diagState.current.vy -= ev.deltaY
+      }
       applyT()
     }
     function onMouseDown(ev: MouseEvent) {
-      dragRef.current = { sx: ev.clientX - diagState.current.vx, sy: ev.clientY - diagState.current.vy, applyT, state: diagState }
+      const target = ev.target as Element
+      if (target.closest?.('[data-cmt-del]')) return
+      if (commentModeRef.current) {
+        ev.preventDefault()
+        const r = wrap.getBoundingClientRect()
+        const ovl = diagId==='zen' ? d2SelRef.current : diagId==='kessai' ? d3SelRef.current : d4SelRef.current
+        selRef.current = { diagId, startX:ev.clientX, startY:ev.clientY, curX:ev.clientX, curY:ev.clientY, wrapEl:wrap, diagState }
+        if (ovl) { ovl.style.display='block'; ovl.style.left=`${ev.clientX-r.left}px`; ovl.style.top=`${ev.clientY-r.top}px`; ovl.style.width='0'; ovl.style.height='0' }
+      } else {
+        dragRef.current = { sx: ev.clientX - diagState.current.vx, sy: ev.clientY - diagState.current.vy, applyT, state: diagState }
+      }
     }
     wrap.addEventListener('wheel', onWheel, { passive: false })
     wrap.addEventListener('mousedown', onMouseDown)
@@ -462,20 +525,50 @@ export default function BizFlowTab() {
   useEffect(() => {
     // Global move/up handlers
     function onMouseMove(ev: MouseEvent) {
+      if (selRef.current) {
+        selRef.current.curX = ev.clientX
+        selRef.current.curY = ev.clientY
+        const sel = selRef.current
+        const r = sel.wrapEl.getBoundingClientRect()
+        const x1 = Math.min(sel.startX, sel.curX) - r.left
+        const y1 = Math.min(sel.startY, sel.curY) - r.top
+        const w = Math.abs(sel.curX - sel.startX)
+        const h = Math.abs(sel.curY - sel.startY)
+        const ovl = sel.diagId==='zen' ? d2SelRef.current : sel.diagId==='kessai' ? d3SelRef.current : d4SelRef.current
+        if (ovl) { ovl.style.left=`${x1}px`; ovl.style.top=`${y1}px`; ovl.style.width=`${w}px`; ovl.style.height=`${h}px` }
+        return
+      }
       if (!dragRef.current) return
       dragRef.current.state.current.vx = ev.clientX - dragRef.current.sx
       dragRef.current.state.current.vy = ev.clientY - dragRef.current.sy
       dragRef.current.applyT()
     }
-    function onMouseUp() { dragRef.current = null }
+    function onMouseUp() {
+      if (selRef.current) {
+        const sel = selRef.current
+        const ovl = sel.diagId==='zen' ? d2SelRef.current : sel.diagId==='kessai' ? d3SelRef.current : d4SelRef.current
+        if (ovl) ovl.style.display='none'
+        const dw = Math.abs(sel.curX - sel.startX)
+        const dh = Math.abs(sel.curY - sel.startY)
+        selRef.current = null
+        if (dw < 20 || dh < 20) return
+        const r = sel.wrapEl.getBoundingClientRect()
+        const { vx, vy, vscale } = sel.diagState.current
+        const sx1 = Math.min(sel.startX, sel.curX), sy1 = Math.min(sel.startY, sel.curY)
+        setPendingCmt({ svgX:(sx1-r.left-vx)/vscale, svgY:(sy1-r.top-vy)/vscale, svgW:dw/vscale, svgH:dh/vscale, screenX:sx1, screenY:sy1, diagId:sel.diagId })
+        setCmtInput('')
+        return
+      }
+      dragRef.current = null
+    }
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)
 
     // D2 init
     d2.render(); d2.fitView()
-    const c2 = d2WrapRef.current ? setupDiagramEvents(d2WrapRef.current, d2.state, d2.applyT) : null
-    const c3 = d3WrapRef.current ? setupDiagramEvents(d3WrapRef.current, d3.state, d3.applyT) : null
-    const c4 = d4WrapRef.current ? setupDiagramEvents(d4WrapRef.current, d4.state, d4.applyT) : null
+    const c2 = d2WrapRef.current ? setupDiagramEvents(d2WrapRef.current, d2.state, d2.applyT, 'zen') : null
+    const c3 = d3WrapRef.current ? setupDiagramEvents(d3WrapRef.current, d3.state, d3.applyT, 'kessai') : null
+    const c4 = d4WrapRef.current ? setupDiagramEvents(d4WrapRef.current, d4.state, d4.applyT, 'yoyaku') : null
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
@@ -490,6 +583,12 @@ export default function BizFlowTab() {
     if (activeTab === 'yoyaku') { d4.render(); setTimeout(() => d4.fitView(), 50) }
   }, [activeTab])
 
+  // Sync cursor with commentMode
+  useEffect(() => {
+    const cursor = commentMode ? 'crosshair' : 'grab'
+    ;[d2WrapRef, d3WrapRef, d4WrapRef].forEach(r => { if (r.current) r.current.style.cursor = cursor })
+  }, [commentMode])
+
   const tabBtnStyle = (id: BizTab): React.CSSProperties => ({
     display:'flex', alignItems:'center', gap:6, padding:'0 16px', height:34,
     border:'none', background:'transparent',
@@ -500,6 +599,7 @@ export default function BizFlowTab() {
   })
 
   return (
+    <>
     <div style={{ display:'flex', flexDirection:'column', height:'100%', overflow:'hidden', background:'#212124' }}>
 
       {/* Topbar */}
@@ -509,7 +609,17 @@ export default function BizFlowTab() {
       }}>
         <h1 style={{ fontSize:15, fontWeight:700, color:'#d0d0d8', whiteSpace:'nowrap' }}>📋 Rincle 業務フロー図</h1>
         <div style={{ width:1, height:18, background:'#38383f' }} />
-        <span style={{ fontSize:11, color:'#666678' }}>マウスホイールでズーム / ドラッグでパン（上下それぞれ独立）</span>
+        <button onClick={toggleCommentMode} style={{
+          display:'flex', alignItems:'center', gap:5, padding:'3px 12px',
+          border:`1.5px solid ${commentMode ? '#c8a030' : '#444450'}`,
+          borderRadius:4, cursor:'pointer', fontSize:11, fontWeight:700,
+          background: commentMode ? '#3a2c08' : '#38383f',
+          color: commentMode ? '#e8c060' : '#a0a0b8',
+        }}>
+          💬 コメント{commentMode ? ' ON' : ''}
+        </button>
+        <div style={{ width:1, height:18, background:'#38383f' }} />
+        <span style={{ fontSize:11, color:'#666678' }}>ホイールでスクロール / Ctrl+ホイールでズーム / ドラッグでパン</span>
       </div>
 
       {/* Page tabs */}
@@ -526,7 +636,7 @@ export default function BizFlowTab() {
           <div style={{ width:1, height:18, background:'#38383f' }} />
           <button onClick={() => { d2.render(); d2.fitView() }} style={{ padding:'3px 10px', border:'1px solid #444450', borderRadius:4, background:'#38383f', color:'#a0a0b8', fontSize:11, cursor:'pointer' }}>全体表示</button>
         </div>
-        <div ref={d2WrapRef} style={{ flex:1, overflow:'hidden', cursor:'grab', background:'#1a1a1f' }}>
+        <div ref={d2WrapRef} style={{ flex:1, overflow:'hidden', cursor:'grab', background:'#1a1a1f', position:'relative' }}>
           <svg style={{ width:'100%', height:'100%' }}>
             <defs>
               <marker id="m2"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
@@ -535,7 +645,9 @@ export default function BizFlowTab() {
               <marker id="m2l" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#8060a0"/></marker>
             </defs>
             <g ref={d2VpRef} />
+            <g ref={d2CmtRef}>{d2Cmts.map(c=><CommentBox key={c.id} c={c} onDelete={id=>setD2Cmts(p=>p.filter(x=>x.id!==id))}/>)}</g>
           </svg>
+          <div ref={d2SelRef} style={{ position:'absolute', pointerEvents:'none', display:'none', border:'2px dashed #c8a030', background:'rgba(200,160,48,0.07)', borderRadius:2, boxSizing:'border-box' }}/>
         </div>
 
         {/* Legend (only on 全体 tab) */}
@@ -583,7 +695,7 @@ export default function BizFlowTab() {
           <div style={{ width:1, height:18, background:'#38383f' }} />
           <button onClick={() => { d3.render(); d3.fitView() }} style={{ padding:'3px 10px', border:'1px solid #444450', borderRadius:4, background:'#38383f', color:'#a0a0b8', fontSize:11, cursor:'pointer' }}>全体表示</button>
         </div>
-        <div ref={d3WrapRef} style={{ flex:'1.4', overflow:'hidden', cursor:'grab', background:'#1a1a1f', minHeight:0 }}>
+        <div ref={d3WrapRef} style={{ flex:'1.4', overflow:'hidden', cursor:'grab', background:'#1a1a1f', minHeight:0, position:'relative' }}>
           <svg style={{ width:'100%', height:'100%' }}>
             <defs>
               <marker id="m3"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
@@ -592,7 +704,9 @@ export default function BizFlowTab() {
               <marker id="m3l" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#8060a0"/></marker>
             </defs>
             <g ref={d3VpRef} />
+            <g ref={d3CmtRef}>{d3Cmts.map(c=><CommentBox key={c.id} c={c} onDelete={id=>setD3Cmts(p=>p.filter(x=>x.id!==id))}/>)}</g>
           </svg>
+          <div ref={d3SelRef} style={{ position:'absolute', pointerEvents:'none', display:'none', border:'2px dashed #c8a030', background:'rgba(200,160,48,0.07)', borderRadius:2, boxSizing:'border-box' }}/>
         </div>
         <div style={{ height:28, display:'flex', alignItems:'center', gap:8, padding:'0 14px', flexShrink:0, background:'#181828', borderBottom:'1px solid #303040', borderTop:'2px solid #304880' }}>
           <span style={{ fontSize:12, fontWeight:700, color:'#6088c0' }}>📊 決済ステータス</span>
@@ -658,7 +772,7 @@ export default function BizFlowTab() {
           <div style={{ width:1, height:18, background:'#38383f' }} />
           <button onClick={() => { d4.render(); d4.fitView() }} style={{ padding:'3px 10px', border:'1px solid #444450', borderRadius:4, background:'#38383f', color:'#a0a0b8', fontSize:11, cursor:'pointer' }}>全体表示</button>
         </div>
-        <div ref={d4WrapRef} style={{ flex:'1.4', overflow:'hidden', cursor:'grab', background:'#1a1a1f', minHeight:0 }}>
+        <div ref={d4WrapRef} style={{ flex:'1.4', overflow:'hidden', cursor:'grab', background:'#1a1a1f', minHeight:0, position:'relative' }}>
           <svg style={{ width:'100%', height:'100%' }}>
             <defs>
               <marker id="m4"  markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
@@ -666,7 +780,9 @@ export default function BizFlowTab() {
               <marker id="m4n" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#a07030"/></marker>
             </defs>
             <g ref={d4VpRef} />
+            <g ref={d4CmtRef}>{d4Cmts.map(c=><CommentBox key={c.id} c={c} onDelete={id=>setD4Cmts(p=>p.filter(x=>x.id!==id))}/>)}</g>
           </svg>
+          <div ref={d4SelRef} style={{ position:'absolute', pointerEvents:'none', display:'none', border:'2px dashed #c8a030', background:'rgba(200,160,48,0.07)', borderRadius:2, boxSizing:'border-box' }}/>
         </div>
         <div style={{ height:28, display:'flex', alignItems:'center', gap:8, padding:'0 14px', flexShrink:0, background:'#181828', borderBottom:'1px solid #303040', borderTop:'2px solid #304880' }}>
           <span style={{ fontSize:12, fontWeight:700, color:'#6088c0' }}>📊 予約ステータス</span>
@@ -737,6 +853,35 @@ export default function BizFlowTab() {
         </div>
       </div>
     </div>
+
+    {/* Comment input popover */}
+
+    {pendingCmt && (
+      <div style={{
+        position:'fixed',
+        left: Math.min(pendingCmt.screenX, (typeof window!=='undefined'?window.innerWidth:1200)-240),
+        top:  Math.min(pendingCmt.screenY, (typeof window!=='undefined'?window.innerHeight:800)-170),
+        zIndex:2000, background:'#2a2810', border:'1.5px solid #c8a030', borderRadius:8,
+        padding:'10px 12px', boxShadow:'0 4px 20px rgba(0,0,0,.7)',
+        display:'flex', flexDirection:'column', gap:8, minWidth:224,
+        fontFamily:"'Hiragino Sans',sans-serif",
+      }}>
+        <div style={{ fontSize:11, fontWeight:700, color:'#c8a030' }}>💬 コメントを入力</div>
+        <textarea
+          autoFocus
+          value={cmtInput}
+          onChange={e=>setCmtInput(e.target.value)}
+          onKeyDown={e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();confirmComment()} if(e.key==='Escape')setPendingCmt(null) }}
+          style={{ background:'#1e1a08', border:'1px solid #705820', borderRadius:4, color:'#e8d080', fontSize:12, padding:'6px 8px', resize:'none', width:200, height:72, fontFamily:'inherit', outline:'none' }}
+          placeholder="Shift+Enterで改行 / Enterで確定"
+        />
+        <div style={{ display:'flex', gap:6, justifyContent:'flex-end' }}>
+          <button onClick={()=>setPendingCmt(null)} style={{ padding:'3px 10px', border:'1px solid #444450', borderRadius:4, background:'#38383f', color:'#a0a0b8', fontSize:11, cursor:'pointer' }}>キャンセル</button>
+          <button onClick={confirmComment} style={{ padding:'3px 10px', border:'1px solid #a07030', borderRadius:4, background:'#503010', color:'#e8c060', fontSize:11, fontWeight:700, cursor:'pointer' }}>追加</button>
+        </div>
+      </div>
+    )}
+    </>
   )
 }
 
@@ -747,6 +892,29 @@ function StNode({ bg, border, color, label, sub }: { bg:string; border:string; c
       <div style={{ padding:'5px 14px', borderRadius:6, fontSize:12, fontWeight:700, border:`1.5px solid ${border}`, background:bg, color, whiteSpace:'nowrap' }}>{label}</div>
       {sub && <div style={{ fontSize:10, color:'#6a7a6a', marginTop:-2, textAlign:'center' }}>{sub}</div>}
     </div>
+  )
+}
+
+function CommentBox({ c, onDelete }: { c: CommentDef; onDelete:(id:string)=>void }) {
+  const lines = c.text.split('\n')
+  const DS = 18
+  return (
+    <g>
+      <rect x={c.svgX} y={c.svgY} width={c.svgW} height={c.svgH}
+        fill="rgba(200,160,48,0.10)" stroke="#c8a030" strokeWidth="1.5" strokeDasharray="6,3" rx="4"/>
+      {lines.map((l,i) => (
+        <text key={i} x={c.svgX+8} y={c.svgY+18+i*15}
+          fill="#e8d080" fontSize="11" fontFamily="'Hiragino Sans',sans-serif">{l}</text>
+      ))}
+      <g data-cmt-del="true" style={{ cursor:'pointer' }}
+        onMouseDown={(e)=>e.stopPropagation()}
+        onClick={(e)=>{ e.stopPropagation(); onDelete(c.id) }}>
+        <rect x={c.svgX+c.svgW-DS} y={c.svgY} width={DS} height={DS}
+          fill="#402010" stroke="#c06030" strokeWidth="0.5" rx="3"/>
+        <text x={c.svgX+c.svgW-DS/2} y={c.svgY+DS-4}
+          textAnchor="middle" fill="#e08060" fontSize="12" style={{ userSelect:'none' }}>×</text>
+      </g>
+    </g>
   )
 }
 

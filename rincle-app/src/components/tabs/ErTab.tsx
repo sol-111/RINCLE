@@ -266,7 +266,7 @@ export default function ErTab() {
   const edgesRef   = useRef<EdgeDef[]>([])
   const sizeRef    = useRef({ w: 1560, h: 2400 })
 
-  const supabase = createClient()
+  const supabase = useRef(createClient()).current
 
   function applyT() {
     if (!canvasRef.current) return
