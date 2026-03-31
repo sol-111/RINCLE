@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 // ── Shared constants ───────────────────────────────────────────────────────────
 type ColorKey = 'user'|'store'|'admin'|'decision'|'startend'|'popup'|'external'|'notify'|'io'
@@ -442,10 +443,34 @@ export default function BizFlowTab() {
   const d3 = useDiagram(d3WrapRef, d3VpRef, 2260, 740, d3Content, [d3CmtRef])
   const d4 = useDiagram(d4WrapRef, d4VpRef, 2560, 680, d4Content, [d4CmtRef])
 
+  // Supabase
+  const supabase = useRef(createClient()).current
+
   // Comment state
   const [d2Cmts, setD2Cmts] = useState<CommentDef[]>([])
   const [d3Cmts, setD3Cmts] = useState<CommentDef[]>([])
   const [d4Cmts, setD4Cmts] = useState<CommentDef[]>([])
+
+  const setCmts = useCallback((diagId: BizTab, cmts: CommentDef[]) => {
+    if (diagId==='zen') setD2Cmts(cmts)
+    else if (diagId==='kessai') setD3Cmts(cmts)
+    else setD4Cmts(cmts)
+  }, [])
+
+  // Load comments from DB on mount
+  useEffect(() => {
+    supabase.from('bizflow_comments').select('*').then(({ data }) => {
+      if (!data) return
+      const toObj = (r: Record<string,unknown>): CommentDef => ({
+        id: r.id as string, svgX: r.svg_x as number, svgY: r.svg_y as number,
+        svgW: r.svg_w as number, svgH: r.svg_h as number, text: r.text as string,
+      })
+      setD2Cmts(data.filter(r=>r.diag_id==='zen').map(toObj))
+      setD3Cmts(data.filter(r=>r.diag_id==='kessai').map(toObj))
+      setD4Cmts(data.filter(r=>r.diag_id==='yoyaku').map(toObj))
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Selection overlay refs
   const d2SelRef = useRef<HTMLDivElement>(null)
@@ -468,13 +493,29 @@ export default function BizFlowTab() {
   const [pendingCmt, setPendingCmt] = useState<{svgX:number;svgY:number;svgW:number;svgH:number;screenX:number;screenY:number;diagId:BizTab}|null>(null)
   const [cmtInput, setCmtInput] = useState('')
 
-  function confirmComment() {
+  async function confirmComment() {
     if (!pendingCmt || !cmtInput.trim()) { setPendingCmt(null); return }
-    const c: CommentDef = { id: Date.now().toString(), svgX:pendingCmt.svgX, svgY:pendingCmt.svgY, svgW:pendingCmt.svgW, svgH:pendingCmt.svgH, text:cmtInput.trim() }
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { setPendingCmt(null); return }
+    const { data, error } = await supabase.from('bizflow_comments').insert({
+      user_id: user.id, diag_id: pendingCmt.diagId,
+      svg_x: pendingCmt.svgX, svg_y: pendingCmt.svgY,
+      svg_w: pendingCmt.svgW, svg_h: pendingCmt.svgH,
+      text: cmtInput.trim(),
+    }).select().single()
+    if (error || !data) { setPendingCmt(null); return }
+    const c: CommentDef = { id: data.id, svgX: data.svg_x, svgY: data.svg_y, svgW: data.svg_w, svgH: data.svg_h, text: data.text }
     if (pendingCmt.diagId==='zen') setD2Cmts(p=>[...p,c])
     else if (pendingCmt.diagId==='kessai') setD3Cmts(p=>[...p,c])
     else setD4Cmts(p=>[...p,c])
     setPendingCmt(null)
+  }
+
+  async function deleteComment(diagId: BizTab, id: string) {
+    await supabase.from('bizflow_comments').delete().eq('id', id)
+    setCmts(diagId, diagId==='zen' ? d2Cmts.filter(c=>c.id!==id)
+      : diagId==='kessai' ? d3Cmts.filter(c=>c.id!==id)
+      : d4Cmts.filter(c=>c.id!==id))
   }
 
   // Global drag state shared across all diagrams
@@ -645,7 +686,7 @@ export default function BizFlowTab() {
               <marker id="m2l" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#8060a0"/></marker>
             </defs>
             <g ref={d2VpRef} />
-            <g ref={d2CmtRef}>{d2Cmts.map(c=><CommentBox key={c.id} c={c} onDelete={id=>setD2Cmts(p=>p.filter(x=>x.id!==id))}/>)}</g>
+            <g ref={d2CmtRef}>{d2Cmts.map(c=><CommentBox key={c.id} c={c} onDelete={id=>deleteComment('zen',id)}/>)}</g>
           </svg>
           <div ref={d2SelRef} style={{ position:'absolute', pointerEvents:'none', display:'none', border:'2px dashed #c8a030', background:'rgba(200,160,48,0.07)', borderRadius:2, boxSizing:'border-box' }}/>
         </div>
@@ -704,7 +745,7 @@ export default function BizFlowTab() {
               <marker id="m3l" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#8060a0"/></marker>
             </defs>
             <g ref={d3VpRef} />
-            <g ref={d3CmtRef}>{d3Cmts.map(c=><CommentBox key={c.id} c={c} onDelete={id=>setD3Cmts(p=>p.filter(x=>x.id!==id))}/>)}</g>
+            <g ref={d3CmtRef}>{d3Cmts.map(c=><CommentBox key={c.id} c={c} onDelete={id=>deleteComment('kessai',id)}/>)}</g>
           </svg>
           <div ref={d3SelRef} style={{ position:'absolute', pointerEvents:'none', display:'none', border:'2px dashed #c8a030', background:'rgba(200,160,48,0.07)', borderRadius:2, boxSizing:'border-box' }}/>
         </div>
@@ -780,7 +821,7 @@ export default function BizFlowTab() {
               <marker id="m4n" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#a07030"/></marker>
             </defs>
             <g ref={d4VpRef} />
-            <g ref={d4CmtRef}>{d4Cmts.map(c=><CommentBox key={c.id} c={c} onDelete={id=>setD4Cmts(p=>p.filter(x=>x.id!==id))}/>)}</g>
+            <g ref={d4CmtRef}>{d4Cmts.map(c=><CommentBox key={c.id} c={c} onDelete={id=>deleteComment('yoyaku',id)}/>)}</g>
           </svg>
           <div ref={d4SelRef} style={{ position:'absolute', pointerEvents:'none', display:'none', border:'2px dashed #c8a030', background:'rgba(200,160,48,0.07)', borderRadius:2, boxSizing:'border-box' }}/>
         </div>
