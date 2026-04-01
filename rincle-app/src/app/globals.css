@@ -3,3 +3,62 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html, body { height: 100%; background: #212124; color: #c0c0cc; }
 body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; font-size: 13px; }
+
+/* ── Tiptap editor ─────────────────────────────────────────── */
+.ProseMirror {
+  outline: none;
+  min-height: 400px;
+  color: #e8e8f2;
+  font-size: 15px;
+  line-height: 1.8;
+  word-break: break-word;
+}
+.ProseMirror > * + * { margin-top: 0.55em; }
+.ProseMirror h1 { font-size: 1.75em; font-weight: 700; color: #4a8ad8; margin-top: 1.4em; margin-bottom: .2em; padding-bottom: .3em; border-bottom: 1px solid #252535; }
+.ProseMirror h2 { font-size: 1.35em; font-weight: 700; color: #e8e8f2 !important; margin-top: 1.2em; margin-bottom: .15em; }
+.ProseMirror h3 { font-size: 1.1em;  font-weight: 700; color: #e8e8f2 !important; margin-top: 1em;  margin-bottom: .1em; }
+.ProseMirror p { margin: 0; }
+.ProseMirror ul, .ProseMirror ol { padding-left: 1.6em; }
+.ProseMirror ul { list-style-type: disc; }
+.ProseMirror ol { list-style-type: decimal; }
+.ProseMirror ul li, .ProseMirror ol li { margin: .1em 0; }
+.ProseMirror ul li::marker { color: #4a8ad8; font-size: 1.1em; }
+.ProseMirror ol li::marker { color: #4a8ad8; font-size: .9em; font-weight: 700; }
+.ProseMirror blockquote { border-left: 3px solid #3a5a88; padding-left: 1em; margin: .8em 0; color: #7888a0; font-style: italic; }
+.ProseMirror code { background: #22222e; border-radius: 3px; padding: .1em .35em; font-size: .88em; font-family: 'SFMono-Regular', Consolas, monospace; color: #e06c7a; }
+.ProseMirror pre { background: #0e0e16; color: #c8c8de; border-radius: 6px; padding: 1em 1.2em; overflow-x: auto; margin: .8em 0; border: 1px solid #252535; }
+.ProseMirror pre code { background: none; color: inherit; padding: 0; font-size: .87em; }
+.ProseMirror hr { border: none; border-top: 1px solid #252535; margin: 1.2em 0; }
+.ProseMirror strong { font-weight: 700; color: #e8e8f8; }
+.ProseMirror em { font-style: italic; color: #b0b8d0; }
+.ProseMirror u { text-decoration: underline; }
+.ProseMirror s { text-decoration: line-through; color: #666680; }
+.ProseMirror a { color: #5a9ae0; text-decoration: underline; cursor: pointer; }
+
+/* text selection */
+.ProseMirror ::selection { background: rgba(74,138,216,.35); }
+
+/* table */
+.ProseMirror table { border-collapse: collapse; width: 100%; margin: .8em 0; font-size: .92em; table-layout: fixed; }
+.ProseMirror th, .ProseMirror td { border: 1px solid #2e2e42; padding: .45em .75em; text-align: left; vertical-align: top; min-width: 60px; position: relative; box-sizing: border-box; }
+.ProseMirror th { background: #1e1e2e; font-weight: 600; color: #d8d8e8; }
+.ProseMirror td { background: #18181f; color: #e8e8f2; }
+.ProseMirror .selectedCell:after { content: ''; position: absolute; inset: 0; background: rgba(74,138,216,.25); pointer-events: none; z-index: 2; }
+.ProseMirror .selectedCell { position: relative; }
+
+/* column resize handle — border turns blue on hover */
+.ProseMirror .column-resize-handle { position: absolute; right: -1px; top: 0; bottom: 0; width: 2px; z-index: 20; background: #4a8ad8; box-shadow: 0 0 6px rgba(74,138,216,.7); pointer-events: none; }
+.ProseMirror.resize-cursor { cursor: col-resize; }
+
+/* image */
+.ProseMirror img { max-width: 100%; border-radius: 6px; margin: .6em 0; display: block; border: 1px solid #252535; }
+.ProseMirror img.ProseMirror-selectednode { outline: 2px solid #4a8ad8; }
+
+/* placeholder */
+.ProseMirror p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: #3a3a52; pointer-events: none; float: left; height: 0; }
+
+.ProseMirror img { max-width: 100%; border-radius: 6px; margin: .6em 0; display: block; }
+
+/* doc list delete button — show on row hover */
+div:has(> .doc-delete-btn):hover .doc-delete-btn { opacity: 1 !important; }
+

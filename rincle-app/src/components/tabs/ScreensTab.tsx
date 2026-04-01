@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 type Row = {
@@ -129,11 +129,210 @@ export default function ScreensTab() {
   const [renameValue, setRenameValue] = useState('')
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dragOverId, setDragOverId] = useState<string | null>(null)
+  const [selectedCell, setSelectedCell] = useState<{ rowId: string; col: string } | null>(null)
+  const [editingCell, setEditingCell] = useState<{ rowId: string; col: string } | null>(null)
+  const [selFocus, setSelFocus] = useState<{ rowId: string; col: string } | null>(null)
+  const [fillSrc, setFillSrc] = useState<{ rowId: string; col: string } | null>(null)
+  const [fillTarget, setFillTarget] = useState<string | null>(null)
 
-  const dragSrcId = useRef<string | null>(null)
+  const dragSrcId      = useRef<string | null>(null)
+  const dragHandleActive = useRef(false)
   const dirtyRows = useRef<Map<string, Row>>(new Map())
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
   const supabase = useRef(createClient()).current
+  const rowsRef = useRef(rows)
+  rowsRef.current = rows
+  const filteredRef = useRef<Row[]>([])
+  const fillSrcRef = useRef(fillSrc)
+  fillSrcRef.current = fillSrc
+  const fillTargetRef = useRef(fillTarget)
+  fillTargetRef.current = fillTarget
+  const selectedCellRef = useRef(selectedCell)
+  selectedCellRef.current = selectedCell
+  const editingCellRef = useRef(editingCell)
+  editingCellRef.current = editingCell
+  const selFocusRef = useRef(selFocus)
+  selFocusRef.current = selFocus
+  const undoStack = useRef<{ rowId: string; col: keyof Row; prev: string; next: string }[]>([])
+  const redoStack = useRef<{ rowId: string; col: keyof Row; prev: string; next: string }[]>([])
+  const isDragSelecting = useRef(false)
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      const isMeta = e.metaKey || e.ctrlKey
+      const sc = selectedCellRef.current
+      const ec = editingCellRef.current
+      const sf = selFocusRef.current
+      if (isMeta && e.key === 'z' && !ec) {
+        e.preventDefault()
+        if (e.shiftKey) {
+          const entry = redoStack.current.pop()
+          if (entry) { undoStack.current.push(entry); applyCell(entry.rowId, entry.col, entry.next); setSelectedCell({ rowId: entry.rowId, col: entry.col }); setSelFocus(null) }
+        } else {
+          const entry = undoStack.current.pop()
+          if (entry) { redoStack.current.push(entry); applyCell(entry.rowId, entry.col, entry.prev); setSelectedCell({ rowId: entry.rowId, col: entry.col }); setSelFocus(null) }
+        }
+        return
+      }
+      if (sc && !ec && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault()
+        const cur = filteredRef.current
+        const ri = cur.findIndex(r => r.id === sc.rowId)
+        const ci = ALL_COLS.indexOf(sc.col as ColKey)
+        if (ri !== -1 && ci !== -1) {
+          let nr = ri, nc = ci
+          if (e.key === 'ArrowUp') nr = Math.max(0, ri - 1)
+          else if (e.key === 'ArrowDown') nr = Math.min(cur.length - 1, ri + 1)
+          else if (e.key === 'ArrowLeft') nc = Math.max(0, ci - 1)
+          else if (e.key === 'ArrowRight') nc = Math.min(ALL_COLS.length - 1, ci + 1)
+          const newRow = cur[nr]; const newCol = ALL_COLS[nc]
+          if (newRow && newCol) { setSelectedCell({ rowId: newRow.id, col: newCol }); setSelFocus(null) }
+        }
+        return
+      }
+      if (!sc || ec) return
+      if ((e.key === 'Delete' || e.key === 'Backspace') && !isMeta) {
+        e.preventDefault()
+        const CLEARABLE = new Set<ColKey>(['item', 'component', 'feature', 'improvement', 'path'])
+        if (sf) {
+          const cur = filteredRef.current
+          const si = cur.findIndex(r => r.id === sc.rowId)
+          const fi = cur.findIndex(r => r.id === sf.rowId)
+          const ci = ALL_COLS.indexOf(sc.col as ColKey)
+          const fci = ALL_COLS.indexOf(sf.col as ColKey)
+          if (si !== -1 && fi !== -1 && ci !== -1 && fci !== -1) {
+            const [ra, rb] = [Math.min(si, fi), Math.max(si, fi)]
+            const [ca, cb] = [Math.min(ci, fci), Math.max(ci, fci)]
+            cur.slice(ra, rb + 1).forEach(r => ALL_COLS.slice(ca, cb + 1).filter(k => CLEARABLE.has(k)).forEach(k => updateCell(r.id, k as keyof Row, '')))
+          }
+        } else if (CLEARABLE.has(sc.col as ColKey)) {
+          updateCell(sc.rowId, sc.col as keyof Row, '')
+        }
+        return
+      }
+      if (isMeta && e.key === 'c') {
+        e.preventDefault()
+        if (sf) {
+          const cur = filteredRef.current
+          const si = cur.findIndex(r => r.id === sc.rowId)
+          const fi = cur.findIndex(r => r.id === sf.rowId)
+          const ci = ALL_COLS.indexOf(sc.col as ColKey)
+          const fci = ALL_COLS.indexOf(sf.col as ColKey)
+          if (si !== -1 && fi !== -1 && ci !== -1 && fci !== -1) {
+            const [ra, rb] = [Math.min(si, fi), Math.max(si, fi)]
+            const [ca, cb] = [Math.min(ci, fci), Math.max(ci, fci)]
+            const cols = ALL_COLS.slice(ca, cb + 1)
+            const tsv = cur.slice(ra, rb + 1).map(r => cols.map(k => String(r[k as keyof Row] ?? '')).join('\t')).join('\n')
+            navigator.clipboard.writeText(tsv).catch(() => {})
+          }
+        } else {
+          const row = rowsRef.current.find(r => r.id === sc.rowId)
+          if (row) navigator.clipboard.writeText(String(row[sc.col as keyof Row] ?? '')).catch(() => {})
+        }
+      }
+      if (isMeta && e.key === 'v') {
+        e.preventDefault()
+        navigator.clipboard.readText().then(text => {
+          const sc2 = selectedCellRef.current
+          if (!sc2) return
+          const lines = text.split('\n').filter(l => l !== '' || text.includes('\n'))
+          if (lines.length <= 1 && !text.includes('\t')) {
+            updateCell(sc2.rowId, sc2.col as keyof Row, text)
+            return
+          }
+          const cur = filteredRef.current
+          const startRi = cur.findIndex(r => r.id === sc2.rowId)
+          const startCi = ALL_COLS.indexOf(sc2.col as ColKey)
+          if (startRi === -1 || startCi === -1) return
+          text.split('\n').forEach((line, ri) => {
+            const row = cur[startRi + ri]
+            if (!row) return
+            line.split('\t').forEach((val, ci) => {
+              const col = ALL_COLS[startCi + ci]
+              if (col) updateCell(row.id, col as keyof Row, val)
+            })
+          })
+        }).catch(() => {})
+      }
+      if (e.key === 'Escape') { setSelectedCell(null); setEditingCell(null); setSelFocus(null) }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!editingCell) return
+    const el = document.querySelector<HTMLElement>(`[data-cell="${editingCell.rowId}-${editingCell.col}"]`)
+    if (!el) return
+    el.focus()
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    range.collapse(false)
+    const sel = window.getSelection()
+    sel?.removeAllRanges()
+    sel?.addRange(range)
+  }, [editingCell])
+
+  useEffect(() => {
+    if (!fillSrc) return
+    document.body.style.cursor = 'crosshair'
+    document.body.style.userSelect = 'none'
+    function onMouseMove(e: MouseEvent) {
+      const tr = (document.elementFromPoint(e.clientX, e.clientY) as Element | null)?.closest('tr[data-row-id]')
+      const id = (tr as HTMLElement | null)?.getAttribute('data-row-id')
+      if (id) setFillTarget(id)
+    }
+    function onMouseUp() {
+      const src = fillSrcRef.current; const tgt = fillTargetRef.current
+      if (src && tgt && src.rowId !== tgt) applyFill(src.rowId, src.col as keyof Row, tgt)
+      setFillSrc(null); setFillTarget(null)
+      document.body.style.cursor = ''; document.body.style.userSelect = ''
+    }
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
+      document.body.style.cursor = ''; document.body.style.userSelect = ''
+    }
+  }, [fillSrc]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    function onMouseMove(e: MouseEvent) {
+      if (!isDragSelecting.current) return
+      const el = document.elementFromPoint(e.clientX, e.clientY)
+      const td = (el as Element | null)?.closest('[data-cell]') as HTMLElement | null
+      const cellAttr = td?.getAttribute('data-cell')
+      if (!cellAttr || cellAttr.length < 38) return
+      const rowId = cellAttr.slice(0, 36)
+      const col = cellAttr.slice(37)
+      setSelFocus(prev => prev?.rowId === rowId && prev?.col === col ? prev : { rowId, col })
+    }
+    function onMouseUp() {
+      if (isDragSelecting.current) {
+        isDragSelecting.current = false
+        document.body.style.userSelect = ''
+      }
+    }
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  function applyFill(srcRowId: string, col: keyof Row, targetRowId: string) {
+    const srcRow = rowsRef.current.find(r => r.id === srcRowId)
+    if (!srcRow) return
+    const val = String(srcRow[col] ?? '')
+    const cur = filteredRef.current
+    const si = cur.findIndex(r => r.id === srcRowId)
+    const ti = cur.findIndex(r => r.id === targetRowId)
+    if (si === -1 || ti === -1) return
+    const [a, b] = [Math.min(si, ti), Math.max(si, ti)]
+    cur.slice(a, b + 1).filter(r => r.id !== srcRowId).forEach(r => updateCell(r.id, col, val))
+  }
 
   useEffect(() => {
     supabase.from('screens').select('*').order('sort_order').then(({ data }) => {
@@ -154,7 +353,7 @@ export default function ScreensTab() {
     }, 800)
   }, [supabase])
 
-  function updateCell(id: string, col: keyof Row, val: string) {
+  function applyCell(id: string, col: keyof Row, val: string) {
     setRows(prev => prev.map(r => {
       if (r.id !== id) return r
       const newRow = { ...r, [col]: val }
@@ -162,6 +361,14 @@ export default function ScreensTab() {
       return newRow
     }))
     scheduleSave()
+  }
+
+  function updateCell(id: string, col: keyof Row, val: string) {
+    const prevVal = String(rowsRef.current.find(r => r.id === id)?.[col] ?? '')
+    if (prevVal === val) return
+    undoStack.current.push({ rowId: id, col, prev: prevVal, next: val })
+    redoStack.current = []
+    applyCell(id, col, val)
   }
 
   async function addRowAfter(rowId: string) {
@@ -244,6 +451,7 @@ function startResize(col: ColKey, e: React.MouseEvent) {
   }
 
   function handleDragStart(e: React.DragEvent, rowId: string) {
+    if (!dragHandleActive.current) { e.preventDefault(); return }
     dragSrcId.current = rowId; setDraggingId(rowId); e.dataTransfer.effectAllowed = 'move'
   }
   function handleDragOver(e: React.DragEvent, rowId: string) {
@@ -267,7 +475,7 @@ function startResize(col: ColKey, e: React.MouseEvent) {
     const changed = updated.filter(r => originalOrders.get(r.id) !== r.sort_order)
     if (changed.length > 0) { setSaving(true); await supabase.from('screens').upsert(changed); setSaving(false) }
   }
-  function handleDragEnd() { setDraggingId(null); setDragOverId(null); dragSrcId.current = null }
+  function handleDragEnd() { setDraggingId(null); setDragOverId(null); dragSrcId.current = null; dragHandleActive.current = false }
 
   // Build effective item per row (inherit from previous non-empty)
   let lastItem = ''
@@ -289,6 +497,36 @@ function startResize(col: ColKey, e: React.MouseEvent) {
     }
     return true
   })
+
+  filteredRef.current = filtered
+
+  const selRange = new Set<string>()
+  if (selectedCell && selFocus) {
+    const si = filtered.findIndex(r => r.id === selectedCell.rowId)
+    const fi = filtered.findIndex(r => r.id === selFocus.rowId)
+    const ci = ALL_COLS.indexOf(selectedCell.col as ColKey)
+    const fci = ALL_COLS.indexOf(selFocus.col as ColKey)
+    if (si !== -1 && fi !== -1 && ci !== -1 && fci !== -1) {
+      const [ra, rb] = [Math.min(si, fi), Math.max(si, fi)]
+      const [ca, cb] = [Math.min(ci, fci), Math.max(ci, fci)]
+      filtered.slice(ra, rb + 1).forEach(r => ALL_COLS.slice(ca, cb + 1).forEach(k => selRange.add(`${r.id}:${k}`)))
+    }
+  }
+  const inSel = (rowId: string, col: string) => selRange.has(`${rowId}:${col}`)
+
+  const fillRange = new Set<string>()
+  if (fillSrc && fillTarget) {
+    const si = filtered.findIndex(r => r.id === fillSrc.rowId)
+    const ti = filtered.findIndex(r => r.id === fillTarget)
+    if (si !== -1 && ti !== -1) {
+      const [a, b] = [Math.min(si, ti), Math.max(si, ti)]
+      filtered.slice(a, b + 1).forEach(r => fillRange.add(r.id))
+    }
+  }
+  const fillHl = (rowId: string, col: string): React.CSSProperties =>
+    fillSrc?.col === col && fillRange.has(rowId) && rowId !== fillSrc?.rowId
+      ? { background: 'rgba(74,138,216,.15)', outline: '1.5px dashed #4a8ad8', outlineOffset: -1 }
+      : {}
 
   if (loading) return <div style={{ padding: 20, color: '#555568' }}>読み込み中...</div>
 
@@ -436,8 +674,36 @@ function startResize(col: ColKey, e: React.MouseEvent) {
               <tbody>
                 {filtered.map(row => {
                   const detailVal = row.detail || '未着手'
+                  const sel = (col: string) => selectedCell?.rowId === row.id && selectedCell?.col === col
+                  const edt = (col: string) => editingCell?.rowId === row.id && editingCell?.col === col
+                  const onCellClick = (e: React.MouseEvent, col: string) => {
+                    e.stopPropagation()
+                    if (e.shiftKey && selectedCell) { setSelFocus({ rowId: row.id, col }) }
+                    else { setSelectedCell({ rowId: row.id, col }); setSelFocus(null) }
+                  }
+                  const onCellDbl = (col: string) => { setSelectedCell({ rowId: row.id, col }); setSelFocus(null); setEditingCell({ rowId: row.id, col }) }
+                  const onCellBlur = (e: React.FocusEvent<HTMLTableCellElement>, col: keyof Row) => {
+                    if (edt(String(col))) { updateCell(row.id, col, e.currentTarget.textContent || ''); setEditingCell(null) }
+                  }
+                  const hlStyle = (col: string): React.CSSProperties => {
+                    if (edt(col)) return {}
+                    if (sel(col)) return { outline: '2px solid #4a8ad8', outlineOffset: -2, background: 'rgba(74,138,216,.1)' }
+                    if (selFocus && inSel(row.id, col)) return { background: 'rgba(74,138,216,.15)', outline: '1px solid rgba(74,138,216,.35)', outlineOffset: -1 }
+                    return {}
+                  }
+                  const handle = (col: string) => sel(col) && !edt(col) && !selFocus ? (
+                    <div style={{ position: 'absolute', bottom: -3, right: -3, width: 7, height: 7, background: '#4a8ad8', border: '1.5px solid #fff', cursor: 'crosshair', zIndex: 10 }}
+                      onMouseDown={e => { e.preventDefault(); e.stopPropagation(); setFillSrc({ rowId: row.id, col }) }} />
+                  ) : null
+                  const onCellMouseDown = (e: React.MouseEvent, col: string) => {
+                    if (e.button !== 0 || e.shiftKey) return
+                    isDragSelecting.current = true
+                    document.body.style.userSelect = 'none'
+                    setSelectedCell({ rowId: row.id, col })
+                    setSelFocus(null)
+                  }
                   return (
-                    <tr key={row.id} draggable
+                    <tr key={row.id} data-row-id={row.id} draggable
                       onDragStart={e => handleDragStart(e, row.id)}
                       onDragOver={e => handleDragOver(e, row.id)}
                       onDragLeave={handleDragLeave}
@@ -450,30 +716,56 @@ function startResize(col: ColKey, e: React.MouseEvent) {
                         borderTop: dragOverId === row.id ? '2px solid #5588aa' : undefined,
                       }}
                     >
-                      <td style={dragTdStyle}>⠿</td>
+                      <td style={dragTdStyle} onMouseDown={() => { dragHandleActive.current = true }} onMouseUp={() => { dragHandleActive.current = false }}>⠿</td>
 
-                      {/* 機能ID — read only */}
-                      <td style={{ ...tdStyle, textAlign: 'center', fontWeight: 600, fontSize: 12, color: '#8898b0', cursor: 'default' }}>
-                        {row.screen_id}
-                      </td>
+                      {/* 機能ID — read only, click to select for copy */}
+                      <td tabIndex={0}
+                        data-cell={`${row.id}-screen_id`}
+                        onClick={e => onCellClick(e, 'screen_id')}
+                        onMouseDown={e => onCellMouseDown(e, 'screen_id')}
+                        style={{ ...tdStyle, position: 'relative', textAlign: 'center', fontWeight: 600, fontSize: 12, color: '#8898b0', cursor: 'default', ...hlStyle('screen_id'), ...fillHl(row.id, 'screen_id') }}
+                      >{row.screen_id}{handle('screen_id')}</td>
 
                       {/* 項目 */}
-                      <td contentEditable suppressContentEditableWarning
-                        onBlur={e => updateCell(row.id, 'item', e.currentTarget.textContent || '')}
-                        style={tdStyle}>{row.item}</td>
+                      <td tabIndex={0}
+                        data-cell={`${row.id}-item`}
+                        onClick={e => onCellClick(e, 'item')}
+                        onMouseDown={e => onCellMouseDown(e, 'item')}
+                        onDoubleClick={() => onCellDbl('item')}
+                        contentEditable={edt('item') || undefined}
+                        suppressContentEditableWarning
+                        onBlur={e => onCellBlur(e, 'item')}
+                        style={{ ...tdStyle, position: 'relative', ...hlStyle('item'), ...fillHl(row.id, 'item') }}
+                      >{row.item}{handle('item')}</td>
 
                       {/* 画面/コンポーネント */}
-                      <td contentEditable suppressContentEditableWarning
-                        onBlur={e => updateCell(row.id, 'component', e.currentTarget.textContent || '')}
-                        style={tdStyle}>{row.component}</td>
+                      <td tabIndex={0}
+                        data-cell={`${row.id}-component`}
+                        onClick={e => onCellClick(e, 'component')}
+                        onMouseDown={e => onCellMouseDown(e, 'component')}
+                        onDoubleClick={() => onCellDbl('component')}
+                        contentEditable={edt('component') || undefined}
+                        suppressContentEditableWarning
+                        onBlur={e => onCellBlur(e, 'component')}
+                        style={{ ...tdStyle, position: 'relative', ...hlStyle('component'), ...fillHl(row.id, 'component') }}
+                      >{row.component}{handle('component')}</td>
 
                       {/* 含まれる機能 */}
-                      <td contentEditable suppressContentEditableWarning
-                        onBlur={e => updateCell(row.id, 'feature', e.currentTarget.textContent || '')}
-                        style={tdStyle}>{row.feature}</td>
+                      <td tabIndex={0}
+                        data-cell={`${row.id}-feature`}
+                        onClick={e => onCellClick(e, 'feature')}
+                        onMouseDown={e => onCellMouseDown(e, 'feature')}
+                        onDoubleClick={() => onCellDbl('feature')}
+                        contentEditable={edt('feature') || undefined}
+                        suppressContentEditableWarning
+                        onBlur={e => onCellBlur(e, 'feature')}
+                        style={{ ...tdStyle, position: 'relative', ...hlStyle('feature'), ...fillHl(row.id, 'feature') }}
+                      >{row.feature}{handle('feature')}</td>
 
-                      {/* 機能詳細 — full-cell select */}
-                      <td style={{ padding: 0, borderRight: '1px solid rgba(255,255,255,.04)', verticalAlign: 'middle', height: '1px' }}>
+                      {/* 機能詳細 — full-cell select with overlay */}
+                      <td data-cell={`${row.id}-detail`}
+                        onMouseDown={e => onCellMouseDown(e, 'detail')}
+                        style={{ padding: 0, borderRight: '1px solid rgba(255,255,255,.04)', verticalAlign: 'middle', height: '1px', ...hlStyle('detail'), ...fillHl(row.id, 'detail') }}>
                         <div style={{
                           position: 'relative', display: 'flex', alignItems: 'center',
                           width: '100%', height: '100%', minHeight: 28,
@@ -482,24 +774,43 @@ function startResize(col: ColKey, e: React.MouseEvent) {
                           color: DETAIL_STYLE[detailVal]?.color ?? '#888898',
                           userSelect: 'none', cursor: 'pointer', boxSizing: 'border-box',
                         }}>
+                          {!sel('detail') && (
+                            <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}
+                              onClick={e => { e.stopPropagation(); setSelectedCell({ rowId: row.id, col: 'detail' }) }} />
+                          )}
                           {detailVal}
                           <span style={{ position: 'absolute', right: 5, fontSize: 8, opacity: .5, pointerEvents: 'none' }}>▼</span>
                           <select value={detailVal} onChange={e => updateCell(row.id, 'detail', e.target.value)}
                             style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer', width: '100%', height: '100%', fontSize: 13 }}>
                             {DETAIL_VALUES.map(v => <option key={v} value={v}>{v}</option>)}
                           </select>
+                          {handle('detail')}
                         </div>
                       </td>
 
                       {/* 改善点 */}
-                      <td contentEditable suppressContentEditableWarning
-                        onBlur={e => updateCell(row.id, 'improvement', e.currentTarget.textContent || '')}
-                        style={tdStyle}>{row.improvement}</td>
+                      <td tabIndex={0}
+                        data-cell={`${row.id}-improvement`}
+                        onClick={e => onCellClick(e, 'improvement')}
+                        onMouseDown={e => onCellMouseDown(e, 'improvement')}
+                        onDoubleClick={() => onCellDbl('improvement')}
+                        contentEditable={edt('improvement') || undefined}
+                        suppressContentEditableWarning
+                        onBlur={e => onCellBlur(e, 'improvement')}
+                        style={{ ...tdStyle, position: 'relative', ...hlStyle('improvement'), ...fillHl(row.id, 'improvement') }}
+                      >{row.improvement}{handle('improvement')}</td>
 
                       {/* path/para */}
-                      <td contentEditable suppressContentEditableWarning
-                        onBlur={e => updateCell(row.id, 'path', e.currentTarget.textContent || '')}
-                        style={{ ...tdStyle, fontFamily: 'monospace', color: '#7a9ab8' }}>{row.path}</td>
+                      <td tabIndex={0}
+                        data-cell={`${row.id}-path`}
+                        onClick={e => onCellClick(e, 'path')}
+                        onMouseDown={e => onCellMouseDown(e, 'path')}
+                        onDoubleClick={() => onCellDbl('path')}
+                        contentEditable={edt('path') || undefined}
+                        suppressContentEditableWarning
+                        onBlur={e => onCellBlur(e, 'path')}
+                        style={{ ...tdStyle, position: 'relative', fontFamily: 'monospace', color: '#7a9ab8', ...hlStyle('path'), ...fillHl(row.id, 'path') }}
+                      >{row.path}{handle('path')}</td>
 
                       <td style={actTdStyle}>
                         <button onClick={() => addRowAfter(row.id)} style={addBtnStyle}>+</button>

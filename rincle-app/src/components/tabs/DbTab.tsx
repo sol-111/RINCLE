@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import OptionSetsTab from './OptionSetsTab'
 
@@ -41,6 +41,8 @@ const INIT_WIDTHS: Record<string, number> = {
   required: 48, ix: 64, dtype: 100, list: 44,
   ref_target: 140, validation: 200, notes: 200,
 }
+
+const DB_SEL_COLS: (keyof Row)[] = ['field_name', 'display_name', 'required', 'ix', 'dtype', 'list', 'ref_target', 'validation', 'notes']
 
 // ── テーブル説明 (DataType) ────────────────────────────────────────────────────
 const TABLE_DESCRIPTIONS: Record<string, string> = {
@@ -113,10 +115,197 @@ export default function DbTab() {
   const [colWidths, setColWidths] = useState<Record<string, number>>(INIT_WIDTHS)
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dragOverId, setDragOverId] = useState<string | null>(null)
-  const dragSrcId = useRef<string | null>(null)
+  const [selectedCell, setSelectedCell] = useState<{ rowId: string; col: string } | null>(null)
+  const [editingCell, setEditingCell] = useState<{ rowId: string; col: string } | null>(null)
+  const [selFocus, setSelFocus] = useState<{ rowId: string; col: string } | null>(null)
+  const [fillSrc, setFillSrc] = useState<{ rowId: string; col: string } | null>(null)
+  const [fillTarget, setFillTarget] = useState<string | null>(null)
+  const dragSrcId        = useRef<string | null>(null)
+  const dragHandleActive = useRef(false)
   const dirtyRows = useRef<Map<string, Row>>(new Map())
   const supabase = useRef(createClient()).current
   const saveTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  const rowsRef = useRef(rows)
+  rowsRef.current = rows
+  const filteredRef = useRef<Row[]>([])
+  const fillSrcRef = useRef(fillSrc)
+  fillSrcRef.current = fillSrc
+  const fillTargetRef = useRef(fillTarget)
+  fillTargetRef.current = fillTarget
+  const selectedCellRef = useRef(selectedCell)
+  selectedCellRef.current = selectedCell
+  const editingCellRef = useRef(editingCell)
+  editingCellRef.current = editingCell
+  const selFocusRef = useRef(selFocus)
+  selFocusRef.current = selFocus
+  const undoStack = useRef<{ rowId: string; prev: Partial<Row>; next: Partial<Row> }[]>([])
+  const redoStack = useRef<{ rowId: string; prev: Partial<Row>; next: Partial<Row> }[]>([])
+  const isDragSelecting = useRef(false)
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      const isMeta = e.metaKey || e.ctrlKey
+      const sc = selectedCellRef.current
+      const ec = editingCellRef.current
+      const sf = selFocusRef.current
+      if (isMeta && e.key === 'z' && !ec) {
+        e.preventDefault()
+        if (e.shiftKey) {
+          const entry = redoStack.current.pop()
+          if (entry) { undoStack.current.push(entry); applyRow(entry.rowId, entry.next); setSelectedCell({ rowId: entry.rowId, col: Object.keys(entry.next)[0] }); setSelFocus(null) }
+        } else {
+          const entry = undoStack.current.pop()
+          if (entry) { redoStack.current.push(entry); applyRow(entry.rowId, entry.prev); setSelectedCell({ rowId: entry.rowId, col: Object.keys(entry.prev)[0] }); setSelFocus(null) }
+        }
+        return
+      }
+      if (sc && !ec && ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault()
+        const cur = filteredRef.current
+        const ri = cur.findIndex(r => r.id === sc.rowId)
+        const ci = DB_SEL_COLS.indexOf(sc.col as keyof Row)
+        if (ri !== -1 && ci !== -1) {
+          let nr = ri, nc = ci
+          if (e.key === 'ArrowUp') nr = Math.max(0, ri - 1)
+          else if (e.key === 'ArrowDown') nr = Math.min(cur.length - 1, ri + 1)
+          else if (e.key === 'ArrowLeft') nc = Math.max(0, ci - 1)
+          else if (e.key === 'ArrowRight') nc = Math.min(DB_SEL_COLS.length - 1, ci + 1)
+          const newRow = cur[nr]; const newCol = DB_SEL_COLS[nc]
+          if (newRow && newCol) { setSelectedCell({ rowId: newRow.id, col: newCol }); setSelFocus(null) }
+        }
+        return
+      }
+      if (!sc || ec) return
+      if ((e.key === 'Delete' || e.key === 'Backspace') && !isMeta) {
+        e.preventDefault()
+        const CLEARABLE = new Set<keyof Row>(['field_name', 'display_name', 'validation', 'notes'])
+        if (sf) {
+          const cur = filteredRef.current
+          const si = cur.findIndex(r => r.id === sc.rowId)
+          const fi = cur.findIndex(r => r.id === sf.rowId)
+          const ci = DB_SEL_COLS.indexOf(sc.col as keyof Row)
+          const fci = DB_SEL_COLS.indexOf(sf.col as keyof Row)
+          if (si !== -1 && fi !== -1 && ci !== -1 && fci !== -1) {
+            const [ra, rb] = [Math.min(si, fi), Math.max(si, fi)]
+            const [ca, cb] = [Math.min(ci, fci), Math.max(ci, fci)]
+            cur.slice(ra, rb + 1).forEach(r => DB_SEL_COLS.slice(ca, cb + 1).filter(k => CLEARABLE.has(k)).forEach(k => updateRow(r.id, { [k]: '' } as Partial<Row>)))
+          }
+        } else if (CLEARABLE.has(sc.col as keyof Row)) {
+          updateRow(sc.rowId, { [sc.col]: '' } as Partial<Row>)
+        }
+        return
+      }
+      if (isMeta && e.key === 'c') {
+        e.preventDefault()
+        if (sf) {
+          const cur = filteredRef.current
+          const si = cur.findIndex(r => r.id === sc.rowId)
+          const fi = cur.findIndex(r => r.id === sf.rowId)
+          const ci = DB_SEL_COLS.indexOf(sc.col as keyof Row)
+          const fci = DB_SEL_COLS.indexOf(sf.col as keyof Row)
+          if (si !== -1 && fi !== -1 && ci !== -1 && fci !== -1) {
+            const [ra, rb] = [Math.min(si, fi), Math.max(si, fi)]
+            const [ca, cb] = [Math.min(ci, fci), Math.max(ci, fci)]
+            const cols = DB_SEL_COLS.slice(ca, cb + 1)
+            const tsv = cur.slice(ra, rb + 1).map(r => cols.map(k => String(r[k] ?? '')).join('\t')).join('\n')
+            navigator.clipboard.writeText(tsv).catch(() => {})
+          }
+        } else {
+          const row = rowsRef.current.find(r => r.id === sc.rowId)
+          if (row) navigator.clipboard.writeText(String(row[sc.col as keyof Row] ?? '')).catch(() => {})
+        }
+      }
+      if (isMeta && e.key === 'v') {
+        e.preventDefault()
+        navigator.clipboard.readText().then(text => {
+          const sc2 = selectedCellRef.current
+          if (!sc2) return
+          const lines = text.split('\n').filter(l => l !== '' || text.includes('\n'))
+          if (lines.length <= 1 && !text.includes('\t')) {
+            updateRow(sc2.rowId, { [sc2.col]: text } as Partial<Row>)
+            return
+          }
+          const cur = filteredRef.current
+          const startRi = cur.findIndex(r => r.id === sc2.rowId)
+          const startCi = DB_SEL_COLS.indexOf(sc2.col as keyof Row)
+          if (startRi === -1 || startCi === -1) return
+          text.split('\n').forEach((line, ri) => {
+            const row = cur[startRi + ri]
+            if (!row) return
+            line.split('\t').forEach((val, ci) => {
+              const col = DB_SEL_COLS[startCi + ci]
+              if (col) updateRow(row.id, { [col]: val } as Partial<Row>)
+            })
+          })
+        }).catch(() => {})
+      }
+      if (e.key === 'Escape') { setSelectedCell(null); setEditingCell(null); setSelFocus(null) }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (!editingCell) return
+    const el = document.querySelector<HTMLElement>(`[data-cell="${editingCell.rowId}-${editingCell.col}"]`)
+    if (!el) return
+    el.focus()
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    range.collapse(false)
+    const sel = window.getSelection()
+    sel?.removeAllRanges()
+    sel?.addRange(range)
+  }, [editingCell])
+
+  useEffect(() => {
+    if (!fillSrc) return
+    document.body.style.cursor = 'crosshair'
+    document.body.style.userSelect = 'none'
+    function onMouseMove(e: MouseEvent) {
+      const tr = (document.elementFromPoint(e.clientX, e.clientY) as Element | null)?.closest('tr[data-row-id]')
+      const id = (tr as HTMLElement | null)?.getAttribute('data-row-id')
+      if (id) setFillTarget(id)
+    }
+    function onMouseUp() {
+      const src = fillSrcRef.current; const tgt = fillTargetRef.current
+      if (src && tgt && src.rowId !== tgt) applyFill(src.rowId, src.col as keyof Row, tgt)
+      setFillSrc(null); setFillTarget(null)
+      document.body.style.cursor = ''; document.body.style.userSelect = ''
+    }
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
+      document.body.style.cursor = ''; document.body.style.userSelect = ''
+    }
+  }, [fillSrc]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    function onMouseMove(e: MouseEvent) {
+      if (!isDragSelecting.current) return
+      const el = document.elementFromPoint(e.clientX, e.clientY)
+      const td = (el as Element | null)?.closest('[data-cell]') as HTMLElement | null
+      const cellAttr = td?.getAttribute('data-cell')
+      if (!cellAttr || cellAttr.length < 38) return
+      const rowId = cellAttr.slice(0, 36)
+      const col = cellAttr.slice(37)
+      setSelFocus(prev => prev?.rowId === rowId && prev?.col === col ? prev : { rowId, col })
+    }
+    function onMouseUp() {
+      if (isDragSelecting.current) {
+        isDragSelecting.current = false
+        document.body.style.userSelect = ''
+      }
+    }
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     supabase.from('db_fields').select('*').order('sort_order').then(({ data }) => {
@@ -155,7 +344,7 @@ export default function DbTab() {
     }, 800)
   }, [supabase])
 
-  function updateRow(id: string, patch: Partial<Row>) {
+  function applyRow(id: string, patch: Partial<Row>) {
     setRows(prev => prev.map(r => {
       if (r.id !== id) return r
       const newRow = { ...r, ...patch }
@@ -163,6 +352,32 @@ export default function DbTab() {
       return newRow
     }))
     scheduleSave()
+  }
+
+  function updateRow(id: string, patch: Partial<Row>) {
+    const cur = rowsRef.current.find(r => r.id === id)
+    if (!cur) { applyRow(id, patch); return }
+    const prevPatch: Partial<Row> = {}
+    for (const key of Object.keys(patch) as (keyof Row)[]) {
+      (prevPatch as Record<keyof Row, unknown>)[key] = cur[key]
+    }
+    undoStack.current.push({ rowId: id, prev: prevPatch, next: patch })
+    redoStack.current = []
+    applyRow(id, patch)
+  }
+
+  function applyFill(srcRowId: string, col: keyof Row, targetRowId: string) {
+    const srcRow = rowsRef.current.find(r => r.id === srcRowId)
+    if (!srcRow) return
+    const val = srcRow[col]
+    const cur = filteredRef.current
+    const si = cur.findIndex(r => r.id === srcRowId)
+    const ti = cur.findIndex(r => r.id === targetRowId)
+    if (si === -1 || ti === -1) return
+    const [a, b] = [Math.min(si, ti), Math.max(si, ti)]
+    cur.slice(a, b + 1).filter(r => r.id !== srcRowId).forEach(r => {
+      updateRow(r.id, { [col]: val } as Partial<Row>)
+    })
   }
 
   async function addRowAfter(rowId: string) {
@@ -251,6 +466,7 @@ export default function DbTab() {
   }
 
   function handleDragStart(e: React.DragEvent, rowId: string) {
+    if (!dragHandleActive.current) { e.preventDefault(); return }
     dragSrcId.current = rowId; setDraggingId(rowId); e.dataTransfer.effectAllowed = 'move'
   }
   function handleDragOver(e: React.DragEvent, rowId: string) {
@@ -278,7 +494,7 @@ export default function DbTab() {
       setSaving(false)
     }
   }
-  function handleDragEnd() { setDraggingId(null); setDragOverId(null); dragSrcId.current = null }
+  function handleDragEnd() { setDraggingId(null); setDragOverId(null); dragSrcId.current = null; dragHandleActive.current = false }
 
   function getTableOrder(r: Row[]) {
     const seen = new Set<string>(); const result: string[] = []
@@ -298,6 +514,36 @@ export default function DbTab() {
     }
     return true
   })
+
+  filteredRef.current = filtered
+
+  const selRange = new Set<string>()
+  if (selectedCell && selFocus) {
+    const si = filtered.findIndex(r => r.id === selectedCell.rowId)
+    const fi = filtered.findIndex(r => r.id === selFocus.rowId)
+    const ci = DB_SEL_COLS.indexOf(selectedCell.col as keyof Row)
+    const fci = DB_SEL_COLS.indexOf(selFocus.col as keyof Row)
+    if (si !== -1 && fi !== -1 && ci !== -1 && fci !== -1) {
+      const [ra, rb] = [Math.min(si, fi), Math.max(si, fi)]
+      const [ca, cb] = [Math.min(ci, fci), Math.max(ci, fci)]
+      filtered.slice(ra, rb + 1).forEach(r => DB_SEL_COLS.slice(ca, cb + 1).forEach(k => selRange.add(`${r.id}:${k}`)))
+    }
+  }
+  const inSel = (rowId: string, col: string) => selRange.has(`${rowId}:${col}`)
+
+  const fillRange = new Set<string>()
+  if (fillSrc && fillTarget) {
+    const si = filtered.findIndex(r => r.id === fillSrc.rowId)
+    const ti = filtered.findIndex(r => r.id === fillTarget)
+    if (si !== -1 && ti !== -1) {
+      const [a, b] = [Math.min(si, ti), Math.max(si, ti)]
+      filtered.slice(a, b + 1).forEach(r => fillRange.add(r.id))
+    }
+  }
+  const fillHl = (rowId: string, col: string): React.CSSProperties =>
+    fillSrc?.col === col && fillRange.has(rowId) && rowId !== fillSrc?.rowId
+      ? { background: 'rgba(74,138,216,.15)', outline: '1.5px dashed #4a8ad8', outlineOffset: -1 }
+      : {}
 
   if (loading) return <div style={{ padding: 20, color: '#555568' }}>読み込み中...</div>
 
@@ -480,76 +726,141 @@ export default function DbTab() {
                       </tr>
                     </thead>
                     <tbody>
-                      {filtered.map(row => (
-                        <tr key={row.id} draggable
-                          onDragStart={e => handleDragStart(e, row.id)}
-                          onDragOver={e => handleDragOver(e, row.id)}
-                          onDragLeave={handleDragLeave}
-                          onDrop={e => handleDrop(e, row.id)}
-                          onDragEnd={handleDragEnd}
-                          style={{
-                            borderBottom: '1px solid rgba(255,255,255,.05)',
-                            opacity: draggingId === row.id ? 0.4 : 1,
-                            borderTop: dragOverId === row.id ? '2px solid #5588aa' : undefined,
-                          }}
-                        >
-                          <td style={dragTdStyle}>⠿</td>
-                          {FRONT_COLS.map(c => (
-                            <td key={c.key} contentEditable suppressContentEditableWarning
-                              onBlur={e => updateRow(row.id, { [c.key]: e.currentTarget.textContent || '' })}
-                              style={{ ...tdStyle, ...(c.key === 'field_name' ? { fontFamily: 'monospace', color: '#a0b0c0' } : {}) }}>
-                              {row[c.key] as string}
+                      {filtered.map(row => {
+                        const sel = (col: string) => selectedCell?.rowId === row.id && selectedCell?.col === col
+                        const edt = (col: string) => editingCell?.rowId === row.id && editingCell?.col === col
+                        const onCellClick = (e: React.MouseEvent, col: string) => {
+                          e.stopPropagation()
+                          if (e.shiftKey && selectedCell) { setSelFocus({ rowId: row.id, col }) }
+                          else { setSelectedCell({ rowId: row.id, col }); setSelFocus(null) }
+                        }
+                        const onCellDbl = (col: string) => { setSelectedCell({ rowId: row.id, col }); setSelFocus(null); setEditingCell({ rowId: row.id, col }) }
+                        const onCellBlur = (e: React.FocusEvent<HTMLTableCellElement>, col: keyof Row) => {
+                          if (edt(String(col))) { updateRow(row.id, { [col]: e.currentTarget.textContent || '' } as Partial<Row>); setEditingCell(null) }
+                        }
+                        const hlStyle = (col: string): React.CSSProperties => {
+                          if (edt(col)) return {}
+                          if (sel(col)) return { outline: '2px solid #4a8ad8', outlineOffset: -2, background: 'rgba(74,138,216,.1)' }
+                          if (selFocus && inSel(row.id, col)) return { background: 'rgba(74,138,216,.15)', outline: '1px solid rgba(74,138,216,.35)', outlineOffset: -1 }
+                          return {}
+                        }
+                        const handle = (col: string) => sel(col) && !edt(col) && !selFocus ? (
+                          <div style={{ position: 'absolute', bottom: -3, right: -3, width: 7, height: 7, background: '#4a8ad8', border: '1.5px solid #fff', cursor: 'crosshair', zIndex: 10 }}
+                            onMouseDown={e => { e.preventDefault(); e.stopPropagation(); setFillSrc({ rowId: row.id, col }) }} />
+                        ) : null
+                        const onCellMouseDown = (e: React.MouseEvent, col: string) => {
+                          if (e.button !== 0 || e.shiftKey) return
+                          isDragSelecting.current = true
+                          document.body.style.userSelect = 'none'
+                          setSelectedCell({ rowId: row.id, col })
+                          setSelFocus(null)
+                        }
+                        return (
+                          <tr key={row.id} data-row-id={row.id} draggable
+                            onDragStart={e => handleDragStart(e, row.id)}
+                            onDragOver={e => handleDragOver(e, row.id)}
+                            onDragLeave={handleDragLeave}
+                            onDrop={e => handleDrop(e, row.id)}
+                            onDragEnd={handleDragEnd}
+                            style={{
+                              borderBottom: '1px solid rgba(255,255,255,.05)',
+                              opacity: draggingId === row.id ? 0.4 : 1,
+                              borderTop: dragOverId === row.id ? '2px solid #5588aa' : undefined,
+                            }}
+                          >
+                            <td style={dragTdStyle} onMouseDown={() => { dragHandleActive.current = true }} onMouseUp={() => { dragHandleActive.current = false }}>⠿</td>
+                            {FRONT_COLS.map(c => (
+                              <td key={c.key}
+                                tabIndex={0}
+                                data-cell={`${row.id}-${c.key}`}
+                                onClick={e => onCellClick(e, c.key)}
+                                onMouseDown={e => onCellMouseDown(e, c.key)}
+                                onDoubleClick={() => onCellDbl(c.key)}
+                                contentEditable={edt(c.key) || undefined}
+                                suppressContentEditableWarning
+                                onBlur={e => onCellBlur(e, c.key as keyof Row)}
+                                style={{ ...tdStyle, position: 'relative', ...(c.key === 'field_name' ? { fontFamily: 'monospace', color: '#a0b0c0' } : {}), ...hlStyle(c.key), ...fillHl(row.id, c.key) }}>
+                                {row[c.key] as string}{handle(c.key)}
+                              </td>
+                            ))}
+                            <td data-cell={`${row.id}-required`}
+                              onMouseDown={e => onCellMouseDown(e, 'required')}
+                              style={{ ...boolTdStyle, ...hlStyle('required'), ...fillHl(row.id, 'required') }}
+                              onClick={e => { e.stopPropagation(); setSelectedCell({ rowId: row.id, col: 'required' }); updateRow(row.id, { required: !row.required }) }}>
+                              <input type="checkbox" checked={row.required} readOnly style={cbStyle} />
                             </td>
-                          ))}
-                          <td style={boolTdStyle} onClick={() => updateRow(row.id, { required: !row.required })}>
-                            <input type="checkbox" checked={row.required} readOnly style={cbStyle} />
-                          </td>
-                          <td style={boolTdStyle} onClick={() => updateRow(row.id, { ix: !row.ix })}>
-                            <input type="checkbox" checked={row.ix} readOnly style={cbStyle} />
-                          </td>
-                          <td style={{ ...tdStyle, padding: '2px 4px' }}>
-                            <select value={row.dtype} onChange={e => updateRow(row.id, { dtype: e.target.value })}
-                              style={{
-                                width: '100%', border: 'none', borderRadius: 3, padding: '2px 4px',
-                                fontSize: 13, cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
-                                fontWeight: 700, background: 'transparent', color: DTYPE_COLORS[row.dtype] || '#c0c0cc'
-                              }}>
-                              {DTYPES.map(dt => <option key={dt} value={dt} style={{ background: '#2a2a2f', color: '#c0c0cc' }}>{dt}</option>)}
-                            </select>
-                          </td>
-                          <td style={boolTdStyle} onClick={() => updateRow(row.id, { list: !row.list })}>
-                            <input type="checkbox" checked={row.list} readOnly style={cbStyle} />
-                          </td>
-                          {BACK_COLS.map(c => c.select ? (
-                            <td key={c.key} style={{ ...tdStyle, padding: '2px 4px' }}>
-                              <select
-                                value={row[c.key] as string}
-                                onChange={e => updateRow(row.id, { [c.key]: e.target.value })}
+                            <td data-cell={`${row.id}-ix`}
+                              onMouseDown={e => onCellMouseDown(e, 'ix')}
+                              style={{ ...boolTdStyle, ...hlStyle('ix'), ...fillHl(row.id, 'ix') }}
+                              onClick={e => { e.stopPropagation(); setSelectedCell({ rowId: row.id, col: 'ix' }); updateRow(row.id, { ix: !row.ix }) }}>
+                              <input type="checkbox" checked={row.ix} readOnly style={cbStyle} />
+                            </td>
+                            <td data-cell={`${row.id}-dtype`}
+                              onMouseDown={e => onCellMouseDown(e, 'dtype')}
+                              style={{ ...tdStyle, padding: '2px 4px', ...hlStyle('dtype'), ...fillHl(row.id, 'dtype') }}
+                              onClick={e => { e.stopPropagation(); setSelectedCell({ rowId: row.id, col: 'dtype' }) }}>
+                              <select value={row.dtype} onChange={e => updateRow(row.id, { dtype: e.target.value })}
                                 style={{
                                   width: '100%', border: 'none', borderRadius: 3, padding: '2px 4px',
-                                  fontSize: 12, cursor: 'pointer', outline: 'none', fontFamily: 'monospace',
-                                  background: 'transparent',
-                                  color: row[c.key] ? '#80cbc4' : '#444458'
+                                  fontSize: 13, cursor: 'pointer', outline: 'none', fontFamily: 'inherit',
+                                  fontWeight: 700, background: 'transparent', color: DTYPE_COLORS[row.dtype] || '#c0c0cc'
                                 }}>
-                                <option value="" style={{ background: '#2a2a2f', color: '#888898' }}>—</option>
-                                {tables.map(t => (
-                                  <option key={t} value={t} style={{ background: '#2a2a2f', color: '#80cbc4' }}>{t}</option>
-                                ))}
+                                {DTYPES.map(dt => <option key={dt} value={dt} style={{ background: '#2a2a2f', color: '#c0c0cc' }}>{dt}</option>)}
                               </select>
                             </td>
-                          ) : (
-                            <td key={c.key} contentEditable suppressContentEditableWarning
-                              onBlur={e => updateRow(row.id, { [c.key]: e.currentTarget.textContent || '' })}
-                              style={tdStyle}>
-                              {row[c.key] as string}
+                            <td data-cell={`${row.id}-list`}
+                              onMouseDown={e => onCellMouseDown(e, 'list')}
+                              style={{ ...boolTdStyle, ...hlStyle('list'), ...fillHl(row.id, 'list') }}
+                              onClick={e => { e.stopPropagation(); setSelectedCell({ rowId: row.id, col: 'list' }); updateRow(row.id, { list: !row.list }) }}>
+                              <input type="checkbox" checked={row.list} readOnly style={cbStyle} />
                             </td>
-                          ))}
-                          <td style={actTdStyle}>
-                            <button onClick={() => addRowAfter(row.id)} style={addBtnStyle}>+</button>
-                            <button onClick={() => deleteRow(row.id)} style={delBtnStyle}>−</button>
-                          </td>
-                        </tr>
-                      ))}
+                            {BACK_COLS.map(c => c.select ? (
+                              <td key={c.key} data-cell={`${row.id}-${c.key}`}
+                                onMouseDown={e => onCellMouseDown(e, c.key)}
+                                style={{ ...tdStyle, padding: '2px 4px', position: 'relative', ...hlStyle(c.key), ...fillHl(row.id, c.key) }}>
+                                <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 24 }}>
+                                  {!sel(c.key) && (
+                                    <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}
+                                      onClick={e => { e.stopPropagation(); setSelectedCell({ rowId: row.id, col: c.key }) }} />
+                                  )}
+                                  <select
+                                    value={row[c.key] as string}
+                                    onChange={e => updateRow(row.id, { [c.key]: e.target.value } as Partial<Row>)}
+                                    style={{
+                                      width: '100%', border: 'none', borderRadius: 3, padding: '2px 4px',
+                                      fontSize: 12, cursor: 'pointer', outline: 'none', fontFamily: 'monospace',
+                                      background: 'transparent',
+                                      color: row[c.key] ? '#80cbc4' : '#444458'
+                                    }}>
+                                    <option value="" style={{ background: '#2a2a2f', color: '#888898' }}>—</option>
+                                    {tables.map(t => (
+                                      <option key={t} value={t} style={{ background: '#2a2a2f', color: '#80cbc4' }}>{t}</option>
+                                    ))}
+                                  </select>
+                                  {handle(c.key)}
+                                </div>
+                              </td>
+                            ) : (
+                              <td key={c.key}
+                                tabIndex={0}
+                                data-cell={`${row.id}-${c.key}`}
+                                onClick={e => onCellClick(e, c.key)}
+                                onMouseDown={e => onCellMouseDown(e, c.key)}
+                                onDoubleClick={() => onCellDbl(c.key)}
+                                contentEditable={edt(c.key) || undefined}
+                                suppressContentEditableWarning
+                                onBlur={e => onCellBlur(e, c.key as keyof Row)}
+                                style={{ ...tdStyle, position: 'relative', ...hlStyle(c.key), ...fillHl(row.id, c.key) }}>
+                                {row[c.key] as string}{handle(c.key)}
+                              </td>
+                            ))}
+                            <td style={actTdStyle}>
+                              <button onClick={() => addRowAfter(row.id)} style={addBtnStyle}>+</button>
+                              <button onClick={() => deleteRow(row.id)} style={delBtnStyle}>−</button>
+                            </td>
+                          </tr>
+                        )
+                      })}
                     </tbody>
                   </table>
                 </div>

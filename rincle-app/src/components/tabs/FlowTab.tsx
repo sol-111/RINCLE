@@ -16,11 +16,12 @@ const PALETTE = [
   '#ffffff','#aaaaaa','#777788','#8040d0','#2060c0','#4a90d9','#34a853','#d4b000','#e03020',
 ]
 
-type NodeObj  = { id:string;x:number;y:number;w:number;h:number;type:string;lines:string[];fill?:string|null;fillOpacity?:number;stroke?:string|null;dashed?:boolean }
-type EdgeObj  = { id:string;from:string;fromSide:string;to:string;toSide:string;label:string;dashed:boolean;offset?:number|null }
-type FrameObj = { id:string;x:number;y:number;w:number;h:number;label:string;fillHex?:string;fillOpacity?:number;stroke:string;labelColor:string;dashed:boolean }
-type SelObj   = { type:'node'|'edge'|'frame'; id:string } | null
-type MultiSel = { type:'node'|'frame'; id:string }
+type NodeObj    = { id:string;x:number;y:number;w:number;h:number;type:string;lines:string[];fill?:string|null;fillOpacity?:number;stroke?:string|null;dashed?:boolean }
+type EdgeObj    = { id:string;from:string;fromSide:string;to:string;toSide:string;label:string;dashed:boolean;offset?:number|null }
+type FrameObj   = { id:string;x:number;y:number;w:number;h:number;label:string;fillHex?:string;fillOpacity?:number;stroke:string;labelColor:string;dashed:boolean }
+type SelObj     = { type:'node'|'edge'|'frame'; id:string } | null
+type MultiSel   = { type:'node'|'frame'; id:string }
+type CommentDef = { id:string; svgX:number; svgY:number; svgW:number; svgH:number; text:string }
 
 // ─── INIT DATA ────────────────────────────────────────────────────────────────
 const INIT_NODES: NodeObj[] = [
@@ -222,6 +223,48 @@ export default function FlowTab() {
   const setSaveStatusRef = useRef(setSaveStatus)
   useEffect(() => { setSaveStatusRef.current = setSaveStatus }, [setSaveStatus])
 
+  // ─── COMMENT STATE ────────────────────────────────────────────────────────
+  const cmtRef         = useRef<SVGGElement>(null)
+  const selRef         = useRef<HTMLDivElement>(null)
+  const commentModeRef = useRef(false)
+  const [commentMode, setCommentMode]   = useState(false)
+  const [comments, setComments]         = useState<CommentDef[]>([])
+  const [pendingCmt, setPendingCmt]     = useState<{svgX:number;svgY:number;svgW:number;svgH:number;screenX:number;screenY:number}|null>(null)
+  const [cmtInput, setCmtInput]         = useState('')
+
+  function toggleCommentMode() {
+    const next = !commentModeRef.current
+    commentModeRef.current = next
+    setCommentMode(next)
+  }
+
+  async function confirmComment() {
+    if (!pendingCmt || !cmtInput.trim()) { setPendingCmt(null); return }
+    const supabase = createClient()
+    const { data:{ user } } = await supabase.auth.getUser()
+    if (!user) { setPendingCmt(null); return }
+    const { data, error } = await supabase.from('flow_comments').insert({
+      user_id: user.id,
+      svg_x: pendingCmt.svgX, svg_y: pendingCmt.svgY,
+      svg_w: pendingCmt.svgW, svg_h: pendingCmt.svgH,
+      text: cmtInput.trim(),
+    }).select().single()
+    if (error || !data) { setPendingCmt(null); return }
+    setComments(prev => [...prev, { id:data.id, svgX:data.svg_x, svgY:data.svg_y, svgW:data.svg_w, svgH:data.svg_h, text:data.text }])
+    setPendingCmt(null); setCmtInput('')
+  }
+
+  async function deleteComment(id: string) {
+    const supabase = createClient()
+    await supabase.from('flow_comments').delete().eq('id', id)
+    setComments(prev => prev.filter(c => c.id !== id))
+  }
+
+  // Cursor sync
+  useEffect(() => {
+    if (wrapRef.current) wrapRef.current.style.cursor = commentMode ? 'crosshair' : 'default'
+  }, [commentMode])
+
   const wrapRef    = useRef<HTMLDivElement>(null)
   const vpRef      = useRef<SVGGElement>(null)
   const pemptyRef  = useRef<HTMLDivElement>(null)
@@ -413,7 +456,9 @@ export default function FlowTab() {
 
     // ─── TRANSFORM ────────────────────────────────────────────────────────
     function applyTransform(){
-      vp.setAttribute('transform',`translate(${s.vx},${s.vy}) scale(${s.vscale})`)
+      const t=`translate(${s.vx},${s.vy}) scale(${s.vscale})`
+      vp.setAttribute('transform',t)
+      if(cmtRef.current) cmtRef.current.setAttribute('transform',t)
     }
     function fitView(){
       const pw=wrap.clientWidth,ph=wrap.clientHeight
@@ -679,6 +724,9 @@ export default function FlowTab() {
       item.x>=fr.x&&item.y>=fr.y&&item.x+item.w<=fr.x+fr.w&&item.y+item.h<=fr.y+fr.h
 
     // ─── EVENTS ───────────────────────────────────────────────────────────
+    // Comment selection state (shared across onDown/onMove/onUp)
+    let cmtSel: {startX:number;startY:number;curX:number;curY:number}|null = null
+
     function onWheel(e:WheelEvent){
       e.preventDefault()
       if(e.ctrlKey){
@@ -698,6 +746,14 @@ export default function FlowTab() {
 
     function onDown(e:MouseEvent){
       if(e.button!==0) return; hideCtx()
+      if((e.target as Element).closest?.('[data-cmt-del]')) return
+      if(commentModeRef.current){
+        e.preventDefault()
+        const r=wrap.getBoundingClientRect(), ovl=selRef.current
+        cmtSel={startX:e.clientX,startY:e.clientY,curX:e.clientX,curY:e.clientY}
+        if(ovl){ovl.style.display='block';ovl.style.left=`${e.clientX-r.left}px`;ovl.style.top=`${e.clientY-r.top}px`;ovl.style.width='0';ovl.style.height='0'}
+        return
+      }
       const rh=(e.target as HTMLElement).closest('.ft-rh')
       if(rh){
         e.stopPropagation()
@@ -787,6 +843,17 @@ export default function FlowTab() {
     }
 
     function onMove(e:MouseEvent){
+      if(cmtSel){
+        cmtSel.curX=e.clientX; cmtSel.curY=e.clientY
+        const r=wrap.getBoundingClientRect(), ovl=selRef.current
+        if(ovl){
+          const x1=Math.min(cmtSel.startX,cmtSel.curX)-r.left, y1=Math.min(cmtSel.startY,cmtSel.curY)-r.top
+          ovl.style.left=`${x1}px`; ovl.style.top=`${y1}px`
+          ovl.style.width=`${Math.abs(cmtSel.curX-cmtSel.startX)}px`
+          ovl.style.height=`${Math.abs(cmtSel.curY-cmtSel.startY)}px`
+        }
+        return
+      }
       type Drag={mode:string;id?:string;ox?:number;oy?:number;sx:number;sy:number;containedNodes?:{id:string;ox:number;oy:number}[];containedFrames?:{id:string;ox:number;oy:number}[];nodeOffsets?:{id:string;ox:number;oy:number}[];frameOffsets?:{id:string;ox:number;oy:number}[];type?:string;edge?:string;origX?:number;origY?:number;origW?:number;origH?:number;edgeId?:string;axis?:string;startPos?:number;startOffset?:number}
       const dr=s.drag as Drag|null
       if(dr){
@@ -836,6 +903,18 @@ export default function FlowTab() {
     }
 
     function onUp(e:MouseEvent){
+      if(cmtSel){
+        const sel=cmtSel; cmtSel=null
+        const ovl=selRef.current; if(ovl) ovl.style.display='none'
+        const dw=Math.abs(sel.curX-sel.startX), dh=Math.abs(sel.curY-sel.startY)
+        if(dw>=20&&dh>=20){
+          const r=wrap.getBoundingClientRect()
+          const sx1=Math.min(sel.startX,sel.curX), sy1=Math.min(sel.startY,sel.curY)
+          setPendingCmt({svgX:(sx1-r.left-s.vx)/s.vscale, svgY:(sy1-r.top-s.vy)/s.vscale, svgW:dw/s.vscale, svgH:dh/s.vscale, screenX:sx1, screenY:sy1})
+          setCmtInput('')
+        }
+        return
+      }
       if(s.drag){s.drag=null;snapGuides=[];render();scheduleSave()}
       if(s.rband){
         const rb=s.rband as {sx:number;sy:number;ex?:number;ey?:number}
@@ -936,7 +1015,7 @@ export default function FlowTab() {
       if((e.metaKey||e.ctrlKey)&&e.key==='v'){if(inInput)return;e.preventDefault();pasteClipboard();return}
       if(inInput) return
       if(e.key==='Delete'||e.key==='Backspace') deleteSelected()
-      if(e.key==='Escape'){s.conn=null;s.fdraw=null;s.rband=null;s.multi=[];select('node',null);setTool('select');render()}
+      if(e.key==='Escape'){s.conn=null;s.fdraw=null;s.rband=null;s.multi=[];select('node',null);setTool('select');commentModeRef.current=false;setCommentMode(false);render()}
     }
 
     function onDocClick(e:MouseEvent){
@@ -979,6 +1058,14 @@ export default function FlowTab() {
           s.selected = null; render(); applyTransform()
           if (patched) scheduleSave()
         }
+        // Load comments
+        const { data:cmtData } = await supabase.from('flow_comments').select('*')
+        if (cmtData) {
+          setComments(cmtData.map((r:Record<string,unknown>) => ({
+            id:r.id as string, svgX:r.svg_x as number, svgY:r.svg_y as number,
+            svgW:r.svg_w as number, svgH:r.svg_h as number, text:r.text as string,
+          })))
+        }
       } catch {}
     })()
 
@@ -1019,6 +1106,14 @@ export default function FlowTab() {
         <button ref={btnFrRef}  className="ft-btn"        onClick={()=>fns.current.setTool('frame')}>フレーム</button>
         <div className="ft-sep"/>
         <button className="ft-btn" onClick={()=>fns.current.fitView()}>全体表示</button>
+        <div className="ft-sep"/>
+        <button onClick={toggleCommentMode} style={{
+          display:'flex',alignItems:'center',gap:5,padding:'4px 10px',
+          border:`1.5px solid ${commentMode?'#c8a030':'#444450'}`,
+          borderRadius:4,cursor:'pointer',fontSize:11,fontWeight:700,
+          background:commentMode?'#3a2c08':'#38383f',
+          color:commentMode?'#e8c060':'#a0a0b8',
+        }}>💬 コメント{commentMode?' ON':''}</button>
         {saveStatus==='saving'&&<span style={{fontSize:10,color:'#888898',marginLeft:4}}>保存中...</span>}
         {saveStatus==='saved'&&<span style={{fontSize:10,color:'#34a853',marginLeft:4}}>保存済み</span>}
         <span ref={hintRef} id="ft-hint">ホイールでズーム / ドラッグでパン / Delで削除</span>
@@ -1032,7 +1127,9 @@ export default function FlowTab() {
               <marker id="ft-arr-sel" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#5a8abf"/></marker>
             </defs>
             <g ref={vpRef}/>
+            <g ref={cmtRef}>{comments.map(c=><CommentBox key={c.id} c={c} onDelete={deleteComment}/>)}</g>
           </svg>
+          <div ref={selRef} style={{position:'absolute',pointerEvents:'none',display:'none',border:'2px dashed #c8a030',background:'rgba(200,160,48,0.07)',borderRadius:2,boxSizing:'border-box'}}/>
           {/* Legend */}
           <div style={{position:'absolute',bottom:16,left:16,background:'#2a2a2f',border:'1px solid #38383f',borderRadius:8,padding:'10px 14px',display:'flex',flexDirection:'column',gap:6,boxShadow:'0 4px 12px rgba(0,0,0,.5)',zIndex:100,pointerEvents:'none'}}>
             <div style={{fontSize:11,fontWeight:700,color:'#888898',marginBottom:2}}>凡例</div>
@@ -1081,6 +1178,56 @@ export default function FlowTab() {
         <div data-ctx="dup">複製</div>
         <div data-ctx="del">削除</div>
       </div>
+      {/* Comment input popover */}
+      {pendingCmt && (
+        <div style={{
+          position:'fixed',
+          left:Math.min(pendingCmt.screenX,(typeof window!=='undefined'?window.innerWidth:1200)-240),
+          top:Math.min(pendingCmt.screenY,(typeof window!=='undefined'?window.innerHeight:800)-170),
+          zIndex:2000,background:'#2a2810',border:'1.5px solid #c8a030',borderRadius:8,
+          padding:'10px 12px',boxShadow:'0 4px 20px rgba(0,0,0,.7)',
+          display:'flex',flexDirection:'column',gap:8,minWidth:224,
+          fontFamily:"'Hiragino Sans',sans-serif",
+        }}>
+          <div style={{fontSize:11,fontWeight:700,color:'#c8a030'}}>💬 コメントを入力</div>
+          <textarea
+            autoFocus
+            value={cmtInput}
+            onChange={e=>setCmtInput(e.target.value)}
+            onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();confirmComment()}if(e.key==='Escape')setPendingCmt(null)}}
+            style={{background:'#1e1a08',border:'1px solid #705820',borderRadius:4,color:'#e8d080',fontSize:12,padding:'6px 8px',resize:'none',width:200,height:72,fontFamily:'inherit',outline:'none'}}
+            placeholder="Shift+Enterで改行 / Enterで確定"
+          />
+          <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
+            <button onClick={()=>setPendingCmt(null)} style={{padding:'3px 10px',border:'1px solid #444450',borderRadius:4,background:'#38383f',color:'#a0a0b8',fontSize:11,cursor:'pointer'}}>キャンセル</button>
+            <button onClick={confirmComment} style={{padding:'3px 10px',border:'1px solid #a07030',borderRadius:4,background:'#503010',color:'#e8c060',fontSize:11,fontWeight:700,cursor:'pointer'}}>追加</button>
+          </div>
+        </div>
+      )}
     </div>
+  )
+}
+
+// ─── CommentBox ───────────────────────────────────────────────────────────────
+function CommentBox({ c, onDelete }: { c: CommentDef; onDelete:(id:string)=>void }) {
+  const lines = c.text.split('\n')
+  const DS = 18
+  return (
+    <g>
+      <rect x={c.svgX} y={c.svgY} width={c.svgW} height={c.svgH}
+        fill="rgba(200,160,48,0.10)" stroke="#c8a030" strokeWidth="1.5" strokeDasharray="6,3" rx="4"/>
+      {lines.map((l,i) => (
+        <text key={i} x={c.svgX+8} y={c.svgY+18+i*15}
+          fill="#e8d080" fontSize="11" fontFamily="'Hiragino Sans',sans-serif">{l}</text>
+      ))}
+      <g data-cmt-del="true" style={{ cursor:'pointer' }}
+        onMouseDown={(e)=>e.stopPropagation()}
+        onClick={(e)=>{ e.stopPropagation(); onDelete(c.id) }}>
+        <rect x={c.svgX+c.svgW-DS} y={c.svgY} width={DS} height={DS}
+          fill="#402010" stroke="#c06030" strokeWidth="0.5" rx="3"/>
+        <text x={c.svgX+c.svgW-DS/2} y={c.svgY+DS-4}
+          textAnchor="middle" fill="#e08060" fontSize="12" style={{ userSelect:'none' }}>×</text>
+      </g>
+    </g>
   )
 }

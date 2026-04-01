@@ -10,10 +10,12 @@ import BizFlowTab from './tabs/BizFlowTab'
 import EmailsTab from './tabs/EmailsTab'
 import DbTab from './tabs/DbTab'
 import ErTab from './tabs/ErTab'
+import DocsTab from './tabs/DocsTab'
 
-type Tab = 'screens' | 'flow' | 'bizflow' | 'emails' | 'db' | 'er'
+type Tab = 'screens' | 'docs' | 'flow' | 'bizflow' | 'emails' | 'db' | 'er'
 
 const TABS = [
+  { id: 'docs'    as Tab, label: 'Docs',        icon: '📄' },
   { id: 'screens' as Tab, label: '画面設計書',  icon: '📊' },
   { id: 'flow'    as Tab, label: '画面遷移図',  icon: '📐' },
   { id: 'bizflow' as Tab, label: '業務フロー図', icon: '📋' },
@@ -23,8 +25,8 @@ const TABS = [
 ]
 
 export default function Dashboard({ user }: { user: User }) {
-  const [tab, setTab] = useState<Tab>('screens')
-  const [visited, setVisited] = useState<Set<Tab>>(new Set(['screens']))
+  const [tab, setTab] = useState<Tab>('docs')
+  const [visited, setVisited] = useState<Set<Tab>>(new Set(['docs']))
   const router = useRouter()
 
   function switchTab(t: Tab) {
@@ -89,6 +91,7 @@ export default function Dashboard({ user }: { user: User }) {
       {/* Content — visited tabs stay mounted (display:none) to avoid re-fetching */}
       <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
         {visited.has('screens') && <div style={{ display: tab === 'screens' ? 'block' : 'none', position: 'absolute', inset: 0 }}><ScreensTab /></div>}
+        {visited.has('docs')    && <div style={{ display: tab === 'docs'    ? 'block' : 'none', position: 'absolute', inset: 0 }}><DocsTab /></div>}
         {visited.has('flow')    && <div style={{ display: tab === 'flow'    ? 'block' : 'none', position: 'absolute', inset: 0 }}><FlowTab /></div>}
         {visited.has('bizflow') && <div style={{ display: tab === 'bizflow' ? 'block' : 'none', position: 'absolute', inset: 0 }}><BizFlowTab /></div>}
         {visited.has('emails')  && <div style={{ display: tab === 'emails'  ? 'block' : 'none', position: 'absolute', inset: 0 }}><EmailsTab /></div>}
