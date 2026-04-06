@@ -11,10 +11,12 @@ import EmailsTab from './tabs/EmailsTab'
 import DbTab from './tabs/DbTab'
 import ErTab from './tabs/ErTab'
 import DocsTab from './tabs/DocsTab'
+import SheetTab from './tabs/SheetTab'
 
-type Tab = 'screens' | 'docs' | 'flow' | 'bizflow' | 'emails' | 'db' | 'er'
+type Tab = 'screens' | 'docs' | 'flow' | 'bizflow' | 'emails' | 'db' | 'er' | 'sheet'
 
 const TABS = [
+  { id: 'sheet'   as Tab, label: 'Sheet',       icon: '🔢' },
   { id: 'docs'    as Tab, label: 'Docs',        icon: '📄' },
   { id: 'screens' as Tab, label: '画面設計書',  icon: '📊' },
   { id: 'flow'    as Tab, label: '画面遷移図',  icon: '📐' },
@@ -90,6 +92,7 @@ export default function Dashboard({ user }: { user: User }) {
 
       {/* Content — visited tabs stay mounted (display:none) to avoid re-fetching */}
       <div style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+        {visited.has('sheet')   && <div style={{ display: tab === 'sheet'   ? 'block' : 'none', position: 'absolute', inset: 0 }}><SheetTab /></div>}
         {visited.has('screens') && <div style={{ display: tab === 'screens' ? 'block' : 'none', position: 'absolute', inset: 0 }}><ScreensTab /></div>}
         {visited.has('docs')    && <div style={{ display: tab === 'docs'    ? 'block' : 'none', position: 'absolute', inset: 0 }}><DocsTab /></div>}
         {visited.has('flow')    && <div style={{ display: tab === 'flow'    ? 'block' : 'none', position: 'absolute', inset: 0 }}><FlowTab /></div>}
