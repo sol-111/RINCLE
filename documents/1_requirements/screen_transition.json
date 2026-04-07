@@ -306,11 +306,11 @@
     },
     {
       "id": "adm_login",
-      "x": 60,
-      "y": 900,
+      "x": 1029.7811174260428,
+      "y": 921.7364733216182,
       "w": 130,
       "h": 52,
-      "type": "popup",
+      "type": "bubble",
       "lines": [
         "管理画面",
         "ログイン"
@@ -318,8 +318,8 @@
     },
     {
       "id": "adm_customer",
-      "x": 260,
-      "y": 900,
+      "x": 1229.7811174260428,
+      "y": 921.7364733216182,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -330,8 +330,8 @@
     },
     {
       "id": "adm_shop",
-      "x": 260,
-      "y": 980,
+      "x": 1229.7811174260428,
+      "y": 1001.7364733216182,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -341,8 +341,8 @@
     },
     {
       "id": "adm_price_table",
-      "x": 430,
-      "y": 980,
+      "x": 1399.7811174260428,
+      "y": 1001.7364733216182,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -352,8 +352,8 @@
     },
     {
       "id": "adm_resv",
-      "x": 260,
-      "y": 1060,
+      "x": 1229.7811174260428,
+      "y": 1081.736473321618,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -363,8 +363,8 @@
     },
     {
       "id": "adm_sales",
-      "x": 430,
-      "y": 1060,
+      "x": 1399.7811174260428,
+      "y": 1081.736473321618,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -374,8 +374,8 @@
     },
     {
       "id": "adm_fv",
-      "x": 260,
-      "y": 1140,
+      "x": 1229.7811174260428,
+      "y": 1161.736473321618,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -385,8 +385,8 @@
     },
     {
       "id": "adm_news",
-      "x": 430,
-      "y": 1140,
+      "x": 1399.7811174260428,
+      "y": 1161.736473321618,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -396,8 +396,8 @@
     },
     {
       "id": "adm_banner",
-      "x": 600,
-      "y": 1140,
+      "x": 1569.781117426043,
+      "y": 1161.736473321618,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -407,8 +407,8 @@
     },
     {
       "id": "adm_qa",
-      "x": 770,
-      "y": 1140,
+      "x": 1739.781117426043,
+      "y": 1161.736473321618,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -418,8 +418,8 @@
     },
     {
       "id": "adm_contact",
-      "x": 260,
-      "y": 1220,
+      "x": 1229.7811174260428,
+      "y": 1241.736473321618,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -430,8 +430,8 @@
     },
     {
       "id": "adm_email",
-      "x": 430,
-      "y": 1220,
+      "x": 1399.7811174260428,
+      "y": 1241.736473321618,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -442,8 +442,8 @@
     },
     {
       "id": "adm_pw",
-      "x": 600,
-      "y": 1220,
+      "x": 1569.781117426043,
+      "y": 1241.736473321618,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -454,8 +454,8 @@
     },
     {
       "id": "adm_calendar",
-      "x": 260,
-      "y": 1300,
+      "x": 1229.7811174260428,
+      "y": 1321.736473321618,
       "w": 130,
       "h": 52,
       "type": "external",
@@ -466,8 +466,8 @@
     },
     {
       "id": "adm_sim",
-      "x": 430,
-      "y": 1300,
+      "x": 1399.7811174260428,
+      "y": 1321.736473321618,
       "w": 130,
       "h": 52,
       "type": "external",
@@ -477,15 +477,175 @@
       ]
     },
     {
-      "id": "adm_pw_reset",
-      "x": 600,
-      "y": 900,
+      "id": "store_login",
+      "x": 60,
+      "y": 987.595645603112,
       "w": 130,
       "h": 52,
-      "type": "popup",
+      "type": "bubble",
+      "lines": [
+        "店舗管理",
+        "ログイン"
+      ]
+    },
+    {
+      "id": "store_resv",
+      "x": 260,
+      "y": 987.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "予約一覧",
+        "(デフォルト)"
+      ]
+    },
+    {
+      "id": "store_past_resv",
+      "x": 430,
+      "y": 987.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "過去の予約"
+      ]
+    },
+    {
+      "id": "store_sales",
+      "x": 600,
+      "y": 987.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "売上レポート"
+      ]
+    },
+    {
+      "id": "store_customer",
+      "x": 260,
+      "y": 1067.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "顧客一覧"
+      ]
+    },
+    {
+      "id": "store_bicycle",
+      "x": 260,
+      "y": 1147.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "自転車一覧"
+      ]
+    },
+    {
+      "id": "store_option",
+      "x": 430,
+      "y": 1147.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "オプション管理"
+      ]
+    },
+    {
+      "id": "store_hours",
+      "x": 600,
+      "y": 1147.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "営業時間設定"
+      ]
+    },
+    {
+      "id": "store_calendar",
+      "x": 770,
+      "y": 1147.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "営業",
+        "カレンダー"
+      ]
+    },
+    {
+      "id": "store_info",
+      "x": 260,
+      "y": 1227.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "店舗情報"
+      ]
+    },
+    {
+      "id": "store_contact",
+      "x": 430,
+      "y": 1227.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "お問い合わせ",
+        "一覧"
+      ]
+    },
+    {
+      "id": "store_email",
+      "x": 600,
+      "y": 1227.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "メールアドレス",
+        "変更"
+      ]
+    },
+    {
+      "id": "store_pw",
+      "x": 770,
+      "y": 1227.595645603112,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
       "lines": [
         "パスワード",
-        "リセット"
+        "変更"
+      ]
+    },
+    {
+      "id": "n200",
+      "x": 60.444202405452224,
+      "y": 1146.3943380476057,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "パスワード再設定"
+      ]
+    },
+    {
+      "id": "n202",
+      "x": 1029.7811174260428,
+      "y": 1083.9182584949783,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "管理画面",
+        "ログイン"
       ]
     }
   ],
@@ -707,15 +867,6 @@
       "dashed": false
     },
     {
-      "id": "ae2",
-      "from": "adm_login",
-      "fromSide": "r",
-      "to": "adm_pw_reset",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
       "id": "ae3",
       "from": "adm_customer",
       "fromSide": "b",
@@ -831,6 +982,132 @@
       "toSide": "l",
       "label": "",
       "dashed": true
+    },
+    {
+      "id": "se1",
+      "from": "store_login",
+      "fromSide": "r",
+      "to": "store_resv",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "se3",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_past_resv",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se4",
+      "from": "store_past_resv",
+      "fromSide": "r",
+      "to": "store_sales",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se5",
+      "from": "store_resv",
+      "fromSide": "b",
+      "to": "store_customer",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se6",
+      "from": "store_resv",
+      "fromSide": "b",
+      "to": "store_bicycle",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se7",
+      "from": "store_bicycle",
+      "fromSide": "r",
+      "to": "store_option",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se8",
+      "from": "store_option",
+      "fromSide": "r",
+      "to": "store_hours",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se9",
+      "from": "store_hours",
+      "fromSide": "r",
+      "to": "store_calendar",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se10",
+      "from": "store_resv",
+      "fromSide": "b",
+      "to": "store_info",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se11",
+      "from": "store_info",
+      "fromSide": "r",
+      "to": "store_contact",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se12",
+      "from": "store_contact",
+      "fromSide": "r",
+      "to": "store_email",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "se13",
+      "from": "store_email",
+      "fromSide": "r",
+      "to": "store_pw",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "e201",
+      "from": "store_login",
+      "fromSide": "b",
+      "to": "n200",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "e203",
+      "from": "n202",
+      "fromSide": "t",
+      "to": "adm_login",
+      "toSide": "b",
+      "label": "",
+      "dashed": true
     }
   ],
   "frames": [
@@ -862,8 +1139,8 @@
     },
     {
       "id": "f3",
-      "x": 30,
-      "y": 860,
+      "x": 999.7811174260428,
+      "y": 881.7364733216182,
       "w": 920,
       "h": 530,
       "label": "システム管理者",
@@ -872,10 +1149,23 @@
       "stroke": "#5a2a2a",
       "labelColor": "#c05050",
       "dashed": false
+    },
+    {
+      "id": "f4",
+      "x": 30,
+      "y": 887.595645603112,
+      "w": 920,
+      "h": 430,
+      "label": "店舗管理者",
+      "fillHex": "#1a5a1a",
+      "fillOpacity": 0.07,
+      "stroke": "#2a5a2a",
+      "labelColor": "#50c050",
+      "dashed": false
     }
   ],
-  "nextId": 200,
-  "vx": 169.4415691776,
-  "vy": 289.08790348800005,
-  "vscale": 0.5277319168
+  "nextId": 204,
+  "vx": 24.520259780109086,
+  "vy": 9.284257753298903,
+  "vscale": 0.7639822182716512
 }
