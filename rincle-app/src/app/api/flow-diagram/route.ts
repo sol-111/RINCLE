@@ -1,21 +1,21 @@
 import { readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
 
-const FILE_PATH = join(process.cwd(), '..', 'documents', '1_requirements', 'screen_transition.drawio')
+const FILE_PATH = join(process.cwd(), '..', 'documents', '1_requirements', 'screen_transition.json')
 
 export async function GET() {
   try {
-    const xml = await readFile(FILE_PATH, 'utf-8')
-    return new Response(xml, { headers: { 'Content-Type': 'application/xml' } })
+    const json = await readFile(FILE_PATH, 'utf-8')
+    return new Response(json, { headers: { 'Content-Type': 'application/json' } })
   } catch {
-    return Response.json({ error: 'File not found' }, { status: 404 })
+    return Response.json(null, { status: 404 })
   }
 }
 
 export async function POST(request: Request) {
   try {
-    const xml = await request.text()
-    await writeFile(FILE_PATH, xml, 'utf-8')
+    const data = await request.json()
+    await writeFile(FILE_PATH, JSON.stringify(data, null, 2), 'utf-8')
     return Response.json({ ok: true })
   } catch (e) {
     return Response.json({ error: String(e) }, { status: 500 })

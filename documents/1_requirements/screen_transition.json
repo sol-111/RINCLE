@@ -1,0 +1,881 @@
+{
+  "nodes": [
+    {
+      "id": "top",
+      "x": 60,
+      "y": 80,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "TOP"
+      ]
+    },
+    {
+      "id": "search",
+      "x": 210,
+      "y": 80,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "空車検索"
+      ]
+    },
+    {
+      "id": "results",
+      "x": 390,
+      "y": 175,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "検索",
+        "一覧"
+      ]
+    },
+    {
+      "id": "shop_dtl",
+      "x": 540,
+      "y": 175,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "店舗",
+        "詳細"
+      ]
+    },
+    {
+      "id": "bicycle",
+      "x": 690,
+      "y": 175,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "自転車",
+        "詳細"
+      ]
+    },
+    {
+      "id": "cart1",
+      "x": 840,
+      "y": 175,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "予約内容",
+        "(空車検索)"
+      ]
+    },
+    {
+      "id": "cart2",
+      "x": 1020,
+      "y": 175,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "予約内容",
+        "(顧客情報入力)"
+      ]
+    },
+    {
+      "id": "cart3",
+      "x": 1210,
+      "y": 175,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "予約内容",
+        "(予約内容確認)"
+      ]
+    },
+    {
+      "id": "cart4",
+      "x": 1390,
+      "y": 175,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "予約内容",
+        "(決済)"
+      ]
+    },
+    {
+      "id": "resv",
+      "x": 1555,
+      "y": 175,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "予約",
+        "一覧"
+      ]
+    },
+    {
+      "id": "card",
+      "x": 1390,
+      "y": 65,
+      "w": 120,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "カード情報",
+        "入力"
+      ]
+    },
+    {
+      "id": "payjp",
+      "x": 1550,
+      "y": 65,
+      "w": 100,
+      "h": 52,
+      "type": "external",
+      "lines": [
+        "Pay.JP"
+      ]
+    },
+    {
+      "id": "news_top",
+      "x": 210,
+      "y": 330,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "新着情報",
+        "一覧"
+      ]
+    },
+    {
+      "id": "news_dtl",
+      "x": 380,
+      "y": 330,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "新着情報",
+        "詳細"
+      ]
+    },
+    {
+      "id": "topics_top",
+      "x": 210,
+      "y": 420,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "お知らせ",
+        "一覧"
+      ]
+    },
+    {
+      "id": "topics_dtl",
+      "x": 380,
+      "y": 420,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "お知らせ",
+        "詳細"
+      ]
+    },
+    {
+      "id": "faq_main",
+      "x": 210,
+      "y": 510,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "FAQ",
+        "一覧"
+      ]
+    },
+    {
+      "id": "login",
+      "x": 630.1113554479637,
+      "y": 372.26118201687666,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "ログイン"
+      ]
+    },
+    {
+      "id": "signup",
+      "x": 630.1113554479637,
+      "y": 462.26118201687666,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "新規会員",
+        "登録"
+      ]
+    },
+    {
+      "id": "hdr_faq",
+      "x": 780.1113554479637,
+      "y": 372.26118201687666,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "FAQ",
+        "一覧"
+      ]
+    },
+    {
+      "id": "contact",
+      "x": 780.1113554479637,
+      "y": 462.26118201687666,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "お問い合わせ"
+      ]
+    },
+    {
+      "id": "terms",
+      "x": 780.1113554479637,
+      "y": 567.2611820168767,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "規約等"
+      ]
+    },
+    {
+      "id": "company",
+      "x": 780.1113554479637,
+      "y": 657.2611820168767,
+      "w": 120,
+      "h": 52,
+      "type": "external",
+      "lines": [
+        "会社概要"
+      ]
+    },
+    {
+      "id": "mypage",
+      "x": 950.1113554479637,
+      "y": 372.26118201687666,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "マイページ"
+      ]
+    },
+    {
+      "id": "edit",
+      "x": 1110.1113554479637,
+      "y": 372.26118201687666,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "アカウント",
+        "詳細/編集"
+      ]
+    },
+    {
+      "id": "user_resv",
+      "x": 1110.1113554479637,
+      "y": 462.26118201687666,
+      "w": 120,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "予約",
+        "一覧"
+      ]
+    },
+    {
+      "id": "adm_login",
+      "x": 60,
+      "y": 900,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "管理画面",
+        "ログイン"
+      ]
+    },
+    {
+      "id": "adm_customer",
+      "x": 260,
+      "y": 900,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "顧客一覧",
+        "(デフォルト)"
+      ]
+    },
+    {
+      "id": "adm_shop",
+      "x": 260,
+      "y": 980,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "加盟店一覧"
+      ]
+    },
+    {
+      "id": "adm_price_table",
+      "x": 430,
+      "y": 980,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "料金表管理"
+      ]
+    },
+    {
+      "id": "adm_resv",
+      "x": 260,
+      "y": 1060,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "予約一覧"
+      ]
+    },
+    {
+      "id": "adm_sales",
+      "x": 430,
+      "y": 1060,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "売上レポート"
+      ]
+    },
+    {
+      "id": "adm_fv",
+      "x": 260,
+      "y": 1140,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "FV管理"
+      ]
+    },
+    {
+      "id": "adm_news",
+      "x": 430,
+      "y": 1140,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "お知らせ管理"
+      ]
+    },
+    {
+      "id": "adm_banner",
+      "x": 600,
+      "y": 1140,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "バナー管理"
+      ]
+    },
+    {
+      "id": "adm_qa",
+      "x": 770,
+      "y": 1140,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "Q&A管理"
+      ]
+    },
+    {
+      "id": "adm_contact",
+      "x": 260,
+      "y": 1220,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "お問い合わせ",
+        "一覧"
+      ]
+    },
+    {
+      "id": "adm_email",
+      "x": 430,
+      "y": 1220,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "メールアドレス",
+        "変更"
+      ]
+    },
+    {
+      "id": "adm_pw",
+      "x": 600,
+      "y": 1220,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "パスワード",
+        "変更"
+      ]
+    },
+    {
+      "id": "adm_calendar",
+      "x": 260,
+      "y": 1300,
+      "w": 130,
+      "h": 52,
+      "type": "external",
+      "lines": [
+        "営業",
+        "カレンダー"
+      ]
+    },
+    {
+      "id": "adm_sim",
+      "x": 430,
+      "y": 1300,
+      "w": 130,
+      "h": 52,
+      "type": "external",
+      "lines": [
+        "料金",
+        "シミュレーション"
+      ]
+    },
+    {
+      "id": "adm_pw_reset",
+      "x": 600,
+      "y": 900,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "パスワード",
+        "リセット"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "top",
+      "fromSide": "r",
+      "to": "search",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e2",
+      "from": "search",
+      "fromSide": "r",
+      "to": "results",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e3",
+      "from": "results",
+      "fromSide": "r",
+      "to": "shop_dtl",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e4",
+      "from": "shop_dtl",
+      "fromSide": "r",
+      "to": "bicycle",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e5",
+      "from": "bicycle",
+      "fromSide": "r",
+      "to": "cart1",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e6",
+      "from": "cart1",
+      "fromSide": "r",
+      "to": "cart2",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e7",
+      "from": "cart2",
+      "fromSide": "r",
+      "to": "cart3",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e8",
+      "from": "cart3",
+      "fromSide": "r",
+      "to": "cart4",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e9",
+      "from": "cart4",
+      "fromSide": "r",
+      "to": "resv",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e10",
+      "from": "cart4",
+      "fromSide": "t",
+      "to": "card",
+      "toSide": "b",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e10b",
+      "from": "card",
+      "fromSide": "r",
+      "to": "payjp",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "eb1",
+      "from": "results",
+      "fromSide": "t",
+      "to": "search",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "eb2",
+      "from": "shop_dtl",
+      "fromSide": "t",
+      "to": "search",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "eb3",
+      "from": "bicycle",
+      "fromSide": "t",
+      "to": "search",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ed1",
+      "from": "top",
+      "fromSide": "b",
+      "to": "news_top",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "ed2",
+      "from": "top",
+      "fromSide": "b",
+      "to": "topics_top",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "ed3",
+      "from": "top",
+      "fromSide": "b",
+      "to": "faq_main",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e11",
+      "from": "news_top",
+      "fromSide": "r",
+      "to": "news_dtl",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e12",
+      "from": "topics_top",
+      "fromSide": "r",
+      "to": "topics_dtl",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e13",
+      "from": "login",
+      "fromSide": "b",
+      "to": "signup",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e14",
+      "from": "signup",
+      "fromSide": "t",
+      "to": "login",
+      "toSide": "b",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e15",
+      "from": "mypage",
+      "fromSide": "r",
+      "to": "edit",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e16",
+      "from": "mypage",
+      "fromSide": "r",
+      "to": "user_resv",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "ae1",
+      "from": "adm_login",
+      "fromSide": "r",
+      "to": "adm_customer",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "ae2",
+      "from": "adm_login",
+      "fromSide": "r",
+      "to": "adm_pw_reset",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae3",
+      "from": "adm_customer",
+      "fromSide": "b",
+      "to": "adm_shop",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae4",
+      "from": "adm_shop",
+      "fromSide": "r",
+      "to": "adm_price_table",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae5",
+      "from": "adm_customer",
+      "fromSide": "b",
+      "to": "adm_resv",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae6",
+      "from": "adm_resv",
+      "fromSide": "r",
+      "to": "adm_sales",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae7",
+      "from": "adm_customer",
+      "fromSide": "b",
+      "to": "adm_fv",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae8",
+      "from": "adm_fv",
+      "fromSide": "r",
+      "to": "adm_news",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae9",
+      "from": "adm_news",
+      "fromSide": "r",
+      "to": "adm_banner",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae10",
+      "from": "adm_banner",
+      "fromSide": "r",
+      "to": "adm_qa",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae11",
+      "from": "adm_customer",
+      "fromSide": "b",
+      "to": "adm_contact",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae12",
+      "from": "adm_contact",
+      "fromSide": "r",
+      "to": "adm_email",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae13",
+      "from": "adm_email",
+      "fromSide": "r",
+      "to": "adm_pw",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae14",
+      "from": "adm_customer",
+      "fromSide": "b",
+      "to": "adm_calendar",
+      "toSide": "t",
+      "label": "",
+      "dashed": true
+    },
+    {
+      "id": "ae15",
+      "from": "adm_calendar",
+      "fromSide": "r",
+      "to": "adm_sim",
+      "toSide": "l",
+      "label": "",
+      "dashed": true
+    }
+  ],
+  "frames": [
+    {
+      "id": "f1",
+      "x": 30,
+      "y": -6.0031284732785934,
+      "w": 1720,
+      "h": 826.0031284732786,
+      "label": "利用者",
+      "fillHex": "#1e50b4",
+      "fillOpacity": 0.07,
+      "stroke": "#2a3a5a",
+      "labelColor": "#4a6a9a",
+      "dashed": false
+    },
+    {
+      "id": "f2",
+      "x": 540.1113554479637,
+      "y": 332.26118201687666,
+      "w": 750,
+      "h": 430,
+      "label": "ヘッダー / フッター",
+      "fillHex": "#c8a030",
+      "fillOpacity": 0.12,
+      "stroke": "#a08020",
+      "labelColor": "#705800",
+      "dashed": false
+    },
+    {
+      "id": "f3",
+      "x": 30,
+      "y": 860,
+      "w": 920,
+      "h": 530,
+      "label": "システム管理者",
+      "fillHex": "#8b1a1a",
+      "fillOpacity": 0.07,
+      "stroke": "#5a2a2a",
+      "labelColor": "#c05050",
+      "dashed": false
+    }
+  ],
+  "nextId": 200,
+  "vx": 169.4415691776,
+  "vy": 289.08790348800005,
+  "vscale": 0.5277319168
+}
