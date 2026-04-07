@@ -587,9 +587,21 @@ export default function FlowTab() {
     function updatePanel(){
       if(!s.selected){
         pempty.style.display=''; pinner.style.display='none'
-        pempty.innerHTML=s.multi.length>1
-          ?`${s.multi.length} 個選択中<br><small style="color:#666">Deleteで削除</small>`
-          :'要素を選択すると<br>プロパティが表示されます'
+        if(s.multi.length>1){
+          const nodeCount=s.multi.filter(m=>m.type==='node').length
+          let html=`${s.multi.length} 個選択中<br><small style="color:#666">Deleteで削除</small>`
+          if(nodeCount>=2){
+            html+=`<div style="display:flex;gap:6px;margin-top:12px">
+              <button data-dist="h" style="flex:1;padding:6px 0;border:1px solid #444450;border-radius:4px;background:#38383f;color:#a0a0b8;font-size:11px;cursor:pointer">横均等</button>
+              <button data-dist="v" style="flex:1;padding:6px 0;border:1px solid #444450;border-radius:4px;background:#38383f;color:#a0a0b8;font-size:11px;cursor:pointer">縦均等</button>
+            </div>`
+          }
+          pempty.innerHTML=html
+          pempty.querySelector('[data-dist="h"]')?.addEventListener('click',()=>{distributeMulti('h')})
+          pempty.querySelector('[data-dist="v"]')?.addEventListener('click',()=>{distributeMulti('v')})
+        } else {
+          pempty.innerHTML='要素を選択すると<br>プロパティが表示されます'
+        }
         return
       }
       pempty.style.display='none'; pinner.style.display='flex'
@@ -720,6 +732,31 @@ export default function FlowTab() {
       s.selected=null; updatePanel(); render()
     }
 
+    // ─── DISTRIBUTE MULTI ──────────────────────────────────────────────
+    function distributeMulti(axis:'h'|'v'){
+      const items:NodeObj[]=[]
+      s.multi.forEach(m=>{
+        if(m.type==='node'){const n=getNode(m.id);if(n)items.push(n)}
+      })
+      if(items.length<2) return
+      pushHist()
+      if(axis==='h'){
+        // 1番上(y最小)のノードのx中心に全ノードを揃える
+        items.sort((a,b)=>a.y-b.y)
+        const topNode=items[0]
+        const centerX=topNode.x+topNode.w/2
+        items.forEach(i=>{i.x=Math.round(centerX-i.w/2)})
+      } else {
+        // 1番上のノードを基準に縦方向等間隔配置
+        items.sort((a,b)=>a.y-b.y)
+        const startY=items[0].y
+        const GAP=20
+        let cy=startY
+        items.forEach(i=>{i.y=Math.round(cy);cy+=i.h+GAP})
+      }
+      render(); scheduleSave()
+    }
+
     // ─── CTX MENU ─────────────────────────────────────────────────────────
     const showCtx=(e:MouseEvent)=>{ctx.style.left=e.clientX+'px';ctx.style.top=e.clientY+'px';ctx.style.display='block'}
     const hideCtx=()=>ctx.style.display='none'
@@ -754,8 +791,44 @@ export default function FlowTab() {
     function onDbl(e:MouseEvent){
       const eh=(e.target as HTMLElement).closest('.edge-handle')
       if(eh){const de=getEdge((eh as HTMLElement).dataset.edge!);if(de){pushHist();de.offset=null;render();return}}
-      const ne=(e.target as HTMLElement).closest('.node-el')
-      if(ne){select('node',(ne as HTMLElement).dataset.id!);setTimeout(()=>document.getElementById('ft-nlbl')?.focus(),50)}
+      // ポートドットもノードの子なので、ポートかノード要素どちらでもノード編集を開始
+      const pd2=(e.target as HTMLElement).closest('.port-dot')
+      const ne=pd2||(e.target as HTMLElement).closest('.node-el')
+      if(ne){
+        const id=pd2?(pd2 as HTMLElement).dataset.node!:(ne as HTMLElement).dataset.id!
+        const n=getNode(id); if(!n) return
+        select('node',id)
+        // ノード位置をスクリーン座標に変換
+        const r=wrap.getBoundingClientRect()
+        const sx=n.x*s.vscale+s.vx+r.left
+        const sy=n.y*s.vscale+s.vy+r.top
+        const sw=n.w*s.vscale, sh=n.h*s.vscale
+        // インライン入力欄を作成
+        const ta=document.createElement('textarea')
+        ta.value=n.lines.join('\n')
+        Object.assign(ta.style,{
+          position:'fixed',left:sx+'px',top:sy+'px',width:sw+'px',height:sh+'px',
+          background:'rgba(0,0,0,0.85)',color:'#a0e8b8',border:'2px solid #5a8abf',
+          borderRadius:(8*s.vscale)+'px',padding:'4px 6px',
+          fontSize:(11*s.vscale)+'px',fontFamily:"'Hiragino Sans',sans-serif",
+          textAlign:'center',resize:'none',outline:'none',zIndex:'9999',
+          boxSizing:'border-box',lineHeight:'1.4',
+          display:'flex',alignItems:'center',
+        })
+        document.body.appendChild(ta)
+        ta.focus(); ta.select()
+        const commit=()=>{
+          if(!ta.parentNode) return
+          pushHist()
+          n.lines=ta.value.split('\n')
+          ta.remove(); render(); updatePanel(); scheduleSave()
+        }
+        ta.addEventListener('keydown',(ke)=>{
+          if(ke.key==='Enter'&&!ke.shiftKey){ke.preventDefault();commit()}
+          if(ke.key==='Escape'){ta.remove();render()}
+        })
+        ta.addEventListener('blur',commit)
+      }
     }
 
     function onDown(e:MouseEvent){
@@ -777,7 +850,7 @@ export default function FlowTab() {
         return
       }
       const pd=(e.target as HTMLElement).closest('.port-dot')
-      if(pd&&s.tool==='select'){
+      if(pd&&s.tool==='select'&&e.detail<2){
         const nid=(pd as HTMLElement).dataset.node!,side=(pd as HTMLElement).dataset.side!
         const n=getNode(nid);if(n){const [px,py]=nodePt(n,side);s.conn={fromId:nid,fromSide:side,x1:px,y1:py}}
         return
@@ -827,6 +900,7 @@ export default function FlowTab() {
       const fe=(e.target as HTMLElement).closest('.frame-el')
       if(fe&&s.tool==='select'){
         const id=(fe as HTMLElement).dataset.id!;let f=getFrame(id)!
+        const alreadySelected=s.selected?.type==='frame'&&s.selected.id===id
         const inMF=s.multi.length>1&&s.multi.some(m=>m.type==='frame'&&m.id===id)
         if(inMF&&!e.altKey){
           pushHist()
@@ -842,8 +916,8 @@ export default function FlowTab() {
           }
           s.selected=s.multi.length===1?s.multi[0]:null; updatePanel(); render(); return
         }
-        s.multi=[]; pushHist()
         if(e.altKey){
+          s.multi=[]; pushHist()
           const cf={...f,id:genId('f')}; s.frames.push(cf)
           const nim:Record<string,string>={}
           s.nodes.filter(n=>inFrame(n,f)).forEach(n=>{const cn={...n,id:genId('n'),lines:[...n.lines]};nim[n.id]=cn.id;s.nodes.push(cn)})
@@ -855,10 +929,17 @@ export default function FlowTab() {
           const cno=Object.values(nim).map(nid=>{const cn=getNode(nid)!;return{id:nid,ox:cn.x,oy:cn.y}})
           s.drag={mode:'drag-frame',id:cf.id,ox:cf.x,oy:cf.y,sx:e.clientX,sy:e.clientY,containedNodes:cno,containedFrames:csf}; return
         }
-        select('frame',id)
-        const cno=s.nodes.filter(n=>inFrame(n,f)).map(n=>({id:n.id,ox:n.x,oy:n.y}))
-        const cfo=s.frames.filter(fr=>fr.id!==id&&inFrame(fr,f)).map(fr=>({id:fr.id,ox:fr.x,oy:fr.y}))
-        s.drag={mode:'drag-frame',id,ox:f.x,oy:f.y,sx:e.clientX,sy:e.clientY,containedNodes:cno,containedFrames:cfo}; return
+        if(alreadySelected){
+          // 選択済み → ドラッグで移動
+          pushHist()
+          const cno=s.nodes.filter(n=>inFrame(n,f)).map(n=>({id:n.id,ox:n.x,oy:n.y}))
+          const cfo=s.frames.filter(fr=>fr.id!==id&&inFrame(fr,f)).map(fr=>({id:fr.id,ox:fr.x,oy:fr.y}))
+          s.drag={mode:'drag-frame',id,ox:f.x,oy:f.y,sx:e.clientX,sy:e.clientY,containedNodes:cno,containedFrames:cfo}; return
+        }
+        // 未選択 → フレーム選択のみ（ドラッグしたらラバーバンド）
+        s.multi=[]; select('frame',id)
+        const [rx,ry]=svgPt(e.clientX,e.clientY)
+        s.rband={sx:rx,sy:ry}; return
       }
 
       if(s.tool==='node'){
@@ -1213,9 +1294,9 @@ export default function FlowTab() {
             autoFocus
             value={cmtInput}
             onChange={e=>setCmtInput(e.target.value)}
-            onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();confirmComment()}if(e.key==='Escape')setPendingCmt(null)}}
+            onKeyDown={e=>{if(e.key==='Escape')setPendingCmt(null)}}
             style={{background:'#1e1a08',border:'1px solid #705820',borderRadius:4,color:'#e8d080',fontSize:12,padding:'6px 8px',resize:'none',width:200,height:72,fontFamily:'inherit',outline:'none'}}
-            placeholder="Shift+Enterで改行 / Enterで確定"
+            placeholder="Escでキャンセル"
           />
           <div style={{display:'flex',gap:6,justifyContent:'flex-end'}}>
             <button onClick={()=>setPendingCmt(null)} style={{padding:'3px 10px',border:'1px solid #444450',borderRadius:4,background:'#38383f',color:'#a0a0b8',fontSize:11,cursor:'pointer'}}>キャンセル</button>

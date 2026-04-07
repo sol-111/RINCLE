@@ -306,8 +306,8 @@
     },
     {
       "id": "adm_login",
-      "x": 1029.7811174260428,
-      "y": 921.7364733216182,
+      "x": 2813.1523837840973,
+      "y": 84.29603609671426,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -318,64 +318,42 @@
     },
     {
       "id": "adm_customer",
-      "x": 1229.7811174260428,
-      "y": 921.7364733216182,
+      "x": 3011.713282348641,
+      "y": 84.2562990587976,
       "w": 130,
       "h": 52,
       "type": "bubble",
       "lines": [
-        "顧客一覧",
+        "顧客管理",
         "(デフォルト)"
       ]
     },
     {
       "id": "adm_shop",
-      "x": 1229.7811174260428,
-      "y": 1001.7364733216182,
+      "x": 3180,
+      "y": 163.2562990587976,
       "w": 130,
       "h": 52,
       "type": "bubble",
       "lines": [
-        "加盟店一覧"
-      ]
-    },
-    {
-      "id": "adm_price_table",
-      "x": 1399.7811174260428,
-      "y": 1001.7364733216182,
-      "w": 130,
-      "h": 52,
-      "type": "bubble",
-      "lines": [
-        "料金表管理"
+        "加盟店管理"
       ]
     },
     {
       "id": "adm_resv",
-      "x": 1229.7811174260428,
-      "y": 1081.736473321618,
+      "x": 3180,
+      "y": 591.2562990587976,
       "w": 130,
       "h": 52,
       "type": "bubble",
       "lines": [
-        "予約一覧"
-      ]
-    },
-    {
-      "id": "adm_sales",
-      "x": 1399.7811174260428,
-      "y": 1081.736473321618,
-      "w": 130,
-      "h": 52,
-      "type": "bubble",
-      "lines": [
-        "売上レポート"
+        "予約管理"
       ]
     },
     {
       "id": "adm_fv",
-      "x": 1229.7811174260428,
-      "y": 1161.736473321618,
+      "x": 3180,
+      "y": 857.2562990587976,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -385,8 +363,8 @@
     },
     {
       "id": "adm_news",
-      "x": 1399.7811174260428,
-      "y": 1161.736473321618,
+      "x": 3180,
+      "y": 1135.2562990587976,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -396,8 +374,8 @@
     },
     {
       "id": "adm_banner",
-      "x": 1569.781117426043,
-      "y": 1161.736473321618,
+      "x": 3180,
+      "y": 1407.193230643867,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -406,80 +384,9 @@
       ]
     },
     {
-      "id": "adm_qa",
-      "x": 1739.781117426043,
-      "y": 1161.736473321618,
-      "w": 130,
-      "h": 52,
-      "type": "bubble",
-      "lines": [
-        "Q&A管理"
-      ]
-    },
-    {
-      "id": "adm_contact",
-      "x": 1229.7811174260428,
-      "y": 1241.736473321618,
-      "w": 130,
-      "h": 52,
-      "type": "bubble",
-      "lines": [
-        "お問い合わせ",
-        "一覧"
-      ]
-    },
-    {
-      "id": "adm_email",
-      "x": 1399.7811174260428,
-      "y": 1241.736473321618,
-      "w": 130,
-      "h": 52,
-      "type": "bubble",
-      "lines": [
-        "メールアドレス",
-        "変更"
-      ]
-    },
-    {
-      "id": "adm_pw",
-      "x": 1569.781117426043,
-      "y": 1241.736473321618,
-      "w": 130,
-      "h": 52,
-      "type": "bubble",
-      "lines": [
-        "パスワード",
-        "変更"
-      ]
-    },
-    {
-      "id": "adm_calendar",
-      "x": 1229.7811174260428,
-      "y": 1321.736473321618,
-      "w": 130,
-      "h": 52,
-      "type": "external",
-      "lines": [
-        "営業",
-        "カレンダー"
-      ]
-    },
-    {
-      "id": "adm_sim",
-      "x": 1399.7811174260428,
-      "y": 1321.736473321618,
-      "w": 130,
-      "h": 52,
-      "type": "external",
-      "lines": [
-        "料金",
-        "シミュレーション"
-      ]
-    },
-    {
       "id": "store_login",
-      "x": 60,
-      "y": 987.595645603112,
+      "x": 1872.4482363484663,
+      "y": 90.25629905879755,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -490,8 +397,8 @@
     },
     {
       "id": "store_resv",
-      "x": 260,
-      "y": 987.595645603112,
+      "x": 2071.2892074745937,
+      "y": 90,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -502,8 +409,8 @@
     },
     {
       "id": "store_past_resv",
-      "x": 430,
-      "y": 987.595645603112,
+      "x": 2246.348598012108,
+      "y": 418.26177808477075,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -513,8 +420,8 @@
     },
     {
       "id": "store_sales",
-      "x": 600,
-      "y": 987.595645603112,
+      "x": 2246.348598012108,
+      "y": 499.1664583635419,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -524,8 +431,8 @@
     },
     {
       "id": "store_customer",
-      "x": 260,
-      "y": 1067.595645603112,
+      "x": 2246.348598012108,
+      "y": 579.9242984735702,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -535,8 +442,8 @@
     },
     {
       "id": "store_bicycle",
-      "x": 260,
-      "y": 1147.595645603112,
+      "x": 2246.348598012108,
+      "y": 659.4087147823743,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -546,8 +453,8 @@
     },
     {
       "id": "store_option",
-      "x": 430,
-      "y": 1147.595645603112,
+      "x": 2246.348598012108,
+      "y": 826.9323413128009,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -557,8 +464,8 @@
     },
     {
       "id": "store_hours",
-      "x": 600,
-      "y": 1147.595645603112,
+      "x": 2246.348598012108,
+      "y": 1005.5026675518034,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -568,8 +475,8 @@
     },
     {
       "id": "store_calendar",
-      "x": 770,
-      "y": 1147.595645603112,
+      "x": 2246.348598012108,
+      "y": 1097.4503289879442,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -579,20 +486,9 @@
       ]
     },
     {
-      "id": "store_info",
-      "x": 260,
-      "y": 1227.595645603112,
-      "w": 130,
-      "h": 52,
-      "type": "bubble",
-      "lines": [
-        "店舗情報"
-      ]
-    },
-    {
       "id": "store_contact",
-      "x": 430,
-      "y": 1227.595645603112,
+      "x": 2246.348598012108,
+      "y": 1280.3807342557498,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -603,8 +499,8 @@
     },
     {
       "id": "store_email",
-      "x": 600,
-      "y": 1227.595645603112,
+      "x": 2246.348598012108,
+      "y": 1372.1332784266294,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -615,8 +511,8 @@
     },
     {
       "id": "store_pw",
-      "x": 770,
-      "y": 1227.595645603112,
+      "x": 2246.348598012108,
+      "y": 1461.6177731571438,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -627,8 +523,8 @@
     },
     {
       "id": "n200",
-      "x": 60.444202405452224,
-      "y": 1146.3943380476057,
+      "x": 1872.8924387539182,
+      "y": 248.8301297222087,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -638,8 +534,8 @@
     },
     {
       "id": "n202",
-      "x": 1029.7811174260428,
-      "y": 1083.9182584949783,
+      "x": 2813.1523837840973,
+      "y": 246.2562990587976,
       "w": 130,
       "h": 52,
       "type": "bubble",
@@ -647,6 +543,453 @@
         "管理画面",
         "ログイン"
       ]
+    },
+    {
+      "id": "n209",
+      "x": 2436.7517762756956,
+      "y": 659.3210927106788,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "自転車",
+        "新規作成"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n211",
+      "x": 2437.348598012108,
+      "y": 741.7984804883715,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "在庫設定"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n213",
+      "x": 2437.348598012108,
+      "y": 579.9242984735702,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "顧客詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n215",
+      "x": 2437.348598012108,
+      "y": 826.0663334753024,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "オプション",
+        "新規作成"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n218",
+      "x": 2437.348598012108,
+      "y": 907.3500777801696,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "在庫設定"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n223",
+      "x": 2246.348598012108,
+      "y": 1196.3865206433593,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "店舗情報"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n233",
+      "x": 3180,
+      "y": 84.2562990587976,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "顧客詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n236",
+      "x": 3364,
+      "y": 163.2562990587976,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "加盟店",
+        "新規作成"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n237",
+      "x": 3364,
+      "y": 246.2562990587976,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "加盟店詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n240",
+      "x": 3180,
+      "y": 340.4307300170119,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "料金表管理"
+      ]
+    },
+    {
+      "id": "n241",
+      "x": 3364,
+      "y": 339.74307758066425,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "料金表",
+        "新規作成"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n243",
+      "x": 3364,
+      "y": 419.72002963694536,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "料金表",
+        "詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n244",
+      "x": 3364,
+      "y": 505.2399387664341,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "料金表",
+        "削除"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n248",
+      "x": 3363,
+      "y": 591.2562990587976,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "予約者",
+        "詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n249",
+      "x": 3363,
+      "y": 670.4904400606274,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "乗車人",
+        "詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n252",
+      "x": 3180,
+      "y": 766.8266741845002,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "売上レポート"
+      ]
+    },
+    {
+      "id": "n256",
+      "x": 3362,
+      "y": 857.2562990587976,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "FV",
+        "新規作成"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n257",
+      "x": 3362,
+      "y": 957.2456306647864,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "FV",
+        "編集"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n260",
+      "x": 3362,
+      "y": 1044.8436114450801,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "FV",
+        "削除"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n262",
+      "x": 3364,
+      "y": 1135.2562990587976,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "お知らせ",
+        "新規作成"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n263",
+      "x": 3364,
+      "y": 1226.8618908554804,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "お知らせ",
+        "編集"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n264",
+      "x": 3364,
+      "y": 1312.901396143342,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "お知らせ",
+        "削除"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n268",
+      "x": 3361,
+      "y": 1407.1500119293592,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "バナー",
+        "新規作成"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n269",
+      "x": 3361,
+      "y": 1498.1929067558367,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "バナー",
+        "編集"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n270",
+      "x": 3361,
+      "y": 1580.5822190046806,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "バナー",
+        "削除"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n278",
+      "x": 3181.57962863839,
+      "y": 1681.7509057439395,
+      "w": 130,
+      "h": 52,
+      "type": "bubble",
+      "lines": [
+        "QA管理"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n280",
+      "x": 3362,
+      "y": 1681.5600488107277,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "Q&A",
+        "新規作成"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n281",
+      "x": 3362,
+      "y": 1773.7049919780943,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "Q&A",
+        "編集"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n282",
+      "x": 3362,
+      "y": 1862.7065942722722,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "Q&A",
+        "削除"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n286",
+      "x": 2244,
+      "y": 90,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "予約者",
+        "詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n288",
+      "x": 2243.307961186727,
+      "y": 173.41159006819515,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "乗車人",
+        "詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n291",
+      "x": 2244,
+      "y": 247.76227651762352,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "ライド開始"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n292",
+      "x": 2244,
+      "y": 332.0691932588357,
+      "w": 130,
+      "h": 52,
+      "type": "popup",
+      "lines": [
+        "キャンセル"
+      ],
+      "fill": null,
+      "stroke": null
     }
   ],
   "edges": [
@@ -867,123 +1210,6 @@
       "dashed": false
     },
     {
-      "id": "ae3",
-      "from": "adm_customer",
-      "fromSide": "b",
-      "to": "adm_shop",
-      "toSide": "t",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae4",
-      "from": "adm_shop",
-      "fromSide": "r",
-      "to": "adm_price_table",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae5",
-      "from": "adm_customer",
-      "fromSide": "b",
-      "to": "adm_resv",
-      "toSide": "t",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae6",
-      "from": "adm_resv",
-      "fromSide": "r",
-      "to": "adm_sales",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae7",
-      "from": "adm_customer",
-      "fromSide": "b",
-      "to": "adm_fv",
-      "toSide": "t",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae8",
-      "from": "adm_fv",
-      "fromSide": "r",
-      "to": "adm_news",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae9",
-      "from": "adm_news",
-      "fromSide": "r",
-      "to": "adm_banner",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae10",
-      "from": "adm_banner",
-      "fromSide": "r",
-      "to": "adm_qa",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae11",
-      "from": "adm_customer",
-      "fromSide": "b",
-      "to": "adm_contact",
-      "toSide": "t",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae12",
-      "from": "adm_contact",
-      "fromSide": "r",
-      "to": "adm_email",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae13",
-      "from": "adm_email",
-      "fromSide": "r",
-      "to": "adm_pw",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae14",
-      "from": "adm_customer",
-      "fromSide": "b",
-      "to": "adm_calendar",
-      "toSide": "t",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "ae15",
-      "from": "adm_calendar",
-      "fromSide": "r",
-      "to": "adm_sim",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
       "id": "se1",
       "from": "store_login",
       "fromSide": "r",
@@ -999,97 +1225,7 @@
       "to": "store_past_resv",
       "toSide": "l",
       "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se4",
-      "from": "store_past_resv",
-      "fromSide": "r",
-      "to": "store_sales",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se5",
-      "from": "store_resv",
-      "fromSide": "b",
-      "to": "store_customer",
-      "toSide": "t",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se6",
-      "from": "store_resv",
-      "fromSide": "b",
-      "to": "store_bicycle",
-      "toSide": "t",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se7",
-      "from": "store_bicycle",
-      "fromSide": "r",
-      "to": "store_option",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se8",
-      "from": "store_option",
-      "fromSide": "r",
-      "to": "store_hours",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se9",
-      "from": "store_hours",
-      "fromSide": "r",
-      "to": "store_calendar",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se10",
-      "from": "store_resv",
-      "fromSide": "b",
-      "to": "store_info",
-      "toSide": "t",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se11",
-      "from": "store_info",
-      "fromSide": "r",
-      "to": "store_contact",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se12",
-      "from": "store_contact",
-      "fromSide": "r",
-      "to": "store_email",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
-    },
-    {
-      "id": "se13",
-      "from": "store_email",
-      "fromSide": "r",
-      "to": "store_pw",
-      "toSide": "l",
-      "label": "",
-      "dashed": true
+      "dashed": false
     },
     {
       "id": "e201",
@@ -1110,6 +1246,439 @@
       "label": "",
       "dashed": true,
       "arrowDir": "both"
+    },
+    {
+      "id": "e204",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_sales",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e207",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_bicycle",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e208",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_customer",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e210",
+      "from": "store_bicycle",
+      "fromSide": "r",
+      "to": "n209",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e212",
+      "from": "store_bicycle",
+      "fromSide": "r",
+      "to": "n211",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e214",
+      "from": "store_customer",
+      "fromSide": "r",
+      "to": "n213",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e216",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_option",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e217",
+      "from": "store_option",
+      "fromSide": "r",
+      "to": "n215",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e219",
+      "from": "store_option",
+      "fromSide": "r",
+      "to": "n218",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e220",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_hours",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e221",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_calendar",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e222",
+      "from": "store_hours",
+      "fromSide": "b",
+      "to": "store_calendar",
+      "toSide": "t",
+      "label": "",
+      "dashed": true,
+      "arrowDir": "both"
+    },
+    {
+      "id": "e224",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "n223",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e225",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_contact",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e226",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_email",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e229",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "store_pw",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e234",
+      "from": "adm_customer",
+      "fromSide": "r",
+      "to": "adm_shop",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e235",
+      "from": "adm_customer",
+      "fromSide": "r",
+      "to": "n233",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e238",
+      "from": "adm_shop",
+      "fromSide": "r",
+      "to": "n236",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e239",
+      "from": "adm_shop",
+      "fromSide": "r",
+      "to": "n237",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e242",
+      "from": "n240",
+      "fromSide": "r",
+      "to": "n241",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e245",
+      "from": "n240",
+      "fromSide": "r",
+      "to": "n243",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e246",
+      "from": "n240",
+      "fromSide": "r",
+      "to": "n244",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e247",
+      "from": "adm_customer",
+      "fromSide": "r",
+      "to": "n240",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e250",
+      "from": "adm_resv",
+      "fromSide": "r",
+      "to": "n248",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e251",
+      "from": "adm_customer",
+      "fromSide": "r",
+      "to": "adm_resv",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e253",
+      "from": "adm_customer",
+      "fromSide": "r",
+      "to": "n252",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e254",
+      "from": "adm_customer",
+      "fromSide": "r",
+      "to": "adm_fv",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e255",
+      "from": "adm_resv",
+      "fromSide": "r",
+      "to": "n249",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e258",
+      "from": "adm_fv",
+      "fromSide": "r",
+      "to": "n256",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e259",
+      "from": "adm_fv",
+      "fromSide": "r",
+      "to": "n257",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e261",
+      "from": "adm_fv",
+      "fromSide": "r",
+      "to": "n260",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e265",
+      "from": "adm_news",
+      "fromSide": "r",
+      "to": "n262",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e266",
+      "from": "adm_news",
+      "fromSide": "r",
+      "to": "n263",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e267",
+      "from": "adm_news",
+      "fromSide": "r",
+      "to": "n264",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e271",
+      "from": "adm_banner",
+      "fromSide": "r",
+      "to": "n268",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e272",
+      "from": "adm_banner",
+      "fromSide": "r",
+      "to": "n269",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e273",
+      "from": "adm_banner",
+      "fromSide": "r",
+      "to": "n270",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e274",
+      "from": "adm_customer",
+      "fromSide": "r",
+      "to": "adm_news",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e275",
+      "from": "adm_customer",
+      "fromSide": "r",
+      "to": "adm_banner",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e279",
+      "from": "adm_customer",
+      "fromSide": "r",
+      "to": "n278",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e283",
+      "from": "n278",
+      "fromSide": "r",
+      "to": "n280",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e284",
+      "from": "n278",
+      "fromSide": "r",
+      "to": "n281",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e285",
+      "from": "n278",
+      "fromSide": "r",
+      "to": "n282",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e287",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "n286",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e290",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "n288",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e293",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "n291",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e294",
+      "from": "store_resv",
+      "fromSide": "r",
+      "to": "n292",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
     }
   ],
   "frames": [
@@ -1141,10 +1710,10 @@
     },
     {
       "id": "f3",
-      "x": 999.7811174260428,
-      "y": 881.7364733216182,
+      "x": 2783.1523837840973,
+      "y": -10.965666728182669,
       "w": 920,
-      "h": 530,
+      "h": 1989.682799250546,
       "label": "システム管理者",
       "fillHex": "#8b1a1a",
       "fillOpacity": 0.07,
@@ -1154,10 +1723,10 @@
     },
     {
       "id": "f4",
-      "x": 30,
-      "y": 887.595645603112,
-      "w": 920,
-      "h": 430,
+      "x": 1842.4482363484663,
+      "y": -9.968562722284716,
+      "w": 864.2825466212814,
+      "h": 1786.6205010923188,
       "label": "店舗管理者",
       "fillHex": "#1a5a1a",
       "fillOpacity": 0.07,
@@ -1166,8 +1735,8 @@
       "dashed": false
     }
   ],
-  "nextId": 204,
-  "vx": 35.83268446327956,
-  "vy": -346.1367018621345,
-  "vscale": 0.9982533874127832
+  "nextId": 295,
+  "vx": -1329.9979513565295,
+  "vy": 25.338958240848584,
+  "vscale": 1.0376373517893613
 }
