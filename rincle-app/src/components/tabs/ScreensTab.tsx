@@ -29,17 +29,17 @@ type ColKey = 'screen_id' | 'item' | 'component' | 'feature' | 'detail' | 'impro
 const ALL_COLS: ColKey[] = ['screen_id', 'item', 'component', 'feature', 'detail', 'improvement', 'path']
 
 const COL_LABELS: Record<ColKey, string> = {
-  screen_id: '機能ID', item: '項目', component: '画面/コンポーネント',
+  screen_id: '機能ID', item: '画面名', component: 'Bubble名',
   feature: '含まれる機能', detail: '機能詳細', improvement: '改善点', path: 'path/para',
 }
 
 const COL_PLACEHOLDERS: Record<ColKey, string> = {
-  screen_id: 'ID', item: '項目', component: '画面', feature: '機能',
+  screen_id: 'ID', item: '画面名', component: 'Bubble名', feature: '機能',
   detail: '詳細', improvement: '改善点', path: 'path',
 }
 
 const INIT_WIDTHS: Record<ColKey, number> = {
-  screen_id: 44, item: 200, component: 130, feature: 230,
+  screen_id: 44, item: 150, component: 140, feature: 250,
   detail: 88, improvement: 220, path: 190,
 }
 
@@ -51,8 +51,8 @@ const ROLE_DATA: Record<Exclude<SummaryTab, '全体'>, {
   accent: string; screenCount: number; uiElements: number; workflows: number; screens: string[]
 }> = {
   '利用者': {
-    accent: '#4a90d9', screenCount: 17, uiElements: 75, workflows: 228,
-    screens: ['TOP', '空車検索', '検索一覧', '店舗詳細', '自転車詳細', '予約内容(空車検索)', '予約内容(顧客情報入力)', '予約内容(予約内容確認)', '予約内容(決済)', '予約一覧', 'ログイン', '新規会員登録', 'マイページ', 'アカウント詳細/編集', 'FAQ一覧', 'お問い合わせ', '規約等'],
+    accent: '#4a90d9', screenCount: 23, uiElements: 75, workflows: 228,
+    screens: ['TOP', '空車検索', '検索一覧', '店舗詳細', '自転車詳細', '予約内容(空車検索)', '予約内容(顧客情報入力)', '予約内容(予約内容確認)', '予約内容(決済)', '予約一覧', 'カード情報入力', '新着情報一覧', '新着情報詳細', 'お知らせ一覧', 'お知らせ詳細', 'FAQ一覧', 'ログイン', '新規会員登録', 'マイページ', 'アカウント詳細/編集', 'お問い合わせ', '規約等', 'パスワード再設定'],
   },
   '店舗管理者': {
     accent: '#66bb6a', screenCount: 15, uiElements: 32, workflows: 156,
@@ -209,7 +209,7 @@ export default function ScreensTab() {
   const [summaryTab, setSummaryTab] = useState<SummaryTab>('全体')
   const [commonOpen, setCommonOpen] = useState(false)
   const [issueTab, setIssueTab] = useState<IssueTab>('全体')
-  const [selectedSheet, setSelectedSheet] = useState<string>('__list__')
+  const [tableTab, setTableTab] = useState<SummaryTab>('全体')
   const [search, setSearch] = useState('')
   const [colFilterKey, setColFilterKey] = useState<ColKey | ''>('')
   const [groupFilter, setGroupFilter] = useState('')
@@ -218,8 +218,6 @@ export default function ScreensTab() {
     screen_id: '', item: '', component: '', feature: '', detail: '', improvement: '', path: ''
   })
   const [colWidths, setColWidths] = useState<Record<ColKey, number>>({ ...INIT_WIDTHS })
-  const [renamingSheet, setRenamingSheet] = useState<string | null>(null)
-  const [renameValue, setRenameValue] = useState('')
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [dragOverId, setDragOverId] = useState<string | null>(null)
   const [selectedCell, setSelectedCell] = useState<{ rowId: string; col: string } | null>(null)
@@ -427,10 +425,85 @@ export default function ScreensTab() {
     cur.slice(a, b + 1).filter(r => r.id !== srcRowId).forEach(r => updateCell(r.id, col, val))
   }
 
+  function getRole(screenId: string): Exclude<SummaryTab, '全体'> | null {
+    if (screenId.startsWith('U')) return '利用者'
+    if (screenId.startsWith('S')) return '店舗管理者'
+    if (screenId.startsWith('A')) return 'システム管理者'
+    return null
+  }
+
   useEffect(() => {
-    supabase.from('screens').select('*').order('sort_order').then(({ data }) => {
-      setRows(data || [])
+    supabase.from('screens').select('*').order('sort_order').then(async ({ data }) => {
+      if (data && data.length > 0) {
+        setRows(data)
+        setLoading(false)
+        return
+      }
+      // Seed initial data if table is empty
+      // item=画面名(画面遷移図と同名), component=Bubble実装画面名
+      const seed: Omit<Row, 'id'>[] = [
+        // ── 利用者 ──
+        { sort_order:0,  screen_id:'U-01', item:'TOP', component:'index', feature:'FVスライダー、空車検索フォーム、新着情報・TOPICSリスト', detail:'完了', improvement:'', path:'/index/top_search' },
+        { sort_order:1,  screen_id:'U-02', item:'空車検索', component:'index', feature:'エリア選択、日付入力（Pikaday）、自転車種類フィルタ、検索ボタン', detail:'完了', improvement:'', path:'/index/top_search' },
+        { sort_order:2,  screen_id:'U-03', item:'検索一覧', component:'index', feature:'「貸出可能な自転車をすべて見る」→「詳細を見る」の2ステップ導線', detail:'完了', improvement:'', path:'/index/search_bicycle' },
+        { sort_order:3,  screen_id:'U-04', item:'店舗詳細', component:'shop_detail', feature:'店舗名、住所、アクセス、Google Maps表示', detail:'完了', improvement:'', path:'/index/shop_detail' },
+        { sort_order:4,  screen_id:'U-05', item:'自転車詳細', component:'index', feature:'画像、スペック、料金表示、Pikadayカレンダー（貸出日/返却日）、時間選択、「予約画面へ進む」', detail:'完了', improvement:'', path:'/index/bicycle_detail' },
+        { sort_order:5,  screen_id:'U-06', item:'予約内容(空車検索)', component:'index', feature:'選択自転車の確認、料金表示、「お客様情報の入力へ」ボタン', detail:'完了', improvement:'', path:'/index/cart' },
+        { sort_order:6,  screen_id:'U-07', item:'予約内容(顧客情報入力)', component:'index', feature:'氏名、住所、電話番号入力、「予約内容の確認に進む」', detail:'完了', improvement:'', path:'/index/cart' },
+        { sort_order:7,  screen_id:'U-08', item:'予約内容(予約内容確認)', component:'index', feature:'予約内容最終確認、「予約する」ボタン', detail:'完了', improvement:'', path:'/index/cart' },
+        { sort_order:8,  screen_id:'U-09', item:'予約内容(決済)', component:'index', feature:'Pay.JP連携、カード情報入力、決済処理', detail:'完了', improvement:'', path:'/index/cart' },
+        { sort_order:9,  screen_id:'U-10', item:'予約一覧', component:'user_reservation_list', feature:'予約一覧表示、「予約をキャンセルする」、確認ダイアログ', detail:'完了', improvement:'', path:'/user_reservation_list' },
+        { sort_order:10, screen_id:'U-11', item:'カード情報入力', component:'index', feature:'Pay.JPカード情報入力ポップアップ', detail:'完了', improvement:'', path:'/index/cart' },
+        { sort_order:11, screen_id:'U-12', item:'ログイン', component:'index', feature:'メール/パスワード入力、ログインボタン', detail:'完了', improvement:'', path:'/' },
+        { sort_order:12, screen_id:'U-13', item:'新規会員登録', component:'index', feature:'会員情報入力、登録ボタン', detail:'完了', improvement:'', path:'/' },
+        { sort_order:13, screen_id:'U-14', item:'マイページ', component:'index', feature:'アカウント編集、予約一覧、退会するボタン、メールアドレス表示', detail:'完了', improvement:'', path:'/index/mypage' },
+        { sort_order:14, screen_id:'U-15', item:'アカウント詳細/編集', component:'index', feature:'個人情報編集、「変更を完了する」ボタン', detail:'完了', improvement:'', path:'/index/edit' },
+        { sort_order:15, screen_id:'U-16', item:'FAQ一覧', component:'index', feature:'よくある質問の一覧表示', detail:'完了', improvement:'', path:'/index/faq' },
+        { sort_order:16, screen_id:'U-17', item:'お問い合わせ', component:'index', feature:'問い合わせフォーム、送信ボタン', detail:'完了', improvement:'', path:'/index/contact' },
+        { sort_order:17, screen_id:'U-18', item:'規約等', component:'shop_term', feature:'プライバシーポリシー、利用規約表示', detail:'完了', improvement:'', path:'/index/privacypolicy' },
+        { sort_order:18, screen_id:'U-19', item:'新着情報一覧', component:'index', feature:'新着情報リスト表示', detail:'完了', improvement:'', path:'/index/news' },
+        { sort_order:19, screen_id:'U-20', item:'新着情報詳細', component:'index', feature:'新着情報本文表示、「一覧へ戻る」ボタン', detail:'完了', improvement:'', path:'/index/news_detail' },
+        { sort_order:20, screen_id:'U-21', item:'お知らせ一覧', component:'index', feature:'お知らせリスト表示', detail:'完了', improvement:'', path:'/index/topics' },
+        { sort_order:21, screen_id:'U-22', item:'お知らせ詳細', component:'index', feature:'お知らせ本文表示、「一覧へ戻る」ボタン', detail:'完了', improvement:'', path:'/index/topics_detail' },
+        { sort_order:22, screen_id:'U-23', item:'会社概要', component:'(外部)', feature:'会社概要ページ（外部リンク）', detail:'完了', improvement:'', path:'' },
+        { sort_order:23, screen_id:'U-24', item:'パスワード再設定', component:'reset_pw', feature:'パスワード再設定フォーム', detail:'完了', improvement:'', path:'/reset_pw' },
+        // ── 店舗管理者 ──
+        { sort_order:24, screen_id:'S-01', item:'店舗管理ログイン', component:'shop_admin_login', feature:'「加盟店様用 管理画面ログイン」、メール/パスワード入力、パスワードリセット', detail:'完了', improvement:'', path:'/shop_admin_login' },
+        { sort_order:25, screen_id:'S-02', item:'予約一覧(デフォルト)', component:'shop_admin', feature:'予約リスト、CSVダウンロード、貸出日フィルタ（Pikaday）、ステータス絞り込み', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:26, screen_id:'S-03', item:'過去の予約', component:'shop_admin', feature:'過去の予約リスト表示、検索・フィルタ', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:27, screen_id:'S-04', item:'売上レポート', component:'shop_admin', feature:'売上データ表示、期間選択', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:28, screen_id:'S-05', item:'顧客一覧', component:'shop_admin', feature:'顧客リスト、キーワード検索、ソート（新着順/古い順）', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:29, screen_id:'S-06', item:'自転車一覧', component:'shop_admin', feature:'自転車リスト、追加/編集Popup（29要素）、画像アップロード', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:30, screen_id:'S-07', item:'オプション管理', component:'shop_admin', feature:'オプション追加/編集Popup、オプション一覧', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:31, screen_id:'S-08', item:'営業時間設定', component:'shop_admin', feature:'曜日別営業時間設定、時/分入力', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:32, screen_id:'S-09', item:'営業カレンダー', component:'shop_admin', feature:'日付別の営業/休業設定、月表示', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:33, screen_id:'S-10', item:'店舗情報', component:'shop_admin', feature:'店舗名、住所、「住所に反映」（Google Maps連携）、画像アップロード、保存', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:34, screen_id:'S-11', item:'お問い合わせ一覧', component:'shop_admin', feature:'問い合わせリスト表示', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:35, screen_id:'S-12', item:'メールアドレス変更', component:'shop_admin', feature:'変更後/確認用メールアドレス入力、変更ボタン', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:36, screen_id:'S-13', item:'パスワード変更', component:'shop_admin', feature:'現在/新規/確認パスワード入力、変更ボタン', detail:'完了', improvement:'', path:'/shop_admin' },
+        { sort_order:37, screen_id:'S-14', item:'パスワードリセット', component:'shop_admin_login', feature:'パスワード再設定メール送信フォーム', detail:'完了', improvement:'', path:'/shop_admin_login' },
+        // ── システム管理者 ──
+        { sort_order:38, screen_id:'A-01', item:'管理画面ログイン', component:'admin_login', feature:'「管理画面ログイン」、メール/パスワード入力、パスワードリセット', detail:'完了', improvement:'', path:'/admin_login' },
+        { sort_order:39, screen_id:'A-02', item:'顧客一覧(デフォルト)', component:'admin', feature:'顧客リスト、CSVダウンロード、キーワード検索、ソート（新着順/古い順）', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:40, screen_id:'A-03', item:'加盟店一覧', component:'admin', feature:'加盟店リスト、詳細/新規追加/編集/削除/アーカイブ', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:41, screen_id:'A-04', item:'料金表管理', component:'admin', feature:'料金表一覧、登録日/更新日表示、新規追加/編集', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:42, screen_id:'A-05', item:'予約一覧', component:'admin', feature:'全予約リスト、ステータス/決済方法フィルタ、並び替え', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:43, screen_id:'A-06', item:'売上レポート', component:'admin', feature:'売上データ表示、加盟店別レポート', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:44, screen_id:'A-07', item:'FV管理', component:'admin', feature:'ファーストビュー画像/テキスト管理、新規追加/編集/削除', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:45, screen_id:'A-08', item:'お知らせ管理', component:'admin', feature:'お知らせ一覧、新規追加/編集/削除', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:46, screen_id:'A-09', item:'バナー管理', component:'admin', feature:'バナー画像管理、表示順設定', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:47, screen_id:'A-10', item:'Q&A管理', component:'admin', feature:'Q&A一覧、新規追加/編集/削除', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:48, screen_id:'A-11', item:'お問い合わせ一覧', component:'admin', feature:'全問い合わせリスト表示', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:49, screen_id:'A-12', item:'メールアドレス変更', component:'admin', feature:'変更後/確認用メールアドレス入力', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:50, screen_id:'A-13', item:'パスワード変更', component:'admin', feature:'現在/新規/確認パスワード入力', detail:'完了', improvement:'', path:'/admin' },
+        { sort_order:51, screen_id:'A-14', item:'営業カレンダー', component:'admin_update_calendar', feature:'祝日処理ボタン、営業カレンダー追加、日付管理', detail:'完了', improvement:'', path:'/admin_update_calendar' },
+        { sort_order:52, screen_id:'A-15', item:'料金シミュレーション', component:'admin_price_simulation', feature:'貸出開始日時/返却日入力、料金/適用プラン表示、シミュレーション実行', detail:'完了', improvement:'', path:'/admin_price_simulation' },
+        { sort_order:53, screen_id:'A-16', item:'パスワードリセット', component:'admin_login', feature:'パスワード再設定メール送信フォーム', detail:'完了', improvement:'', path:'/admin_login' },
+      ]
+      const newRows = seed.map(s => ({ ...s, id: crypto.randomUUID() } as Row))
+      setRows(newRows)
       setLoading(false)
+      await supabase.from('screens').insert(newRows)
     })
   }, [])
 
@@ -495,52 +568,9 @@ function startResize(col: ColKey, e: React.MouseEvent) {
     window.addEventListener('mouseup', onUp)
   }
 
-  async function createSheet() {
-    const name = prompt('新しい画面名を入力')?.trim()
-    if (!name) return
-    if (sheetNames.includes(name)) { alert('同名の画面が既に存在します'); return }
-    const maxOrder = rows.length > 0 ? Math.max(...rows.map(r => r.sort_order)) : -1
-    const newRow: Row = {
-      id: crypto.randomUUID(), sort_order: maxOrder + 1,
-      screen_id: '', item: name, component: '', feature: '',
-      detail: '未着手', improvement: '', path: '',
-    }
-    setRows(prev => [...prev, newRow])
-    await supabase.from('screens').insert(newRow)
-    setSelectedSheet(name)
-  }
-
   function computeEffectiveItems(r: Row[]) {
     let last = ''
     return r.map(row => { if (row.item) last = row.item; return last })
-  }
-
-  async function deleteSheet(name: string) {
-    const eff = computeEffectiveItems(rows)
-    const count = rows.filter((_, i) => eff[i] === name).length
-    if (!confirm(`画面「${name}」（${count} 行）を削除しますか？`)) return
-    const ids = rows.filter((_, i) => eff[i] === name).map(r => r.id)
-    await supabase.from('screens').delete().in('id', ids)
-    setRows(prev => prev.filter((_, i) => eff[i] !== name))
-    setSelectedSheet('__list__')
-  }
-
-  async function commitRename(oldName: string) {
-    const newName = renameValue.trim()
-    setRenamingSheet(null)
-    if (!newName || newName === oldName) return
-    if (sheetNames.includes(newName)) { alert('同名の画面が既に存在します'); return }
-    const eff = computeEffectiveItems(rows)
-    // Explicitly set item on every row in the group (including inherited-empty rows)
-    const fullyUpdated = rows.map((r, i) =>
-      eff[i] === oldName ? { ...r, item: newName } : r
-    )
-    setRows(fullyUpdated)
-    if (selectedSheet === oldName) setSelectedSheet(newName)
-    const changed = fullyUpdated.filter((_, i) => eff[i] === oldName)
-    setSaving(true)
-    await supabase.from('screens').upsert(changed)
-    setSaving(false)
   }
 
   function handleDragStart(e: React.DragEvent, rowId: string) {
@@ -573,10 +603,12 @@ function startResize(col: ColKey, e: React.MouseEvent) {
   // Build effective item per row (inherit from previous non-empty)
   let lastItem = ''
   const effectiveItems = rows.map(r => { if (r.item) lastItem = r.item; return lastItem })
-  const sheetNames = [...new Set(effectiveItems.filter(Boolean))]
 
   const filtered = rows.filter((r, i) => {
-    if (selectedSheet !== '__list__' && effectiveItems[i] !== selectedSheet) return false
+    if (tableTab !== '全体') {
+      const role = getRole(r.screen_id)
+      if (role !== tableTab) return false
+    }
     if (groupFilter && effectiveItems[i] !== groupFilter) return false
     if (onlyIssues && !r.improvement) return false
     if (search) {
@@ -642,13 +674,7 @@ function startResize(col: ColKey, e: React.MouseEvent) {
       {/* Content (scrollable) */}
       <div style={{ flex: 1, overflow: 'auto', padding: 14 }}>
 
-        {selectedSheet !== '__list__' ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: 300, color: '#555568', fontSize: 14 }}>
-            <div style={{ fontSize: 36, marginBottom: 12 }}>📄</div>
-            <div style={{ fontWeight: 700, marginBottom: 6, color: '#888898' }}>{selectedSheet}</div>
-            <div>詳細要件シート（準備中）</div>
-          </div>
-        ) : (<>
+        {(<>
 
         {/* ── Card: サマリー ── */}
         <div style={cardStyle}>
@@ -776,6 +802,24 @@ function startResize(col: ColKey, e: React.MouseEvent) {
             <span style={{ fontSize: 11, color: '#666678' }}>{filtered.length} 行</span>
           </div>
 
+          {/* Tab bar */}
+          <div style={{ display: 'flex', background: '#252528', borderBottom: '1px solid #38383f' }}>
+            {SUMMARY_TABS.map(tab => {
+              const accent = tab === '全体' ? '#9070c0' : ROLE_DATA[tab as Exclude<SummaryTab,'全体'>]?.accent ?? '#9070c0'
+              return (
+                <button key={tab} onClick={() => setTableTab(tab)} style={{
+                  flex: 1, padding: '8px 0', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 600,
+                  background: tableTab === tab ? '#2e2e34' : 'transparent',
+                  color: tableTab === tab ? accent : '#666678',
+                  borderBottom: tableTab === tab ? `2px solid ${accent}` : '2px solid transparent',
+                  transition: 'all .15s',
+                }}>
+                  {tab}
+                </button>
+              )
+            })}
+          </div>
+
           {/* Toolbar */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: 8, padding: '6px 14px',
@@ -790,16 +834,6 @@ function startResize(col: ColKey, e: React.MouseEvent) {
               <option value="improvement">改善点</option>
               <option value="path">path</option>
             </select>
-            {selectedSheet === '__list__' && (
-              <>
-                <div style={sepStyle} />
-                <label style={{ color: '#888898', fontSize: 12 }}>グループ:</label>
-                <select value={groupFilter} onChange={e => setGroupFilter(e.target.value)} style={selectStyle}>
-                  <option value="">すべて</option>
-                  {sheetNames.map(n => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </>
-            )}
             <div style={sepStyle} />
             <label style={{ color: '#888898', fontSize: 12, display: 'flex', alignItems: 'center', gap: 5, cursor: 'pointer' }}>
               <input type="checkbox" checked={onlyIssues} onChange={e => setOnlyIssues(e.target.checked)} />
@@ -812,12 +846,14 @@ function startResize(col: ColKey, e: React.MouseEvent) {
             <table style={{ borderCollapse: 'collapse', width: '100%', tableLayout: 'fixed' }}>
               <colgroup>
                 <col style={{ width: 22 }} />
+                {tableTab === '全体' && <col style={{ width: 80 }} />}
                 {ALL_COLS.map(k => <col key={k} style={{ width: colWidths[k] }} />)}
                 <col style={{ width: 64 }} />
               </colgroup>
               <thead>
                 <tr>
                   <th style={{ ...thMainStyle, background: '#252528', width: 22 }}></th>
+                  {tableTab === '全体' && <th style={{ ...thMainStyle, width: 80 }}>アクター</th>}
                   {ALL_COLS.map(k => (
                     <th key={k} style={{ ...thMainStyle, width: colWidths[k] }}>
                       {COL_LABELS[k]}
@@ -828,6 +864,7 @@ function startResize(col: ColKey, e: React.MouseEvent) {
                 </tr>
                 <tr>
                   <th style={thFilterStyle}></th>
+                  {tableTab === '全体' && <th style={thFilterStyle}></th>}
                   {ALL_COLS.map(k => (
                     <th key={k} style={thFilterStyle}>
                       <input
@@ -887,6 +924,21 @@ function startResize(col: ColKey, e: React.MouseEvent) {
                       }}
                     >
                       <td style={dragTdStyle} onMouseDown={() => { dragHandleActive.current = true }} onMouseUp={() => { dragHandleActive.current = false }}>⠿</td>
+
+                      {/* アクター (全体タブのみ) */}
+                      {tableTab === '全体' && (() => {
+                        const role = getRole(row.screen_id)
+                        const accent = role ? ROLE_DATA[role].accent : '#888898'
+                        return (
+                          <td style={{ ...tdStyle, textAlign: 'center', padding: '4px 2px' }}>
+                            <span style={{
+                              display: 'inline-block', padding: '2px 6px', borderRadius: 3,
+                              fontSize: 10, fontWeight: 600, lineHeight: '16px', whiteSpace: 'nowrap',
+                              background: `${accent}18`, color: accent, border: `1px solid ${accent}30`,
+                            }}>{role || '-'}</span>
+                          </td>
+                        )
+                      })()}
 
                       {/* 機能ID — read only, click to select for copy */}
                       <td tabIndex={0}
@@ -991,7 +1043,7 @@ function startResize(col: ColKey, e: React.MouseEvent) {
                 })}
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={ALL_COLS.length + 2}
+                    <td colSpan={ALL_COLS.length + 2 + (tableTab === '全体' ? 1 : 0)}
                       style={{ padding: '24px', textAlign: 'center', color: '#555568', fontSize: 12 }}>
                       表示する行がありません
                     </td>
@@ -1015,62 +1067,6 @@ function startResize(col: ColKey, e: React.MouseEvent) {
         </>)}
       </div>
 
-      {/* Sheet tabs */}
-      <div style={{
-        display: 'flex', alignItems: 'stretch', background: '#1a1a1f',
-        borderTop: '1px solid #38383f', flexShrink: 0, overflowX: 'auto', minHeight: 34,
-      }}>
-        {/* 一覧 tab */}
-        <button
-          onClick={() => setSelectedSheet('__list__')}
-          style={{
-            padding: '0 18px', border: 'none', borderRight: '1px solid #2e2e38',
-            borderTop: selectedSheet === '__list__' ? '2px solid #4a8ad8' : '2px solid transparent',
-            background: selectedSheet === '__list__' ? '#2a2a2f' : 'transparent',
-            color: selectedSheet === '__list__' ? '#90b8f0' : '#686880',
-            fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap',
-            minHeight: 34, transition: 'background .1s, color .1s',
-          }}
-        >画面 / 機能一覧</button>
-        {/* Per-screen tabs */}
-        {sheetNames.map(name => (
-          <button key={name}
-            onClick={() => setSelectedSheet(name)}
-            onDoubleClick={() => { setRenamingSheet(name); setRenameValue(name) }}
-            title="ダブルクリックでリネーム"
-            style={{
-              padding: '0 18px', border: 'none', borderRight: '1px solid #2e2e38',
-              borderTop: name === selectedSheet ? '2px solid #4a8ad8' : '2px solid transparent',
-              background: name === selectedSheet ? '#2a2a2f' : 'transparent',
-              color: name === selectedSheet ? '#90b8f0' : '#686880',
-              fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap',
-              minHeight: 34, transition: 'background .1s, color .1s',
-            }}
-          >
-            {renamingSheet === name ? (
-              <input autoFocus value={renameValue}
-                onChange={e => setRenameValue(e.target.value)}
-                onBlur={() => commitRename(name)}
-                onKeyDown={e => { if (e.key === 'Enter') commitRename(name); if (e.key === 'Escape') setRenamingSheet(null) }}
-                onClick={e => e.stopPropagation()}
-                style={{ background: '#38383f', border: '1px solid #4a8ad8', borderRadius: 3, color: '#d0d0d8', fontSize: 12, padding: '1px 6px', outline: 'none', width: 160 }}
-              />
-            ) : (
-              <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                {name}
-                <span onClick={e => { e.stopPropagation(); deleteSheet(name) }} title="この画面を削除"
-                  style={{ fontSize: 11, color: '#555568', lineHeight: 1, cursor: 'pointer', padding: '0 1px' }}>✕</span>
-              </span>
-            )}
-          </button>
-        ))}
-        <button onClick={createSheet} title="新しい画面を作成"
-          style={{
-            padding: '0 14px', border: 'none', background: 'transparent',
-            color: '#555568', fontSize: 18, cursor: 'pointer', minHeight: 34,
-            display: 'flex', alignItems: 'center', lineHeight: 1, borderTop: '2px solid transparent',
-          }}>+</button>
-      </div>
     </div>
   )
 }

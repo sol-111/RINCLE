@@ -17,7 +17,7 @@ const PALETTE = [
 ]
 
 type NodeObj    = { id:string;x:number;y:number;w:number;h:number;type:string;lines:string[];fill?:string|null;fillOpacity?:number;stroke?:string|null;dashed?:boolean }
-type EdgeObj    = { id:string;from:string;fromSide:string;to:string;toSide:string;label:string;dashed:boolean;offset?:number|null }
+type EdgeObj    = { id:string;from:string;fromSide:string;to:string;toSide:string;label:string;dashed:boolean;offset?:number|null;arrowDir?:'end'|'start'|'both'|'none' }
 type FrameObj   = { id:string;x:number;y:number;w:number;h:number;label:string;fillHex?:string;fillOpacity?:number;stroke:string;labelColor:string;dashed:boolean }
 type SelObj     = { type:'node'|'edge'|'frame'; id:string } | null
 type MultiSel   = { type:'node'|'frame'; id:string }
@@ -489,9 +489,12 @@ export default function FlowTab() {
         const isSel=s.selected?.type==='edge'&&s.selected.id===e.id
         const d=buildPath(e,s.nodes); if(!d) return
         const da=e.dashed?' stroke-dasharray="5,3"':''
-        const sc=isSel?'#5a8abf':'#5a6a7a', mk=isSel?'ft-arr-sel':'ft-arr', sw=isSel?'2.5':'1.5'
+        const sc=isSel?'#5a8abf':'#5a6a7a', sw=isSel?'2.5':'1.5'
+        const dir=e.arrowDir??'end'
+        const mEnd=(dir==='end'||dir==='both')?` marker-end="url(#${isSel?'ft-arr-sel':'ft-arr'})"`:'';
+        const mStart=(dir==='start'||dir==='both')?` marker-start="url(#${isSel?'ft-arr-rev-sel':'ft-arr-rev'})"`:'';
         h+=`<path class="edge-hit" data-id="${e.id}" d="${d}" fill="none" stroke="transparent" stroke-width="10"/>`
-        h+=`<path class="edge-el" data-id="${e.id}" d="${d}" fill="none" stroke="${sc}" stroke-width="${sw}"${da} marker-end="url(#${mk})"/>`
+        h+=`<path class="edge-el" data-id="${e.id}" d="${d}" fill="none" stroke="${sc}" stroke-width="${sw}"${da}${mEnd}${mStart}/>`
         const fn2=getNode(e.from),tn2=getNode(e.to)
         if(fn2&&tn2&&e.label){
           const [ex2,ey2]=nodePt(fn2,e.fromSide),[tx2,ty2]=nodePt(tn2,e.toSide)
@@ -614,6 +617,13 @@ export default function FlowTab() {
         const e=getEdge(s.selected.id)!
         h+=`<div class="ft-ps"><div class="ft-pl">ラベル</div><input class="ft-ti" id="ft-elbl" value="${esc(e.label)}"></div>`
         h+=`<div class="ft-ps"><div class="ft-cbrow"><input type="checkbox" id="ft-edash"${e.dashed?' checked':''}><label for="ft-edash">点線</label></div></div>`
+        const dir=e.arrowDir??'end'
+        h+=`<div class="ft-ps"><div class="ft-pl">矢印の向き</div><div class="ft-segrow">
+          <button class="ft-seg${dir==='end'?' active':''}" data-earrow="end">→</button>
+          <button class="ft-seg${dir==='start'?' active':''}" data-earrow="start">←</button>
+          <button class="ft-seg${dir==='both'?' active':''}" data-earrow="both">↔</button>
+          <button class="ft-seg${dir==='none'?' active':''}" data-earrow="none">—</button>
+        </div></div>`
         if(e.offset!=null) h+=`<button class="ft-seg" id="ft-ereset" style="border-radius:3px">ルートをリセット</button>`
         h+=`<button class="ft-del" data-del="1">削除</button>`
       } else if(s.selected.type==='frame'){
@@ -652,6 +662,9 @@ export default function FlowTab() {
         if(li){li.onfocus=pushHist;li.oninput=()=>{e.label=li.value;render();scheduleSave()}}
         if(dc) dc.onchange=()=>{pushHist();e.dashed=dc.checked;render()}
         if(rb) rb.onclick=()=>{pushHist();e.offset=null;updatePanel();render()}
+        pinner.querySelectorAll('[data-earrow]').forEach(el=>{
+          (el as HTMLElement).onclick=()=>{pushHist();e.arrowDir=(el as HTMLElement).dataset.earrow as EdgeObj['arrowDir'];updatePanel();render()}
+        })
       } else if(s.selected.type==='frame'){
         const f=getFrame(s.selected.id)!
         const li=byId('ft-flbl') as HTMLInputElement|null
@@ -782,6 +795,14 @@ export default function FlowTab() {
           s.drag={mode:'drag-multi',sx:e.clientX,sy:e.clientY,nodeOffsets:no,frameOffsets:fo}; return
         }
         if(e.altKey){pushHist();const cl={...n,id:genId('n'),lines:[...n.lines]};s.nodes.push(cl);select('node',cl.id);n=cl}
+        else if(e.shiftKey||e.metaKey||e.ctrlKey){
+          const idx=s.multi.findIndex(m=>m.type==='node'&&m.id===id)
+          if(idx>=0){s.multi.splice(idx,1)}else{
+            if(s.selected&&!s.multi.length){s.multi.push(s.selected as MultiSel)}
+            s.multi.push({type:'node',id})
+          }
+          s.selected=s.multi.length===1?s.multi[0]:null; updatePanel(); render(); return
+        }
         else{s.multi=[];select('node',id);pushHist()}
         s.drag={mode:'drag-node',id:n.id,ox:n.x,oy:n.y,sx:e.clientX,sy:e.clientY}; return
       }
@@ -812,6 +833,14 @@ export default function FlowTab() {
           const no=s.multi.filter(m=>m.type==='node').map(m=>{const mn=getNode(m.id)!;return{id:m.id,ox:mn.x,oy:mn.y}})
           const fo=s.multi.filter(m=>m.type==='frame').map(m=>{const mf=getFrame(m.id)!;return{id:m.id,ox:mf.x,oy:mf.y}})
           s.drag={mode:'drag-multi',sx:e.clientX,sy:e.clientY,nodeOffsets:no,frameOffsets:fo}; return
+        }
+        if(e.shiftKey||e.metaKey||e.ctrlKey){
+          const idx=s.multi.findIndex(m=>m.type==='frame'&&m.id===id)
+          if(idx>=0){s.multi.splice(idx,1)}else{
+            if(s.selected&&!s.multi.length){s.multi.push(s.selected as MultiSel)}
+            s.multi.push({type:'frame',id})
+          }
+          s.selected=s.multi.length===1?s.multi[0]:null; updatePanel(); render(); return
         }
         s.multi=[]; pushHist()
         if(e.altKey){
@@ -1113,6 +1142,8 @@ export default function FlowTab() {
             <defs>
               <marker id="ft-arr"     markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
               <marker id="ft-arr-sel" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#5a8abf"/></marker>
+              <marker id="ft-arr-rev"     markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#7a8a9a"/></marker>
+              <marker id="ft-arr-rev-sel" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#5a8abf"/></marker>
             </defs>
             <g ref={vpRef}/>
             <g ref={cmtRef}>{comments.map(c=><CommentBox key={c.id} c={c} onDelete={deleteComment}/>)}</g>
