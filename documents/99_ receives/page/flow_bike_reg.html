@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RINCLE バイク登録フロー</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Hiragino Sans','Segoe UI',-apple-system,sans-serif;font-size:13px;background:#0d1117;color:#c0c0cc;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+#topbar{background:#161b22;padding:6px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #30363d;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+#topbar h1{font-size:15px;font-weight:700;color:#d0d0d8;white-space:nowrap}
+.sep{width:1px;height:18px;background:#30363d}
+.btn{padding:3px 10px;border:1px solid #30363d;border-radius:4px;background:#21262d;color:#a0a0b8;font-size:11px;cursor:pointer}
+.btn:hover{background:#30363d;color:#d0d0d8}
+#hint{font-size:11px;color:#484f58;margin-left:auto}
+.sec-bar{height:28px;display:flex;align-items:center;gap:8px;padding:0 14px;flex-shrink:0;border-bottom:1px solid #21262d;background:#161b22;border-top:2px solid #8060d8}
+.sec-label{font-size:12px;font-weight:700;color:#b080e0}
+.diagram-wrap{flex:1;min-height:0;overflow:hidden;cursor:grab;background:#0d1117}
+.diagram-wrap:active{cursor:grabbing}
+svg{width:100%;height:100%}
+#legend{position:fixed;bottom:16px;left:16px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:6px;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+#legend .leg-title{font-size:11px;font-weight:700;color:#888898;margin-bottom:2px}
+#legend .leg-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#a0a0b8}
+.leg-box{width:22px;height:13px;border-radius:3px;border-width:1.5px;border-style:solid;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <h1>RINCLE バイク登録フロー</h1>
+  <div class="sep"></div>
+  <button class="btn" onclick="D.fitView()">全体表示</button>
+  <button class="btn" onclick="D.resetZoom()">リセット</button>
+  <span id="hint">ホイールでパン / Ctrl+ホイールでズーム / ドラッグでパン</span>
+</div>
+
+<div class="sec-bar">
+  <span class="sec-label">店舗初期登録 - バイク登録フロー</span>
+</div>
+
+<div class="diagram-wrap" id="wrap">
+  <svg id="svg"><defs>
+    <marker id="ma" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
+    <marker id="mc" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3090b0"/></marker>
+  </defs><g id="vp"></g></svg>
+</div>
+
+<div id="legend">
+  <div class="leg-title">凡例</div>
+  <div class="leg-row">
+    <div class="leg-item"><div class="leg-box" style="background:#3a1818;border-color:#d05050"></div>リンクル管理</div>
+    <div class="leg-item"><div class="leg-box" style="background:#1e1a38;border-color:#8060d8"></div>店舗管理</div>
+    <div class="leg-item"><div class="leg-box" style="background:#1a3a28;border-color:#34a853"></div>ユーザー画面</div>
+    <div class="leg-item"><div class="leg-box" style="background:#181e3a;border-color:#3878d0"></div>DB/データ</div>
+    <div class="leg-item"><div class="leg-box" style="background:#3a3010;border-color:#c8a030"></div>注記</div>
+  </div>
+</div>
+
+<script>
+const C={
+  admin:{fill:'#3a1818',stroke:'#d05050',tc:'#f0a8a8'},
+  store:{fill:'#1e1a38',stroke:'#8060d8',tc:'#c0a8f8'},
+  user:{fill:'#1a3a28',stroke:'#34a853',tc:'#a0e8b8'},
+  external:{fill:'#181e3a',stroke:'#3878d0',tc:'#80b0f0'},
+  popup:{fill:'#3a3010',stroke:'#c8a030',tc:'#ffe066'},
+  io:{fill:'#301e10',stroke:'#a07030',tc:'#d8a060'},
+  decision:{fill:'#151e38',stroke:'#4a72c0',tc:'#88b0e0'},
+  startend:{fill:'#222230',stroke:'#686890',tc:'#b0b0d0'},
+  notify:{fill:'#182030',stroke:'#3090b0',tc:'#80c8d8'},
+  highlight:{fill:'#2a2a10',stroke:'#c8a030',tc:'#ffe066'}
+};
+const SD={rect:{hw:90,hh:26},wide:{hw:130,hh:26},tall:{hw:100,hh:40},diamond:{hw:62,hh:36},ellipse:{hw:52,hh:20},db:{hw:60,hh:30},list:{hw:140,hh:100}};
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mText(cx,cy,lines,color,fs=11){const a=Array.isArray(lines)?lines:lines.split('\n');return a.map((l,i)=>{const dy=cy+(i-(a.length-1)/2)*(fs+3)+1;return`<text x="${cx}" y="${dy}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-size="${fs}" font-family="'Hiragino Sans',sans-serif">${esc(l)}</text>`;}).join('');}
+
+function nEl(n){
+  const c=C[n.ck],lines=n.lines.flatMap(l=>l.split('\n'));
+  if(n.shape==='ellipse'){const d=SD.ellipse;return`<ellipse cx="${n.cx}" cy="${n.cy}" rx="${d.hw}" ry="${d.hh}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>${mText(n.cx,n.cy,lines,c.tc)}`;}
+  if(n.shape==='diamond'){const{hw,hh}=SD.diamond;const pts=`${n.cx},${n.cy-hh} ${n.cx+hw},${n.cy} ${n.cx},${n.cy+hh} ${n.cx-hw},${n.cy}`;return`<polygon points="${pts}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>${mText(n.cx,n.cy,lines,c.tc,10)}`;}
+  if(n.shape==='db'){
+    const{hw,hh}=SD.db;
+    let s=`<path d="M ${n.cx-hw} ${n.cy-hh+10} Q ${n.cx-hw} ${n.cy-hh} ${n.cx} ${n.cy-hh} Q ${n.cx+hw} ${n.cy-hh} ${n.cx+hw} ${n.cy-hh+10} V ${n.cy+hh-10} Q ${n.cx+hw} ${n.cy+hh} ${n.cx} ${n.cy+hh} Q ${n.cx-hw} ${n.cy+hh} ${n.cx-hw} ${n.cy+hh-10} Z" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>`;
+    s+=`<path d="M ${n.cx-hw} ${n.cy-hh+10} Q ${n.cx-hw} ${n.cy-hh+20} ${n.cx} ${n.cy-hh+20} Q ${n.cx+hw} ${n.cy-hh+20} ${n.cx+hw} ${n.cy-hh+10}" fill="none" stroke="${c.stroke}" stroke-width="1"/>`;
+    s+=mText(n.cx,n.cy+5,lines,c.tc);
+    return s;
+  }
+  const sh=n.shape==='wide'?'wide':n.shape==='tall'?'tall':n.shape==='list'?'list':'rect';
+  const{hw,hh}=SD[sh];
+  return`<rect x="${n.cx-hw}" y="${n.cy-hh}" width="${hw*2}" height="${hh*2}" rx="8" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>${mText(n.cx,n.cy,lines,c.tc,sh==='list'?10:11)}`;
+}
+
+let _drag=null;
+window.addEventListener('mousemove',e=>{if(!_drag)return;_drag.set(e.clientX-_drag.sx,e.clientY-_drag.sy);});
+window.addEventListener('mouseup',()=>{_drag=null;});
+
+function makeDiagram(wrapId,vpId,svgW,svgH,nodes,lanesF,renderF){
+  const NM={};
+  nodes.forEach(n=>{NM[n[0]]={id:n[0],cx:n[1],cy:n[2],ck:n[3],shape:n[4],lines:n.slice(5)};});
+  function pt(id,side){const n=NM[id],sh=n.shape;const d=SD[sh]||SD.rect;return{r:[n.cx+d.hw,n.cy],l:[n.cx-d.hw,n.cy],t:[n.cx,n.cy-d.hh],b:[n.cx,n.cy+d.hh]}[side];}
+  let vx=0,vy=0,vscale=1;
+  function applyT(){document.getElementById(vpId).setAttribute('transform',`translate(${vx},${vy}) scale(${vscale})`);}
+  function fitView(){const w=document.getElementById(wrapId),pw=w.clientWidth,ph=w.clientHeight;vscale=Math.min(pw/svgW,ph/svgH)*0.92;vx=(pw-svgW*vscale)/2;vy=(ph-svgH*vscale)/2;applyT();}
+  function resetZoom(){vx=40;vy=20;vscale=1;applyT();}
+  function render(){const vp=document.getElementById(vpId);let h=lanesF();h+=renderF(pt);nodes.forEach(([id])=>{h+=nEl(NM[id]);});vp.innerHTML=h;}
+  const wrap=document.getElementById(wrapId);
+  wrap.addEventListener('wheel',e=>{e.preventDefault();if(e.ctrlKey||e.metaKey){const f=e.deltaY<0?1.12:0.88,r=wrap.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;vx=mx-(mx-vx)*f;vy=my-(my-vy)*f;vscale*=f;}else{vx-=e.deltaX;vy-=e.deltaY;}applyT();},{passive:false});
+  wrap.addEventListener('mousedown',e=>{_drag={sx:e.clientX-vx,sy:e.clientY-vy,set:(x,y)=>{vx=x;vy=y;applyT();}};});
+  return{render,fitView,resetZoom};
+}
+
+const LX={rincle:200, store:560, userscreen:920};
+const LW=280;
+const SVG_W=1200, SVG_H=1200;
+
+const NODES=[
+  // Rincle admin lane
+  ['r_price_menu', LX.rincle, 120, 'admin','wide','料金表管理画面\n新規登録'],
+  ['r_create',     LX.rincle, 210, 'admin','rect','デフォルトの\n料金表を作成'],
+  ['r_db',         LX.rincle, 310, 'external','db','料金表'],
+  ['r_items',      LX.rincle, 460, 'admin','list','1.料金表名\n2.〜3時間プラン料金\n3.1日プラン料金\n4.2日プラン料金\n5.3日プラン料金\n6.7日プラン料金\n7.14日プラン料金\n8.30日プラン料金\n9.1時間延長料金\n10.1日延長料金\n11.税率'],
+
+  // Store lane
+  ['s_cal_menu',   LX.store, 120, 'store','wide','在庫管理\n営業時間設定'],
+  ['s_cal_mod',    LX.store, 210, 'store','wide','在庫管理\n営業カレンダー修正'],
+  ['s_bike_list',  LX.store, 310, 'store','wide','在庫管理\n自転車一覧画面'],
+  ['s_new_btn',    LX.store, 400, 'store','rect','新規登録押下'],
+  ['s_bike_form',  LX.store, 490, 'store','rect','自転車登録画面'],
+  ['s_items',      LX.store, 690, 'store','list','1.ブランド名 2.バイク名\n3.種別 4.サイズ 5.カラー\n6.備考 7.画像\n8.シリアル番号\n9.E-bikeフラグ\n10.適用するオプション\n11.適用する料金表選択\n12.3時間〜30日料金\n13.延長料金 14.税率\n15.最大貸出日数'],
+  ['s_default',    LX.store, 870, 'store','wide','デフォルトステータス:\nユーザー非表示'],
+  ['s_visible',    LX.store, 960, 'store','wide','ユーザー表示に変更'],
+
+  // User screen lane
+  ['u_store_info', LX.userscreen, 960, 'user','wide','店舗情報表示'],
+  ['u_bike_detail',LX.userscreen,1050, 'user','wide','バイク詳細\n及び在庫表示'],
+];
+
+function lanes(){
+  let s='';
+  const laneData=[
+    {x:60,  w:LW, label:'リンクル管理',  fill:'rgba(58,24,24,0.15)', stroke:'#3a2020', tc:'#d05050'},
+    {x:420, w:LW, label:'店舗管理',      fill:'rgba(30,26,56,0.15)', stroke:'#2a2240', tc:'#8060d8'},
+    {x:780, w:LW, label:'ユーザー画面',  fill:'rgba(26,58,40,0.15)', stroke:'#1e3828', tc:'#34a853'},
+  ];
+  laneData.forEach(l=>{
+    s+=`<rect x="${l.x}" y="40" width="${l.w}" height="${SVG_H-80}" rx="6" fill="${l.fill}" stroke="${l.stroke}" stroke-width="1"/>`;
+    s+=`<text x="${l.x+l.w/2}" y="65" text-anchor="middle" fill="${l.tc}" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">${l.label}</text>`;
+  });
+  // Notes
+  s+=`<text x="${LX.rincle}" y="575" text-anchor="middle" fill="#686880" font-size="9" font-style="italic" font-family="'Hiragino Sans',sans-serif">クロスバイクA、ロードバイクBなどの</text>`;
+  s+=`<text x="${LX.rincle}" y="589" text-anchor="middle" fill="#686880" font-size="9" font-style="italic" font-family="'Hiragino Sans',sans-serif">料金表をデフォルト値として作成し登録する</text>`;
+
+  s+=`<text x="${LX.store}" y="810" text-anchor="middle" fill="#686880" font-size="9" font-style="italic" font-family="'Hiragino Sans',sans-serif">リンクル管理画面で設定した料金表を選択すると</text>`;
+  s+=`<text x="${LX.store}" y="824" text-anchor="middle" fill="#686880" font-size="9" font-style="italic" font-family="'Hiragino Sans',sans-serif">デフォルト値として料金表が作成される。修正可能。</text>`;
+
+  // Highlight on item 11
+  s+=`<rect x="${LX.store-130}" y="${690-100+66}" width="260" height="14" rx="3" fill="rgba(200,160,48,0.15)" stroke="#c8a030" stroke-width="0.8"/>`;
+
+  return s;
+}
+
+function edges(pt){
+  function e(fid,fs,tid,ts,opts={}){
+    const[fx,fy]=pt(fid,fs),[tx,ty]=pt(tid,ts);
+    const cross=opts.cross||false;
+    const mk=cross?'mc':'ma';const sc=cross?'#3090b0':'#5a6a7a';const sw=cross?'1.2':'1.5';const da=cross?' stroke-dasharray="5,3"':'';
+    let d;
+    if(Math.abs(fy-ty)<2)d=`M ${fx} ${fy} H ${tx}`;
+    else if(Math.abs(fx-tx)<2)d=`M ${fx} ${fy} V ${ty}`;
+    else if(fs==='t'||fs==='b'){const m=(fy+ty)/2;d=`M ${fx} ${fy} V ${m} H ${tx} V ${ty}`;}
+    else{const m=(fx+tx)/2;d=`M ${fx} ${fy} H ${m} V ${ty} H ${tx}`;}
+    let s=`<path d="${d}" fill="none" stroke="${sc}" stroke-width="${sw}"${da} marker-end="url(#${mk})"/>`;
+    if(opts.label){const lx=(fx+tx)/2,ly=Math.min(fy,ty)-7;s+=`<text x="${lx}" y="${ly}" text-anchor="middle" fill="${sc}" font-size="9" font-family="monospace">${esc(opts.label)}</text>`;}
+    return s;
+  }
+  let h='';
+  // Rincle lane
+  h+=e('r_price_menu','b','r_create','t');
+  h+=e('r_create','b','r_db','t');
+  h+=e('r_db','b','r_items','t');
+
+  // Store lane
+  h+=e('s_cal_menu','b','s_cal_mod','t');
+  h+=e('s_bike_list','b','s_new_btn','t');
+  h+=e('s_new_btn','b','s_bike_form','t');
+  h+=e('s_bike_form','b','s_items','t');
+  h+=e('s_items','b','s_default','t');
+  h+=e('s_default','b','s_visible','t');
+
+  // Cross lane: store to user
+  h+=e('s_visible','r','u_store_info','l',{cross:true});
+  h+=e('u_store_info','b','u_bike_detail','t');
+
+  // Cross lane: rincle DB to store items (料金表選択)
+  h+=e('r_db','r','s_items','l',{cross:true,label:'料金表選択'});
+
+  return h;
+}
+
+const D=makeDiagram('wrap','vp',SVG_W,SVG_H,NODES,lanes,edges);
+D.render();
+requestAnimationFrame(()=>D.fitView());
+</script>
+</body>
+</html>

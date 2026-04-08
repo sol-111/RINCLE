@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RINCLE 加盟店登録フロー</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Hiragino Sans','Segoe UI',-apple-system,sans-serif;font-size:13px;background:#0d1117;color:#c0c0cc;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+#topbar{background:#161b22;padding:6px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #30363d;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+#topbar h1{font-size:15px;font-weight:700;color:#d0d0d8;white-space:nowrap}
+.sep{width:1px;height:18px;background:#30363d}
+.btn{padding:3px 10px;border:1px solid #30363d;border-radius:4px;background:#21262d;color:#a0a0b8;font-size:11px;cursor:pointer}
+.btn:hover{background:#30363d;color:#d0d0d8}
+#hint{font-size:11px;color:#484f58;margin-left:auto}
+.sec-bar{height:28px;display:flex;align-items:center;gap:8px;padding:0 14px;flex-shrink:0;border-bottom:1px solid #21262d;background:#161b22;border-top:2px solid #d05050}
+.sec-label{font-size:12px;font-weight:700;color:#f0a8a8}
+.diagram-wrap{flex:1;min-height:0;overflow:hidden;cursor:grab;background:#0d1117}
+.diagram-wrap:active{cursor:grabbing}
+svg{width:100%;height:100%}
+#legend{position:fixed;bottom:16px;left:16px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:6px;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+#legend .leg-title{font-size:11px;font-weight:700;color:#888898;margin-bottom:2px}
+#legend .leg-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#a0a0b8}
+.leg-box{width:22px;height:13px;border-radius:3px;border-width:1.5px;border-style:solid;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <h1>RINCLE 加盟店登録フロー</h1>
+  <div class="sep"></div>
+  <button class="btn" onclick="D.fitView()">全体表示</button>
+  <button class="btn" onclick="D.resetZoom()">リセット</button>
+  <span id="hint">ホイールでパン / Ctrl+ホイールでズーム / ドラッグでパン</span>
+</div>
+
+<div class="sec-bar">
+  <span class="sec-label">加盟店登録フロー</span>
+</div>
+
+<div class="diagram-wrap" id="wrap">
+  <svg id="svg"><defs>
+    <marker id="ma" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#7a8a9a"/></marker>
+    <marker id="mc" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3090b0"/></marker>
+    <marker id="mn" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#a07030"/></marker>
+  </defs><g id="vp"></g></svg>
+</div>
+
+<div id="legend">
+  <div class="leg-title">凡例</div>
+  <div class="leg-row">
+    <div class="leg-item"><div class="leg-box" style="background:#3a1818;border-color:#d05050"></div>RINCLE営業</div>
+    <div class="leg-item"><div class="leg-box" style="background:#1e1a38;border-color:#8060d8"></div>加盟店</div>
+    <div class="leg-item"><div class="leg-box" style="background:#181e3a;border-color:#3878d0"></div>バックオフィス</div>
+    <div class="leg-item"><div class="leg-box" style="background:#1a3a28;border-color:#34a853"></div>RINCLE店舗管理</div>
+    <div class="leg-item"><div class="leg-box" style="background:#182030;border-color:#3090b0"></div>通知/外部</div>
+  </div>
+</div>
+
+<script>
+const C={
+  admin:{fill:'#3a1818',stroke:'#d05050',tc:'#f0a8a8'},
+  store:{fill:'#1e1a38',stroke:'#8060d8',tc:'#c0a8f8'},
+  external:{fill:'#181e3a',stroke:'#3878d0',tc:'#80b0f0'},
+  user:{fill:'#1a3a28',stroke:'#34a853',tc:'#a0e8b8'},
+  notify:{fill:'#182030',stroke:'#3090b0',tc:'#80c8d8'},
+  io:{fill:'#301e10',stroke:'#a07030',tc:'#d8a060'},
+  decision:{fill:'#151e38',stroke:'#4a72c0',tc:'#88b0e0'},
+  startend:{fill:'#222230',stroke:'#686890',tc:'#b0b0d0'},
+  popup:{fill:'#3a3010',stroke:'#c8a030',tc:'#ffe066'}
+};
+const SD={rect:{hw:100,hh:26},wide:{hw:140,hh:26},tall:{hw:100,hh:38},diamond:{hw:62,hh:36},ellipse:{hw:52,hh:20}};
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mText(cx,cy,lines,color,fs=11){const a=Array.isArray(lines)?lines:lines.split('\n');return a.map((l,i)=>{const dy=cy+(i-(a.length-1)/2)*(fs+3)+1;return`<text x="${cx}" y="${dy}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-size="${fs}" font-family="'Hiragino Sans',sans-serif">${esc(l)}</text>`;}).join('');}
+function nEl(n){const c=C[n.ck],lines=n.lines.flatMap(l=>l.split('\n'));if(n.shape==='ellipse'){const d=SD.ellipse;return`<ellipse cx="${n.cx}" cy="${n.cy}" rx="${d.hw}" ry="${d.hh}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>${mText(n.cx,n.cy,lines,c.tc)}`;}if(n.shape==='diamond'){const{hw,hh}=SD.diamond;const pts=`${n.cx},${n.cy-hh} ${n.cx+hw},${n.cy} ${n.cx},${n.cy+hh} ${n.cx-hw},${n.cy}`;return`<polygon points="${pts}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>${mText(n.cx,n.cy,lines,c.tc,10)}`;}const sh=n.shape==='wide'?'wide':n.shape==='tall'?'tall':'rect';const{hw,hh}=SD[sh];return`<rect x="${n.cx-hw}" y="${n.cy-hh}" width="${hw*2}" height="${hh*2}" rx="8" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>${mText(n.cx,n.cy,lines,c.tc)}`;}
+
+let _drag=null;
+window.addEventListener('mousemove',e=>{if(!_drag)return;_drag.set(e.clientX-_drag.sx,e.clientY-_drag.sy);});
+window.addEventListener('mouseup',()=>{_drag=null;});
+
+function makeDiagram(wrapId,vpId,svgW,svgH,nodes,lanesF,renderF){
+  const NM={};
+  nodes.forEach(n=>{NM[n[0]]={id:n[0],cx:n[1],cy:n[2],ck:n[3],shape:n[4],lines:n.slice(5)};});
+  function pt(id,side){const n=NM[id],sh=n.shape==='wide'?'wide':n.shape==='tall'?'tall':n.shape;const d=SD[sh]||SD.rect;return{r:[n.cx+d.hw,n.cy],l:[n.cx-d.hw,n.cy],t:[n.cx,n.cy-d.hh],b:[n.cx,n.cy+d.hh]}[side];}
+  let vx=0,vy=0,vscale=1;
+  function applyT(){document.getElementById(vpId).setAttribute('transform',`translate(${vx},${vy}) scale(${vscale})`);}
+  function fitView(){const w=document.getElementById(wrapId),pw=w.clientWidth,ph=w.clientHeight;vscale=Math.min(pw/svgW,ph/svgH)*0.92;vx=(pw-svgW*vscale)/2;vy=(ph-svgH*vscale)/2;applyT();}
+  function resetZoom(){vx=40;vy=20;vscale=1;applyT();}
+  function render(){const vp=document.getElementById(vpId);let h=lanesF();h+=renderF(pt);nodes.forEach(([id])=>{h+=nEl(NM[id]);});vp.innerHTML=h;}
+  const wrap=document.getElementById(wrapId);
+  wrap.addEventListener('wheel',e=>{e.preventDefault();if(e.ctrlKey||e.metaKey){const f=e.deltaY<0?1.12:0.88,r=wrap.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;vx=mx-(mx-vx)*f;vy=my-(my-vy)*f;vscale*=f;}else{vx-=e.deltaX;vy-=e.deltaY;}applyT();},{passive:false});
+  wrap.addEventListener('mousedown',e=>{_drag={sx:e.clientX-vx,sy:e.clientY-vy,set:(x,y)=>{vx=x;vy=y;applyT();}};});
+  return{render,fitView,resetZoom};
+}
+
+const LX={sales:200, kamei:560, back:920};
+const LW=280;
+const SVG_W=1200, SVG_H=1500;
+
+const NODES=[
+  // Step 1: Form
+  ['r_form',       LX.sales, 110, 'admin','wide','会社登録フォーム送信\n(Lark Form)'],
+  ['k_info',       LX.kamei, 110, 'store','wide','会社情報登録\n(Lark Form)'],
+
+  // Step 2: Review
+  ['r_receive',    LX.sales, 210, 'admin','wide','会社情報受領'],
+  ['r_register',   LX.sales, 300, 'admin','wide','会社情報登録(LARK)'],
+  ['r_judge',      LX.sales, 390, 'admin','wide','加盟店事業判断(LARK)'],
+
+  // Step 3: Application
+  ['r_send_app',   LX.sales, 490, 'admin','wide','加盟店申込書送付\n(Word)'],
+  ['k_recv_app',   LX.kamei, 490, 'store','wide','加盟店申込書受領\n(PDF)'],
+
+  // Step 4: Confirmation
+  ['r_confirm',    LX.sales, 580, 'admin','rect','社内確認完了'],
+
+  // Step 5: Contract
+  ['k_contract',   LX.kamei, 670, 'store','wide','オンライン契約書締結'],
+  ['b_contract',   LX.back,  670, 'external','wide','電子契約書作成送信\n(マネーフォワード)'],
+
+  // Step 6: Application form
+  ['k_app_form',   LX.kamei, 760, 'store','wide','加盟の申し込み\nフォームURL受領、送信'],
+  ['b_app_form',   LX.back,  760, 'external','wide','加盟の申し込み\nフォームURL送信'],
+
+  // Step 7: RINCLE registration
+  ['r_member',     LX.sales, 850, 'admin','wide','RINCLE管理画面にて\n店舗会員登録'],
+  ['r_mail',       LX.sales, 940, 'notify','wide','会員情報メール送信\n(BUBBLE/hyperion)'],
+
+  // Step 8: Initial setup
+  ['r_init',       LX.sales, 1030, 'admin','wide','RINCLE\n店舗情報初期登録'],
+
+  // Step 9: Store management
+  ['s_manage',     LX.kamei, 1030, 'user','wide','RINCLE店舗管理\n(営業カレンダー・バイク・オプション)'],
+
+  // Step 10: Store confirmation
+  ['s_confirm',    LX.kamei, 1130, 'user','wide','RINCLE店舗管理画面\n確認'],
+  ['s_start',      LX.kamei, 1220, 'user','wide','店舗運営開始\n(運用開始)'],
+
+  // Step 11: Payment setup
+  ['s_pay_set',    LX.kamei, 1310, 'user','wide','オンライン決済設定'],
+  ['p_payjp',      LX.back,  1310, 'external','wide','PAY.jpから\n決済登録'],
+
+  // Step 12
+  ['s_pay_start',  LX.kamei, 1400, 'user','wide','オンライン決済\n運用開始'],
+];
+
+function lanes(){
+  let s='';
+  const laneData=[
+    {x:60,  w:LW, label:'RINCLE営業',   fill:'rgba(58,24,24,0.15)', stroke:'#3a2020', tc:'#d05050'},
+    {x:420, w:LW, label:'加盟店',       fill:'rgba(30,26,56,0.15)', stroke:'#2a2240', tc:'#8060d8'},
+    {x:780, w:LW, label:'バックオフィス', fill:'rgba(24,30,58,0.15)', stroke:'#1e2840', tc:'#3878d0'},
+  ];
+  laneData.forEach(l=>{
+    s+=`<rect x="${l.x}" y="40" width="${l.w}" height="${SVG_H-80}" rx="6" fill="${l.fill}" stroke="${l.stroke}" stroke-width="1"/>`;
+    s+=`<text x="${l.x+l.w/2}" y="65" text-anchor="middle" fill="${l.tc}" font-size="13" font-weight="700" font-family="'Hiragino Sans',sans-serif">${l.label}</text>`;
+  });
+
+  // Section dividers
+  s+=`<line x1="60" y1="1080" x2="1060" y2="1080" stroke="#404060" stroke-width="1" stroke-dasharray="6,3"/>`;
+  s+=`<text x="560" y="1098" text-anchor="middle" fill="#6088d0" font-size="12" font-weight="700" font-family="'Hiragino Sans',sans-serif">決済関連</text>`;
+
+  // Notes
+  s+=`<text x="${LX.back}" y="1370" text-anchor="middle" fill="#686880" font-size="9" font-style="italic" font-family="'Hiragino Sans',sans-serif">クレジット決済の本人確認期間:</text>`;
+  s+=`<text x="${LX.back}" y="1384" text-anchor="middle" fill="#686880" font-size="9" font-style="italic" font-family="'Hiragino Sans',sans-serif">VISA/MasterCard 約3〜4日</text>`;
+  s+=`<text x="${LX.back}" y="1398" text-anchor="middle" fill="#686880" font-size="9" font-style="italic" font-family="'Hiragino Sans',sans-serif">JCB/AMEXなど 約1-2週間</text>`;
+
+  return s;
+}
+
+function edges(pt){
+  function e(fid,fs,tid,ts,opts={}){
+    const[fx,fy]=pt(fid,fs),[tx,ty]=pt(tid,ts);
+    const cross=opts.cross||false,ng=opts.ng||false;
+    const mk=cross?'mc':ng?'mn':'ma';const sc=cross?'#3090b0':ng?'#a07030':'#5a6a7a';const sw=cross?'1.2':'1.5';const da=cross?' stroke-dasharray="5,3"':'';
+    let d;
+    if(opts.path){d=opts.path;}
+    else if(Math.abs(fy-ty)<2)d=`M ${fx} ${fy} H ${tx}`;
+    else if(Math.abs(fx-tx)<2)d=`M ${fx} ${fy} V ${ty}`;
+    else if(fs==='t'||fs==='b'){const m=(fy+ty)/2;d=`M ${fx} ${fy} V ${m} H ${tx} V ${ty}`;}
+    else{const m=(fx+tx)/2;d=`M ${fx} ${fy} H ${m} V ${ty} H ${tx}`;}
+    let s=`<path d="${d}" fill="none" stroke="${sc}" stroke-width="${sw}"${da} marker-end="url(#${mk})"/>`;
+    if(opts.label){const lx=(fx+tx)/2,ly=Math.min(fy,ty)-7;s+=`<text x="${lx}" y="${ly}" text-anchor="middle" fill="${sc}" font-size="9" font-family="monospace">${esc(opts.label)}</text>`;}
+    return s;
+  }
+  let h='';
+
+  // Step 1
+  h+=e('r_form','r','k_info','l',{cross:true});
+  // Step 2
+  h+=e('k_info','b','r_receive','r',{cross:true,path:`M ${pt('k_info','b')[0]} ${pt('k_info','b')[1]} V ${pt('r_receive','r')[1]} H ${pt('r_receive','r')[0]}`});
+  h+=e('r_receive','b','r_register','t');
+  h+=e('r_register','b','r_judge','t');
+  // Step 3
+  h+=e('r_judge','b','r_send_app','t');
+  h+=e('r_send_app','r','k_recv_app','l',{cross:true});
+  // Step 4
+  h+=e('r_send_app','b','r_confirm','t');
+  // Step 5
+  h+=e('r_confirm','r','k_contract','l',{cross:true,path:`M ${pt('r_confirm','r')[0]} ${pt('r_confirm','r')[1]} H ${(LX.sales+LX.kamei)/2} V ${pt('k_contract','l')[1]} H ${pt('k_contract','l')[0]}`});
+  h+=e('k_contract','r','b_contract','l',{cross:true});
+  // Step 6
+  h+=e('k_contract','b','k_app_form','t');
+  h+=e('b_contract','b','b_app_form','t');
+  // Step 7
+  h+=e('k_app_form','l','r_member','r',{cross:true,path:`M ${pt('k_app_form','l')[0]} ${pt('k_app_form','l')[1]} H ${(LX.sales+LX.kamei)/2} V ${pt('r_member','r')[1]} H ${pt('r_member','r')[0]}`});
+  h+=e('r_member','b','r_mail','t');
+  // Step 8
+  h+=e('r_mail','b','r_init','t');
+  // Step 9
+  h+=e('r_init','r','s_manage','l',{cross:true});
+  // Step 10
+  h+=e('s_manage','b','s_confirm','t');
+  h+=e('s_confirm','b','s_start','t');
+  // Step 11
+  h+=e('s_start','b','s_pay_set','t');
+  h+=e('s_pay_set','r','p_payjp','l',{cross:true});
+  // Step 12
+  h+=e('s_pay_set','b','s_pay_start','t');
+
+  return h;
+}
+
+const D=makeDiagram('wrap','vp',SVG_W,SVG_H,NODES,lanes,edges);
+D.render();
+requestAnimationFrame(()=>D.fitView());
+</script>
+</body>
+</html>
