@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RINCLE テストケース</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --text-muted: #8b949e; --accent: #58a6ff;
+    --green: #3fb950; --orange: #d29922; --red: #f85149; --purple: #bc8cff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+  .nav { position: fixed; top: 0; left: 0; width: 260px; height: 100vh; background: var(--surface); border-right: 1px solid var(--border); padding: 24px 16px; overflow-y: auto; z-index: 100; }
+  .nav h2 { font-size: 14px; color: var(--accent); margin-bottom: 16px; letter-spacing: 1px; text-transform: uppercase; }
+  .nav a { display: block; padding: 6px 12px; color: var(--text-muted); text-decoration: none; font-size: 13px; border-radius: 6px; margin-bottom: 2px; transition: all .15s; }
+  .nav a:hover { background: rgba(88,166,255,.1); color: var(--accent); }
+  .nav a.l2 { padding-left: 28px; font-size: 12px; }
+
+  .main { margin-left: 260px; max-width: 960px; padding: 40px 48px 80px; }
+
+  h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+  h2 { font-size: 22px; font-weight: 600; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 17px; font-weight: 600; margin: 32px 0 12px; color: var(--accent); }
+  h4 { font-size: 15px; font-weight: 600; margin: 24px 0 8px; color: var(--purple); }
+  p { margin-bottom: 12px; color: var(--text-muted); font-size: 14px; }
+  strong { color: var(--text); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .icon-blue { background: rgba(88,166,255,.15); }
+  .icon-green { background: rgba(63,185,80,.15); }
+  .icon-orange { background: rgba(210,153,34,.15); }
+  .icon-red { background: rgba(248,81,73,.15); }
+  .icon-purple { background: rgba(188,140,255,.15); }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 13px; }
+  th { background: rgba(88,166,255,.08); color: var(--accent); font-weight: 600; text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); }
+  td { padding: 8px 14px; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+  tr:hover td { background: rgba(255,255,255,.02); }
+  td:first-child { color: var(--text); font-weight: 500; }
+  .center { text-align: center; }
+
+  .status-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; background: rgba(63,185,80,.15); color: var(--green); }
+  .tc-num { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: var(--bg); font-size: 11px; font-weight: 700; flex-shrink: 0; }
+
+  blockquote { border-left: 3px solid var(--orange); padding: 10px 16px; margin: 12px 0; background: rgba(210,153,34,.06); border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text-muted); }
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+  ul { margin: 8px 0 16px 24px; color: var(--text-muted); font-size: 14px; }
+  li { margin-bottom: 4px; }
+
+  @media (max-width: 768px) { .nav { display: none; } .main { margin-left: 0; padding: 24px 16px; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <h2>Test Cases</h2>
+  <a href="#summary">サマリ</a>
+  <a href="#tc1">1. 店舗在庫作成・更新</a>
+  <a href="#tc1-sys" class="l2">システム (バッチ)</a>
+  <a href="#tc1-store" class="l2">店舗 (設定変更)</a>
+  <a href="#tc1-bike" class="l2">自転車 (連動)</a>
+  <a href="#tc2">2. キャンセル</a>
+  <a href="#tc2-user" class="l2">ユーザー側</a>
+  <a href="#tc2-store" class="l2">店舗側</a>
+  <a href="#tc3">3. 決済</a>
+  <a href="#tc3-method" class="l2">決済方法</a>
+  <a href="#tc3-stock" class="l2">在庫反映</a>
+  <a href="#tc4">4. 自転車料金計算</a>
+  <a href="#tc4-1" class="l2">日付指定: 可</a>
+  <a href="#tc4-2" class="l2">日付指定: 不可</a>
+  <a href="#tc4-3" class="l2">貸出可能期間</a>
+  <a href="#tc5">5. 延長料金計算</a>
+  <a href="#tc6">6. 料金の変更</a>
+  <a href="#tc7">7. 検索</a>
+  <a href="#tc7-pattern" class="l2">検索パターン</a>
+  <a href="#tc7-detail" class="l2">詳細ロジック</a>
+  <a href="#tc8">8. カート機能の削除</a>
+</nav>
+
+<div class="main">
+
+<h1>テストケース</h1>
+<p class="subtitle">RINCLE 改修スコープに対応するテストケース一覧</p>
+
+<section id="summary">
+<h2>サマリ</h2>
+<table>
+  <thead><tr><th>#</th><th>カテゴリ</th><th>概要</th><th>ステータス</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><a href="#tc1" style="color:var(--accent)">店舗在庫作成・更新</a></td><td>営業カレンダーが自動で365日分生成・更新されること</td><td><span class="status-badge">確定</span></td></tr>
+    <tr><td>2</td><td><a href="#tc2" style="color:var(--accent)">キャンセル</a></td><td>ユーザーと店舗それぞれのキャンセルルールが正しく動くこと</td><td><span class="status-badge">確定</span></td></tr>
+    <tr><td>3</td><td><a href="#tc3" style="color:var(--accent)">決済</a></td><td>各決済パターンで正しく処理され、在庫に反映されること</td><td><span class="status-badge">確定</span></td></tr>
+    <tr><td>4</td><td><a href="#tc4" style="color:var(--accent)">自転車料金計算</a></td><td>貸出時間・日数に応じた正しいプランと料金が適用されること</td><td><span class="status-badge">確定</span></td></tr>
+    <tr><td>5</td><td><a href="#tc5" style="color:var(--accent)">延長料金計算</a></td><td>延長時刻に応じた正しい計算単位が適用されること</td><td><span class="status-badge">確定</span></td></tr>
+    <tr><td>6</td><td><a href="#tc6" style="color:var(--accent)">料金の変更</a></td><td>料金改定が既存・新規予約に正しく適用されること</td><td><span class="status-badge">確定</span></td></tr>
+    <tr><td>7</td><td><a href="#tc7" style="color:var(--accent)">検索</a></td><td>貸出日・返却日の指定状況に応じて正しい自転車が表示されること</td><td><span class="status-badge">確定</span></td></tr>
+    <tr><td>8</td><td><a href="#tc8" style="color:var(--accent)">カート機能の削除</a></td><td>カートの自動削除と削除後の遷移が正しく動くこと</td><td><span class="status-badge">確定</span></td></tr>
+  </tbody>
+</table>
+</section>
+
+<hr>
+
+<!-- ========== 1 ========== -->
+<section id="tc1">
+<h2>1. 店舗在庫作成・更新ケース</h2>
+<p>店舗の営業カレンダーは<strong>常に1年分（365日以上）</strong>自動で管理される。毎日バッチで1日分が追加され、店舗が曜日設定を行うと作成日から1年分の日付データが生成される。</p>
+
+<div id="tc1-sys" class="card">
+  <div class="card-header"><div class="card-icon icon-blue">🔄</div><h3 style="margin:0">システム（バッチ処理）</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>本日から365日以上分のデフォルト日程が存在していること</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>デフォルトが毎日1日分ずつ追加されること（翌日になると1日分追加される）</td></tr>
+      <tr><td><span class="tc-num">3</span></td><td>店舗の日付も毎日1日分ずつ追加されること</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="tc1-store" class="card">
+  <div class="card-header"><div class="card-icon icon-green">🏪</div><h3 style="margin:0">店舗（初期設定・変更時）</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>店舗の曜日を初期設定したとき、デフォルト分の日付データが作成されること</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>曜日設定を変更したとき、翌日以降の店舗日程が新しい設定に更新されること</td></tr>
+      <tr><td><span class="tc-num">3</span></td><td>特定の日付を個別に変更したとき、その日付のデータが更新されること</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="tc1-bike" class="card">
+  <div class="card-header"><div class="card-icon icon-orange">🚲</div><h3 style="margin:0">自転車（カレンダー連動）</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>店舗カレンダーが更新されたとき、自転車の貸し出し可能日も仕様通りに更新されること</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>自転車を新規作成したとき、デフォルト分の貸し出し可能日が自動作成されること</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<hr>
+
+<!-- ========== 2 ========== -->
+<section id="tc2">
+<h2>2. キャンセルケース</h2>
+<p>ユーザーと店舗では<strong>キャンセルできるタイミングが異なる</strong>。ユーザーはライド前日の23:59:59まで、店舗はライド当日でもキャンセル可能。返金の有無は常に店舗側が選択できる。</p>
+
+<div id="tc2-user" class="card">
+  <div class="card-header"><div class="card-icon icon-blue">👤</div><h3 style="margin:0">ユーザー側</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>ライド前日の23:59:59まではキャンセルボタンが操作できること</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>ライド当日（0:00以降）はキャンセルボタンが表示されるが非活性になること</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="tc2-store" class="card">
+  <div class="card-header"><div class="card-icon icon-green">🏪</div><h3 style="margin:0">店舗側</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>予約が「来客待ち」ステータスのときにキャンセルが実行できること</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>返金有無の選択が常に入力できる状態であること</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<hr>
+
+<!-- ========== 3 ========== -->
+<section id="tc3">
+<h2>3. 決済ケース</h2>
+<p>決済方法はクレカ・現地決済の2種類。クレカはPay.jpを経由する。決済が完了・キャンセル・延長・短縮されたとき、在庫にも正しく反映される必要がある。</p>
+
+<div id="tc3-method" class="card">
+  <div class="card-header"><div class="card-icon icon-purple">💳</div><h3 style="margin:0">決済方法（全パターン確認）</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>クレカ決済が成功するパターン</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>クレカ決済が失敗するパターン</td></tr>
+      <tr><td><span class="tc-num">3</span></td><td>クレカで初回決済後、延長時に現地決済に切り替えるパターン</td></tr>
+      <tr><td><span class="tc-num">4</span></td><td>現地決済のみで完結するパターン（初回のみ）</td></tr>
+      <tr><td><span class="tc-num">5</span></td><td>現地決済で初回決済後、延長も現地決済するパターン</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="tc3-stock" class="card">
+  <div class="card-header"><div class="card-icon icon-orange">📦</div><h3 style="margin:0">在庫反映（各操作後の確認）</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>タイミング</th><th>確認内容</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>店舗がキャンセルしたとき</td><td>対象日程の在庫が空きに戻ること</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>ユーザーがキャンセルしたとき</td><td>対象日程の在庫が空きに戻ること</td></tr>
+      <tr><td><span class="tc-num">3</span></td><td>延長したとき</td><td>延長分の日程が在庫に反映されること</td></tr>
+      <tr><td><span class="tc-num">4</span></td><td>期間を短縮したとき</td><td>短縮分の日程が在庫に戻ること</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<hr>
+
+<!-- ========== 4 ========== -->
+<section id="tc4">
+<h2>4. 自転車料金計算</h2>
+<p>貸出時間と返却時間の差によって、適用されるプランと料金が自動的に決まる。自転車詳細画面の条件Dropdownには営業時間のみが表示される。</p>
+
+<div id="tc4-1" class="card">
+  <div class="card-header"><div class="card-icon icon-green">✅</div><h3 style="margin:0">4-1. 日付指定：可の場合（プラン判定ロジック）</h3></div>
+  <table>
+    <thead><tr><th>プラン</th><th>料金（税抜）</th><th>適用条件</th></tr></thead>
+    <tbody>
+      <tr><td>〜3時間</td><td>¥880</td><td>1時間 ≦ 差分 ＜ 4時間</td></tr>
+      <tr><td>4時間以上〜1日</td><td>¥3,300</td><td>4時間 ≦ 差分 ≦ 営業終了時間</td></tr>
+      <tr><td>1泊（2日間）</td><td>¥13,200</td><td>日付差 = 1日</td></tr>
+      <tr><td>2泊（3日間）</td><td>¥27,500</td><td>日付差 = 2日</td></tr>
+      <tr><td>3泊〜6泊（〜7日間）</td><td>¥27,500</td><td>日付差 ≧ 3日</td></tr>
+      <tr><td>7泊〜13泊（〜14日間）</td><td>¥27,500</td><td>日付差 ≧ 7日</td></tr>
+      <tr><td>14泊〜29泊（〜30日間）</td><td>¥27,500</td><td>日付差 ≧ 14日</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="tc4-2" class="card">
+  <div class="card-header"><div class="card-icon icon-red">🚫</div><h3 style="margin:0">4-2. 日付指定：不可の場合</h3></div>
+  <p>以下の条件に1つでも該当する場合、その日程は予約不可として扱われる。</p>
+  <table>
+    <thead><tr><th>#</th><th>条件</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>貸出日または返却日が店舗の休日である</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>貸出日〜返却日の期間内に他のレンタル予定が含まれている</td></tr>
+      <tr><td><span class="tc-num">3</span></td><td>貸出日を起算して31日以上のレンタルである</td></tr>
+      <tr><td><span class="tc-num">4</span></td><td>店舗が「バイクレンタル不可」に設定している自転車である</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div id="tc4-3" class="card">
+  <div class="card-header"><div class="card-icon icon-blue">📐</div><h3 style="margin:0">4-3. 貸し出し可能期間の設定</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>期間指定不可の設定になっている場合、予約できないこと</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>レンタル可能期間に応じて、表示される料金が切り替わること</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<hr>
+
+<!-- ========== 5 ========== -->
+<section id="tc5">
+<h2>5. 延長料金計算</h2>
+<p>延長は<strong>返却日が同日かどうか・営業終了時間内かどうか</strong>で計算単位が変わる。延長料金は返却時にまとめて「延長料金」として別途決済される。</p>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon icon-purple">⏱</div><h3 style="margin:0">5-1. 延長時の計算単位</h3></div>
+  <table>
+    <thead><tr><th>返却タイミング</th><th class="center">計算単位</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td>返却日が同日かつ営業終了時間前</td><td class="center">1時間単位</td><td>同日の営業時間内に返却する延長</td></tr>
+      <tr><td>返却日が同日かつ営業終了時間以降</td><td class="center">泊数 x 日料金</td><td>同日だが営業終了時間を超える延長</td></tr>
+    </tbody>
+  </table>
+  <blockquote>期間内に別の予約が入っている場合は、前日までしか延長できない</blockquote>
+</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon icon-orange">💰</div><h3 style="margin:0">5-2. 決済方法</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>延長の決済は現地決済のみで処理されること</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon icon-red">🚫</div><h3 style="margin:0">5-3. 延長不可となる条件</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>条件</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>貸出日または返却日が店舗の休日である</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>延長後の期間内に他のレンタル予定が含まれている</td></tr>
+      <tr><td><span class="tc-num">3</span></td><td>貸出日起算で31日以上になるレンタル</td></tr>
+      <tr><td><span class="tc-num">4</span></td><td>店舗が「バイクレンタル不可」に設定している自転車である</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<hr>
+
+<!-- ========== 6 ========== -->
+<section id="tc6">
+<h2>6. 料金の変更</h2>
+<p>料金テーブルを変更しても、<strong>すでに作成済みの予約には影響しない</strong>。変更後に新規作成された予約にのみ、新しい料金が適用される。</p>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon icon-orange">📝</div><h3 style="margin:0">料金改定テスト</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>テストケース</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>料金改定前に作成された予約には、改定前の料金テーブルが適用されること</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>料金改定後に新規作成した予約には、改定後の料金テーブルが適用されること</td></tr>
+      <tr><td><span class="tc-num">3</span></td><td>貸し出し中の自転車を延長するとき、改定前の料金テーブルが使われること</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<hr>
+
+<!-- ========== 7 ========== -->
+<section id="tc7">
+<h2>7. 検索のケース</h2>
+<p>貸出日・返却日の指定有無によって、検索結果に表示される自転車が変わる。「貸出不可」設定の自転車は、どの条件でも常に非表示。</p>
+
+<div id="tc7-pattern" class="card">
+  <div class="card-header"><div class="card-icon icon-blue">🔎</div><h3 style="margin:0">検索パターン別の表示ルール</h3></div>
+  <table>
+    <thead><tr><th class="center">貸出日</th><th class="center">返却日</th><th class="center">全て空き</th><th class="center">指定日空き</th><th class="center">空き無し</th><th class="center">貸出不可</th></tr></thead>
+    <tbody>
+      <tr><td class="center">指定</td><td class="center">指定</td><td class="center" style="color:var(--green)">○</td><td class="center" style="color:var(--red)">×</td><td class="center" style="color:var(--red)">×</td><td class="center" style="color:var(--red)">×</td></tr>
+      <tr><td class="center">未定</td><td class="center">指定</td><td class="center" style="color:var(--green)">○</td><td class="center" style="color:var(--green)">○</td><td class="center" style="color:var(--red)">×</td><td class="center" style="color:var(--red)">×</td></tr>
+      <tr><td class="center">指定</td><td class="center">未定</td><td class="center" style="color:var(--green)">○</td><td class="center" style="color:var(--green)">○</td><td class="center" style="color:var(--red)">×</td><td class="center" style="color:var(--red)">×</td></tr>
+      <tr><td class="center">未定</td><td class="center">未定</td><td class="center" style="color:var(--green)">○</td><td class="center" style="color:var(--green)">○</td><td class="center" style="color:var(--green)">○</td><td class="center" style="color:var(--red)">×</td></tr>
+    </tbody>
+  </table>
+  <blockquote>
+    両日指定：完全に空きがある自転車のみ表示<br>
+    片方のみ指定：指定した日に空きがあれば表示<br>
+    両日未定：空きが1日でもあれば表示（空き無しの非活性状態も含む）
+  </blockquote>
+</div>
+
+<div id="tc7-detail" class="card">
+  <div class="card-header"><div class="card-icon icon-purple">🧩</div><h3 style="margin:0">検索状態の詳細ロジック</h3></div>
+  <p><strong>自転車の表示可否は「貸出可否」×「日程かぶり」で決まる</strong></p>
+  <table>
+    <thead><tr><th></th><th class="center">パターン1</th><th class="center">パターン2</th><th class="center">パターン3</th><th class="center">パターン4</th></tr></thead>
+    <tbody>
+      <tr><td colspan="5" style="background:rgba(88,166,255,.05);color:var(--accent);font-weight:600">自転車の貸出可否</td></tr>
+      <tr><td>可</td><td class="center">●</td><td class="center">●</td><td class="center"></td><td class="center"></td></tr>
+      <tr><td>不可</td><td class="center"></td><td class="center"></td><td class="center">●</td><td class="center">●</td></tr>
+      <tr><td colspan="5" style="background:rgba(88,166,255,.05);color:var(--accent);font-weight:600">日程かぶり判定</td></tr>
+      <tr><td>あり（予約被り）</td><td class="center">●</td><td class="center"></td><td class="center">●</td><td class="center"></td></tr>
+      <tr><td>なし（被りなし）</td><td class="center"></td><td class="center">●</td><td class="center"></td><td class="center">●</td></tr>
+      <tr><td colspan="5" style="background:rgba(88,166,255,.05);color:var(--accent);font-weight:600">表示結果</td></tr>
+      <tr><td>空きあり（通常表示）</td><td class="center"></td><td class="center" style="color:var(--green)">●</td><td class="center"></td><td class="center"></td></tr>
+      <tr><td>空き無し（非活性表示）</td><td class="center" style="color:var(--orange)">●</td><td class="center"></td><td class="center"></td><td class="center"></td></tr>
+      <tr><td>空き無し（貸出不可表示）</td><td class="center"></td><td class="center"></td><td class="center" style="color:var(--red)">●</td><td class="center" style="color:var(--red)">●</td></tr>
+    </tbody>
+  </table>
+
+  <h4>パターン①：貸出日・返却日ともに指定</h4>
+  <table>
+    <thead><tr><th>状態</th><th class="center">貸出日</th><th class="center">返却日</th><th>From</th><th>To</th><th>表示</th><th>判定ロジック</th></tr></thead>
+    <tbody>
+      <tr><td>予約あり</td><td class="center">●</td><td class="center">●</td><td>貸出日</td><td>返却日</td><td style="color:var(--green)">空きあり</td><td>カレンダー数＝自転車含むカレンダー数</td></tr>
+      <tr><td>予約なし</td><td class="center">●</td><td class="center">●</td><td>貸出日</td><td>返却日</td><td style="color:var(--orange)">空き無し</td><td>カレンダー数＞自転車含むカレンダー数</td></tr>
+    </tbody>
+  </table>
+
+  <h4>パターン②：貸出日のみ指定</h4>
+  <table>
+    <thead><tr><th>状態</th><th class="center">貸出日</th><th class="center">返却日</th><th>From</th><th>To</th><th>表示</th><th>判定ロジック</th></tr></thead>
+    <tbody>
+      <tr><td>空きあり</td><td class="center">●</td><td class="center">-</td><td>貸出日</td><td>今日+31日</td><td style="color:var(--green)">空きあり</td><td>含むカレンダー数＞0</td></tr>
+      <tr><td>空き無し</td><td class="center">●</td><td class="center">-</td><td>貸出日</td><td>今日+31日</td><td style="color:var(--orange)">空き無し</td><td>含むカレンダー数＝0</td></tr>
+    </tbody>
+  </table>
+
+  <h4>パターン③：返却日のみ指定</h4>
+  <table>
+    <thead><tr><th>状態</th><th class="center">貸出日</th><th class="center">返却日</th><th>From</th><th>To</th><th>表示</th><th>判定ロジック</th></tr></thead>
+    <tbody>
+      <tr><td>空きあり</td><td class="center">-</td><td class="center">●</td><td>明日</td><td>返却日</td><td style="color:var(--green)">空きあり</td><td>含むカレンダー数＞0</td></tr>
+      <tr><td>空き無し</td><td class="center">-</td><td class="center">●</td><td>明日</td><td>返却日</td><td style="color:var(--orange)">空き無し</td><td>含むカレンダー数＝0</td></tr>
+    </tbody>
+  </table>
+
+  <h4>パターン④：両方未定</h4>
+  <table>
+    <thead><tr><th>状態</th><th class="center">貸出日</th><th class="center">返却日</th><th>From</th><th>To</th><th>表示</th><th>判定ロジック</th></tr></thead>
+    <tbody>
+      <tr><td>空きあり</td><td class="center">-</td><td class="center">-</td><td>明日</td><td>今日+31日</td><td style="color:var(--green)">空きあり</td><td>含むカレンダー数＞0</td></tr>
+      <tr><td>空き無し</td><td class="center">-</td><td class="center">-</td><td>明日</td><td>今日+31日</td><td style="color:var(--orange)">空き無し</td><td>含むカレンダー数＝0</td></tr>
+    </tbody>
+  </table>
+  <blockquote>貸し出し中の場合はメンテナンス表示 / 最下部コンディションで休業条件を追加</blockquote>
+</div>
+</section>
+
+<hr>
+
+<!-- ========== 8 ========== -->
+<section id="tc8">
+<h2>8. カート機能の削除</h2>
+<p>カートは<strong>当日限り有効</strong>。翌日になるか、ログインしていない状態でページを開くと自動的に削除される。削除時はアラートを表示した後、空車検索画面へ遷移する（入力途中の情報は都道府県のみ引き継ぐ）。</p>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon icon-red">🗑</div><h3 style="margin:0">削除トリガー</h3></div>
+  <table>
+    <thead><tr><th>#</th><th>条件</th><th>動作</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tc-num">1</span></td><td>カート作成日の翌日にページをロードしたとき（例：1/1作成 → 1/2アクセス）</td><td>カートを削除</td></tr>
+      <tr><td><span class="tc-num">2</span></td><td>ログインしていないユーザーがページをロードしたとき</td><td>アラートを表示してカートを削除</td></tr>
+    </tbody>
+  </table>
+  <p><strong>対象画面</strong>：自転車詳細画面・カート画面（カートに1台以上の自転車がある場合のみアラート表示）</p>
+</div>
+
+<div class="card">
+  <div class="card-header"><div class="card-icon icon-blue">🔄</div><h3 style="margin:0">カート削除後の遷移先</h3></div>
+  <p>空車検索画面へ遷移し、以下の状態で表示する。</p>
+  <table>
+    <thead><tr><th>項目</th><th>値</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td>都道府県</td><td>カート作成時の値</td><td>引き継ぐ</td></tr>
+      <tr><td>カテゴリ</td><td>全て</td><td>リセット</td></tr>
+      <tr><td>貸出日</td><td>未定</td><td>リセット</td></tr>
+      <tr><td>返却日</td><td>未定</td><td>リセット</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+</div>
+</body>
+</html>
