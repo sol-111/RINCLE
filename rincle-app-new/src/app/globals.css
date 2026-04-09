@@ -18,8 +18,9 @@ body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Hiragino San
 .md-body p { margin: 8px 0; }
 .md-body strong { color: #e0e0e8; }
 .md-body hr { border: none; border-top: 1px solid #2e2e38; margin: 24px 0; }
-.md-body ul, .md-body ol { padding-left: 22px; margin: 6px 0; }
-.md-body li { margin: 3px 0; }
+.md-body ul { padding-left: 22px; margin: 6px 0; list-style-type: disc; }
+.md-body ol { padding-left: 22px; margin: 6px 0; list-style-type: decimal; }
+.md-body li { margin: 3px 0; display: list-item; }
 .md-body blockquote { border-left: 3px solid #4a8ad8; padding: 8px 16px; margin: 12px 0; background: rgba(74,138,216,.08); border-radius: 0 6px 6px 0; color: #a0a0b0; }
 .md-body code { background: #2a2a34; padding: 1px 6px; border-radius: 4px; font-size: 13px; color: #e8a0d0; }
 .md-body pre { background: #1e1e28; border: 1px solid #2e2e38; border-radius: 8px; padding: 16px; overflow-x: auto; margin: 12px 0; }
