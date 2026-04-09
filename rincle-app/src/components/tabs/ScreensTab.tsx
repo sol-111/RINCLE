@@ -56,150 +56,12 @@ const ROLE_DATA: Record<Exclude<SummaryTab, '全体'>, {
   },
 }
 
-const PRIO_STYLE: Record<string, { bg: string; color: string }> = {
-  '緊急': { bg: '#4a1a1a', color: '#ff8a80' },
-  '高':   { bg: '#3a2a10', color: '#ffb74d' },
-  '中':   { bg: '#1a3a1a', color: '#81c784' },
-  '低':   { bg: '#1a1a3a', color: '#90caf9' },
-}
-
-type IssueTab = '全体' | '利用者' | '店舗管理者' | 'システム管理者'
-const ISSUE_TABS: IssueTab[] = ['全体', '利用者', '店舗管理者', 'システム管理者']
-
-type IssueSection = { heading: string; items: [string, string][] }
-
-const ISSUES_ALL: IssueSection[] = [
-  { heading: 'UI/UX 観点', items: [
-    ['ページタイトル・meta description・OGP タグが未設定のため、SNS シェア時にリンクプレビューが表示されず、SEO にも悪影響', '高'],
-    ['viewport meta タグの設定が確認できず、スマートフォンでの表示が崩れる可能性がある', '高'],
-    ['画像に alt テキストが設定されていないため、スクリーンリーダー利用者がコンテンツを認識できない', '中'],
-    ['ARIA ラベルが未設定でキーボードナビゲーションが機能しない。WCAG 準拠が困難な状態', '中'],
-    ['CDN リソースの読み込み失敗時に「IT 管理者に連絡してください」という不親切なエラーメッセージが表示される', '中'],
-    ['広告ブロッカー利用環境でアプリが起動しないケースがある', '中'],
-    ['エラー通知をポップアップに集中させており（63 個）、操作の流れを頻繁に中断する。トースト通知・インライン表示への切り替えを検討', '低'],
-    ['空のリスト表示時のエンプティステート（「該当なし」等のメッセージ）が未定義', '低'],
-  ]},
-  { heading: '開発・セキュリティ観点', items: [
-    ['【緊急】 Pay.JP の本番公開鍵・テスト秘密鍵がオプションセットにハードコードされており、JSON 書き出し等で漏洩するリスクがある。即時ローテーションが必要', '緊急'],
-    ['16 本の API ワークフローで ignore_privacy_rules: TRUE が設定されており、決済・予約データへのアクセス制御が無効化されている', '緊急'],
-    ['複数の決済関連 API で auth_unnecessary: TRUE が設定されており、未認証リクエストが受け入れられる', '緊急'],
-    ['birth_date・phone_text・address_text・car_id_text・cus_id_text 等、個人情報 11 フィールドにプライバシーロールが未設定', '高'],
-    ['Pay.JP Webhook の署名検証が確認できず、偽造リクエストを受け入れる可能性がある', '高'],
-    ['Google Maps API キーがフロントエンドに露出している。ドメイン制限等のリファラー制限を設定する必要がある', '高'],
-    ['メールアドレス 5 件・URL 9 件がワークフロー内にハードコードされており、環境切り替えや変更時の修正漏れリスクがある', '中'],
-    ['データタイプ名・要素 ID に ___、bTHEn 等の無意味な名前が多数使われており、保守性が著しく低い', '中'],
-    ['プロジェクト全体でコメントが 1 件のみ。ワークフローの意図・ロジックが不明瞭で引き継ぎ困難', '中'],
-    ['全銀ネット（zengin.ajtw.net）との連携があるが、銀行口座情報の取り扱いにおける PCI DSS 準拠状況が不明', '中'],
-    ['クライアントサイドの入力バリデーションが確認できず、不正な値がそのまま送信される可能性がある', '中'],
-  ]},
-]
-
-const ISSUES_USER: IssueSection[] = [
-  { heading: 'UI/UX 観点', items: [
-    ['予約フローで Bubble の button_disabled キャッシュにより「予約画面へ進む」ボタンが無反応になる。E2E でも時間選択 UI のロード遅延でテスト失敗（一般ユーザーも同様に操作不能になる）', '緊急'],
-    ['195 個の Input と 85 個の Dropdown に should_not_be_empty が 0 件。全フォームで空送信が可能な状態', '高'],
-    ['Pikaday カレンダーの月ナビゲーションが直感的でなく、遠い日付の選択に最大 24 回クリックが必要。月ジャンプ機能がない', '高'],
-    ['検索結果の「貸出可能な自転車をすべて見る」→「詳細を見る」と 2 ステップ必要で、ユーザーが離脱しやすい導線', '高'],
-    ['エラーフィードバックが皆無（alert 1 件のみ）。フォーム送信失敗時やAPI通信エラー時にユーザーへの通知がない', '高'],
-    ['予約フローが 4 ステップ（カート → 顧客情報 → 確認 → 決済）と長く、途中離脱率が高いと推測される', '中'],
-    ['新着情報・TOPICS のクリックが通常 click() では動作せず jQuery ハンドラ経由でのみ遷移する。タッチデバイスで反応しない可能性', '中'],
-    ['「Popup 工事中」が存在しており、未完成機能がユーザーに露出している可能性がある', '中'],
-    ['空のリスト表示時のエンプティステート（empty_state 0 件）が未定義。検索結果 0 件時にガイダンスがない', '中'],
-    ['検索時に「日付未定」チェックを 2 つ個別に操作する必要がある。1 つのトグルにまとめるべき', '低'],
-  ]},
-  { heading: '開発・セキュリティ観点', items: [
-    ['Pay.JP 本番シークレットキー（sk_live_...）が Bubble 定義ファイルに平文でハードコード。このキーで任意の課金・返金操作が可能。即時ローテーション必須', '緊急'],
-    ['テスト用 API キー（sk_test_...、pk_test_...）も平文で格納。テスト環境でも漏洩リスクがある', '緊急'],
-    ['ignore_privacy_rules: TRUE が 31 箇所、auth_unnecessary: TRUE が 10 箇所。決済・予約データへのアクセス制御がバイパスされている', '高'],
-    ['予約確定後の URL 遷移が不安定（E2E で catch で回避）。ネットワーク遅延時に二重予約の可能性', '高'],
-    ['ユーザー登録・ログインフォームに入力バリデーション（メール形式、パスワード強度）が確認できない', '高'],
-    ['お問い合わせフォームに CSRF 対策・レート制限が確認できない。メール送信 WF が 18 箇所あるがスパム対策が不明', '中'],
-    ['退会機能がマイページにあるが、退会処理のデータ削除範囲（GDPR 対応）が不明', '中'],
-    ['テスト用メールアドレス（liveqaaccount@example.com 等）が本番データに残存', '低'],
-  ]},
-]
-
-const ISSUES_STORE: IssueSection[] = [
-  { heading: 'UI/UX 観点', items: [
-    ['26 個の Popup と 149 個のワークフローが単一ページに集中。モーダル地獄でユーザーが迷いやすく、読み込み速度にも影響', '高'],
-    ['予約一覧がデフォルト画面だが、当日の予約ハイライトやアクションが必要な予約の視覚的区別がない', '高'],
-    ['営業時間設定が曜日別で複雑だが、一括コピー（例：月曜の設定を火〜金に適用）機能がない', '高'],
-    ['自転車登録/編集ポップアップが 29 要素と長大。ステップウィザードや折りたたみセクションが望ましい', '中'],
-    ['CSV ダウンロードが予約一覧のみ。売上レポートや顧客一覧にもエクスポートが必要', '中'],
-    ['営業カレンダーの月間ビュー全体で営業/休業を一括設定する UI がない', '中'],
-    ['お問い合わせ一覧から返信する導線がサイドバーに見当たらない（別途メール対応が必要と思われる）', '低'],
-  ]},
-  { heading: '開発・セキュリティ観点', items: [
-    ['全ページで page_is_private が未設定。URL 直打ちで認証なしにページが表示される可能性がある', '緊急'],
-    ['27 個の API エンドポイント全てで認証が none。「オプション詳細情報の変更」等の書き込み系も含まれ、外部からデータ改ざん可能', '緊急'],
-    ['ログインページにブルートフォース対策（rate_limit, captcha, lockout）が一切なし', '緊急'],
-    ['149 個のワークフロー全てが unnamed。デバッグやメンテナンスが極めて困難', '高'],
-    ['入力バリデーション（validate, required, min_length, sanitize）が未検出。XSS や不正データ投入のリスク', '高'],
-    ['「ライド開始」「ライド終了」の排他制御が確認できず、同時操作で不整合が発生する可能性', '高'],
-    ['「リカーリング始動」「api テスト」などデバッグ/運用系ボタンが本番 UI に残っている', '中'],
-    ['店舗管理者の操作ログ（access_log 型は存在するが）の実装範囲が不明。不正アクセスの検知に必要', '中'],
-  ]},
-]
-
-const ISSUES_ADMIN: IssueSection[] = [
-  { heading: 'UI/UX 観点', items: [
-    ['顧客一覧がデフォルト画面だが、アクティブユーザーと退会済みユーザーの区別が視覚的に不明瞭', '高'],
-    ['加盟店一覧から個別店舗の詳細・編集への導線が「詳細」ボタンのみで、主要 KPI（売上・予約数）のプレビューがない', '高'],
-    ['「シュミレーション」表記が 20 箇所で誤り（正：シミュレーション）。正表記は 1 箇所のみで混在', '中'],
-    ['営業カレンダー・料金シミュレーションがサイドバーメニューに含まれず、直接 URL でしかアクセスできない', '中'],
-    ['FV 管理・バナー管理・お知らせ管理が別メニューに分かれているが、「トップページ管理」で統合した方が直感的', '中'],
-    ['重いデータ表示（料金 518 参照、予約 259 参照）に対してローディングインジケータが不足（spinner 1 件のみ）', '中'],
-    ['CSV ダウンロードが顧客一覧にしか確認できず、予約一覧・売上レポート等にもエクスポートが必要', '低'],
-    ['検索・フィルタ UI 要素は存在する（39 件）が動作テストが未実施で、正常動作が保証されていない', '低'],
-  ]},
-  { heading: '開発・セキュリティ観点', items: [
-    ['管理者ログインに二段階認証（MFA）が未実装。全顧客・加盟店・売上データにアクセスできるアカウントがパスワード認証のみ', '緊急'],
-    ['ignore_privacy_rules: TRUE が 31 箇所で使用。管理者 API 経由で全データにアクセス可能、最小権限原則に違反', '緊急'],
-    ['管理者ログイン URL が推測可能（/admin_login）で IP 制限・レート制限が未設定。ブルートフォース攻撃のリスク', '緊急'],
-    ['監査ログ（Audit Log）が存在しない。管理者の操作履歴が追跡不能でインシデント対応・コンプライアンスに支障', '高'],
-    ['auto_binding が 115 箇所で有効。フォーム入力が DB に直接反映される設定で、意図しないデータ変更のリスクが高い', '高'],
-    ['セッションタイムアウトが未設定。管理者がログインしたまま離席した場合に第三者が操作可能', '高'],
-    ['管理画面が Popup ベース（19 個）で構成されており、ブラウザバック・ブックマークが不可', '中'],
-    ['破壊的操作の確認ダイアログが 7 件のみ。料金変更・カレンダー変更等の誤操作防止が不十分', '中'],
-    ['管理者権限のロール分離が不十分（role 7 件、権限 1 件）。全管理者がフルアクセスの可能性', '中'],
-  ]},
-]
-
-function ImprovementTable({ items }: { items: [string, string][] }) {
-  return (
-    <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-      <tbody>
-        <tr>
-          <th style={{ ...infoThStyle, width: 36 }}>#</th>
-          <th style={infoThStyle}>改善点</th>
-          <th style={{ ...infoThStyle, width: 60 }}>優先度</th>
-        </tr>
-        {items.map(([text, prio], i) => (
-          <tr key={i} style={i % 2 === 1 ? { background: '#262628' } : {}}>
-            <td style={{ ...infoTdStyle, textAlign: 'center' }}>{i + 1}</td>
-            <td style={infoTdStyle}>{text}</td>
-            <td style={infoTdStyle}>
-              <span style={{
-                display: 'inline-block', padding: '2px 8px', borderRadius: 3,
-                fontSize: 11, fontWeight: 700,
-                background: PRIO_STYLE[prio]?.bg, color: PRIO_STYLE[prio]?.color,
-              }}>{prio}</span>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  )
-}
-
 // ── Main component ──────────────────────────────────────────────────────────
 export default function ScreensTab() {
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
-  const [commonOpen, setCommonOpen] = useState(false)
-  const [issueTab, setIssueTab] = useState<IssueTab>('全体')
   const [tableTab, setTableTab] = useState<SummaryTab>('全体')
   const [search, setSearch] = useState('')
   const [colFilterKey, setColFilterKey] = useState<ColKey | ''>('')
@@ -667,45 +529,6 @@ function startResize(col: ColKey, e: React.MouseEvent) {
 
         {(<>
 
-
-        {/* ── Card: 改善点 ── */}
-        <div style={cardStyle}>
-          <div onClick={() => setCommonOpen(v => !v)} style={{ ...cardHdStyle, cursor: 'pointer', userSelect: 'none' }}>
-            改善点
-            <span style={{ fontSize: 16, display: 'inline-block', transition: 'transform .2s', transform: commonOpen ? 'none' : 'rotate(-90deg)' }}>▼</span>
-          </div>
-          {commonOpen && (<>
-            {/* Tab bar */}
-            <div style={{ display: 'flex', background: '#252528', borderBottom: '1px solid #38383f' }}>
-              {ISSUE_TABS.map(tab => {
-                const accent = tab === '全体' ? '#9070c0' : ROLE_DATA[tab as Exclude<IssueTab,'全体'>]?.accent ?? '#9070c0'
-                return (
-                  <button key={tab} onClick={() => setIssueTab(tab)} style={{
-                    flex: 1, padding: '8px 0', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 600,
-                    background: issueTab === tab ? '#2e2e34' : 'transparent',
-                    color: issueTab === tab ? accent : '#666678',
-                    borderBottom: issueTab === tab ? `2px solid ${accent}` : '2px solid transparent',
-                    transition: 'all .15s',
-                  }}>
-                    {tab}
-                  </button>
-                )
-              })}
-            </div>
-            <div style={{ padding: '12px 14px' }}>
-              {(issueTab === '全体' ? ISSUES_ALL
-                : issueTab === '利用者' ? ISSUES_USER
-                : issueTab === '店舗管理者' ? ISSUES_STORE
-                : ISSUES_ADMIN
-              ).map((section, si) => (
-                <div key={si} style={{ marginBottom: si === 0 ? 16 : 0 }}>
-                  <p style={{ fontWeight: 700, marginBottom: 8, color: '#a8b8d0', fontSize: 13 }}>{section.heading}</p>
-                  <ImprovementTable items={section.items} />
-                </div>
-              ))}
-            </div>
-          </>)}
-        </div>
 
         {/* ── Card: 画面/機能一覧 ── */}
         <div style={{ ...cardStyle, marginBottom: 0 }}>

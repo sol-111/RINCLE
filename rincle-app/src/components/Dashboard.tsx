@@ -12,8 +12,9 @@ import DbTab from './tabs/DbTab'
 import ErTab from './tabs/ErTab'
 import DocsTab from './tabs/DocsTab'
 import SheetTab from './tabs/SheetTab'
+import PayjpFlowTab from './tabs/PayjpFlowTab'
 
-type Tab = 'screens' | 'docs' | 'flow' | 'bizflow' | 'emails' | 'db' | 'er' | 'sheet'
+type Tab = 'screens' | 'docs' | 'flow' | 'bizflow' | 'emails' | 'db' | 'er' | 'sheet' | 'payjp'
 
 const TABS = [
   // { id: 'sheet'   as Tab, label: 'Sheet',       icon: '🔢' },
@@ -24,6 +25,7 @@ const TABS = [
   { id: 'emails'  as Tab, label: 'メール一覧',  icon: '✉️' },
   { id: 'db'      as Tab, label: 'DB設計書',    icon: '🗄️' },
   { id: 'er'      as Tab, label: 'ER図',        icon: '🔗' },
+  { id: 'payjp'   as Tab, label: 'Pay.JP決済',  icon: '💳' },
 ]
 
 export default function Dashboard({ user }: { user: User }) {
@@ -100,6 +102,7 @@ export default function Dashboard({ user }: { user: User }) {
         {visited.has('emails')  && <div style={{ display: tab === 'emails'  ? 'block' : 'none', position: 'absolute', inset: 0 }}><EmailsTab /></div>}
         {visited.has('db')      && <div style={{ display: tab === 'db'      ? 'block' : 'none', position: 'absolute', inset: 0 }}><DbTab /></div>}
         {visited.has('er')      && <div style={{ display: tab === 'er'      ? 'block' : 'none', position: 'absolute', inset: 0 }}><ErTab /></div>}
+        {visited.has('payjp')   && <div style={{ display: tab === 'payjp'   ? 'block' : 'none', position: 'absolute', inset: 0 }}><PayjpFlowTab /></div>}
       </div>
     </div>
   )
