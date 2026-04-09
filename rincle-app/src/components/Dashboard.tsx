@@ -16,8 +16,8 @@ import SheetTab from './tabs/SheetTab'
 type Tab = 'screens' | 'docs' | 'flow' | 'bizflow' | 'emails' | 'db' | 'er' | 'sheet'
 
 const TABS = [
-  { id: 'sheet'   as Tab, label: 'Sheet',       icon: '🔢' },
-  { id: 'docs'    as Tab, label: 'Docs',        icon: '📄' },
+  // { id: 'sheet'   as Tab, label: 'Sheet',       icon: '🔢' },
+  // { id: 'docs'    as Tab, label: 'Docs',        icon: '📄' },
   { id: 'screens' as Tab, label: '画面設計書',  icon: '📊' },
   { id: 'flow'    as Tab, label: '画面遷移図',  icon: '📐' },
   { id: 'bizflow' as Tab, label: '業務フロー図', icon: '📋' },
@@ -27,8 +27,8 @@ const TABS = [
 ]
 
 export default function Dashboard({ user }: { user: User }) {
-  const [tab, setTab] = useState<Tab>('docs')
-  const [visited, setVisited] = useState<Set<Tab>>(new Set(['docs']))
+  const [tab, setTab] = useState<Tab>('screens')
+  const [visited, setVisited] = useState<Set<Tab>>(new Set(['screens']))
   const router = useRouter()
 
   function switchTab(t: Tab) {

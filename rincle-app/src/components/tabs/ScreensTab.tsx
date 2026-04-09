@@ -15,32 +15,24 @@ type Row = {
   path: string
 }
 
-const DETAIL_VALUES = ['未着手', '着手中', '協議中', '完了'] as const
-
-const DETAIL_STYLE: Record<string, { bg: string; color: string }> = {
-  '完了':   { bg: '#1a3a1a', color: '#81c784' },
-  '未着手': { bg: '#252528', color: '#888898' },
-  '着手中': { bg: '#1a2e40', color: '#64b5f6' },
-  '協議中': { bg: '#3a1a1a', color: '#ff8a80' },
-}
 
 
-type ColKey = 'screen_id' | 'item' | 'component' | 'feature' | 'detail' | 'improvement' | 'path'
-const ALL_COLS: ColKey[] = ['screen_id', 'item', 'component', 'feature', 'detail', 'improvement', 'path']
+type ColKey = 'screen_id' | 'item' | 'component' | 'feature' | 'improvement' | 'path'
+const ALL_COLS: ColKey[] = ['screen_id', 'item', 'component', 'feature', 'improvement', 'path']
 
 const COL_LABELS: Record<ColKey, string> = {
-  screen_id: '機能ID', item: '画面名', component: 'Bubble名',
-  feature: '含まれる機能', detail: '機能詳細', improvement: '改善点', path: 'path/para',
+  screen_id: '機能ID', item: '項目', component: '画面 / コンポーネント',
+  feature: '含まれる機能', improvement: '改善点', path: 'path / para',
 }
 
 const COL_PLACEHOLDERS: Record<ColKey, string> = {
-  screen_id: 'ID', item: '画面名', component: 'Bubble名', feature: '機能',
-  detail: '詳細', improvement: '改善点', path: 'path',
+  screen_id: 'ID', item: '項目', component: '画面 / コンポーネント', feature: '機能',
+  improvement: '改善点', path: 'path',
 }
 
 const INIT_WIDTHS: Record<ColKey, number> = {
   screen_id: 44, item: 150, component: 140, feature: 250,
-  detail: 88, improvement: 220, path: 190,
+  improvement: 220, path: 190,
 }
 
 // ── Static content ──────────────────────────────────────────────────────────
@@ -205,8 +197,7 @@ export default function ScreensTab() {
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [summaryOpen, setSummaryOpen] = useState(true)
-  const [summaryTab, setSummaryTab] = useState<SummaryTab>('全体')
+
   const [commonOpen, setCommonOpen] = useState(false)
   const [issueTab, setIssueTab] = useState<IssueTab>('全体')
   const [tableTab, setTableTab] = useState<SummaryTab>('全体')
@@ -215,7 +206,7 @@ export default function ScreensTab() {
   const [groupFilter, setGroupFilter] = useState('')
   const [onlyIssues, setOnlyIssues] = useState(false)
   const [colFilters, setColFilters] = useState<Record<ColKey, string>>({
-    screen_id: '', item: '', component: '', feature: '', detail: '', improvement: '', path: ''
+    screen_id: '', item: '', component: '', feature: '', improvement: '', path: ''
   })
   const [colWidths, setColWidths] = useState<Record<ColKey, number>>({ ...INIT_WIDTHS })
   const [draggingId, setDraggingId] = useState<string | null>(null)
@@ -676,85 +667,6 @@ function startResize(col: ColKey, e: React.MouseEvent) {
 
         {(<>
 
-        {/* ── Card: サマリー ── */}
-        <div style={cardStyle}>
-          <div onClick={() => setSummaryOpen(v => !v)} style={{ ...cardHdStyle, cursor: 'pointer', userSelect: 'none' }}>
-            サマリー
-            <span style={{ fontSize: 16, display: 'inline-block', transition: 'transform .2s', transform: summaryOpen ? 'none' : 'rotate(-90deg)' }}>▼</span>
-          </div>
-          {summaryOpen && (<>
-            {/* Tab bar */}
-            <div style={{ display: 'flex', background: '#252528', borderBottom: '1px solid #38383f' }}>
-              {SUMMARY_TABS.map(tab => (
-                <button key={tab} onClick={() => setSummaryTab(tab)} style={{
-                  flex: 1, padding: '8px 0', border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 600,
-                  background: summaryTab === tab ? '#2e2e34' : 'transparent',
-                  color: summaryTab === tab ? (tab === '全体' ? '#c0a0e0' : ROLE_DATA[tab as Exclude<SummaryTab,'全体'>]?.accent ?? '#c0a0e0') : '#666678',
-                  borderBottom: summaryTab === tab ? `2px solid ${tab === '全体' ? '#9070c0' : ROLE_DATA[tab as Exclude<SummaryTab,'全体'>]?.accent ?? '#9070c0'}` : '2px solid transparent',
-                  transition: 'all .15s',
-                }}>
-                  {tab}
-                </button>
-              ))}
-            </div>
-            {/* Tab content */}
-            <div style={{ padding: '14px' }}>
-              {(() => {
-                const roles = Object.keys(ROLE_DATA) as Exclude<SummaryTab, '全体'>[]
-                const isAll = summaryTab === '全体'
-                const targets = isAll ? roles : [summaryTab as Exclude<SummaryTab, '全体'>]
-                const totalScreens = targets.reduce((s, r) => s + ROLE_DATA[r].screenCount, 0)
-                const totalUI = targets.reduce((s, r) => s + ROLE_DATA[r].uiElements, 0)
-                const totalWF = targets.reduce((s, r) => s + ROLE_DATA[r].workflows, 0)
-                const accent = isAll ? '#9070c0' : ROLE_DATA[targets[0]].accent
-
-                return (<>
-                  {/* KPI */}
-                  <div style={{ display: 'flex', gap: 10, marginBottom: 14 }}>
-                    {[
-                      { label: '画面数', value: totalScreens },
-                      { label: 'UI 要素数', value: totalUI },
-                      { label: 'ワークフロー数', value: totalWF },
-                    ].map(kpi => (
-                      <div key={kpi.label} style={{
-                        flex: 1, background: '#252528', borderRadius: 8, padding: '12px 16px',
-                        border: '1px solid #38383f', textAlign: 'center',
-                      }}>
-                        <div style={{ fontSize: 11, color: '#888898', marginBottom: 4 }}>{kpi.label}</div>
-                        <div style={{ fontSize: 26, fontWeight: 800, color: accent, lineHeight: 1 }}>{kpi.value}</div>
-                      </div>
-                    ))}
-                  </div>
-                  {/* Screen list */}
-                  {targets.map(role => {
-                    const d = ROLE_DATA[role]
-                    return (
-                      <div key={role} style={{ marginBottom: isAll ? 12 : 0 }}>
-                        {isAll && (
-                          <div style={{ fontSize: 12, fontWeight: 700, color: d.accent, marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
-                            <span style={{ width: 8, height: 8, borderRadius: '50%', background: d.accent, display: 'inline-block', flexShrink: 0 }} />
-                            {role}
-                            <span style={{ fontSize: 11, color: '#666678', fontWeight: 400 }}>{d.screenCount} 画面 / {d.uiElements} UI / {d.workflows} WF</span>
-                          </div>
-                        )}
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                          {d.screens.map(s => (
-                            <span key={s} style={{
-                              display: 'inline-block', padding: '3px 10px', borderRadius: 4,
-                              fontSize: 11, lineHeight: '18px',
-                              background: `${d.accent}15`, color: `${d.accent}dd`, border: `1px solid ${d.accent}30`,
-                              whiteSpace: 'nowrap',
-                            }}>{s}</span>
-                          ))}
-                        </div>
-                      </div>
-                    )
-                  })}
-                </>)
-              })()}
-            </div>
-          </>)}
-        </div>
 
         {/* ── Card: 改善点 ── */}
         <div style={cardStyle}>
@@ -846,25 +758,24 @@ function startResize(col: ColKey, e: React.MouseEvent) {
             <table style={{ borderCollapse: 'collapse', width: '100%', tableLayout: 'fixed' }}>
               <colgroup>
                 <col style={{ width: 22 }} />
-                {tableTab === '全体' && <col style={{ width: 80 }} />}
-                {ALL_COLS.map(k => <col key={k} style={{ width: colWidths[k] }} />)}
-                <col style={{ width: 64 }} />
+                {ALL_COLS.map(k => <col key={k} />)}
+                <col style={{ width: 40 }} />
               </colgroup>
               <thead>
                 <tr>
                   <th style={{ ...thMainStyle, background: '#252528', width: 22 }}></th>
-                  {tableTab === '全体' && <th style={{ ...thMainStyle, width: 80 }}>アクター</th>}
+
                   {ALL_COLS.map(k => (
-                    <th key={k} style={{ ...thMainStyle, width: colWidths[k] }}>
+                    <th key={k} style={{ ...thMainStyle }}>
                       {COL_LABELS[k]}
                       <div onMouseDown={e => startResize(k, e)} style={resizerStyle} />
                     </th>
                   ))}
-                  <th style={{ ...thMainStyle, background: '#252528', width: 64 }}></th>
+                  <th style={{ ...thMainStyle, background: '#252528', width: 40 }}></th>
                 </tr>
                 <tr>
                   <th style={thFilterStyle}></th>
-                  {tableTab === '全体' && <th style={thFilterStyle}></th>}
+
                   {ALL_COLS.map(k => (
                     <th key={k} style={thFilterStyle}>
                       <input
@@ -880,7 +791,7 @@ function startResize(col: ColKey, e: React.MouseEvent) {
               </thead>
               <tbody>
                 {filtered.map(row => {
-                  const detailVal = row.detail || '未着手'
+
                   const sel = (col: string) => selectedCell?.rowId === row.id && selectedCell?.col === col
                   const edt = (col: string) => editingCell?.rowId === row.id && editingCell?.col === col
                   const onCellClick = (e: React.MouseEvent, col: string) => {
@@ -925,20 +836,6 @@ function startResize(col: ColKey, e: React.MouseEvent) {
                     >
                       <td style={dragTdStyle} onMouseDown={() => { dragHandleActive.current = true }} onMouseUp={() => { dragHandleActive.current = false }}>⠿</td>
 
-                      {/* アクター (全体タブのみ) */}
-                      {tableTab === '全体' && (() => {
-                        const role = getRole(row.screen_id)
-                        const accent = role ? ROLE_DATA[role].accent : '#888898'
-                        return (
-                          <td style={{ ...tdStyle, textAlign: 'center', padding: '4px 2px' }}>
-                            <span style={{
-                              display: 'inline-block', padding: '2px 6px', borderRadius: 3,
-                              fontSize: 10, fontWeight: 600, lineHeight: '16px', whiteSpace: 'nowrap',
-                              background: `${accent}18`, color: accent, border: `1px solid ${accent}30`,
-                            }}>{role || '-'}</span>
-                          </td>
-                        )
-                      })()}
 
                       {/* 機能ID — read only, click to select for copy */}
                       <td tabIndex={0}
@@ -984,31 +881,6 @@ function startResize(col: ColKey, e: React.MouseEvent) {
                         style={{ ...tdStyle, position: 'relative', ...hlStyle('feature'), ...fillHl(row.id, 'feature') }}
                       >{row.feature}{handle('feature')}</td>
 
-                      {/* 機能詳細 — full-cell select with overlay */}
-                      <td data-cell={`${row.id}-detail`}
-                        onMouseDown={e => onCellMouseDown(e, 'detail')}
-                        style={{ padding: 0, borderRight: '1px solid rgba(255,255,255,.04)', verticalAlign: 'middle', height: '1px', ...hlStyle('detail'), ...fillHl(row.id, 'detail') }}>
-                        <div style={{
-                          position: 'relative', display: 'flex', alignItems: 'center',
-                          width: '100%', height: '100%', minHeight: 28,
-                          padding: '5px 20px 5px 7px', fontWeight: 600, fontSize: 13,
-                          background: DETAIL_STYLE[detailVal]?.bg ?? '#252528',
-                          color: DETAIL_STYLE[detailVal]?.color ?? '#888898',
-                          userSelect: 'none', cursor: 'pointer', boxSizing: 'border-box',
-                        }}>
-                          {!sel('detail') && (
-                            <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}
-                              onClick={e => { e.stopPropagation(); setSelectedCell({ rowId: row.id, col: 'detail' }) }} />
-                          )}
-                          {detailVal}
-                          <span style={{ position: 'absolute', right: 5, fontSize: 8, opacity: .5, pointerEvents: 'none' }}>▼</span>
-                          <select value={detailVal} onChange={e => updateCell(row.id, 'detail', e.target.value)}
-                            style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer', width: '100%', height: '100%', fontSize: 13 }}>
-                            {DETAIL_VALUES.map(v => <option key={v} value={v}>{v}</option>)}
-                          </select>
-                          {handle('detail')}
-                        </div>
-                      </td>
 
                       {/* 改善点 */}
                       <td tabIndex={0}
@@ -1119,20 +991,20 @@ const dragTdStyle: React.CSSProperties = {
   verticalAlign: 'middle', cursor: 'grab', color: '#555568', fontSize: 14, userSelect: 'none',
 }
 const actTdStyle: React.CSSProperties = {
-  background: 'rgba(0,0,0,.15)', width: 64, textAlign: 'center',
-  borderLeft: '1px solid rgba(255,255,255,.05)', padding: '2px 4px',
+  background: 'rgba(0,0,0,.15)', width: 40, textAlign: 'center',
+  borderLeft: '1px solid rgba(255,255,255,.05)', padding: '2px 2px',
   verticalAlign: 'middle', whiteSpace: 'nowrap',
 }
 const addBtnStyle: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-  width: 22, height: 22, border: '1.5px solid #34a853', borderRadius: '50%',
-  background: 'transparent', color: '#34a853', fontSize: 15, fontWeight: 700, cursor: 'pointer',
+  width: 18, height: 18, border: '1.5px solid #34a853', borderRadius: '50%',
+  background: 'transparent', color: '#34a853', fontSize: 13, fontWeight: 700, cursor: 'pointer',
 }
 const delBtnStyle: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-  width: 22, height: 22, border: '1.5px solid #ea4335', borderRadius: '50%',
-  background: 'transparent', color: '#ea4335', fontSize: 15, fontWeight: 700,
-  cursor: 'pointer', marginLeft: 8,
+  width: 18, height: 18, border: '1.5px solid #ea4335', borderRadius: '50%',
+  background: 'transparent', color: '#ea4335', fontSize: 13, fontWeight: 700,
+  cursor: 'pointer', marginLeft: 6,
 }
 const resizerStyle: React.CSSProperties = {
   position: 'absolute', right: 0, top: 0, width: 5, height: '100%',
