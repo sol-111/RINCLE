@@ -1,0 +1,2200 @@
+{
+  "title": "RINCLE 業務フロー図",
+  "description": "利用者・店舗・管理者の業務フローをノード・エッジで定義",
+  "colorLegend": {
+    "user": {
+      "label": "ユーザー",
+      "fill": "#1a3a28",
+      "stroke": "#34a853"
+    },
+    "store": {
+      "label": "店舗",
+      "fill": "#1e1a38",
+      "stroke": "#8060d8"
+    },
+    "admin": {
+      "label": "管理者",
+      "fill": "#3a1818",
+      "stroke": "#d05050"
+    },
+    "decision": {
+      "label": "判定",
+      "fill": "#151e38",
+      "stroke": "#4a72c0"
+    },
+    "startend": {
+      "label": "開始/終了",
+      "fill": "#222230",
+      "stroke": "#686890"
+    },
+    "popup": {
+      "label": "ポップアップ",
+      "fill": "#3a3010",
+      "stroke": "#c8a030"
+    },
+    "external": {
+      "label": "外部サービス",
+      "fill": "#181e3a",
+      "stroke": "#3878d0"
+    },
+    "notify": {
+      "label": "通知",
+      "fill": "#182030",
+      "stroke": "#3090b0"
+    },
+    "io": {
+      "label": "エラー/入出力",
+      "fill": "#301e10",
+      "stroke": "#a07030"
+    }
+  },
+  "shapeLegend": {
+    "rect": "矩形",
+    "diamond": "ひし形(判定)",
+    "ellipse": "楕円(開始/終了)"
+  },
+  "diagrams": {
+    "全体フロー": {
+      "id": "zen",
+      "description": "アカウント・認証 → 店舗準備 → 検索 → 予約 → 決済 → 完了 → キャンセル の全工程",
+      "svgSize": {
+        "width": 5900,
+        "height": 960
+      },
+      "lanes": [
+        {
+          "label": "ユーザー",
+          "y": 42,
+          "height": 398,
+          "color": "user"
+        },
+        {
+          "label": "店舗",
+          "y": 450,
+          "height": 220,
+          "color": "store"
+        },
+        {
+          "label": "管理者",
+          "y": 680,
+          "height": 225,
+          "color": "admin"
+        }
+      ],
+      "phases": [
+        {
+          "label": "アカウント・認証",
+          "x": 60,
+          "width": 840
+        },
+        {
+          "label": "店舗準備・承認 / マスタ管理",
+          "x": 900,
+          "width": 940
+        },
+        {
+          "label": "自転車検索・閲覧",
+          "x": 1840,
+          "width": 780
+        },
+        {
+          "label": "予約フロー",
+          "x": 2620,
+          "width": 860
+        },
+        {
+          "label": "決済",
+          "x": 3480,
+          "width": 940
+        },
+        {
+          "label": "完了・通知",
+          "x": 4420,
+          "width": 680
+        },
+        {
+          "label": "キャンセル・返金",
+          "x": 5100,
+          "width": 720
+        }
+      ],
+      "nodes": [
+        {
+          "id": "u_start",
+          "x": 110,
+          "y": 250,
+          "role": "startend",
+          "roleLabel": "開始/終了",
+          "shape": "ellipse",
+          "shapeLabel": "楕円(開始/終了)",
+          "label": "開始"
+        },
+        {
+          "id": "u_new_q",
+          "x": 275,
+          "y": 250,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "新規登録?"
+        },
+        {
+          "id": "u_login",
+          "x": 450,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "ログインフォーム"
+        },
+        {
+          "id": "u_auth_ok",
+          "x": 650,
+          "y": 190,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "認証OK?"
+        },
+        {
+          "id": "u_auth_err",
+          "x": 650,
+          "y": 260,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "エラー表示(再入力)"
+        },
+        {
+          "id": "u_mypage",
+          "x": 840,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "マイページ確認"
+        },
+        {
+          "id": "u_signup",
+          "x": 450,
+          "y": 320,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "新規登録フォーム"
+        },
+        {
+          "id": "u_mail_out",
+          "x": 650,
+          "y": 320,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "確認メール送信"
+        },
+        {
+          "id": "u_verified",
+          "x": 840,
+          "y": 320,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "メール本人確認"
+        },
+        {
+          "id": "u_pw_req",
+          "x": 450,
+          "y": 415,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "PWリセット申請"
+        },
+        {
+          "id": "u_pw_mail",
+          "x": 650,
+          "y": 415,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "リセットメール送信"
+        },
+        {
+          "id": "u_pw_done",
+          "x": 840,
+          "y": 415,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "新PW設定完了"
+        },
+        {
+          "id": "s_start",
+          "x": 110,
+          "y": 560,
+          "role": "startend",
+          "roleLabel": "開始/終了",
+          "shape": "ellipse",
+          "shapeLabel": "楕円(開始/終了)",
+          "label": "開始"
+        },
+        {
+          "id": "s_form",
+          "x": 290,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "店舗登録フォーム"
+        },
+        {
+          "id": "s_submit",
+          "x": 470,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "申請送信"
+        },
+        {
+          "id": "a_start",
+          "x": 110,
+          "y": 775,
+          "role": "startend",
+          "roleLabel": "開始/終了",
+          "shape": "ellipse",
+          "shapeLabel": "楕円(開始/終了)",
+          "label": "開始"
+        },
+        {
+          "id": "a_login",
+          "x": 290,
+          "y": 775,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "ログイン"
+        },
+        {
+          "id": "a_dash",
+          "x": 470,
+          "y": 775,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "ダッシュボード"
+        },
+        {
+          "id": "s_wait",
+          "x": 975,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "審査待ち"
+        },
+        {
+          "id": "a_rev",
+          "x": 1180,
+          "y": 775,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "店舗審査"
+        },
+        {
+          "id": "a_approve",
+          "x": 1375,
+          "y": 715,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "承認"
+        },
+        {
+          "id": "a_reject",
+          "x": 1375,
+          "y": 845,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "却下"
+        },
+        {
+          "id": "n_rej_m",
+          "x": 1560,
+          "y": 845,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "却下通知メール(店舗)"
+        },
+        {
+          "id": "n_app_m",
+          "x": 1375,
+          "y": 635,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "承認メール送信(店舗)"
+        },
+        {
+          "id": "s_activate",
+          "x": 1560,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "アカウント有効化"
+        },
+        {
+          "id": "s_login",
+          "x": 1750,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "ログイン(shop_admin)"
+        },
+        {
+          "id": "s_bike",
+          "x": 1940,
+          "y": 505,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "自転車登録・編集"
+        },
+        {
+          "id": "s_status",
+          "x": 1940,
+          "y": 615,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "在庫ステータス管理"
+        },
+        {
+          "id": "s_price",
+          "x": 2130,
+          "y": 505,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "料金プラン設定"
+        },
+        {
+          "id": "s_cal",
+          "x": 2320,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "カレンダー(休業日)設定"
+        },
+        {
+          "id": "u_search",
+          "x": 1930,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "エリア・日時選択"
+        },
+        {
+          "id": "u_exec",
+          "x": 2120,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "検索実行"
+        },
+        {
+          "id": "u_has_res",
+          "x": 2310,
+          "y": 190,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "空車あり?"
+        },
+        {
+          "id": "u_no_res",
+          "x": 2310,
+          "y": 305,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "空車なし(条件変更)"
+        },
+        {
+          "id": "u_list",
+          "x": 2500,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "検索結果一覧"
+        },
+        {
+          "id": "u_detail",
+          "x": 2700,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "自転車詳細/日時選択"
+        },
+        {
+          "id": "u_inv_q",
+          "x": 2890,
+          "y": 190,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "在庫最終確認"
+        },
+        {
+          "id": "u_inv_ng",
+          "x": 2890,
+          "y": 305,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "在庫切れ(別の自転車)"
+        },
+        {
+          "id": "u_cart1",
+          "x": 3080,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約① 空車確認"
+        },
+        {
+          "id": "u_cart2",
+          "x": 3270,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約② 顧客情報"
+        },
+        {
+          "id": "u_cart3",
+          "x": 3460,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約③ 内容確認"
+        },
+        {
+          "id": "u_cart4",
+          "x": 3590,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約④ 決済"
+        },
+        {
+          "id": "u_card",
+          "x": 3590,
+          "y": 85,
+          "role": "popup",
+          "roleLabel": "ポップアップ",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "カード情報入力"
+        },
+        {
+          "id": "u_payjp",
+          "x": 3780,
+          "y": 85,
+          "role": "external",
+          "roleLabel": "外部サービス",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "Pay.JP決済処理"
+        },
+        {
+          "id": "u_pay_ok",
+          "x": 3780,
+          "y": 190,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "決済OK?"
+        },
+        {
+          "id": "u_pay_err",
+          "x": 3780,
+          "y": 305,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済エラー表示"
+        },
+        {
+          "id": "u_retry_q",
+          "x": 3970,
+          "y": 305,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "再試行?(3回上限)"
+        },
+        {
+          "id": "u_max_err",
+          "x": 3970,
+          "y": 415,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約中断(上限超過)"
+        },
+        {
+          "id": "n_fail_u",
+          "x": 4170,
+          "y": 415,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済失敗メール(ユーザー)"
+        },
+        {
+          "id": "u_pay_done",
+          "x": 3970,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済完了/予約確定"
+        },
+        {
+          "id": "n_fail_a",
+          "x": 4170,
+          "y": 870,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済失敗アラート(管理者)"
+        },
+        {
+          "id": "n_conf_u",
+          "x": 4480,
+          "y": 190,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約確認メール(ユーザー)"
+        },
+        {
+          "id": "u_resv",
+          "x": 4670,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約一覧確認"
+        },
+        {
+          "id": "n_conf_s",
+          "x": 4480,
+          "y": 560,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約通知メール(店舗)"
+        },
+        {
+          "id": "s_resv",
+          "x": 4670,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約詳細確認"
+        },
+        {
+          "id": "s_prep",
+          "x": 4860,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "自転車準備"
+        },
+        {
+          "id": "a_pay_mgmt",
+          "x": 4480,
+          "y": 775,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済問題対応"
+        },
+        {
+          "id": "a_monitor",
+          "x": 4670,
+          "y": 775,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約モニタリング"
+        },
+        {
+          "id": "a_report",
+          "x": 4860,
+          "y": 775,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "売上レポート"
+        },
+        {
+          "id": "u_cq",
+          "x": 5180,
+          "y": 190,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "キャンセルする?"
+        },
+        {
+          "id": "u_pq",
+          "x": 5370,
+          "y": 190,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "キャンセル期限内?"
+        },
+        {
+          "id": "u_refund",
+          "x": 5560,
+          "y": 140,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "全額返金処理"
+        },
+        {
+          "id": "u_noref",
+          "x": 5560,
+          "y": 250,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返金なし(規定外)"
+        },
+        {
+          "id": "u_cancel",
+          "x": 5750,
+          "y": 190,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "キャンセル完了"
+        },
+        {
+          "id": "n_can_u",
+          "x": 5750,
+          "y": 85,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "キャンセル確認メール(ユーザー)"
+        },
+        {
+          "id": "n_can_s",
+          "x": 5750,
+          "y": 480,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "キャンセル通知メール(店舗)"
+        },
+        {
+          "id": "s_cancel",
+          "x": 5750,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "キャンセル確認・対応"
+        },
+        {
+          "id": "a_refund",
+          "x": 5560,
+          "y": 775,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返金処理"
+        },
+        {
+          "id": "a_sim",
+          "x": 5750,
+          "y": 775,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "料金シミュレーション"
+        }
+      ],
+      "edges": [
+        {
+          "from": "u_start",
+          "fromSide": "r",
+          "to": "u_new_q",
+          "toSide": "l"
+        },
+        {
+          "from": "u_new_q",
+          "fromSide": "t",
+          "to": "u_login",
+          "toSide": "l",
+          "label": "No(既存)"
+        },
+        {
+          "from": "u_new_q",
+          "fromSide": "b",
+          "to": "u_signup",
+          "toSide": "l",
+          "label": "Yes(新規)"
+        },
+        {
+          "from": "u_login",
+          "fromSide": "r",
+          "to": "u_auth_ok",
+          "toSide": "l"
+        },
+        {
+          "from": "u_auth_ok",
+          "fromSide": "r",
+          "to": "u_mypage",
+          "toSide": "l",
+          "label": "OK"
+        },
+        {
+          "from": "u_auth_ok",
+          "fromSide": "b",
+          "to": "u_auth_err",
+          "toSide": "t",
+          "label": "NG",
+          "ng": true
+        },
+        {
+          "from": "u_auth_err",
+          "fromSide": "b",
+          "to": "u_pw_req",
+          "toSide": "t",
+          "label": "PW忘れ",
+          "ng": true
+        },
+        {
+          "from": "u_signup",
+          "fromSide": "r",
+          "to": "u_mail_out",
+          "toSide": "l"
+        },
+        {
+          "from": "u_mail_out",
+          "fromSide": "r",
+          "to": "u_verified",
+          "toSide": "l"
+        },
+        {
+          "from": "u_pw_req",
+          "fromSide": "r",
+          "to": "u_pw_mail",
+          "toSide": "l"
+        },
+        {
+          "from": "u_pw_mail",
+          "fromSide": "r",
+          "to": "u_pw_done",
+          "toSide": "l"
+        },
+        {
+          "from": "s_start",
+          "fromSide": "r",
+          "to": "s_form",
+          "toSide": "l"
+        },
+        {
+          "from": "s_form",
+          "fromSide": "r",
+          "to": "s_submit",
+          "toSide": "l"
+        },
+        {
+          "from": "s_submit",
+          "fromSide": "r",
+          "to": "s_wait",
+          "toSide": "l"
+        },
+        {
+          "from": "s_submit",
+          "fromSide": "b",
+          "to": "a_dash",
+          "toSide": "t",
+          "cross": true,
+          "label": "申請通知"
+        },
+        {
+          "from": "a_start",
+          "fromSide": "r",
+          "to": "a_login",
+          "toSide": "l"
+        },
+        {
+          "from": "a_login",
+          "fromSide": "r",
+          "to": "a_dash",
+          "toSide": "l"
+        },
+        {
+          "from": "a_dash",
+          "fromSide": "r",
+          "to": "a_rev",
+          "toSide": "l"
+        },
+        {
+          "from": "s_wait",
+          "fromSide": "b",
+          "to": "a_rev",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "a_rev",
+          "fromSide": "t",
+          "to": "a_approve",
+          "toSide": "b",
+          "label": "承認"
+        },
+        {
+          "from": "a_rev",
+          "fromSide": "b",
+          "to": "a_reject",
+          "toSide": "t",
+          "label": "却下",
+          "ng": true
+        },
+        {
+          "from": "a_reject",
+          "fromSide": "r",
+          "to": "n_rej_m",
+          "toSide": "l"
+        },
+        {
+          "from": "a_approve",
+          "fromSide": "t",
+          "to": "n_app_m",
+          "toSide": "b"
+        },
+        {
+          "from": "n_app_m",
+          "fromSide": "t",
+          "to": "s_activate",
+          "toSide": "b",
+          "cross": true
+        },
+        {
+          "from": "s_activate",
+          "fromSide": "r",
+          "to": "s_login",
+          "toSide": "l"
+        },
+        {
+          "from": "s_login",
+          "fromSide": "r",
+          "to": "s_bike",
+          "toSide": "l"
+        },
+        {
+          "from": "s_bike",
+          "fromSide": "r",
+          "to": "s_price",
+          "toSide": "l"
+        },
+        {
+          "from": "s_price",
+          "fromSide": "r",
+          "to": "s_cal",
+          "toSide": "l"
+        },
+        {
+          "from": "u_mypage",
+          "fromSide": "r",
+          "to": "u_search",
+          "toSide": "l"
+        },
+        {
+          "from": "u_verified",
+          "fromSide": "r",
+          "to": "u_search",
+          "toSide": "l"
+        },
+        {
+          "from": "u_pw_done",
+          "fromSide": "r",
+          "to": "u_search",
+          "toSide": "l"
+        },
+        {
+          "from": "u_search",
+          "fromSide": "r",
+          "to": "u_exec",
+          "toSide": "l"
+        },
+        {
+          "from": "u_exec",
+          "fromSide": "r",
+          "to": "u_has_res",
+          "toSide": "l"
+        },
+        {
+          "from": "u_has_res",
+          "fromSide": "r",
+          "to": "u_list",
+          "toSide": "l",
+          "label": "あり"
+        },
+        {
+          "from": "u_has_res",
+          "fromSide": "b",
+          "to": "u_no_res",
+          "toSide": "t",
+          "label": "なし",
+          "ng": true
+        },
+        {
+          "from": "u_list",
+          "fromSide": "r",
+          "to": "u_detail",
+          "toSide": "l"
+        },
+        {
+          "from": "u_detail",
+          "fromSide": "r",
+          "to": "u_inv_q",
+          "toSide": "l"
+        },
+        {
+          "from": "u_inv_q",
+          "fromSide": "r",
+          "to": "u_cart1",
+          "toSide": "l",
+          "label": "OK"
+        },
+        {
+          "from": "u_inv_q",
+          "fromSide": "b",
+          "to": "u_inv_ng",
+          "toSide": "t",
+          "label": "NG",
+          "ng": true
+        },
+        {
+          "from": "u_cart1",
+          "fromSide": "r",
+          "to": "u_cart2",
+          "toSide": "l"
+        },
+        {
+          "from": "u_cart2",
+          "fromSide": "r",
+          "to": "u_cart3",
+          "toSide": "l"
+        },
+        {
+          "from": "u_cart3",
+          "fromSide": "r",
+          "to": "u_cart4",
+          "toSide": "l"
+        },
+        {
+          "from": "u_cart4",
+          "fromSide": "t",
+          "to": "u_card",
+          "toSide": "b"
+        },
+        {
+          "from": "u_card",
+          "fromSide": "r",
+          "to": "u_payjp",
+          "toSide": "l"
+        },
+        {
+          "from": "u_payjp",
+          "fromSide": "b",
+          "to": "u_pay_ok",
+          "toSide": "t"
+        },
+        {
+          "from": "u_pay_ok",
+          "fromSide": "r",
+          "to": "u_pay_done",
+          "toSide": "l",
+          "label": "OK"
+        },
+        {
+          "from": "u_pay_ok",
+          "fromSide": "b",
+          "to": "u_pay_err",
+          "toSide": "t",
+          "label": "NG",
+          "ng": true
+        },
+        {
+          "from": "u_pay_err",
+          "fromSide": "r",
+          "to": "u_retry_q",
+          "toSide": "l"
+        },
+        {
+          "from": "u_retry_q",
+          "fromSide": "b",
+          "to": "u_max_err",
+          "toSide": "t",
+          "label": "上限超過",
+          "ng": true
+        },
+        {
+          "from": "u_max_err",
+          "fromSide": "r",
+          "to": "n_fail_u",
+          "toSide": "l"
+        },
+        {
+          "from": "n_fail_u",
+          "fromSide": "b",
+          "to": "n_fail_a",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "u_retry_q",
+          "fromSide": "t",
+          "to": "u_card",
+          "toSide": "t",
+          "loop": true,
+          "label": "Yes→再試行"
+        },
+        {
+          "from": "u_pay_done",
+          "fromSide": "r",
+          "to": "n_conf_u",
+          "toSide": "l"
+        },
+        {
+          "from": "n_conf_u",
+          "fromSide": "r",
+          "to": "u_resv",
+          "toSide": "l"
+        },
+        {
+          "from": "u_pay_done",
+          "fromSide": "b",
+          "to": "n_conf_s",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "n_conf_s",
+          "fromSide": "r",
+          "to": "s_resv",
+          "toSide": "l"
+        },
+        {
+          "from": "s_resv",
+          "fromSide": "r",
+          "to": "s_prep",
+          "toSide": "l"
+        },
+        {
+          "from": "n_fail_a",
+          "fromSide": "r",
+          "to": "a_pay_mgmt",
+          "toSide": "l",
+          "cross": true
+        },
+        {
+          "from": "a_pay_mgmt",
+          "fromSide": "r",
+          "to": "a_monitor",
+          "toSide": "l"
+        },
+        {
+          "from": "a_monitor",
+          "fromSide": "r",
+          "to": "a_report",
+          "toSide": "l"
+        },
+        {
+          "from": "u_resv",
+          "fromSide": "r",
+          "to": "u_cq",
+          "toSide": "l"
+        },
+        {
+          "from": "u_cq",
+          "fromSide": "r",
+          "to": "u_pq",
+          "toSide": "l",
+          "label": "する"
+        },
+        {
+          "from": "u_pq",
+          "fromSide": "t",
+          "to": "u_refund",
+          "toSide": "b",
+          "label": "期限内"
+        },
+        {
+          "from": "u_pq",
+          "fromSide": "b",
+          "to": "u_noref",
+          "toSide": "t",
+          "label": "期限外",
+          "ng": true
+        },
+        {
+          "from": "u_refund",
+          "fromSide": "r",
+          "to": "u_cancel",
+          "toSide": "l"
+        },
+        {
+          "from": "u_noref",
+          "fromSide": "r",
+          "to": "u_cancel",
+          "toSide": "l"
+        },
+        {
+          "from": "u_cancel",
+          "fromSide": "t",
+          "to": "n_can_u",
+          "toSide": "b"
+        },
+        {
+          "from": "u_cancel",
+          "fromSide": "b",
+          "to": "n_can_s",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "n_can_s",
+          "fromSide": "b",
+          "to": "s_cancel",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "u_refund",
+          "fromSide": "b",
+          "to": "a_refund",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "a_refund",
+          "fromSide": "r",
+          "to": "a_sim",
+          "toSide": "l"
+        }
+      ]
+    },
+    "決済フロー（詳細）": {
+      "id": "kessai",
+      "description": "カード入力 → トークン化 → チャージ → 決済判定 → 完了/キャンセル/返金",
+      "svgSize": {
+        "width": 2260,
+        "height": 740
+      },
+      "lanes": [
+        {
+          "label": "ユーザー",
+          "y": 42,
+          "height": 370,
+          "color": "user"
+        },
+        {
+          "label": "管理者 / 通知",
+          "y": 422,
+          "height": 270,
+          "color": "admin"
+        }
+      ],
+      "phases": [
+        {
+          "label": "カード入力・トークン化",
+          "x": 60,
+          "width": 570
+        },
+        {
+          "label": "チャージ・決済判定",
+          "x": 630,
+          "width": 600
+        },
+        {
+          "label": "完了・確認",
+          "x": 1230,
+          "width": 500
+        },
+        {
+          "label": "キャンセル・返金",
+          "x": 1730,
+          "width": 500
+        }
+      ],
+      "nodes": [
+        {
+          "id": "u_cart4",
+          "x": 110,
+          "y": 200,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約④ 決済画面"
+        },
+        {
+          "id": "u_card",
+          "x": 300,
+          "y": 120,
+          "role": "popup",
+          "roleLabel": "ポップアップ",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "カード情報入力(POP)"
+        },
+        {
+          "id": "u_token",
+          "x": 490,
+          "y": 120,
+          "role": "external",
+          "roleLabel": "外部サービス",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "Pay.JPトークン化"
+        },
+        {
+          "id": "u_charge",
+          "x": 700,
+          "y": 200,
+          "role": "external",
+          "roleLabel": "外部サービス",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "Pay.JPチャージ実行"
+        },
+        {
+          "id": "u_pay_ok",
+          "x": 900,
+          "y": 200,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "決済OK?"
+        },
+        {
+          "id": "u_pay_err",
+          "x": 900,
+          "y": 330,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済エラー表示"
+        },
+        {
+          "id": "u_retry_q",
+          "x": 1090,
+          "y": 330,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "再試行?(3回上限)"
+        },
+        {
+          "id": "u_give_up",
+          "x": 1090,
+          "y": 450,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約中断(上限超過)"
+        },
+        {
+          "id": "u_done",
+          "x": 1090,
+          "y": 200,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済完了/予約確定"
+        },
+        {
+          "id": "u_resv",
+          "x": 1280,
+          "y": 200,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約一覧確認"
+        },
+        {
+          "id": "u_cancel",
+          "x": 1470,
+          "y": 200,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "キャンセル申請"
+        },
+        {
+          "id": "u_refund_q",
+          "x": 1660,
+          "y": 200,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "期限内?"
+        },
+        {
+          "id": "u_ref_ok",
+          "x": 1850,
+          "y": 130,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "Pay.JP返金処理"
+        },
+        {
+          "id": "u_ref_ng",
+          "x": 1850,
+          "y": 270,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返金なし(規定外)"
+        },
+        {
+          "id": "u_cancel_done",
+          "x": 2050,
+          "y": 200,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "キャンセル完了"
+        },
+        {
+          "id": "n_conf_u",
+          "x": 1090,
+          "y": 90,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "確認メール(ユーザー)"
+        },
+        {
+          "id": "n_conf_s",
+          "x": 700,
+          "y": 510,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約通知(店舗)"
+        },
+        {
+          "id": "n_fail",
+          "x": 1280,
+          "y": 490,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済失敗メール(ユーザー+管理者)"
+        },
+        {
+          "id": "n_refund",
+          "x": 2050,
+          "y": 80,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返金完了メール(ユーザー)"
+        },
+        {
+          "id": "n_cancel_s",
+          "x": 2050,
+          "y": 340,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "キャンセル通知(店舗)"
+        },
+        {
+          "id": "a_monitor",
+          "x": 1280,
+          "y": 610,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済問題モニタリング"
+        },
+        {
+          "id": "a_refund",
+          "x": 1850,
+          "y": 510,
+          "role": "admin",
+          "roleLabel": "管理者",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返金承認(管理者)"
+        }
+      ],
+      "edges": [
+        {
+          "from": "u_cart4",
+          "fromSide": "t",
+          "to": "u_card",
+          "toSide": "b"
+        },
+        {
+          "from": "u_card",
+          "fromSide": "r",
+          "to": "u_token",
+          "toSide": "l"
+        },
+        {
+          "from": "u_token",
+          "fromSide": "b",
+          "to": "u_charge",
+          "toSide": "t"
+        },
+        {
+          "from": "u_charge",
+          "fromSide": "r",
+          "to": "u_pay_ok",
+          "toSide": "l"
+        },
+        {
+          "from": "u_pay_ok",
+          "fromSide": "r",
+          "to": "u_done",
+          "toSide": "l",
+          "label": "OK"
+        },
+        {
+          "from": "u_pay_ok",
+          "fromSide": "b",
+          "to": "u_pay_err",
+          "toSide": "t",
+          "label": "NG",
+          "ng": true
+        },
+        {
+          "from": "u_pay_err",
+          "fromSide": "r",
+          "to": "u_retry_q",
+          "toSide": "l"
+        },
+        {
+          "from": "u_retry_q",
+          "fromSide": "b",
+          "to": "u_give_up",
+          "toSide": "t",
+          "label": "上限",
+          "ng": true
+        },
+        {
+          "from": "u_give_up",
+          "fromSide": "r",
+          "to": "n_fail",
+          "toSide": "l"
+        },
+        {
+          "from": "n_fail",
+          "fromSide": "b",
+          "to": "a_monitor",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "u_retry_q",
+          "fromSide": "t",
+          "to": "u_card",
+          "toSide": "t",
+          "loop": true,
+          "label": "Yes→再試行"
+        },
+        {
+          "from": "u_done",
+          "fromSide": "t",
+          "to": "n_conf_u",
+          "toSide": "b"
+        },
+        {
+          "from": "u_done",
+          "fromSide": "b",
+          "to": "n_conf_s",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "u_done",
+          "fromSide": "r",
+          "to": "u_resv",
+          "toSide": "l"
+        },
+        {
+          "from": "u_resv",
+          "fromSide": "r",
+          "to": "u_cancel",
+          "toSide": "l"
+        },
+        {
+          "from": "u_cancel",
+          "fromSide": "r",
+          "to": "u_refund_q",
+          "toSide": "l"
+        },
+        {
+          "from": "u_refund_q",
+          "fromSide": "t",
+          "to": "u_ref_ok",
+          "toSide": "b",
+          "label": "期限内"
+        },
+        {
+          "from": "u_refund_q",
+          "fromSide": "b",
+          "to": "u_ref_ng",
+          "toSide": "t",
+          "label": "期限外",
+          "ng": true
+        },
+        {
+          "from": "u_ref_ok",
+          "fromSide": "r",
+          "to": "u_cancel_done",
+          "toSide": "l"
+        },
+        {
+          "from": "u_ref_ng",
+          "fromSide": "r",
+          "to": "u_cancel_done",
+          "toSide": "l"
+        },
+        {
+          "from": "u_cancel_done",
+          "fromSide": "t",
+          "to": "n_refund",
+          "toSide": "b"
+        },
+        {
+          "from": "u_cancel_done",
+          "fromSide": "b",
+          "to": "n_cancel_s",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "u_ref_ok",
+          "fromSide": "b",
+          "to": "a_refund",
+          "toSide": "t",
+          "cross": true
+        }
+      ]
+    },
+    "予約フロー（詳細）": {
+      "id": "yoyaku",
+      "description": "検索 → 予約 → 決済 → 確定 → 貸出 → 返却、およびキャンセル分岐",
+      "svgSize": {
+        "width": 2560,
+        "height": 680
+      },
+      "lanes": [
+        {
+          "label": "ユーザー",
+          "y": 42,
+          "height": 395,
+          "color": "user"
+        },
+        {
+          "label": "店舗",
+          "y": 447,
+          "height": 200,
+          "color": "store"
+        }
+      ],
+      "phases": [
+        {
+          "label": "自転車検索・閲覧",
+          "x": 60,
+          "width": 670
+        },
+        {
+          "label": "予約フロー",
+          "x": 730,
+          "width": 770
+        },
+        {
+          "label": "決済・確定",
+          "x": 1500,
+          "width": 580
+        },
+        {
+          "label": "利用・返却",
+          "x": 2080,
+          "width": 480
+        }
+      ],
+      "nodes": [
+        {
+          "id": "u_search",
+          "x": 100,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "エリア・日時選択"
+        },
+        {
+          "id": "u_list",
+          "x": 290,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "検索結果一覧"
+        },
+        {
+          "id": "u_detail",
+          "x": 480,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "自転車詳細/日時選択"
+        },
+        {
+          "id": "u_inv_q",
+          "x": 670,
+          "y": 210,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "在庫確認"
+        },
+        {
+          "id": "u_inv_ng",
+          "x": 670,
+          "y": 340,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "在庫切れ(別を選択)"
+        },
+        {
+          "id": "u_c1",
+          "x": 860,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約① 空車確認"
+        },
+        {
+          "id": "u_c2",
+          "x": 1050,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約② 顧客情報"
+        },
+        {
+          "id": "u_c3",
+          "x": 1240,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約③ 内容確認"
+        },
+        {
+          "id": "u_c4",
+          "x": 1430,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約④ 決済"
+        },
+        {
+          "id": "u_pay_ok",
+          "x": 1620,
+          "y": 210,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "決済OK?"
+        },
+        {
+          "id": "u_pay_ng",
+          "x": 1620,
+          "y": 340,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "決済失敗(再試行)"
+        },
+        {
+          "id": "u_confirmed",
+          "x": 1820,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約確定(来客待ち)"
+        },
+        {
+          "id": "u_lend",
+          "x": 2010,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "来店・貸出開始"
+        },
+        {
+          "id": "u_return",
+          "x": 2200,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返却手続き"
+        },
+        {
+          "id": "u_done",
+          "x": 2390,
+          "y": 210,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返却済み完了"
+        },
+        {
+          "id": "u_myresv",
+          "x": 2010,
+          "y": 80,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約一覧確認"
+        },
+        {
+          "id": "u_cancel_q",
+          "x": 1820,
+          "y": 340,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "キャンセル?"
+        },
+        {
+          "id": "u_limit_q",
+          "x": 2010,
+          "y": 400,
+          "role": "decision",
+          "roleLabel": "判定",
+          "shape": "diamond",
+          "shapeLabel": "ひし形(判定)",
+          "label": "期限内?"
+        },
+        {
+          "id": "u_ref",
+          "x": 2200,
+          "y": 330,
+          "role": "user",
+          "roleLabel": "ユーザー",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返金ありキャンセル"
+        },
+        {
+          "id": "u_noref",
+          "x": 2200,
+          "y": 470,
+          "role": "io",
+          "roleLabel": "エラー/入出力",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返金なしキャンセル"
+        },
+        {
+          "id": "s_notify",
+          "x": 1820,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約通知受信"
+        },
+        {
+          "id": "s_prep",
+          "x": 2010,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "自転車準備"
+        },
+        {
+          "id": "s_lend",
+          "x": 2200,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "貸出確認(ステータス変更)"
+        },
+        {
+          "id": "s_ret",
+          "x": 2390,
+          "y": 560,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "返却確認(ステータス変更)"
+        },
+        {
+          "id": "s_cancel",
+          "x": 2390,
+          "y": 460,
+          "role": "store",
+          "roleLabel": "店舗",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "キャンセル対応"
+        },
+        {
+          "id": "n_conf",
+          "x": 1820,
+          "y": 80,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "予約確認メール"
+        },
+        {
+          "id": "n_canc",
+          "x": 2390,
+          "y": 340,
+          "role": "notify",
+          "roleLabel": "通知",
+          "shape": "rect",
+          "shapeLabel": "矩形",
+          "label": "キャンセル確認メール"
+        }
+      ],
+      "edges": [
+        {
+          "from": "u_search",
+          "fromSide": "r",
+          "to": "u_list",
+          "toSide": "l"
+        },
+        {
+          "from": "u_list",
+          "fromSide": "r",
+          "to": "u_detail",
+          "toSide": "l"
+        },
+        {
+          "from": "u_detail",
+          "fromSide": "r",
+          "to": "u_inv_q",
+          "toSide": "l"
+        },
+        {
+          "from": "u_inv_q",
+          "fromSide": "r",
+          "to": "u_c1",
+          "toSide": "l",
+          "label": "OK"
+        },
+        {
+          "from": "u_inv_q",
+          "fromSide": "b",
+          "to": "u_inv_ng",
+          "toSide": "t",
+          "label": "NG",
+          "ng": true
+        },
+        {
+          "from": "u_c1",
+          "fromSide": "r",
+          "to": "u_c2",
+          "toSide": "l"
+        },
+        {
+          "from": "u_c2",
+          "fromSide": "r",
+          "to": "u_c3",
+          "toSide": "l"
+        },
+        {
+          "from": "u_c3",
+          "fromSide": "r",
+          "to": "u_c4",
+          "toSide": "l"
+        },
+        {
+          "from": "u_c4",
+          "fromSide": "r",
+          "to": "u_pay_ok",
+          "toSide": "l"
+        },
+        {
+          "from": "u_pay_ok",
+          "fromSide": "r",
+          "to": "u_confirmed",
+          "toSide": "l",
+          "label": "OK"
+        },
+        {
+          "from": "u_pay_ok",
+          "fromSide": "b",
+          "to": "u_pay_ng",
+          "toSide": "t",
+          "label": "NG",
+          "ng": true
+        },
+        {
+          "from": "u_confirmed",
+          "fromSide": "t",
+          "to": "n_conf",
+          "toSide": "b"
+        },
+        {
+          "from": "n_conf",
+          "fromSide": "r",
+          "to": "u_myresv",
+          "toSide": "l"
+        },
+        {
+          "from": "u_confirmed",
+          "fromSide": "r",
+          "to": "u_lend",
+          "toSide": "l"
+        },
+        {
+          "from": "u_lend",
+          "fromSide": "r",
+          "to": "u_return",
+          "toSide": "l"
+        },
+        {
+          "from": "u_return",
+          "fromSide": "r",
+          "to": "u_done",
+          "toSide": "l"
+        },
+        {
+          "from": "u_confirmed",
+          "fromSide": "b",
+          "to": "u_cancel_q",
+          "toSide": "t"
+        },
+        {
+          "from": "u_cancel_q",
+          "fromSide": "r",
+          "to": "u_limit_q",
+          "toSide": "l",
+          "label": "する"
+        },
+        {
+          "from": "u_limit_q",
+          "fromSide": "t",
+          "to": "u_ref",
+          "toSide": "b",
+          "label": "期限内"
+        },
+        {
+          "from": "u_limit_q",
+          "fromSide": "b",
+          "to": "u_noref",
+          "toSide": "t",
+          "label": "期限外",
+          "ng": true
+        },
+        {
+          "from": "u_ref",
+          "fromSide": "r",
+          "to": "n_canc",
+          "toSide": "l"
+        },
+        {
+          "from": "u_noref",
+          "fromSide": "r",
+          "to": "s_cancel",
+          "toSide": "l",
+          "cross": true
+        },
+        {
+          "from": "u_confirmed",
+          "fromSide": "b",
+          "to": "s_notify",
+          "toSide": "t",
+          "cross": true
+        },
+        {
+          "from": "s_notify",
+          "fromSide": "r",
+          "to": "s_prep",
+          "toSide": "l"
+        },
+        {
+          "from": "s_prep",
+          "fromSide": "r",
+          "to": "s_lend",
+          "toSide": "l"
+        },
+        {
+          "from": "s_lend",
+          "fromSide": "r",
+          "to": "s_ret",
+          "toSide": "l"
+        },
+        {
+          "from": "s_lend",
+          "fromSide": "t",
+          "to": "u_lend",
+          "toSide": "b",
+          "cross": true
+        },
+        {
+          "from": "s_ret",
+          "fromSide": "t",
+          "to": "u_return",
+          "toSide": "b",
+          "cross": true
+        }
+      ]
+    }
+  }
+}

@@ -7,9 +7,9 @@ import Sidebar from '@/components/Sidebar'
 import TabBar from '@/components/TabBar'
 import CsvViewer from '@/components/viewers/CsvViewer'
 import MdViewer from '@/components/viewers/MdViewer'
-import JsonViewer from '@/components/viewers/JsonViewer'
 import MediaViewer from '@/components/viewers/MediaViewer'
 import HtmlViewer from '@/components/viewers/HtmlViewer'
+import FlowViewer from '@/components/viewers/FlowViewer'
 
 export default function Home() {
   const [rootHandle, setRootHandle] = useState<FileSystemDirectoryHandle | null>(null)
@@ -99,7 +99,7 @@ export default function Home() {
             <>
               {current.ext === '.csv' && <CsvViewer key={current.path} rootHandle={rootHandle} filePath={current.path} />}
               {current.ext === '.md' && <MdViewer key={current.path} rootHandle={rootHandle} filePath={current.path} />}
-              {current.ext === '.json' && <JsonViewer key={current.path} rootHandle={rootHandle} filePath={current.path} />}
+              {current.ext === '.json' && <FlowViewer key={current.path} rootHandle={rootHandle} filePath={current.path} />}
               {['.pdf', '.jpeg', '.jpg', '.png'].includes(current.ext) && (
                 <MediaViewer key={current.path} rootHandle={rootHandle} filePath={current.path} ext={current.ext} />
               )}

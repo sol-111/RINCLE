@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'fs/promises'
 import { join } from 'path'
 
-const FILE_PATH = join(process.cwd(), '..', 'documents', '1_requirements', 'screen_transition.json')
+const FILE_PATH = join(process.cwd(), '..', 'documents', '1_requirements', '02_screen', 'screen_transition.json')
 
 export async function GET() {
   try {
