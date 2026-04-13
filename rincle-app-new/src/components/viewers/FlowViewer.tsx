@@ -13,6 +13,7 @@ type PhaseObj = { id:string;label:string;x:number;width:number;type?:string }
 type SelObj   = { type:'node'|'edge'|'frame'|'lane'|'phase'; id:string } | null
 type MultiSel = { type:'node'|'frame'; id:string }
 type FlowState = { nodes:NodeObj[];edges:EdgeObj[];frames:FrameObj[];lanes:LaneObj[];phases:PhaseObj[];nextId:number }
+type UnifiedFlowJson = { title?:string; colorLegend?:Record<string,{label:string;fill:string;stroke:string}>; diagrams:Record<string,FlowState>; activeDiagram?:string }
 
 const TYPES: Record<string, { fill:string; stroke:string; tc:string }> = {
   bubble:   { fill:'#1a3a28', stroke:'#34a853', tc:'#a0e8b8' },
@@ -114,33 +115,25 @@ function getEdgeHandles(e:EdgeObj,nodes:NodeObj[]):{x:number;y:number;axis:'x'|'
 }
 
 // ─── FORMAT DETECTION ─────────────────────────────────────────────────────────
-type BizFlowJson = { title:string; colorLegend:Record<string,{label:string;fill:string;stroke:string}>; diagrams:Record<string,{id:string;svgSize:{width:number;height:number};lanes:{label:string;y:number;height:number;color:string}[];phases:{label:string;x:number;width:number}[];nodes:{id:string;x:number;y:number;role:string;shape:string;label:string}[];edges:{from:string;fromSide:string;to:string;toSide:string;label?:string;ng?:boolean}[]}> }
+const emptyFlowState = ():FlowState => ({nodes:[],edges:[],frames:[],lanes:[],phases:[],nextId:1})
 
+function isUnifiedFlow(d: unknown): d is UnifiedFlowJson {
+  if(!d||typeof d!=='object') return false
+  const o=d as Record<string,unknown>
+  if(typeof o.diagrams!=='object'||o.diagrams===null) return false
+  const keys=Object.keys(o.diagrams as Record<string,unknown>)
+  if(keys.length===0) return true
+  const fd=(o.diagrams as Record<string,unknown>)[keys[0]]
+  if(!fd||typeof fd!=='object') return false
+  const f=fd as Record<string,unknown>
+  return Array.isArray(f.nodes)&&Array.isArray(f.edges)&&typeof f.nextId==='number'
+}
 function isScreenTransition(d: unknown): d is { nodes: NodeObj[]; edges?: EdgeObj[]; frames?: FrameObj[]; lanes?: LaneObj[]; phases?: PhaseObj[]; nextId?: number } {
   return d!==null && typeof d==='object' && Array.isArray((d as Record<string,unknown>).nodes)
 }
-function isBizFlow(d: unknown): d is BizFlowJson {
-  if(!d||typeof d!=='object') return false
-  const o=d as Record<string,unknown>
-  return typeof o.diagrams==='object'&&o.diagrams!==null&&typeof o.colorLegend==='object'
-}
-function convertBizFlow(biz: BizFlowJson, diagramKey: string): FlowState {
-  const diag = biz.diagrams[diagramKey]
-  if(!diag) return {nodes:[],edges:[],frames:[],lanes:[],phases:[],nextId:200}
-  let eid=1
-  const nodes: NodeObj[] = diag.nodes.map(n => {
-    const sh = n.shape as 'rect'|'diamond'|'ellipse'
-    const w = sh==='diamond'?72:sh==='ellipse'?88:140
-    const h = sh==='diamond'?72:sh==='ellipse'?44:44
-    return { id:n.id, x:n.x-w/2, y:n.y-h/2, w, h, type:n.role, shape:sh, lines:n.label.split('\n') }
-  })
-  const edges: EdgeObj[] = diag.edges.map(e => ({
-    id:'be'+(eid++), from:e.from, fromSide:e.fromSide, to:e.to, toSide:e.toSide,
-    label:e.label||'', dashed:!!e.ng, ng:e.ng,
-  }))
-  const lanes: LaneObj[] = diag.lanes.map((l,i) => ({ id:'lane'+i, label:l.label, y:l.y, height:l.height, type:l.color }))
-  const phases: PhaseObj[] = diag.phases.map((p,i) => ({ id:'phase'+i, label:p.label, x:p.x, width:p.width }))
-  return { nodes, edges, frames:[], lanes, phases, nextId:200+eid }
+function wrapScreenFlow(d: { nodes:NodeObj[]; edges?:EdgeObj[]; frames?:FrameObj[]; lanes?:LaneObj[]; phases?:PhaseObj[]; nextId?:number }): UnifiedFlowJson {
+  const fs: FlowState = { nodes:d.nodes, edges:d.edges??[], frames:d.frames??[], lanes:d.lanes??[], phases:d.phases??[], nextId:d.nextId??200 }
+  return { diagrams:{ 'default': fs } }
 }
 
 // ─── CSS ──────────────────────────────────────────────────────────────────────
@@ -191,9 +184,9 @@ input.ft-ti{flex:1;background:#2a2a33;border:1px solid #444450;border-radius:3px
 `
 
 // ─── FLOW EDITOR ──────────────────────────────────────────────────────────────
-function FlowEditor({ rootHandle, filePath, initData }: {
+function FlowEditor({ rootHandle, filePath, initData, unifiedData, activeDiagram }: {
   rootHandle: FileSystemDirectoryHandle; filePath: string;
-  initData: FlowState
+  initData: FlowState; unifiedData: UnifiedFlowJson; activeDiagram: string
 }) {
   const [saveStatus, setSaveStatus] = useState<'idle'|'saving'|'saved'>('idle')
   const setSaveStatusRef = useRef(setSaveStatus)
@@ -253,7 +246,17 @@ function FlowEditor({ rootHandle, filePath, initData }: {
     async function saveToFile(){
       setSaveStatusRef.current('saving')
       try{
-        await writeTextFile(rootHandle,filePath,JSON.stringify({nodes:s.nodes,edges:s.edges,frames:s.frames,lanes:s.lanes,phases:s.phases,nextId:s.nextId,vx:s.vx,vy:s.vy,vscale:s.vscale},null,2))
+        const currentFs:FlowState = {nodes:s.nodes,edges:s.edges,frames:s.frames,lanes:s.lanes,phases:s.phases,nextId:s.nextId}
+        const keys=Object.keys(unifiedData.diagrams)
+        const isSingleDefault = keys.length<=1 && (keys[0]==='default'||keys.length===0) && !unifiedData.title && !unifiedData.colorLegend
+        let output:string
+        if(isSingleDefault){
+          output=JSON.stringify({...currentFs,vx:s.vx,vy:s.vy,vscale:s.vscale},null,2)
+        }else{
+          const updated:UnifiedFlowJson = {...unifiedData, diagrams:{...unifiedData.diagrams,[activeDiagram]:currentFs}, activeDiagram}
+          output=JSON.stringify(updated,null,2)
+        }
+        await writeTextFile(rootHandle,filePath,output)
         setSaveStatusRef.current('saved')
         setTimeout(()=>setSaveStatusRef.current('idle'),2000)
       }catch{setSaveStatusRef.current('idle')}
@@ -598,7 +601,14 @@ function FlowEditor({ rootHandle, filePath, initData }: {
       else if(cl.type==='frame'){const nf={...cl.data,id:genId('f'),x:cl.data.x+24,y:cl.data.y+24};s.frames.push(nf);select('frame',nf.id)}
       render()
     }
-    function exportJSON(){const b=new Blob([JSON.stringify({nodes:s.nodes,edges:s.edges,frames:s.frames,lanes:s.lanes,phases:s.phases},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='flow.json';a.click()}
+    function exportJSON(){
+      const currentFs:FlowState = {nodes:s.nodes,edges:s.edges,frames:s.frames,lanes:s.lanes,phases:s.phases,nextId:s.nextId}
+      const keys=Object.keys(unifiedData.diagrams)
+      const isSingleDefault = keys.length<=1 && (keys[0]==='default'||keys.length===0) && !unifiedData.title && !unifiedData.colorLegend
+      let data:unknown
+      if(isSingleDefault){ data=currentFs }else{ data={...unifiedData,diagrams:{...unifiedData.diagrams,[activeDiagram]:currentFs},activeDiagram} }
+      const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='flow.json';a.click()
+    }
 
     function setTool(t:string){s.tool=t;s.conn=null;s.fdraw=null;btnSel.classList.toggle('active',t==='select');btnNd.classList.toggle('active',t==='node');btnDm.classList.toggle('active',t==='diamond');btnEl.classList.toggle('active',t==='ellipse');btnFr.classList.toggle('active',t==='frame');wrap.style.cursor=t==='select'?'default':'crosshair';render()}
 
@@ -849,6 +859,22 @@ function FlowEditor({ rootHandle, filePath, initData }: {
       if(inInput)return
       if(e.key==='Delete'||e.key==='Backspace')deleteSelected()
       if(e.key==='Escape'){s.conn=null;s.fdraw=null;s.rband=null;s.multi=[];select('node',null);setTool('select');render()}
+      if(e.key==='ArrowUp'||e.key==='ArrowDown'||e.key==='ArrowLeft'||e.key==='ArrowRight'){
+        const d=e.shiftKey?10:1,dx=e.key==='ArrowLeft'?-d:e.key==='ArrowRight'?d:0,dy=e.key==='ArrowUp'?-d:e.key==='ArrowDown'?d:0
+        const moveNode=(id:string)=>{const n=getNode(id);if(n){n.x+=dx;n.y+=dy}}
+        const moveFrame=(id:string)=>{const f=getFrame(id);if(f){s.nodes.filter(n=>inFrame(n,f)).forEach(n=>{n.x+=dx;n.y+=dy});s.frames.filter(fr=>fr.id!==id&&inFrame(fr,f)).forEach(fr=>{fr.x+=dx;fr.y+=dy});f.x+=dx;f.y+=dy}}
+        let moved=false
+        if(s.multi.length>0){
+          pushHist();s.multi.forEach(m=>{if(m.type==='node')moveNode(m.id);else if(m.type==='frame')moveFrame(m.id)});moved=true
+        }else if(s.selected){
+          const{type,id}=s.selected
+          if(type==='node'){pushHist();moveNode(id);moved=true}
+          else if(type==='frame'){pushHist();moveFrame(id);moved=true}
+          else if(type==='lane'){const l=s.lanes.find(l=>l.id===id);if(l){pushHist();l.y+=dy;moved=true}}
+          else if(type==='phase'){const p=s.phases.find(p=>p.id===id);if(p){pushHist();p.x+=dx;moved=true}}
+        }
+        if(moved){e.preventDefault();render()}
+      }
     }
     function onDocClick(e:MouseEvent){if(!(e.target as HTMLElement).closest('#ft-cp')&&!(e.target as HTMLElement).closest('.ft-cpbtn'))cpEl.style.display='none';if(!(e.target as HTMLElement).closest('#ft-ctx'))hideCtx()}
 
@@ -911,23 +937,27 @@ function FlowEditor({ rootHandle, filePath, initData }: {
 export default function FlowViewer({ rootHandle, filePath }: { rootHandle: FileSystemDirectoryHandle; filePath: string }) {
   const [mode, setMode] = useState<'loading'|'flow'|'json'|'error'>('loading')
   const [flowData, setFlowData] = useState<FlowState|null>(null)
-  const [bizDiagrams, setBizDiagrams] = useState<{biz:BizFlowJson;keys:string[]}|null>(null)
+  const [unifiedData, setUnifiedData] = useState<UnifiedFlowJson|null>(null)
   const [activeDiagram, setActiveDiagram] = useState('')
   const [error, setError] = useState<string|null>(null)
 
   useEffect(() => {
-    setMode('loading');setFlowData(null);setBizDiagrams(null);setError(null)
+    setMode('loading');setFlowData(null);setUnifiedData(null);setError(null)
     readTextFile(rootHandle, filePath).then(text => {
       try {
         const d = JSON.parse(text)
-        if (isBizFlow(d)) {
-          const keys = Object.keys(d.diagrams)
-          setBizDiagrams({biz:d, keys})
-          setActiveDiagram(keys[0]||'')
-          setFlowData(convertBizFlow(d, keys[0]||''))
-          setMode('flow')
+        let unified: UnifiedFlowJson|null = null
+        if (isUnifiedFlow(d)) {
+          unified = d
         } else if (isScreenTransition(d) && d.nodes.length > 0) {
-          setFlowData({nodes:d.nodes, edges:d.edges??[], frames:d.frames??[], lanes:d.lanes??[], phases:d.phases??[], nextId:d.nextId??200})
+          unified = wrapScreenFlow(d)
+        }
+        if (unified) {
+          setUnifiedData(unified)
+          const keys = Object.keys(unified.diagrams)
+          const active = unified.activeDiagram && keys.includes(unified.activeDiagram) ? unified.activeDiagram : keys[0]||''
+          setActiveDiagram(active)
+          setFlowData(unified.diagrams[active]||emptyFlowState())
           setMode('flow')
         } else setMode('json')
       } catch { setMode('json') }
@@ -937,13 +967,14 @@ export default function FlowViewer({ rootHandle, filePath }: { rootHandle: FileS
   if (mode==='error') return <div style={{padding:20,color:'#f48771'}}>{error}</div>
   if (mode==='loading') return <div style={{padding:20,color:'#888'}}>読み込み中...</div>
   if (mode==='json') return <JsonViewer rootHandle={rootHandle} filePath={filePath}/>
-  if (mode==='flow' && flowData) {
+  if (mode==='flow' && flowData && unifiedData) {
+    const keys = Object.keys(unifiedData.diagrams)
     return (
       <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
-        {bizDiagrams && bizDiagrams.keys.length > 1 && (
+        {keys.length > 1 && (
           <div style={{display:'flex',gap:0,borderBottom:'1px solid #38383f',background:'#2a2a2f',flexShrink:0}}>
-            {bizDiagrams.keys.map(name => (
-              <button key={name} onClick={() => {setActiveDiagram(name);setFlowData(convertBizFlow(bizDiagrams.biz,name))}} style={{
+            {keys.map(name => (
+              <button key={name} onClick={() => {setActiveDiagram(name);setFlowData(unifiedData.diagrams[name]||emptyFlowState())}} style={{
                 padding:'8px 18px',fontSize:12,fontWeight:activeDiagram===name?700:400,cursor:'pointer',
                 background:activeDiagram===name?'#1a1a1f':'transparent',color:activeDiagram===name?'#d0d0d8':'#888898',
                 border:'none',borderBottom:activeDiagram===name?'2px solid #5a8abf':'2px solid transparent',
@@ -951,7 +982,7 @@ export default function FlowViewer({ rootHandle, filePath }: { rootHandle: FileS
             ))}
           </div>
         )}
-        <FlowEditor key={activeDiagram||filePath} rootHandle={rootHandle} filePath={filePath} initData={flowData}/>
+        <FlowEditor key={activeDiagram||filePath} rootHandle={rootHandle} filePath={filePath} initData={flowData} unifiedData={unifiedData} activeDiagram={activeDiagram}/>
       </div>
     )
   }

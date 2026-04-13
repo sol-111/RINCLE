@@ -1,0 +1,8 @@
+display,parameter
+顧客一覧,customer_all
+自転車一覧,bicycle_all
+料金管理,price
+予約一覧,reservation
+売上レポート,sales
+店舗情報,info
+ログアウト,logout

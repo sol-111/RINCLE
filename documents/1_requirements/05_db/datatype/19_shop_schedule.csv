@@ -1,0 +1,7 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+___date,対象日,true,false,date,false,,
+starttime_option_time,開始時間,false,false,option,false,,Time
+endtime_option_time,終了時間,false,false,option,false,,Time
+____user,所属ショップ,true,false,ref,false,user,
+_____option_____op,スケジュール区分,false,false,option,false,,営業状態op
+__________s_list_custom_bicycle,対象自転車リスト,false,false,ref,true,bicycle,

@@ -10,6 +10,7 @@ import MdViewer from '@/components/viewers/MdViewer'
 import MediaViewer from '@/components/viewers/MediaViewer'
 import HtmlViewer from '@/components/viewers/HtmlViewer'
 import FlowViewer from '@/components/viewers/FlowViewer'
+import ErViewer from '@/components/viewers/ErViewer'
 
 export default function Home() {
   const [rootHandle, setRootHandle] = useState<FileSystemDirectoryHandle | null>(null)
@@ -50,6 +51,7 @@ export default function Home() {
   }, [])
 
   const current = tabs.find(t => t.path === activeTab)
+  const isDbIndex = current?.name === '_index.csv' && current.path.includes('05_db')
 
   const startResize = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
@@ -97,7 +99,8 @@ export default function Home() {
         <div style={{ flex: 1, overflow: 'auto' }}>
           {current && rootHandle ? (
             <>
-              {current.ext === '.csv' && <CsvViewer key={current.path} rootHandle={rootHandle} filePath={current.path} />}
+              {isDbIndex && <ErViewer key={`er-${current.path}`} rootHandle={rootHandle} filePath={current.path} />}
+              {current.ext === '.csv' && !isDbIndex && <CsvViewer key={current.path} rootHandle={rootHandle} filePath={current.path} />}
               {current.ext === '.md' && <MdViewer key={current.path} rootHandle={rootHandle} filePath={current.path} />}
               {current.ext === '.json' && <FlowViewer key={current.path} rootHandle={rootHandle} filePath={current.path} />}
               {['.pdf', '.jpeg', '.jpg', '.png'].includes(current.ext) && (

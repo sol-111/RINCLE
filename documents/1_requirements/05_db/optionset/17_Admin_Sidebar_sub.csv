@@ -1,0 +1,7 @@
+display,parameter
+顧客一覧,customer_all
+加盟店一覧,shop_all
+予約一覧,reservation
+FV管理,first_view
+お知らせ管理,news
+ログアウト,logout

@@ -1,0 +1,3 @@
+display,yes,yes_no
+yes,yes,True
+no,no,False

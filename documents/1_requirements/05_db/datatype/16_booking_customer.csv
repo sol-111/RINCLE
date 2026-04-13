@@ -1,0 +1,12 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+name_text,氏名,false,false,text,false,,
+name_kana_text,氏名（カナ）,false,false,text,false,,
+email_text,メールアドレス,false,false,text,false,,
+phone_text_text,電話番号,false,false,text,false,,
+address_text,住所,false,false,text,false,,
+signup_user_boolean,会員登録フラグ,false,false,boolean,false,,
+_____number,数値②,false,false,number,false,,
+_____date,日付,false,false,date,false,,
+___text,住所（bubble key）,false,false,text,false,,
+___number,身長,false,false,number,false,,
+____1_number,郵便番号,false,false,number,false,,

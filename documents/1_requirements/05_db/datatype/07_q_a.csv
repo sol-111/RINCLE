@@ -1,0 +1,9 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+title_text,タイトル,true,false,text,false,,
+q_text,質問,true,false,text,false,,
+a_text,回答,true,false,text,false,,
+show_boolean,表示フラグ,false,false,boolean,false,,
+index_number,表示順①,false,false,number,false,,
+index1_number,表示順②,false,false,number,false,,
+category_custom_q_a_category,カテゴリ（参照）,false,false,ref,false,q_a_category,
+category_option_q_a_category,カテゴリ（OptionSet）,false,false,option,false,,q_a_category

@@ -1,0 +1,4 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+___number,金額,false,false,number,false,,
+price_menu_custom_price_menu,料金プラン,false,false,ref,false,price_menu,
+______custom_sub_option,サブオプション,false,false,ref,false,sub_option,

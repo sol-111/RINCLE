@@ -1,0 +1,2 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+number_number,数値,false,false,number,false,,

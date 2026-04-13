@@ -1,0 +1,5 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+name_text,都道府県名,true,false,text,false,,
+index_number,ソート順,false,false,number,false,,
+shop_user,所属ショップ,false,false,ref,false,user,
+shoplist_list_user,該当ショップ一覧,false,false,ref,true,user,

@@ -116,3 +116,214 @@ http://localhost:3001 にアクセス。
 
 - 編集は自動保存（1秒 debounce）
 - ツールバーに「保存中...」インジケータ表示
+
+---
+
+## フロー図 JSON ファイル仕様
+
+フロー図のJSONは統一形式です。
+単一図の場合はフラット、複数図の場合は `diagrams` でラップして保存されます。
+
+### 単一図（フラット形式）
+
+```json
+{
+  "nodes": [],
+  "edges": [],
+  "frames": [],
+  "lanes": [],
+  "phases": [],
+  "nextId": 1
+}
+```
+
+### 複数図（統一形式）
+
+```json
+{
+  "title": "タイトル（任意）",
+  "colorLegend": {
+    "キー": { "label": "表示名", "fill": "#hex", "stroke": "#hex" }
+  },
+  "diagrams": {
+    "図の名前": {
+      "nodes": [], "edges": [], "frames": [],
+      "lanes": [], "phases": [], "nextId": 1
+    }
+  },
+  "activeDiagram": "最後に開いていた図の名前"
+}
+```
+
+複数ダイアグラムがある場合、タブで切り替えて表示・編集できます。
+
+---
+
+### 各要素の仕様
+
+#### nodes — ノード
+
+| プロパティ | 型 | 必須 | 説明 |
+|-----------|-----|------|------|
+| `id` | string | ○ | 一意なID |
+| `x` | number | ○ | X座標 |
+| `y` | number | ○ | Y座標 |
+| `w` | number | ○ | 幅 |
+| `h` | number | ○ | 高さ |
+| `type` | string | ○ | ノード種別（下記参照） |
+| `shape` | string | | `rect`（デフォルト） / `diamond` / `ellipse` |
+| `lines` | string[] | ○ | 表示テキスト（複数行対応） |
+| `fill` | string | | カスタム塗り色（hex） |
+| `fillOpacity` | number | | 塗りの透明度（0〜1） |
+| `stroke` | string | | カスタム枠色（hex） |
+| `dashed` | boolean | | 破線にするか |
+
+**ノード種別（type）**
+
+| type | 用途 | 色 |
+|------|------|-----|
+| `bubble` | デフォルト | 緑 |
+| `popup` | ポップアップ | ゴールド |
+| `external` | 外部画面 | 青 |
+| `custom1` | カスタム1 | マゼンタ |
+| `custom2` | カスタム2 | 紫 |
+| `user` | ユーザー操作 | 緑 |
+| `store` | データ/ストア | 紫 |
+| `admin` | 管理者操作 | 赤 |
+| `decision` | 分岐 | 青 |
+| `startend` | 開始/終了 | グレー |
+| `notify` | 通知 | シアン |
+| `io` | 入出力 | ブラウン |
+
+#### edges — 接続線
+
+| プロパティ | 型 | 必須 | 説明 |
+|-----------|-----|------|------|
+| `id` | string | ○ | 一意なID |
+| `from` | string | ○ | 接続元ノードID |
+| `fromSide` | string | ○ | 接続元の辺（`t` / `b` / `l` / `r`） |
+| `to` | string | ○ | 接続先ノードID |
+| `toSide` | string | ○ | 接続先の辺（`t` / `b` / `l` / `r`） |
+| `label` | string | ○ | ラベル（空文字可） |
+| `dashed` | boolean | ○ | 破線にするか |
+| `offset` | number | | ルートのオフセット |
+| `arrowDir` | string | | 矢印方向: `end`（デフォルト） / `start` / `both` / `none` |
+| `ng` | boolean | | エラー線（赤い破線で描画） |
+
+#### frames — 枠（グループ）
+
+| プロパティ | 型 | 必須 | 説明 |
+|-----------|-----|------|------|
+| `id` | string | ○ | 一意なID |
+| `x` | number | ○ | X座標 |
+| `y` | number | ○ | Y座標 |
+| `w` | number | ○ | 幅 |
+| `h` | number | ○ | 高さ |
+| `label` | string | ○ | タイトル |
+| `fillHex` | string | | 塗り色（hex） |
+| `fillOpacity` | number | | 透明度（0〜1） |
+| `stroke` | string | ○ | 枠色（hex） |
+| `labelColor` | string | ○ | ラベル色（hex） |
+| `dashed` | boolean | ○ | 破線にするか |
+
+#### lanes — スイムレーン
+
+| プロパティ | 型 | 必須 | 説明 |
+|-----------|-----|------|------|
+| `id` | string | ○ | 一意なID |
+| `label` | string | ○ | レーン名（例: `ユーザー`） |
+| `y` | number | ○ | Y座標 |
+| `height` | number | ○ | 高さ |
+| `type` | string | ○ | レーン種別（ノード種別と同じ値） |
+
+#### phases — フェーズ（縦区切り）
+
+| プロパティ | 型 | 必須 | 説明 |
+|-----------|-----|------|------|
+| `id` | string | ○ | 一意なID |
+| `label` | string | ○ | フェーズ名 |
+| `x` | number | ○ | X座標 |
+| `width` | number | ○ | 幅 |
+| `type` | string | | スタイル種別 |
+
+---
+
+### エディタ機能
+
+- ノード・線・枠・レーン・フェーズのドラッグ＆ドロップ編集
+- 複数選択
+- Undo / Redo
+- カラーピッカー
+- スナップガイド（位置揃え）
+- ズーム・パン操作
+- JSONエクスポート
+
+---
+
+## ER図 / DB設計ビューア
+
+`05_db/_index.csv` を開くと専用ビューアが起動し、3つのタブで DB 設計を閲覧できます。
+
+### ファイル構成
+
+```
+05_db/
+├── _index.csv            # テーブル/オプションセット一覧
+├── datatype/             # テーブル定義（1ファイル = 1テーブル）
+│   ├── 01_user.csv
+│   ├── 02_bicycle.csv
+│   └── ...
+└── optionset/            # オプションセット定義（1ファイル = 1セット）
+    ├── 01_Rights.csv
+    ├── 02_予約ステータス.csv
+    └── ...
+```
+
+### タブ
+
+| タブ | 内容 |
+|------|------|
+| テーブル一覧 | `_index.csv` の内容をテーブル表示。全テーブル・オプションセットの名前と説明 |
+| ER図 | `datatype/*.csv` を全読み込みし、リレーションを自動描画 |
+| Option Set | `optionset/*.csv` を全読み込みし、カード形式で一覧表示 |
+
+### DataType CSV 仕様
+
+各テーブルのフィールド定義。ファイル名からテーブル名を取得（`01_user.csv` → `user`）。
+
+| カラム | 説明 |
+|--------|------|
+| `field_name` | フィールド名（snake_case） |
+| `display_name` | 日本語表示名 |
+| `required` | 必須（`true` / `false`） |
+| `ix` | インデックス（`true` / `false`） |
+| `dtype` | データ型（`text` / `number` / `date` / `boolean` / `image` / `option` / `ref`） |
+| `list` | 配列フラグ（`true` / `false`） |
+| `ref_target` | 参照先テーブル名（`dtype=ref` の場合） |
+| `notes` | 備考（オプション名など） |
+
+### OptionSet CSV 仕様
+
+各オプションセットの選択肢定義。
+
+- 1列目は必ず `display`（表示名）
+- 2列目以降は属性カラム（セットにより異なる）
+
+### ER図の操作
+
+| 操作 | 方法 |
+|------|------|
+| パン（移動） | スクロール / トラックパッド |
+| ズーム | Ctrl + スクロール（カーソル中心） |
+| 全体表示 | ツールバー「全体表示」ボタン / 左下 `⊡` ボタン |
+
+### ER図の自動生成ルール
+
+- 各テーブルに `Unique id`（PK）が自動付与される
+- `dtype=ref` のフィールドは FK バッジ付きで表示され、`ref_target` の値でリレーション線が引かれる
+- テーブルは列方向に自動レイアウトされる（高さ上限を超えると次の列へ）
+
+### 編集方法
+
+各 CSV ファイルはサイドバーから個別に開いて CSV エディタで編集できます。
+編集後、`_index.csv` を開き直すと ER図に反映されます。

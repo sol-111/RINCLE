@@ -1,0 +1,3 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+text_text,イベント本文,false,false,text,false,,
+type_text,イベント種別,false,false,text,false,,

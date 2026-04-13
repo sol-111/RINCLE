@@ -1,0 +1,8 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+date_date,記録日,true,false,date,false,,
+__number,金額①,false,false,number,false,,
+_1_number,金額②,false,false,number,false,,
+____number,金額③,false,false,number,false,,
+___boolean,処理済みフラグ,false,false,boolean,false,,
+shop_user,所属ショップ,true,false,ref,false,user,
+__________option__________,振り込みステータス,false,false,option,false,,振り込みステータス
