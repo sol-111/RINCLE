@@ -142,7 +142,7 @@ async function typeInNthInput(page: Page, index: number, text: string, clear = f
 // 管理者機能テスト（6-2: 未実施項目）
 // =====================================================================
 test.describe("管理者機能テスト", () => {
-  test.describe.configure({ mode: "serial" });
+  // 各テストは独立して実行可能
 
   // ================================================================
   // 加盟店CRUD

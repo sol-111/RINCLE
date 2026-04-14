@@ -273,7 +273,6 @@ async function doReservation(page: Page, start: ReturnType<typeof parseDatetime>
 // TC1: 店舗在庫作成・更新
 // =====================================================================
 test.describe("TC1: 店舗在庫作成・更新", () => {
-  test.describe.configure({ mode: "serial" });
 
   test("TC1-1: 自転車一覧が表示される（在庫の基盤）", async ({ page }) => {
     await storeLogin(page);
@@ -517,7 +516,6 @@ test.describe("TC2: キャンセル完全版", () => {
 // TC4: 自転車料金計算
 // =====================================================================
 test.describe("TC4: 自転車料金計算", () => {
-  test.describe.configure({ mode: "serial" });
 
   test("TC4-1: 料金ページの料金表が表示される", async ({ page }) => {
     await userLogin(page);
@@ -691,7 +689,6 @@ test.describe("TC4: 自転車料金計算", () => {
 // TC5: 延長料金計算
 // =====================================================================
 test.describe("TC5: 延長料金計算", () => {
-  test.describe.configure({ mode: "serial" });
 
   test("TC5-1: 店舗管理 — 予約一覧でライド管理UIの確認", async ({ page }) => {
     await storeLogin(page);
@@ -758,7 +755,6 @@ test.describe("TC5: 延長料金計算", () => {
 // TC6: 料金の変更
 // =====================================================================
 test.describe("TC6: 料金の変更", () => {
-  test.describe.configure({ mode: "serial" });
 
   test("TC6-1: 管理者 — 料金表一覧の確認", async ({ page }) => {
     await adminLogin(page);
@@ -834,7 +830,6 @@ test.describe("TC6: 料金の変更", () => {
 // TC7: 検索完全版
 // =====================================================================
 test.describe("TC7: 検索完全版", () => {
-  test.describe.configure({ mode: "serial" });
 
   test("TC7-1: 日付未定検索（基本）", async ({ page }) => {
     await userLogin(page);
