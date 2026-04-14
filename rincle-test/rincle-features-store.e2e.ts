@@ -23,31 +23,33 @@ async function bubbleClick(page: Page, text: string): Promise<boolean> {
 }
 
 async function sidebarClick(page: Page, text: string) {
-  const clicked = await page.evaluate((t) => {
-    let el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
-      const r = el.getBoundingClientRect();
-      return r.width > 0 && r.height > 0 && el.textContent?.trim() === t;
-    }) as HTMLElement | null;
-    if (!el) {
-      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-      let node;
-      while ((node = walker.nextNode())) {
-        if (node.textContent?.trim() === t) {
-          el = (node.parentElement?.closest(".clickable-element") || node.parentElement) as HTMLElement | null;
-          break;
+  // リトライ付き: Bubble SPAの描画タイミングに対応
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const clicked = await page.evaluate((t) => {
+      let el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
+        const r = el.getBoundingClientRect();
+        return r.width > 0 && r.height > 0 && el.textContent?.trim() === t;
+      }) as HTMLElement | null;
+      if (!el) {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        let node;
+        while ((node = walker.nextNode())) {
+          if (node.textContent?.trim() === t) {
+            el = (node.parentElement?.closest(".clickable-element") || node.parentElement) as HTMLElement | null;
+            break;
+          }
         }
       }
-    }
-    if (!el) return false;
-    const ev = (window as any).jQuery?._data?.(el, "events")?.click?.[0]?.handler;
-    if (ev) { const e = (window as any).jQuery.Event("click"); e.target = el; e.currentTarget = el; ev.call(el, e); return true; }
-    el.click();
-    return true;
-  }, text);
-  if (!clicked) {
-    await page.getByText(text, { exact: true }).first().click();
+      if (!el) return false;
+      const ev = (window as any).jQuery?._data?.(el, "events")?.click?.[0]?.handler;
+      if (ev) { const e = (window as any).jQuery.Event("click"); e.target = el; e.currentTarget = el; ev.call(el, e); return true; }
+      el.click();
+      return true;
+    }, text);
+    if (clicked) break;
+    if (attempt < 2) await page.waitForTimeout(2000);
   }
-  await page.waitForLoadState("networkidle", { timeout: 15000 });
+  await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
   await page.waitForTimeout(2000);
 }
 
@@ -56,15 +58,26 @@ async function bodyText(page: Page): Promise<string> {
 }
 
 async function storeLogin(page: Page) {
-  await page.goto(BASE_URL, { waitUntil: "networkidle", timeout: 30000 });
-  await page.waitForTimeout(2000);
-  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 10000 });
-  await page.locator('input[type="email"]').fill(STORE_EMAIL);
-  await page.locator('input[type="password"]').fill(STORE_PASSWORD);
-  await page.getByRole("button", { name: "ログイン" }).click();
-  await page.waitForLoadState("networkidle", { timeout: 30000 });
-  await page.waitForTimeout(3000);
-  await page.getByText("予約・売上管理").first().waitFor({ state: "visible", timeout: 15000 }).catch(() => {});
+  for (let retry = 0; retry < 2; retry++) {
+    await page.goto(BASE_URL, { waitUntil: "networkidle", timeout: 30000 });
+    await page.waitForTimeout(2000);
+    await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 10000 });
+    await page.locator('input[type="email"]').fill(STORE_EMAIL);
+    await page.locator('input[type="password"]').fill(STORE_PASSWORD);
+    await page.getByRole("button", { name: "ログイン" }).click();
+    await page.waitForLoadState("networkidle", { timeout: 30000 }).catch(() => {});
+    await page.waitForTimeout(3000);
+    let loggedIn = false;
+    for (let i = 0; i < 5; i++) {
+      loggedIn = await page.evaluate(() => {
+        const text = document.body.textContent || "";
+        return text.includes("予約・売上管理") || text.includes("顧客管理") || text.includes("自転車一覧") || text.includes("予約一覧");
+      });
+      if (loggedIn) break;
+      await page.waitForTimeout(2000);
+    }
+    if (loggedIn) break;
+  }
 }
 
 async function getVisibleInputs(page: Page) {

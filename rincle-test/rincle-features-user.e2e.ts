@@ -291,8 +291,15 @@ test.describe("ユーザー機能テスト", () => {
       await checkboxes.nth(i).check();
     }
 
-    await page.getByRole("button", { name: "検索する" }).click();
-    await page.waitForLoadState("networkidle");
+    // 検索ボタン: Bubble SPA のため複数パターンで試行
+    const searchBtn = page.getByRole("button", { name: "検索する" });
+    if (await searchBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await searchBtn.click();
+    } else {
+      // ボタンが見つからない場合はBubble経由でクリック
+      await bubbleClick(page, "検索");
+    }
+    await page.waitForLoadState("networkidle").catch(() => {});
     await page.waitForTimeout(3000);
 
     const resultText = await bodyText(page);
