@@ -45,9 +45,23 @@ documents/
 │           └── ...
 │
 └── 99_ receives/                   # クライアント提供資料（原本）
-    ├── *.pdf                       #   業務フロー・マニュアル等のPDF
-    ├── image/                      #   スクリーンショット
+    ├── 仕様管理表.xlsx             #   検索・決済・料金・キャンセル等のケースロジック
+    ├── questions.md                #   仕様の未確認事項・矛盾点まとめ
+    ├── RINCLEクレジット支払いフロー.pdf
+    ├── RINCLEバイク登録.pdf
+    ├── RINCLE加盟店登録フロー.pdf
+    ├── RINCLE加盟店管理画面初期設定マニュアル.pdf
+    ├── RINCLE店舗でのバイク貸出フロー.pdf
+    ├── rincle_sales_pitch_20260314.pdf
+    ├── image/                      #   スクリーンショット（業務フロー図・UIキャプチャ）
     └── page/                       #   Luminous社 納品HTML（旧実装の参考資料）
+        ├── index.html              #     タブナビゲーション（エントリポイント）
+        ├── scope.html              #     改修スコープ（要件定義）
+        ├── test_cases.html         #     テストケース一覧
+        ├── flow_credit.html        #     クレジット支払いフロー図
+        ├── flow_bike_reg.html      #     バイク登録フロー図
+        ├── flow_store_reg.html     #     加盟店登録フロー図
+        └── flow_bike_rental.html   #     バイク貸出フロー図
 ```
 
 ## ファイル形式と対応ビューア
@@ -60,6 +74,7 @@ documents/
 | `.pdf` | MediaViewer | 不可 |
 | `.html` | HtmlViewer（iframe） | 不可 |
 | `.png` / `.jpg` | MediaViewer | 不可 |
+| `.xlsx` | — （外部ツールで閲覧） | 不可 |
 | `05_db/_index.csv` | ErViewer（ER図 + テーブル一覧 + オプションセット） | CSVを個別編集 |
 
 ## 番号体系
