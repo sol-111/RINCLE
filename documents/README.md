@@ -31,7 +31,12 @@ documents/
 │   │   └── emails_config.csv       #   送信設定（差出人・フッター等）
 │   │
 │   ├── 04_integration/             # 外部連携
-│   │   └── payjp_integration.md    #   Pay.JP 決済フロー仕様
+│   │   └── pay.jp/                 #   Pay.JP 決済連携
+│   │       ├── payjp-flow-asis.md                # 現行の決済フロー仕様（As-Is）
+│   │       ├── payjp-api-summary-ja.md          # API一覧・概要
+│   │       ├── payjp-flow-tobe.md                # To-Be 支払い・予約フロー統合版
+│   │       ├── payjp-rincle-bubble-usage.md     # Bubble既存実装のPay.jp利用箇所
+│   │       └── payjp-test-mode-e2e.md           # テストモード・E2Eテスト調査
 │   │
 │   └── 05_db/                      # DB設計（_index.csv → ErViewer で表示）
 │       ├── _index.csv              #   テーブル/オプションセット一覧
