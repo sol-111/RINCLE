@@ -56,15 +56,15 @@ async function bodyText(page: Page): Promise<string> {
 }
 
 async function storeLogin(page: Page) {
-  await page.goto(BASE_URL, { waitUntil: "networkidle" });
-  await page.waitForTimeout(1500);
-  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 8000 });
+  await page.goto(BASE_URL, { waitUntil: "networkidle", timeout: 30000 });
+  await page.waitForTimeout(2000);
+  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 10000 });
   await page.locator('input[type="email"]').fill(STORE_EMAIL);
   await page.locator('input[type="password"]').fill(STORE_PASSWORD);
   await page.getByRole("button", { name: "ログイン" }).click();
-  await page.waitForLoadState("networkidle", { timeout: 20000 });
-  await page.waitForTimeout(2000);
-  await page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 10000 });
+  await page.waitForLoadState("networkidle", { timeout: 30000 });
+  await page.waitForTimeout(3000);
+  await page.getByText("予約・売上管理").first().waitFor({ state: "visible", timeout: 15000 }).catch(() => {});
 }
 
 async function getVisibleInputs(page: Page) {

@@ -110,7 +110,6 @@ test.describe("ユーザー機能テスト", () => {
       return {
         hasError: text.includes("エラー") || text.includes("入力してください") || text.includes("必須"),
         hasEmptyError: text.includes("空") || text.includes("未入力"),
-        submitted: submitClicked,
       };
     });
 
