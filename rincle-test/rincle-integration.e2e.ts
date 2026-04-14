@@ -239,26 +239,15 @@ async function adminLogin(page: Page) {
 }
 
 async function storeLogin(page: Page) {
-  for (let retry = 0; retry < 2; retry++) {
-    await page.goto(STORE_BASE, { waitUntil: "networkidle", timeout: 30000 });
-    await page.waitForTimeout(2000);
-    await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 10000 });
-    await page.locator('input[type="email"]').fill(STORE_EMAIL);
-    await page.locator('input[type="password"]').fill(STORE_PASSWORD);
-    await page.getByRole("button", { name: "ログイン" }).click();
-    await page.waitForLoadState("networkidle", { timeout: 30000 }).catch(() => {});
-    await page.waitForTimeout(3000);
-    let loggedIn = false;
-    for (let i = 0; i < 5; i++) {
-      loggedIn = await page.evaluate(() => {
-        const text = document.body.textContent || "";
-        return text.includes("予約・売上管理") || text.includes("顧客管理") || text.includes("自転車一覧") || text.includes("予約一覧");
-      });
-      if (loggedIn) break;
-      await page.waitForTimeout(2000);
-    }
-    if (loggedIn) break;
-  }
+  await page.goto(STORE_BASE, { waitUntil: "networkidle" });
+  await page.waitForTimeout(1500);
+  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 8000 });
+  await page.locator('input[type="email"]').fill(STORE_EMAIL);
+  await page.locator('input[type="password"]').fill(STORE_PASSWORD);
+  await page.getByRole("button", { name: "ログイン" }).click();
+  await page.waitForLoadState("networkidle", { timeout: 20000 });
+  await page.waitForTimeout(2000);
+  await page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 10000 });
 }
 
 /** テキストがページに含まれるか */
