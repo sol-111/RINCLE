@@ -13,7 +13,9 @@ documents/
 │   ├── 3rd_sales_meeting_minutes.txt
 │   └── summary.md
 │
-├── 1_requirements/                 # 要件定義
+├── 1_meeting_minutes/              # 定例議事録
+│
+├── 2_requirements/                 # 要件定義
 │   ├── 00_overview/                # プロジェクト概要
 │   │   ├── project_summary.md      #   プロジェクト概要
 │   │   └── glossary.md             #   用語集
@@ -48,7 +50,7 @@ documents/
 │           ├── 02_予約ステータス.csv
 │           └── ...
 │
-├── 2_test/                         # テスト結果
+├── 3_test/                         # テスト結果
 │   ├── e2e_test_report.md          #   E2Eテスト実行レポート（84/85 passed）
 │   └── payjp-test-mode-e2e.md     #   Pay.JPテストモード・E2Eテスト調査
 │
@@ -87,6 +89,6 @@ documents/
 
 ## 番号体系
 
-- フォルダの先頭番号（`0_`, `1_`, `99_`）は大分類の並び順
+- フォルダの先頭番号（`0_`, `1_`, `2_`, `3_`, `99_`）は大分類の並び順
 - サブフォルダの番号（`00_`, `01_`, ...）はセクションの並び順
 - CSV ファイルの番号（`01_`, `02_`, ...）はエクスポート順
