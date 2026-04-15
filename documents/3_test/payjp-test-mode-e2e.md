@@ -1,5 +1,7 @@
 # PAY.JP テストモード & E2Eテスト調査結果
 
+> 最終更新: 2026-04-15 — `version-5398j` 環境でPay.JP決済E2Eテスト12/12 PASS
+
 ## 1. テストモードの有無
 
 **結論: あり。** PAY.JPはテストモードとライブモードを完全に分離して提供している。
@@ -24,6 +26,8 @@ Option Set `pay_jp_key` で管理されている:
 - `test_sk` → `sk_test_7737...`
 - `test_pk` → `pk_test_0ede...`
 - `live` → `pk_live_17c3...`
+
+**`version-5398j` 環境は `pk_test_0ede...` に切替済み**（TC-12で確認。2026-04-15）
 
 ---
 
@@ -130,15 +134,34 @@ Step 4: 返金
 ### Rincleの決済フローとの対応
 
 ```
-Rincle予約時の決済:
+Rincle予約時の決済（現行 version-5398j）:
   Token作成（Checkout.js） → Charge（capture=true、即時確定）→ 必要に応じてRefund
 
 延長料金:
-  別のCharge → 必要に応じてRefund
+  別のCharge → 必要に応じてRefund（※延長UI未実装のため未稼働）
 
 キャンセル返金:
   通常分Refund + 延長分Refund（2回返金）
 ```
+
+### E2Eテスト実行結果（2026-04-15 version-5398j）
+
+`version-5398j` 環境は `pk_test_0ede...` に切替済み。テストカード利用可能。
+
+| TC | テスト | 結果 | 詳細 |
+|---|---|---|---|
+| TC-1 | マイページ カード情報 | **PASS** | カード未登録状態を確認 |
+| TC-2 | カード登録（Checkout.js） | **PASS** | 予約フロー内のCheckout iframe検出、フォーム構造検証（5ブランド対応）、名義入力OK |
+| TC-3 | 予約→カード決済 | **PASS** | 検索→詳細→予約→決済完了 |
+| TC-4 | 予約一覧 | **PASS** | キャンセル可能な予約確認 |
+| TC-5 | 店舗管理 予約情報 | **PASS** | 予約一覧表示OK |
+| TC-6 | 店舗 売上レポート | **PASS** | データ表示OK |
+| TC-7 | 管理者 予約一覧 | **PASS** | 金額表示あり（charge_id非表示） |
+| TC-8 | 管理者 売上レポート | **PASS** | 金額データあり |
+| TC-9 | キャンセル→返金 | **PASS** | 対象予約なし（正常スキップ） |
+| TC-10 | 店舗 Pay.jp審査状態 | **PASS** | 審査状態表示あり |
+| TC-11 | 管理者 加盟店一覧 | **PASS** | 一覧表示OK |
+| TC-12 | Checkout.jsキー確認 | **PASS** | `pk_test_0ede...` テストモード確認 |
 
 ---
 
