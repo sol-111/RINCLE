@@ -20,7 +20,7 @@ documents/
 │   │
 │   ├── 01_functional/              # 機能要件
 │   │   ├── features.csv            #   画面設計書（画面・機能・改善点）
-│   │   └── screens_improvements.md #   画面別の改善提案
+│   │   └── improvements.md         #   改善点一覧（E2Eテスト+コード分析）
 │   │
 │   ├── 02_flow/                    # フロー図（JSON → FlowViewer で表示）
 │   │   ├── screenflow.json         #   画面遷移図
@@ -35,8 +35,7 @@ documents/
 │   │       ├── payjp-flow-asis.md                # 現行の決済フロー仕様（As-Is）
 │   │       ├── payjp-api-summary-ja.md          # API一覧・概要
 │   │       ├── payjp-flow-tobe.md                # To-Be 支払い・予約フロー統合版
-│   │       ├── payjp-rincle-bubble-usage.md     # Bubble既存実装のPay.jp利用箇所
-│   │       └── payjp-test-mode-e2e.md           # テストモード・E2Eテスト調査
+│   │       └── payjp-rincle-bubble-usage.md     # Bubble既存実装のPay.jp利用箇所
 │   │
 │   └── 05_db/                      # DB設計（_index.csv → ErViewer で表示）
 │       ├── _index.csv              #   テーブル/オプションセット一覧
@@ -48,6 +47,10 @@ documents/
 │           ├── 01_Rights.csv
 │           ├── 02_予約ステータス.csv
 │           └── ...
+│
+├── 2_test/                         # テスト結果
+│   ├── e2e_test_report.md          #   E2Eテスト実行レポート（84/85 passed）
+│   └── payjp-test-mode-e2e.md     #   Pay.JPテストモード・E2Eテスト調査
 │
 └── 99_ receives/                   # クライアント提供資料（原本）
     ├── 仕様管理表.xlsx             #   検索・決済・料金・キャンセル等のケースロジック
