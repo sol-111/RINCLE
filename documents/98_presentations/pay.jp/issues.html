@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pay.JP 連携 修正一覧 - Issues / Action Items</title>
+<title>Pay.JP 連携 修正一覧 - 優先順位付き対応計画</title>
 <style>
   :root {
     --primary: #2563eb;
@@ -21,12 +21,12 @@
     --radius: 12px;
     --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
     --shadow-lg: 0 4px 24px rgba(0,0,0,0.1);
-    --high: #dc2626;
-    --high-light: #fef2f2;
-    --high-border: #fecaca;
-    --mid: #d97706;
-    --mid-light: #fffbeb;
-    --mid-border: #fde68a;
+    --immediate: #dc2626;
+    --immediate-light: #fef2f2;
+    --immediate-border: #fecaca;
+    --tobe: #d97706;
+    --tobe-light: #fffbeb;
+    --tobe-border: #fde68a;
     --low: #6366f1;
     --low-light: #eef2ff;
     --low-border: #c7d2fe;
@@ -79,7 +79,7 @@
   /* Summary cards */
   .summary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     margin: -40px 32px 40px;
     position: relative;
@@ -96,8 +96,8 @@
     box-shadow: var(--shadow-lg);
     text-align: center;
   }
-  .summary-card.high { border-top: 4px solid var(--high); }
-  .summary-card.mid { border-top: 4px solid var(--mid); }
+  .summary-card.immediate { border-top: 4px solid var(--immediate); }
+  .summary-card.tobe { border-top: 4px solid var(--tobe); }
   .summary-card.low { border-top: 4px solid var(--low); }
   .summary-card.total { border-top: 4px solid var(--gray-900); }
   .summary-card h3 {
@@ -107,8 +107,8 @@
     letter-spacing: 1px;
     margin-bottom: 6px;
   }
-  .summary-card.high h3 { color: var(--high); }
-  .summary-card.mid h3 { color: var(--mid); }
+  .summary-card.immediate h3 { color: var(--immediate); }
+  .summary-card.tobe h3 { color: var(--tobe); }
   .summary-card.low h3 { color: var(--low); }
   .summary-card.total h3 { color: var(--gray-700); }
   .summary-card .count {
@@ -116,8 +116,8 @@
     font-weight: 800;
     line-height: 1.2;
   }
-  .summary-card.high .count { color: var(--high); }
-  .summary-card.mid .count { color: var(--mid); }
+  .summary-card.immediate .count { color: var(--immediate); }
+  .summary-card.tobe .count { color: var(--tobe); }
   .summary-card.low .count { color: var(--low); }
   .summary-card.total .count { color: var(--gray-900); }
   .summary-card .unit {
@@ -125,6 +125,56 @@
     color: var(--gray-500);
     font-weight: 500;
   }
+
+  /* Strategy callout */
+  .strategy-box {
+    background: linear-gradient(135deg, #fef2f2 0%, #fff7ed 50%, #eff6ff 100%);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 40px;
+  }
+  .strategy-box h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .strategy-box .goal {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--immediate);
+    margin-bottom: 16px;
+  }
+  .strategy-list {
+    list-style: none;
+    padding: 0;
+  }
+  .strategy-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+  .strategy-list li:last-child { margin-bottom: 0; }
+  .strategy-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .strategy-tag.immediate { background: #fee2e2; color: #991b1b; }
+  .strategy-tag.tobe { background: #fef3c7; color: #92400e; }
+  .strategy-tag.low-tag { background: #e0e7ff; color: #3730a3; }
 
   /* Sections */
   .section { margin-bottom: 48px; }
@@ -148,8 +198,8 @@
     font-weight: 800;
     flex-shrink: 0;
   }
-  .section-num.high { background: var(--high); }
-  .section-num.mid { background: var(--mid); }
+  .section-num.immediate { background: var(--immediate); }
+  .section-num.tobe { background: var(--tobe); }
   .section-num.low { background: var(--low); }
   .section-header h2 { font-size: 22px; font-weight: 700; }
   .section-desc { color: var(--gray-500); font-size: 14px; margin-bottom: 20px; }
@@ -166,8 +216,8 @@
   .issue-card:hover {
     box-shadow: var(--shadow-lg);
   }
-  .issue-card.high { border-left: 5px solid var(--high); }
-  .issue-card.mid { border-left: 5px solid var(--mid); }
+  .issue-card.immediate { border-left: 5px solid var(--immediate); }
+  .issue-card.tobe { border-left: 5px solid var(--tobe); }
   .issue-card.low { border-left: 5px solid var(--low); }
 
   .issue-card-header {
@@ -188,8 +238,8 @@
     flex-shrink: 0;
     color: #fff;
   }
-  .issue-number.high { background: var(--high); }
-  .issue-number.mid { background: var(--mid); }
+  .issue-number.immediate { background: var(--immediate); }
+  .issue-number.tobe { background: var(--tobe); }
   .issue-number.low { background: var(--low); }
 
   .issue-title-area { flex: 1; }
@@ -200,7 +250,33 @@
     line-height: 1.4;
   }
 
-  .priority-badge {
+  /* Order badge for immediate items */
+  .order-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+    background: var(--immediate);
+    color: #fff;
+    white-space: nowrap;
+  }
+  .order-badge .order-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .category-badge {
     display: inline-block;
     padding: 3px 12px;
     border-radius: 6px;
@@ -208,9 +284,8 @@
     font-weight: 700;
     flex-shrink: 0;
   }
-  .priority-badge.high { background: #fee2e2; color: #991b1b; }
-  .priority-badge.mid { background: #fef3c7; color: #92400e; }
-  .priority-badge.low { background: #e0e7ff; color: #3730a3; }
+  .category-badge.tobe { background: #fef3c7; color: #92400e; }
+  .category-badge.low-cat { background: #e0e7ff; color: #3730a3; }
 
   .issue-card-body {
     padding: 16px 24px 24px;
@@ -250,6 +325,10 @@
     background: #eff6ff;
     color: #1e40af;
   }
+  .issue-field-label.priority-reason {
+    background: #fef3c7;
+    color: #92400e;
+  }
   .issue-field-text {
     font-size: 14px;
     color: var(--gray-700);
@@ -274,6 +353,37 @@
     height: 6px;
     border-radius: 50%;
     background: var(--gray-300);
+  }
+
+  /* Priority reason callout */
+  .priority-reason-callout {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .priority-reason-callout .pr-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+  .priority-reason-callout .pr-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #92400e;
+    margin-bottom: 2px;
+  }
+  .priority-reason-callout .pr-text {
+    font-size: 14px;
+    color: #78350f;
+    font-weight: 600;
+    line-height: 1.6;
   }
 
   /* Cards / callouts */
@@ -323,16 +433,17 @@
     font-size: 12px;
     font-weight: 700;
   }
-  .badge-ok { background: #d1fae5; color: #065f46; }
-  .badge-ng { background: #fee2e2; color: #991b1b; }
-  .badge-wait { background: #fef3c7; color: #92400e; }
+  .badge-immediate { background: #fee2e2; color: #991b1b; }
+  .badge-tobe { background: #fef3c7; color: #92400e; }
+  .badge-low { background: #e0e7ff; color: #3730a3; }
 
   /* Overview table */
   .overview-table {
     margin: 24px 0;
   }
   .overview-table table td:nth-child(1) { white-space: nowrap; width: 50px; text-align: center; }
-  .overview-table table td:nth-child(3) { white-space: nowrap; width: 80px; text-align: center; }
+  .overview-table table td:nth-child(3) { white-space: nowrap; width: 120px; text-align: center; }
+  .overview-table table td:nth-child(4) { white-space: nowrap; width: 80px; text-align: center; }
 
   /* Footer note */
   .footer-note {
@@ -351,41 +462,62 @@
     .container { padding: 24px 16px 60px; }
     .summary-grid { grid-template-columns: 1fr 1fr; padding: 0 16px; }
     .issue-card-header { flex-wrap: wrap; }
+    .strategy-box { padding: 20px; }
   }
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <div class="hero-label">Issues / Action Items</div>
+  <div class="hero-label">Issues / Action Plan</div>
   <h1>Pay.JP 連携 修正一覧</h1>
   <p>Yanoさんの調査報告（2026-04-16）および rincle.bubble 解析結果に基づく課題・改善項目の一覧です。</p>
 </div>
 
 <div class="summary-grid">
-  <div class="summary-card high">
-    <h3>&#x1F534; High</h3>
-    <div class="count">3</div>
-    <div class="unit">件</div>
-  </div>
-  <div class="summary-card mid">
-    <h3>&#x1F7E0; Medium</h3>
+  <div class="summary-card immediate">
+    <h3>&#x1F534; 即時対応</h3>
     <div class="count">5</div>
     <div class="unit">件</div>
   </div>
+  <div class="summary-card tobe">
+    <h3>&#x1F7E0; 改善時</h3>
+    <div class="count">3</div>
+    <div class="unit">件</div>
+  </div>
   <div class="summary-card low">
-    <h3>&#x1F535; Low</h3>
+    <h3>&#x1F535; 低優先</h3>
     <div class="count">3</div>
     <div class="unit">件</div>
   </div>
   <div class="summary-card total">
-    <h3>Total</h3>
+    <h3>合計</h3>
     <div class="count">11</div>
     <div class="unit">件</div>
   </div>
 </div>
 
 <div class="container">
+
+  <!-- Strategy / Policy -->
+  <div class="strategy-box">
+    <h3>&#x1F3AF; 対応方針</h3>
+    <div class="goal">目標: まず運用上問題ない状態にする</div>
+    <ul class="strategy-list">
+      <li>
+        <span class="strategy-tag immediate">即時対応 5件</span>
+        運用が壊れる / 仕様未達 / 事故リスクがあるもの &#x2192; 着手順: #3 &#x2192; #2 &#x2192; #1 &#x2192; #5 &#x2192; #4
+      </li>
+      <li>
+        <span class="strategy-tag tobe">改善時に対応 3件</span>
+        改善フェーズでまとめて対応
+      </li>
+      <li>
+        <span class="strategy-tag low-tag">低優先 3件</span>
+        運用に影響なし。余裕があれば対応
+      </li>
+    </ul>
+  </div>
 
   <!-- Overview table -->
   <div class="section">
@@ -400,134 +532,96 @@
           <tr>
             <th>#</th>
             <th>タイトル</th>
-            <th>重要度</th>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>延長決済の charge_id が保存されていない</td>
-            <td><span class="priority-badge high">高</span></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>DBが完全オープン（セキュリティ）</td>
-            <td><span class="priority-badge high">高</span></td>
+            <th>カテゴリ</th>
+            <th>着手順</th>
           </tr>
           <tr>
             <td>3</td>
             <td>開発環境で本番キーが使用されている</td>
-            <td><span class="priority-badge high">高</span></td>
+            <td><span class="badge badge-immediate">即時対応</span></td>
+            <td>1番目</td>
           </tr>
           <tr>
-            <td>4</td>
-            <td>カード登録時のオーソリ（与信確認）が未実装</td>
-            <td><span class="priority-badge mid">中</span></td>
+            <td>2</td>
+            <td>DBが完全オープン（セキュリティ）</td>
+            <td><span class="badge badge-immediate">即時対応</span></td>
+            <td>2番目</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>延長決済の charge_id が保存されていない</td>
+            <td><span class="badge badge-immediate">即時対応</span></td>
+            <td>3番目</td>
           </tr>
           <tr>
             <td>5</td>
             <td>デフォルトカードの設定がドロップダウン選択と不一致</td>
-            <td><span class="priority-badge mid">中</span></td>
+            <td><span class="badge badge-immediate">即時対応</span></td>
+            <td>4番目</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>オーソリ（与信確認）が未実装</td>
+            <td><span class="badge badge-immediate">即時対応</span></td>
+            <td>5番目</td>
           </tr>
           <tr>
             <td>6</td>
             <td>エラーハンドリングの改善</td>
-            <td><span class="priority-badge mid">中</span></td>
+            <td><span class="badge badge-tobe">改善時</span></td>
+            <td>&#x2014;</td>
           </tr>
           <tr>
             <td>7</td>
             <td>エラー通知・ログの仕組みがない</td>
-            <td><span class="priority-badge mid">中</span></td>
+            <td><span class="badge badge-tobe">改善時</span></td>
+            <td>&#x2014;</td>
           </tr>
           <tr>
             <td>8</td>
             <td>店舗招待URLのセキュリティ</td>
-            <td><span class="priority-badge mid">中</span></td>
+            <td><span class="badge badge-tobe">改善時</span></td>
+            <td>&#x2014;</td>
           </tr>
           <tr>
             <td>9</td>
             <td>PEDALSTANDARD の 15% 利用料請求の仕組みが未定</td>
-            <td><span class="priority-badge low">低</span></td>
+            <td><span class="badge badge-low">低優先</span></td>
+            <td>&#x2014;</td>
           </tr>
           <tr>
             <td>10</td>
             <td>テナント登録時の銀行口座情報</td>
-            <td><span class="priority-badge low">低</span></td>
+            <td><span class="badge badge-low">低優先</span></td>
+            <td>&#x2014;</td>
           </tr>
           <tr>
             <td>11</td>
             <td>Webhook名のtypo</td>
-            <td><span class="priority-badge low">低</span></td>
+            <td><span class="badge badge-low">低優先</span></td>
+            <td>&#x2014;</td>
           </tr>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- ========== HIGH ========== -->
+  <!-- ========== IMMEDIATE ========== -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num high">&#x26A0;</div>
-      <h2>重要度: 高</h2>
+      <div class="section-num immediate">&#x26A0;</div>
+      <h2>即時対応</h2>
     </div>
-    <p class="section-desc">即時対応が必要な重大な問題です。セキュリティリスクやデータ欠損に関わるため、優先的に対処してください。</p>
+    <p class="section-desc">運用が壊れる、仕様未達、または事故リスクがある問題です。着手順に沿って対処してください。</p>
 
-    <!-- Issue 1 -->
-    <div class="issue-card high">
+    <!-- Issue #3 - Order 1 -->
+    <div class="issue-card immediate">
       <div class="issue-card-header">
-        <div class="issue-number high">1</div>
-        <div class="issue-title-area">
-          <div class="issue-title">延長決済の charge_id が保存されていない</div>
-        </div>
-        <span class="priority-badge high">高</span>
-      </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">shop_admin の延長ワークフロー（<code>bTdud</code> / ライド終了ボタン）で Charge_by_car_id を実行した後、返却された charge_id を予約データに保存していない</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">延長分の返金時に <code>__charge_id</code> が空のため、返金できない可能性がある</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">延長決済成功後に <code>__charge_id</code> フィールドへ charge_id を保存する処理を追加</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Issue 2 -->
-    <div class="issue-card high">
-      <div class="issue-card-header">
-        <div class="issue-number high">2</div>
-        <div class="issue-title-area">
-          <div class="issue-title">DBが完全オープン（セキュリティ）</div>
-        </div>
-        <span class="priority-badge high">高</span>
-      </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">現状DBは誰でも閲覧可能な状態</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">顧客情報・決済情報が外部から参照できるリスク</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">プライバシールールを設定し、適切なアクセス制御を行う</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Issue 3 -->
-    <div class="issue-card high">
-      <div class="issue-card-header">
-        <div class="issue-number high">3</div>
+        <div class="issue-number immediate">3</div>
         <div class="issue-title-area">
           <div class="issue-title">開発環境で本番キーが使用されている</div>
         </div>
-        <span class="priority-badge high">高</span>
+        <div class="order-badge"><span class="order-num">1</span> 1st</div>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -542,60 +636,88 @@
           <div class="issue-field-label action">&#x2705; 対応</div>
           <div class="issue-field-text">開発用ワークフロー / 本番用ワークフローを分けるか、環境変数で切り替える仕組みを導入</div>
         </div>
+        <div class="priority-reason-callout">
+          <div class="pr-icon">&#x1F4A1;</div>
+          <div>
+            <div class="pr-label">優先理由</div>
+            <div class="pr-text">全ての開発・テスト作業の前提。これがないと他の修正の検証もできない</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="callout danger">
-      <div class="callout-icon">&#x1F6A8;</div>
-      <div><strong>重要度「高」の3件はいずれもセキュリティ・データ整合性に直結する問題です。</strong>本番運用に入る前に必ず対処が必要です。特に #2 のDB公開状態と #3 の本番キー利用は、情報漏洩につながる可能性があります。</div>
-    </div>
-  </div>
-
-  <!-- ========== MEDIUM ========== -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num mid">&#x25B2;</div>
-      <h2>重要度: 中</h2>
-    </div>
-    <p class="section-desc">ユーザー体験やシステムの信頼性に影響する問題です。早期の対応を推奨します。</p>
-
-    <!-- Issue 4 -->
-    <div class="issue-card mid">
+    <!-- Issue #2 - Order 2 -->
+    <div class="issue-card immediate">
       <div class="issue-card-header">
-        <div class="issue-number mid">4</div>
+        <div class="issue-number immediate">2</div>
         <div class="issue-title-area">
-          <div class="issue-title">カード登録時のオーソリ（与信確認）が未実装</div>
+          <div class="issue-title">DBが完全オープン（セキュリティ）</div>
         </div>
-        <span class="priority-badge mid">中</span>
+        <div class="order-badge"><span class="order-num">2</span> 2nd</div>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
           <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">ユーザーがカードを登録した時点ではオーソリ（与信確認）を行っていない</div>
+          <div class="issue-field-text">現状DBは誰でも閲覧可能な状態</div>
         </div>
         <div class="issue-field">
           <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">カードは登録できるが、実際の支払い時に残高不足等で失敗する可能性がある</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label note">&#x1F4D6; 参考</div>
-          <div class="issue-field-text">「RINCLEクレジット支払いフロー.pdf」にはオーソリの件が記載されているが、実装されていない</div>
+          <div class="issue-field-text">顧客情報・決済情報が外部から参照できるリスク</div>
         </div>
         <div class="issue-field">
           <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">カード登録時に少額オーソリを実行し、カードの有効性を確認する</div>
+          <div class="issue-field-text">プライバシールールを設定し、適切なアクセス制御を行う</div>
+        </div>
+        <div class="priority-reason-callout">
+          <div class="pr-icon">&#x1F4A1;</div>
+          <div>
+            <div class="pr-label">優先理由</div>
+            <div class="pr-text">事故が起きたら取り返しがつかない。放置期間が長いほどリスク増大</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Issue 5 -->
-    <div class="issue-card mid">
+    <!-- Issue #1 - Order 3 -->
+    <div class="issue-card immediate">
       <div class="issue-card-header">
-        <div class="issue-number mid">5</div>
+        <div class="issue-number immediate">1</div>
+        <div class="issue-title-area">
+          <div class="issue-title">延長決済の charge_id が保存されていない</div>
+        </div>
+        <div class="order-badge"><span class="order-num">3</span> 3rd</div>
+      </div>
+      <div class="issue-card-body">
+        <div class="issue-field">
+          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
+          <div class="issue-field-text">shop_admin の延長ワークフロー（<code>bTdud</code> / ライド終了ボタン）で Charge_by_car_id を実行した後、返却された charge_id を予約データに保存していない</div>
+        </div>
+        <div class="issue-field">
+          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
+          <div class="issue-field-text">延長分の返金時に <code>__charge_id</code> が空のため、返金できない可能性がある</div>
+        </div>
+        <div class="issue-field">
+          <div class="issue-field-label action">&#x2705; 対応</div>
+          <div class="issue-field-text">延長決済成功後に <code>__charge_id</code> フィールドへ charge_id を保存する処理を追加</div>
+        </div>
+        <div class="priority-reason-callout">
+          <div class="pr-icon">&#x1F4A1;</div>
+          <div>
+            <div class="pr-label">優先理由</div>
+            <div class="pr-text">延長が発生した時点で返金不能になる</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue #5 - Order 4 -->
+    <div class="issue-card immediate">
+      <div class="issue-card-header">
+        <div class="issue-number immediate">5</div>
         <div class="issue-title-area">
           <div class="issue-title">デフォルトカードの設定がドロップダウン選択と不一致</div>
         </div>
-        <span class="priority-badge mid">中</span>
+        <div class="order-badge"><span class="order-num">4</span> 4th</div>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -610,17 +732,70 @@
           <div class="issue-field-label action">&#x2705; 対応</div>
           <div class="issue-field-text">ドロップダウンで選択されたカードをデフォルトカードに設定するよう修正</div>
         </div>
+        <div class="priority-reason-callout">
+          <div class="pr-icon">&#x1F4A1;</div>
+          <div>
+            <div class="pr-label">優先理由</div>
+            <div class="pr-text">クレーム直結。複数カード登録ユーザーで発生する</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Issue 6 -->
-    <div class="issue-card mid">
+    <!-- Issue #4 - Order 5 -->
+    <div class="issue-card immediate">
       <div class="issue-card-header">
-        <div class="issue-number mid">6</div>
+        <div class="issue-number immediate">4</div>
+        <div class="issue-title-area">
+          <div class="issue-title">オーソリ（与信確認）が未実装</div>
+        </div>
+        <div class="order-badge"><span class="order-num">5</span> 5th</div>
+      </div>
+      <div class="issue-card-body">
+        <div class="issue-field">
+          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
+          <div class="issue-field-text">クライアント提供の「RINCLEクレジット支払いフロー.pdf」ではオーソリ→キャプチャモデルが定義されているが、実際には実装されていない。予約時にオーソリなし、ライド開始時に直接課金している</div>
+        </div>
+        <div class="issue-field">
+          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
+          <div class="issue-field-text">クライアントは実装済みと認識している可能性が高い。未回収リスクの抑制が機能していない</div>
+        </div>
+        <div class="issue-field">
+          <div class="issue-field-label action">&#x2705; 対応</div>
+          <div class="issue-field-text">オーソリ→キャプチャモデルを実装（<code>capture=false</code> / <code>expiry_days=60</code>）。最大予約先も60日に制限、営業カレンダーも60日分に縮小</div>
+        </div>
+        <div class="priority-reason-callout">
+          <div class="pr-icon">&#x1F4A1;</div>
+          <div>
+            <div class="pr-label">優先理由</div>
+            <div class="pr-text">クライアントが想定している仕様と実装が乖離している（仕様未達）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-icon">&#x1F6A8;</div>
+      <div><strong>即時対応の5件は着手順に沿って進めてください。</strong>まず #3（本番キー分離）を完了させ、安全にテストできる環境を整えた上で、#2（DB公開）、#1（charge_id保存）、#5（カード選択）、#4（オーソリ実装）の順に着手します。</div>
+    </div>
+  </div>
+
+  <!-- ========== 改善時に対応 ========== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num tobe">&#x25B2;</div>
+      <h2>改善時に対応</h2>
+    </div>
+    <p class="section-desc">改善フェーズでまとめて対応する項目です。</p>
+
+    <!-- Issue #6 -->
+    <div class="issue-card tobe">
+      <div class="issue-card-header">
+        <div class="issue-number tobe">6</div>
         <div class="issue-title-area">
           <div class="issue-title">エラーハンドリングの改善</div>
         </div>
-        <span class="priority-badge mid">中</span>
+        <span class="category-badge tobe">改善時</span>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -644,14 +819,14 @@
       </div>
     </div>
 
-    <!-- Issue 7 -->
-    <div class="issue-card mid">
+    <!-- Issue #7 -->
+    <div class="issue-card tobe">
       <div class="issue-card-header">
-        <div class="issue-number mid">7</div>
+        <div class="issue-number tobe">7</div>
         <div class="issue-title-area">
           <div class="issue-title">エラー通知・ログの仕組みがない</div>
         </div>
-        <span class="priority-badge mid">中</span>
+        <span class="category-badge tobe">改善時</span>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -674,14 +849,14 @@
       </div>
     </div>
 
-    <!-- Issue 8 -->
-    <div class="issue-card mid">
+    <!-- Issue #8 -->
+    <div class="issue-card tobe">
       <div class="issue-card-header">
-        <div class="issue-number mid">8</div>
+        <div class="issue-number tobe">8</div>
         <div class="issue-title-area">
           <div class="issue-title">店舗招待URLのセキュリティ</div>
         </div>
-        <span class="priority-badge mid">中</span>
+        <span class="category-badge tobe">改善時</span>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -701,7 +876,7 @@
 
     <div class="callout warning">
       <div class="callout-icon">&#x26A0;&#xFE0F;</div>
-      <div><strong>重要度「中」の5件はUXと運用品質に関わる問題です。</strong>特に #5 の「選択カードと実際の決済カードの不一致」はユーザーからのクレームにつながる可能性があります。#6, #7 のエラー関連は運用開始後のトラブルシューティングに不可欠です。</div>
+      <div><strong>改善時に対応の3件は改善フェーズでまとめて対応します。</strong>即時対応の5件が完了してから着手してください。</div>
     </div>
   </div>
 
@@ -709,18 +884,18 @@
   <div class="section">
     <div class="section-header">
       <div class="section-num low">&#x25CF;</div>
-      <h2>重要度: 低</h2>
+      <h2>低優先</h2>
     </div>
-    <p class="section-desc">即座の対応は不要ですが、将来的に対処が望ましい項目です。</p>
+    <p class="section-desc">運用に影響なし。余裕があれば対応する項目です。</p>
 
-    <!-- Issue 9 -->
+    <!-- Issue #9 -->
     <div class="issue-card low">
       <div class="issue-card-header">
         <div class="issue-number low">9</div>
         <div class="issue-title-area">
           <div class="issue-title">PEDALSTANDARD の 15% 利用料請求の仕組みが未定</div>
         </div>
-        <span class="priority-badge low">低</span>
+        <span class="category-badge low-cat">低優先</span>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -742,14 +917,14 @@
       </div>
     </div>
 
-    <!-- Issue 10 -->
+    <!-- Issue #10 -->
     <div class="issue-card low">
       <div class="issue-card-header">
         <div class="issue-number low">10</div>
         <div class="issue-title-area">
           <div class="issue-title">テナント登録時の銀行口座情報</div>
         </div>
-        <span class="priority-badge low">低</span>
+        <span class="category-badge low-cat">低優先</span>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -767,14 +942,14 @@
       </div>
     </div>
 
-    <!-- Issue 11 -->
+    <!-- Issue #11 -->
     <div class="issue-card low">
       <div class="issue-card-header">
         <div class="issue-number low">11</div>
         <div class="issue-title-area">
           <div class="issue-title">Webhook名のtypo</div>
         </div>
-        <span class="priority-badge low">低</span>
+        <span class="category-badge low-cat">低優先</span>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -794,7 +969,7 @@
 
     <div class="callout info">
       <div class="callout-icon">&#x2139;&#xFE0F;</div>
-      <div><strong>重要度「低」の3件は機能的な影響が限定的です。</strong>#9 はビジネス要件の確定待ち、#10 と #11 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div>
+      <div><strong>低優先の3件は運用に直接影響しません。</strong>#9 はビジネス要件の確定待ち、#10 と #11 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div>
     </div>
   </div>
 
