@@ -5,7 +5,7 @@ require("dotenv").config();
   const browser = await chromium.launch({ headless: false, slowMo: 200 });
   const page = await browser.newPage();
 
-  const BASE_URL = "https://rincle.co.jp/version-test";
+  const BASE_URL = "https://rincle.co.jp/version-5398j";
   const EMAIL = process.env.RINCLE_EMAIL;
   const PASSWORD = process.env.RINCLE_PASSWORD;
   const AREA = process.env.RINCLE_AREA;

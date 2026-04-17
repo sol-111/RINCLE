@@ -5,7 +5,7 @@ require("dotenv").config();
   const browser = await chromium.launch({ headless: false, slowMo: 100 });
   const page = await browser.newPage();
 
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   
   // Get the run.js URL
   const scripts = await page.evaluate(() =>

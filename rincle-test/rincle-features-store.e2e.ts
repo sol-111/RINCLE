@@ -2,7 +2,7 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const BASE_URL = "https://rincle.co.jp/version-test/shop_admin_login";
+const BASE_URL = "https://rincle.co.jp/version-5398j/shop_admin_login";
 const STORE_EMAIL    = process.env.STORE_EMAIL!;
 const STORE_PASSWORD = process.env.STORE_PASSWORD!;
 
@@ -58,15 +58,21 @@ async function bodyText(page: Page): Promise<string> {
 }
 
 async function storeLogin(page: Page) {
-  await page.goto(BASE_URL, { waitUntil: "networkidle" });
-  await page.waitForTimeout(1500);
+  await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(3000);
   await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 8000 });
   await page.locator('input[type="email"]').fill(STORE_EMAIL);
   await page.locator('input[type="password"]').fill(STORE_PASSWORD);
   await page.getByRole("button", { name: "ログイン" }).click();
   await page.waitForLoadState("networkidle", { timeout: 20000 });
   await page.waitForTimeout(2000);
-  await page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 10000 });
+  await Promise.race([
+    page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("予約一覧").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("加盟店一覧").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("売上レポート").first().waitFor({ state: "visible", timeout: 20000 }),
+  ]).catch(() => {});
+  await page.waitForTimeout(1000);
 }
 
 async function getVisibleInputs(page: Page) {

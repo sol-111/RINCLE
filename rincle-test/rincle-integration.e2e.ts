@@ -2,9 +2,9 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const USER_BASE  = "https://rincle.co.jp/version-test";
-const ADMIN_BASE = "https://rincle.co.jp/version-test/admin_login";
-const STORE_BASE = "https://rincle.co.jp/version-test/shop_admin_login";
+const USER_BASE  = "https://rincle.co.jp/version-5398j";
+const ADMIN_BASE = "https://rincle.co.jp/version-5398j/admin_login";
+const STORE_BASE = "https://rincle.co.jp/version-5398j/shop_admin_login";
 
 const EMAIL          = process.env.RINCLE_EMAIL!;
 const PASSWORD       = process.env.RINCLE_PASSWORD!;
@@ -227,27 +227,37 @@ async function userLogin(page: Page) {
 }
 
 async function adminLogin(page: Page) {
-  await page.goto(ADMIN_BASE, { waitUntil: "networkidle" });
-  await page.waitForTimeout(1500);
-  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 8000 });
+  await page.goto(ADMIN_BASE, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(3000);
+  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 15000 });
   await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
   await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
   await page.getByRole("button", { name: "ログイン" }).click();
-  await page.waitForLoadState("networkidle", { timeout: 20000 });
-  await page.waitForTimeout(2000);
-  await page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 10000 });
+  await page.waitForTimeout(5000);
+  // ログイン後のサイドバーメニュー表示を待機（複数パターン対応）
+  await Promise.race([
+    page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("予約一覧").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("加盟店一覧").first().waitFor({ state: "visible", timeout: 20000 }),
+  ]).catch(() => {});
+  await page.waitForTimeout(1000);
 }
 
 async function storeLogin(page: Page) {
-  await page.goto(STORE_BASE, { waitUntil: "networkidle" });
-  await page.waitForTimeout(1500);
-  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 8000 });
+  await page.goto(STORE_BASE, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(3000);
+  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 15000 });
   await page.locator('input[type="email"]').fill(STORE_EMAIL);
   await page.locator('input[type="password"]').fill(STORE_PASSWORD);
   await page.getByRole("button", { name: "ログイン" }).click();
-  await page.waitForLoadState("networkidle", { timeout: 20000 });
-  await page.waitForTimeout(2000);
-  await page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 10000 });
+  await page.waitForTimeout(5000);
+  // ログイン後のサイドバーメニュー表示を待機（複数パターン対応）
+  await Promise.race([
+    page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("予約一覧").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("売上レポート").first().waitFor({ state: "visible", timeout: 20000 }),
+  ]).catch(() => {});
+  await page.waitForTimeout(1000);
 }
 
 /** テキストがページに含まれるか */

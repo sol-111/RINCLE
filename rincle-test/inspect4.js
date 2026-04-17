@@ -2,7 +2,7 @@ const { chromium } = require('@playwright/test');
 (async () => {
   const browser = await chromium.launch({ headless: false, slowMo: 300 });
   const page = await browser.newPage();
-  await page.goto('https://rincle.co.jp/version-test', { waitUntil: 'networkidle', timeout: 20000 });
+  await page.goto('https://rincle.co.jp/version-5398j', { waitUntil: 'networkidle', timeout: 20000 });
   await page.waitForTimeout(3000);
 
   // ログイン

@@ -2,7 +2,7 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const BASE_URL = "https://rincle.co.jp/version-test";
+const BASE_URL = "https://rincle.co.jp/version-5398j";
 const EMAIL    = process.env.RINCLE_EMAIL!;
 const PASSWORD = process.env.RINCLE_PASSWORD!;
 const AREA     = process.env.RINCLE_AREA!;

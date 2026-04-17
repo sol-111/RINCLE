@@ -5,7 +5,7 @@ require("dotenv").config();
   const browser = await chromium.launch({ headless: false, slowMo: 80 });
   const page = await browser.newPage();
 
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "ログイン" }).first().click();
   await page.locator('input[type="email"]').waitFor({ state: "visible" });
   await page.locator('input[type="email"]').fill(process.env.RINCLE_EMAIL);
@@ -22,7 +22,7 @@ require("dotenv").config();
     );
 
   // マイページ
-  await page.goto("https://rincle.co.jp/version-test/index/mypage", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j/index/mypage", { waitUntil: "networkidle" });
   await page.waitForTimeout(1500);
   console.log("=== マイページ ===");
   console.log("URL:", page.url());
@@ -37,21 +37,21 @@ require("dotenv").config();
   console.log("Texts:", mypageTexts);
 
   // ガイドページ
-  await page.goto("https://rincle.co.jp/version-test/index/guide", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j/index/guide", { waitUntil: "networkidle" });
   await page.waitForTimeout(1500);
   console.log("\n=== ガイドページ ===");
   console.log("URL:", page.url());
   console.log("Btns:", await getVisibleBtns());
 
   // 料金ページ
-  await page.goto("https://rincle.co.jp/version-test/index/howtopay", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j/index/howtopay", { waitUntil: "networkidle" });
   await page.waitForTimeout(1500);
   console.log("\n=== 料金ページ ===");
   console.log("URL:", page.url());
   console.log("Btns:", await getVisibleBtns());
 
   // 予約一覧ページ
-  await page.goto("https://rincle.co.jp/version-test/user_reservation_list", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j/user_reservation_list", { waitUntil: "networkidle" });
   await page.waitForTimeout(2000);
   console.log("\n=== 予約一覧ページ ===");
   console.log("URL:", page.url());
@@ -66,7 +66,7 @@ require("dotenv").config();
   console.log("Texts:", listTexts);
 
   // ログアウト
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   await page.waitForTimeout(1000);
   console.log("\n=== ログアウト ===");
   const logoutBtn = page.getByRole("button", { name: "ログアウト" });

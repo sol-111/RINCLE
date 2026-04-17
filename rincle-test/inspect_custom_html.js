@@ -8,7 +8,7 @@ require("dotenv").config();
   page.on("console", msg => { if (msg.type() === "error") consoleErrors.push(msg.text().substring(0, 300)); });
   page.on("pageerror", e => consoleErrors.push("PAGE: " + e.message.substring(0, 300)));
 
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "ログイン" }).first().click();
   await page.locator('input[type="email"]').waitFor({ state: "visible" });
   await page.locator('input[type="email"]').fill(process.env.RINCLE_EMAIL);

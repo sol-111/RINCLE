@@ -8,7 +8,7 @@ require("dotenv").config();
   page.on("request", req => { if (req.url().includes("workflow/start")) allReqs.push({ body: req.postData() }); });
   page.on("response", async res => { if (res.url().includes("workflow/start")) { const b = await res.text().catch(() => ""); const l = allReqs[allReqs.length-1]; if(l) l.response = b.substring(0,600); }});
 
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "ログイン" }).first().click();
   await page.locator('input[type="email"]').waitFor({ state: "visible" });
   await page.locator('input[type="email"]').fill(process.env.RINCLE_EMAIL);

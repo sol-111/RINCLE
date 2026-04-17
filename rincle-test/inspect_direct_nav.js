@@ -6,7 +6,7 @@ require("dotenv").config();
   const page = await browser.newPage();
 
   // Login first
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "ログイン" }).first().click();
   await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 5000 });
   await page.locator('input[type="email"]').fill(process.env.RINCLE_EMAIL);
@@ -17,7 +17,7 @@ require("dotenv").config();
 
   // Navigate to bicycle detail and complete full form flow
   // then directly navigate to cart URL candidates
-  const BASE = "https://rincle.co.jp/version-test";
+  const BASE = "https://rincle.co.jp/version-5398j";
   const BICYCLE_ID = "1759034684755x353916196529111040";
 
   // 2026/04/05 11:00 JST = Unix timestamp

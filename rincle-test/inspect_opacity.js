@@ -10,7 +10,7 @@ require("dotenv").config();
     if (req.url().includes("workflow")) workflowReqs.push({ method: req.method(), url: req.url().substring(0, 120), body: req.postData()?.substring(0, 200) });
   });
 
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "ログイン" }).first().click();
   await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 5000 });
   await page.locator('input[type="email"]').fill(process.env.RINCLE_EMAIL);

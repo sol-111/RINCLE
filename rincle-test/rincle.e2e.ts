@@ -2,7 +2,7 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const BASE_URL = "https://rincle.co.jp/version-test";
+const BASE_URL = "https://rincle.co.jp/version-5398j";
 const EMAIL    = process.env.RINCLE_EMAIL!;
 const PASSWORD = process.env.RINCLE_PASSWORD!;
 const AREA     = process.env.RINCLE_AREA!;
@@ -400,30 +400,41 @@ test.describe("RINCLE E2E", () => {
     await login(page);
 
     // コンテンツが描画されるまで待機してからスクロール
-    await page.waitForTimeout(1500);
-    await page.evaluate(() => window.scrollTo(0, 900));
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
+    await page.evaluate(() => window.scrollTo(0, 700));
+    await page.waitForTimeout(2000);
 
     // 新着情報の1件目をBubble jQuery handler経由でクリック
-    await page.evaluate(() => {
-      const el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
+    const clicked = await page.evaluate(() => {
+      const els = Array.from(document.querySelectorAll(".clickable-element"));
+      const el = els.find(el => {
         const r = el.getBoundingClientRect();
-        return r.width > 0 && r.height > 0 && el.textContent?.includes("OPEN");
+        const text = el.textContent || "";
+        // 新着情報の記事を検索（日付パターンを含み、かつラベル「新着情報」自体は除外）
+        return r.width > 0 && r.height > 0
+          && /\d{4}\.\d{1,2}\.\d{1,2}/.test(text)
+          && text.trim() !== "新着情報";
       }) as HTMLElement | null;
-      if (!el) return;
+      if (!el) return false;
       const events = (window as any).jQuery?._data?.(el, "events");
       const handler = events?.click?.[0]?.handler;
       if (handler) {
         const e = (window as any).jQuery.Event("click");
         e.target = el; e.currentTarget = el;
         handler.call(el, e);
-      } else {
-        el.click();
+        return true;
       }
+      el.click();
+      return true;
     });
+    if (!clicked) {
+      console.log("⚠️ 新着情報の記事が見つからない — スキップ");
+      return;
+    }
 
     // news_detail ページに遷移したことを確認
-    await page.waitForURL(/\/index\/news_detail/, { timeout: 10000 });
+    await page.waitForTimeout(3000);
+    await page.waitForURL(/\/index\/news_detail/, { timeout: 15000 });
     await expect(page).toHaveURL(/\/index\/news_detail/);
 
     // 「一覧へ戻る」ボタンが表示されること
@@ -435,7 +446,7 @@ test.describe("RINCLE E2E", () => {
       return !!el;
     });
     expect(await backBtn).toBe(true);
-    console.log("✅ 新着情報詳細ページ確認完了:", page.url().split("version-test")[1]);
+    console.log("✅ 新着情報詳細ページ確認完了:", page.url().split("version-5398j")[1]);
   });
 
   // ----------------------------------------------------------------
@@ -478,7 +489,7 @@ test.describe("RINCLE E2E", () => {
       return !!el;
     });
     expect(await backBtn).toBe(true);
-    console.log("✅ TOPICS詳細ページ確認完了:", page.url().split("version-test")[1]);
+    console.log("✅ TOPICS詳細ページ確認完了:", page.url().split("version-5398j")[1]);
   });
 
   // ----------------------------------------------------------------

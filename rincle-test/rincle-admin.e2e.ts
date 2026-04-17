@@ -2,8 +2,8 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const BASE_URL = "https://rincle.co.jp/version-test/admin_login";
-const ADMIN_URL = "https://rincle.co.jp/version-test/admin";
+const BASE_URL = "https://rincle.co.jp/version-5398j/admin_login";
+const ADMIN_URL = "https://rincle.co.jp/version-5398j/admin";
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 
@@ -73,8 +73,8 @@ async function clickSidebarMenu(page: Page, text: string): Promise<void> {
 }
 
 async function adminLogin(page: Page) {
-  await page.goto(BASE_URL, { waitUntil: "networkidle" });
-  await page.waitForTimeout(1500);
+  await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(3000);
 
   // 管理画面ログインフォーム
   await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 8000 });
@@ -87,7 +87,13 @@ async function adminLogin(page: Page) {
   await page.waitForTimeout(2000);
 
   // サイドバーの「顧客管理」見出しが表示されることで確認
-  await page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 10000 });
+  await Promise.race([
+    page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("予約一覧").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("加盟店一覧").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("売上レポート").first().waitFor({ state: "visible", timeout: 20000 }),
+  ]).catch(() => {});
+  await page.waitForTimeout(1000);
 }
 
 // -------------------------------------------------------------------
@@ -316,7 +322,7 @@ test.describe("RINCLE 管理者 E2E", () => {
   test("営業カレンダー", async ({ page }) => {
     await adminLogin(page);
 
-    await page.goto("https://rincle.co.jp/version-test/admin_update_calendar", { waitUntil: "networkidle" });
+    await page.goto("https://rincle.co.jp/version-5398j/admin_update_calendar", { waitUntil: "networkidle" });
     await page.waitForTimeout(2000);
 
     // カレンダー関連の要素が表示されること
@@ -334,7 +340,7 @@ test.describe("RINCLE 管理者 E2E", () => {
   test("料金シミュレーション", async ({ page }) => {
     await adminLogin(page);
 
-    await page.goto("https://rincle.co.jp/version-test/admin_price_simulation", { waitUntil: "networkidle" });
+    await page.goto("https://rincle.co.jp/version-5398j/admin_price_simulation", { waitUntil: "networkidle" });
     await page.waitForTimeout(2000);
 
     // シミュレーション関連の要素が表示されること

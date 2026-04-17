@@ -11,7 +11,7 @@ require("dotenv").config();
     requests.push({ method: req.method(), url: req.url().substring(0, 120) });
   });
 
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
 
   await page.getByRole("button", { name: "ログイン" }).first().click();
   await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 5000 });

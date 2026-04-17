@@ -5,7 +5,7 @@ require("dotenv").config();
   const browser = await chromium.launch({ headless: false, slowMo: 200 });
   const page = await browser.newPage();
 
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "ログイン" }).first().click();
   await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 5000 });
   await page.locator('input[type="email"]').fill(process.env.RINCLE_EMAIL);
@@ -90,7 +90,7 @@ require("dotenv").config();
   } else {
     console.log("⚠️ 自動遷移なし → 直接 cart URL へナビゲート");
     // Navigate directly to cart with the timestamps
-    cartUrl = `https://rincle.co.jp/version-test/index/cart?startDate2=${startTs}&endDate2=${endTs}&change=no`;
+    cartUrl = `https://rincle.co.jp/version-5398j/index/cart?startDate2=${startTs}&endDate2=${endTs}&change=no`;
     await page.goto(cartUrl, { waitUntil: "networkidle" });
     await page.waitForTimeout(2000);
     console.log("Cart URL最終:", page.url());

@@ -2,7 +2,7 @@ const { chromium } = require("playwright");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const BASE_URL = "https://rincle.co.jp/version-test/admin_login";
+const BASE_URL = "https://rincle.co.jp/version-5398j/admin_login";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 console.log("Using:", ADMIN_EMAIL);

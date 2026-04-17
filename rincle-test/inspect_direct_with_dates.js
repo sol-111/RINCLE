@@ -17,7 +17,7 @@ require("dotenv").config();
   page.on("console", msg => consoleLogs.push({ type: msg.type(), text: msg.text().substring(0, 200) }));
 
   // Login first
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "ログイン" }).first().click();
   await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 5000 });
   await page.locator('input[type="email"]').fill(process.env.RINCLE_EMAIL);
@@ -31,7 +31,7 @@ require("dotenv").config();
   const END_TS = 1775383200000;    // 2026/04/05 19:00 JST
 
   // Navigate directly to bicycle_detail with timestamps in URL
-  const detailUrl = `https://rincle.co.jp/version-test/index/bicycle_detail?bicycle_id=${BICYCLE_ID}&startDate2=${START_TS}&endDate2=${END_TS}&change=no`;
+  const detailUrl = `https://rincle.co.jp/version-5398j/index/bicycle_detail?bicycle_id=${BICYCLE_ID}&startDate2=${START_TS}&endDate2=${END_TS}&change=no`;
   console.log("\n→ 直接ナビゲート:", detailUrl);
   await page.goto(detailUrl, { waitUntil: "networkidle" });
   await page.waitForTimeout(2000);

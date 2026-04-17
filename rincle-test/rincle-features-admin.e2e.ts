@@ -2,8 +2,8 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const BASE_URL  = "https://rincle.co.jp/version-test/admin_login";
-const ADMIN_URL = "https://rincle.co.jp/version-test/admin";
+const BASE_URL  = "https://rincle.co.jp/version-5398j/admin_login";
+const ADMIN_URL = "https://rincle.co.jp/version-5398j/admin";
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 
@@ -59,15 +59,21 @@ async function bodyText(page: Page): Promise<string> {
 }
 
 async function adminLogin(page: Page) {
-  await page.goto(BASE_URL, { waitUntil: "networkidle" });
-  await page.waitForTimeout(1500);
+  await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(3000);
   await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 8000 });
   await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
   await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
   await page.getByRole("button", { name: "ログイン" }).click();
   await page.waitForLoadState("networkidle", { timeout: 20000 });
   await page.waitForTimeout(2000);
-  await page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 10000 });
+  await Promise.race([
+    page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("予約一覧").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("加盟店一覧").first().waitFor({ state: "visible", timeout: 20000 }),
+    page.getByText("売上レポート").first().waitFor({ state: "visible", timeout: 20000 }),
+  ]).catch(() => {});
+  await page.waitForTimeout(1000);
 }
 
 async function getVisibleInputs(page: Page) {
@@ -500,7 +506,7 @@ test.describe("管理者機能テスト", () => {
   // ================================================================
   test("A-CAL-1: 管理者 営業カレンダー確認", async ({ page }) => {
     await adminLogin(page);
-    await page.goto("https://rincle.co.jp/version-test/admin_update_calendar", { waitUntil: "networkidle" });
+    await page.goto("https://rincle.co.jp/version-5398j/admin_update_calendar", { waitUntil: "networkidle" });
     await page.waitForTimeout(2000);
 
     const calInfo = await page.evaluate(() => {

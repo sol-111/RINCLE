@@ -20,7 +20,7 @@ require("dotenv").config();
   });
 
   // Login
-  await page.goto("https://rincle.co.jp/version-test", { waitUntil: "networkidle" });
+  await page.goto("https://rincle.co.jp/version-5398j", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "ログイン" }).first().click();
   await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 5000 });
   await page.locator('input[type="email"]').fill(process.env.RINCLE_EMAIL);
@@ -34,7 +34,7 @@ require("dotenv").config();
   const START_TS = 1775354400000;
   const END_TS = 1775383200000;
   await page.goto(
-    `https://rincle.co.jp/version-test/index/bicycle_detail?bicycle_id=${BICYCLE_ID}&startDate2=${START_TS}&endDate2=${END_TS}&change=no`,
+    `https://rincle.co.jp/version-5398j/index/bicycle_detail?bicycle_id=${BICYCLE_ID}&startDate2=${START_TS}&endDate2=${END_TS}&change=no`,
     { waitUntil: "networkidle" }
   );
   await page.waitForTimeout(3000);
