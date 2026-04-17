@@ -51,6 +51,18 @@ documents/
 │           ├── 02_予約ステータス.csv
 │           └── ...
 │
+├── 98_presentations/               # 説明資料（HTML SPA）
+│   ├── index.html                  #   SPA エントリポイント（サイドバーナビ）
+│   ├── bizflow/                    #   業務フロー
+│   │   ├── asis.html               #     As-Is フロー
+│   │   └── tobe.html               #     To-Be フロー
+│   └── pay.jp/                     #   Pay.JP 決済連携
+│       ├── asis.html               #     As-Is フロー
+│       ├── tobe.html               #     To-Be フロー
+│       ├── api-reference.html      #     APIリファレンス
+│       ├── dev-reference.html      #     開発者リファレンス
+│       └── issues.html             #     修正一覧
+│
 ├── 3_test/                         # テスト結果
 │   ├── e2e_test_report.md          #   E2Eテスト実行レポート（84/85 passed）
 │   └── payjp-test-mode-e2e.md     #   Pay.JPテストモード・E2Eテスト調査
