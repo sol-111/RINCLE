@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pay.JP 決済連携 - 理想フロー（To-Be）</title>
+<style>
+  :root {
+    --primary: #d97706;
+    --primary-light: #fef3c7;
+    --accent: #e94560;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+    --gray-900: #0f172a;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #78350f 0%, #d97706 50%, #f59e0b 100%);
+    color: #fff;
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 16px; opacity: 0.85; max-width: 600px; }
+
+  /* Layout */
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 32px 80px; }
+
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: -40px 32px 40px;
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 32px;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    border-top: 3px solid var(--primary);
+  }
+  .summary-card h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .summary-card p { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+
+  /* Sections */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .section-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 22px; font-weight: 700; }
+  .section-desc { color: var(--gray-500); font-size: 14px; margin-bottom: 20px; }
+
+  /* Flow steps */
+  .flow { margin: 24px 0; }
+  .flow-step {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    padding-bottom: 8px;
+  }
+  .flow-step:not(:last-child) { padding-bottom: 24px; }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 44px;
+    bottom: 0;
+    width: 2px;
+    background: var(--gray-200);
+  }
+  .flow-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .flow-num.user { background: #dbeafe; color: #1d4ed8; }
+  .flow-num.system { background: #d1fae5; color: #065f46; }
+  .flow-num.payjp { background: #fef3c7; color: #92400e; }
+  .flow-num.admin { background: #ede9fe; color: #5b21b6; }
+  .flow-num.shop { background: #fce7f3; color: #9d174d; }
+  .flow-body { flex: 1; padding-top: 6px; }
+  .flow-actor {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .flow-actor.user { color: #1d4ed8; }
+  .flow-actor.system { color: #065f46; }
+  .flow-actor.payjp { color: #92400e; }
+  .flow-actor.admin { color: #5b21b6; }
+  .flow-actor.shop { color: #9d174d; }
+  .flow-text { font-size: 15px; color: var(--gray-700); }
+  .flow-note {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-top: 4px;
+    padding-left: 12px;
+    border-left: 2px solid var(--gray-200);
+  }
+
+  /* Cards / callouts */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+  }
+  .callout {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 20px; flex-shrink: 0; line-height: 1.4; }
+  .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .callout.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+  .callout.success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
+  th {
+    background: var(--gray-900);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); }
+  tr:hover td { background: var(--gray-50); }
+  td:first-child { font-weight: 600; }
+  .highlight-row td { background: #fffbeb; }
+  .highlight-row:hover td { background: #fef3c7; }
+
+  /* Money flow */
+  .money-flow {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin: 20px 0;
+    border: 1px solid #fde68a;
+  }
+  .money-flow h4 { font-size: 14px; color: var(--primary); margin-bottom: 16px; font-weight: 700; }
+  .money-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    font-size: 15px;
+  }
+  .money-arrow { color: var(--primary); font-weight: 700; font-size: 18px; }
+  .money-amount { font-weight: 700; color: var(--gray-900); }
+  .money-label { color: var(--gray-500); font-size: 13px; }
+
+  /* Status badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .badge-ok { background: #d1fae5; color: #065f46; }
+  .badge-ng { background: #fee2e2; color: #991b1b; }
+  .badge-wait { background: #fef3c7; color: #92400e; }
+  .badge-new { background: #dbeafe; color: #1d4ed8; }
+
+  /* Overview diagram */
+  .overview-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 32px 16px;
+    margin: 24px 0;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    flex-wrap: wrap;
+  }
+  .diagram-box {
+    text-align: center;
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    min-width: 140px;
+  }
+  .diagram-box.customer { background: #dbeafe; border: 2px solid #93c5fd; }
+  .diagram-box.platform { background: #fef3c7; border: 2px solid #fcd34d; }
+  .diagram-box.shop { background: #d1fae5; border: 2px solid #6ee7b7; }
+  .diagram-box.rincle { background: #ede9fe; border: 2px solid #c4b5fd; }
+  .diagram-box strong { display: block; font-size: 16px; margin-bottom: 4px; }
+  .diagram-box span { font-size: 12px; color: var(--gray-500); }
+  .diagram-arrow {
+    font-size: 28px;
+    color: var(--gray-300);
+    font-weight: 300;
+  }
+
+  /* Summary box */
+  .summary-flow {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+  }
+  .summary-flow h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary-flow p {
+    font-size: 14px;
+    color: var(--gray-500);
+    margin-left: 28px;
+    margin-bottom: 12px;
+  }
+
+  /* Checklist */
+  .checklist { list-style: none; margin: 16px 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--gray-700);
+  }
+  .checklist li::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--gray-300);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hero { padding: 32px 20px 28px; }
+    .hero h1 { font-size: 24px; }
+    .container { padding: 24px 16px 60px; }
+    .summary-grid { grid-template-columns: 1fr 1fr; padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">To-Be / Future</div>
+  <h1>Pay.JP 決済連携 理想フロー</h1>
+  <p>オーソリモデルへの移行により、キャンセルしやすく未回収リスクの低い決済体験を実現します。</p>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <h3>オーソリモデル</h3>
+    <p>予約時は与信枠の確保のみ。実際の課金はライド開始時に確定</p>
+  </div>
+  <div class="summary-card">
+    <h3>キャンセル簡易</h3>
+    <p>オーソリ解放で済むため返金処理が不要になる</p>
+  </div>
+  <div class="summary-card">
+    <h3>15% 月末請求</h3>
+    <p>プラットフォーム利用料はPay.jp経由ではなく毎月末に別途請求</p>
+  </div>
+  <div class="summary-card">
+    <h3>延長未検証</h3>
+    <p>延長フローは実績ゼロのためE2E検証後に設計予定</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 登場人物 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">0</div>
+      <h2>登場人物の概要</h2>
+    </div>
+
+    <div class="overview-diagram">
+      <div class="diagram-box customer">
+        <strong>エンドユーザー</strong>
+        <span>バイクを予約・支払いする</span>
+      </div>
+      <div class="diagram-arrow">&rarr;</div>
+      <div class="diagram-box rincle">
+        <strong>RINCLE</strong>
+        <span>予約管理・在庫管理</span>
+      </div>
+      <div class="diagram-arrow">&rarr;</div>
+      <div class="diagram-box platform">
+        <strong>PAY.jp</strong>
+        <span>オーソリ・キャプチャ・返金</span>
+      </div>
+      <div class="diagram-arrow">&rarr;</div>
+      <div class="diagram-box shop">
+        <strong>加盟店（販売店）</strong>
+        <span>ライド開始・精算</span>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x2139;&#xFE0F;</div>
+      <div>To-Beでは予約時に「オーソリ（与信枠の確保）」を行い、ライド開始時に「キャプチャ（決済確定）」する2ステップ方式に変わります。お客さんのカードから実際にお金が引き落とされるのはライド開始時です。</div>
+    </div>
+  </div>
+
+  <!-- 1. 予約〜オーソリフロー -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>予約 ~ オーソリフロー</h2>
+    </div>
+    <p class="section-desc">お客さんが予約すると、カードの与信枠だけを確保します。<strong>この時点ではお金は引き落とされません。</strong></p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num user">1</div>
+          <div class="flow-body">
+            <div class="flow-actor user">エンドユーザー</div>
+            <div class="flow-text">RINCLEでバイクを予約する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num user">2</div>
+          <div class="flow-body">
+            <div class="flow-actor user">エンドユーザー</div>
+            <div class="flow-text">支払方法「クレジットカード」を選択する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">3</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">PAY.jpにオーソリ（与信枠確保）を依頼する</div>
+            <div class="flow-note">実際の請求は行わず、利用可能枠のみを一時的に確保する<br>未回収リスクを抑えるため、予約時に与信確認のみ実施</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num payjp">4</div>
+          <div class="flow-body">
+            <div class="flow-actor payjp">PAY.jp（自動）</div>
+            <div class="flow-text">与信枠を確保する（有効期限: 30日間）</div>
+            <div class="flow-note">決済エラーの場合 → エラー表示、別カードで再試行</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num user">5</div>
+          <div class="flow-body">
+            <div class="flow-actor user">エンドユーザー</div>
+            <div class="flow-text">予約を確定する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">6</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">予約確定・在庫を確保する</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">&#x1f512;</div>
+      <div><strong>お金は引き落とされません。</strong>オーソリはカードの「利用可能枠」を一時的に確保するだけです。お客さんの口座残高は変わりません。与信枠の有効期限は30日間です。</div>
+    </div>
+  </div>
+
+  <!-- 2. キャンセルフロー -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>キャンセルフロー</h2>
+    </div>
+    <p class="section-desc">キャンセル時はオーソリ解放だけで完了します。<strong>返金処理は不要です。</strong></p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num user">1</div>
+          <div class="flow-body">
+            <div class="flow-actor user">エンドユーザー</div>
+            <div class="flow-text">キャンセル操作を行う</div>
+            <div class="flow-note">予約前日 23:59 までオンラインでキャンセル可能<br>それ以降は電話で店舗がキャンセル対応</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">2</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">PAY.jpにオーソリ解放を依頼する</div>
+            <div class="flow-note">まだキャプチャしていないので「返金」ではなく「解放」</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">3</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">予約キャンセル・在庫を開放する</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">&#x2705;</div>
+      <div><strong>返金処理が不要になります。</strong>お金を引き落としていないので「返金」ではなく「枠の解放」で済みます。雨の日でもキャンセルしやすい体験を実現できます。キャンセル料やプラットフォーム利用料も発生しません。</div>
+    </div>
+  </div>
+
+  <!-- 3. レンタル当日〜キャプチャフロー -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>レンタル当日 ~ キャプチャフロー</h2>
+    </div>
+    <p class="section-desc">店舗が「ライド開始」をクリックしたタイミングで、オーソリを確定（キャプチャ）します。<strong>ここで初めてお金が動きます。</strong></p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num user">1</div>
+          <div class="flow-body">
+            <div class="flow-actor user">エンドユーザー</div>
+            <div class="flow-text">店舗に来店する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num shop">2</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">加盟店（店舗スタッフ）</div>
+            <div class="flow-text">RINCLE店舗管理画面を開く</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num shop">3</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">加盟店（店舗スタッフ）</div>
+            <div class="flow-text">予約情報から「ライド開始」ボタンをクリックする</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">4</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">PAY.jpにキャプチャ（決済確定）を依頼する</div>
+            <div class="flow-note">キャプチャ失敗の場合 → 別カードで再決済 or 別決済手段（現金等）へ切替<br>※ この時点の決済不成立の場合の動きは要定義</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num shop">5</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">加盟店（店舗スタッフ）</div>
+            <div class="flow-text">精算（店舗POS）を行い、バイクを貸し出す</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num user">6</div>
+          <div class="flow-body">
+            <div class="flow-actor user">エンドユーザー</div>
+            <div class="flow-text">RIDE!</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">7</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">ステータスを変更する</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div><strong>キャプチャ失敗時の救済フロー（別カード / 現金）は要定義です。</strong>また、二重キャプチャ防止の仕組みも必要になります。</div>
+    </div>
+  </div>
+
+  <!-- 4. お金の流れ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>お金の流れ</h2>
+    </div>
+    <p class="section-desc">キャプチャ（決済確定）後のお金の流れです。As-Isとの大きな違いは、プラットフォーム利用料の受け渡し方法です。</p>
+
+    <div class="money-flow">
+      <h4>例: 予約金額 10,000円 の場合</h4>
+      <div class="money-row">
+        <span class="money-amount">エンドユーザーのカード</span>
+        <span class="money-arrow">&rarr;</span>
+        <span>10,000円 キャプチャ（確定）</span>
+      </div>
+      <div class="money-row" style="margin-left:32px;">
+        <span class="money-arrow">&darr;</span>
+        <span class="money-label">PAY.jp が一時預かり</span>
+      </div>
+      <div class="money-row" style="margin-left:48px;">
+        <span class="money-arrow">&rarr;</span>
+        <span><strong>加盟店へ: ネット入金</strong></span>
+        <span class="money-label">（カード手数料 約3.5% 差引後）</span>
+      </div>
+      <div class="money-row" style="margin-left:32px;">
+        <span class="money-arrow">&darr;</span>
+        <span class="money-label">別途: 毎月末にPEDALSTANDARDから請求</span>
+      </div>
+      <div class="money-row" style="margin-left:48px;">
+        <span class="money-arrow">&rarr;</span>
+        <span><strong>PEDALSTANDARDへ: 売上の15%</strong></span>
+        <span class="money-label">（Pay.jp経由ではなく別請求）</span>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>To-Be</th></tr>
+        <tr><td>カード売上の帰属</td><td><strong>加盟店</strong>がPAY.jpからネット入金を受ける</td></tr>
+        <tr><td>プラットフォーム利用料</td><td>売上の<strong>15%</strong>をPEDALSTANDARDへ<strong>毎月末請求</strong>（Pay.jpの platform_fee では抜かない）</td></tr>
+        <tr><td>Pay.jp手数料</td><td>カード利用料 約3.5%（Pay.jpが差し引き）</td></tr>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x2139;&#xFE0F;</div>
+      <div>As-Isでは Pay.jp の platform_fee で10%を都度差し引いていましたが、To-Be では<strong>月末にまとめて15%を別途請求</strong>する方式に変わります。</div>
+    </div>
+  </div>
+
+  <!-- 5. 現地払いフロー -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>現地払いフロー</h2>
+    </div>
+    <p class="section-desc">現地払いの場合、PAY.jpのAPIは一切呼びません。</p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num user">1</div>
+          <div class="flow-body">
+            <div class="flow-actor user">エンドユーザー</div>
+            <div class="flow-text">支払方法「現地払い」を選択する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">2</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">予約確定・在庫を確保する（PAY.jp APIは呼ばない）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num user">3</div>
+          <div class="flow-body">
+            <div class="flow-actor user">エンドユーザー</div>
+            <div class="flow-text">来店時に店舗で精算する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">4</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">ステータスを精算完了に変更する</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x2139;&#xFE0F;</div>
+      <div>現地払いでは Pay.jp の Charge は作成しません（charge_id は空）。テナント設定ミスによる誤入金は発生しません。なお、現地払いでのキャンセル料回収は現実的に困難です。</div>
+    </div>
+  </div>
+
+  <!-- 6. As-Is との差分 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>As-Is との差分</h2>
+    </div>
+    <p class="section-desc">現行フロー（As-Is）と理想フロー（To-Be）の主な違いを比較します。</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>As-Is（現状）</th><th>To-Be（理想）</th></tr>
+        <tr class="highlight-row">
+          <td>予約時</td>
+          <td>カード設定のみ（課金なし、オーソリもなし）</td>
+          <td><span class="badge badge-new">NEW</span> <strong>オーソリ（与信枠確保）</strong></td>
+        </tr>
+        <tr class="highlight-row">
+          <td>ライド開始時</td>
+          <td>全額直接課金</td>
+          <td><span class="badge badge-new">NEW</span> <strong>オーソリをキャプチャ（確定）</strong></td>
+        </tr>
+        <tr class="highlight-row">
+          <td>キャンセル時</td>
+          <td>管理者が返金処理を実行</td>
+          <td><span class="badge badge-new">NEW</span> <strong>オーソリ解放（返金不要）</strong></td>
+        </tr>
+        <tr>
+          <td>決済失敗時</td>
+          <td>店頭決済（未請求）として更新</td>
+          <td>別カードで再決済 or 別手段へ切替</td>
+        </tr>
+        <tr class="highlight-row">
+          <td>platform_fee</td>
+          <td>10%（Pay.jpで都度差し引き）</td>
+          <td><span class="badge badge-new">NEW</span> <strong>0（15%は月末に別途請求）</strong></td>
+        </tr>
+        <tr>
+          <td>キャプチャ失敗時</td>
+          <td>該当なし（直接課金のため）</td>
+          <td>別カード / 現金フォールバック（<strong>要定義</strong>）</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div>最も大きな変更点は<strong>「オーソリ → キャプチャ」の2段階決済</strong>への移行です。これにより未回収リスクを抑えつつ、キャンセルしやすい体験を両立できます。</div>
+    </div>
+  </div>
+
+  <!-- 7. 決め残し -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>決め残し</h2>
+    </div>
+    <p class="section-desc">今後、詳細を詰める必要がある項目です。</p>
+
+    <ul class="checklist">
+      <li>キャプチャ失敗時のフォールバック詳細（別カード再決済の画面フロー）</li>
+      <li>オーソリ有効期限（30日）切れ時の運用</li>
+      <li>15%の課税・端数・計算基準（総額 / ネット）</li>
+      <li>月末請求の締め日・入金日・未払い時の運用</li>
+      <li>延長フローのE2E検証と設計</li>
+      <li>現地払いキャンセル時のキャンセル料回収ポリシー</li>
+      <li>Webhook による整合性確認の設計</li>
+    </ul>
+  </div>
+
+  <!-- まとめ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background: var(--success);">&#10003;</div>
+      <h2>フロー全体のまとめ</h2>
+    </div>
+
+    <div class="summary-flow">
+      <h4>&#x1f4b3; 予約時</h4>
+      <p>クレジットカードのオーソリ（与信枠確保）のみ実行。お金は引き落とされない。</p>
+
+      <h4>&#x274c; キャンセル時</h4>
+      <p>オーソリ解放で完了。返金処理が不要になり、キャンセルしやすい体験を実現。</p>
+
+      <h4>&#x1f6b2; ライド開始時</h4>
+      <p>店舗が「ライド開始」→ キャプチャ（決済確定）→ ここで初めてお金が動く。</p>
+
+      <h4>&#x1f4b0; プラットフォーム利用料</h4>
+      <p>売上の15%をPEDALSTANDARDへ毎月末に別途請求（Pay.jp経由ではない）。</p>
+
+      <h4>&#x1f3ea; 現地払い</h4>
+      <p>PAY.jp APIは呼ばない。来店時に店舗で直接精算。</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

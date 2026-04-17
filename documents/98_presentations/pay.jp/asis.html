@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pay.JP 決済連携 - 現行フロー（As-Is）</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --accent: #e94560;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+    --gray-900: #0f172a;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #3b82f6 100%);
+    color: #fff;
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 16px; opacity: 0.85; max-width: 600px; }
+
+  /* Layout */
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 32px 80px; }
+
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: -40px 32px 40px;
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 32px;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    border-top: 3px solid var(--primary);
+  }
+  .summary-card h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .summary-card p { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+
+  /* Sections */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .section-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 22px; font-weight: 700; }
+  .section-desc { color: var(--gray-500); font-size: 14px; margin-bottom: 20px; }
+
+  /* Flow steps */
+  .flow { margin: 24px 0; }
+  .flow-step {
+    display: flex;
+    gap: 16px;
+    position: relative;
+    padding-bottom: 8px;
+  }
+  .flow-step:not(:last-child) { padding-bottom: 24px; }
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 44px;
+    bottom: 0;
+    width: 2px;
+    background: var(--gray-200);
+  }
+  .flow-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .flow-num.user { background: #dbeafe; color: #1d4ed8; }
+  .flow-num.system { background: #d1fae5; color: #065f46; }
+  .flow-num.payjp { background: #fef3c7; color: #92400e; }
+  .flow-num.admin { background: #ede9fe; color: #5b21b6; }
+  .flow-num.shop { background: #fce7f3; color: #9d174d; }
+  .flow-body { flex: 1; padding-top: 6px; }
+  .flow-actor {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .flow-actor.user { color: #1d4ed8; }
+  .flow-actor.system { color: #065f46; }
+  .flow-actor.payjp { color: #92400e; }
+  .flow-actor.admin { color: #5b21b6; }
+  .flow-actor.shop { color: #9d174d; }
+  .flow-text { font-size: 15px; color: var(--gray-700); }
+  .flow-note {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-top: 4px;
+    padding-left: 12px;
+    border-left: 2px solid var(--gray-200);
+  }
+
+  /* Cards / callouts */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+  }
+  .callout {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 20px; flex-shrink: 0; line-height: 1.4; }
+  .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .callout.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+  .callout.success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
+  th {
+    background: var(--gray-900);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); }
+  tr:hover td { background: var(--gray-50); }
+  td:first-child { font-weight: 600; }
+
+  /* Money flow */
+  .money-flow {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin: 20px 0;
+    border: 1px solid #bae6fd;
+  }
+  .money-flow h4 { font-size: 14px; color: var(--primary); margin-bottom: 16px; font-weight: 700; }
+  .money-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+    font-size: 15px;
+  }
+  .money-arrow { color: var(--primary); font-weight: 700; font-size: 18px; }
+  .money-amount { font-weight: 700; color: var(--gray-900); }
+  .money-label { color: var(--gray-500); font-size: 13px; }
+
+  /* Status badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .badge-ok { background: #d1fae5; color: #065f46; }
+  .badge-ng { background: #fee2e2; color: #991b1b; }
+  .badge-wait { background: #fef3c7; color: #92400e; }
+
+  /* Overview diagram */
+  .overview-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 32px 16px;
+    margin: 24px 0;
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    flex-wrap: wrap;
+  }
+  .diagram-box {
+    text-align: center;
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    min-width: 140px;
+  }
+  .diagram-box.customer { background: #dbeafe; border: 2px solid #93c5fd; }
+  .diagram-box.platform { background: #fef3c7; border: 2px solid #fcd34d; }
+  .diagram-box.shop { background: #d1fae5; border: 2px solid #6ee7b7; }
+  .diagram-box strong { display: block; font-size: 16px; margin-bottom: 4px; }
+  .diagram-box span { font-size: 12px; color: var(--gray-500); }
+  .diagram-arrow {
+    font-size: 28px;
+    color: var(--gray-300);
+    font-weight: 300;
+  }
+
+  /* Summary box */
+  .summary-flow {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+  }
+  .summary-flow h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary-flow p {
+    font-size: 14px;
+    color: var(--gray-500);
+    margin-left: 28px;
+    margin-bottom: 12px;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hero { padding: 32px 20px 28px; }
+    .hero h1 { font-size: 24px; }
+    .container { padding: 24px 16px 60px; }
+    .summary-grid { grid-template-columns: 1fr 1fr; padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">As-Is / Current</div>
+  <h1>Pay.JP 決済連携 現行フロー</h1>
+  <p>Rincleの決済の仕組みを「誰が・何をするか」の視点でわかりやすく説明します。</p>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <h3>決済サービス</h3>
+    <p>Pay.JP を使用したクレジットカード決済</p>
+  </div>
+  <div class="summary-card">
+    <h3>手数料</h3>
+    <p>売上の10%をRincleが手数料として受け取る</p>
+  </div>
+  <div class="summary-card">
+    <h3>審査</h3>
+    <p>店舗はPay.JPの審査に合格する必要あり</p>
+  </div>
+  <div class="summary-card">
+    <h3>カード登録</h3>
+    <p>1回登録すれば以降の予約でそのまま使える</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 概要 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">0</div>
+      <h2>概要 - 登場人物と役割</h2>
+    </div>
+
+    <div class="overview-diagram">
+      <div class="diagram-box customer">
+        <strong>お客さん</strong>
+        <span>予約してお金を支払う</span>
+      </div>
+      <div class="diagram-arrow">&rarr;</div>
+      <div class="diagram-box platform">
+        <strong>Pay.JP</strong>
+        <span>決済処理・お金の分配</span>
+      </div>
+      <div class="diagram-arrow">&rarr;</div>
+      <div class="diagram-box shop">
+        <strong>店舗</strong>
+        <span>サービス提供・売上受取</span>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x1f3ea;</div>
+      <div>Rincleは「ショッピングモールの運営会社」、Pay.JPは「レジシステム」のような存在です。カード決済の処理やお金の分配を代行してくれます。</div>
+    </div>
+  </div>
+
+  <!-- 1. 店舗登録 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>店舗の登録 ~ 審査フロー</h2>
+    </div>
+    <p class="section-desc">店舗がRincleで決済を受け取れるようになるまでの流れです。</p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num shop">1</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">店舗オーナー</div>
+            <div class="flow-text">Rincleで店舗アカウントを登録する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">2</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">Pay.JPに「この店舗の決済口座を作ってください」と依頼する</div>
+            <div class="flow-note">店舗名 / 銀行口座情報 / 手数料率: 10% / 最低振込金額: 1,000円</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">3</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">Pay.JPに「この店舗の審査ページを作ってください」と依頼する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">4</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">審査用URLをブラウザで直接開く</div>
+            <div class="flow-note">メール送信ではなく、店舗登録完了後にそのまま画面遷移する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num shop">5</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">店舗オーナー</div>
+            <div class="flow-text">Pay.JPの審査ページで本人確認書類をアップロードする</div>
+            <div class="flow-note">この画面はPay.JPが用意したもので、Rincleの画面ではない</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num payjp">6</div>
+          <div class="flow-body">
+            <div class="flow-actor payjp">Pay.JP（自動）</div>
+            <div class="flow-text">提出された書類を審査する（数日かかる場合あり）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num payjp">7</div>
+          <div class="flow-body">
+            <div class="flow-actor payjp">Pay.JP（自動）</div>
+            <div class="flow-text">審査が終わったら、Rincleに「結果出たよ」と自動通知する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">8</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">通知を受け取って、店舗の審査状態を更新する</div>
+            <div class="flow-note">合格 → 決済受付OK + 「審査通過のご案内」メール送信<br>不合格 → 決済受付NG + 「審査否決のご案内」メール送信</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x2139;&#xFE0F;</div>
+      <div><strong>審査はPay.JPが行います。</strong> Rincleの管理画面に「承認ボタン」はありません。審査に通るまで、その店舗ではクレジットカード決済ができません。</div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>状態</th><th>意味</th><th>いつこの状態になる？</th><th>カード決済</th></tr>
+        <tr><td>審査前</td><td>まだ書類を出していない</td><td>店舗登録直後</td><td><span class="badge badge-ng">不可</span></td></tr>
+        <tr><td>審査中</td><td>Pay.JPが確認している最中</td><td>書類提出後</td><td><span class="badge badge-wait">不可</span></td></tr>
+        <tr><td>審査通過</td><td>問題なしと判断された</td><td>Pay.JPが承認した時</td><td><span class="badge badge-ok">可能</span></td></tr>
+        <tr><td>審査否認</td><td>不備や問題があると判断された</td><td>Pay.JPが否認した時</td><td><span class="badge badge-ng">不可</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2. カード登録 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>お客さんのカード登録フロー</h2>
+    </div>
+    <p class="section-desc">お客さん（予約する人）がクレジットカードを登録する流れです。</p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num user">1</div>
+          <div class="flow-body">
+            <div class="flow-actor user">お客さん</div>
+            <div class="flow-text">Rincleのマイページを開く</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">2</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">そのお客さんが既にカード登録済みか確認する</div>
+            <div class="flow-note">登録済み → カード情報を表示 / 未登録 → 登録ボタンを表示</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num user">3</div>
+          <div class="flow-body">
+            <div class="flow-actor user">お客さん</div>
+            <div class="flow-text">「新しいカードを登録する」ボタンを押す</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num payjp">4</div>
+          <div class="flow-body">
+            <div class="flow-actor payjp">Pay.JP（自動）</div>
+            <div class="flow-text">カード入力フォームを表示する</div>
+            <div class="flow-note">カード番号はRincleのサーバーを通らない（セキュリティのため）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num user">5</div>
+          <div class="flow-body">
+            <div class="flow-actor user">お客さん</div>
+            <div class="flow-text">カード番号・有効期限・セキュリティコードを入力する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num payjp">6</div>
+          <div class="flow-body">
+            <div class="flow-actor payjp">Pay.JP（自動）</div>
+            <div class="flow-text">カード情報を受け取り、「トークン」（使い捨ての引換券）を発行する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">7</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">トークンを使ってカードを登録する</div>
+            <div class="flow-note">初めてのお客さん → 顧客アカウント作成後にカード登録<br>既存のお客さん → カードを追加登録</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">8</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">顧客情報を取得して登録完了を確認する</div>
+            <div class="flow-note">この時点ではメインカードの設定は行わない（予約確定時に設定される）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <div class="callout-icon">&#x1f512;</div>
+      <div><strong>カード番号はRincleには保存されません。</strong>Pay.JPが安全に管理します。メインカードは予約確定時に設定されます。</div>
+    </div>
+  </div>
+
+  <!-- 3. 予約確定 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>予約確定フロー</h2>
+    </div>
+    <p class="section-desc">お客さんが予約を確定するフローです。<strong>この時点ではカード引き落としは行われません。</strong></p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num user">1</div>
+          <div class="flow-body">
+            <div class="flow-actor user">お客さん</div>
+            <div class="flow-text">Rincleで予約を確定する（支払方法: クレジットカード）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">2</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">Pay.JPから顧客情報を取得する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">3</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">取得したカード情報の1つ目をデフォルトカードとして設定する</div>
+            <div class="flow-note">ドロップダウンで選択したカードではなく、取得した顧客カードの1つ目が使われる</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">4</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">予約情報を作成する（ステータス: 来客待ち）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">5</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">営業日カレンダーを更新する（自転車を確保）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">6</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">メールを送信する</div>
+            <div class="flow-note">お客さんに予約確認メール / 店舗に予約通知メール / PEDALSTANDARDに通知メール</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div>予約確定時に<strong>課金は発生しません</strong>（自転車の確保とカード設定のみ）。実際のカード引き落としは「ライド開始」時に行われます。</div>
+    </div>
+  </div>
+
+  <!-- 3.5. ライド開始 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:#e94560;">3.5</div>
+      <h2>ライド開始時の決済フロー（店舗操作）</h2>
+    </div>
+    <p class="section-desc">店舗スタッフが「ライド開始」を行ったときに、クレジットカード決済が実行されます。</p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num shop">1</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">店舗スタッフ</div>
+            <div class="flow-text">shop_admin画面の予約一覧から「ライド開始」をクリック</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num shop">2</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">店舗スタッフ</div>
+            <div class="flow-text">確認ポップアップで「はい」をクリック</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">3</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">Pay.JPに「このお客さんのカードから引き落としてください」と依頼する</div>
+            <div class="flow-note">顧客ID（cus_xxxxx）/ 合計金額 / 店舗テナントID（ten_xxxxx）/ 手数料 = 金額 x 10%</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num payjp">4</div>
+          <div class="flow-body">
+            <div class="flow-actor payjp">Pay.JP（自動）</div>
+            <div class="flow-text">カードから引き落としを実行する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">5</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">決済情報（charge_id）を予約データに保存する</div>
+            <div class="flow-note">エラー時 → 店頭決済（未請求）として更新する</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="money-flow">
+      <h4>お金の流れ（例: 予約金額 10,000円）</h4>
+      <div class="money-row">
+        <span class="money-amount">お客さんのカード</span>
+        <span class="money-arrow">&rarr;</span>
+        <span>10,000円 引き落とし</span>
+      </div>
+      <div class="money-row" style="margin-left:32px;">
+        <span class="money-arrow">&darr;</span>
+        <span class="money-label">Pay.JP が一時預かり → 振込時に分配</span>
+      </div>
+      <div class="money-row" style="margin-left:48px;">
+        <span class="money-arrow">&rarr;</span>
+        <span><strong>店舗へ: 9,000円</strong></span>
+        <span class="money-label">（10,000円 - 手数料10%）</span>
+      </div>
+      <div class="money-row" style="margin-left:48px;">
+        <span class="money-arrow">&rarr;</span>
+        <span><strong>Rincleへ: 1,000円</strong></span>
+        <span class="money-label">（手数料10%）</span>
+      </div>
+      <div style="margin-top:8px; font-size:13px; color:var(--gray-500);">※ 別途 Pay.JP自体の手数料がかかります（上記とは別計算）</div>
+    </div>
+  </div>
+
+  <!-- 3.6. 管理者決済 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:#7c3aed;">3.6</div>
+      <h2>管理者による決済フロー（admin操作）</h2>
+    </div>
+    <p class="section-desc">管理者が予約一覧のステータスを変更したときにも、決済が実行される場合があります。</p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num admin">1</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">Rincle管理者</div>
+            <div class="flow-text">admin画面の予約一覧でステータスをドロップダウンから変更する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">2</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">条件を満たす場合、Pay.JPに引き落としを依頼する</div>
+            <div class="flow-note">条件: 来客待ち・未請求 かつ クレジットカード決済</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">3</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">決済情報を予約データに保存する</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x2139;&#xFE0F;</div>
+      <div>現金支払い等で支払いが行われていないユーザーに対して実行する想定です。ドロップダウンのステータス変更で自動発火します。</div>
+    </div>
+  </div>
+
+  <!-- 4. 延長 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>延長料金の決済フロー</h2>
+    </div>
+    <p class="section-desc">ライド（利用）が予定より長くなった場合、追加料金が発生する流れです。</p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num shop">1</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">店舗スタッフ</div>
+            <div class="flow-text">延長を登録する（合計金額・手数料・延長返却日を更新）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num shop">2</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">店舗スタッフ</div>
+            <div class="flow-text">「ライド終了」ボタンをクリックする</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">3</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">延長料金がある場合、Pay.JPに追加引き落としを依頼する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num payjp">4</div>
+          <div class="flow-body">
+            <div class="flow-actor payjp">Pay.JP（自動）</div>
+            <div class="flow-text">カードから追加引き落としを実行する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">5</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">予約ステータスを決済済みに更新する</div>
+            <div class="flow-note">エラー時 → 返却済み・延長未決済として更新する</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x2139;&#xFE0F;</div>
+      <div>延長料金は、ライド開始時の決済とは<strong>別の決済</strong>として処理されます。返金するときも、それぞれ個別に返金する必要があります。</div>
+    </div>
+  </div>
+
+  <!-- 5. 返金 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>返金フロー</h2>
+    </div>
+    <p class="section-desc">予約がキャンセルされたなどの理由で、お客さんに返金する流れです。</p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num admin">1</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">Rincle管理者</div>
+            <div class="flow-text">admin画面の予約一覧からステータスを「キャンセル」に変更する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num admin">2</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">Rincle管理者</div>
+            <div class="flow-text">キャンセルポップアップで「返金あり」をクリック</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">3</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">Pay.JPに通常決済の返金を依頼する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num payjp">4</div>
+          <div class="flow-body">
+            <div class="flow-actor payjp">Pay.JP（自動）</div>
+            <div class="flow-text">お客さんのカードに返金処理を行う</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">5</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">延長料金の決済があれば、そちらも返金する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">6</div>
+          <div class="flow-body">
+            <div class="flow-actor system">Rincle（自動）</div>
+            <div class="flow-text">返金IDを予約データに保存 + 営業日カレンダーを更新</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div>返金は管理画面からの手動操作です（お客さん側からは返金できません）。延長料金がある場合は、通常分と延長分の<strong>2回返金</strong>が必要です。</div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background: var(--success);">&#10003;</div>
+      <h2>フロー全体のまとめ</h2>
+    </div>
+
+    <div class="summary-flow">
+      <h4>&#x1f3ea; 店舗側の準備</h4>
+      <p>店舗登録 → Pay.JP審査（数日）→ 審査通過 → 決済受付OK！</p>
+
+      <h4>&#x1f4b3; お客さん側の準備</h4>
+      <p>カード登録（1回だけ）→ 以降はそのカードで決済OK！</p>
+
+      <h4>&#x1f6b2; 予約 ~ 決済</h4>
+      <p>予約確定（課金なし・自転車確保のみ）→ 店舗が「ライド開始」→ カード引き落とし → 完了<br>※ 管理者がステータス変更で課金する場合もあり</p>
+
+      <h4>&#x23F0; 延長が発生したら</h4>
+      <p>店舗が延長登録 → 「ライド終了」→ 延長料金を追加で引き落とし</p>
+
+      <h4>&#x21A9;&#xFE0F; キャンセル・返金</h4>
+      <p>管理者が返金実行 → カードに返金（通常分 + 延長分）</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

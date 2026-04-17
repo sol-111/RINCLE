@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rincle - クライアント説明資料</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --sidebar-width: 260px;
+      --color-bg: #f8f9fa;
+      --color-sidebar: #1a1a2e;
+      --color-sidebar-hover: #16213e;
+      --color-sidebar-active: #0f3460;
+      --color-accent: #e94560;
+      --color-text: #333;
+      --color-text-light: #94a3b8;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      min-width: var(--sidebar-width);
+      background: var(--color-sidebar);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .sidebar-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .sidebar-header p {
+      font-size: 12px;
+      color: var(--color-text-light);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 0;
+    }
+
+    /* Accordion section */
+    .nav-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #e2e8f0;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .nav-section:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .nav-section-arrow {
+      font-size: 10px;
+      transition: transform 0.25s ease;
+      color: var(--color-text-light);
+    }
+
+    .nav-section.collapsed .nav-section-arrow {
+      transform: rotate(-90deg);
+    }
+
+    .nav-group {
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.25s ease;
+      max-height: 500px;
+      opacity: 1;
+    }
+
+    .nav-group.collapsed {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 9px 20px 9px 32px;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: var(--color-sidebar-hover);
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: var(--color-sidebar-active);
+      color: #fff;
+      border-left-color: var(--color-accent);
+    }
+
+    /* Section item count badge */
+    .nav-section-count {
+      background: rgba(255,255,255,0.1);
+      color: var(--color-text-light);
+      font-size: 10px;
+      padding: 1px 7px;
+      border-radius: 10px;
+      margin-left: 8px;
+      font-weight: 400;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      padding: 16px 32px;
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 60px;
+    }
+
+    .topbar h2 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .topbar-section {
+      font-size: 12px;
+      color: var(--color-text-light);
+      margin-left: 12px;
+    }
+
+    .content {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Welcome screen */
+    .welcome {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      color: #94a3b8;
+    }
+
+    .welcome h2 {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 8px;
+    }
+
+    .welcome p {
+      font-size: 14px;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      :root { --sidebar-width: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <h1>Rincle</h1>
+    <p>説明資料</p>
+  </div>
+  <div class="sidebar-nav" id="nav">
+    <!-- nav items are rendered by JS from the pages array -->
+  </div>
+</nav>
+
+<main class="main">
+  <header class="topbar">
+    <h2 id="page-title">ホーム</h2>
+  </header>
+  <div class="content" id="content">
+    <div class="welcome">
+      <div>
+        <h2>資料を選択してください</h2>
+        <p>左のメニューから閲覧したい資料を選んでください。</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  // ============================================================
+  // Page Registry
+  // ここにページを追加していく。section でグループ化。
+  // ============================================================
+  const pages = [
+    { section: '業務フロー', id: 'bizflow-asis',  title: 'As-Is フロー',              src: 'bizflow/asis.html' },
+    { section: '業務フロー', id: 'bizflow-tobe',  title: 'To-Be フロー',              src: 'bizflow/tobe.html' },
+    { section: 'Pay.JP 決済連携', id: 'payjp-asis',      title: 'As-Is フロー',       src: 'pay.jp/asis.html' },
+    { section: 'Pay.JP 決済連携', id: 'payjp-tobe',      title: 'To-Be フロー',              src: 'pay.jp/tobe.html' },
+    { section: 'Pay.JP 決済連携', id: 'payjp-api',       title: 'APIリファレンス',            src: 'pay.jp/api-reference.html' },
+    { section: 'Pay.JP 決済連携', id: 'payjp-dev',       title: '開発者リファレンス',          src: 'pay.jp/dev-reference.html' },
+    { section: 'Pay.JP 決済連携', id: 'payjp-issues',    title: '修正一覧',                   src: 'pay.jp/issues.html' },
+  ];
+
+  // ============================================================
+  // Render
+  // ============================================================
+  const nav = document.getElementById('nav');
+  const contentEl = document.getElementById('content');
+  const pageTitle = document.getElementById('page-title');
+
+  // Track accordion open/close state per section
+  const sectionState = {};
+
+  function render() {
+    nav.innerHTML = '';
+    let currentSection = null;
+    let currentGroup = null;
+
+    if (pages.length === 0) {
+      nav.innerHTML = '<div style="padding:20px;color:#94a3b8;font-size:13px;">まだ資料がありません。<br>pages 配列にエントリを追加してください。</div>';
+      return;
+    }
+
+    // Count items per section
+    const sectionCounts = {};
+    pages.forEach(p => {
+      sectionCounts[p.section] = (sectionCounts[p.section] || 0) + 1;
+    });
+
+    pages.forEach(page => {
+      if (page.section !== currentSection) {
+        currentSection = page.section;
+
+        // Default to open
+        if (sectionState[currentSection] === undefined) {
+          sectionState[currentSection] = true;
+        }
+
+        const isOpen = sectionState[currentSection];
+
+        // Section header (accordion toggle)
+        const sectionEl = document.createElement('div');
+        sectionEl.className = 'nav-section' + (isOpen ? '' : ' collapsed');
+        sectionEl.innerHTML = `
+          <span>${currentSection}<span class="nav-section-count">${sectionCounts[currentSection]}</span></span>
+          <span class="nav-section-arrow">&#x25BC;</span>
+        `;
+
+        // Group container for items
+        const groupEl = document.createElement('div');
+        groupEl.className = 'nav-group' + (isOpen ? '' : ' collapsed');
+
+        // Click to toggle
+        sectionEl.addEventListener('click', () => {
+          const willOpen = sectionEl.classList.contains('collapsed');
+          sectionEl.classList.toggle('collapsed');
+          groupEl.classList.toggle('collapsed');
+          sectionState[currentSection] = willOpen;
+        });
+
+        nav.appendChild(sectionEl);
+        nav.appendChild(groupEl);
+        currentGroup = groupEl;
+      }
+
+      const a = document.createElement('a');
+      a.className = 'nav-item';
+      a.textContent = page.title;
+      a.dataset.id = page.id;
+      a.addEventListener('click', () => loadPage(page));
+      currentGroup.appendChild(a);
+    });
+
+  }
+
+  function restoreFromHash() {
+    const hash = location.hash.slice(1);
+    if (!hash) return;
+    const target = pages.find(p => p.id === hash);
+    if (target) {
+      // Make sure the section is open
+      sectionState[target.section] = true;
+      // Re-render nav to reflect opened section, then load page
+      render();
+      loadPage(target);
+    }
+  }
+
+  let lastHash = null;
+  function loadPage(page) {
+    // Prevent re-render loop
+    if (lastHash === page.id) {
+      // Just update active state
+    }
+    lastHash = page.id;
+
+    // Update nav active state
+    document.querySelectorAll('.nav-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.id === page.id);
+    });
+
+    // Update title
+    pageTitle.textContent = page.title;
+
+    // Load iframe
+    contentEl.innerHTML = `<iframe src="${page.src}"></iframe>`;
+
+    // Update hash
+    history.replaceState(null, '', '#' + page.id);
+  }
+
+  render();
+  restoreFromHash();
+</script>
+
+</body>
+</html>

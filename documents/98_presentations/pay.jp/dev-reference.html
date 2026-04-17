@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pay.JP 開発者向けリファレンス - Bubble実装</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --accent: #e94560;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+    --gray-900: #0f172a;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.1);
+    --dev-purple: #7c3aed;
+    --dev-purple-light: #ede9fe;
+    --dev-indigo: #4f46e5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 40%, #7c3aed 100%);
+    color: #fff;
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(167,139,250,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 16px; opacity: 0.85; max-width: 600px; }
+
+  /* Layout */
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 32px 80px; }
+
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: -40px 32px 40px;
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 32px;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    border-top: 3px solid var(--dev-purple);
+  }
+  .summary-card h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--dev-purple);
+    margin-bottom: 6px;
+  }
+  .summary-card p { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+
+  /* Sections */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .section-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--dev-purple);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 22px; font-weight: 700; }
+  .section-desc { color: var(--gray-500); font-size: 14px; margin-bottom: 20px; }
+
+  /* Cards / callouts */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+  }
+  .callout {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 20px; flex-shrink: 0; line-height: 1.4; }
+  .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .callout.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+  .callout.success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+  .callout.dev { background: #f5f3ff; border: 1px solid #c4b5fd; color: #5b21b6; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
+  th {
+    background: var(--gray-900);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); }
+  tr:hover td { background: var(--gray-50); }
+  td:first-child { font-weight: 600; }
+
+  /* Workflow tables with distinct flow headers */
+  .flow-table-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 12px;
+    padding: 14px 20px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .flow-table-header.shop-flow { background: linear-gradient(135deg, #9d174d, #be185d); }
+  .flow-table-header.user-flow { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+  .flow-table-header.admin-flow { background: linear-gradient(135deg, #5b21b6, #7c3aed); }
+  .flow-table-header + .table-wrap { margin-top: 0; border-radius: 0 0 var(--radius) var(--radius); }
+  .flow-table-header + .table-wrap table th {
+    font-size: 12px;
+  }
+
+  /* Code / monospace styling */
+  code, .code {
+    font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', 'Consolas', monospace;
+    background: #f1f5f9;
+    color: #6d28d9;
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+  }
+  td code {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  /* Improvement column highlight */
+  td.improve {
+    background: #fffbeb;
+    color: #92400e;
+    font-size: 13px;
+    line-height: 1.6;
+    border-left: 3px solid #f59e0b;
+  }
+  td.improve:empty {
+    background: transparent;
+    border-left: 3px solid transparent;
+  }
+
+  /* Endpoint styling */
+  .endpoint {
+    font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', 'Consolas', monospace;
+    font-size: 12px;
+    color: #059669;
+    background: #ecfdf5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #a7f3d0;
+  }
+
+  /* HTTP method badges */
+  .method {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'SF Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+  .method.get { background: #dbeafe; color: #1d4ed8; }
+  .method.post { background: #d1fae5; color: #065f46; }
+  .method.delete { background: #fee2e2; color: #991b1b; }
+
+  /* Usage badge */
+  .usage {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .usage.active { background: #d1fae5; color: #065f46; }
+  .usage.unused { background: #f1f5f9; color: #94a3b8; text-decoration: line-through; }
+  .usage.error { background: #fee2e2; color: #991b1b; }
+
+  /* Sub-section heading */
+  .sub-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--dev-purple);
+    margin: 28px 0 12px;
+    padding-left: 12px;
+    border-left: 3px solid var(--dev-purple);
+  }
+
+  /* Param table */
+  .param-table th {
+    background: #4338ca;
+  }
+
+  /* Data model field tables */
+  .model-name {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 24px 0 8px;
+    padding: 4px 0;
+    border-bottom: 2px dashed var(--gray-200);
+  }
+  .model-name code {
+    font-size: 16px;
+    background: var(--dev-purple-light);
+    color: var(--dev-purple);
+    border: 1px solid #c4b5fd;
+  }
+
+  /* Key management table */
+  .key-table th { background: #1e1b4b; }
+
+  /* Status badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .badge-ok { background: #d1fae5; color: #065f46; }
+  .badge-ng { background: #fee2e2; color: #991b1b; }
+  .badge-wait { background: #fef3c7; color: #92400e; }
+
+  /* Connector info box */
+  .connector-info {
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+    border: 1px solid #c4b5fd;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .connector-info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .connector-info-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-500);
+    white-space: nowrap;
+  }
+  .connector-info-value {
+    font-family: 'SF Mono', monospace;
+    font-size: 14px;
+    color: var(--dev-purple);
+    font-weight: 600;
+  }
+
+  /* TOC */
+  .toc {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 36px;
+  }
+  .toc h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .toc ol {
+    list-style: none;
+    counter-reset: toc-counter;
+  }
+  .toc ol li {
+    counter-increment: toc-counter;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 15px;
+  }
+  .toc ol li:last-child { border-bottom: none; }
+  .toc ol li::before {
+    content: counter(toc-counter) ".";
+    display: inline-block;
+    width: 28px;
+    color: var(--dev-purple);
+    font-weight: 700;
+  }
+  .toc ol li a {
+    color: var(--gray-700);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .toc ol li a:hover { color: var(--dev-purple); }
+
+  /* Summary stat */
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+    font-size: 14px;
+  }
+  .stat-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .stat-dot.active { background: var(--success); }
+  .stat-dot.unused { background: var(--gray-300); }
+  .stat-dot.error { background: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hero { padding: 32px 20px 28px; }
+    .hero h1 { font-size: 24px; }
+    .container { padding: 24px 16px 60px; }
+    .summary-grid { grid-template-columns: 1fr 1fr; padding: 0 16px; }
+    .connector-info { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Developer Reference</div>
+  <h1>Pay.JP 開発者向けリファレンス</h1>
+  <p>Bubbleエクスポート（rincle.bubble）の実装に基づく、API Connector定義・ワークフロー・データモデルの技術仕様書。</p>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <h3>契約形態</h3>
+    <p>Marketplace型 - テナント単位で審査が必要</p>
+  </div>
+  <div class="summary-card">
+    <h3>API定義数</h3>
+    <p>計15本（実使用11本 / 未使用3本 / エラー用1本）</p>
+  </div>
+  <div class="summary-card">
+    <h3>Connector ID</h3>
+    <p><code>bTHZi</code></p>
+  </div>
+  <div class="summary-card">
+    <h3>手数料率</h3>
+    <p>デフォルト10% (platform_fee)</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#sec1">Pay.jp 契約形態</a></li>
+      <li><a href="#sec2">API Connector 定義一覧</a></li>
+      <li><a href="#sec3">ワークフロー詳細（ページ別）</a></li>
+      <li><a href="#sec4">バックエンドワークフロー</a></li>
+      <li><a href="#sec5">フロントエンド実装（Checkout.js）</a></li>
+      <li><a href="#sec6">データモデル（Pay.JP関連フィールド）</a></li>
+      <li><a href="#sec7">プラットフォーム手数料</a></li>
+      <li><a href="#sec8">キー管理</a></li>
+      <li><a href="#sec9">関連 Option Set</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. 契約形態 -->
+  <div class="section" id="sec1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Pay.jp 契約形態</h2>
+    </div>
+    <p class="section-desc">現状は <strong>Marketplace型</strong> で契約しており、テナント単位での審査が必要。</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Marketplace型</th>
+          <th>Payouts型</th>
+        </tr>
+        <tr>
+          <td>想定</td>
+          <td>出店者（テナント）が商品・役務の販売主体</td>
+          <td>プラットフォーマーが商品・役務の販売主体</td>
+        </tr>
+        <tr>
+          <td>審査</td>
+          <td>テナント単位で申請・審査（原則は法人・個人事業主）</td>
+          <td>審査対象はプラットフォーマー。テナント単位の個別審査は不要</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="callout dev">
+      <div class="callout-icon">&#x1f4cc;</div>
+      <div>Marketplace型のため、必須パラメータや使えるAPI（審査申請URLは Marketplace型のみ等）が Payouts型と異なります。</div>
+    </div>
+  </div>
+
+  <!-- 2. API Connector 定義一覧 -->
+  <div class="section" id="sec2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>API Connector 定義一覧</h2>
+    </div>
+
+    <div class="connector-info">
+      <div class="connector-info-item">
+        <span class="connector-info-label">Bubble API Connector ID</span>
+        <span class="connector-info-value">bTHZi</span>
+      </div>
+      <div class="connector-info-item">
+        <span class="connector-info-label">Base URL</span>
+        <span class="connector-info-value">https://api.pay.jp/v1</span>
+      </div>
+      <div class="connector-info-item">
+        <span class="connector-info-label">認証方式</span>
+        <span class="connector-info-value">HTTP Basic (Secret Key = username)</span>
+      </div>
+    </div>
+
+    <!-- テナント管理 -->
+    <h3 class="sub-heading">テナント（店舗）管理</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Bubble call_id</th>
+          <th>API名</th>
+          <th>メソッド</th>
+          <th>エンドポイント</th>
+          <th style="text-align:right;">参照数</th>
+          <th>用途</th>
+        </tr>
+        <tr>
+          <td><code>bTHZj</code></td>
+          <td>Create Tenant</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/tenants</span></td>
+          <td style="text-align:right;">1</td>
+          <td>店舗アカウント作成時にテナントを作成</td>
+        </tr>
+        <tr>
+          <td><code>bTHbI</code></td>
+          <td>Create Tenant Approval Link</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/tenants/{tenant_id}/application_urls</span></td>
+          <td style="text-align:right;">1</td>
+          <td>店舗の本人確認・審査用URLを生成</td>
+        </tr>
+        <tr>
+          <td><code>bTHqD</code></td>
+          <td>Delete Tenant</td>
+          <td><span class="method delete">DELETE</span></td>
+          <td><span class="endpoint">/tenants/{tenant_id}</span></td>
+          <td style="text-align:right;">1</td>
+          <td>テナント削除（管理画面から）</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 顧客管理 -->
+    <h3 class="sub-heading">顧客（エンドユーザー）管理</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Bubble call_id</th>
+          <th>API名</th>
+          <th>メソッド</th>
+          <th>エンドポイント</th>
+          <th style="text-align:right;">参照数</th>
+          <th>用途</th>
+        </tr>
+        <tr>
+          <td><code>bTVGG</code></td>
+          <td>account_create</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/customers</span></td>
+          <td style="text-align:right;">2</td>
+          <td>顧客オブジェクト作成 <span class="usage active">実使用</span></td>
+        </tr>
+        <tr>
+          <td><code>bTOAP</code></td>
+          <td>Create Client</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/customers</span></td>
+          <td style="text-align:right;">1</td>
+          <td>顧客オブジェクト作成 <span class="usage active">実使用</span><br><span style="font-size:12px;color:var(--gray-500);">account_createと同一エンドポイントだが、カード登録フローで cus_id 未作成時のフォールバックとして使用</span></td>
+        </tr>
+        <tr>
+          <td><code>bTVNI</code></td>
+          <td>Get Client action</td>
+          <td><span class="method get">GET</span></td>
+          <td><span class="endpoint">/customers/{id}</span></td>
+          <td style="text-align:right;">5</td>
+          <td>顧客情報取得・カード情報含む <span class="usage active">実使用</span></td>
+        </tr>
+        <tr>
+          <td><code>bTOFU0</code></td>
+          <td>Get Client</td>
+          <td><span class="method get">GET</span></td>
+          <td><span class="endpoint">/customers/{id}</span></td>
+          <td style="text-align:right;">0</td>
+          <td>顧客情報取得 <span class="usage unused">未使用</span><br><span style="font-size:12px;color:var(--gray-500);">Get Client actionと同一</span></td>
+        </tr>
+        <tr>
+          <td><code>bTOAX</code></td>
+          <td>Create Card</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/customers/{id}/cards</span></td>
+          <td style="text-align:right;">2</td>
+          <td>カードトークンを顧客に紐付け <span class="usage active">実使用</span></td>
+        </tr>
+        <tr>
+          <td><code>bTVHC</code></td>
+          <td>account_register_card</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/customers/{customer_id}</span></td>
+          <td style="text-align:right;">1</td>
+          <td>カード情報を顧客に登録 <span class="usage active">実使用</span></td>
+        </tr>
+        <tr>
+          <td><code>bTVHy</code></td>
+          <td>account_register_default_card</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/customers/{customer_id}</span></td>
+          <td style="text-align:right;">2</td>
+          <td>デフォルトカードの設定（<code>default_card</code>パラメータで指定） <span class="usage active">実使用</span></td>
+        </tr>
+        <tr>
+          <td><code>bTYlx</code></td>
+          <td>account_register_card_error</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/customers/{customer_id}</span></td>
+          <td style="text-align:right;">0</td>
+          <td>カード登録エラー処理用 <span class="usage unused">未使用</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- トークン・決済 -->
+    <h3 class="sub-heading">トークン・決済</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Bubble call_id</th>
+          <th>API名</th>
+          <th>メソッド</th>
+          <th>エンドポイント</th>
+          <th style="text-align:right;">参照数</th>
+          <th>用途</th>
+        </tr>
+        <tr>
+          <td><code>bTOAh</code></td>
+          <td>Create Token</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/tokens</span></td>
+          <td style="text-align:right;">0</td>
+          <td>カード情報からトークン生成 <span class="usage unused">未使用</span><br><span style="font-size:12px;color:var(--gray-500);">フロントエンドCheckout.jsで代替</span></td>
+        </tr>
+        <tr>
+          <td><code>bTTcd</code></td>
+          <td>Charge</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/charges</span></td>
+          <td style="text-align:right;">0</td>
+          <td>トークンで決済 <span class="usage unused">未使用</span><br><span style="font-size:12px;color:var(--gray-500);">Charge_by_car_idで代替</span></td>
+        </tr>
+        <tr>
+          <td><code>bTVIE</code></td>
+          <td>Charge_by_car_id</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/charges</span></td>
+          <td style="text-align:right;">3</td>
+          <td>登録済みカードで決済 <span class="usage active">実使用</span><br><span style="font-size:12px;color:var(--gray-500);">決済の本体</span></td>
+        </tr>
+        <tr>
+          <td><code>bTVFu</code></td>
+          <td>Charge_refund</td>
+          <td><span class="method post">POST</span></td>
+          <td><span class="endpoint">/charges/{id}/refund</span></td>
+          <td style="text-align:right;">2</td>
+          <td>返金処理 <span class="usage active">実使用</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+      <div style="font-size:15px; font-weight:700; margin-bottom:12px;">API定義サマリー</div>
+      <div class="stat-row"><span class="stat-dot active"></span> <strong>実使用: 11本</strong></div>
+      <div class="stat-row"><span class="stat-dot unused"></span> <strong>未使用: 3本</strong>（Get Client / Create Token / Charge）</div>
+      <div class="stat-row"><span class="stat-dot error"></span> <strong>エラー用: 1本</strong>（account_register_card_error）</div>
+      <div style="margin-top:12px; font-size:13px; color:var(--gray-500);">参照回数はエクスポート JSON 文字列に <code>apiconnector2-{connector}.{call}</code> が出現した回数（0 でも定義は残っている）。</div>
+    </div>
+
+    <!-- Charge_by_car_id パラメータ -->
+    <h3 class="sub-heading">Charge_by_car_id の送信パラメータ</h3>
+    <div class="table-wrap param-table">
+      <table>
+        <tr>
+          <th style="background:#4338ca;">パラメータ</th>
+          <th style="background:#4338ca;">型</th>
+          <th style="background:#4338ca;">説明</th>
+        </tr>
+        <tr>
+          <td><code>customer</code></td>
+          <td>text</td>
+          <td>顧客ID（<code>cus_xxxxx</code>） ※ APIキー名には末尾スペースあり</td>
+        </tr>
+        <tr>
+          <td><code>amount</code></td>
+          <td>number</td>
+          <td>決済金額</td>
+        </tr>
+        <tr>
+          <td><code>currency</code></td>
+          <td>text</td>
+          <td><code>"jpy"</code>（固定・private）</td>
+        </tr>
+        <tr>
+          <td><code>tenant</code></td>
+          <td>text</td>
+          <td>店舗のテナントID（<code>ten_xxxxx</code>）</td>
+        </tr>
+        <tr>
+          <td><code>platform_fee</code></td>
+          <td>number</td>
+          <td>Rincleの手数料額</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3. ワークフロー詳細 -->
+  <div class="section" id="sec3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>ワークフロー詳細（ページ別）</h2>
+    </div>
+    <p class="section-desc">各画面ページで発生するPay.JP関連のワークフローを一覧化。「改善点」列はコードレビュー時の指摘事項。</p>
+
+    <!-- 店舗フロー -->
+    <div class="flow-table-header shop-flow">
+      <span>&#x1f3ea;</span> 店舗フロー（shop_form / shop_admin）
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th style="min-width:90px;">大項目</th>
+          <th style="min-width:110px;">ユーザー操作</th>
+          <th style="min-width:110px;">トリガー</th>
+          <th>アクション</th>
+          <th>詳細</th>
+          <th style="min-width:180px;">改善点</th>
+        </tr>
+        <tr>
+          <td rowspan="2">店舗追加</td>
+          <td>シスアド画面から「新規追加」</td>
+          <td>Button 新規追加 click</td>
+          <td>show popup</td>
+          <td>popup add company表示</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td>popupでメアド登録</td>
+          <td>招待メール送信 click</td>
+          <td>send mail</td>
+          <td>shop_formへのメール送信</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td rowspan="8">加盟店申し込み</td>
+          <td>メアド登録、パス、店舗名、銀行口座保存</td>
+          <td>Button 申請する click</td>
+          <td></td>
+          <td></td>
+          <td class="improve">招待メールを投げているなら、パラメータにメアドか招待アカウントをDB保存してunique_idをつけて最初から設定しておきたい。URLさえわかれば誰でも登録できるけどいいのか？</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>sign up</td>
+          <td>サインアップ</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>make change user</td>
+          <td>reviewed_brand = passedで登録（開発のみ）</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>pay.jp API Create Tenant</td>
+          <td>テナント作成</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>pay.jp API Create Tenant Approval Link</td>
+          <td>本番のカード用ブランド審査用のURLを払い出す</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>make change user</td>
+          <td>テナントIDやURLを登録する</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>Schedule API営業日初期登録</td>
+          <td></td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>open page 審査用URL</td>
+          <td>審査用のURL画面を表示</td>
+          <td class="improve">Pay.jpの画面に移動する</td>
+        </tr>
+        <tr>
+          <td>Pay.jpに審査情報を登録する</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>pay.jpで審査情報を登録（口座情報や本人確認書類など）</td>
+          <td class="improve">APIコネクタの設定が本番キーになっているので、本番向けの審査フォームが表示されている</td>
+        </tr>
+        <tr>
+          <td>審査中</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>popupで審査中が表示</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td rowspan="2">審査OK</td>
+          <td></td>
+          <td>Webhook受け取り</td>
+          <td>Create Webhook Event</td>
+          <td>ログ作成</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>Send Mail</td>
+          <td>審査結果をメール送信</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td rowspan="4">クレカ払い: ライド開始</td>
+          <td>予約情報から「ライド開始」クリック</td>
+          <td>Button ライド開始 click</td>
+          <td>showPopup決済_ライド開始</td>
+          <td></td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td>清算終了しましたか？Yes</td>
+          <td>Button クレカ決済_はい click</td>
+          <td>API Charge_by_car_id</td>
+          <td>顧客のデフォルトカードに対して、指定した店舗の売上として支払いを実行する</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>エラーコードなし：予約情報更新</td>
+          <td>請求済みとして更新</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>エラーコードあり：予約情報更新</td>
+          <td>店頭決済として更新（未請求）</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td>店頭払い: ライド開始</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>店頭決済として更新（未請求）</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td rowspan="5">延長</td>
+          <td>延長はこちらをクリック</td>
+          <td>Text延長はこちら</td>
+          <td>show popup延長</td>
+          <td></td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td>延長を確定するクリック</td>
+          <td>Button 延長を確定する</td>
+          <td>make change 予約</td>
+          <td>合計金額を更新</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>make change 営業カレンダー</td>
+          <td>レンタル可能な自転車情報を更新</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>make change 予約</td>
+          <td>手数料、延長返却日を更新</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>make change 営業カレンダー</td>
+          <td>レンタル可能な自転車情報を更新</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td rowspan="4">延長清算</td>
+          <td>ライド終了ボタンクリック</td>
+          <td>Button ライド終了 click</td>
+          <td>make change 予約</td>
+          <td>返却済み</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>（延長あり）API Charge_by_car_id</td>
+          <td>延長料金の支払い実行</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>make change 予約</td>
+          <td>決済済み</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>エラーのとき：予約更新</td>
+          <td>返却済み、延長未決済、請求no</td>
+          <td class="improve"></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- ユーザーフロー -->
+    <div class="flow-table-header user-flow">
+      <span>&#x1f464;</span> ユーザーフロー（index）
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th style="min-width:100px;">大項目</th>
+          <th style="min-width:120px;">ユーザー操作</th>
+          <th style="min-width:110px;">トリガー</th>
+          <th>アクション</th>
+          <th>詳細</th>
+          <th style="min-width:180px;">改善点</th>
+        </tr>
+        <tr>
+          <td rowspan="6">予約（支払いから）</td>
+          <td>自転車・日付選択後</td>
+          <td>画面表示時</td>
+          <td>（Dropdown要素）</td>
+          <td>Dropdownに現在ユーザーのカード取得、表示</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td>カードがないとき カード情報を登録する</td>
+          <td></td>
+          <td>（HTML要素）</td>
+          <td>checkout.pay.jpでカード登録 / トークン発行</td>
+          <td class="improve">本番APIキーになってしまっている。本番か開発かで切り分ける</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>get_tokenイベント</td>
+          <td>API Create Client</td>
+          <td>顧客作成</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>make change user</td>
+          <td>作成した顧客IDを保存</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>API account_register_card</td>
+          <td>顧客にカード情報を登録 / トークンで登録</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>API get client action</td>
+          <td>顧客情報を取得</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td rowspan="7">予約確定</td>
+          <td>予約確定ボタンクリック</td>
+          <td>Button 予約を確定する</td>
+          <td>（クレジットの場合）API get client action</td>
+          <td>顧客情報を取得</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>（クレジットの場合）account_register_default_card</td>
+          <td>顧客情報を更新。直前で取得したカード情報のうち最新カードをデフォルトカードとして登録</td>
+          <td class="improve">dropdownで選択したカードではない？</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>（クレジットの場合）make change user</td>
+          <td>カードidを更新</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>予約更新</td>
+          <td>ステータス＝来客待ち、予約番号、支払い方法</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>営業日カレンダー更新</td>
+          <td></td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>Send Mail</td>
+          <td>顧客にメール送信 / 店舗にメール送信 / pedalstandardにメール送信</td>
+          <td class="improve"></td>
+        </tr>
+        <tr style="display:none;"></tr>
+        <tr>
+          <td rowspan="2">お客様情報登録</td>
+          <td>登録を完了するボタンクリック</td>
+          <td>Button 登録を完了する</td>
+          <td>make change user</td>
+          <td>入力情報を保存</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>API account_create</td>
+          <td>顧客を作成（email）</td>
+          <td class="improve"></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 運営者フロー -->
+    <div class="flow-table-header admin-flow">
+      <span>&#x1f6e0;&#xfe0f;</span> 運営者フロー（admin）
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th style="min-width:80px;">大項目</th>
+          <th style="min-width:120px;">ユーザー操作</th>
+          <th style="min-width:130px;">トリガー</th>
+          <th>アクション</th>
+          <th>詳細</th>
+          <th style="min-width:180px;">改善点</th>
+        </tr>
+        <tr>
+          <td>返金</td>
+          <td>予約一覧店舗のdropdownから「キャンセル」選択</td>
+          <td>Dropdown 予約一覧選択's value changed</td>
+          <td>show popupキャンセル</td>
+          <td>popup表示</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td rowspan="5">返金あり</td>
+          <td>返金あり選択</td>
+          <td>Button 返金ありclick</td>
+          <td>make change予約</td>
+          <td>キャンセル、返金済み</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>（クレジットカードの時）API Charge_refund</td>
+          <td>本体料金を返金</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>（クレジットカードの時）API Charge_refund</td>
+          <td>延長料金を返金</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>make change予約</td>
+          <td>返金ID登録</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>営業日カレンダーを更新</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td>課金</td>
+          <td>予約一覧からステータス変更</td>
+          <td>Dropdown 予約一覧選択's value changed</td>
+          <td>API Charge_by_car_id 来客まち・未請求</td>
+          <td>予約金額を請求</td>
+          <td class="improve">これは何のためにしている？現金支払い等で、支払いが行われていないユーザーに対して実行？</td>
+        </tr>
+        <tr>
+          <td rowspan="2">退会させる</td>
+          <td></td>
+          <td>Button 退会させる click</td>
+          <td>API Delete Tenant</td>
+          <td>テナントを削除</td>
+          <td class="improve"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>make change user</td>
+          <td>archive=yes</td>
+          <td class="improve"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. バックエンドワークフロー -->
+  <div class="section" id="sec4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>バックエンドワークフロー</h2>
+    </div>
+
+    <h3 class="sub-heading">Webhook（Pay.JPからの自動通知受信）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Bubble WF ID</th>
+          <th>エンドポイント名</th>
+          <th>トリガー条件</th>
+          <th>処理内容</th>
+        </tr>
+        <tr>
+          <td><code>bTHex</code></td>
+          <td>payjp_webhook_charge_captured</td>
+          <td><code>body.type == "charge.captured"</code></td>
+          <td>Webhook_Eventレコード作成（type: charge.captured）。決済完了時に発火</td>
+        </tr>
+        <tr>
+          <td><code>bTHef</code></td>
+          <td>payjp_webhook_update_<strong>talent</strong></td>
+          <td><code>body.type == "tenant.updated"</code></td>
+          <td>Webhook_Eventレコード作成 + Userの<code>reviewed_brand</code>更新 + 審査結果メール送信（通過/否決）。審査結果通知時に発火</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div><strong>注意:</strong> <code>payjp_webhook_update_talent</code> は <code>tenant</code> の<strong>typo</strong>。Bubbleの内部IDで紐づいているため動作しているが、名前としては誤り。</div>
+    </div>
+
+    <div class="callout dev">
+      <div class="callout-icon">&#x1f511;</div>
+      <div>Webhook認証ヘッダー: <code>x-payjp-webhook-token</code></div>
+    </div>
+
+    <h3 class="sub-heading">その他のAPIイベント</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Bubble WF ID</th>
+          <th>エンドポイント名</th>
+          <th>用途</th>
+        </tr>
+        <tr>
+          <td><code>bTOEl</code></td>
+          <td>create_card</td>
+          <td>カード登録処理用のAPIイベント</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 5. フロントエンド実装 -->
+  <div class="section" id="sec5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>フロントエンド実装（Checkout.js）</h2>
+    </div>
+
+    <div class="card">
+      <div style="margin-bottom:16px;">
+        <div style="font-size:13px; color:var(--gray-500); margin-bottom:4px;">Script URL</div>
+        <code style="font-size:14px;">https://checkout.pay.jp/</code>
+      </div>
+      <div class="table-wrap" style="margin:0;">
+        <table>
+          <tr>
+            <th style="background:#4338ca;">属性</th>
+            <th style="background:#4338ca;">値</th>
+            <th style="background:#4338ca;">説明</th>
+          </tr>
+          <tr>
+            <td><code>data-partial</code></td>
+            <td><code>"true"</code></td>
+            <td>トークン取得のみ、決済は行わない</td>
+          </tr>
+          <tr>
+            <td><code>data-submit-text</code></td>
+            <td><code>"新しいカードを登録する"</code></td>
+            <td>ボタンの表示テキスト</td>
+          </tr>
+        </table>
+      </div>
+      <div style="margin-top:16px; padding:16px; background:#f8fafc; border-radius:8px; border:1px solid var(--gray-200);">
+        <div style="font-size:13px; color:var(--gray-500); margin-bottom:6px;">トークン取得成功時のコールバック</div>
+        <code style="display:block; padding:10px 14px; background:#1e1b4b; color:#a5b4fc; border-radius:6px; font-size:13px; border:none;">bubble_fn_tokenget(response.id)</code>
+        <div style="font-size:12px; color:var(--gray-500); margin-top:6px;">BubbleのJavascriptToBubble要素にトークンを渡す</div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x2139;&#xFE0F;</div>
+      <div>サーバーサイドの <code>Create Token</code>（call_id: <code>bTOAh</code>）は参照0。トークン生成はフロントエンドのCheckout.jsが担当。</div>
+    </div>
+  </div>
+
+  <!-- 6. データモデル -->
+  <div class="section" id="sec6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>データモデル（Pay.JP関連フィールド）</h2>
+    </div>
+
+    <div class="model-name"><code>User</code></div>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th style="background:#4338ca;">フィールド</th>
+          <th style="background:#4338ca;">型</th>
+          <th style="background:#4338ca;">用途</th>
+        </tr>
+        <tr>
+          <td><code>cus_id</code></td>
+          <td>text</td>
+          <td>Pay.JP顧客ID（<code>cus_xxxxx</code>）</td>
+        </tr>
+        <tr>
+          <td><code>tenant_id</code></td>
+          <td>text</td>
+          <td>Pay.JPテナントID（<code>ten_xxxxx</code>）</td>
+        </tr>
+        <tr>
+          <td><code>reviewed_brand</code></td>
+          <td>option (brand_status)</td>
+          <td>審査状態（before_review / in_review / passed / declined）</td>
+        </tr>
+        <tr>
+          <td><code>user_id_payjp</code></td>
+          <td>text</td>
+          <td>Pay.JPユーザーID</td>
+        </tr>
+        <tr>
+          <td><code>pay_jp_apply_form_url</code></td>
+          <td>text</td>
+          <td>審査申請フォームURL</td>
+        </tr>
+        <tr>
+          <td><code>shop_pay_real</code></td>
+          <td>text</td>
+          <td>店舗決済アカウント情報</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="model-name"><code>予約情報</code></div>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th style="background:#4338ca;">フィールド</th>
+          <th style="background:#4338ca;">型</th>
+          <th style="background:#4338ca;">用途</th>
+        </tr>
+        <tr>
+          <td><code>token</code></td>
+          <td>text</td>
+          <td>決済トークン</td>
+        </tr>
+        <tr>
+          <td><code>charge_id</code></td>
+          <td>text</td>
+          <td>通常決済のチャージID</td>
+        </tr>
+        <tr>
+          <td><code>__charge_id</code></td>
+          <td>text</td>
+          <td>延長料金のチャージID</td>
+        </tr>
+        <tr>
+          <td><code>__charge_id1</code></td>
+          <td>text</td>
+          <td>返金ID</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="model-name"><code>Webhook_Event</code></div>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th style="background:#4338ca;">フィールド</th>
+          <th style="background:#4338ca;">型</th>
+          <th style="background:#4338ca;">用途</th>
+        </tr>
+        <tr>
+          <td><code>type</code></td>
+          <td>text</td>
+          <td>イベント種別（charge.captured / tenant.updated）</td>
+        </tr>
+        <tr>
+          <td><code>text</code></td>
+          <td>text</td>
+          <td>ペイロードテキスト（テナントID等）</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 7. プラットフォーム手数料 -->
+  <div class="section" id="sec7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>プラットフォーム手数料</h2>
+    </div>
+
+    <div class="card">
+      <div class="table-wrap" style="margin:0;">
+        <table>
+          <tr>
+            <th style="background:#4338ca;">項目</th>
+            <th style="background:#4338ca;">値</th>
+          </tr>
+          <tr>
+            <td>デフォルト手数料率</td>
+            <td><strong>10%</strong>（option_set <code>platform_fee</code> &rarr; <code>デフォルト</code> = 10）</td>
+          </tr>
+          <tr>
+            <td>計算式</td>
+            <td><code>platform_fee = amount x platform_fee_rate / 100</code></td>
+          </tr>
+          <tr>
+            <td>Pay.JP手数料の扱い</td>
+            <td><code>payjp_fee_included: false</code> &rarr; Pay.JP手数料はプラットフォーム手数料に含まない</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. キー管理 -->
+  <div class="section" id="sec8">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>キー管理</h2>
+    </div>
+
+    <div class="table-wrap key-table">
+      <table>
+        <tr>
+          <th style="background:#1e1b4b;">用途</th>
+          <th style="background:#1e1b4b;">管理場所</th>
+        </tr>
+        <tr>
+          <td>本番秘密鍵</td>
+          <td>API Connector <code>bTHZi</code> の Basic認証（<code>settings.secure</code>）</td>
+        </tr>
+        <tr>
+          <td>本番公開鍵</td>
+          <td>Option Set <code>pay_jp_key</code> &rarr; <code>live</code>（Checkout.jsで使用）</td>
+        </tr>
+        <tr>
+          <td>テスト秘密鍵</td>
+          <td>Option Set <code>pay_jp_key</code> &rarr; <code>test_sk</code></td>
+        </tr>
+        <tr>
+          <td>テスト公開鍵</td>
+          <td>Option Set <code>pay_jp_key</code> &rarr; <code>test_pk</code> / Option Set <code>pay_jp_pk</code></td>
+        </tr>
+        <tr>
+          <td>審査後リダイレクトURL</td>
+          <td>Option Set <code>pay_jp_apply_redirect_url</code></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 9. 関連 Option Set -->
+  <div class="section" id="sec9">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>関連 Option Set</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th style="background:#4338ca;">Option Set名</th>
+          <th style="background:#4338ca;">説明</th>
+        </tr>
+        <tr>
+          <td><code>pay_jp_apply_redirect_url</code></td>
+          <td>Pay.jp apply redirect url</td>
+        </tr>
+        <tr>
+          <td><code>pay_jp_key</code></td>
+          <td>pay_jp_key</td>
+        </tr>
+        <tr>
+          <td><code>pay_jp_pk</code></td>
+          <td>pay.jp pk</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rincle 業務フロー図（現行 As-Is）</title>
+<style>
+  :root {
+    --user: #2563eb; --user-bg: #dbeafe; --user-border: #93c5fd;
+    --store: #059669; --store-bg: #d1fae5; --store-border: #6ee7b7;
+    --admin: #7c3aed; --admin-bg: #ede9fe; --admin-border: #c4b5fd;
+    --notify: #d97706; --notify-bg: #fef3c7; --notify-border: #fcd34d;
+    --external: #dc2626; --external-bg: #fee2e2; --external-border: #fca5a5;
+    --error: #ef4444;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1; --gray-500: #64748b; --gray-700: #334155; --gray-900: #0f172a;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    color: var(--gray-900); background: var(--gray-50); line-height: 1.8; -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+    color: #fff; padding: 56px 40px 48px; position: relative; overflow: hidden;
+  }
+  .hero::after {
+    content: ''; position: absolute; top: -50%; right: -20%; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%); border-radius: 50%;
+  }
+  .hero-label {
+    display: inline-block; background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);
+    padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 16px; opacity: 0.85; max-width: 700px; }
+
+  /* Layout */
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 32px 80px; }
+
+  /* Summary */
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    margin: -36px auto 40px; max-width: 1100px; padding: 0 32px; position: relative; z-index: 1;
+  }
+  .summary-card {
+    background: #fff; border-radius: var(--radius); padding: 20px 24px;
+    box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 16px;
+  }
+  .summary-icon {
+    width: 48px; height: 48px; border-radius: 12px; display: flex;
+    align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+  }
+  .summary-icon.user { background: var(--user-bg); }
+  .summary-icon.store { background: var(--store-bg); }
+  .summary-icon.admin { background: var(--admin-bg); }
+  .summary-card h3 { font-size: 13px; font-weight: 700; color: var(--gray-500); margin-bottom: 2px; }
+  .summary-card p { font-size: 15px; font-weight: 600; color: var(--gray-900); line-height: 1.4; }
+
+  /* Legend */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px;
+    padding: 20px 24px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
+  }
+  .legend-title { font-size: 13px; font-weight: 700; color: var(--gray-500); width: 100%; margin-bottom: 4px; }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600;
+  }
+  .legend-dot {
+    width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0;
+  }
+  .legend-dot.user { background: var(--user); }
+  .legend-dot.store { background: var(--store); }
+  .legend-dot.admin { background: var(--admin); }
+  .legend-dot.notify { background: var(--notify); }
+  .legend-dot.external { background: var(--external); }
+  .legend-dot.error { background: transparent; border: 2px dashed var(--error); }
+
+  /* Phase overview timeline */
+  .timeline {
+    display: flex; gap: 4px; margin-bottom: 48px; overflow-x: auto;
+    padding: 4px 0 16px; scroll-behavior: smooth;
+  }
+  .timeline::-webkit-scrollbar { height: 6px; }
+  .timeline::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 3px; }
+  .tl-phase {
+    flex: 0 0 auto; min-width: 140px; border-radius: var(--radius);
+    background: #fff; box-shadow: var(--shadow); overflow: hidden;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .tl-phase:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .tl-num {
+    padding: 10px 16px; font-size: 11px; font-weight: 800; letter-spacing: 1px;
+    text-transform: uppercase; color: #fff; background: var(--gray-700);
+  }
+  .tl-body { padding: 12px 16px; }
+  .tl-body h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+  .tl-actors { display: flex; gap: 4px; }
+  .tl-actor {
+    width: 8px; height: 8px; border-radius: 2px;
+  }
+  .tl-actor.user { background: var(--user); }
+  .tl-actor.store { background: var(--store); }
+  .tl-actor.admin { background: var(--admin); }
+
+  /* Swim lane diagram per phase */
+  .swim {
+    background: #fff; border-radius: var(--radius); box-shadow: var(--shadow);
+    margin: 24px 0; overflow-x: auto;
+  }
+  .swim-inner { min-width: 600px; padding: 24px; }
+  .swim-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 0; min-height: 56px;
+  }
+  .swim-row + .swim-row { border-top: 1px dashed var(--gray-200); }
+  .swim-label {
+    width: 80px; flex-shrink: 0; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.5px; text-align: right; padding-right: 12px;
+  }
+  .swim-label.user { color: var(--user); }
+  .swim-label.store { color: var(--store); }
+  .swim-label.admin { color: var(--admin); }
+  .swim-track { display: flex; align-items: center; gap: 6px; flex: 1; flex-wrap: wrap; }
+  .swim-node {
+    display: inline-flex; align-items: center; padding: 6px 14px;
+    border-radius: 8px; font-size: 13px; font-weight: 600; white-space: nowrap;
+    border: 2px solid; line-height: 1.3;
+  }
+  .swim-node.user { background: var(--user-bg); border-color: var(--user-border); color: var(--user); }
+  .swim-node.store { background: var(--store-bg); border-color: var(--store-border); color: var(--store); }
+  .swim-node.admin { background: var(--admin-bg); border-color: var(--admin-border); color: var(--admin); }
+  .swim-node.notify { background: var(--notify-bg); border-color: var(--notify-border); color: var(--notify); }
+  .swim-node.external { background: var(--external-bg); border-color: var(--external-border); color: var(--external); }
+  .swim-node.decision {
+    border-radius: 4px; transform: rotate(0deg);
+    border-style: dashed; font-size: 12px; padding: 4px 10px;
+  }
+  .swim-node.error { border-style: dashed; opacity: 0.7; }
+  .swim-arrow { color: var(--gray-300); font-size: 16px; font-weight: 700; flex-shrink: 0; }
+  .swim-arrow.down { transform: rotate(90deg); }
+  .swim-arrow.error-arrow { color: var(--error); }
+  .swim-divider {
+    width: 1px; height: 32px; background: var(--gray-200); margin: 0 4px; flex-shrink: 0;
+  }
+  .swim-branch {
+    display: flex; flex-direction: column; gap: 4px; align-items: flex-start;
+  }
+  .swim-branch-label {
+    font-size: 10px; font-weight: 700; color: var(--gray-500);
+    background: var(--gray-100); padding: 1px 8px; border-radius: 4px;
+  }
+  .swim-branch-label.ok { color: var(--store); background: var(--store-bg); }
+  .swim-branch-label.ng { color: var(--error); background: #fee2e2; }
+
+  /* Section */
+  .section { margin-bottom: 56px; }
+  .section-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+    padding-bottom: 12px; border-bottom: 2px solid var(--gray-200);
+  }
+  .section-num {
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; background: var(--gray-700); color: #fff;
+    border-radius: 10px; font-size: 20px; font-weight: 800; flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 22px; font-weight: 700; }
+  .section-desc { color: var(--gray-500); font-size: 14px; margin-bottom: 16px; }
+
+  /* Flow steps */
+  .flow { margin: 20px 0; }
+  .flow-step { display: flex; gap: 16px; position: relative; padding-bottom: 8px; }
+  .flow-step:not(:last-child) { padding-bottom: 20px; }
+  .flow-step:not(:last-child)::after {
+    content: ''; position: absolute; left: 19px; top: 44px; bottom: 0;
+    width: 2px; background: var(--gray-200);
+  }
+  .flow-dot {
+    width: 40px; height: 40px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-size: 14px;
+    font-weight: 800; flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .flow-dot.user { background: var(--user-bg); color: var(--user); }
+  .flow-dot.store { background: var(--store-bg); color: var(--store); }
+  .flow-dot.admin { background: var(--admin-bg); color: var(--admin); }
+  .flow-dot.notify { background: var(--notify-bg); color: var(--notify); }
+  .flow-dot.external { background: var(--external-bg); color: var(--external); }
+  .flow-dot.system { background: var(--gray-100); color: var(--gray-700); }
+  .flow-body { flex: 1; padding-top: 6px; }
+  .flow-actor { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 2px; }
+  .flow-actor.user { color: var(--user); }
+  .flow-actor.store { color: var(--store); }
+  .flow-actor.admin { color: var(--admin); }
+  .flow-actor.notify { color: var(--notify); }
+  .flow-actor.external { color: var(--external); }
+  .flow-actor.system { color: var(--gray-500); }
+  .flow-text { font-size: 15px; color: var(--gray-700); }
+  .flow-note {
+    font-size: 13px; color: var(--gray-500); margin-top: 4px;
+    padding-left: 12px; border-left: 2px solid var(--gray-200);
+  }
+
+  /* Callout */
+  .callout {
+    border-radius: var(--radius); padding: 16px 20px; margin: 16px 0;
+    font-size: 14px; display: flex; gap: 12px; align-items: flex-start; line-height: 1.6;
+  }
+  .callout-icon { font-size: 18px; flex-shrink: 0; line-height: 1.5; }
+  .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .callout.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+  .callout.success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+  .callout.danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+
+  /* Card */
+  .card {
+    background: #fff; border-radius: var(--radius); padding: 24px;
+    box-shadow: var(--shadow); margin: 16px 0;
+  }
+  .card h4 { font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+  /* Comparison */
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .compare-card {
+    background: #fff; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
+    border-top: 3px solid;
+  }
+  .compare-card.asis { border-top-color: var(--gray-500); }
+  .compare-card.tobe { border-top-color: var(--user); }
+  .compare-card h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .compare-card.asis h4 { color: var(--gray-500); }
+  .compare-card.tobe h4 { color: var(--user); }
+  .compare-card p { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+  .compare-card .highlight { font-weight: 700; color: var(--gray-900); }
+
+  /* Footer */
+  .footer {
+    text-align: center; padding: 32px; color: var(--gray-500); font-size: 13px;
+    border-top: 1px solid var(--gray-200); margin-top: 40px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero { padding: 32px 20px 28px; }
+    .hero h1 { font-size: 24px; }
+    .container { padding: 24px 16px 60px; }
+    .summary-grid { grid-template-columns: 1fr; padding: 0 16px; }
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<div class="hero">
+  <div class="hero-label">As-Is / Current State</div>
+  <h1>Rincle 業務フロー図（現行）</h1>
+  <p>自転車レンタルサービス「Rincle」の現行業務フローです。ユーザー・店舗・管理者の3つの視点で、予約から返却・キャンセルまでの全体像を示します。</p>
+</div>
+
+<!-- ========== SUMMARY ========== -->
+<div class="summary-grid">
+  <div class="summary-card">
+    <div class="summary-icon user">&#x1F464;</div>
+    <div>
+      <h3>ユーザー</h3>
+      <p>自転車を検索・予約・利用するお客さん</p>
+    </div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-icon store">&#x1F6B2;</div>
+    <div>
+      <h3>店舗</h3>
+      <p>自転車を提供する加盟店（30-35店舗）</p>
+    </div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-icon admin">&#x1F6E0;</div>
+    <div>
+      <h3>管理者</h3>
+      <p>PEDALSTANDARD の運営チーム</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-title">凡例（色の意味）</div>
+    <div class="legend-item"><div class="legend-dot user"></div>ユーザー操作</div>
+    <div class="legend-item"><div class="legend-dot store"></div>店舗操作</div>
+    <div class="legend-item"><div class="legend-dot admin"></div>管理者操作</div>
+    <div class="legend-item"><div class="legend-dot notify"></div>自動通知</div>
+    <div class="legend-item"><div class="legend-dot external"></div>外部サービス</div>
+    <div class="legend-item"><div class="legend-dot error"></div>エラー・異常系</div>
+  </div>
+
+  <!-- Phase Timeline -->
+  <div class="timeline">
+    <a class="tl-phase" href="#phase1" style="text-decoration:none;color:inherit">
+      <div class="tl-num">Phase 1</div>
+      <div class="tl-body">
+        <h4>アカウント・認証</h4>
+        <div class="tl-actors"><div class="tl-actor user"></div></div>
+      </div>
+    </a>
+    <a class="tl-phase" href="#phase2" style="text-decoration:none;color:inherit">
+      <div class="tl-num">Phase 2</div>
+      <div class="tl-body">
+        <h4>店舗準備・承認</h4>
+        <div class="tl-actors"><div class="tl-actor store"></div><div class="tl-actor admin"></div></div>
+      </div>
+    </a>
+    <a class="tl-phase" href="#phase3" style="text-decoration:none;color:inherit">
+      <div class="tl-num">Phase 3</div>
+      <div class="tl-body">
+        <h4>自転車検索</h4>
+        <div class="tl-actors"><div class="tl-actor user"></div></div>
+      </div>
+    </a>
+    <a class="tl-phase" href="#phase4" style="text-decoration:none;color:inherit">
+      <div class="tl-num">Phase 4</div>
+      <div class="tl-body">
+        <h4>予約申込（未決済）</h4>
+        <div class="tl-actors"><div class="tl-actor user"></div><div class="tl-actor store"></div></div>
+      </div>
+    </a>
+    <a class="tl-phase" href="#phase5" style="text-decoration:none;color:inherit">
+      <div class="tl-num">Phase 5</div>
+      <div class="tl-body">
+        <h4>来店・貸出・決済</h4>
+        <div class="tl-actors"><div class="tl-actor store"></div><div class="tl-actor admin"></div></div>
+      </div>
+    </a>
+    <a class="tl-phase" href="#phase6" style="text-decoration:none;color:inherit">
+      <div class="tl-num">Phase 6</div>
+      <div class="tl-body">
+        <h4>返却・完了</h4>
+        <div class="tl-actors"><div class="tl-actor store"></div><div class="tl-actor admin"></div></div>
+      </div>
+    </a>
+    <a class="tl-phase" href="#phase7" style="text-decoration:none;color:inherit">
+      <div class="tl-num">Phase 7</div>
+      <div class="tl-body">
+        <h4>キャンセル・返金</h4>
+        <div class="tl-actors"><div class="tl-actor user"></div><div class="tl-actor store"></div><div class="tl-actor admin"></div></div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- PHASE 1 -->
+  <!-- ================================================================ -->
+  <div class="section" id="phase1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>アカウント・認証</h2>
+    </div>
+    <p class="section-desc">ユーザーがサービスを利用するための認証フローです。カード登録はマイページから事前に行います。</p>
+
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label user">ユーザー</div>
+        <div class="swim-track">
+          <div class="swim-node user">開始</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node user decision">新規?</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-branch">
+            <div class="swim-branch-label">既存ユーザー</div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <div class="swim-node user">ログイン</div>
+              <div class="swim-arrow">&rarr;</div>
+              <div class="swim-node user decision">認証OK?</div>
+              <div class="swim-arrow">&rarr;</div>
+              <div class="swim-node user">マイページ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label user"></div>
+        <div class="swim-track">
+          <div style="width:80px"></div>
+          <div style="width:28px"></div>
+          <div style="width:54px"></div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-branch">
+            <div class="swim-branch-label">新規ユーザー</div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <div class="swim-node user">新規登録</div>
+              <div class="swim-arrow">&rarr;</div>
+              <div class="swim-node notify">確認メール</div>
+              <div class="swim-arrow">&rarr;</div>
+              <div class="swim-node user">本人確認</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label" style="color:var(--notify)">補足</div>
+        <div class="swim-track">
+          <div class="swim-node user" style="border-style:dashed">マイページ</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node external">カード情報登録（Pay.JP）</div>
+          <div style="margin-left:16px;font-size:12px;color:var(--gray-500)">* 予約前に事前登録が必要</div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card">
+      <h4>&#x1F511; 認証フロー詳細</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot user">1</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー</div>
+            <div class="flow-text">トップページからログインまたは新規登録を選択</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot user">2</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー（既存）</div>
+            <div class="flow-text">メールアドレスとパスワードでログイン</div>
+            <div class="flow-note">認証失敗 &rarr; エラー表示、パスワード忘れ &rarr; リセット申請フロー</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot user">3</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー（新規）</div>
+            <div class="flow-text">新規登録フォームに情報を入力</div>
+            <div class="flow-note">確認メール送信 &rarr; メール内リンクで本人確認完了</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot user">4</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー</div>
+            <div class="flow-text">マイページでカード情報を事前登録する</div>
+            <div class="flow-note">Pay.JPのフォームが表示される。カード番号はRincleに保存されない（トークン方式）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x1F4B3;</div>
+      <div><strong>現行の特徴：</strong>カード登録は予約時ではなく、マイページから事前に行う必要があります。（To-Beでは予約フロー内でカード入力に変更予定）</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- PHASE 2 -->
+  <!-- ================================================================ -->
+  <div class="section" id="phase2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>店舗準備・承認 / マスタ管理</h2>
+    </div>
+    <p class="section-desc">加盟店がRincleに出店し、自転車を登録して予約を受けられるようになるまでの流れです。</p>
+
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label store">店舗</div>
+        <div class="swim-track">
+          <div class="swim-node store">店舗登録</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store">申請送信</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store" style="opacity:0.5">審査待ち...</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store">アカウント有効化</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store">ログイン</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label admin">管理者</div>
+        <div class="swim-track">
+          <div style="width:60px"></div>
+          <div class="swim-node notify">申請通知</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node admin">ダッシュボード</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node admin decision">店舗審査</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-branch">
+            <div style="display:flex;gap:8px">
+              <div>
+                <div class="swim-branch-label ok">承認</div>
+                <div class="swim-node notify" style="margin-top:4px">承認メール</div>
+              </div>
+              <div>
+                <div class="swim-branch-label ng">却下</div>
+                <div class="swim-node notify error" style="margin-top:4px">却下メール</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label store">マスタ管理</div>
+        <div class="swim-track">
+          <div class="swim-node store">自転車登録</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store">料金プラン設定</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store">カレンダー設定</div>
+          <div style="margin-left:8px"></div>
+          <div class="swim-node store" style="opacity:0.7">在庫ステータス管理</div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card">
+      <h4>&#x1F3EA; 店舗登録から出店準備まで</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot store">1</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗オーナー</div>
+            <div class="flow-text">店舗登録フォームに店舗情報を入力して申請を送信</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot notify">2</div>
+          <div class="flow-body">
+            <div class="flow-actor notify">自動通知</div>
+            <div class="flow-text">管理者のダッシュボードに申請通知が届く</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot admin">3</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">管理者</div>
+            <div class="flow-text">店舗情報を審査し、承認または却下を判断</div>
+            <div class="flow-note">承認 &rarr; 店舗に承認メール送信、アカウント有効化<br>却下 &rarr; 店舗に却下通知メール送信</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot store">4</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗オーナー</div>
+            <div class="flow-text">承認後、shop_admin としてログインし初期設定を開始</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot store">5</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗オーナー</div>
+            <div class="flow-text">自転車登録・料金プラン設定・営業カレンダー設定を行う</div>
+            <div class="flow-note">自転車: 名前・ブランド・種別・サイズ・画像・料金など29項目<br>料金: 4時間/1日/2日/3-6日/7-13日/14-29日 + 延長料金</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x2139;&#xFE0F;</div>
+      <div><strong>Pay.JP審査も含まれます。</strong>店舗申請と並行して Pay.JP の決済審査（本人確認書類の提出）も行われ、審査通過後にクレジットカード決済が利用可能になります。</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- PHASE 3 -->
+  <!-- ================================================================ -->
+  <div class="section" id="phase3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>自転車検索・閲覧</h2>
+    </div>
+    <p class="section-desc">ユーザーがエリアや日時を指定して利用可能な自転車を探すフローです。</p>
+
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label user">ユーザー</div>
+        <div class="swim-track">
+          <div class="swim-node user">エリア・日時選択</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node user">検索実行</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node user decision">空車あり?</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-branch">
+            <div>
+              <div class="swim-branch-label ok">あり</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                <div class="swim-node user">検索結果一覧</div>
+                <div class="swim-arrow">&rarr;</div>
+                <div class="swim-node user">自転車詳細</div>
+              </div>
+            </div>
+            <div style="margin-top:6px">
+              <div class="swim-branch-label ng">なし</div>
+              <div class="swim-node user error" style="margin-top:4px">空車なし（条件変更）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card">
+      <h4>&#x1F50D; 検索フロー詳細</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot user">1</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー</div>
+            <div class="flow-text">エリア（都道府県）・利用日時・自転車タイプを選択</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot system">2</div>
+          <div class="flow-body">
+            <div class="flow-actor system">システム</div>
+            <div class="flow-text">条件に合致する空車を検索して結果を一覧表示</div>
+            <div class="flow-note">空車なし &rarr; 条件変更を促すメッセージを表示</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot user">3</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー</div>
+            <div class="flow-text">一覧から自転車を選択し、詳細ページで写真・スペック・料金を確認</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- PHASE 4 -->
+  <!-- ================================================================ -->
+  <div class="section" id="phase4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>予約申込（未決済）</h2>
+    </div>
+    <p class="section-desc">ユーザーが自転車を予約するフローです。<strong>この時点ではカード引き落としは行われません。</strong></p>
+
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label user">ユーザー</div>
+        <div class="swim-track">
+          <div class="swim-node user decision">在庫確認</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node user">Step1 空車確認</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node user">Step2 顧客情報</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node user">Step3 内容確認</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node user" style="border-color:var(--user);background:var(--user);color:#fff;font-weight:700">Step4 確定（未決済）</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label" style="color:var(--notify)">通知</div>
+        <div class="swim-track">
+          <div style="width:500px"></div>
+          <div class="swim-node notify">予約確認メール（ユーザー）</div>
+          <div style="width:8px"></div>
+          <div class="swim-node notify">予約通知メール（店舗）</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label store">店舗</div>
+        <div class="swim-track">
+          <div style="width:540px"></div>
+          <div class="swim-node store">予約詳細確認</div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card">
+      <h4>&#x1F4DD; 予約4ステップ</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot system">1</div>
+          <div class="flow-body">
+            <div class="flow-actor system">システム</div>
+            <div class="flow-text">選択した自転車の在庫を最終確認</div>
+            <div class="flow-note">在庫切れの場合 &rarr; 別の自転車を案内</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot user">2</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー</div>
+            <div class="flow-text">Step1: 空車情報を確認、Step2: 顧客情報（名前・電話・住所等）を入力</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot user">3</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー</div>
+            <div class="flow-text">Step3: 予約内容を確認し、支払方法（クレジットカード or 現地払い）を選択</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot user">4</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー</div>
+            <div class="flow-text">Step4: 予約を確定する</div>
+            <div class="flow-note">ステータス: 「来客待ち」で予約作成（カード引き落としはまだ行われない）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot notify">5</div>
+          <div class="flow-body">
+            <div class="flow-actor notify">自動通知</div>
+            <div class="flow-text">ユーザーに予約確認メール、店舗に予約通知メールを送信</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot store">6</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗</div>
+            <div class="flow-text">shop_admin で予約詳細を確認し、自転車の準備に入る</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div><strong>現行の重要ポイント：</strong>予約確定時に決済は行われません。カード引き落としは Phase 5 の「貸出開始」時に店舗が実行します。これは To-Be では予約確定時に即時決済に変更される予定です。</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- PHASE 5 -->
+  <!-- ================================================================ -->
+  <div class="section" id="phase5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>来店・貸出・決済</h2>
+    </div>
+    <p class="section-desc">ユーザーが来店し、店舗が自転車を貸し出すフローです。<strong>決済はこのタイミングで店舗が実行します。</strong></p>
+
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label store">店舗</div>
+        <div class="swim-track">
+          <div class="swim-node store">自転車準備</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store" style="border-color:var(--store);background:var(--store);color:#fff;font-weight:700">貸出開始ボタン</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node external">Pay.JP 決済処理</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store decision">決済OK?</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-branch">
+            <div>
+              <div class="swim-branch-label ok">OK</div>
+              <div class="swim-node store" style="margin-top:4px">貸出中</div>
+            </div>
+            <div style="margin-top:6px">
+              <div class="swim-branch-label ng">NG</div>
+              <div class="swim-node store error" style="margin-top:4px">現地払いに変更</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label admin">管理者</div>
+        <div class="swim-track">
+          <div style="width:480px"></div>
+          <div class="swim-node admin" style="opacity:0.6">決済エラー時 &rarr;</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node admin">決済問題対応</div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card">
+      <h4>&#x1F3E0; 来店から貸出まで</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot store">1</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗</div>
+            <div class="flow-text">予約通知を受けて自転車を準備する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot store">2</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗</div>
+            <div class="flow-text">ユーザーが来店したら、shop_admin で「貸出開始」ボタンを押す</div>
+            <div class="flow-note">このボタン押下が Pay.JP へのカード課金のトリガーになる</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot external">3</div>
+          <div class="flow-body">
+            <div class="flow-actor external">Pay.JP</div>
+            <div class="flow-text">登録済みカードに対して利用料金を課金（charge 作成）</div>
+            <div class="flow-note">charge_id が予約レコードに保存される</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot store">4</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗</div>
+            <div class="flow-text">決済結果を確認し、自転車を貸し出す</div>
+            <div class="flow-note">決済成功 &rarr; 予約ステータスを「貸出中」に更新<br>決済失敗 &rarr; 現地払い（現金）に切り替えて貸出</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot admin">5</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">管理者（決済エラー時のみ）</div>
+            <div class="flow-text">決済エラーが発生した場合、管理者が状況を確認して対応</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-icon">&#x1F6A8;</div>
+      <div><strong>現行の課題：</strong>決済が貸出開始時なので、「予約したがカード残高不足で決済できない」ケースが発生します。その場合、現地払いに切り替えるため、売上管理が複雑になります。</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- PHASE 6 -->
+  <!-- ================================================================ -->
+  <div class="section" id="phase6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>返却・完了</h2>
+    </div>
+    <p class="section-desc">ユーザーが自転車を返却し、レンタルが完了するまでの流れです。</p>
+
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label store">店舗</div>
+        <div class="swim-track">
+          <div class="swim-node store">貸出中</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store">返却確認</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node store" style="border-color:var(--store);background:var(--store);color:#fff">完了処理</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label admin">管理者</div>
+        <div class="swim-track">
+          <div class="swim-node admin">予約モニタリング</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node admin">売上レポート</div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card">
+      <h4>&#x2705; 返却フロー詳細</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot store">1</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗</div>
+            <div class="flow-text">ユーザーが自転車を返却。店舗が車体の状態を確認する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot store">2</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗</div>
+            <div class="flow-text">shop_admin で返却処理を実行し、予約を完了にする</div>
+            <div class="flow-note">延長がある場合は追加料金の決済が別途発生（現行は部分的に実装）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot admin">3</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">管理者</div>
+            <div class="flow-text">予約状況をモニタリングし、売上レポートで実績を確認</div>
+            <div class="flow-note">月次で売上集計、プラットフォーム手数料（10%）を店舗に請求</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- PHASE 7 -->
+  <!-- ================================================================ -->
+  <div class="section" id="phase7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>キャンセル・返金</h2>
+    </div>
+    <p class="section-desc">ユーザーが予約をキャンセルする場合のフローです。<strong>返金は管理者が手動で処理します。</strong></p>
+
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label user">ユーザー</div>
+        <div class="swim-track">
+          <div class="swim-node user">予約一覧</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node user decision">キャンセルする?</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node user">キャンセル完了</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label" style="color:var(--notify)">通知</div>
+        <div class="swim-track">
+          <div style="width:280px"></div>
+          <div class="swim-node notify">キャンセル確認メール（ユーザー）</div>
+          <div style="width:8px"></div>
+          <div class="swim-node notify">キャンセル通知メール（店舗）</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label store">店舗</div>
+        <div class="swim-track">
+          <div style="width:340px"></div>
+          <div class="swim-node store">キャンセル確認・対応</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label admin">管理者</div>
+        <div class="swim-track">
+          <div style="width:340px"></div>
+          <div class="swim-node admin" style="border-color:var(--admin);background:var(--admin);color:#fff">返金処理（手動）</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node admin">料金シミュレーション</div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card">
+      <h4>&#x274C; キャンセルフロー詳細</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot user">1</div>
+          <div class="flow-body">
+            <div class="flow-actor user">ユーザー</div>
+            <div class="flow-text">予約一覧からキャンセルしたい予約を選択し、キャンセルを実行</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot notify">2</div>
+          <div class="flow-body">
+            <div class="flow-actor notify">自動通知</div>
+            <div class="flow-text">ユーザーにキャンセル確認メール、店舗にキャンセル通知メールを送信</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot store">3</div>
+          <div class="flow-body">
+            <div class="flow-actor store">店舗</div>
+            <div class="flow-text">キャンセル通知を確認し、自転車の在庫を戻すなど対応</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot admin">4</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">管理者</div>
+            <div class="flow-text">返金が必要な場合、管理者が手動で Pay.JP の返金処理を実行</div>
+            <div class="flow-note">返金額は料金シミュレーション機能で計算可能<br>charge_id を使って Pay.JP の Refund API を呼び出す</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div><strong>現行の課題：</strong>キャンセル期限の自動判定がなく、返金処理はすべて管理者の手動対応です。To-Be では「キャンセル期限内なら自動全額返金、期限外なら返金なし」のロジックが導入される予定です。</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- COMPARISON -->
+  <!-- ================================================================ -->
+  <div class="section" id="compare">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--user)">vs</div>
+      <h2>As-Is と To-Be の主な違い</h2>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card asis">
+        <h4>As-Is（現行）カード登録</h4>
+        <p>マイページで<span class="highlight">事前に</span>カード情報を登録する必要がある</p>
+      </div>
+      <div class="compare-card tobe">
+        <h4>To-Be（目標）カード登録</h4>
+        <p>予約フロー内の<span class="highlight">決済ステップで</span>カード情報を入力する</p>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card asis">
+        <h4>As-Is（現行）決済タイミング</h4>
+        <p>予約時は<span class="highlight">未決済</span>。店舗が「貸出開始」ボタンを押した時点でカード課金</p>
+      </div>
+      <div class="compare-card tobe">
+        <h4>To-Be（目標）決済タイミング</h4>
+        <p>予約確定時に<span class="highlight">即時決済</span>。Pay.JP でカード課金が完了してから予約が確定する</p>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card asis">
+        <h4>As-Is（現行）決済失敗時</h4>
+        <p>店舗で<span class="highlight">現地払い（現金）に切り替え</span>て貸出を続行</p>
+      </div>
+      <div class="compare-card tobe">
+        <h4>To-Be（目標）決済失敗時</h4>
+        <p><span class="highlight">3回までリトライ可能</span>。上限超過で予約中断、失敗通知メール送信</p>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card asis">
+        <h4>As-Is（現行）キャンセル返金</h4>
+        <p>管理者が<span class="highlight">手動で</span>返金処理を実行（期限判定なし）</p>
+      </div>
+      <div class="compare-card tobe">
+        <h4>To-Be（目標）キャンセル返金</h4>
+        <p>キャンセル期限を<span class="highlight">自動判定</span>。期限内は全額返金、期限外は返金なし</p>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card asis">
+        <h4>As-Is（現行）貸出/返却</h4>
+        <p>店舗が「貸出開始」「返却確認」を<span class="highlight">手動で操作</span>する物理フローが存在</p>
+      </div>
+      <div class="compare-card tobe">
+        <h4>To-Be（目標）貸出/返却</h4>
+        <p>予約確定時に決済完了のため、<span class="highlight">貸出/返却の業務フローは簡略化</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Rincle 業務フロー図（As-Is / 現行）&mdash; PEDALSTANDARD
+  </div>
+
+</div>
+</body>
+</html>

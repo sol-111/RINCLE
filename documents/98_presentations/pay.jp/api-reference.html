@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAY.JP API リファレンス - 日本語まとめ</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --accent: #e94560;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+    --gray-900: #0f172a;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.1);
+    --teal: #0d9488;
+    --teal-dark: #0f766e;
+    --teal-light: #ccfbf1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #064e3b 0%, #0d9488 50%, #14b8a6 100%);
+    color: #fff;
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 16px; opacity: 0.85; max-width: 600px; }
+
+  /* Layout */
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 32px 80px; }
+
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: -40px 32px 40px;
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 32px;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    border-top: 3px solid var(--teal);
+  }
+  .summary-card h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .summary-card p { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+  .summary-card code {
+    background: var(--gray-100);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  }
+
+  /* Sections */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .section-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 22px; font-weight: 700; }
+  .section-desc { color: var(--gray-500); font-size: 14px; margin-bottom: 20px; }
+
+  /* Cards / callouts */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+  }
+  .callout {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 20px; flex-shrink: 0; line-height: 1.4; }
+  .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .callout.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+  .callout.success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+  .callout.teal { background: #f0fdfa; border: 1px solid #99f6e4; color: #0f766e; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
+  th {
+    background: var(--gray-900);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); }
+  tr:hover td { background: var(--gray-50); }
+
+  /* Method badges */
+  .method {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    min-width: 56px;
+    text-align: center;
+  }
+  .method-get { background: #d1fae5; color: #065f46; }
+  .method-post { background: #dbeafe; color: #1e40af; }
+  .method-delete { background: #fee2e2; color: #991b1b; }
+
+  /* Endpoint paths */
+  .endpoint {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    color: var(--gray-700);
+    background: var(--gray-100);
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .endpoint .param {
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  /* Resource section sub-headers */
+  .resource-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 32px 0 12px;
+    padding: 12px 0;
+  }
+  .resource-header:first-child { margin-top: 0; }
+  .resource-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .resource-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gray-900);
+  }
+  .resource-header .resource-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    letter-spacing: 0.5px;
+  }
+  .resource-note {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-bottom: 12px;
+    padding-left: 42px;
+  }
+
+  /* Webhook event table */
+  .event-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .event-item {
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding: 8px 12px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+    font-size: 13px;
+  }
+  .event-type {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 12px;
+    color: var(--teal-dark);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .event-desc {
+    color: var(--gray-500);
+    font-size: 12px;
+  }
+
+  /* Status badges */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .badge-ok { background: #d1fae5; color: #065f46; }
+  .badge-ng { background: #fee2e2; color: #991b1b; }
+  .badge-wait { background: #fef3c7; color: #92400e; }
+  .badge-beta { background: #ede9fe; color: #5b21b6; }
+
+  /* Platform callout */
+  .platform-box {
+    background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+    border: 1px solid #c4b5fd;
+  }
+  .platform-box h4 {
+    font-size: 14px;
+    color: #5b21b6;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .platform-box p, .platform-box li {
+    font-size: 14px;
+    color: #4c1d95;
+    line-height: 1.7;
+  }
+  .platform-box ul {
+    margin: 8px 0 0 20px;
+  }
+
+  /* Links section */
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: var(--gray-900);
+    border: 1px solid var(--gray-200);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .link-card:hover {
+    border-color: var(--teal);
+    box-shadow: var(--shadow-lg);
+  }
+  .link-card .link-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+  .link-card .link-text {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .link-card .link-url {
+    font-size: 12px;
+    color: var(--gray-500);
+    word-break: break-all;
+  }
+
+  /* Rincle usage */
+  .rincle-box {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+    border: 1px solid #bae6fd;
+  }
+  .rincle-box h4 {
+    font-size: 14px;
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .rincle-box p {
+    font-size: 14px;
+    color: #1e40af;
+    line-height: 1.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hero { padding: 32px 20px 28px; }
+    .hero h1 { font-size: 24px; }
+    .container { padding: 24px 16px 60px; }
+    .summary-grid { grid-template-columns: 1fr 1fr; padding: 0 16px; }
+    .event-grid { grid-template-columns: 1fr; }
+    .link-grid { grid-template-columns: 1fr; }
+    .endpoint { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">API Reference</div>
+  <h1>PAY.JP API リファレンス</h1>
+  <p>PAY.JP REST API (v1) の全リソース・エンドポイントを日本語で整理したリファレンスです。移行・設計のたたき台としてご利用ください。</p>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <h3>Base URL</h3>
+    <p><code>https://api.pay.jp/v1/</code></p>
+  </div>
+  <div class="summary-card">
+    <h3>Protocol</h3>
+    <p>HTTPS のみ</p>
+  </div>
+  <div class="summary-card">
+    <h3>Authentication</h3>
+    <p>Basic認証 (<code>sk_...</code>)</p>
+  </div>
+  <div class="summary-card">
+    <h3>Response</h3>
+    <p>JSON (UTF-8)</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 1. 全体像 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>全体像</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>内容</th></tr>
+        <tr><td>ベース URL</td><td><span class="endpoint">https://api.pay.jp/v1/</span></td></tr>
+        <tr><td>プロトコル</td><td><strong>HTTPS のみ</strong></td></tr>
+        <tr><td>認証</td><td><strong>Basic 認証</strong> &mdash; ユーザー名に<strong>シークレットキー</strong>（<code>sk_...</code>）、パスワードは空</td></tr>
+        <tr><td>パブリックキー</td><td><code>pk_...</code> &mdash; 主にブラウザ側でカードを<strong>トークン化</strong>するときに使用</td></tr>
+        <tr><td>メソッド</td><td><span class="method method-get">GET</span> <span class="method method-post">POST</span> <span class="method method-delete">DELETE</span></td></tr>
+        <tr><td>POST のボディ</td><td><code>Content-Type: application/x-www-form-urlencoded</code></td></tr>
+        <tr><td>レスポンス</td><td>JSON（UTF-8）</td></tr>
+      </table>
+    </div>
+
+    <div class="callout teal">
+      <div class="callout-icon">&#x1f4d6;</div>
+      <div><strong>API v2 について:</strong> PAY.JP v2 ドキュメントでは、クレジット以外の手段や Checkout 等が扱われます。本ドキュメントは <strong>v1 REST のリソース中心</strong>です。</div>
+    </div>
+  </div>
+
+  <!-- 2. 共通機能 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>共通機能（リソース以外）</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>区分</th><th>内容</th></tr>
+        <tr><td>Error</td><td>エラーは JSON の <code>error</code> オブジェクト（<code>type</code>, <code>code</code>, <code>message</code>, <code>param</code> 等）。SDK では用途別例外で捕捉可能</td></tr>
+        <tr><td>Rate Limit</td><td>レートリミットゾーンあり。超過時は <code>429</code> 等</td></tr>
+        <tr><td>List</td><td><code>limit</code> / <code>offset</code> 等で一覧 API をページ分割</td></tr>
+        <tr><td>Metadata</td><td>各オブジェクトに付与可能なメタデータ（キー数・文字数に上限あり）</td></tr>
+        <tr><td>Event / Webhook</td><td>リソース操作時に <code>event</code> が生成され、登録先があれば Webhook 送信</td></tr>
+      </table>
+    </div>
+
+    <div class="resource-header" style="margin-top:32px;">
+      <div class="resource-icon" style="background: #fef3c7;">&#x1f514;</div>
+      <h3>Webhook / イベント type 一覧</h3>
+    </div>
+
+    <div class="event-grid">
+      <div class="event-item">
+        <span class="event-type">charge.succeeded</span>
+        <span class="event-desc">支払いの成功</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">charge.failed</span>
+        <span class="event-desc">支払いの失敗</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">charge.updated</span>
+        <span class="event-desc">支払いの更新</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">charge.refunded</span>
+        <span class="event-desc">支払いの返金</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">charge.captured</span>
+        <span class="event-desc">支払いの確定</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">dispute.created</span>
+        <span class="event-desc">チャージバック発生</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">token.created</span>
+        <span class="event-desc">トークン作成</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">customer.created</span>
+        <span class="event-desc">顧客の作成</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">customer.updated</span>
+        <span class="event-desc">顧客の更新</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">customer.deleted</span>
+        <span class="event-desc">顧客の削除</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">customer.card.created</span>
+        <span class="event-desc">カードの作成</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">customer.card.updated</span>
+        <span class="event-desc">カードの更新</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">customer.card.deleted</span>
+        <span class="event-desc">カードの削除</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">plan.created</span>
+        <span class="event-desc">プランの作成</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">plan.updated</span>
+        <span class="event-desc">プランの更新</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">plan.deleted</span>
+        <span class="event-desc">プランの削除</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">subscription.*</span>
+        <span class="event-desc">定期課金の各種操作</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">transfer.succeeded</span>
+        <span class="event-desc">入金内容の確定</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">tenant.*</span>
+        <span class="event-desc">Platform テナント操作</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">tenant_transfer.succeeded</span>
+        <span class="event-desc">テナント入金の確定</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">term.created</span>
+        <span class="event-desc">集計区間の作成</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">term.closed</span>
+        <span class="event-desc">集計区間の締め完了</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">statement.created</span>
+        <span class="event-desc">取引明細の作成</span>
+      </div>
+      <div class="event-item">
+        <span class="event-type">balance.*</span>
+        <span class="event-desc">残高の各種操作</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 標準 API -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>標準 API &mdash; リソース別エンドポイント</h2>
+    </div>
+    <p class="section-desc">PAY.JP v1 の全リソースのエンドポイントです。詳細パラメータ・制約は必ず公式ドキュメントを参照してください。</p>
+
+    <!-- Charge -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #dbeafe;">&#x1f4b3;</div>
+      <h3>Charge（支払い）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/charges</span></td>
+          <td>支払いを作成</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/charges/<span class="param">:id</span></span></td>
+          <td>支払いを取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/charges/<span class="param">:id</span></span></td>
+          <td>支払いを更新</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/charges</span></td>
+          <td>支払い一覧</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/charges/<span class="param">:id</span>/capture</span></td>
+          <td>支払いを確定（オーソリの確定）</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/charges/<span class="param">:id</span>/refund</span></td>
+          <td>返金</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/charges/<span class="param">:id</span>/reauth</span></td>
+          <td>再度与信枠確保</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/charges/<span class="param">:id</span>/tds_finish</span></td>
+          <td>3D セキュアフロー完了</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Customer -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #d1fae5;">&#x1f464;</div>
+      <h3>Customer（顧客）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/customers</span></td>
+          <td>顧客を作成</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span></span></td>
+          <td>顧客を取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span></span></td>
+          <td>顧客を更新</td>
+        </tr>
+        <tr>
+          <td><span class="method method-delete">DELETE</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span></span></td>
+          <td>顧客を削除</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/customers</span></td>
+          <td>顧客一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Card -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #fef3c7;">&#x1f4b3;</div>
+      <h3>Customer に紐づく Card（カード）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards</span></td>
+          <td>顧客のカードを追加</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards/<span class="param">:card_id</span></span></td>
+          <td>特定カードを取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards/<span class="param">:card_id</span></span></td>
+          <td>カード情報を更新</td>
+        </tr>
+        <tr>
+          <td><span class="method method-delete">DELETE</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards/<span class="param">:card_id</span></span></td>
+          <td>カードを削除</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards</span></td>
+          <td>カード一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Customer Subscription -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #ede9fe;">&#x1f501;</div>
+      <h3>Customer に紐づく Subscription（定期課金の参照）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span>/subscriptions/<span class="param">:subscription_id</span></span></td>
+          <td>特定の定期課金を取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/customers/<span class="param">:id</span>/subscriptions</span></td>
+          <td>定期課金一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Plan -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #fce7f3;">&#x1f4cb;</div>
+      <h3>Plan（プラン）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/plans</span></td>
+          <td>プラン作成</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/plans/<span class="param">:id</span></span></td>
+          <td>プラン取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/plans/<span class="param">:id</span></span></td>
+          <td>プラン更新</td>
+        </tr>
+        <tr>
+          <td><span class="method method-delete">DELETE</span></td>
+          <td><span class="endpoint">/v1/plans/<span class="param">:id</span></span></td>
+          <td>プラン削除</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/plans</span></td>
+          <td>プラン一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Subscription -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #ede9fe;">&#x1f504;</div>
+      <h3>Subscription（定期課金）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/subscriptions</span></td>
+          <td>定期課金を作成</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span></span></td>
+          <td>取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span></span></td>
+          <td>更新</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span>/pause</span></td>
+          <td>一時停止</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span>/resume</span></td>
+          <td>再開</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span>/cancel</span></td>
+          <td>キャンセル</td>
+        </tr>
+        <tr>
+          <td><span class="method method-delete">DELETE</span></td>
+          <td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span></span></td>
+          <td>削除</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/subscriptions</span></td>
+          <td>一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Token -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #ccfbf1;">&#x1f511;</div>
+      <h3>Token（トークン）</h3>
+    </div>
+    <p class="resource-note">カード番号等を<strong>トークン化</strong>したオブジェクト。サーバーは原則<strong>生のカードデータを扱わず</strong>トークンで Charge 等に渡す。</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/tokens</span></td>
+          <td>トークン作成</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/tokens/<span class="param">:id</span></span></td>
+          <td>トークン取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/tokens/<span class="param">:id</span>/tds_finish</span></td>
+          <td>3D セキュア完了</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Transfer -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #d1fae5;">&#x1f3e6;</div>
+      <h3>Transfer（入金）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/transfers/<span class="param">:id</span></span></td>
+          <td>入金情報を取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/transfers</span></td>
+          <td>入金一覧</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/transfers/<span class="param">:id</span>/charges</span></td>
+          <td>その入金に含まれる支払い一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Statement -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #e0f2fe;">&#x1f4c4;</div>
+      <h3>Statement（取引明細）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/statements/<span class="param">:id</span></span></td>
+          <td>取引明細を取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/statements/<span class="param">:id</span>/statement_urls</span></td>
+          <td>明細 URL 関連の操作</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/statements</span></td>
+          <td>取引明細一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Term -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #fef3c7;">&#x1f4c5;</div>
+      <h3>Term（集計区間）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/terms/<span class="param">:id</span></span></td>
+          <td>区間を取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/terms</span></td>
+          <td>区間一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Balance -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #d1fae5;">&#x1f4b0;</div>
+      <h3>Balance（残高）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/balances/<span class="param">:id</span></span></td>
+          <td>残高を取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/balances/<span class="param">:id</span>/statement_urls</span></td>
+          <td>明細 URL 関連</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/balances</span></td>
+          <td>残高一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Event -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #fce7f3;">&#x1f4e8;</div>
+      <h3>Event（イベント）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/events/<span class="param">:id</span></span></td>
+          <td>イベント 1 件取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/events</span></td>
+          <td>イベント一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- ThreeDSecureRequest -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #fee2e2;">&#x1f6e1;</div>
+      <h3>ThreeDSecureRequest（3D セキュアリクエスト）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/three_d_secure_requests</span></td>
+          <td>3DS リクエスト作成</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/three_d_secure_requests/<span class="param">:id</span></span></td>
+          <td>取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/three_d_secure_requests/</span></td>
+          <td>一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Account -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #dbeafe;">&#x1f465;</div>
+      <h3>Account（アカウント）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/accounts</span></td>
+          <td>自アカウント情報取得（<code>account</code> / 内包の <code>merchant</code> 等）</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 3-D Secure URL -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #fee2e2;">&#x1f510;</div>
+      <h3>3-D Secure（開始 URL）</h3>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/tds/<span class="param">:resource_id</span>/start</span></td>
+          <td>3D セキュア認証画面への開始（戻り先 URL 等は公式参照）</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4. Platform API -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background: #7c3aed;">4</div>
+      <h2>Platform API <span class="badge badge-beta" style="margin-left:8px; vertical-align: middle;">BETA</span></h2>
+    </div>
+    <p class="section-desc">マーケットプレイス型・Payouts 型アカウント向け。テナントごとに売上分配・入金・プラットフォーム手数料などを扱います。</p>
+
+    <div class="platform-box">
+      <h4>Platform API の特徴</h4>
+      <ul>
+        <li>通常の <strong>Charge / Transfer</strong> を拡張して利用する部分と、<strong>Tenant / TenantTransfer</strong> 専用リソースがある</li>
+        <li>Platform 利用時、<strong>Plan / Subscription の一部 API は利用不可</strong>（公式に「準備中」と記載）という制約あり</li>
+        <li>認証・JSON 形式は v1 共通項目に準拠。Platform 固有の <code>error[code]</code> が追加される</li>
+      </ul>
+    </div>
+
+    <!-- Tenant -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #ede9fe;">&#x1f3e2;</div>
+      <h3>Tenant（テナント）</h3>
+      <span class="badge badge-beta">Platform</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/tenants</span></td>
+          <td>テナント作成</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/tenants/<span class="param">:id</span></span></td>
+          <td>取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/tenants/<span class="param">:id</span></span></td>
+          <td>更新</td>
+        </tr>
+        <tr>
+          <td><span class="method method-delete">DELETE</span></td>
+          <td><span class="endpoint">/v1/tenants/<span class="param">:id</span></span></td>
+          <td>削除</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/tenants</span></td>
+          <td>一覧</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/tenants/<span class="param">:id</span>/application_urls</span></td>
+          <td>本番申請用 URL 等（承認フロー向け）</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Tenant Transfer -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #ede9fe;">&#x1f4b8;</div>
+      <h3>Tenant Transfer（テナント入金）</h3>
+      <span class="badge badge-beta">Platform</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:80px;">メソッド</th><th>パス</th><th>説明</th></tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/tenant_transfers/<span class="param">:tenant_transfer_id</span></span></td>
+          <td>テナント入金を取得</td>
+        </tr>
+        <tr>
+          <td><span class="method method-post">POST</span></td>
+          <td><span class="endpoint">/v1/tenant_transfers/<span class="param">:tenant_transfer_id</span>/statement_urls</span></td>
+          <td>明細 URL 関連</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/tenant_transfers</span></td>
+          <td>一覧</td>
+        </tr>
+        <tr>
+          <td><span class="method method-get">GET</span></td>
+          <td><span class="endpoint">/v1/tenant_transfers/<span class="param">:tenant_transfer_id</span>/charges</span></td>
+          <td>紐づく支払い一覧</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Charge / Transfer for Platform -->
+    <div class="resource-header">
+      <div class="resource-icon" style="background: #fef3c7;">&#x1f527;</div>
+      <h3>Charge / Transfer for Platform</h3>
+      <span class="badge badge-beta">Platform</span>
+    </div>
+    <div class="card">
+      <div class="table-wrap" style="box-shadow:none; margin-top:0;">
+        <table>
+          <tr><th>リソース</th><th>説明</th></tr>
+          <tr>
+            <td><strong>Charge</strong></td>
+            <td>通常の <span class="endpoint">/v1/charges</span> を利用。作成時に <code>tenant</code> 指定が必須、<code>platform_fee</code> 等 Platform 専用プロパティあり</td>
+          </tr>
+          <tr>
+            <td><strong>Transfer</strong></td>
+            <td>プラットフォーマー側の入金は通常の <span class="endpoint">/v1/transfers</span>。テナント側の入金は <span class="endpoint">/v1/tenant_transfers</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Rincle Usage -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background: var(--primary);">5</div>
+      <h2>Rincle（Bubble）での利用状況</h2>
+    </div>
+
+    <div class="rincle-box">
+      <h4>API Connector / Webhook 定義</h4>
+      <p>API Connector には<strong>テナント / 顧客 / カード / トークン / 課金 / 返金</strong>など <code>api.pay.jp/v1/...</code> の呼び出しがまとまって定義されています。</p>
+      <p style="margin-top:8px;">Webhook では <code>payjp_webhook_charge_captured</code> 等の <strong>API Event</strong> が pay.jp フォルダにあります。</p>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x1f4c2;</div>
+      <div>一覧の正本（コネクタ全件・参照回数・Webhook WF 等）は <strong>payjp-rincle-bubble-usage.md</strong>（<code>scripts/generate_bubble_docs.py</code> が rincle.bubble から生成）を参照してください。</div>
+    </div>
+  </div>
+
+  <!-- 6. 参考リンク -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background: var(--success);">&#x2197;</div>
+      <h2>参考リンク</h2>
+    </div>
+
+    <div class="link-grid">
+      <a class="link-card" href="https://pay.jp/docs/api/" target="_blank" rel="noopener">
+        <div class="link-icon">&#x1f4d6;</div>
+        <div>
+          <div class="link-text">PAY.JP API リファレンス（v1）</div>
+          <div class="link-url">pay.jp/docs/api/</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://pay.jp/docs/" target="_blank" rel="noopener">
+        <div class="link-icon">&#x1f3e0;</div>
+        <div>
+          <div class="link-text">PAY.JP ドキュメントトップ</div>
+          <div class="link-url">pay.jp/docs/</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://docs.pay.jp/v2" target="_blank" rel="noopener">
+        <div class="link-icon">&#x1f680;</div>
+        <div>
+          <div class="link-text">PAY.JP v2 ドキュメント</div>
+          <div class="link-url">docs.pay.jp/v2</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://pay.jp/v1/platform-introduction" target="_blank" rel="noopener">
+        <div class="link-icon">&#x1f91d;</div>
+        <div>
+          <div class="link-text">Platform チュートリアル</div>
+          <div class="link-url">pay.jp/v1/platform-introduction</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
