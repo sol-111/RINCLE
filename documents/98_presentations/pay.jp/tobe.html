@@ -443,7 +443,7 @@
           <div class="flow-num payjp">4</div>
           <div class="flow-body">
             <div class="flow-actor payjp">PAY.jp（自動）</div>
-            <div class="flow-text">与信枠を確保する（有効期限: 30日間）</div>
+            <div class="flow-text">与信枠を確保する（有効期限: 60日間、expiry_days=60）</div>
             <div class="flow-note">決済エラーの場合 → エラー表示、別カードで再試行</div>
           </div>
         </div>
@@ -466,7 +466,7 @@
 
     <div class="callout success">
       <div class="callout-icon">&#x1f512;</div>
-      <div><strong>お金は引き落とされません。</strong>オーソリはカードの「利用可能枠」を一時的に確保するだけです。お客さんの口座残高は変わりません。与信枠の有効期限は30日間です。</div>
+      <div><strong>お金は引き落とされません。</strong>オーソリはカードの「利用可能枠」を一時的に確保するだけです。お客さんの口座残高は変わりません。与信枠の有効期限は60日間（expiry_days=60）です。最大予約先も60日以内に制限します。</div>
     </div>
   </div>
 
@@ -622,6 +622,8 @@
         <tr><td>カード売上の帰属</td><td><strong>加盟店</strong>がPAY.jpからネット入金を受ける</td></tr>
         <tr><td>プラットフォーム利用料</td><td>売上の<strong>15%</strong>をPEDALSTANDARDへ<strong>毎月末請求</strong>（Pay.jpの platform_fee では抜かない）</td></tr>
         <tr><td>Pay.jp手数料</td><td>カード利用料 約3.5%（Pay.jpが差し引き）</td></tr>
+        <tr><td>オーソリ有効期限</td><td><strong>60日</strong>（expiry_days=60）。最大予約先を60日以内に制限</td></tr>
+        <tr><td>営業カレンダー</td><td>365日分 → <strong>60日分に縮小</strong>（オーソリ期限と整合）</td></tr>
       </table>
     </div>
 
@@ -738,7 +740,7 @@
 
     <ul class="checklist">
       <li>キャプチャ失敗時のフォールバック詳細（別カード再決済の画面フロー）</li>
-      <li>オーソリ有効期限（30日）切れ時の運用</li>
+      <li>2026年8月以降、海外カードはオーソリ最大7日制限（PAY.JP仕様変更）への対応</li>
       <li>15%の課税・端数・計算基準（総額 / ネット）</li>
       <li>月末請求の締め日・入金日・未払い時の運用</li>
       <li>延長フローのE2E検証と設計</li>
