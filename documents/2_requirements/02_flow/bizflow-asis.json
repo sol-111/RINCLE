@@ -1,0 +1,1456 @@
+{
+  "nodes": [
+    {
+      "id": "u_start",
+      "x": 66,
+      "y": 228,
+      "w": 88,
+      "h": 44,
+      "type": "startend",
+      "shape": "ellipse",
+      "lines": [
+        "開始"
+      ]
+    },
+    {
+      "id": "u_new_q",
+      "x": 239,
+      "y": 214,
+      "w": 72,
+      "h": 72,
+      "type": "decision",
+      "shape": "diamond",
+      "lines": [
+        "新規登録?"
+      ]
+    },
+    {
+      "id": "u_login",
+      "x": 380,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "ログインフォーム"
+      ]
+    },
+    {
+      "id": "u_auth_ok",
+      "x": 614,
+      "y": 154,
+      "w": 72,
+      "h": 72,
+      "type": "decision",
+      "shape": "diamond",
+      "lines": [
+        "認証OK?"
+      ]
+    },
+    {
+      "id": "u_auth_err",
+      "x": 580,
+      "y": 275,
+      "w": 140,
+      "h": 44,
+      "type": "io",
+      "shape": "rect",
+      "lines": [
+        "エラー表示(再入力)"
+      ]
+    },
+    {
+      "id": "u_mypage",
+      "x": 770,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "マイページ確認"
+      ]
+    },
+    {
+      "id": "u_card_reg",
+      "x": 770,
+      "y": 63,
+      "w": 140,
+      "h": 44,
+      "type": "popup",
+      "shape": "rect",
+      "lines": [
+        "カード情報登録(Pay.JP)"
+      ]
+    },
+    {
+      "id": "u_signup",
+      "x": 380,
+      "y": 310,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "新規登録フォーム"
+      ]
+    },
+    {
+      "id": "u_mail_out",
+      "x": 580,
+      "y": 375,
+      "w": 140,
+      "h": 44,
+      "type": "notify",
+      "shape": "rect",
+      "lines": [
+        "確認メール送信"
+      ]
+    },
+    {
+      "id": "u_verified",
+      "x": 770,
+      "y": 298,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "メール本人確認"
+      ]
+    },
+    {
+      "id": "u_pw_req",
+      "x": 380,
+      "y": 393,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "PWリセット申請"
+      ]
+    },
+    {
+      "id": "u_pw_mail",
+      "x": 580,
+      "y": 430,
+      "w": 140,
+      "h": 44,
+      "type": "notify",
+      "shape": "rect",
+      "lines": [
+        "リセットメール送信"
+      ]
+    },
+    {
+      "id": "u_pw_done",
+      "x": 770,
+      "y": 393,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "新PW設定完了"
+      ]
+    },
+    {
+      "id": "s_start",
+      "x": 66,
+      "y": 602.9492426144983,
+      "w": 88,
+      "h": 44,
+      "type": "startend",
+      "shape": "ellipse",
+      "lines": [
+        "開始"
+      ]
+    },
+    {
+      "id": "s_form",
+      "x": 220,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "店舗登録フォーム"
+      ]
+    },
+    {
+      "id": "s_submit",
+      "x": 400,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "申請送信"
+      ]
+    },
+    {
+      "id": "a_start",
+      "x": 66,
+      "y": 856.1343617691671,
+      "w": 88,
+      "h": 44,
+      "type": "startend",
+      "shape": "ellipse",
+      "lines": [
+        "開始"
+      ]
+    },
+    {
+      "id": "a_login",
+      "x": 220,
+      "y": 856.1343617691671,
+      "w": 140,
+      "h": 44,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "ログイン"
+      ]
+    },
+    {
+      "id": "a_dash",
+      "x": 400,
+      "y": 856.1343617691671,
+      "w": 140,
+      "h": 44,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "ダッシュボード"
+      ]
+    },
+    {
+      "id": "s_wait",
+      "x": 905,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "審査待ち(Pay.JP審査含む)"
+      ]
+    },
+    {
+      "id": "a_rev",
+      "x": 1144,
+      "y": 863.1343617691671,
+      "w": 72,
+      "h": 72,
+      "type": "decision",
+      "shape": "diamond",
+      "lines": [
+        "店舗審査"
+      ]
+    },
+    {
+      "id": "a_approve",
+      "x": 1305,
+      "y": 660,
+      "w": 140,
+      "h": 44,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "承認"
+      ]
+    },
+    {
+      "id": "a_reject",
+      "x": 1305,
+      "y": 913.1851191546687,
+      "w": 140,
+      "h": 44,
+      "type": "io",
+      "shape": "rect",
+      "lines": [
+        "却下"
+      ]
+    },
+    {
+      "id": "n_rej_m",
+      "x": 1490,
+      "y": 913.1851191546687,
+      "w": 140,
+      "h": 44,
+      "type": "notify",
+      "shape": "rect",
+      "lines": [
+        "却下通知メール(店舗)"
+      ]
+    },
+    {
+      "id": "n_app_m",
+      "x": 1305,
+      "y": 629.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "notify",
+      "shape": "rect",
+      "lines": [
+        "承認メール送信(店舗)"
+      ]
+    },
+    {
+      "id": "s_activate",
+      "x": 1490,
+      "y": 544.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "アカウント有効化"
+      ]
+    },
+    {
+      "id": "s_login",
+      "x": 1680,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "ログイン(shop_admin)"
+      ]
+    },
+    {
+      "id": "s_bike",
+      "x": 1870,
+      "y": 547.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "自転車登録・編集"
+      ]
+    },
+    {
+      "id": "s_status",
+      "x": 1870,
+      "y": 657.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "在庫ステータス管理"
+      ]
+    },
+    {
+      "id": "s_price",
+      "x": 2060,
+      "y": 547.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "料金プラン設定"
+      ]
+    },
+    {
+      "id": "s_cal",
+      "x": 2250,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "カレンダー(休業日)設定"
+      ]
+    },
+    {
+      "id": "u_search",
+      "x": 1860,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "エリア・日時選択"
+      ]
+    },
+    {
+      "id": "u_exec",
+      "x": 2050,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "検索実行"
+      ]
+    },
+    {
+      "id": "u_has_res",
+      "x": 2274,
+      "y": 154,
+      "w": 72,
+      "h": 72,
+      "type": "decision",
+      "shape": "diamond",
+      "lines": [
+        "空車あり?"
+      ]
+    },
+    {
+      "id": "u_no_res",
+      "x": 2240,
+      "y": 283,
+      "w": 140,
+      "h": 44,
+      "type": "io",
+      "shape": "rect",
+      "lines": [
+        "空車なし(条件変更)"
+      ]
+    },
+    {
+      "id": "u_list",
+      "x": 2430,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "検索結果一覧"
+      ]
+    },
+    {
+      "id": "u_detail",
+      "x": 2630,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "自転車詳細/日時選択"
+      ]
+    },
+    {
+      "id": "u_inv_q",
+      "x": 2854,
+      "y": 154,
+      "w": 72,
+      "h": 72,
+      "type": "decision",
+      "shape": "diamond",
+      "lines": [
+        "在庫最終確認"
+      ]
+    },
+    {
+      "id": "u_inv_ng",
+      "x": 2820,
+      "y": 283,
+      "w": 140,
+      "h": 44,
+      "type": "io",
+      "shape": "rect",
+      "lines": [
+        "在庫切れ(別の自転車)"
+      ]
+    },
+    {
+      "id": "u_cart1",
+      "x": 3010,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "予約① 空車確認"
+      ]
+    },
+    {
+      "id": "u_cart2",
+      "x": 3200,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "予約② 顧客情報"
+      ]
+    },
+    {
+      "id": "u_cart3",
+      "x": 3390,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "予約③ 内容確認"
+      ]
+    },
+    {
+      "id": "u_cart4",
+      "x": 3580,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "予約④ 確定(未決済)"
+      ]
+    },
+    {
+      "id": "n_conf_u",
+      "x": 3580,
+      "y": 63,
+      "w": 140,
+      "h": 44,
+      "type": "notify",
+      "shape": "rect",
+      "lines": [
+        "予約確認メール(ユーザー)"
+      ]
+    },
+    {
+      "id": "u_resv",
+      "x": 3770,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "予約一覧確認"
+      ]
+    },
+    {
+      "id": "n_conf_s",
+      "x": 3580,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "notify",
+      "shape": "rect",
+      "lines": [
+        "予約通知メール(店舗)"
+      ]
+    },
+    {
+      "id": "s_resv",
+      "x": 3770,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "予約詳細確認"
+      ]
+    },
+    {
+      "id": "s_prep",
+      "x": 3960,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "自転車準備"
+      ]
+    },
+    {
+      "id": "s_ride_start",
+      "x": 4150,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "貸出開始ボタン"
+      ]
+    },
+    {
+      "id": "s_payjp",
+      "x": 4150,
+      "y": 547.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "external",
+      "shape": "rect",
+      "lines": [
+        "Pay.JP決済処理"
+      ]
+    },
+    {
+      "id": "s_charge_ok",
+      "x": 4374,
+      "y": 589,
+      "w": 72,
+      "h": 72,
+      "type": "decision",
+      "shape": "diamond",
+      "lines": [
+        "決済OK?"
+      ]
+    },
+    {
+      "id": "s_charge_ng",
+      "x": 4340,
+      "y": 710,
+      "w": 140,
+      "h": 44,
+      "type": "io",
+      "shape": "rect",
+      "lines": [
+        "現地払いに変更"
+      ]
+    },
+    {
+      "id": "s_riding",
+      "x": 4700,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "貸出中"
+      ]
+    },
+    {
+      "id": "a_pay_mgmt",
+      "x": 4340,
+      "y": 856.1343617691671,
+      "w": 140,
+      "h": 44,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "決済問題対応"
+      ]
+    },
+    {
+      "id": "s_return",
+      "x": 4890,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "返却確認"
+      ]
+    },
+    {
+      "id": "s_complete",
+      "x": 5080,
+      "y": 602.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "完了処理"
+      ]
+    },
+    {
+      "id": "a_monitor",
+      "x": 4890,
+      "y": 856.1343617691671,
+      "w": 140,
+      "h": 44,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "予約モニタリング"
+      ]
+    },
+    {
+      "id": "a_report",
+      "x": 5080,
+      "y": 856.1343617691671,
+      "w": 140,
+      "h": 44,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "売上レポート"
+      ]
+    },
+    {
+      "id": "u_cq",
+      "x": 5440,
+      "y": 154,
+      "w": 72,
+      "h": 72,
+      "type": "decision",
+      "shape": "diamond",
+      "lines": [
+        "キャンセルする?"
+      ]
+    },
+    {
+      "id": "u_cancel",
+      "x": 5630,
+      "y": 168,
+      "w": 140,
+      "h": 44,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "キャンセル完了"
+      ]
+    },
+    {
+      "id": "n_can_u",
+      "x": 5630,
+      "y": 63,
+      "w": 140,
+      "h": 44,
+      "type": "notify",
+      "shape": "rect",
+      "lines": [
+        "キャンセル確認メール(ユーザー)"
+      ]
+    },
+    {
+      "id": "n_can_s",
+      "x": 5630,
+      "y": 522.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "notify",
+      "shape": "rect",
+      "lines": [
+        "キャンセル通知メール(店舗)"
+      ]
+    },
+    {
+      "id": "s_cancel",
+      "x": 5630,
+      "y": 609.9492426144983,
+      "w": 140,
+      "h": 44,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "キャンセル確認・対応"
+      ]
+    },
+    {
+      "id": "a_refund",
+      "x": 5630,
+      "y": 856.1343617691671,
+      "w": 140,
+      "h": 44,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "返金処理(手動)"
+      ]
+    },
+    {
+      "id": "a_sim",
+      "x": 5820,
+      "y": 856.1343617691671,
+      "w": 140,
+      "h": 44,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "料金シミュレーション"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "be1",
+      "from": "u_start",
+      "fromSide": "r",
+      "to": "u_new_q",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be2",
+      "from": "u_new_q",
+      "fromSide": "t",
+      "to": "u_login",
+      "toSide": "l",
+      "label": "No(既存)",
+      "dashed": false
+    },
+    {
+      "id": "be3",
+      "from": "u_new_q",
+      "fromSide": "b",
+      "to": "u_signup",
+      "toSide": "l",
+      "label": "Yes(新規)",
+      "dashed": false
+    },
+    {
+      "id": "be4",
+      "from": "u_login",
+      "fromSide": "r",
+      "to": "u_auth_ok",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be5",
+      "from": "u_auth_ok",
+      "fromSide": "r",
+      "to": "u_mypage",
+      "toSide": "l",
+      "label": "OK",
+      "dashed": false
+    },
+    {
+      "id": "be6",
+      "from": "u_auth_ok",
+      "fromSide": "b",
+      "to": "u_auth_err",
+      "toSide": "t",
+      "label": "NG",
+      "dashed": true,
+      "ng": true
+    },
+    {
+      "id": "be7",
+      "from": "u_auth_err",
+      "fromSide": "b",
+      "to": "u_pw_req",
+      "toSide": "t",
+      "label": "PW忘れ",
+      "dashed": true,
+      "ng": true
+    },
+    {
+      "id": "be8",
+      "from": "u_signup",
+      "fromSide": "r",
+      "to": "u_mail_out",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be9",
+      "from": "u_mail_out",
+      "fromSide": "r",
+      "to": "u_verified",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be10",
+      "from": "u_pw_req",
+      "fromSide": "r",
+      "to": "u_pw_mail",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be11",
+      "from": "u_pw_mail",
+      "fromSide": "r",
+      "to": "u_pw_done",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be12",
+      "from": "u_mypage",
+      "fromSide": "t",
+      "to": "u_card_reg",
+      "toSide": "b",
+      "label": "カード登録",
+      "dashed": false
+    },
+    {
+      "id": "be13",
+      "from": "s_start",
+      "fromSide": "r",
+      "to": "s_form",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be14",
+      "from": "s_form",
+      "fromSide": "r",
+      "to": "s_submit",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be15",
+      "from": "s_submit",
+      "fromSide": "r",
+      "to": "s_wait",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be16",
+      "from": "s_submit",
+      "fromSide": "b",
+      "to": "a_dash",
+      "toSide": "t",
+      "label": "申請通知",
+      "dashed": false
+    },
+    {
+      "id": "be17",
+      "from": "a_start",
+      "fromSide": "r",
+      "to": "a_login",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be18",
+      "from": "a_login",
+      "fromSide": "r",
+      "to": "a_dash",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be19",
+      "from": "a_dash",
+      "fromSide": "r",
+      "to": "a_rev",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be20",
+      "from": "s_wait",
+      "fromSide": "b",
+      "to": "a_rev",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be21",
+      "from": "a_rev",
+      "fromSide": "t",
+      "to": "a_approve",
+      "toSide": "b",
+      "label": "承認",
+      "dashed": false
+    },
+    {
+      "id": "be22",
+      "from": "a_rev",
+      "fromSide": "b",
+      "to": "a_reject",
+      "toSide": "t",
+      "label": "却下",
+      "dashed": true,
+      "ng": true
+    },
+    {
+      "id": "be23",
+      "from": "a_reject",
+      "fromSide": "r",
+      "to": "n_rej_m",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be24",
+      "from": "a_approve",
+      "fromSide": "t",
+      "to": "n_app_m",
+      "toSide": "b",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be25",
+      "from": "n_app_m",
+      "fromSide": "t",
+      "to": "s_activate",
+      "toSide": "b",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be26",
+      "from": "s_activate",
+      "fromSide": "r",
+      "to": "s_login",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be27",
+      "from": "s_login",
+      "fromSide": "r",
+      "to": "s_bike",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be28",
+      "from": "s_bike",
+      "fromSide": "r",
+      "to": "s_price",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be29",
+      "from": "s_price",
+      "fromSide": "r",
+      "to": "s_cal",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be30",
+      "from": "u_mypage",
+      "fromSide": "r",
+      "to": "u_search",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be31",
+      "from": "u_verified",
+      "fromSide": "r",
+      "to": "u_search",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be32",
+      "from": "u_pw_done",
+      "fromSide": "r",
+      "to": "u_search",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be33",
+      "from": "u_search",
+      "fromSide": "r",
+      "to": "u_exec",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be34",
+      "from": "u_exec",
+      "fromSide": "r",
+      "to": "u_has_res",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be35",
+      "from": "u_has_res",
+      "fromSide": "r",
+      "to": "u_list",
+      "toSide": "l",
+      "label": "あり",
+      "dashed": false
+    },
+    {
+      "id": "be36",
+      "from": "u_has_res",
+      "fromSide": "b",
+      "to": "u_no_res",
+      "toSide": "t",
+      "label": "なし",
+      "dashed": true,
+      "ng": true
+    },
+    {
+      "id": "be37",
+      "from": "u_list",
+      "fromSide": "r",
+      "to": "u_detail",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be38",
+      "from": "u_detail",
+      "fromSide": "r",
+      "to": "u_inv_q",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be39",
+      "from": "u_inv_q",
+      "fromSide": "r",
+      "to": "u_cart1",
+      "toSide": "l",
+      "label": "OK",
+      "dashed": false
+    },
+    {
+      "id": "be40",
+      "from": "u_inv_q",
+      "fromSide": "b",
+      "to": "u_inv_ng",
+      "toSide": "t",
+      "label": "NG",
+      "dashed": true,
+      "ng": true
+    },
+    {
+      "id": "be41",
+      "from": "u_cart1",
+      "fromSide": "r",
+      "to": "u_cart2",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be42",
+      "from": "u_cart2",
+      "fromSide": "r",
+      "to": "u_cart3",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be43",
+      "from": "u_cart3",
+      "fromSide": "r",
+      "to": "u_cart4",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be44",
+      "from": "u_cart4",
+      "fromSide": "t",
+      "to": "n_conf_u",
+      "toSide": "b",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be45",
+      "from": "u_cart4",
+      "fromSide": "r",
+      "to": "u_resv",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be46",
+      "from": "u_cart4",
+      "fromSide": "b",
+      "to": "n_conf_s",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be47",
+      "from": "n_conf_s",
+      "fromSide": "r",
+      "to": "s_resv",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be48",
+      "from": "s_resv",
+      "fromSide": "r",
+      "to": "s_prep",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be49",
+      "from": "s_prep",
+      "fromSide": "r",
+      "to": "s_ride_start",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be50",
+      "from": "s_ride_start",
+      "fromSide": "t",
+      "to": "s_payjp",
+      "toSide": "b",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be51",
+      "from": "s_payjp",
+      "fromSide": "r",
+      "to": "s_charge_ok",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be52",
+      "from": "s_charge_ok",
+      "fromSide": "r",
+      "to": "s_riding",
+      "toSide": "l",
+      "label": "OK",
+      "dashed": false
+    },
+    {
+      "id": "be53",
+      "from": "s_charge_ok",
+      "fromSide": "b",
+      "to": "s_charge_ng",
+      "toSide": "t",
+      "label": "NG",
+      "dashed": true,
+      "ng": true
+    },
+    {
+      "id": "be54",
+      "from": "s_charge_ng",
+      "fromSide": "b",
+      "to": "a_pay_mgmt",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be55",
+      "from": "s_riding",
+      "fromSide": "r",
+      "to": "s_return",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be56",
+      "from": "s_return",
+      "fromSide": "r",
+      "to": "s_complete",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be57",
+      "from": "a_pay_mgmt",
+      "fromSide": "r",
+      "to": "a_monitor",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be58",
+      "from": "a_monitor",
+      "fromSide": "r",
+      "to": "a_report",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be59",
+      "from": "u_resv",
+      "fromSide": "r",
+      "to": "u_cq",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be60",
+      "from": "u_cq",
+      "fromSide": "r",
+      "to": "u_cancel",
+      "toSide": "l",
+      "label": "する",
+      "dashed": false
+    },
+    {
+      "id": "be61",
+      "from": "u_cancel",
+      "fromSide": "t",
+      "to": "n_can_u",
+      "toSide": "b",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be62",
+      "from": "u_cancel",
+      "fromSide": "b",
+      "to": "n_can_s",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be63",
+      "from": "n_can_s",
+      "fromSide": "b",
+      "to": "s_cancel",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be64",
+      "from": "s_cancel",
+      "fromSide": "b",
+      "to": "a_refund",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "be65",
+      "from": "a_refund",
+      "fromSide": "r",
+      "to": "a_sim",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    }
+  ],
+  "frames": [],
+  "lanes": [
+    {
+      "id": "lane0",
+      "label": "ユーザー",
+      "y": 42,
+      "height": 462.9492426144983,
+      "type": "user"
+    },
+    {
+      "id": "lane1",
+      "label": "店舗",
+      "y": 514.9492426144983,
+      "height": 258.1851191546687,
+      "type": "store"
+    },
+    {
+      "id": "lane2",
+      "label": "管理者",
+      "y": 783.1343617691671,
+      "height": 225,
+      "type": "admin"
+    }
+  ],
+  "phases": [
+    {
+      "id": "phase0",
+      "label": "アカウント・認証",
+      "x": 60,
+      "width": 900,
+      "type": "startend"
+    },
+    {
+      "id": "phase1",
+      "label": "店舗準備・承認 / マスタ管理",
+      "x": 960,
+      "width": 880,
+      "type": "startend"
+    },
+    {
+      "id": "phase2",
+      "label": "自転車検索・閲覧",
+      "x": 1840,
+      "width": 780,
+      "type": "startend"
+    },
+    {
+      "id": "phase3",
+      "label": "予約申込(未決済)",
+      "x": 2620,
+      "width": 1200,
+      "type": "startend"
+    },
+    {
+      "id": "phase4",
+      "label": "来店・貸出・決済",
+      "x": 3820,
+      "width": 1030,
+      "type": "startend"
+    },
+    {
+      "id": "phase5",
+      "label": "返却・完了",
+      "x": 4850,
+      "width": 500,
+      "type": "startend"
+    },
+    {
+      "id": "phase6",
+      "label": "キャンセル・返金",
+      "x": 5350,
+      "width": 630,
+      "type": "startend"
+    }
+  ],
+  "nextId": 100,
+  "vx": -720.6593895260007,
+  "vy": 329.92042781256066,
+  "vscale": 0.4424211965652098
+}
