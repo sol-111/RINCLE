@@ -1,0 +1,8 @@
+# prefecture
+
+| 物理名 | 必須 | index | データ型 | List | バリデーション | 備考 |
+| --- | --- | --- | --- | --- | --- | --- |
+| name | ✓ |  | text |  |  |  |
+| index |  |  | number |  |  |  |
+| shop |  |  | リレーション |  |  |  |
+| shoplist_list |  |  | リレーション | ✓ |  |  |
