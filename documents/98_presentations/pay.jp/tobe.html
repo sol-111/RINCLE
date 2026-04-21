@@ -265,13 +265,14 @@
     background: #fff;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
   .diagram-box {
     text-align: center;
     padding: 20px 24px;
     border-radius: var(--radius);
-    min-width: 140px;
+    min-width: 120px;
+    flex-shrink: 1;
   }
   .diagram-box.customer { background: #dbeafe; border: 2px solid #93c5fd; }
   .diagram-box.platform { background: #fef3c7; border: 2px solid #fcd34d; }
@@ -381,23 +382,25 @@
 
     <div class="overview-diagram">
       <div class="diagram-box customer">
-        <strong>エンドユーザー</strong>
-        <span>バイクを予約・支払いする</span>
+        <strong>お客さん</strong>
+        <span>
+          バイクを予約 / 支払いする
+        </span>
       </div>
       <div class="diagram-arrow">&rarr;</div>
       <div class="diagram-box rincle">
         <strong>RINCLE</strong>
-        <span>予約管理・在庫管理</span>
+        <span>予約 / 在庫管理</span>
       </div>
       <div class="diagram-arrow">&rarr;</div>
       <div class="diagram-box platform">
-        <strong>PAY.jp</strong>
-        <span>オーソリ・キャプチャ・返金</span>
+        <strong>Pay.JP</strong>
+        <span>オーソリ / キャプチャ / 返金</span>
       </div>
       <div class="diagram-arrow">&rarr;</div>
       <div class="diagram-box shop">
-        <strong>加盟店（販売店）</strong>
-        <span>ライド開始・精算</span>
+        <strong>店舗</strong>
+        <span>ライド開始 / 精算</span>
       </div>
     </div>
 
