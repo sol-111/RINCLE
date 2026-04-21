@@ -350,7 +350,7 @@
       <div class="section-num">1</div>
       <h2>アカウント・認証</h2>
     </div>
-    <p class="section-desc">ユーザーの認証フローです。As-Is と同じですが、<strong>カードの事前登録は不要</strong>になります（予約フロー内で入力）。</p>
+    <p class="section-desc">ユーザーの認証フローです。As-Is と同じです。カード登録は予約フローの「支払い方法」ステップで行います（As-Isと変更なし）。</p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
@@ -388,7 +388,7 @@
 
     <div class="callout success">
       <div class="callout-icon">&#x2705;</div>
-      <div><strong>As-Is との違い：</strong>マイページでの事前カード登録が不要になります。カード情報は Phase 4 の予約フロー内で入力します。</div>
+      <div><strong>As-Is と同じ：</strong>カード登録は予約フローの「支払い方法」ステップで行います。この部分はAs-Isから変更ありません。To-Beでの変更点は Phase 4 の「オーソリ（与信枠確保）」の追加です。</div>
     </div>
   </div>
 
@@ -594,7 +594,7 @@
           <div class="flow-body">
             <div class="flow-actor external">Pay.JP</div>
             <div class="flow-text">オーソリ（与信枠確保）を実行する</div>
-            <div class="flow-note"><code>POST /v1/charges</code> を <code>capture=false</code> で呼ぶ<br>お金は引き落とされず、カードの利用可能枠を一時的に確保するだけ（有効期限: 30日）</div>
+            <div class="flow-note"><code>POST /v1/charges</code> を <code>capture=false</code> で呼ぶ<br>お金は引き落とされず、カードの利用可能枠を一時的に確保するだけ（有効期限: 60日間）</div>
           </div>
         </div>
         <div class="flow-step">
@@ -681,7 +681,7 @@
           <div class="flow-body">
             <div class="flow-actor external">Pay.JP</div>
             <div class="flow-text">オーソリをキャプチャ（決済確定）する</div>
-            <div class="flow-note"><code>POST /v1/charges/:id/capture</code> で与信枠を確定<br>ここで初めてお客さんのカードからお金が引き落とされる</div>
+            <div class="flow-note">予約時に確保した与信枠を確定し、ここで初めてお客さんのカードからお金が引き落とされる<br>RINCLEの利用料（15%）はこの決済からは差し引かれず、月末に別途請求する方式</div>
           </div>
         </div>
         <div class="flow-step">
@@ -887,6 +887,91 @@
   </div>
 
   <!-- ================================================================ -->
+  <!-- PHASE 7.5 -->
+  <!-- ================================================================ -->
+  <div class="section" id="phase7-5">
+    <div class="section-header">
+      <div class="section-num" style="background:#e94560;">7.5</div>
+      <h2>キャプチャ後の返金フロー</h2>
+    </div>
+    <p class="section-desc">ライド開始後（キャプチャ済み）にトラブル等で返金が必要になった場合のフローです。<strong>オーソリ解放ではなく「返金」処理になります。</strong></p>
+
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label store">店舗</div>
+        <div class="swim-track">
+          <div class="swim-node store">返金事由の発生</div>
+          <div style="margin-left:8px;font-size:12px;color:var(--gray-500)">（車体トラブル等）</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label admin">管理者</div>
+        <div class="swim-track">
+          <div class="swim-node admin" style="border-color:var(--admin);background:var(--admin);color:#fff">返金操作（admin画面）</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node external">Pay.JP 返金処理</div>
+          <div class="swim-arrow">&rarr;</div>
+          <div class="swim-node admin">ステータス更新・在庫開放</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label" style="color:var(--notify)">通知</div>
+        <div class="swim-track">
+          <div style="width:200px"></div>
+          <div class="swim-node notify">返金完了メール（ユーザー）</div>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="card">
+      <h4>&#x21A9;&#xFE0F; キャプチャ後返金フロー詳細</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot store">1</div>
+          <div class="flow-body">
+            <div class="flow-actor store">加盟店 or エンドユーザー</div>
+            <div class="flow-text">返金が必要な状況が発生する</div>
+            <div class="flow-note">車体トラブル、天候悪化による早期返却、お客さん都合 など</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot admin">2</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">管理者</div>
+            <div class="flow-text">admin画面から返金操作を行う</div>
+            <div class="flow-note">返金はお客さん側からはできない（管理者のみ操作可能）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot external">3</div>
+          <div class="flow-body">
+            <div class="flow-actor external">Pay.JP</div>
+            <div class="flow-text">お客さんのカードに返金処理を行う</div>
+            <div class="flow-note">キャプチャ済みのため、オーソリ解放ではなく返金APIを使用<br>返金額はPay.JPから店舗への次回振込から差し引かれる</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot system">4</div>
+          <div class="flow-body">
+            <div class="flow-actor system">システム</div>
+            <div class="flow-text">予約ステータスを更新し、在庫を開放する</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div>
+        <strong>Phase 7（オーソリ解放）との違い：</strong><br>
+        ・ライド開始前のキャンセル → オーソリ解放（お金は動いていないので返金不要）<br>
+        ・ライド開始後のキャンセル → 返金処理（実際にお金を返す必要がある）<br><br>
+        月末請求で既にプラットフォーム利用料（15%）を計上済みの場合、<strong>返金分の利用料を翌月請求で調整</strong>する必要があります。
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
   <!-- SUMMARY -->
   <!-- ================================================================ -->
   <div class="section" id="summary">
@@ -914,8 +999,15 @@
         <div class="flow-step">
           <div class="flow-dot" style="background:var(--accent-light);color:var(--accent)">3</div>
           <div class="flow-body">
-            <div class="flow-text" style="font-weight:700">キャンセル時 &mdash; オーソリ解放</div>
+            <div class="flow-text" style="font-weight:700">キャンセル時（ライド開始前） &mdash; オーソリ解放</div>
             <div class="flow-note">返金処理が不要。キャンセルしやすい体験を実現</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot" style="background:var(--accent-light);color:var(--accent)">3.5</div>
+          <div class="flow-body">
+            <div class="flow-text" style="font-weight:700">返金（ライド開始後） &mdash; Pay.JP 返金API</div>
+            <div class="flow-note">キャプチャ済みのため返金処理が必要。月末請求の利用料調整も必要</div>
           </div>
         </div>
         <div class="flow-step">
@@ -959,6 +1051,9 @@
         </li>
         <li style="padding:8px 0;border-bottom:1px solid var(--gray-100);font-size:14px;display:flex;gap:8px">
           <span style="color:var(--error);font-weight:700;flex-shrink:0">[ ]</span> 月末請求の締め日・入金日・未払い時の運用
+        </li>
+        <li style="padding:8px 0;border-bottom:1px solid var(--gray-100);font-size:14px;display:flex;gap:8px">
+          <span style="color:var(--error);font-weight:700;flex-shrink:0">[ ]</span> キャプチャ後返金時の月末請求利用料の調整ルール
         </li>
         <li style="padding:8px 0;border-bottom:1px solid var(--gray-100);font-size:14px;display:flex;gap:8px">
           <span style="color:var(--error);font-weight:700;flex-shrink:0">[ ]</span> 延長フローのE2E検証と設計

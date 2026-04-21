@@ -443,7 +443,91 @@
   }
   .overview-table table td:nth-child(1) { white-space: nowrap; width: 50px; text-align: center; }
   .overview-table table td:nth-child(3) { white-space: nowrap; width: 120px; text-align: center; }
-  .overview-table table td:nth-child(4) { white-space: nowrap; width: 80px; text-align: center; }
+
+  /* Accordion (dev detail) */
+  .dev-detail {
+    margin-top: 16px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .dev-detail summary {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray-700);
+    background: var(--gray-50);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+  .dev-detail summary::-webkit-details-marker { display: none; }
+  .dev-detail summary::before {
+    content: '▶';
+    font-size: 10px;
+    color: var(--gray-500);
+    transition: transform 0.2s;
+  }
+  .dev-detail[open] summary::before {
+    transform: rotate(90deg);
+  }
+  .dev-detail-body {
+    padding: 16px 20px;
+    font-size: 13px;
+    color: var(--gray-700);
+    line-height: 1.8;
+    border-top: 1px solid var(--gray-200);
+  }
+  .dev-detail-body h5 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 16px 0 6px;
+  }
+  .dev-detail-body h5:first-child { margin-top: 0; }
+  .dev-detail-body table {
+    font-size: 13px;
+    margin: 8px 0;
+    box-shadow: none;
+  }
+  .dev-detail-body table th {
+    background: var(--gray-700);
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  .dev-detail-body table td {
+    padding: 8px 12px;
+  }
+  .dev-detail-body code {
+    background: var(--gray-100);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--gray-900);
+  }
+  .dev-detail-body .flow-diagram {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 8px 0;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    color: var(--gray-700);
+  }
+  .dev-detail-body .flow-diagram .highlight-line {
+    background: #fee2e2;
+    display: inline;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 700;
+    color: #991b1b;
+  }
 
   /* Footer note */
   .footer-note {
@@ -477,7 +561,7 @@
 <div class="summary-grid">
   <div class="summary-card immediate">
     <h3>&#x1F534; 即時対応</h3>
-    <div class="count">5</div>
+    <div class="count">6</div>
     <div class="unit">件</div>
   </div>
   <div class="summary-card tobe">
@@ -492,7 +576,7 @@
   </div>
   <div class="summary-card total">
     <h3>合計</h3>
-    <div class="count">11</div>
+    <div class="count">12</div>
     <div class="unit">件</div>
   </div>
 </div>
@@ -505,8 +589,8 @@
     <div class="goal">目標: まず運用上問題ない状態にする</div>
     <ul class="strategy-list">
       <li>
-        <span class="strategy-tag immediate">即時対応 5件</span>
-        運用が壊れる / 仕様未達 / 事故リスクがあるもの &#x2192; 着手順: #3 &#x2192; #2 &#x2192; #1 &#x2192; #5 &#x2192; #4
+        <span class="strategy-tag immediate">即時対応 6件</span>
+        運用が壊れる / 仕様未達 / 事故リスクがあるもの &#x2192; 着手順: #1 &#x2192; #2 &#x2192; #3 &#x2192; #4 &#x2192; #5 &#x2192; #6
       </li>
       <li>
         <span class="strategy-tag tobe">改善時に対応 3件</span>
@@ -533,73 +617,66 @@
             <th>#</th>
             <th>タイトル</th>
             <th>カテゴリ</th>
-            <th>着手順</th>
           </tr>
           <tr>
-            <td>3</td>
+            <td>1</td>
             <td>開発環境で本番キーが使用されている</td>
             <td><span class="badge badge-immediate">即時対応</span></td>
-            <td>1番目</td>
           </tr>
           <tr>
             <td>2</td>
             <td>DBが完全オープン（セキュリティ）</td>
             <td><span class="badge badge-immediate">即時対応</span></td>
-            <td>2番目</td>
           </tr>
           <tr>
-            <td>1</td>
+            <td>3</td>
+            <td>プラットフォーム手数料が契約と異なる（10% → 15%）</td>
+            <td><span class="badge badge-immediate">即時対応</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
             <td>延長決済の charge_id が保存されていない</td>
             <td><span class="badge badge-immediate">即時対応</span></td>
-            <td>3番目</td>
           </tr>
           <tr>
             <td>5</td>
             <td>デフォルトカードの設定がドロップダウン選択と不一致</td>
             <td><span class="badge badge-immediate">即時対応</span></td>
-            <td>4番目</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>オーソリ（与信確認）が未実装</td>
-            <td><span class="badge badge-immediate">即時対応</span></td>
-            <td>5番目</td>
           </tr>
           <tr>
             <td>6</td>
-            <td>エラーハンドリングの改善</td>
-            <td><span class="badge badge-tobe">改善時</span></td>
-            <td>&#x2014;</td>
+            <td>オーソリ（与信確認）が未実装</td>
+            <td><span class="badge badge-immediate">即時対応</span></td>
           </tr>
           <tr>
             <td>7</td>
-            <td>エラー通知・ログの仕組みがない</td>
+            <td>エラーハンドリングの改善</td>
             <td><span class="badge badge-tobe">改善時</span></td>
-            <td>&#x2014;</td>
           </tr>
           <tr>
             <td>8</td>
-            <td>店舗招待URLのセキュリティ</td>
+            <td>エラー通知・ログの仕組みがない</td>
             <td><span class="badge badge-tobe">改善時</span></td>
-            <td>&#x2014;</td>
           </tr>
           <tr>
             <td>9</td>
-            <td>PEDALSTANDARD の 15% 利用料請求の仕組みが未定</td>
-            <td><span class="badge badge-low">低優先</span></td>
-            <td>&#x2014;</td>
+            <td>店舗招待URLのセキュリティ</td>
+            <td><span class="badge badge-tobe">改善時</span></td>
           </tr>
           <tr>
             <td>10</td>
-            <td>テナント登録時の銀行口座情報</td>
+            <td>PEDALSTANDARD の 15% 利用料請求の仕組みが未定</td>
             <td><span class="badge badge-low">低優先</span></td>
-            <td>&#x2014;</td>
           </tr>
           <tr>
             <td>11</td>
+            <td>テナント登録時の銀行口座情報</td>
+            <td><span class="badge badge-low">低優先</span></td>
+          </tr>
+          <tr>
+            <td>12</td>
             <td>Webhook名のtypo</td>
             <td><span class="badge badge-low">低優先</span></td>
-            <td>&#x2014;</td>
           </tr>
         </table>
       </div>
@@ -614,10 +691,10 @@
     </div>
     <p class="section-desc">運用が壊れる、仕様未達、または事故リスクがある問題です。着手順に沿って対処してください。</p>
 
-    <!-- Issue #3 - Order 1 -->
+    <!-- Issue #1 -->
     <div class="issue-card immediate">
       <div class="issue-card-header">
-        <div class="issue-number immediate">3</div>
+        <div class="issue-number immediate">1</div>
         <div class="issue-title-area">
           <div class="issue-title">開発環境で本番キーが使用されている</div>
         </div>
@@ -646,7 +723,7 @@
       </div>
     </div>
 
-    <!-- Issue #2 - Order 2 -->
+    <!-- Issue #2 -->
     <div class="issue-card immediate">
       <div class="issue-card-header">
         <div class="issue-number immediate">2</div>
@@ -658,7 +735,7 @@
       <div class="issue-card-body">
         <div class="issue-field">
           <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">現状DBは誰でも閲覧可能な状態</div>
+          <div class="issue-field-text">DBは誰でも閲覧可能な状態</div>
         </div>
         <div class="issue-field">
           <div class="issue-field-label impact">&#x1F4A5; 影響</div>
@@ -678,14 +755,119 @@
       </div>
     </div>
 
-    <!-- Issue #1 - Order 3 -->
+    <!-- Issue #3 -->
     <div class="issue-card immediate">
       <div class="issue-card-header">
-        <div class="issue-number immediate">1</div>
+        <div class="issue-number immediate">3</div>
+        <div class="issue-title-area">
+          <div class="issue-title">プラットフォーム手数料が契約と異なる（10% → 15%）</div>
+        </div>
+        <div class="order-badge"><span class="order-num">3</span> 3rd</div>
+      </div>
+      <div class="issue-card-body">
+        <div class="issue-field">
+          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
+          <div class="issue-field-text">契約上のRINCLE取り分は売上の15%だが、現在のシステムでは10%に設定されている。全ての決済で5%分の収益が失われている</div>
+        </div>
+        <div class="issue-field">
+          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
+          <div class="issue-field-text">1万円の決済あたり500円の損失。取引が発生するたびに損失が拡大し続けている</div>
+        </div>
+        <div class="issue-field">
+          <div class="issue-field-label action">&#x2705; 対応</div>
+          <div class="issue-field-text">Pay.JPのプラットフォーム手数料の設定値を10% → 15%に変更する（設定1箇所の変更のみ）</div>
+        </div>
+        <div class="priority-reason-callout">
+          <div class="pr-icon">&#x1F4A1;</div>
+          <div>
+            <div class="pr-label">優先理由</div>
+            <div class="pr-text">契約通りの収益が得られていない。修正は設定変更のみで工数最小、即日対応可能</div>
+          </div>
+        </div>
+
+        <details class="dev-detail">
+          <summary>&#x1F527; 開発者向け詳細</summary>
+          <div class="dev-detail-body">
+
+            <h5>設定値の場所</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>場所</th><th>現在の値</th><th>修正後</th></tr>
+                <tr>
+                  <td>Bubble Option Set <code>platform_fee</code></td>
+                  <td><strong>10</strong></td>
+                  <td><strong>15</strong></td>
+                </tr>
+              </table>
+            </div>
+            <p>Bubble管理画面 → Data → Option Sets → <code>platform_fee</code> → 「デフォルト」の number 値を <strong>10 → 15</strong> に変更するだけ。</p>
+
+            <h5>platform_fee の計算式</h5>
+            <div class="flow-diagram">platform_fee = デフォルト's number / 100 × amount
+
+例: 予約金額 10,000円の場合
+  現状: <span class="highlight-line">10 / 100 × 10,000 = 1,000円（10%）</span>
+  修正後: 15 / 100 × 10,000 = 1,500円（15%）</div>
+
+            <h5>この計算式が使われている全ワークフロー</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>ワークフロー</th><th>トリガー</th><th>画面</th></tr>
+                <tr>
+                  <td><code>Charge_by_car_id</code></td>
+                  <td>「ライド開始」ボタン</td>
+                  <td>shop_admin</td>
+                </tr>
+                <tr>
+                  <td><code>Charge_by_car_id</code></td>
+                  <td>「ライド終了」ボタン（延長料金）</td>
+                  <td>shop_admin</td>
+                </tr>
+                <tr>
+                  <td><code>Charge_by_car_id</code></td>
+                  <td>ステータス変更（管理者決済）</td>
+                  <td>admin</td>
+                </tr>
+              </table>
+            </div>
+            <p>3箇所すべてで同じ Option Set を参照しているため、<strong>Option Set の値を1箇所変えれば全ワークフローに反映される。</strong></p>
+
+            <h5>Pay.JP に送信されるパラメータ（Charge_by_car_id）</h5>
+            <div class="flow-diagram">customer:      予約情報の cus_id
+amount:        合計金額（or 延長料金）
+currency:      "jpy"
+tenant:        店舗の tenant_id
+<span class="highlight-line">platform_fee:  デフォルト's number / 100 × amount  ← ここが10%</span></div>
+
+            <h5>お金の流れの変化（1万円の場合）</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>受取人</th><th>現状（10%）</th><th>修正後（15%）</th></tr>
+                <tr><td>RINCLE（PEDALSTANDARD）</td><td>1,000円</td><td><strong>1,500円</strong></td></tr>
+                <tr><td>Pay.JP（カード手数料 約3.5%）</td><td>約350円</td><td>約350円</td></tr>
+                <tr><td>店舗（ネット入金）</td><td>約8,650円</td><td><strong>約8,150円</strong></td></tr>
+              </table>
+            </div>
+
+            <h5>注意事項</h5>
+            <ul>
+              <li>Option Set の値変更は即座に全ワークフローに反映される（デプロイ不要）</li>
+              <li>変更前の決済（既に charge 済み）には影響しない。変更後の新規決済から適用</li>
+              <li>店舗のネット入金が減るため、店舗への事前通知の要否をクライアントに確認</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- Issue #4 -->
+    <div class="issue-card immediate">
+      <div class="issue-card-header">
+        <div class="issue-number immediate">4</div>
         <div class="issue-title-area">
           <div class="issue-title">延長決済の charge_id が保存されていない</div>
         </div>
-        <div class="order-badge"><span class="order-num">3</span> 3rd</div>
+        <div class="order-badge"><span class="order-num">4</span> 4th</div>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -704,20 +886,72 @@
           <div class="pr-icon">&#x1F4A1;</div>
           <div>
             <div class="pr-label">優先理由</div>
-            <div class="pr-text">延長が発生した時点で返金不能になる</div>
+            <div class="pr-text">延長が発生した時点で返金不能になる（現時点で延長実績ゼロのため実害は未発生）</div>
           </div>
         </div>
+
+        <details class="dev-detail">
+          <summary>&#x1F527; 開発者向け詳細</summary>
+          <div class="dev-detail-body">
+
+            <h5>DBフィールド構成（予約テーブル）</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>フィールド</th><th>用途</th><th>現状</th></tr>
+                <tr><td><code>charge_id</code></td><td>通常決済（ライド開始時）の決済ID</td><td>保存されている &#x2705;</td></tr>
+                <tr><td><code>__charge_id</code></td><td>延長決済（ライド終了時）の決済ID</td><td><strong>空のまま &#x274C;</strong></td></tr>
+                <tr><td><code>__charge_id1</code></td><td>返金用charge_id</td><td>&#x2014;</td></tr>
+              </table>
+            </div>
+
+            <h5>現状のワークフロー（ライド終了ボタン / WF: <code>bTdud</code>）</h5>
+            <div class="flow-diagram">① 延長料金があるか確認
+   ↓
+② Pay.JP に追加決済を依頼（<code>Charge_by_car_id</code> API）
+   ↓
+③ Pay.JP が決済成功 → charge_id を返す
+   ↓
+<span class="highlight-line">④ ← ここで __charge_id に保存すべきだが、していない</span>
+   ↓
+⑤ ステータスを「決済済み」に更新</div>
+
+            <h5>返金時に何が起きるか</h5>
+            <div class="flow-diagram">管理者が「返金あり」をクリック
+   ↓
+通常分の返金 → <code>charge_id</code> で Pay.JP に返金依頼 → 成功 &#x2705;
+   ↓
+延長分の返金 → <code>__charge_id</code> で Pay.JP に返金依頼
+   → <span class="highlight-line">空なので返金できない &#x274C;</span></div>
+
+            <h5>修正内容</h5>
+            <p><strong>対象:</strong> shop_admin「ライド終了」ボタンのワークフロー（<code>bTdud</code>）</p>
+            <div class="flow-diagram"><strong>現状:</strong>
+  Charge_by_car_id → make change 予約（ステータス: 決済済み）
+
+<strong>修正後:</strong>
+  Charge_by_car_id
+    → <span class="highlight-line">make change 予約（__charge_id = API response の charge_id）</span>
+    → make change 予約（ステータス: 決済済み）</div>
+
+            <h5>補足</h5>
+            <ul>
+              <li>延長の実績は現時点でゼロ。実害は出ていないが、1件でも発生した時点で返金不能になる</li>
+              <li>延長料金はライド開始時の決済とは<strong>別の charge</strong> として処理される</li>
+              <li><code>charge_id</code>（通常）と <code>__charge_id</code>（延長）を個別に返金する設計</li>
+            </ul>
+          </div>
+        </details>
       </div>
     </div>
 
-    <!-- Issue #5 - Order 4 -->
+    <!-- Issue #5 -->
     <div class="issue-card immediate">
       <div class="issue-card-header">
         <div class="issue-number immediate">5</div>
         <div class="issue-title-area">
           <div class="issue-title">デフォルトカードの設定がドロップダウン選択と不一致</div>
         </div>
-        <div class="order-badge"><span class="order-num">4</span> 4th</div>
+        <div class="order-badge"><span class="order-num">5</span> 5th</div>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -739,17 +973,61 @@
             <div class="pr-text">クレーム直結。複数カード登録ユーザーで発生する</div>
           </div>
         </div>
+
+        <details class="dev-detail">
+          <summary>&#x1F527; 開発者向け詳細</summary>
+          <div class="dev-detail-body">
+
+            <h5>現状のワークフロー（index / 予約確定ボタン）</h5>
+            <div class="flow-diagram">① ユーザーがDropdownでカードを選択
+   ↓
+② 「予約を確定する」ボタンをクリック
+   ↓
+③ API <code>get_client_action</code> で顧客情報を取得
+   ↓
+<span class="highlight-line">④ API account_register_default_card で1つ目のカードをデフォルトに設定</span>
+   ← Dropdownの選択値を無視して、取得したカード配列の先頭を使っている
+   ↓
+⑤ 予約レコード作成（ステータス: 来客待ち）</div>
+
+            <h5>問題の原因</h5>
+            <p><code>account_register_default_card</code> の <code>default_card</code> パラメータに、Dropdownの値ではなく <code>get_client_action</code> のレスポンスから取得したカード配列の最初の要素が渡されている。</p>
+
+            <h5>修正内容</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>項目</th><th>現状</th><th>修正後</th></tr>
+                <tr>
+                  <td><code>default_card</code> パラメータ</td>
+                  <td>get_client_action の cards[0].id</td>
+                  <td><strong>Dropdown の value（ユーザー選択カードID）</strong></td>
+                </tr>
+              </table>
+            </div>
+
+            <h5>修正箇所</h5>
+            <ul>
+              <li><strong>ページ:</strong> <code>index</code>（ユーザー予約画面）</li>
+              <li><strong>ワークフロー:</strong> 「予約を確定する」ボタンの click イベント内</li>
+              <li><strong>対象API:</strong> <code>account_register_default_card</code></li>
+              <li><strong>変更:</strong> <code>default_card</code> に Dropdown の value を渡す</li>
+            </ul>
+
+            <h5>再現条件</h5>
+            <p>ユーザーが<strong>2枚以上のカードを登録</strong>しており、かつ <strong>2枚目以降のカードを選択して予約</strong>した場合に発生。カード1枚のユーザーでは問題は起きない。</p>
+          </div>
+        </details>
       </div>
     </div>
 
-    <!-- Issue #4 - Order 5 -->
+    <!-- Issue #6 -->
     <div class="issue-card immediate">
       <div class="issue-card-header">
-        <div class="issue-number immediate">4</div>
+        <div class="issue-number immediate">6</div>
         <div class="issue-title-area">
           <div class="issue-title">オーソリ（与信確認）が未実装</div>
         </div>
-        <div class="order-badge"><span class="order-num">5</span> 5th</div>
+        <div class="order-badge"><span class="order-num">6</span> 6th</div>
       </div>
       <div class="issue-card-body">
         <div class="issue-field">
@@ -771,12 +1049,81 @@
             <div class="pr-text">クライアントが想定している仕様と実装が乖離している（仕様未達）</div>
           </div>
         </div>
+
+        <details class="dev-detail">
+          <summary>&#x1F527; 開発者向け詳細</summary>
+          <div class="dev-detail-body">
+
+            <h5>現状（As-Is）の決済フロー</h5>
+            <div class="flow-diagram"><strong>予約確定時（index）:</strong>
+  カード設定のみ。課金もオーソリもなし
+
+<strong>ライド開始時（shop_admin / ライド開始ボタン）:</strong>
+  <code>POST /v1/charges</code>（capture=true ← デフォルト）
+  → <span class="highlight-line">全額を直接課金（オーソリなし）</span></div>
+
+            <h5>あるべき姿（To-Be）の決済フロー</h5>
+            <div class="flow-diagram"><strong>予約確定時（index）:</strong>
+  <code>POST /v1/charges</code> に <code>capture=false</code> を追加
+  → オーソリ（与信枠確保）のみ。お金は動かない
+  → 返却された charge_id を予約データに保存
+
+<strong>ライド開始時（shop_admin / ライド開始ボタン）:</strong>
+  <code>POST /v1/charges/<strong>:id</strong>/capture</code>
+  → 予約時のオーソリを確定（キャプチャ）
+  → ここで初めてお金が動く
+
+<strong>キャンセル時（admin）:</strong>
+  オーソリ解放のみ（返金処理不要）</div>
+
+            <h5>API パラメータの変更</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>タイミング</th><th>現状のAPI</th><th>修正後のAPI</th></tr>
+                <tr>
+                  <td>予約確定時</td>
+                  <td>なし（カード設定のみ）</td>
+                  <td><code>POST /charges</code> <strong>capture=false, expiry_days=60</strong></td>
+                </tr>
+                <tr>
+                  <td>ライド開始時</td>
+                  <td><code>POST /charges</code>（全額課金）</td>
+                  <td><code>POST /charges/:id/<strong>capture</strong></code></td>
+                </tr>
+                <tr>
+                  <td>キャンセル時</td>
+                  <td><code>POST /charges/:id/refund</code></td>
+                  <td>オーソリ自動失効（API不要）</td>
+                </tr>
+              </table>
+            </div>
+
+            <h5>追加で必要な修正</h5>
+            <ul>
+              <li><strong>営業カレンダー:</strong> 365日分 → 60日分に縮小（オーソリ有効期限と整合）</li>
+              <li><strong>最大予約先:</strong> 60日以内に制限</li>
+              <li><strong>二重キャプチャ防止:</strong> キャプチャ済みフラグのチェックを追加</li>
+              <li><strong>キャプチャ失敗時:</strong> 別カード再決済 or 現金フォールバック（要設計）</li>
+            </ul>
+
+            <h5>影響範囲</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>ページ</th><th>ワークフロー</th><th>変更内容</th></tr>
+                <tr><td><code>index</code></td><td>予約確定ボタン</td><td>オーソリAPI追加 + charge_id保存</td></tr>
+                <tr><td><code>shop_admin</code></td><td>ライド開始ボタン</td><td>Charge → Capture に変更</td></tr>
+                <tr><td><code>admin</code></td><td>キャンセル処理</td><td>Refund → 不要に（オーソリ解放）</td></tr>
+                <tr><td><code>admin</code></td><td>ステータス変更</td><td>Charge → Capture に変更</td></tr>
+              </table>
+            </div>
+          </div>
+        </details>
       </div>
     </div>
 
     <div class="callout danger">
       <div class="callout-icon">&#x1F6A8;</div>
-      <div><strong>即時対応の5件は着手順に沿って進めてください。</strong>まず #3（本番キー分離）を完了させ、安全にテストできる環境を整えた上で、#2（DB公開）、#1（charge_id保存）、#5（カード選択）、#4（オーソリ実装）の順に着手します。</div>
+      <div><strong>即時対応の6件は着手順に沿って進めてください。</strong>まず #1（本番キー分離）→ #2（DB公開）で安全な環境を整え、#3（手数料15%修正）で収益損失を止めた上で、#4（charge_id保存）→ #5（カード選択）→ #6（オーソリ実装）の順に着手します。</div>
     </div>
   </div>
 
@@ -788,10 +1135,10 @@
     </div>
     <p class="section-desc">改善フェーズでまとめて対応する項目です。</p>
 
-    <!-- Issue #6 -->
+    <!-- Issue #7 -->
     <div class="issue-card tobe">
       <div class="issue-card-header">
-        <div class="issue-number tobe">6</div>
+        <div class="issue-number tobe">7</div>
         <div class="issue-title-area">
           <div class="issue-title">エラーハンドリングの改善</div>
         </div>
@@ -816,13 +1163,52 @@
             </ul>
           </div>
         </div>
+
+        <details class="dev-detail">
+          <summary>&#x1F527; 開発者向け詳細</summary>
+          <div class="dev-detail-body">
+
+            <h5>alert() が発生するワークフロー一覧</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>ページ</th><th>操作</th><th>API</th></tr>
+                <tr><td><code>index</code></td><td>予約確定</td><td><code>get_client_action</code> / <code>account_register_default_card</code></td></tr>
+                <tr><td><code>index</code></td><td>カード登録</td><td><code>Create Client</code> / <code>account_register_card</code></td></tr>
+                <tr><td><code>shop_admin</code></td><td>ライド開始</td><td><code>Charge_by_car_id</code></td></tr>
+                <tr><td><code>shop_admin</code></td><td>ライド終了（延長）</td><td><code>Charge_by_car_id</code></td></tr>
+                <tr><td><code>admin</code></td><td>ステータス変更（課金）</td><td><code>Charge_by_car_id</code></td></tr>
+                <tr><td><code>admin</code></td><td>ステータス変更（返金）</td><td><code>Charge_refund</code></td></tr>
+              </table>
+            </div>
+
+            <h5>Pay.JP の主要エラーコードとユーザー向けメッセージ案</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>エラーコード</th><th>意味</th><th>ユーザー向けメッセージ</th></tr>
+                <tr><td><code>card_error</code></td><td>カード決済エラー</td><td>「カード決済に失敗しました。別のカードをお試しください」</td></tr>
+                <tr><td><code>insufficient_funds</code></td><td>残高不足</td><td>「カードの残高が不足しています」</td></tr>
+                <tr><td><code>expired_card</code></td><td>有効期限切れ</td><td>「カードの有効期限が切れています」</td></tr>
+                <tr><td><code>processing_error</code></td><td>処理エラー</td><td>「決済処理中にエラーが発生しました。もう一度お試しください」</td></tr>
+                <tr><td><code>invalid_argument</code></td><td>パラメータ不正</td><td>（管理者へ通知。ユーザーには「エラーが発生しました」）</td></tr>
+              </table>
+            </div>
+
+            <h5>修正方針</h5>
+            <ul>
+              <li>APIコネクタの設定で「エラー時もワークフローを継続」を有効にする</li>
+              <li>APIレスポンスの <code>failure_code</code> で条件分岐</li>
+              <li><code>alert()</code> → UIポップアップ（Bubble の Popup 要素）に置き換え</li>
+              <li>管理者向けエラー（<code>authentication_error</code> 等）はメール通知（#8 と連携）</li>
+            </ul>
+          </div>
+        </details>
       </div>
     </div>
 
-    <!-- Issue #7 -->
+    <!-- Issue #8 -->
     <div class="issue-card tobe">
       <div class="issue-card-header">
-        <div class="issue-number tobe">7</div>
+        <div class="issue-number tobe">8</div>
         <div class="issue-title-area">
           <div class="issue-title">エラー通知・ログの仕組みがない</div>
         </div>
@@ -846,13 +1232,56 @@
             </ul>
           </div>
         </div>
+
+        <details class="dev-detail">
+          <summary>&#x1F527; 開発者向け詳細</summary>
+          <div class="dev-detail-body">
+
+            <h5>現状</h5>
+            <ul>
+              <li>APIエラー発生 → 管理者に通知なし。気付けない</li>
+              <li>Bubble のサーバーログ → 最短<strong>2週間で自動削除</strong></li>
+              <li>決済エラーの監査証跡 → なし</li>
+            </ul>
+
+            <h5>新規テーブル: <code>Error_Log</code></h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>フィールド</th><th>型</th><th>説明</th></tr>
+                <tr><td><code>timestamp</code></td><td>date</td><td>エラー発生時刻</td></tr>
+                <tr><td><code>workflow_name</code></td><td>text</td><td>ワークフロー名（例: ライド開始）</td></tr>
+                <tr><td><code>error_code</code></td><td>text</td><td>Pay.JP エラーコード</td></tr>
+                <tr><td><code>error_message</code></td><td>text</td><td>エラーメッセージ</td></tr>
+                <tr><td><code>user_id</code></td><td>text</td><td>対象ユーザーID</td></tr>
+                <tr><td><code>reservation_id</code></td><td>text</td><td>対象予約ID</td></tr>
+                <tr><td><code>api_endpoint</code></td><td>text</td><td>呼び出したAPI名</td></tr>
+                <tr><td><code>resolved</code></td><td>yes/no</td><td>解決済みフラグ</td></tr>
+              </table>
+            </div>
+
+            <h5>メール通知の追加</h5>
+            <div class="flow-diagram">API呼び出し失敗時:
+  ↓
+<code>Error_Log</code> にレコード作成
+  ↓
+管理者にメール送信（エラーコード・予約ID・ユーザーID）
+  ↓
+特に決済関連（<code>Charge_by_car_id</code> / <code>Charge_refund</code>）は即時送信</div>
+
+            <h5>実装ポイント</h5>
+            <ul>
+              <li>全 Pay.JP API 呼び出しの直後に「failure_code が空でない場合 → Error_Log 作成 + メール送信」を追加</li>
+              <li>#7 のエラーハンドリング改善と同時に実装するのが効率的</li>
+            </ul>
+          </div>
+        </details>
       </div>
     </div>
 
-    <!-- Issue #8 -->
+    <!-- Issue #9 -->
     <div class="issue-card tobe">
       <div class="issue-card-header">
-        <div class="issue-number tobe">8</div>
+        <div class="issue-number tobe">9</div>
         <div class="issue-title-area">
           <div class="issue-title">店舗招待URLのセキュリティ</div>
         </div>
@@ -871,6 +1300,53 @@
           <div class="issue-field-label action">&#x2705; 対応</div>
           <div class="issue-field-text">招待メール送信時にパラメータとしてメアドか招待アカウントをDB保存し、unique_id で認証する</div>
         </div>
+
+        <details class="dev-detail">
+          <summary>&#x1F527; 開発者向け詳細</summary>
+          <div class="dev-detail-body">
+
+            <h5>現状のフロー</h5>
+            <div class="flow-diagram">① 管理者が shop_admin で「新規追加」をクリック
+   ↓
+② popup でメールアドレスを入力 → 「招待メール送信」
+   ↓
+③ メール本文に shop_form のURLが記載される
+   ↓
+<span class="highlight-line">④ URLを知っていれば誰でもアクセスして店舗登録できる</span></div>
+
+            <h5>修正後のフロー</h5>
+            <div class="flow-diagram">① 管理者が「招待メール送信」をクリック
+   ↓
+② 新規テーブル <code>Shop_Invitation</code> にレコード作成:
+   - invitation_token: UUID（ユニークID）
+   - email: 招待対象メールアドレス
+   - expires_at: 現在日時 + 7日
+   - used: false
+   ↓
+③ メール本文に token 付きURLを記載:
+   <code>https://rincle.app/shop_form?token=&lt;invitation_token&gt;</code>
+   ↓
+④ shop_form ページ読み込み時に検証:
+   - token パラメータあり？ → なければ拒否
+   - DB に該当 token あり？ → なければ拒否
+   - 有効期限内？ → 期限切れなら拒否
+   - 使用済み？ → 使用済みなら拒否
+   ↓
+⑤ 登録完了時に used = true に更新</div>
+
+            <h5>新規テーブル: <code>Shop_Invitation</code></h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>フィールド</th><th>型</th><th>説明</th></tr>
+                <tr><td><code>invitation_token</code></td><td>text (UUID)</td><td>招待トークン</td></tr>
+                <tr><td><code>email</code></td><td>text</td><td>招待対象メールアドレス</td></tr>
+                <tr><td><code>expires_at</code></td><td>date</td><td>有効期限（7日後）</td></tr>
+                <tr><td><code>used</code></td><td>yes/no</td><td>使用済みフラグ</td></tr>
+                <tr><td><code>created_by</code></td><td>User</td><td>招待元管理者</td></tr>
+              </table>
+            </div>
+          </div>
+        </details>
       </div>
     </div>
 
@@ -888,10 +1364,10 @@
     </div>
     <p class="section-desc">運用に影響なし。余裕があれば対応する項目です。</p>
 
-    <!-- Issue #9 -->
+    <!-- Issue #10 -->
     <div class="issue-card low">
       <div class="issue-card-header">
-        <div class="issue-number low">9</div>
+        <div class="issue-number low">10</div>
         <div class="issue-title-area">
           <div class="issue-title">PEDALSTANDARD の 15% 利用料請求の仕組みが未定</div>
         </div>
@@ -914,13 +1390,50 @@
           <div class="issue-field-label action">&#x2705; 対応</div>
           <div class="issue-field-text">ビジネス要件を確定させた上で実装方針を決定</div>
         </div>
+
+        <details class="dev-detail">
+          <summary>&#x1F527; 開発者向け詳細</summary>
+          <div class="dev-detail-body">
+
+            <h5>選択肢の比較</h5>
+            <div class="table-wrap">
+              <table>
+                <tr><th>方式</th><th>Pay.JP の platform_fee</th><th>RINCLE取り分</th><th>リスク</th></tr>
+                <tr>
+                  <td><strong>A. platform_fee を15%にする</strong></td>
+                  <td>15%（自動差引）</td>
+                  <td>Pay.JPが自動で分配</td>
+                  <td>低（自動徴収）</td>
+                </tr>
+                <tr>
+                  <td><strong>B. platform_fee を0にして月末請求</strong></td>
+                  <td>0%（差引なし）</td>
+                  <td>月末に請求書で15%回収</td>
+                  <td>高（未払いリスク）</td>
+                </tr>
+              </table>
+            </div>
+
+            <h5>方式Bを選ぶ場合に必要な実装</h5>
+            <ul>
+              <li>Option Set <code>platform_fee</code> を 15 → 0 に変更</li>
+              <li>月末売上集計ワークフローの新規実装</li>
+              <li>請求データテーブル（<code>Monthly_Invoice</code>）の新規作成</li>
+              <li>admin画面に請求管理セクション追加</li>
+              <li>締め日・入金期限・督促ルールの策定</li>
+            </ul>
+
+            <h5>現時点の方針</h5>
+            <p>まず #3 で <strong>platform_fee を15%に修正</strong>（方式A）して収益損失を止める。月末請求化（方式B）は別フェーズで検討。</p>
+          </div>
+        </details>
       </div>
     </div>
 
-    <!-- Issue #10 -->
+    <!-- Issue #11 -->
     <div class="issue-card low">
       <div class="issue-card-header">
-        <div class="issue-number low">10</div>
+        <div class="issue-number low">11</div>
         <div class="issue-title-area">
           <div class="issue-title">テナント登録時の銀行口座情報</div>
         </div>
@@ -942,10 +1455,10 @@
       </div>
     </div>
 
-    <!-- Issue #11 -->
+    <!-- Issue #12 -->
     <div class="issue-card low">
       <div class="issue-card-header">
-        <div class="issue-number low">11</div>
+        <div class="issue-number low">12</div>
         <div class="issue-title-area">
           <div class="issue-title">Webhook名のtypo</div>
         </div>
@@ -969,7 +1482,7 @@
 
     <div class="callout info">
       <div class="callout-icon">&#x2139;&#xFE0F;</div>
-      <div><strong>低優先の3件は運用に直接影響しません。</strong>#9 はビジネス要件の確定待ち、#10 と #11 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div>
+      <div><strong>低優先の3件は運用に直接影響しません。</strong>#10 はビジネス要件の確定待ち、#11 と #12 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div>
     </div>
   </div>
 

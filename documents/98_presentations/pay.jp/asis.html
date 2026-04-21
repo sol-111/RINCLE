@@ -329,7 +329,7 @@
   </div>
   <div class="summary-card">
     <h3>手数料</h3>
-    <p>売上の10%をRincleが手数料として受け取る</p>
+    <p>Rincle: 売上の10% / カード手数料 約3.5%: 店舗負担</p>
   </div>
   <div class="summary-card">
     <h3>審査</h3>
@@ -337,7 +337,7 @@
   </div>
   <div class="summary-card">
     <h3>カード登録</h3>
-    <p>1回登録すれば以降の予約でそのまま使える</p>
+    <p>予約フロー内で登録。以降の予約でそのまま使える</p>
   </div>
 </div>
 
@@ -468,7 +468,7 @@
       <div class="section-num">2</div>
       <h2>お客さんのカード登録フロー</h2>
     </div>
-    <p class="section-desc">お客さん（予約する人）がクレジットカードを登録する流れです。</p>
+    <p class="section-desc">お客さん（予約する人）がクレジットカードを登録する流れです。<strong>予約フローの「支払い方法」ステップで行います。</strong></p>
 
     <div class="card">
       <div class="flow">
@@ -476,7 +476,7 @@
           <div class="flow-num user">1</div>
           <div class="flow-body">
             <div class="flow-actor user">お客さん</div>
-            <div class="flow-text">Rincleのマイページを開く</div>
+            <div class="flow-text">予約フローの「支払い方法」ステップに進む</div>
           </div>
         </div>
         <div class="flow-step">
@@ -484,14 +484,14 @@
           <div class="flow-body">
             <div class="flow-actor system">Rincle（自動）</div>
             <div class="flow-text">そのお客さんが既にカード登録済みか確認する</div>
-            <div class="flow-note">登録済み → カード情報を表示 / 未登録 → 登録ボタンを表示</div>
+            <div class="flow-note">登録済み → 登録済みカードを表示（ドロップダウンで選択）/ 未登録 → カード入力フォームを表示</div>
           </div>
         </div>
         <div class="flow-step">
           <div class="flow-num user">3</div>
           <div class="flow-body">
             <div class="flow-actor user">お客さん</div>
-            <div class="flow-text">「新しいカードを登録する」ボタンを押す</div>
+            <div class="flow-text">「オンライン決済」を選択し、カード情報を入力する</div>
           </div>
         </div>
         <div class="flow-step">
@@ -537,7 +537,7 @@
 
     <div class="callout success">
       <div class="callout-icon">&#x1f512;</div>
-      <div><strong>カード番号はRincleには保存されません。</strong>Pay.JPが安全に管理します。メインカードは予約確定時に設定されます。</div>
+      <div><strong>カード番号はRincleには保存されません。</strong>Pay.JPが安全に管理します。カード情報は予約フローの「支払い方法」ステップで入力します。</div>
     </div>
   </div>
 
@@ -654,28 +654,9 @@
       </div>
     </div>
 
-    <div class="money-flow">
-      <h4>お金の流れ（例: 予約金額 10,000円）</h4>
-      <div class="money-row">
-        <span class="money-amount">お客さんのカード</span>
-        <span class="money-arrow">&rarr;</span>
-        <span>10,000円 引き落とし</span>
-      </div>
-      <div class="money-row" style="margin-left:32px;">
-        <span class="money-arrow">&darr;</span>
-        <span class="money-label">Pay.JP が一時預かり → 振込時に分配</span>
-      </div>
-      <div class="money-row" style="margin-left:48px;">
-        <span class="money-arrow">&rarr;</span>
-        <span><strong>店舗へ: 9,000円</strong></span>
-        <span class="money-label">（10,000円 - 手数料10%）</span>
-      </div>
-      <div class="money-row" style="margin-left:48px;">
-        <span class="money-arrow">&rarr;</span>
-        <span><strong>Rincleへ: 1,000円</strong></span>
-        <span class="money-label">（手数料10%）</span>
-      </div>
-      <div style="margin-top:8px; font-size:13px; color:var(--gray-500);">※ 別途 Pay.JP自体の手数料がかかります（上記とは別計算）</div>
+    <div class="callout info">
+      <div class="callout-icon">&#x2139;&#xFE0F;</div>
+      <div>お金の流れの詳細は、ページ下部の<strong>「お金の流れまとめ」</strong>セクションで図解しています。</div>
     </div>
   </div>
 
@@ -836,6 +817,79 @@
     </div>
   </div>
 
+  <!-- お金の流れまとめ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background: var(--accent);">&#165;</div>
+      <h2>お金の流れまとめ</h2>
+    </div>
+    <p class="section-desc">カード決済1件あたりの分配と、店舗が実際に負担する手数料をまとめます。</p>
+
+    <!-- ビジュアル図解 -->
+    <div class="money-flow">
+      <h4>例: 予約金額 10,000円 の場合</h4>
+      <div class="money-row">
+        <span class="money-amount">お客さんのカード</span>
+        <span class="money-arrow">&rarr;</span>
+        <span>10,000円 引き落とし</span>
+      </div>
+      <div class="money-row" style="margin-left:32px;">
+        <span class="money-arrow">&darr;</span>
+        <span class="money-label">Pay.JP が一時預かり → 振込時に分配</span>
+      </div>
+      <div class="money-row" style="margin-left:48px;">
+        <span class="money-arrow">&rarr;</span>
+        <span><strong>Rincleへ: 1,000円</strong></span>
+        <span class="money-label">（プラットフォーム手数料 10%）</span>
+      </div>
+      <div class="money-row" style="margin-left:48px;">
+        <span class="money-arrow">&rarr;</span>
+        <span><strong>Pay.JPへ: 約350円</strong></span>
+        <span class="money-label">（カード手数料 約3.5%）</span>
+      </div>
+      <div class="money-row" style="margin-left:48px;">
+        <span class="money-arrow">&rarr;</span>
+        <span><strong>店舗へ: 約8,650円</strong></span>
+        <span class="money-label">（10,000 - 1,000 - 350）</span>
+      </div>
+    </div>
+
+    <!-- 分配テーブル -->
+    <div class="table-wrap">
+      <table>
+        <tr><th>受取人</th><th>金額（1万円あたり）</th><th>計算</th></tr>
+        <tr><td>Rincle（PEDALSTANDARD）</td><td><strong>1,000円</strong></td><td>10,000 x 10%</td></tr>
+        <tr><td>Pay.JP（カード手数料）</td><td><strong>約350円</strong></td><td>10,000 x 約3.5%</td></tr>
+        <tr><td>店舗（ネット入金）</td><td><strong>約8,650円</strong></td><td>10,000 - 1,000 - 350</td></tr>
+      </table>
+    </div>
+
+    <!-- 店舗負担率 -->
+    <div class="table-wrap">
+      <table>
+        <tr><th>店舗から見た負担</th><th>率</th><th>支払先</th></tr>
+        <tr><td>プラットフォーム手数料</td><td><strong>10%</strong></td><td>Rincle（PEDALSTANDARD）</td></tr>
+        <tr><td>カード手数料</td><td><strong>約3.5%</strong></td><td>Pay.JP</td></tr>
+        <tr style="background:#fee2e2;"><td><strong>合計負担</strong></td><td><strong>約13.5%</strong></td><td></td></tr>
+      </table>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div>
+        <strong>カード手数料（約3.5%）は店舗負担です。</strong><br>
+        Pay.JPの設定により、カード手数料はRincleのプラットフォーム手数料には含まれず、店舗の取り分から差し引かれます。
+      </div>
+    </div>
+
+    <div class="callout" style="background:#fee2e2; border:1px solid #fecaca; color:#991b1b;">
+      <div class="callout-icon">&#x1f6a8;</div>
+      <div>
+        <strong>契約と実装のズレ:</strong> 契約上のRINCLE取り分は <strong>15%</strong> ですが、現在のシステムでは <strong>10%</strong> に設定されています。<strong>5%分の差額</strong>が発生しており、修正が必要です。
+      </div>
+    </div>
+  </div>
+
   <!-- まとめ -->
   <div class="section">
     <div class="section-header">
@@ -848,7 +902,7 @@
       <p>店舗登録 → Pay.JP審査（数日）→ 審査通過 → 決済受付OK！</p>
 
       <h4>&#x1f4b3; お客さん側の準備</h4>
-      <p>カード登録（1回だけ）→ 以降はそのカードで決済OK！</p>
+      <p>予約フローの「支払い方法」でカード登録 → 以降はそのカードで決済OK！</p>
 
       <h4>&#x1f6b2; 予約 ~ 決済</h4>
       <p>予約確定（課金なし・自転車確保のみ）→ 店舗が「ライド開始」→ カード引き落とし → 完了<br>※ 管理者がステータス変更で課金する場合もあり</p>

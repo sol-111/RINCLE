@@ -548,7 +548,7 @@
           <div class="flow-body">
             <div class="flow-actor system">RINCLE（自動）</div>
             <div class="flow-text">PAY.jpにキャプチャ（決済確定）を依頼する</div>
-            <div class="flow-note">キャプチャ失敗の場合 → 別カードで再決済 or 別決済手段（現金等）へ切替<br>※ この時点の決済不成立の場合の動きは要定義</div>
+            <div class="flow-note">platform_fee = 0 のため、RINCLEの利用料はPay.JPでは差し引かれない（月末に別途請求）<br>キャプチャ失敗の場合 → 別カードで再決済 or 別決済手段（現金等）へ切替<br>※ この時点の決済不成立の場合の動きは要定義</div>
           </div>
         </div>
         <div class="flow-step">
@@ -579,6 +579,74 @@
       <div class="callout-icon">&#x26A0;&#xFE0F;</div>
       <div><strong>キャプチャ失敗時の救済フロー（別カード / 現金）は要定義です。</strong>また、二重キャプチャ防止の仕組みも必要になります。</div>
     </div>
+
+    <div class="callout info">
+      <div class="callout-icon">&#x1f464;</div>
+      <div><strong>管理者もキャプチャを実行できます。</strong>admin画面からステータスを変更することで、オーソリ済みの予約をキャプチャします。As-Isの「管理者によるステータス変更で課金」に相当する操作です。</div>
+    </div>
+  </div>
+
+  <!-- 3.5. キャプチャ後の返金フロー -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:#e94560;">3.5</div>
+      <h2>キャプチャ後の返金フロー</h2>
+    </div>
+    <p class="section-desc">ライド開始後（キャプチャ済み）にトラブル等で返金が必要になった場合のフローです。<strong>オーソリ解放ではなく「返金」処理になります。</strong></p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num shop">1</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">加盟店 or エンドユーザー</div>
+            <div class="flow-text">返金が必要な状況が発生する</div>
+            <div class="flow-note">車体トラブル、天候悪化による早期返却、お客さん都合 など</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num admin">2</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">RINCLE管理者</div>
+            <div class="flow-text">admin画面から返金操作を行う</div>
+            <div class="flow-note">返金はお客さん側からはできない（管理者のみ操作可能）</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">3</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">PAY.jpに返金（refund）を依頼する</div>
+            <div class="flow-note">キャプチャ済みのため、オーソリ解放ではなく返金APIを使用</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num payjp">4</div>
+          <div class="flow-body">
+            <div class="flow-actor payjp">PAY.jp（自動）</div>
+            <div class="flow-text">お客さんのカードに返金処理を行う</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num system">5</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動）</div>
+            <div class="flow-text">予約ステータスを更新し、在庫を開放する</div>
+            <div class="flow-note">返金額はPay.JPから店舗への次回振込から差し引かれる</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div>
+        <strong>ライド開始前のキャンセル（オーソリ解放）との違い:</strong><br>
+        ・ライド開始前 → オーソリ解放（お金は動いていないので返金不要）<br>
+        ・ライド開始後 → 返金処理（実際にお金を返す必要がある）<br><br>
+        月末請求で既にプラットフォーム利用料（15%）を計上済みの場合、<strong>返金分の利用料を翌月請求で調整</strong>する必要があります。
+      </div>
+    </div>
   </div>
 
   <!-- 4. お金の流れ -->
@@ -598,38 +666,94 @@
       </div>
       <div class="money-row" style="margin-left:32px;">
         <span class="money-arrow">&darr;</span>
-        <span class="money-label">PAY.jp が一時預かり</span>
+        <span class="money-label">PAY.jp が一時預かり → 振込時に分配</span>
       </div>
       <div class="money-row" style="margin-left:48px;">
         <span class="money-arrow">&rarr;</span>
-        <span><strong>加盟店へ: ネット入金</strong></span>
-        <span class="money-label">（カード手数料 約3.5% 差引後）</span>
-      </div>
-      <div class="money-row" style="margin-left:32px;">
-        <span class="money-arrow">&darr;</span>
-        <span class="money-label">別途: 毎月末にPEDALSTANDARDから請求</span>
+        <span><strong>Pay.JPへ: 約350円</strong></span>
+        <span class="money-label">（カード手数料 約3.5% &#x2190; 店舗負担）</span>
       </div>
       <div class="money-row" style="margin-left:48px;">
         <span class="money-arrow">&rarr;</span>
-        <span><strong>PEDALSTANDARDへ: 売上の15%</strong></span>
-        <span class="money-label">（Pay.jp経由ではなく別請求）</span>
+        <span><strong>加盟店へ: 約9,650円</strong></span>
+        <span class="money-label">（ネット入金 = 10,000 - 350）</span>
+      </div>
+      <div style="margin:16px 0 4px 32px; border-top:2px dashed #fde68a; padding-top:12px;">
+        <span class="money-label" style="font-weight:700; color:var(--primary);">&#x1f4c4; Pay.JPの外で別途処理（月末請求書）</span>
+      </div>
+      <div class="money-row" style="margin-left:48px;">
+        <span class="money-arrow">&rarr;</span>
+        <span><strong>PEDALSTANDARDへ: 1,500円</strong></span>
+        <span class="money-label">（売上10,000円 x 15% を月末に請求）</span>
       </div>
     </div>
 
+    <!-- 1件あたりの分配テーブル -->
     <div class="table-wrap">
       <table>
-        <tr><th>項目</th><th>To-Be</th></tr>
-        <tr><td>カード売上の帰属</td><td><strong>加盟店</strong>がPAY.jpからネット入金を受ける</td></tr>
-        <tr><td>プラットフォーム利用料</td><td>売上の<strong>15%</strong>をPEDALSTANDARDへ<strong>毎月末請求</strong>（Pay.jpの platform_fee では抜かない）</td></tr>
-        <tr><td>Pay.jp手数料</td><td>カード利用料 約3.5%（Pay.jpが差し引き）</td></tr>
-        <tr><td>オーソリ有効期限</td><td><strong>60日</strong>（expiry_days=60）。最大予約先を60日以内に制限</td></tr>
-        <tr><td>営業カレンダー</td><td>365日分 → <strong>60日分に縮小</strong>（オーソリ期限と整合）</td></tr>
+        <tr><th>受取人</th><th>金額（1万円あたり）</th><th>計算</th><th>いつ届く</th></tr>
+        <tr><td>Pay.JP（カード手数料）</td><td><strong>約350円</strong></td><td>10,000 x 約3.5%</td><td>振込時に自動差引</td></tr>
+        <tr><td>加盟店（ネット入金）</td><td><strong>約9,650円</strong></td><td>10,000 - 350</td><td>Pay.JP振込日</td></tr>
+        <tr><td>PEDALSTANDARD（利用料）</td><td><strong>1,500円</strong></td><td>10,000 x 15%</td><td>月末に請求書で回収</td></tr>
       </table>
     </div>
 
     <div class="callout info">
       <div class="callout-icon">&#x2139;&#xFE0F;</div>
-      <div>As-Isでは Pay.jp の platform_fee で10%を都度差し引いていましたが、To-Be では<strong>月末にまとめて15%を別途請求</strong>する方式に変わります。</div>
+      <div>現状（As-Is）ではPay.JPが自動で10%を差し引いていましたが、To-Beでは<strong>Pay.JPでの差し引きを0にして、毎月末に15%をまとめて請求書で別途請求</strong>する方式に変わります。詳しい比較はページ下部の<strong>「As-Is との差分」</strong>セクションで図解しています。</div>
+    </div>
+  </div>
+
+  <!-- 4.5. 月末プラットフォーム利用料の請求フロー -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:#7c3aed;">&#x1f4c4;</div>
+      <h2>月末プラットフォーム利用料の請求フロー</h2>
+    </div>
+    <p class="section-desc">RINCLEの利用料（売上の15%）は、Pay.JP経由ではなく<strong>毎月末に請求書で別途回収</strong>する新しいフローです。</p>
+
+    <div class="card">
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num system">1</div>
+          <div class="flow-body">
+            <div class="flow-actor system">RINCLE（自動 or 手動）</div>
+            <div class="flow-text">月末に、各加盟店のキャプチャ済み売上を集計する</div>
+            <div class="flow-note">返金が発生した分は売上から差し引いて集計</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num admin">2</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">PEDALSTANDARD</div>
+            <div class="flow-text">売上合計 × 15% の請求書を作成し、加盟店に送付する</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num shop">3</div>
+          <div class="flow-body">
+            <div class="flow-actor shop">加盟店</div>
+            <div class="flow-text">請求書に基づき、指定口座へ振り込む</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num admin">4</div>
+          <div class="flow-body">
+            <div class="flow-actor admin">PEDALSTANDARD</div>
+            <div class="flow-text">入金を確認する</div>
+            <div class="flow-note">未入金の場合 → 督促対応（運用ルールは要定義）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
+      <div>
+        <strong>As-IsではPay.JPが自動で手数料を差し引いていたため、未払いリスクはゼロでした。</strong><br>
+        To-Beでは請求書ベースの回収になるため、<strong>未払い・遅延リスク</strong>が新たに発生します。<br>
+        締め日・入金期限・督促ルールの策定が必要です。
+      </div>
     </div>
   </div>
 
@@ -688,6 +812,7 @@
     </div>
     <p class="section-desc">現行フロー（As-Is）と理想フロー（To-Be）の主な違いを比較します。</p>
 
+    <p style="font-weight:700; font-size:16px; margin-bottom:12px;">決済フローの差分</p>
     <div class="table-wrap">
       <table>
         <tr><th>項目</th><th>As-Is（現状）</th><th>To-Be（理想）</th></tr>
@@ -711,22 +836,78 @@
           <td>店頭決済（未請求）として更新</td>
           <td>別カードで再決済 or 別手段へ切替</td>
         </tr>
-        <tr class="highlight-row">
-          <td>platform_fee</td>
-          <td>10%（Pay.jpで都度差し引き）</td>
-          <td><span class="badge badge-new">NEW</span> <strong>0（15%は月末に別途請求）</strong></td>
-        </tr>
         <tr>
           <td>キャプチャ失敗時</td>
           <td>該当なし（直接課金のため）</td>
           <td>別カード / 現金フォールバック（<strong>要定義</strong>）</td>
         </tr>
+        <tr>
+          <td>キャプチャ後の返金</td>
+          <td>admin が返金処理を実行</td>
+          <td>admin が返金処理を実行（同様）+ <strong>利用料の調整が必要</strong></td>
+        </tr>
+        <tr>
+          <td>管理者によるキャプチャ</td>
+          <td>ステータス変更で全額課金</td>
+          <td>ステータス変更で<strong>オーソリをキャプチャ</strong></td>
+        </tr>
+        <tr class="highlight-row">
+          <td>利用料の回収</td>
+          <td>Pay.JPが自動で差し引き（10%）</td>
+          <td><span class="badge badge-new">NEW</span> <strong>月末に請求書で回収（15%）</strong></td>
+        </tr>
+      </table>
+    </div>
+
+    <p style="font-weight:700; font-size:16px; margin:24px 0 12px;">お金の流れの差分</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>As-Is（現状）</th><th>To-Be（理想）</th></tr>
+        <tr class="highlight-row">
+          <td>RINCLE利用料の徴収方法</td>
+          <td>Pay.JPが自動で差し引き（10%）</td>
+          <td><span class="badge badge-new">NEW</span> <strong>月末に請求書で別途請求（15%）</strong></td>
+        </tr>
+        <tr>
+          <td>RINCLE利用料の率</td>
+          <td>10%（※契約上は15%。設定の差異あり）</td>
+          <td><strong>15%</strong></td>
+        </tr>
+        <tr>
+          <td>カード手数料（約3.5%）の負担者</td>
+          <td><strong>店舗</strong></td>
+          <td><strong>店舗</strong>（変更なし）</td>
+        </tr>
+        <tr>
+          <td>店舗のPay.JPからの入金（1万円あたり）</td>
+          <td>約8,650円</td>
+          <td><strong>約9,650円</strong>（Pay.JPからの入金は増える）</td>
+        </tr>
+        <tr>
+          <td>RINCLE側の未払いリスク</td>
+          <td>なし（自動徴収）</td>
+          <td><strong>あり</strong>（月末請求の回収が必要）</td>
+        </tr>
+      </table>
+    </div>
+
+    <p style="font-weight:700; font-size:16px; margin:24px 0 12px;">店舗から見た負担率の変化</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>店舗から見た負担</th><th>As-Is（現状）</th><th>To-Be（理想）</th><th>支払先</th></tr>
+        <tr><td>カード手数料</td><td>約3.5%</td><td><strong>約3.5%</strong>（変更なし）</td><td>Pay.JP</td></tr>
+        <tr><td>プラットフォーム利用料</td><td>10%（Pay.JP経由で自動）</td><td><strong>15%</strong>（月末請求書）</td><td>PEDALSTANDARD</td></tr>
+        <tr style="background:#fffbeb;"><td><strong>合計負担</strong></td><td><strong>約13.5%</strong></td><td><strong>約18.5%</strong></td><td></td></tr>
       </table>
     </div>
 
     <div class="callout warning">
       <div class="callout-icon">&#x26A0;&#xFE0F;</div>
-      <div>最も大きな変更点は<strong>「オーソリ → キャプチャ」の2段階決済</strong>への移行です。これにより未回収リスクを抑えつつ、キャンセルしやすい体験を両立できます。</div>
+      <div>
+        <strong>店舗の負担率: As-Is 約13.5% → To-Be 約18.5%</strong><br>
+        ただしAs-Isの10%は契約上15%であるべきなので、契約通りに是正すると考えれば実質的な増分はカード手数料 約3.5% のみです。<br><br>
+        最も大きな変更点は<strong>「オーソリ → キャプチャ」の2段階決済</strong>と、<strong>プラットフォーム利用料の月末請求への切替</strong>です。利用料の回収はPay.JP外で自前で行う必要があります。
+      </div>
     </div>
   </div>
 
@@ -743,6 +924,7 @@
       <li>2026年8月以降、海外カードはオーソリ最大7日制限（PAY.JP仕様変更）への対応</li>
       <li>15%の課税・端数・計算基準（総額 / ネット）</li>
       <li>月末請求の締め日・入金日・未払い時の運用</li>
+      <li>キャプチャ後返金時の月末請求利用料の調整ルール</li>
       <li>延長フローのE2E検証と設計</li>
       <li>現地払いキャンセル時のキャンセル料回収ポリシー</li>
       <li>Webhook による整合性確認の設計</li>
@@ -760,14 +942,17 @@
       <h4>&#x1f4b3; 予約時</h4>
       <p>クレジットカードのオーソリ（与信枠確保）のみ実行。お金は引き落とされない。</p>
 
-      <h4>&#x274c; キャンセル時</h4>
+      <h4>&#x274c; キャンセル時（ライド開始前）</h4>
       <p>オーソリ解放で完了。返金処理が不要になり、キャンセルしやすい体験を実現。</p>
 
       <h4>&#x1f6b2; ライド開始時</h4>
       <p>店舗が「ライド開始」→ キャプチャ（決済確定）→ ここで初めてお金が動く。</p>
 
-      <h4>&#x1f4b0; プラットフォーム利用料</h4>
-      <p>売上の15%をPEDALSTANDARDへ毎月末に別途請求（Pay.jp経由ではない）。</p>
+      <h4>&#x21a9;&#xfe0f; 返金（ライド開始後）</h4>
+      <p>キャプチャ済みのため、Pay.jpの返金APIで処理。月末請求の利用料調整も必要。</p>
+
+      <h4>&#x1f4c4; プラットフォーム利用料（月末請求）</h4>
+      <p>売上の15%をPEDALSTANDARDへ毎月末に請求書で別途回収。未払いリスクの管理が必要。</p>
 
       <h4>&#x1f3ea; 現地払い</h4>
       <p>PAY.jp APIは呼ばない。来店時に店舗で直接精算。</p>

@@ -362,7 +362,7 @@
       <div class="section-num">1</div>
       <h2>アカウント・認証</h2>
     </div>
-    <p class="section-desc">ユーザーがサービスを利用するための認証フローです。カード登録はマイページから事前に行います。</p>
+    <p class="section-desc">ユーザーがサービスを利用するための認証フローです。カード登録は予約フローの「支払い方法」ステップで行います。</p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
@@ -406,10 +406,10 @@
       <div class="swim-row">
         <div class="swim-label" style="color:var(--notify)">補足</div>
         <div class="swim-track">
-          <div class="swim-node user" style="border-style:dashed">マイページ</div>
+          <div class="swim-node user" style="border-style:dashed">予約フロー</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-node external">カード情報登録（Pay.JP）</div>
-          <div style="margin-left:16px;font-size:12px;color:var(--gray-500)">* 予約前に事前登録が必要</div>
+          <div style="margin-left:16px;font-size:12px;color:var(--gray-500)">* 予約フローの「支払い方法」ステップで登録</div>
         </div>
       </div>
     </div></div>
@@ -444,8 +444,8 @@
           <div class="flow-dot user">4</div>
           <div class="flow-body">
             <div class="flow-actor user">ユーザー</div>
-            <div class="flow-text">マイページでカード情報を事前登録する</div>
-            <div class="flow-note">Pay.JPのフォームが表示される。カード番号はRincleに保存されない（トークン方式）</div>
+            <div class="flow-text">予約フローの「支払い方法」ステップでカード情報を登録する</div>
+            <div class="flow-note">Pay.JPのCheckout.jsフォームが表示される。カード番号はRincleに保存されない（トークン方式）</div>
           </div>
         </div>
       </div>
@@ -453,7 +453,7 @@
 
     <div class="callout info">
       <div class="callout-icon">&#x1F4B3;</div>
-      <div><strong>現行の特徴：</strong>カード登録は予約時ではなく、マイページから事前に行う必要があります。（To-Beでは予約フロー内でカード入力に変更予定）</div>
+      <div><strong>現行の特徴：</strong>カード登録は予約フローの「支払い方法」ステップ（index/howtopay）で行います。Pay.JPのCheckout.jsによるカード入力フォームが表示されます。</div>
     </div>
   </div>
 
@@ -884,7 +884,7 @@
           <div class="flow-body">
             <div class="flow-actor admin">管理者</div>
             <div class="flow-text">予約状況をモニタリングし、売上レポートで実績を確認</div>
-            <div class="flow-note">月次で売上集計、プラットフォーム手数料（10%）を店舗に請求</div>
+            <div class="flow-note">プラットフォーム手数料（10%）は Pay.JP が自動で差し引いて Rincle に分配（手動請求ではない）<br>※ 契約上の取り分は15%だが、現在のシステムでは10%に設定されている（5%分の差額あり）</div>
           </div>
         </div>
       </div>
@@ -987,17 +987,6 @@
     <div class="section-header">
       <div class="section-num" style="background:var(--user)">vs</div>
       <h2>As-Is と To-Be の主な違い</h2>
-    </div>
-
-    <div class="compare-grid">
-      <div class="compare-card asis">
-        <h4>As-Is（現行）カード登録</h4>
-        <p>マイページで<span class="highlight">事前に</span>カード情報を登録する必要がある</p>
-      </div>
-      <div class="compare-card tobe">
-        <h4>To-Be（目標）カード登録</h4>
-        <p>予約フロー内の<span class="highlight">決済ステップで</span>カード情報を入力する</p>
-      </div>
     </div>
 
     <div class="compare-grid">
