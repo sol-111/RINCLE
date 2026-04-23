@@ -1,53 +1,64 @@
 no,type,name,description
-01,datatype,user,ユーザー（事業者・加盟店）。認証・プロフィール・Pay.JP決済情報を管理。アプリの中心テーブル
-02,datatype,bicycle,自転車情報。加盟店が登録する貸出可能な自転車。料金プランと紐づく
-03,datatype,price_menu,料金プラン。時間・日・週・月単位の単価を管理。自転車に紐づく
-04,datatype,option,オプション商品。自転車に追加できるアクセサリ等。加盟店ごとに管理
-05,datatype,sub_option,サブオプション。オプションの詳細・数量・単価。対応自転車を複数持てる
-06,datatype,prefecture,都道府県マスタ。ショップのサービスエリア管理
-07,datatype,q_a,よくある質問と回答。カテゴリに紐づく
-08,datatype,q_a_category,FAQカテゴリ。Q&Aの分類に使用
-09,datatype,news,お知らせ。管理者・運営からユーザーへの通知
-10,datatype,banner,バナー広告。トップページ等に表示する画像+リンク
-11,datatype,fv,ファーストビュー。トップページのヒーロー画像・リンク
-12,datatype,holidays,祝日マスタ。貸出不可日の管理に使用
-13,datatype,access_log,アクセスログ。ユーザーの訪問日時・IPを記録
-14,datatype,webhook_event,Webhookイベント。Pay.JPなど外部サービスからの通知を記録
-15,datatype,reservation,予約情報。貸出・返却・決済の中心テーブル。明細・オプション価格と紐づく
-16,datatype,booking_customer,予約顧客情報。会員登録なしで予約した顧客の氏名・連絡先
-17,datatype,reservation_detail,予約明細。予約ごとの自転車・料金プラン・金額の詳細
-18,datatype,option_price,オプション価格。予約に紐づくオプション金額の記録
-19,datatype,shop_schedule,ショップスケジュール。特定日の営業状態と対象自転車を管理
-20,datatype,business_hours,営業時間設定。曜日・期間ごとの営業時間ルール
-21,datatype,sales_record,売上記録。月次集計・振込処理用のデータ
-22,datatype,shop_notification,ショップ通知。お問い合わせ・請求・キャンセル等の通知
-23,datatype,contact_inquiry,お問い合わせ。ユーザーからの問い合わせフォームデータ
-24,datatype,ip_rights,IPベースのアクセス制御
-25,datatype,holiday_defaults,祝日デフォルト設定
-26,datatype,holiday_master,祝日マスタ（マスタテーブル）
-27,datatype,reservation_count,予約カウント。手数料計算の補助テーブル
-01,optionset,Rights,ユーザー / 加盟店 / 管理者のアクセス権限
-02,optionset,予約ステータス,貸出中・来客待ち・返却済み等、予約の進行状態
-03,optionset,決済ステータス,決済済み・未決済・返金済み等、支払い状態
-04,optionset,振り込みステータス,振込済 / 未振込
-05,optionset,支払い方法,店頭決済 / クレカ決済
-06,optionset,貸し出し可能ステータス,自転車のユーザー表示フラグ
-07,optionset,brand_status,ブランドレビューの審査状態
-08,optionset,Bicycle Category,自転車カテゴリ（ロード・クロス・MTB等）
-09,optionset,yes/no,True/False の汎用フラグ
-10,optionset,営業状態op,営業 / 休業
-11,optionset,予約管理並び替え,予約一覧の並び順オプション
-12,optionset,管理者/運営_news_type,お知らせ種別（お問い合わせ・請求/入金・キャンセル）
-13,optionset,Admin_info,管理者メール・サービス名などグローバル設定
+01,datatype,Access_log,アクセスログ。ユーザーの訪問日時・IPを記録
+02,datatype,Banner,バナー広告。トップページ等に表示する画像+リンク
+03,datatype,Bicycle,自転車情報。加盟店が登録する貸出可能な自転車。料金プランと紐づく
+04,datatype,FV,ファーストビュー。トップページのヒーロー画像・リンク
+05,datatype,Holidays,祝日マスタ。貸出不可日の管理に使用
+06,datatype,News,お知らせ。管理者・運営からユーザーへの通知
+07,datatype,Prefecture,都道府県マスタ。ショップのサービスエリア管理
+08,datatype,Price_Menu,料金プラン。時間・日・週・月単位の単価を管理。自転車に紐づく
+09,datatype,Q&A,よくある質問と回答。カテゴリに紐づく
+10,datatype,Q&A Category,FAQカテゴリ。Q&Aの分類に使用
+11,datatype,Sub_Option,サブオプション。オプションの詳細・数量・単価。対応自転車を複数持てる
+12,datatype,User,ユーザー（事業者・加盟店）。認証・プロフィール・Pay.JP決済情報を管理。アプリの中心テーブル
+13,datatype,Webhook_Event,Webhookイベント。Pay.JPなど外部サービスからの通知を記録
+14,datatype,お問い合わせ履歴,お問い合わせ。ユーザーからの問い合わせフォームデータ
+15,datatype,お問い合わせ種別,IPベースのアクセス制御
+16,datatype,オプション予約詳細,オプション価格。予約に紐づくオプション金額の記録
+17,datatype,乗車人情報,予約顧客情報。会員登録なしで予約した顧客の氏名・連絡先
+18,datatype,予約情報,予約情報。貸出・返却・決済の中心テーブル。明細・オプション価格と紐づく
+19,datatype,営業カレンダー（日付）,ショップスケジュール。特定日の営業状態と対象自転車を管理
+20,datatype,営業カレンダー（曜日）,営業時間設定。曜日・期間ごとの営業時間ルール
+21,datatype,工事中,メンテナンス表示用フラグ
+22,datatype,手数料月ごと,売上記録。月次集計・振込処理用のデータ
+23,datatype,日付データ Defaults,祝日デフォルト設定
+24,datatype,日付データ 追加用,祝日マスタ（マスタテーブル）
+25,datatype,管理者/運営_news,ショップ通知。お問い合わせ・請求・キャンセル等の通知
+26,datatype,管理者手数料,予約カウント。手数料計算の補助テーブル
+27,datatype,自転車予約詳細,予約明細。予約ごとの自転車・料金プラン・金額の詳細
+28,datatype,銀行口座,銀行口座情報（フィールドなし）
+01,optionset,Admin_info,管理者メール・サービス名などグローバル設定
+02,optionset,Admin_Sidebar,管理者画面のサイドバー大項目
+03,optionset,Admin_Sidebar_sub,管理者画面のサイドバー項目
+04,optionset,Bicycle Category,自転車カテゴリ（ロード・クロス・MTB等）
+05,optionset,brand_status,ブランドレビューの審査状態
+06,optionset,index_page,インデックスページのパラメータ定義
+07,optionset,menu_プライバシーポリシー,プライバシーポリシー本文（長文テキスト）
+08,optionset,menu_利用規約,利用規約本文（長文テキスト）
+09,optionset,menu_特定商取引法に基づく表記,特定商取引法表記（長文テキスト）
+10,optionset,noplan_list,プランなし状態の定義
+11,optionset,Pay.jp apply redirect url,Pay.JPテナント申請後のリダイレクトURL
+12,optionset,pay.jp pk,Pay.JP公開鍵
+13,optionset,pay_jp_key,Pay.JPの公開鍵・秘密鍵
 14,optionset,Platform_Fee,プラットフォーム手数料率（デフォルト10%）
-15,optionset,index_page,インデックスページのパラメータ定義
-16,optionset,Shop_Sidebar_sub,ショップ管理画面のサイドバー項目
-17,optionset,Admin_Sidebar_sub,管理者画面のサイドバー項目
-18,optionset,pay_jp_key,Pay.JP の公開鍵・秘密鍵
-19,optionset,曜日,月〜日・祝日のスラグ定義
-20,optionset,月,1月〜12月
-21,optionset,日付,1〜31の日付マスタ（31件）
-22,optionset,Time,0:00〜23:50の時刻マスタ（10分刻み・144件）
-23,optionset,menu_利用規約,利用規約本文（長文テキスト）
-24,optionset,menu_プライバシーポリシー,プライバシーポリシー本文（長文テキスト）
-25,optionset,menu_特商法,特定商取引法表記（長文テキスト）
+15,optionset,Rights,ユーザー / 加盟店 / 管理者のアクセス権限
+16,optionset,Shop_Sidebar,ショップ管理画面のサイドバー大項目
+17,optionset,Shop_Sidebar_sub,ショップ管理画面のサイドバー項目
+18,optionset,Time,0:00〜23:50の時刻マスタ（10分刻み・144件）
+19,optionset,yes/no,True/Falseの汎用フラグ
+20,optionset,予約ステータス,貸出中・来客待ち・返却済み等、予約の進行状態
+21,optionset,予約種別,過去の予約 / 現在の予約の表示切替
+22,optionset,予約管理並び替え,予約一覧の並び順オプション
+23,optionset,会員登録表示,会員登録フローのステップ表示
+24,optionset,営業状態op,営業 / 休業
+25,optionset,振り込みステータス,振込済 / 未振込
+26,optionset,支払い方法,店頭決済 / クレカ決済
+27,optionset,新着/古い,新着順 / 古い順のソートオプション
+28,optionset,曜日,月〜日・祝日のスラグ定義
+29,optionset,月,1月〜12月
+30,optionset,検索カテゴリ,貸出日・返却日・エリア・自転車タイプ等の検索フィルター
+31,optionset,決済ステータス,決済済み・未決済の支払い状態
+32,optionset,管理者/運営_news_type,お知らせ種別（お問い合わせ・請求/入金）
+33,optionset,表示レポート_加盟店,加盟店向け売上レポートの表示項目
+34,optionset,表示項目,管理者向けダッシュボードの表示項目
+35,optionset,貸し出し可能ステータス,自転車のユーザー表示フラグ
