@@ -1,9 +1,0 @@
-field_name,display_name,required,ix,dtype,list,ref_target,notes
-startdate_date,開始日,true,false,date,false,,
-enddate_date,終了日,true,false,date,false,,
-starttime_option_time,開始時間,false,false,option,false,,Time
-endtime_option_time,終了時間,false,false,option,false,,Time
-____user,所属ショップ,true,false,ref,false,user,
-_____option_____op,スケジュール区分,false,false,option,false,,営業状態op
-___option___,曜日区分,false,false,option,false,,曜日
-___boolean,フラグ,false,false,boolean,false,,

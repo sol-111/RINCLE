@@ -1,7 +1,0 @@
-field_name,display_name,required,ix,dtype,list,ref_target,notes
-__1_text,氏名,false,false,text,false,,
-___text,メールアドレス,false,false,text,false,,
-________text,本文,false,false,text,false,,
-______boolean,対応済みフラグ,false,false,boolean,false,,
-_____user,ユーザー参照,false,false,ref,false,user,
-___custom_________,種別,false,false,ref,false,ip_rights,お問い合わせ種別テーブル参照

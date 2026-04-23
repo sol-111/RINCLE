@@ -1,0 +1,3 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+index,表示順,false,false,number,false,,
+title,カテゴリ名,true,false,text,false,,

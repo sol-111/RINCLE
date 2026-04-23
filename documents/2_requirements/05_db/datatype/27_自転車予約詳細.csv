@@ -1,0 +1,8 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+price_menu,料金プラン,false,false,ref,false,price_menu,
+オプション予約詳細,オプション価格リスト,false,false,ref,true,option_price,
+乗車人情報,乗車人情報参照,false,false,ref,false,booking_customer,
+予約情報,予約情報参照,false,false,ref,false,reservation,
+合計金額,金額②,false,false,number,false,,
+基本料金,金額①,false,false,number,false,,
+自転車,自転車,true,false,ref,false,bicycle,

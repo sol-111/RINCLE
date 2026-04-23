@@ -1,7 +1,0 @@
-field_name,display_name,required,ix,dtype,list,ref_target,notes
-viewed_boolean,既読フラグ,false,false,boolean,false,,
-shop_user,所属ショップ,true,false,ref,false,user,
-right_option_rights,表示権限,false,false,option,false,,Rights
-news_type_option________news_type,通知種別,false,false,option,false,,管理者/運営_news_type
-___custom_______,請求参照,false,false,ref,false,sales_record,
-_______custom_________1,お問い合わせ参照,false,false,ref,false,contact_inquiry,

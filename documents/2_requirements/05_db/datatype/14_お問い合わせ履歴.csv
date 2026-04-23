@@ -1,0 +1,7 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+アーカイブ,対応済みフラグ,false,false,boolean,false,,
+メールアドレス,本文,false,false,text,false,,
+内容,メールアドレス,false,false,text,false,,
+名前,氏名,false,false,text,false,,
+対象店舗,ユーザー参照,false,false,ref,false,user,
+種別,種別,false,false,ref,false,ip_rights,お問い合わせ種別テーブル参照

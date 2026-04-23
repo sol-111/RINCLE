@@ -1,3 +1,0 @@
-field_name,display_name,required,ix,dtype,list,ref_target,notes
-___text,IPアドレス等,false,false,text,false,,
-____option_rights,アクセス権限,false,false,option,false,,Rights

@@ -1,0 +1,7 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+news_type,通知種別,false,false,option,false,,管理者/運営_news_type
+right,表示権限,false,false,option,false,,Rights
+shop,所属ショップ,true,false,ref,false,user,
+viewed,既読フラグ,false,false,boolean,false,,
+お問い合わせ,お問い合わせ参照,false,false,ref,false,contact_inquiry,
+請求,請求参照,false,false,ref,false,sales_record,

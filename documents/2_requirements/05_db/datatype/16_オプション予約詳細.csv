@@ -1,0 +1,4 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+price_menu,料金プラン,false,false,ref,false,price_menu,
+オプション,サブオプション,false,false,ref,false,sub_option,
+料金,金額,false,false,number,false,,

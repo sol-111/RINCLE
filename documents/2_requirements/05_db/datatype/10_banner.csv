@@ -1,7 +1,0 @@
-field_name,display_name,required,ix,dtype,list,ref_target,notes
-title_text,タイトル,true,false,text,false,,
-content_text,説明文,false,false,text,false,,
-external_url_text,外部URL,false,false,text,false,,
-image_image,バナー画像,false,false,image,false,,
-page_boolean,内部ページフラグ,false,false,boolean,false,,
-page_content_text,内部ページコンテンツ,false,false,text,false,,

@@ -1,0 +1,2 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+yes/no,yes/no,false,false,boolean,false,,

@@ -1,0 +1,3 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+date,日付,true,false,date,false,,
+holiday,祝日フラグ,false,false,boolean,false,,

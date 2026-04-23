@@ -1,0 +1,6 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+content,本文,false,false,text,false,,
+external url,外部URL,false,false,text,false,,
+page,内部ページフラグ,false,false,boolean,false,,
+page content,内部ページコンテンツ,false,false,text,false,,
+title,タイトル,true,false,text,false,,

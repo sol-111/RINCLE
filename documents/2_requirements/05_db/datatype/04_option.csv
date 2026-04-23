@@ -1,5 +1,0 @@
-field_name,display_name,required,ix,dtype,list,ref_target,notes
-name_text,オプション名,true,false,text,false,,
-description_text,説明,false,false,text,false,,
-________option__________,難読化オプション,false,false,option,false,,
-shop_user,所属ショップ,true,false,ref,false,user,

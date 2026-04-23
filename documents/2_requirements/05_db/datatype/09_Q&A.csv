@@ -1,0 +1,6 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+a,回答,true,false,text,false,,
+index,表示順②,false,false,number,false,,
+q,質問,true,false,text,false,,
+show,表示フラグ,false,false,boolean,false,,
+title,タイトル,true,false,text,false,,

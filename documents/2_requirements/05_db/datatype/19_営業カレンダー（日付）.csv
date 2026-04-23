@@ -1,0 +1,7 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+endTime,終了時間,false,false,option,false,,Time
+startTime,開始時間,false,false,option,false,,Time
+レンタル可能な自転車s,対象自転車リスト,false,false,ref,true,bicycle,
+加盟店,所属ショップ,true,false,ref,false,user,
+営業状態,スケジュール区分,false,false,option,false,,営業状態op
+日付,対象日,true,false,date,false,,
