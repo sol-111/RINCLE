@@ -274,7 +274,7 @@
 <div class="hero">
   <div class="hero-label">Migration Plan</div>
   <h1>Stripe 移行方針</h1>
-  <p>4/21 定例MTGでの合意に基づく、Pay.jpからStripeへの移行計画。一括回収モデル・予約時決済・店頭決済廃止を実現します。</p>
+  <p>4/21・5/1 定例MTGでの合意に基づく、Pay.jpからStripeへの移行計画。一括回収モデル・予約時決済・店頭決済廃止を実現します。</p>
 </div>
 
 <div class="summary-grid">
@@ -450,7 +450,7 @@
     </div>
 
     <div class="note">
-      <strong>ポイント：</strong>現行は来店時に決済していますが、新フローでは予約時に決済が完了します。来店時に店舗がボタンを押す必要はありません。
+      <strong>ポイント：</strong>現行は来店時に店舗が「ライド開始」ボタンを押して決済していますが、新フローでは予約時に決済が完了します。来店時に店舗がボタンを押す必要はなく、時間軸で自動的に進行させることも検討可能です。（5/1 MTG）
     </div>
 
     <!-- 3-2 キャンセル -->
@@ -480,7 +480,7 @@
     </div>
 
     <div class="note">
-      <strong>要決定：</strong>予約時に全額決済するため、キャンセル時は返金が発生します。「何日前まで全額返金」「当日キャンセルは○%」などのキャンセルポリシーの策定が必要です。
+      <strong>要決定：</strong>予約時に全額決済するため、キャンセル時は返金が発生します。「何日前まで全額返金」「当日キャンセルは○%」などのキャンセルポリシーの策定が必要です。また、キャンセル時の返金手数料をユーザーに負担させるかどうかも検討が必要です。（5/1 MTG）
     </div>
 
     <!-- 3-3 延長 -->
@@ -494,17 +494,34 @@
     </div>
 
     <!-- 3-4 追加オプション -->
-    <h3>現場での追加オプション（ヘルメット、保険等）</h3>
-    <div class="flow">
-      <div class="flow-step">店舗がオプション選択</div>
-      <div class="flow-arrow">&rarr;</div>
-      <div class="flow-step accent">追加決済<small>登録済みカードを再利用</small></div>
-      <div class="flow-arrow">&rarr;</div>
-      <div class="flow-step success">オプション情報を更新</div>
+    <h3>現場での追加オプション（ヘルメット、車両保険等）</h3>
+    <div class="vflow">
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div><div class="vflow-connector"></div></div>
+        <div class="vflow-content">
+          <h4>店舗がオプション選択</h4>
+          <p>ヘルメット、車両保険など。現場でお客様と相談の上、追加を決定</p>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div><div class="vflow-connector"></div></div>
+        <div class="vflow-content">
+          <h4>追加決済</h4>
+          <p>登録済みのカードで追加料金を即時決済</p>
+          <div class="error">決済失敗の場合 → ユーザーに別のカードを登録してもらい再試行</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div></div>
+        <div class="vflow-content">
+          <h4>オプション情報を更新</h4>
+          <p>決済完了後、予約情報にオプション内容と金額を記録</p>
+        </div>
+      </div>
     </div>
-    <p style="font-size:14px; color:var(--gray-500); margin-top:-8px;">
-      現在はリンクル外（現場で別途決済）で処理されていますが、システム上で管理できるようになります。
-    </p>
+    <div class="note">
+      <strong>現状：</strong>オプション追加は現在リンクル外（現場で別途現金決済等）で処理されており、リンクルの売上データに反映されません。システム化することで売上の正確な把握が可能になります。車両保険については、高級バイクを中心に現場での加入案内が発生する見込みです。（5/1 MTG）
+    </div>
 
     <!-- 3-5 デポジット -->
     <h3>高級車のデポジット（将来対応）</h3>
@@ -580,9 +597,48 @@
     </div>
   </section>
 
-  <!-- 5. 店舗登録の変化 -->
+  <!-- 5. 領収書 -->
   <section>
-    <h2><span class="num">5</span> 店舗登録フローの変化</h2>
+    <h2><span class="num">5</span> 領収書の発行</h2>
+    <p class="section-lead">一括回収モデルでは、PEDALSTANDARDがユーザーに対して領収書を発行する必要が出てくる可能性があります。（5/1 MTG）</p>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th class="old">現行</th>
+            <th class="new">新</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">お金のやり取りの当事者</td>
+            <td>ユーザー ↔ 店舗</td>
+            <td><strong>ユーザー ↔ PEDALSTANDARD</strong></td>
+          </tr>
+          <tr>
+            <td class="label">領収書の発行元</td>
+            <td>店舗</td>
+            <td><strong>PEDALSTANDARD（要確認）</strong></td>
+          </tr>
+          <tr>
+            <td class="label">発行手段</td>
+            <td>店舗が紙で発行</td>
+            <td><strong>Stripeのレシート自動送信機能が利用可能</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>Stripeの機能：</strong>Stripeには決済完了時にレシートメールを自動送信する機能が標準搭載されています。法的な要件を満たすかは別途確認が必要ですが、基本的なレシート発行はシステム側で自動化可能です。
+    </div>
+  </section>
+
+  <!-- 6. 店舗登録の変化 -->
+  <section>
+    <h2><span class="num">6</span> 店舗登録フローの変化</h2>
     <p class="section-lead">店舗に決済アカウントを作らせる必要がなくなり、登録が大幅に簡単になります。</p>
 
     <h3>現在</h3>
@@ -607,19 +663,25 @@
     <p style="font-size:14px; color:var(--gray-500); text-align:center; margin-top:-8px;">
       決済アカウントの作成・審査が不要。即座に利用可能
     </p>
+
+    <div class="note">
+      <strong>補足：</strong>現在、店舗情報の登録はPEDALSTANDARD様が全店舗分を代行入力しています（約300店舗）。この運用は今後も継続予定です。バイク情報の入力のみ店舗側が行う形で、Stripe移行後はPay.jpアカウント作成の8ステップが丸ごと不要になります。（5/1 MTG）
+    </div>
   </section>
 
-  <!-- 6. 移行スケジュール -->
+  <!-- 7. 移行スケジュール -->
   <section>
-    <h2><span class="num">6</span> 移行スケジュール</h2>
+    <h2><span class="num">7</span> 移行スケジュール</h2>
     <p class="section-lead">4段階に分けて段階的に移行します。</p>
 
     <div class="phase-grid">
       <div class="phase-card p0">
-        <div class="phase-label">Phase 0 &mdash; 即時対応（GW前）</div>
+        <div class="phase-label">Phase 0 &mdash; 即時対応（〜GW前）</div>
         <h4>現行システムの緊急修正</h4>
         <ul>
           <li class="done">プラットフォーム手数料を 10% → 15% に変更</li>
+          <li class="done">不具合の洗い出し・修正（ほぼ完了）</li>
+          <li class="done">新データベース設計・モジュール設計（今週完了予定）</li>
           <li class="todo">テスト環境の本番キー使用を修正</li>
           <li class="todo">データベースのセキュリティ対応</li>
           <li class="todo">延長決済の処理不備修正</li>
@@ -627,24 +689,26 @@
         </ul>
       </div>
       <div class="phase-card p1">
-        <div class="phase-label">Phase 1 &mdash; 導入準備（GW明け〜）</div>
-        <h4>方針確定・設計</h4>
+        <div class="phase-label">Phase 1 &mdash; 方針確定（5/8 MTG〜）</div>
+        <h4>決済サービス決定・設計</h4>
         <ul>
+          <li class="todo">Pay.jp vs Stripe 比較資料で方針決定（5/8 MTG）</li>
           <li class="todo">弁護士回答の確認（会計処理・責任所在）</li>
           <li class="todo">Stripeアカウント開設</li>
           <li class="todo">決済フローの詳細設計</li>
           <li class="todo">キャンセルポリシーの確定</li>
-          <li class="todo">データベース設計の見直し</li>
+          <li class="todo">領収書発行方法の確定</li>
         </ul>
       </div>
       <div class="phase-card p2">
-        <div class="phase-label">Phase 2 &mdash; 実装</div>
-        <h4>Stripe決済の実装</h4>
+        <div class="phase-label">Phase 2 &mdash; 実装（5/11〜）</div>
+        <h4>検索改修 + Stripe決済の実装</h4>
         <ul>
+          <li class="todo">検索周りの大幅改修（最優先・段階リリース）</li>
           <li class="todo">予約時決済フローの実装</li>
           <li class="todo">キャンセル・返金フローの実装</li>
-          <li class="todo">延長決済フローの実装</li>
-          <li class="todo">高級車デポジットの実装</li>
+          <li class="todo">延長・追加オプション決済の実装</li>
+          <li class="todo">高級車デポジットの実装（後回し可）</li>
           <li class="todo">管理画面への決済ステータス表示</li>
         </ul>
       </div>
@@ -662,9 +726,9 @@
     </div>
   </section>
 
-  <!-- 7. 決め残し -->
+  <!-- 8. 決め残し -->
   <section>
-    <h2><span class="num">7</span> 決め残し・要確認事項</h2>
+    <h2><span class="num">8</span> 決め残し・要確認事項</h2>
     <p class="section-lead">方針確定に向けて、決定が必要な事項です。</p>
 
     <div class="action-grid">
@@ -676,6 +740,9 @@
           <li>店舗への振込頻度<br><small style="color:var(--gray-500);">月1回 or 月2回</small></li>
           <li>振込手数料の負担者<br><small style="color:var(--gray-500);">PEDALSTANDARD or 店舗</small></li>
           <li>追加オプション（ヘルメット等）のシステム化可否</li>
+          <li>車両保険の料金体系・加入タイミング<br><small style="color:var(--gray-500);">現場での加入案内が発生する見込み（5/1 MTG）</small></li>
+          <li>キャンセル時の返金手数料をユーザーに負担させるか<br><small style="color:var(--gray-500);">5/1 MTG時点で未確定</small></li>
+          <li>領収書の発行義務・発行元の確認<br><small style="color:var(--gray-500);">一括回収モデルではPEDALSTANDARDが発行元になる可能性（5/1 MTG）</small></li>
         </ul>
       </div>
       <div class="action-card">
@@ -686,6 +753,8 @@
           <li>既存ユーザーのカード再登録方法<br><small style="color:var(--gray-500);">カード情報はセキュリティ上、直接移行不可</small></li>
           <li>決済通知（Webhook）の設計</li>
           <li>3Dセキュア認証フローの設計</li>
+          <li>来店時のオペレーション設計<br><small style="color:var(--gray-500);">予約時決済で来店時の操作が不要に。自動進行 or 確認ボタン（5/1 MTG）</small></li>
+          <li>決済失敗時の別カード登録フロー<br><small style="color:var(--gray-500);">オプション追加時等の失敗時、ユーザーに別カード登録を促すUI（5/1 MTG）</small></li>
         </ul>
       </div>
     </div>
