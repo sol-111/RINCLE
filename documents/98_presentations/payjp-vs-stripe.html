@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pay.jp vs Stripe 比較資料 | RINCLE</title>
+  <style>
+    :root {
+      --primary: #1a1a2e;
+      --accent: #4361ee;
+      --accent-light: #e8ecff;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --stripe-purple: #635bff;
+      --payjp-blue: #0070f3;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      color: var(--gray-900);
+      background: var(--gray-50);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 40%, #7c3aed 100%);
+      color: #fff;
+      padding: 56px 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(167,139,250,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-label {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+    .hero p { font-size: 16px; opacity: 0.85; max-width: 600px; }
+
+    /* Summary cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: -40px auto 40px;
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      padding: 0 32px;
+    }
+    .summary-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+      border-top: 3px solid var(--accent);
+    }
+    .summary-card h3 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .summary-card p { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+
+    /* ── Sections ── */
+    section {
+      padding: 48px 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    section:last-of-type { border-bottom: none; }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    h2 .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .section-lead {
+      color: var(--gray-500);
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--gray-700);
+      margin: 32px 0 14px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .card.highlight {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    /* ── Flow Diagram ── */
+    .flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 32px 20px;
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .flow-step {
+      text-align: center;
+      padding: 16px 20px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      min-width: 140px;
+    }
+    .flow-step.accent {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .flow-step small {
+      display: block;
+      font-weight: 400;
+      color: var(--gray-500);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .flow-arrow {
+      font-size: 20px;
+      color: var(--gray-300);
+      flex-shrink: 0;
+    }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    thead th {
+      background: var(--gray-100);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--gray-500);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 2px solid var(--gray-200);
+    }
+    thead th.payjp { color: var(--payjp-blue); }
+    thead th.stripe { color: var(--stripe-purple); }
+    tbody td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--gray-100);
+      vertical-align: top;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--gray-50); }
+    td.label {
+      font-weight: 600;
+      color: var(--gray-700);
+      white-space: nowrap;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .badge.yes { background: #d1fae5; color: #065f46; }
+    .badge.no { background: #fee2e2; color: #991b1b; }
+    .badge.partial { background: #fef3c7; color: #92400e; }
+    .badge.stripe-win { background: #ede9fe; color: #5b21b6; }
+    .badge.same { background: var(--gray-100); color: var(--gray-500); }
+
+    /* ── Cost Comparison ── */
+    .cost-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 640px) { .cost-grid { grid-template-columns: 1fr; } }
+    .cost-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .cost-card .service-name {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+    .cost-card.payjp .service-name { color: var(--payjp-blue); }
+    .cost-card.stripe .service-name { color: var(--stripe-purple); }
+    .cost-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 14px;
+    }
+    .cost-row:last-child { border-bottom: none; font-weight: 700; }
+    .cost-row .amount { font-weight: 600; }
+
+    /* ── Pros/Cons ── */
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    @media (max-width: 640px) { .pros-cons { grid-template-columns: 1fr; } }
+    .pros-cons .col h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid;
+    }
+    .pros-cons .col.pro h4 { color: var(--success); border-color: var(--success); }
+    .pros-cons .col.con h4 { color: var(--danger); border-color: var(--danger); }
+    .pros-cons ul {
+      list-style: none;
+      padding: 0;
+    }
+    .pros-cons li {
+      padding: 6px 0;
+      font-size: 14px;
+      padding-left: 20px;
+      position: relative;
+    }
+    .pros-cons .col.pro li::before { content: "+"; position: absolute; left: 0; color: var(--success); font-weight: 700; }
+    .pros-cons .col.con li::before { content: "-"; position: absolute; left: 2px; color: var(--danger); font-weight: 700; }
+
+    /* ── Verdict ── */
+    .verdict {
+      background: linear-gradient(135deg, #f0f0ff 0%, #e8ecff 100%);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 36px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .verdict .label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .verdict h3 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 0 0 16px;
+    }
+    .verdict p {
+      font-size: 15px;
+      color: var(--gray-700);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Score Table ── */
+    .score-table td.result {
+      text-align: center;
+      font-weight: 700;
+    }
+    .score-table td.result.win { color: var(--stripe-purple); }
+    .score-table td.result.lose { color: var(--gray-300); }
+    .score-table td.result.tie { color: var(--gray-500); }
+
+    /* ── Action Items ── */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 640px) { .action-grid { grid-template-columns: 1fr; } }
+    .action-card {
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .action-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gray-500);
+      margin-bottom: 14px;
+    }
+    .action-card ul { list-style: none; padding: 0; }
+    .action-card li {
+      padding: 8px 0;
+      font-size: 14px;
+      border-bottom: 1px solid var(--gray-100);
+      padding-left: 12px;
+      position: relative;
+    }
+    .action-card li:last-child { border-bottom: none; }
+    .action-card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* ── Notes ── */
+    .note {
+      background: #fffbeb;
+      border-left: 4px solid var(--warning);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--gray-700);
+      margin: 20px 0;
+    }
+    .note strong { color: #92400e; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--gray-500);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Payment Comparison</div>
+  <h1>Pay.jp vs Stripe 比較資料</h1>
+  <p>リンクルの新決済モデル（PEDALSTANDARD一括回収・予約時決済・店頭決済廃止）を前提に、決済サービスを比較します。</p>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <h3>推奨</h3>
+    <p><strong>Stripe</strong> への移行</p>
+  </div>
+  <div class="summary-card">
+    <h3>手数料</h3>
+    <p>Stripe 3.6% / Pay.jp 3.0〜3.6%</p>
+  </div>
+  <div class="summary-card">
+    <h3>3Dセキュア</h3>
+    <p>Stripe: 標準対応 / Pay.jp: 別途実装</p>
+  </div>
+  <div class="summary-card">
+    <h3>開発工数</h3>
+    <p>ほぼ同等（3DS考慮でStripe有利）</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- ── 1. 前提 ── -->
+  <section>
+    <h2><span class="num">1</span> 前提：新しい決済モデル</h2>
+    <p class="section-lead">4/21・5/1 の定例MTGで合意した方針に基づき、決済サービスを比較します。</p>
+
+    <div class="card">
+      <ul style="list-style:none; padding:0;">
+        <li style="padding:6px 0;"><strong>店頭決済（現金）を廃止</strong> &mdash; カード決済のみに統一</li>
+        <li style="padding:6px 0;"><strong>PEDALSTANDARDが売上を一括回収</strong> &mdash; 手数料を差し引いて店舗へ振込</li>
+        <li style="padding:6px 0;"><strong>予約時に即時決済</strong> &mdash; 来店時の決済は不要</li>
+        <li style="padding:6px 0;"><strong>店舗に決済アカウントを作らせない</strong> &mdash; 審査・登録の手間を解消</li>
+      </ul>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">エンドユーザー<small>予約時にカード決済</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step accent">決済サービス<small>Pay.jp or Stripe</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">PEDALSTANDARD<small>一括回収</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">店舗<small>手数料差引後に振込</small></div>
+    </div>
+  </section>
+
+  <!-- ── 2. 手数料比較 ── -->
+  <section>
+    <h2><span class="num">2</span> 手数料比較</h2>
+    <p class="section-lead">主要な費用項目を比較します。</p>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th class="payjp">Pay.jp</th>
+            <th class="stripe">Stripe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">決済手数料（Visa / Master）</td>
+            <td><strong>3.0%</strong></td>
+            <td>3.6%</td>
+          </tr>
+          <tr>
+            <td class="label">決済手数料（JCB / Amex / Diners）</td>
+            <td>3.6%</td>
+            <td>3.6%</td>
+          </tr>
+          <tr>
+            <td class="label">返金手数料</td>
+            <td>無料</td>
+            <td>無料</td>
+          </tr>
+          <tr>
+            <td class="label">振込手数料</td>
+            <td>250円 / 回</td>
+            <td><strong>無料</strong></td>
+          </tr>
+          <tr>
+            <td class="label">月額固定費・初期費用</td>
+            <td>なし</td>
+            <td>なし</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1万円の取引シミュレーション</h3>
+
+    <div class="cost-grid">
+      <div class="cost-card payjp">
+        <div class="service-name">Pay.jp（Visa / Master の場合）</div>
+        <div class="cost-row"><span>売上</span><span class="amount">10,000円</span></div>
+        <div class="cost-row"><span>決済手数料 3.0%</span><span class="amount">-300円</span></div>
+        <div class="cost-row"><span>PEDALSTANDARD受取</span><span class="amount">9,700円</span></div>
+        <div class="cost-row"><span>利用料 15%</span><span class="amount">-1,500円</span></div>
+        <div class="cost-row"><span>店舗への振込額</span><span class="amount">8,200円</span></div>
+      </div>
+      <div class="cost-card stripe">
+        <div class="service-name">Stripe</div>
+        <div class="cost-row"><span>売上</span><span class="amount">10,000円</span></div>
+        <div class="cost-row"><span>決済手数料 3.6%</span><span class="amount">-360円</span></div>
+        <div class="cost-row"><span>PEDALSTANDARD受取</span><span class="amount">9,640円</span></div>
+        <div class="cost-row"><span>利用料 15%</span><span class="amount">-1,500円</span></div>
+        <div class="cost-row"><span>店舗への振込額</span><span class="amount">8,140円</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>手数料差について：</strong>Visa/Mastercard利用時はPay.jpが1取引あたり60円安くなります。JCB等では同額です。月間取引量やカードブランドの比率によって実際の差額は変動します。
+    </div>
+  </section>
+
+  <!-- ── 3. 機能比較 ── -->
+  <section>
+    <h2><span class="num">3</span> 機能比較</h2>
+    <p class="section-lead">今回必要な機能と将来的に必要になる機能を比較します。</p>
+
+    <h3>今回必須の機能</h3>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>機能</th>
+            <th class="payjp">Pay.jp</th>
+            <th class="stripe">Stripe</th>
+            <th>備考</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">カード決済</td>
+            <td><span class="badge yes">対応</span></td>
+            <td><span class="badge yes">対応</span></td>
+            <td>どちらも可能</td>
+          </tr>
+          <tr>
+            <td class="label">カード情報の保存・再利用</td>
+            <td><span class="badge yes">対応</span></td>
+            <td><span class="badge yes">対応</span></td>
+            <td>どちらも可能</td>
+          </tr>
+          <tr>
+            <td class="label">返金・部分返金</td>
+            <td><span class="badge yes">対応</span></td>
+            <td><span class="badge yes">対応</span></td>
+            <td>キャンセル時に必要</td>
+          </tr>
+          <tr>
+            <td class="label">3Dセキュア認証</td>
+            <td><span class="badge partial">別途実装</span></td>
+            <td><span class="badge stripe-win">標準対応</span></td>
+            <td>不正利用防止に重要</td>
+          </tr>
+          <tr>
+            <td class="label">カード登録時のCVC検証</td>
+            <td><span class="badge no">未対応</span></td>
+            <td><span class="badge stripe-win">対応</span></td>
+            <td>Pay.jpはCVC誤りでも登録可能</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>将来的に必要になる機能</h3>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>機能</th>
+            <th class="payjp">Pay.jp</th>
+            <th class="stripe">Stripe</th>
+            <th>備考</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">デポジット（保証金）</td>
+            <td><span class="badge yes">対応</span></td>
+            <td><span class="badge yes">対応</span></td>
+            <td>高級車向け。7日以内で十分</td>
+          </tr>
+          <tr>
+            <td class="label">領収書の自動送信</td>
+            <td><span class="badge no">未対応</span></td>
+            <td><span class="badge stripe-win">対応</span></td>
+            <td>一括回収モデルで必要に</td>
+          </tr>
+          <tr>
+            <td class="label">Apple Pay / Google Pay</td>
+            <td><span class="badge no">未対応</span></td>
+            <td><span class="badge stripe-win">対応</span></td>
+            <td>モバイル決済の将来対応</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>不要になる機能</h3>
+    <div class="card" style="background: var(--gray-50);">
+      <p style="font-size:14px; color: var(--gray-500); margin-bottom: 12px;">新モデル（一括回収）では以下の機能は使用しません。</p>
+      <table>
+        <tbody>
+          <tr>
+            <td class="label">店舗ごとの決済アカウント</td>
+            <td>PEDALSTANDARDが一括回収するため不要</td>
+          </tr>
+          <tr>
+            <td class="label">店舗の審査プロセス</td>
+            <td>同上。店舗の登録フローが大幅に簡略化</td>
+          </tr>
+          <tr>
+            <td class="label">売上の自動分配</td>
+            <td>振込はPEDALSTANDARDが管理</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── 4. セキュリティ ── -->
+  <section>
+    <h2><span class="num">4</span> セキュリティ比較</h2>
+    <p class="section-lead">決済におけるセキュリティ面の違いです。</p>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th class="payjp">Pay.jp</th>
+            <th class="stripe">Stripe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">3Dセキュア（本人認証）</td>
+            <td>
+              <span class="badge partial">追加開発が必要</span>
+              <div style="font-size:12px; color:var(--gray-500); margin-top:4px;">現状は未対応。対応するには別途開発コストが発生</div>
+            </td>
+            <td>
+              <span class="badge yes">標準装備</span>
+              <div style="font-size:12px; color:var(--gray-500); margin-top:4px;">追加の開発なしで自動的に本人認証が走る</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">CVC検証</td>
+            <td>
+              <span class="badge no">登録時は検証しない</span>
+              <div style="font-size:12px; color:var(--gray-500); margin-top:4px;">セキュリティコードが間違っていてもカード登録ができてしまう。決済時に初めてエラーになる</div>
+            </td>
+            <td>
+              <span class="badge yes">登録時に検証</span>
+              <div style="font-size:12px; color:var(--gray-500); margin-top:4px;">カード登録の時点でセキュリティコードを検証。誤りがあれば登録できない</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">不正検知</td>
+            <td>基本的な不正検知</td>
+            <td>
+              <strong>Radar</strong>（機械学習ベース）
+              <div style="font-size:12px; color:var(--gray-500); margin-top:4px;">全世界の決済データを学習した不正検知エンジンが標準搭載</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>現行の問題：</strong>現在のPay.jp実装では、CVCが間違った状態でカードが登録でき、実際に決済を行う段階でエラーになります。これはお客様にとって「予約したのに当日決済が通らない」という体験につながるリスクがあります。
+    </div>
+  </section>
+
+  <!-- ── 5. 店舗登録フローの変化 ── -->
+  <section>
+    <h2><span class="num">5</span> 店舗登録フローの変化</h2>
+    <p class="section-lead">新モデルでは店舗の決済アカウント作成が不要になり、登録が大幅に簡単になります。</p>
+
+    <h3>現在（Pay.jp）</h3>
+    <div class="flow">
+      <div class="flow-step">店舗情報入力</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">Pay.jp<br>アカウント作成</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">本人確認書類<br>アップロード</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">審査待ち<br><small>数日かかる</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">審査通過で<br>決済受付開始</div>
+    </div>
+
+    <h3>新モデル（Stripe / Pay.jp どちらでも）</h3>
+    <div class="flow">
+      <div class="flow-step accent">店舗情報入力</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step accent">登録完了</div>
+    </div>
+    <p style="font-size:14px; color:var(--gray-500); text-align:center; margin-top: -8px;">決済はPEDALSTANDARDのアカウントで一括処理するため、店舗ごとの審査が不要に</p>
+  </section>
+
+  <!-- ── 6. 開発工数 ── -->
+  <section>
+    <h2><span class="num">6</span> 開発工数の比較</h2>
+    <p class="section-lead">どちらを選んでも共通のタスクが大半を占めるため、工数差は小さいです。</p>
+
+    <div class="card">
+      <h3 style="margin-top:0;">共通タスク（どちらを選んでも必要）</h3>
+      <table>
+        <tbody>
+          <tr><td class="label">予約フローの変更</td><td>予約時に即時決済する仕組みに変更</td></tr>
+          <tr><td class="label">キャンセル・返金</td><td>キャンセルポリシーに基づく返金処理の実装</td></tr>
+          <tr><td class="label">延長・追加オプション</td><td>追加決済の仕組み</td></tr>
+          <tr><td class="label">店舗登録の簡略化</td><td>決済アカウント作成ステップの削除</td></tr>
+          <tr><td class="label">管理画面の更新</td><td>決済ステータスの表示・返金操作</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cost-grid">
+      <div class="cost-card payjp">
+        <div class="service-name">Pay.jp 継続の場合</div>
+        <div class="cost-row"><span>既存機能の撤去・整理</span><span class="badge same">小</span></div>
+        <div class="cost-row"><span>契約形態の変更確認</span><span class="badge partial">小〜中</span></div>
+        <div class="cost-row"><span>3Dセキュアの追加実装</span><span class="badge no">中〜大</span></div>
+      </div>
+      <div class="cost-card stripe">
+        <div class="service-name">Stripe 移行の場合</div>
+        <div class="cost-row"><span>アカウント開設・設定</span><span class="badge same">小</span></div>
+        <div class="cost-row"><span>決済フロー実装</span><span class="badge partial">中</span></div>
+        <div class="cost-row"><span>ユーザーへのカード再登録案内</span><span class="badge same">小</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>ポイント：</strong>Pay.jpを継続する場合、3Dセキュアを新たに実装する必要があり、その分の追加コストが発生します。Stripeは3Dセキュアが標準搭載のため、その分の工数がかかりません。
+    </div>
+  </section>
+
+  <!-- ── 7. リスク ── -->
+  <section>
+    <h2><span class="num">7</span> リスク比較</h2>
+    <p class="section-lead">移行に伴うリスクを整理します。</p>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>リスク</th>
+            <th class="payjp">Pay.jp</th>
+            <th class="stripe">Stripe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">セキュリティコード未検証<br>による決済失敗</td>
+            <td><span class="badge no">リスクあり</span></td>
+            <td><span class="badge yes">問題なし</span></td>
+          </tr>
+          <tr>
+            <td class="label">3Dセキュア未対応</td>
+            <td><span class="badge partial">追加開発が必要</span></td>
+            <td><span class="badge yes">標準対応</span></td>
+          </tr>
+          <tr>
+            <td class="label">既存ユーザーへの影響</td>
+            <td><span class="badge yes">影響なし</span></td>
+            <td><span class="badge partial">カード再登録が必要</span></td>
+          </tr>
+          <tr>
+            <td class="label">契約変更</td>
+            <td><span class="badge partial">確認が必要</span></td>
+            <td><span class="badge yes">新規契約のみ</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>カード再登録について：</strong>Stripeに移行する場合、既存ユーザーにカードの再登録をお願いする必要があります。ただし、現時点のユーザー数は少ないため影響は限定的です。ユーザー数が増えた後に移行するとコストが大きくなるため、早期の切り替えが合理的です。
+    </div>
+  </section>
+
+  <!-- ── 8. 結論 ── -->
+  <section>
+    <h2><span class="num">8</span> 総合比較と結論</h2>
+    <p class="section-lead">各観点での評価をまとめます。</p>
+
+    <div class="card">
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>判断軸</th>
+            <th class="payjp" style="text-align:center;">Pay.jp</th>
+            <th class="stripe" style="text-align:center;">Stripe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">手数料</td>
+            <td class="result win" style="text-align:center;">Visa/Masterで安い</td>
+            <td class="result tie" style="text-align:center;">振込手数料が無料</td>
+          </tr>
+          <tr>
+            <td class="label">セキュリティ</td>
+            <td class="result lose" style="text-align:center;">&mdash;</td>
+            <td class="result win" style="text-align:center;">3Dセキュア + CVC検証</td>
+          </tr>
+          <tr>
+            <td class="label">開発工数</td>
+            <td class="result lose" style="text-align:center;">3Dセキュア実装分が追加</td>
+            <td class="result win" style="text-align:center;">標準機能でカバー</td>
+          </tr>
+          <tr>
+            <td class="label">開発チームの知見</td>
+            <td class="result lose" style="text-align:center;">&mdash;</td>
+            <td class="result win" style="text-align:center;">実績豊富</td>
+          </tr>
+          <tr>
+            <td class="label">将来の拡張性</td>
+            <td class="result lose" style="text-align:center;">&mdash;</td>
+            <td class="result win" style="text-align:center;">Apple Pay / 領収書 / etc.</td>
+          </tr>
+          <tr>
+            <td class="label">既存ユーザーへの影響</td>
+            <td class="result win" style="text-align:center;">再登録不要</td>
+            <td class="result lose" style="text-align:center;">カード再登録が必要</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="verdict">
+      <div class="label">推奨</div>
+      <h3>Stripe への移行</h3>
+      <p>
+        セキュリティ・開発効率・将来性の観点で Stripe が優位です。<br>
+        唯一のデメリットであるカード再登録も、現時点のユーザー数であれば影響は限定的です。<br>
+        ユーザー数が増えてからの移行はさらにコストが上がるため、早期の切り替えを推奨します。
+      </p>
+    </div>
+  </section>
+
+  <!-- ── 9. ネクストアクション ── -->
+  <section>
+    <h2><span class="num">9</span> 次のアクション</h2>
+    <p class="section-lead">方針確定後、以下を進めます。</p>
+
+    <div class="action-grid">
+      <div class="action-card">
+        <h4>PEDALSTANDARD 様</h4>
+        <ul>
+          <li>弁護士回答の共有（一括回収時の会計処理・責任所在）</li>
+          <li>キャンセルポリシーの策定（全額返金の期限、キャンセル料率など）</li>
+          <li>振込頻度の決定（月1回 or 月2回）</li>
+        </ul>
+      </div>
+      <div class="action-card">
+        <h4>開発チーム（弊社）</h4>
+        <ul>
+          <li>Stripeアカウント開設のご案内</li>
+          <li>決済フローの詳細設計</li>
+          <li>データベース設計への反映</li>
+          <li>既存ユーザーへのカード再登録案内の準備</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    &copy; 2026 Rincle Inc. &nbsp;|&nbsp; 本資料は社外秘です
+  </div>
+</footer>
+
+</body>
+</html>

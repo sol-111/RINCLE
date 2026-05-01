@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe 移行方針 | RINCLE</title>
+  <style>
+    :root {
+      --primary: #1a1a2e;
+      --accent: #635bff;
+      --accent-light: #ede9fe;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --warning: #f59e0b;
+      --warning-light: #fef3c7;
+      --danger: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      color: var(--gray-900);
+      background: var(--gray-50);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 40%, #7c3aed 100%);
+      color: #fff;
+      padding: 56px 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(167,139,250,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-label {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+    .hero p { font-size: 16px; opacity: 0.85; max-width: 600px; }
+
+    /* Summary cards */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: -40px auto 40px;
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      padding: 0 32px;
+    }
+    .summary-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+      border-top: 3px solid var(--accent);
+    }
+    .summary-card h3 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .summary-card p { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+
+    /* Sections */
+    section { padding: 48px 0; border-bottom: 1px solid var(--gray-200); }
+    section:last-of-type { border-bottom: none; }
+    h2 {
+      font-size: 22px; font-weight: 700; color: var(--primary);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+    }
+    h2 .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; background: var(--accent); color: #fff;
+      border-radius: 8px; font-size: 15px; font-weight: 700; flex-shrink: 0;
+    }
+    .section-lead { color: var(--gray-500); font-size: 15px; margin-bottom: 28px; }
+    h3 { font-size: 17px; font-weight: 700; color: var(--gray-700); margin: 32px 0 14px; }
+
+    /* Cards */
+    .card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: 12px; padding: 28px; margin-bottom: 20px;
+    }
+
+    /* Flow */
+    .flow {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      flex-wrap: wrap; padding: 28px 16px; background: #fff;
+      border: 1px solid var(--gray-200); border-radius: 12px; margin-bottom: 20px;
+    }
+    .flow-step {
+      text-align: center; padding: 14px 18px; background: var(--gray-50);
+      border: 1px solid var(--gray-200); border-radius: 10px;
+      font-size: 13px; font-weight: 600; min-width: 120px;
+    }
+    .flow-step.accent { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+    .flow-step.success { background: var(--success-light); border-color: var(--success); color: #065f46; }
+    .flow-step small { display: block; font-weight: 400; color: var(--gray-500); font-size: 11px; margin-top: 4px; }
+    .flow-arrow { font-size: 18px; color: var(--gray-300); flex-shrink: 0; }
+    .flow-down { font-size: 18px; color: var(--gray-300); width: 100%; text-align: center; }
+
+    /* Vertical Flow */
+    .vflow { margin-bottom: 20px; }
+    .vflow-item {
+      display: flex; gap: 16px; position: relative; padding-bottom: 8px;
+    }
+    .vflow-item:last-child { padding-bottom: 0; }
+    .vflow-line {
+      display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0;
+    }
+    .vflow-dot {
+      width: 12px; height: 12px; border-radius: 50%; border: 3px solid var(--accent);
+      background: #fff; flex-shrink: 0; z-index: 1;
+    }
+    .vflow-dot.done { background: var(--accent); }
+    .vflow-connector { flex: 1; width: 2px; background: var(--gray-200); }
+    .vflow-content {
+      flex: 1; background: #fff; border: 1px solid var(--gray-200);
+      border-radius: 10px; padding: 16px 20px; margin-bottom: 8px;
+    }
+    .vflow-content h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .vflow-content p { font-size: 13px; color: var(--gray-500); }
+    .vflow-content .error {
+      margin-top: 8px; padding: 8px 12px; background: #fef2f2;
+      border-radius: 6px; font-size: 12px; color: #991b1b;
+    }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 16px; }
+    thead th {
+      background: var(--gray-100); font-weight: 700; font-size: 13px;
+      letter-spacing: 0.04em; color: var(--gray-500); padding: 10px 14px;
+      text-align: left; border-bottom: 2px solid var(--gray-200);
+    }
+    tbody td { padding: 12px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--gray-50); }
+    td.label { font-weight: 600; color: var(--gray-700); white-space: nowrap; }
+    thead th.old { color: var(--gray-500); }
+    thead th.new { color: var(--accent); }
+
+    /* Badges */
+    .badge {
+      display: inline-block; padding: 2px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+    }
+    .badge.done { background: #d1fae5; color: #065f46; }
+    .badge.todo { background: var(--gray-100); color: var(--gray-500); }
+    .badge.wait { background: #fef3c7; color: #92400e; }
+    .badge.new { background: var(--accent-light); color: #5b21b6; }
+
+    /* Cost */
+    .cost-row {
+      display: flex; justify-content: space-between; padding: 8px 0;
+      border-bottom: 1px solid var(--gray-100); font-size: 14px;
+    }
+    .cost-row:last-child { border-bottom: none; font-weight: 700; }
+    .cost-row .amount { font-weight: 600; }
+
+    /* Phase Cards */
+    .phase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    @media (max-width: 640px) { .phase-grid { grid-template-columns: 1fr; } }
+    .phase-card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: 12px; padding: 24px; position: relative; overflow: hidden;
+    }
+    .phase-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .phase-card.p0::before { background: var(--success); }
+    .phase-card.p1::before { background: var(--warning); }
+    .phase-card.p2::before { background: var(--accent); }
+    .phase-card.p3::before { background: var(--primary); }
+    .phase-label {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 8px;
+    }
+    .phase-card.p0 .phase-label { color: var(--success); }
+    .phase-card.p1 .phase-label { color: var(--warning); }
+    .phase-card.p2 .phase-label { color: var(--accent); }
+    .phase-card.p3 .phase-label { color: var(--primary); }
+    .phase-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+    .phase-card ul { list-style: none; padding: 0; }
+    .phase-card li {
+      padding: 5px 0; font-size: 13px; padding-left: 22px; position: relative;
+    }
+    .phase-card li::before {
+      position: absolute; left: 0; top: 7px; font-size: 12px;
+    }
+    .phase-card li.done::before { content: "✓"; color: var(--success); font-weight: 700; }
+    .phase-card li.todo::before { content: "○"; color: var(--gray-300); }
+    .phase-card li.done { color: var(--gray-500); text-decoration: line-through; }
+
+    /* Note */
+    .note {
+      background: #fffbeb; border-left: 4px solid var(--warning);
+      border-radius: 0 8px 8px 0; padding: 16px 20px;
+      font-size: 14px; color: var(--gray-700); margin: 20px 0;
+    }
+    .note strong { color: #92400e; }
+
+    /* Action grid */
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 640px) { .action-grid { grid-template-columns: 1fr; } }
+    .action-card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: 12px; padding: 24px;
+    }
+    .action-card h4 {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--gray-500); margin-bottom: 14px;
+    }
+    .action-card ul { list-style: none; padding: 0; }
+    .action-card li {
+      padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--gray-100);
+      padding-left: 12px; position: relative;
+    }
+    .action-card li:last-child { border-bottom: none; }
+    .action-card li::before {
+      content: ""; position: absolute; left: 0; top: 14px;
+      width: 5px; height: 5px; background: var(--accent); border-radius: 50%;
+    }
+
+    footer {
+      text-align: center; padding: 40px 0; color: var(--gray-500); font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Migration Plan</div>
+  <h1>Stripe 移行方針</h1>
+  <p>4/21 定例MTGでの合意に基づく、Pay.jpからStripeへの移行計画。一括回収モデル・予約時決済・店頭決済廃止を実現します。</p>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <h3>決済モデル</h3>
+    <p>PEDALSTANDARD 一括回収 → 手数料差引後に店舗へ振込</p>
+  </div>
+  <div class="summary-card">
+    <h3>決済タイミング</h3>
+    <p>予約時に即時決済（来店時の決済を廃止）</p>
+  </div>
+  <div class="summary-card">
+    <h3>利用料</h3>
+    <p>プラットフォーム利用料 <strong>15%</strong></p>
+  </div>
+  <div class="summary-card">
+    <h3>移行フェーズ</h3>
+    <p>Phase 0〜3 の4段階で段階的に移行</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- 1. 背景 -->
+  <section>
+    <h2><span class="num">1</span> なぜ移行するのか</h2>
+    <p class="section-lead">現行の Pay.jp（プラットフォーム型）からStripe（シンプル決済）へ移行する背景です。</p>
+
+    <div class="card">
+      <h3 style="margin-top:0;">現行（Pay.jp）の課題</h3>
+      <table>
+        <tbody>
+          <tr>
+            <td class="label">店舗ごとにアカウントが必要</td>
+            <td>Pay.jpの審査を通す必要があり、店舗登録に手間と時間がかかる</td>
+          </tr>
+          <tr>
+            <td class="label">手数料の徴収が煩雑</td>
+            <td>Pay.jp上で10%自動差引 + 残り5%を紙の請求書で別途回収。未払いリスクあり</td>
+          </tr>
+          <tr>
+            <td class="label">セキュリティ上の問題</td>
+            <td>決済関連のAPIキーや顧客情報がデータベース上で閲覧可能な状態</td>
+          </tr>
+          <tr>
+            <td class="label">CVC検証がされない</td>
+            <td>カード登録時にセキュリティコードが誤っていても登録できてしまい、決済時にエラーになる</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light);">
+      <h3 style="margin-top:0; color: var(--accent);">Stripe移行で解決すること</h3>
+      <table>
+        <tbody>
+          <tr>
+            <td class="label">店舗アカウント不要</td>
+            <td>PEDALSTANDARDが一括回収するため、店舗に決済アカウントを作らせる必要がない</td>
+          </tr>
+          <tr>
+            <td class="label">手数料回収がシンプル</td>
+            <td>全額を先に回収し、手数料差引後に店舗へ振込。未払いリスクがゼロ</td>
+          </tr>
+          <tr>
+            <td class="label">3Dセキュア標準対応</td>
+            <td>追加開発なしで本人認証が自動的に走る。不正利用を防止</td>
+          </tr>
+          <tr>
+            <td class="label">CVC検証あり</td>
+            <td>カード登録時にセキュリティコードを検証。誤りがあれば登録できない</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 2. 新しいお金の流れ -->
+  <section>
+    <h2><span class="num">2</span> 新しいお金の流れ</h2>
+    <p class="section-lead">PEDALSTANDARDが売上を一括回収し、手数料を差し引いて店舗へ振り込む仕組みです。</p>
+
+    <div class="flow">
+      <div class="flow-step">エンドユーザー<small>予約時にカード決済</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step accent">Stripe<small>カード手数料 3.6% 差引</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step accent">PEDALSTANDARD<small>一括回収</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step success">店舗<small>利用料15%差引後に振込</small></div>
+    </div>
+
+    <h3>1万円の取引の場合</h3>
+    <div class="card">
+      <div class="cost-row"><span>エンドユーザーの支払い</span><span class="amount">10,000円</span></div>
+      <div class="cost-row"><span>Stripe 手数料（3.6%）</span><span class="amount">-360円</span></div>
+      <div class="cost-row"><span>PEDALSTANDARD 受取額</span><span class="amount">9,640円</span></div>
+      <div class="cost-row"><span>プラットフォーム利用料（15%）</span><span class="amount">-1,500円</span></div>
+      <div class="cost-row"><span>店舗への振込額</span><span class="amount">8,140円</span></div>
+    </div>
+
+    <h3>現行との比較</h3>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th class="old">現行（Pay.jp）</th>
+            <th class="new">新（Stripe）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">売上の受取</td>
+            <td>店舗がPay.jpから直接受取</td>
+            <td><strong>PEDALSTANDARDが一括回収</strong></td>
+          </tr>
+          <tr>
+            <td class="label">利用料の徴収</td>
+            <td>10%自動差引 + 5%を紙請求</td>
+            <td><strong>15%を差引後に振込（紙請求なし）</strong></td>
+          </tr>
+          <tr>
+            <td class="label">未払いリスク</td>
+            <td>あり（紙請求5%分）</td>
+            <td><strong>なし</strong></td>
+          </tr>
+          <tr>
+            <td class="label">店舗のアカウント作成</td>
+            <td>必要（審査あり）</td>
+            <td><strong>不要</strong></td>
+          </tr>
+          <tr>
+            <td class="label">店頭決済（現金）</td>
+            <td>あり</td>
+            <td><strong>廃止（カード決済のみ）</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3. 決済フロー -->
+  <section>
+    <h2><span class="num">3</span> 決済フロー</h2>
+    <p class="section-lead">各シーンでの決済の流れです。</p>
+
+    <!-- 3-1 予約時 -->
+    <h3>予約時決済（通常バイク）</h3>
+    <div class="vflow">
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div><div class="vflow-connector"></div></div>
+        <div class="vflow-content">
+          <h4>エンドユーザーが予約</h4>
+          <p>バイクを選択し、カード情報を入力して予約を確定</p>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div><div class="vflow-connector"></div></div>
+        <div class="vflow-content">
+          <h4>即時決済</h4>
+          <p>予約と同時にカードから全額引き落とし。3Dセキュア認証が自動で走る</p>
+          <div class="error">決済エラーの場合 → エラー表示。別のカードで再試行</div>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div></div>
+        <div class="vflow-content">
+          <h4>予約確定・在庫確保</h4>
+          <p>決済完了と同時に予約が確定。バイクの在庫が確保される</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>ポイント：</strong>現行は来店時に決済していますが、新フローでは予約時に決済が完了します。来店時に店舗がボタンを押す必要はありません。
+    </div>
+
+    <!-- 3-2 キャンセル -->
+    <h3>キャンセル時</h3>
+    <div class="vflow">
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div><div class="vflow-connector"></div></div>
+        <div class="vflow-content">
+          <h4>キャンセル操作</h4>
+          <p>エンドユーザーまたは店舗がキャンセル</p>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div><div class="vflow-connector"></div></div>
+        <div class="vflow-content">
+          <h4>返金処理</h4>
+          <p>キャンセルポリシーに基づき、全額または一部を返金</p>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div></div>
+        <div class="vflow-content">
+          <h4>予約キャンセル・在庫開放</h4>
+          <p>バイクの在庫が開放され、他のお客様が予約可能に</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>要決定：</strong>予約時に全額決済するため、キャンセル時は返金が発生します。「何日前まで全額返金」「当日キャンセルは○%」などのキャンセルポリシーの策定が必要です。
+    </div>
+
+    <!-- 3-3 延長 -->
+    <h3>延長時</h3>
+    <div class="flow">
+      <div class="flow-step">店舗が延長操作<small>追加料金を確定</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step accent">追加決済<small>登録済みカードを再利用</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step success">延長情報を更新</div>
+    </div>
+
+    <!-- 3-4 追加オプション -->
+    <h3>現場での追加オプション（ヘルメット、保険等）</h3>
+    <div class="flow">
+      <div class="flow-step">店舗がオプション選択</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step accent">追加決済<small>登録済みカードを再利用</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step success">オプション情報を更新</div>
+    </div>
+    <p style="font-size:14px; color:var(--gray-500); margin-top:-8px;">
+      現在はリンクル外（現場で別途決済）で処理されていますが、システム上で管理できるようになります。
+    </p>
+
+    <!-- 3-5 デポジット -->
+    <h3>高級車のデポジット（将来対応）</h3>
+    <div class="vflow">
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div><div class="vflow-connector"></div></div>
+        <div class="vflow-content">
+          <h4>予約時：通常料金を即時決済</h4>
+          <p>通常のレンタル料金はその場で全額引き落とし</p>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div><div class="vflow-connector"></div></div>
+        <div class="vflow-content">
+          <h4>貸出日：デポジット分の枠を仮押さえ</h4>
+          <p>例：10万円分の利用枠を確保。お金は引き落とさない（最大7日間有効）</p>
+        </div>
+      </div>
+      <div class="vflow-item">
+        <div class="vflow-line"><div class="vflow-dot done"></div></div>
+        <div class="vflow-content">
+          <h4>返却時</h4>
+          <p>問題なし → 枠を解放（何も起きない）<br>車体損傷等 → デポジット分を引き落として回収</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 店舗への振込 -->
+  <section>
+    <h2><span class="num">4</span> 店舗への振込フロー</h2>
+    <p class="section-lead">PEDALSTANDARDから各店舗への振込の流れです。</p>
+
+    <div class="flow">
+      <div class="flow-step">月末に売上集計<small>各店舗の決済済み売上</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step accent">手数料差引<small>Stripe手数料 + 利用料15%</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step success">店舗へ振込</div>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th class="old">現行</th>
+            <th class="new">新</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">振込元</td>
+            <td>Pay.jpから各店舗へ直接</td>
+            <td><strong>PEDALSTANDARDから各店舗へ</strong></td>
+          </tr>
+          <tr>
+            <td class="label">利用料の回収</td>
+            <td>10%自動差引 + 5%を紙請求書で別途</td>
+            <td><strong>振込前に15%を差引（請求書不要）</strong></td>
+          </tr>
+          <tr>
+            <td class="label">回収漏れ</td>
+            <td>紙請求5%分に未払いリスクあり</td>
+            <td><strong>リスクなし（先に全額回収済み）</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>要決定：</strong>振込頻度（月1回 or 月2回）、振込手数料の負担者（PEDALSTANDARD or 店舗）を決める必要があります。
+    </div>
+  </section>
+
+  <!-- 5. 店舗登録の変化 -->
+  <section>
+    <h2><span class="num">5</span> 店舗登録フローの変化</h2>
+    <p class="section-lead">店舗に決済アカウントを作らせる必要がなくなり、登録が大幅に簡単になります。</p>
+
+    <h3>現在</h3>
+    <div class="flow">
+      <div class="flow-step">店舗情報入力</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">Pay.jp<br>アカウント作成</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">本人確認書類<br>アップロード</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">審査待ち<br><small>数日かかる</small></div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">審査通過で<br>決済受付開始</div>
+    </div>
+
+    <h3>移行後</h3>
+    <div class="flow">
+      <div class="flow-step accent">店舗情報入力</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step success">登録完了</div>
+    </div>
+    <p style="font-size:14px; color:var(--gray-500); text-align:center; margin-top:-8px;">
+      決済アカウントの作成・審査が不要。即座に利用可能
+    </p>
+  </section>
+
+  <!-- 6. 移行スケジュール -->
+  <section>
+    <h2><span class="num">6</span> 移行スケジュール</h2>
+    <p class="section-lead">4段階に分けて段階的に移行します。</p>
+
+    <div class="phase-grid">
+      <div class="phase-card p0">
+        <div class="phase-label">Phase 0 &mdash; 即時対応（GW前）</div>
+        <h4>現行システムの緊急修正</h4>
+        <ul>
+          <li class="done">プラットフォーム手数料を 10% → 15% に変更</li>
+          <li class="todo">テスト環境の本番キー使用を修正</li>
+          <li class="todo">データベースのセキュリティ対応</li>
+          <li class="todo">延長決済の処理不備修正</li>
+          <li class="todo">カード選択の不具合修正</li>
+        </ul>
+      </div>
+      <div class="phase-card p1">
+        <div class="phase-label">Phase 1 &mdash; 導入準備（GW明け〜）</div>
+        <h4>方針確定・設計</h4>
+        <ul>
+          <li class="todo">弁護士回答の確認（会計処理・責任所在）</li>
+          <li class="todo">Stripeアカウント開設</li>
+          <li class="todo">決済フローの詳細設計</li>
+          <li class="todo">キャンセルポリシーの確定</li>
+          <li class="todo">データベース設計の見直し</li>
+        </ul>
+      </div>
+      <div class="phase-card p2">
+        <div class="phase-label">Phase 2 &mdash; 実装</div>
+        <h4>Stripe決済の実装</h4>
+        <ul>
+          <li class="todo">予約時決済フローの実装</li>
+          <li class="todo">キャンセル・返金フローの実装</li>
+          <li class="todo">延長決済フローの実装</li>
+          <li class="todo">高級車デポジットの実装</li>
+          <li class="todo">管理画面への決済ステータス表示</li>
+        </ul>
+      </div>
+      <div class="phase-card p3">
+        <div class="phase-label">Phase 3 &mdash; 移行・切替</div>
+        <h4>本番切替・運用開始</h4>
+        <ul>
+          <li class="todo">テスト環境での検証</li>
+          <li class="todo">既存ユーザーへのカード再登録案内</li>
+          <li class="todo">本番環境への切替</li>
+          <li class="todo">Pay.jp 店舗アカウントの廃止</li>
+          <li class="todo">店舗への振込フロー運用開始</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 決め残し -->
+  <section>
+    <h2><span class="num">7</span> 決め残し・要確認事項</h2>
+    <p class="section-lead">方針確定に向けて、決定が必要な事項です。</p>
+
+    <div class="action-grid">
+      <div class="action-card">
+        <h4>PEDALSTANDARD 様 側で決定が必要</h4>
+        <ul>
+          <li>キャンセルポリシーの策定<br><small style="color:var(--gray-500);">何日前まで全額返金、当日キャンセルは何%等</small></li>
+          <li>弁護士回答の共有<br><small style="color:var(--gray-500);">一括回収時の会計上の扱い・責任所在</small></li>
+          <li>店舗への振込頻度<br><small style="color:var(--gray-500);">月1回 or 月2回</small></li>
+          <li>振込手数料の負担者<br><small style="color:var(--gray-500);">PEDALSTANDARD or 店舗</small></li>
+          <li>追加オプション（ヘルメット等）のシステム化可否</li>
+        </ul>
+      </div>
+      <div class="action-card">
+        <h4>開発チーム（弊社）側で確認</h4>
+        <ul>
+          <li>Stripe手数料率の最終確認<br><small style="color:var(--gray-500);">契約プランにより変動の可能性</small></li>
+          <li>Bubble連携プラグインの選定・検証</li>
+          <li>既存ユーザーのカード再登録方法<br><small style="color:var(--gray-500);">カード情報はセキュリティ上、直接移行不可</small></li>
+          <li>決済通知（Webhook）の設計</li>
+          <li>3Dセキュア認証フローの設計</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    &copy; 2026 Rincle Inc. &nbsp;|&nbsp; 本資料は社外秘です
+  </div>
+</footer>
+
+</body>
+</html>
