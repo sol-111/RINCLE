@@ -1,0 +1,414 @@
+{
+  "nodes": [
+    {
+      "id": "n_topic_list",
+      "x": 80,
+      "y": 100,
+      "w": 180,
+      "h": 70,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "お知らせ一覧",
+        "お知らせ(list)"
+      ]
+    },
+    {
+      "id": "n_topic_detail",
+      "x": 310,
+      "y": 110,
+      "w": 160,
+      "h": 50,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "お知らせ詳細",
+        "お知らせ"
+      ]
+    },
+    {
+      "id": "n_news_list",
+      "x": 80,
+      "y": 210,
+      "w": 180,
+      "h": 70,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "ニュース一覧",
+        "ニュース(list)"
+      ]
+    },
+    {
+      "id": "n_news_detail",
+      "x": 310,
+      "y": 220,
+      "w": 160,
+      "h": 50,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "ニュース詳細",
+        "ニュース"
+      ]
+    },
+    {
+      "id": "n_faq",
+      "x": 80,
+      "y": 320,
+      "w": 180,
+      "h": 70,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "FAQ一覧",
+        "FAQ(list)"
+      ]
+    },
+    {
+      "id": "n_contact",
+      "x": 80,
+      "y": 430,
+      "w": 180,
+      "h": 50,
+      "type": "io",
+      "shape": "rect",
+      "lines": [
+        "お問い合わせフォーム"
+      ]
+    },
+    {
+      "id": "n_search_form",
+      "x": 480,
+      "y": 340,
+      "w": 200,
+      "h": 80,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "検索フォーム",
+        "Cart"
+      ]
+    },
+    {
+      "id": "n_search",
+      "x": 830,
+      "y": 164.46643838764453,
+      "w": 190,
+      "h": 80,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "検索",
+        "Shop(list)",
+        "Bicycle(list)"
+      ]
+    },
+    {
+      "id": "n_shop_detail",
+      "x": 1041.5571058319704,
+      "y": 165.02089998015143,
+      "w": 170,
+      "h": 80,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "店舗詳細",
+        "Shop",
+        "特商法表示"
+      ]
+    },
+    {
+      "id": "n_bicycle_detail",
+      "x": 1243.375477296764,
+      "y": 154.67100699066918,
+      "w": 180,
+      "h": 100,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "自転車詳細",
+        "Bicycle",
+        "料金確認",
+        "カート追加"
+      ]
+    },
+    {
+      "id": "n_cart",
+      "x": 1233.4103717030343,
+      "y": 324.67544041654634,
+      "w": 200,
+      "h": 130,
+      "type": "popup",
+      "shape": "rect",
+      "lines": [
+        "カート",
+        "Cart",
+        "予約情報",
+        "支払い合計",
+        "お客様情報入力",
+        "決済"
+      ]
+    },
+    {
+      "id": "n_mypage",
+      "x": 1593.6871426477055,
+      "y": 90,
+      "w": 200,
+      "h": 110,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "マイページ",
+        "登録情報表示/変更",
+        "予約情報表示",
+        "退会"
+      ]
+    },
+    {
+      "id": "n_res_list",
+      "x": 1863.6871426477055,
+      "y": 90,
+      "w": 190,
+      "h": 70,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "予約一覧",
+        "予約情報(list)"
+      ]
+    },
+    {
+      "id": "n_res_detail",
+      "x": 1863.6871426477055,
+      "y": 210,
+      "w": 190,
+      "h": 50,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "予約詳細",
+        "予約情報"
+      ]
+    },
+    {
+      "id": "n_signin",
+      "x": 1595.189854859991,
+      "y": 490,
+      "w": 200,
+      "h": 150,
+      "type": "external",
+      "shape": "rect",
+      "lines": [
+        "サインイン/サインアップ",
+        "新規登録",
+        "ログイン",
+        "メアド認証",
+        "パスワードリセット",
+        "ユーザー情報登録"
+      ]
+    },
+    {
+      "id": "n_user_edit",
+      "x": 1865.189854859991,
+      "y": 530,
+      "w": 190,
+      "h": 70,
+      "type": "user",
+      "shape": "rect",
+      "lines": [
+        "ユーザー情報編集",
+        "ユーザー情報表示/編集"
+      ]
+    },
+    {
+      "id": "n_legal",
+      "x": 80,
+      "y": 650,
+      "w": 200,
+      "h": 80,
+      "type": "notify",
+      "shape": "rect",
+      "lines": [
+        "規約・ポリシー",
+        "プライバシーポリシー",
+        "利用規約",
+        "特商法"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "n_topic_list",
+      "fromSide": "r",
+      "to": "n_topic_detail",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e2",
+      "from": "n_news_list",
+      "fromSide": "r",
+      "to": "n_news_detail",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e3",
+      "from": "n_search_form",
+      "fromSide": "r",
+      "to": "n_search",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e4",
+      "from": "n_search",
+      "fromSide": "r",
+      "to": "n_shop_detail",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e4b",
+      "from": "n_shop_detail",
+      "fromSide": "r",
+      "to": "n_bicycle_detail",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e5",
+      "from": "n_bicycle_detail",
+      "fromSide": "b",
+      "to": "n_cart",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e6",
+      "from": "n_cart",
+      "fromSide": "r",
+      "to": "n_res_list",
+      "toSide": "l",
+      "label": "予約完了",
+      "dashed": false
+    },
+    {
+      "id": "e7",
+      "from": "n_mypage",
+      "fromSide": "r",
+      "to": "n_res_list",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e8",
+      "from": "n_res_list",
+      "fromSide": "b",
+      "to": "n_res_detail",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e9",
+      "from": "n_signin",
+      "fromSide": "t",
+      "to": "n_mypage",
+      "toSide": "b",
+      "label": "ログイン",
+      "dashed": false
+    },
+    {
+      "id": "e10",
+      "from": "n_mypage",
+      "fromSide": "b",
+      "to": "n_user_edit",
+      "toSide": "t",
+      "label": "",
+      "dashed": false
+    }
+  ],
+  "frames": [
+    {
+      "id": "f_top",
+      "x": 50,
+      "y": 50,
+      "w": 700,
+      "h": 520,
+      "label": "Topページ",
+      "fillHex": "#c8a030",
+      "fillOpacity": 0.06,
+      "stroke": "#c8a030",
+      "labelColor": "#e8c850",
+      "dashed": true
+    },
+    {
+      "id": "f_search",
+      "x": 800,
+      "y": 50,
+      "w": 680,
+      "h": 480,
+      "label": "検索・予約ページ",
+      "fillHex": "#30a060",
+      "fillOpacity": 0.06,
+      "stroke": "#30a060",
+      "labelColor": "#60d090",
+      "dashed": true
+    },
+    {
+      "id": "f_mypage",
+      "x": 1563.6871426477055,
+      "y": 50,
+      "w": 560,
+      "h": 350,
+      "label": "マイページ",
+      "fillHex": "#b89020",
+      "fillOpacity": 0.06,
+      "stroke": "#b89020",
+      "labelColor": "#d0b040",
+      "dashed": true
+    },
+    {
+      "id": "f_auth",
+      "x": 1565.189854859991,
+      "y": 460,
+      "w": 560,
+      "h": 300,
+      "label": "ログイン / 新規登録",
+      "fillHex": "#c040c0",
+      "fillOpacity": 0.06,
+      "stroke": "#c040c0",
+      "labelColor": "#f090f0",
+      "dashed": true
+    },
+    {
+      "id": "f_other",
+      "x": 50,
+      "y": 620,
+      "w": 420,
+      "h": 140,
+      "label": "その他",
+      "fillHex": "#406090",
+      "fillOpacity": 0.06,
+      "stroke": "#406090",
+      "labelColor": "#8090b0",
+      "dashed": true
+    }
+  ],
+  "lanes": [],
+  "phases": [],
+  "nextId": 104,
+  "vx": 83.35564153831888,
+  "vy": 217.42973356779987,
+  "vscale": 0.3841015734066023
+}
