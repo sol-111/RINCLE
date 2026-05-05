@@ -1,0 +1,773 @@
+{
+  "nodes": [
+    {
+      "id": "n_admin",
+      "x": 30,
+      "y": 290,
+      "w": 160,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "admin",
+        "管理者画面"
+      ]
+    },
+    {
+      "id": "n_customer",
+      "x": 268.0757115858198,
+      "y": -365.47276788271006,
+      "w": 200,
+      "h": 70,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "顧客一覧",
+        "Customer(list)",
+        "CSVダウンロード"
+      ]
+    },
+    {
+      "id": "n_shop_list",
+      "x": 275.98018707902463,
+      "y": -176.9592206365653,
+      "w": 200,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "加盟店一覧",
+        "Shop(list)"
+      ]
+    },
+    {
+      "id": "n_price",
+      "x": 275.98018707902463,
+      "y": 10.68872129189969,
+      "w": 200,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "料金表管理",
+        "Price(list)"
+      ]
+    },
+    {
+      "id": "n_reservation",
+      "x": 263.45695400366395,
+      "y": 817.4926156628233,
+      "w": 200,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "予約一覧",
+        "Reservation(list)",
+        "ステータス変更"
+      ]
+    },
+    {
+      "id": "n_sales",
+      "x": 256.3587187964299,
+      "y": 1001.8049773622619,
+      "w": 200,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "売上レポート",
+        "売上高グラフ",
+        "csv出力"
+      ]
+    },
+    {
+      "id": "n_fv",
+      "x": 277.8257727589078,
+      "y": 275.63181620516593,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "FV管理"
+      ]
+    },
+    {
+      "id": "n_topic",
+      "x": 277.0067974669586,
+      "y": 431.7965183564451,
+      "w": 210,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "お知らせ管理",
+        "Topic(list)"
+      ]
+    },
+    {
+      "id": "n_news",
+      "x": 273.7308962991616,
+      "y": 525.072419524242,
+      "w": 210,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "バナー管理",
+        "News(list)"
+      ]
+    },
+    {
+      "id": "n_faq",
+      "x": 267.9980692555169,
+      "y": 639.6416782827193,
+      "w": 210,
+      "h": 80,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "Q&A管理",
+        "FAQ(list)"
+      ]
+    },
+    {
+      "id": "n_contact",
+      "x": 250.53793805530597,
+      "y": 1161.7913659879437,
+      "w": 210,
+      "h": 67.37515942257303,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "お問い合わせ一覧",
+        "Contact(list)",
+        "詳細",
+        "アーカイブ"
+      ]
+    },
+    {
+      "id": "n_email",
+      "x": 250.9988855192168,
+      "y": 1241.7913659879437,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "メールアドレス変更"
+      ]
+    },
+    {
+      "id": "n_pw",
+      "x": 250.9988855192168,
+      "y": 1311.7913659879437,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "パスワード変更"
+      ]
+    },
+    {
+      "id": "n_logout",
+      "x": 250.9988855192168,
+      "y": 1381.7913659879437,
+      "w": 210,
+      "h": 50,
+      "type": "startend",
+      "shape": "rect",
+      "lines": [
+        "ログアウト"
+      ]
+    },
+    {
+      "id": "n100",
+      "x": 534.5777915855062,
+      "y": -364.6128514976232,
+      "w": 200,
+      "h": 70,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "顧客詳細",
+        "顧客詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n106",
+      "x": 551.9481109036439,
+      "y": 274.232726625366,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "編集 / 削除",
+        "編集",
+        "削除"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n112",
+      "x": 565.5789933042072,
+      "y": -176.37320935825497,
+      "w": 117.71240848724861,
+      "h": 43.54248169744972,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "加盟店詳細",
+        "詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n114",
+      "x": 567.6975629408494,
+      "y": -29.36135912283102,
+      "w": 129.2326712990338,
+      "h": 50.67407296188817,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "料金詳細",
+        "詳細 /削除",
+        ""
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n116",
+      "x": 584.8902958139931,
+      "y": 797.002124429807,
+      "w": 80.95595668408674,
+      "h": 41.230894251454764,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "予約詳細",
+        "詳細内容",
+        ""
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n120",
+      "x": 569.7753390613389,
+      "y": 1165.4485912163382,
+      "w": 210,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "種別設定",
+        "削除",
+        "登録"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n124",
+      "x": 566.1126480928953,
+      "y": -101.78900293205189,
+      "w": 125.3925836951054,
+      "h": 53.96557662239823,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "加盟店登録",
+        "登録"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n126",
+      "x": 565.0232814524151,
+      "y": 43.037158130390566,
+      "w": 200,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "登録",
+        "登録",
+        "シミュレーション"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n128",
+      "x": 566.6612320363135,
+      "y": 125.87333358656029,
+      "w": 200,
+      "h": 60,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "編集",
+        "編集",
+        "シミュレーション"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n130",
+      "x": 553.065079822409,
+      "y": 335.65199181054675,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "登録",
+        "登録"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n132",
+      "x": 557.1116791888113,
+      "y": 404.69951457876704,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "編集 / 削除",
+        "編集",
+        "削除"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n133",
+      "x": 559.0476233995257,
+      "y": 465.2998044719985,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "登録",
+        "登録"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n136",
+      "x": 559.8183215981311,
+      "y": 640.8141151936197,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "編集 / 削除",
+        "編集",
+        "削除"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n137",
+      "x": 559.2490628396539,
+      "y": 526.4072908541985,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "編集 / 削除",
+        "編集",
+        "削除"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n138",
+      "x": 561.7542658088455,
+      "y": 584.3009383381102,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "登録",
+        "登録"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n139",
+      "x": 565.2798835101145,
+      "y": 707.396948663968,
+      "w": 210,
+      "h": 50,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "登録",
+        "登録"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n146",
+      "x": 586.8857666715677,
+      "y": 850.81471230019,
+      "w": 78.11666260119316,
+      "h": 46.19965889651858,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "乗車人情報",
+        "乗車人情報"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n147",
+      "x": 587.4615904876954,
+      "y": 915.2746529814237,
+      "w": 94.4426035778314,
+      "h": 45.48983537579518,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "オプション情報",
+        "オプション情報"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n148",
+      "x": 588.7472378245465,
+      "y": 973.346181976147,
+      "w": 95.1524270985548,
+      "h": 42.650541292901565,
+      "type": "admin",
+      "shape": "rect",
+      "lines": [
+        "予約者情報",
+        "予約者情報",
+        ""
+      ],
+      "fill": null,
+      "stroke": null
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "n_admin",
+      "fromSide": "t",
+      "to": "n_customer",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e2",
+      "from": "n_admin",
+      "fromSide": "r",
+      "to": "n_shop_list",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e3",
+      "from": "n_admin",
+      "fromSide": "b",
+      "to": "n_reservation",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e4",
+      "from": "n_admin",
+      "fromSide": "r",
+      "to": "n_fv",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e5",
+      "from": "n_admin",
+      "fromSide": "b",
+      "to": "n_contact",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e101",
+      "from": "n_customer",
+      "fromSide": "r",
+      "to": "n100",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e107",
+      "from": "n_fv",
+      "fromSide": "r",
+      "to": "n106",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e113",
+      "from": "n_shop_list",
+      "fromSide": "r",
+      "to": "n112",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e115",
+      "from": "n_price",
+      "fromSide": "r",
+      "to": "n114",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e117",
+      "from": "n_reservation",
+      "fromSide": "r",
+      "to": "n116",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e121",
+      "from": "n_contact",
+      "fromSide": "r",
+      "to": "n120",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e125",
+      "from": "n_shop_list",
+      "fromSide": "r",
+      "to": "n124",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e127",
+      "from": "n_price",
+      "fromSide": "r",
+      "to": "n126",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e129",
+      "from": "n_price",
+      "fromSide": "r",
+      "to": "n128",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e131",
+      "from": "n_fv",
+      "fromSide": "r",
+      "to": "n130",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e134",
+      "from": "n_topic",
+      "fromSide": "r",
+      "to": "n132",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e135",
+      "from": "n_topic",
+      "fromSide": "r",
+      "to": "n133",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e140",
+      "from": "n_news",
+      "fromSide": "r",
+      "to": "n137",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e141",
+      "from": "n_news",
+      "fromSide": "r",
+      "to": "n138",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e142",
+      "from": "n_faq",
+      "fromSide": "r",
+      "to": "n136",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e145",
+      "from": "n_faq",
+      "fromSide": "r",
+      "to": "n139",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e150",
+      "from": "n_reservation",
+      "fromSide": "r",
+      "to": "n146",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e151",
+      "from": "n_reservation",
+      "fromSide": "r",
+      "to": "n147",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e152",
+      "from": "n_reservation",
+      "fromSide": "r",
+      "to": "n148",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    }
+  ],
+  "frames": [
+    {
+      "id": "f_customer",
+      "x": 248.07571158581982,
+      "y": -412.7913636103316,
+      "w": 529.9839642632152,
+      "h": 180.99364297577458,
+      "label": "顧客管理",
+      "fillHex": "#4a6090",
+      "fillOpacity": 0.06,
+      "stroke": "#4a6090",
+      "labelColor": "#8090c0",
+      "dashed": true
+    },
+    {
+      "id": "f_shop",
+      "x": 257.07735496586133,
+      "y": -206.41063669314696,
+      "w": 557.8994057138771,
+      "h": 410.65623427264353,
+      "label": "加盟店管理",
+      "fillHex": "#8060d0",
+      "fillOpacity": 0.06,
+      "stroke": "#8060d0",
+      "labelColor": "#b090f0",
+      "dashed": true
+    },
+    {
+      "id": "f_booking",
+      "x": 244.87660104511073,
+      "y": 787.4926156628233,
+      "w": 569.6987476891256,
+      "h": 287.58745926624886,
+      "label": "予約・売上管理",
+      "fillHex": "#d05050",
+      "fillOpacity": 0.06,
+      "stroke": "#d05050",
+      "labelColor": "#f08080",
+      "dashed": true
+    },
+    {
+      "id": "f_toppage",
+      "x": 257.8257727589078,
+      "y": 245.63181620516596,
+      "w": 643.4072679795765,
+      "h": 531.3547761453424,
+      "label": "トップページ管理",
+      "fillHex": "#c8a030",
+      "fillOpacity": 0.06,
+      "stroke": "#c8a030",
+      "labelColor": "#e8c850",
+      "dashed": true
+    },
+    {
+      "id": "f_account",
+      "x": 230.9988855192168,
+      "y": 1131.7913659879437,
+      "w": 658.5250251324399,
+      "h": 322.98520618076736,
+      "label": "アカウント情報",
+      "fillHex": "#30a060",
+      "fillOpacity": 0.06,
+      "stroke": "#30a060",
+      "labelColor": "#60d090",
+      "dashed": true
+    }
+  ],
+  "lanes": [],
+  "phases": [],
+  "nextId": 153,
+  "vx": -44.53285914699052,
+  "vy": -1081.236795907463,
+  "vscale": 1.408800879098611
+}

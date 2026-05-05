@@ -1,0 +1,577 @@
+{
+  "nodes": [
+    {
+      "id": "n_shop_admin",
+      "x": 30,
+      "y": 260,
+      "w": 160,
+      "h": 60,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "shop_admin",
+        "加盟店画面"
+      ]
+    },
+    {
+      "id": "n_reservation",
+      "x": 273.413127753961,
+      "y": -422.06130662950693,
+      "w": 210,
+      "h": 80,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "予約一覧",
+        "CSVダウンロード",
+        "Reservation(list)",
+        "ライド管理(無くなるかも)",
+        "延長申請"
+      ]
+    },
+    {
+      "id": "n_sales",
+      "x": 276.74365774635896,
+      "y": -27.180506147317377,
+      "w": 210,
+      "h": 60,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "売上レポート",
+        "売上高グラフ",
+        "csv出力"
+      ]
+    },
+    {
+      "id": "n_customer",
+      "x": 266.800609713219,
+      "y": 168.9386595944578,
+      "w": 210,
+      "h": 70,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "顧客一覧",
+        "Customer(list)"
+      ]
+    },
+    {
+      "id": "n_bicycle",
+      "x": 265.39420555541477,
+      "y": 339.4552459980415,
+      "w": 220,
+      "h": 60,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "自転車一覧",
+        "Bicycle(list)",
+        "詳細",
+        ""
+      ]
+    },
+    {
+      "id": "n_option",
+      "x": 263.22997071445457,
+      "y": 565.7564686175117,
+      "w": 220,
+      "h": 60,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "オプション管理",
+        "Option(list)",
+        "詳細"
+      ]
+    },
+    {
+      "id": "n_business_hour",
+      "x": 262.49921689356967,
+      "y": 746.126424951342,
+      "w": 220,
+      "h": 60,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "営業時間設定",
+        "休業 / 営業設定",
+        "時間設定"
+      ]
+    },
+    {
+      "id": "n_calendar",
+      "x": 261.64293573218407,
+      "y": 891.7847004414114,
+      "w": 220,
+      "h": 60,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "営業カレンダー",
+        "休業 / 営業設定",
+        "時間設定"
+      ]
+    },
+    {
+      "id": "n_shop_info",
+      "x": 237.23701315928432,
+      "y": 1127.3029243071774,
+      "w": 220,
+      "h": 55,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "店舗情報",
+        "shop(list)"
+      ]
+    },
+    {
+      "id": "n_contact",
+      "x": 237.76643560060944,
+      "y": 1197.6743537333396,
+      "w": 220,
+      "h": 55,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "お問い合わせ一覧",
+        "Contact(list)",
+        "詳細",
+        "アーカイブ"
+      ]
+    },
+    {
+      "id": "n_email",
+      "x": 237.23701315928432,
+      "y": 1267.6743537333396,
+      "w": 220,
+      "h": 45,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "メールアドレス変更"
+      ]
+    },
+    {
+      "id": "n_pw",
+      "x": 237.23701315928432,
+      "y": 1327.6743537333396,
+      "w": 220,
+      "h": 45,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "パスワード変更"
+      ]
+    },
+    {
+      "id": "n_logout",
+      "x": 237.23701315928432,
+      "y": 1387.6743537333396,
+      "w": 220,
+      "h": 45,
+      "type": "startend",
+      "shape": "rect",
+      "lines": [
+        "ログアウト"
+      ]
+    },
+    {
+      "id": "n100",
+      "x": 274.38345552360056,
+      "y": -215.8618822244078,
+      "w": 210,
+      "h": 80,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "過去の予約",
+        "Reservation(list)",
+        "CSVダウンロード"
+      ]
+    },
+    {
+      "id": "n101",
+      "x": 586.7256211857919,
+      "y": -446.80028348774727,
+      "w": 110.21489609067292,
+      "h": 54.18517882273215,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "予約詳細",
+        "予約詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n107",
+      "x": 573.055224325897,
+      "y": -225.3699498394931,
+      "w": 111.13834461633343,
+      "h": 54.09897589579215,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "過去の予約詳細",
+        "詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n111",
+      "x": 606.7471772995576,
+      "y": 168.50757377286214,
+      "w": 210,
+      "h": 70,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "顧客詳細",
+        "詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n113",
+      "x": 608.2666613822128,
+      "y": 328.30138574355476,
+      "w": 168.72787526518925,
+      "h": 65.13587208567137,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "在庫設定",
+        "在庫設定"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n115",
+      "x": 610.1202179165189,
+      "y": 562.6844846776255,
+      "w": 177.54312359406143,
+      "h": 59.726930217438294,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "在庫設定",
+        "",
+        "在庫設定",
+        "",
+        ""
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n125",
+      "x": 586.8124753856031,
+      "y": -376.54115273486894,
+      "w": 115.48290120910828,
+      "h": 54.498759763195565,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "予約者詳細",
+        "予約者詳細"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n127",
+      "x": 586.8124753856031,
+      "y": -300.66008382996625,
+      "w": 117.95843072144082,
+      "h": 49.39851171583467,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "乗車人情報",
+        "乗車人情報",
+        ""
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n131",
+      "x": 572.4131801011029,
+      "y": -138.00946877135763,
+      "w": 119.16401405707389,
+      "h": 57.38220430336779,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "乗車人情報",
+        "乗車人情報"
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n136",
+      "x": 612.9177531700813,
+      "y": 646.5163380798164,
+      "w": 183.24926250281445,
+      "h": 79.06994472460609,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "新規登録 / 編集　",
+        "新規登録",
+        "編集",
+        "料金シミュレーション",
+        ""
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n138",
+      "x": 610.8865485907252,
+      "y": 433.02399404411005,
+      "w": 173.75537263724488,
+      "h": 70.72339185223308,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "新規登録 / 編集",
+        "新規登録",
+        "編集　",
+        "料金シミュレーション",
+        ""
+      ],
+      "fill": null,
+      "stroke": null
+    },
+    {
+      "id": "n140",
+      "x": 541.8507110835956,
+      "y": 1128.3941810329454,
+      "w": 220,
+      "h": 55,
+      "type": "store",
+      "shape": "rect",
+      "lines": [
+        "詳細/編集",
+        "詳細/編集"
+      ],
+      "fill": null,
+      "stroke": null
+    }
+  ],
+  "edges": [
+    {
+      "id": "e1",
+      "from": "n_shop_admin",
+      "fromSide": "t",
+      "to": "n_reservation",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e2",
+      "from": "n_shop_admin",
+      "fromSide": "r",
+      "to": "n_customer",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e3",
+      "from": "n_shop_admin",
+      "fromSide": "r",
+      "to": "n_bicycle",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e4",
+      "from": "n_shop_admin",
+      "fromSide": "b",
+      "to": "n_shop_info",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e102",
+      "from": "n_reservation",
+      "fromSide": "r",
+      "to": "n101",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e108",
+      "from": "n100",
+      "fromSide": "r",
+      "to": "n107",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e112",
+      "from": "n_customer",
+      "fromSide": "r",
+      "to": "n111",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e114",
+      "from": "n_bicycle",
+      "fromSide": "r",
+      "to": "n113",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e116",
+      "from": "n_option",
+      "fromSide": "r",
+      "to": "n115",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e119",
+      "from": "n_calendar",
+      "fromSide": "t",
+      "to": "n_business_hour",
+      "toSide": "b",
+      "label": "",
+      "dashed": false,
+      "arrowDir": "both"
+    },
+    {
+      "id": "e126",
+      "from": "n_reservation",
+      "fromSide": "r",
+      "to": "n125",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e128",
+      "from": "n_reservation",
+      "fromSide": "r",
+      "to": "n127",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e132",
+      "from": "n100",
+      "fromSide": "r",
+      "to": "n131",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e137",
+      "from": "n_option",
+      "fromSide": "r",
+      "to": "n136",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e139",
+      "from": "n_bicycle",
+      "fromSide": "r",
+      "to": "n138",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    },
+    {
+      "id": "e141",
+      "from": "n_shop_info",
+      "fromSide": "r",
+      "to": "n140",
+      "toSide": "l",
+      "label": "",
+      "dashed": false
+    }
+  ],
+  "frames": [
+    {
+      "id": "f_booking",
+      "x": 252.55199546700624,
+      "y": -456.91695769192467,
+      "w": 737.1494056240388,
+      "h": 531.8038795987643,
+      "label": "予約・売上管理",
+      "fillHex": "#d05050",
+      "fillOpacity": 0.06,
+      "stroke": "#d05050",
+      "labelColor": "#f08080",
+      "dashed": true
+    },
+    {
+      "id": "f_customer",
+      "x": 245.9443285518333,
+      "y": 131.23212914198663,
+      "w": 647.039084946329,
+      "h": 159.96984064849892,
+      "label": "顧客管理",
+      "fillHex": "#4a6090",
+      "fillOpacity": 0.06,
+      "stroke": "#4a6090",
+      "labelColor": "#8090c0",
+      "dashed": true
+    },
+    {
+      "id": "f_inventory",
+      "x": 246.06441754617938,
+      "y": 309.4552459980415,
+      "w": 631.793443700682,
+      "h": 669.243818724597,
+      "label": "在庫管理",
+      "fillHex": "#8060d0",
+      "fillOpacity": 0.06,
+      "stroke": "#8060d0",
+      "labelColor": "#b090f0",
+      "dashed": true
+    },
+    {
+      "id": "f_account",
+      "x": 217.2370131592843,
+      "y": 1097.6743537333396,
+      "w": 635.8884277869082,
+      "h": 360,
+      "label": "アカウント情報",
+      "fillHex": "#30a060",
+      "fillOpacity": 0.06,
+      "stroke": "#30a060",
+      "labelColor": "#60d090",
+      "dashed": true
+    }
+  ],
+  "lanes": [],
+  "phases": [],
+  "nextId": 142,
+  "vx": 551.8676938036472,
+  "vy": -583.572777926817,
+  "vscale": 0.852055221092608
+}
