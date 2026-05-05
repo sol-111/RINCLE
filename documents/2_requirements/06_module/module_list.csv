@@ -1,51 +1,54 @@
 No.,グループ,画面名,モジュール区分,URL,ロール,備考
 ,,,,,, ===エンドユーザー===
 1,トップページ,index,ページ,/,エンドユーザー,トップページ
-2,トップページ,お知らせ一覧,ページ,/topic,エンドユーザー,旧：topic
-3,トップページ,お知らせ詳細,ページ,/topic_detail,エンドユーザー,旧：topic_detail
-4,トップページ,FAQ一覧,ページ,/faq,エンドユーザー,旧：faq
-5,トップページ,お問い合わせフォーム,ページ,/contact,エンドユーザー,旧：contact
-6,検索,検索,ページ,/search,エンドユーザー,検索フォーム〜検索結果まで表示。旧：search
-7,検索,自転車詳細,ページ,/bicycle_detail,エンドユーザー,旧：bicycle_detail
-8,カート,カート,ページ,/reservation,エンドユーザー,お客様情報入力・金額確認・決済。旧：reservation
-9,マイページ,マイページ,ページ,/mypage,エンドユーザー,旧：mypage
-10,マイページ,予約一覧,ページ,/user_reservation_list,エンドユーザー,旧：user_reservation_list
-11,マイページ,予約詳細,ページ,/reservation_detail,エンドユーザー,新規
-12,ユーザー情報,サインイン / サインアップ,ページ,/signin,エンドユーザー,新規登録・ログイン・パスワード再設定。旧：signin
-13,ユーザー情報,ユーザー情報編集,ページ,/mypage_edit,エンドユーザー,旧：mypage_edit
-14,その他,ニュース一覧,ページ,/news,エンドユーザー,旧：news。お知らせ一覧との統合を検討
-15,その他,ニュース詳細,ページ,/news_detail,エンドユーザー,旧：news_detail。お知らせ詳細との統合を検討
-16,その他,規約・ポリシー,ページ,/legal?mode={mode},エンドユーザー,プライバシーポリシー / 利用規約 / 特商法に基づく表示
-17,共通,r_user_header,リユーザブル,,エンドユーザー,エンドユーザーヘッダー
-18,共通,r_user_footer,リユーザブル,,エンドユーザー,エンドユーザーフッター
-19,認証,r_signin/signup,リユーザブル,/signin?mode={mode},エンドユーザー,新規登録・ログイン・パスワード再設定
+2,トップページ,バナー一覧,reusable(topic),/topic,エンドユーザー,旧：topics_list
+3,トップページ,バナー詳細,reusable(topic),/topic?topic={id},エンドユーザー,旧：topics_detail
+4,トップページ,ニュース一覧,reusable(news),/news,エンドユーザー,旧：news_list
+5,トップページ,ニュース詳細,reusable(news),/news?news={id},エンドユーザー,旧：news_detail
+6,トップページ,FAQ一覧,reusable(faq),/faq,エンドユーザー,"旧：faq,guide"
+7,トップページ,お問い合わせフォーム,reusable(contact),/contact,エンドユーザー,旧：contact
+8,検索,検索,ページ,/search,エンドユーザー,検索フォーム〜検索結果まで表示。旧：top_search
+9,検索,検索欄,reusable(search_area),/search,エンドユーザー,検索フォーム部分
+10,検索,店舗一覧,reusable(shop),/search,エンドユーザー,旧：shop_detail
+10,検索,店舗詳細,reusable(shop),/search?shop={id},エンドユーザー,旧：shop_detail
+11,検索,自転車一覧,reusable(bicycle),/search,エンドユーザー,旧：bicycle_detail
+11,検索,自転車詳細,reusable(bicycle),/search?bicyce={id},エンドユーザー,旧：bicycle_detail
+12,カート,カート,reusable(cart),/reservation,エンドユーザー,お客様情報入力・金額確認・決済。旧：reservation
+13,マイページ,マイページ,ページ,/mypage,エンドユーザー,旧：mypage
+14,マイページ,予約一覧,reusable(user_reservation),/mypage/user_reservation,エンドユーザー,"旧：user_reservation_list , mypage > 予約情報"
+15,マイページ,予約詳細,reusable(user_reservation_detail),/mypage/user_reservation?reserve={id},エンドユーザー,旧：user_reservation_list
+16,ユーザー情報,ユーザー情報,reusable(userinfo),/mypage/userinfo,エンドユーザー,旧：user_edit/mypage。表示と編集
+17,,規約・ポリシー,ページ,/legal?mode={mode},エンドユーザー,プライバシーポリシー / 利用規約 / 特商法に基づく表示
+18,共通,r_user_header,reusable,,エンドユーザー,エンドユーザーヘッダー
+19,共通,r_user_footer,reusable,,エンドユーザー,エンドユーザーフッター
+20,認証,r_signin/signup,reusable,/signin?mode={mode},エンドユーザー,新規登録・ログイン・パスワード再設定
 ,,,,,, ===管理者 / 加盟店 共通===
 20,共通,admin_signin,ページ,/admin_signin,管理者 / 加盟店,管理者 / 加盟店ログイン・パスワード再設定
-21,共通,r_admin_header,リユーザブル,,管理者 / 加盟店,管理者 / 加盟店ヘッダー
-22,共通,r_admin_sidebar,リユーザブル,,管理者 / 加盟店,管理者 / 加盟店サイドバー
+21,共通,r_admin_header,リユーザブル,,管理者 / 加盟店,管理者 / 加盟店ヘッダー -> 不要
+22,共通,r_admin_sidebar,リユーザブル,,管理者 / 加盟店,管理者 / 加盟店サイドバー -> 不要
 23,認証,r_admin_signin,リユーザブル,/signin?mode={mode}&role={role},管理者 / 加盟店,管理者 / 加盟店ログイン・パスワード再設定
 ,,,,,, ===管理者===
-24,管理者,admin,ページ,/admin,管理者,管理者画面
+24,管理者,admin,ページ,/admin,管理者,管理者画面★shopと共通、ヘッダー/サイドバーを指定して各メニューページをreusable化する。
 25,管理者,r_admin_price,リユーザブル,/admin/price,管理者,料金表管理
-26,管理者,r_admin_customer_info,リユーザブル,/admin/customer,管理者,顧客一覧
-27,管理者,r_admin_shop_list,リユーザブル,/admin/shop_list,管理者,加盟店一覧
-28,管理者,r_admin_contact,リユーザブル,/admin/contact,管理者,お問い合わせ一覧
-29,管理者,r_admin_reservation,リユーザブル,/admin/reservation,管理者,予約一覧・過去の予約
+26,管理者,r_admin_customer_info,リユーザブル,/admin/customer,管理者,顧客一覧★shopと共通
+27,管理者,r_admin_shop_list,リユーザブル,/admin/shop_list,管理者,加盟店一覧★shopと共通
+28,管理者,r_admin_contact,リユーザブル,/admin/contact,管理者,お問い合わせ一覧★shopと共通
+29,管理者,r_admin_reservation,リユーザブル,/admin/reservation,管理者,予約一覧・過去の予約★shopと共通
 30,管理者,r_admin_news,リユーザブル,/admin/news,管理者,ニュース(新着情報)管理。旧名称：お知らせ管理
-31,管理者,r_admin_topic,リユーザブル,/admin/topic,管理者,お知らせ管理。旧名称：バナー管理
+31,管理者,r_admin_topic,リユーザブル,/admin/topic,管理者,お知らせ管理。旧名称：バナー管理★shopと共通
 32,管理者,r_admin_fv,リユーザブル,/admin/fv,管理者,FV管理。削除候補
 33,管理者,r_admin_faq,リユーザブル,/admin/faq,管理者,FAQ管理。旧名称：Q&A管理
-34,管理者,r_admin_sales,リユーザブル,/admin/sales,管理者,売上レポート
-35,管理者,r_admin_setting,リユーザブル,/admin/setting,管理者,メールアドレス変更・パスワード変更
+34,管理者,r_admin_sales,リユーザブル,/admin/sales,管理者,売上レポート★shopと共通
+35,管理者,r_admin_setting,リユーザブル,/admin/setting,管理者,メールアドレス変更・パスワード変更★shopと共通
 ,,,,,, ===加盟店===
-36,加盟店,shop_admin,ページ,/shop_admin,加盟店,加盟店画面
+36,加盟店,shop_admin,ページ,/shop_admin,加盟店,加盟店画面 ★adminと共通
 37,加盟店,shop_info,ページ,/shop_form,加盟店,加盟店情報登録。口座情報をbubble側で持ちたくないため、削除検討したい。
-38,加盟店,r_shop_customer_info,リユーザブル,/shop_admin/customer,加盟店,顧客一覧
-39,加盟店,r_shop_contact,リユーザブル,/shop_admin/contact,加盟店,お問い合わせ一覧
-40,加盟店,r_shop_reservation,リユーザブル,/shop_admin/reservation,加盟店,予約一覧・過去の予約
-41,加盟店,r_shop_sales,リユーザブル,/shop_admin/sales,加盟店,売上レポート
-42,加盟店,r_shop_setting,リユーザブル,/shop_admin/setting,加盟店,メールアドレス変更・パスワード変更
-43,加盟店,r_shop_info,リユーザブル,/shop_admin/shop_info,加盟店,店舗情報編集。旧名称：施設情報
+38,加盟店,r_shop_customer_info,リユーザブル,/shop_admin/customer,加盟店,顧客一覧★adminと共通
+39,加盟店,r_shop_contact,リユーザブル,/shop_admin/contact,加盟店,お問い合わせ一覧★adminと共通
+40,加盟店,r_shop_reservation,リユーザブル,/shop_admin/reservation,加盟店,予約一覧・過去の予約★adminと共通
+41,加盟店,r_shop_sales,リユーザブル,/shop_admin/sales,加盟店,売上レポート★shopと共通
+42,加盟店,r_shop_setting,リユーザブル,/shop_admin/setting,加盟店,メールアドレス変更・パスワード変更★adminと共通
+43,加盟店,r_shop_info,リユーザブル,/shop_admin/shop_info,加盟店,店舗情報編集。旧名称：施設情報★管理者>加盟店>詳細と共通
 44,加盟店,r_shop_business_hour,リユーザブル,/shop_admin/business_hour,加盟店,営業時間設定。曜日ごと・日付ごとの設定を統合
 45,加盟店,r_shop_calendar,リユーザブル,/shop_admin/calendar,加盟店,営業カレンダー
 46,加盟店,r_shop_bicycle,リユーザブル,/shop_admin/bicycle,加盟店,自転車一覧
