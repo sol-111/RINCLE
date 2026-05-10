@@ -40,6 +40,7 @@ documents/
 │   │       └── payjp-rincle-bubble-usage.md     # Bubble既存実装のPay.jp利用箇所
 │   │
 │   └── 05_db/                      # DB設計（_index.csv → ErViewer で表示）
+│       ├── flow_sequences/       #   予約〜決済のシーケンス（As-Is レコード整理）
 │       ├── _index.csv              #   テーブル/オプションセット一覧
 │       ├── datatype/               #   テーブル定義（27テーブル）
 │       │   ├── 01_user.csv

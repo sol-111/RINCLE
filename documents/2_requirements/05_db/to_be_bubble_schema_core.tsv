@@ -1,0 +1,143 @@
+テーブル論理名	テーブル名（日本語名）	フィールド名	フィールド名日本語	フィールドタイプ	refの場合のData TypeかOption Sets	リストかどうか	メモ_To-Be設計	既存datatype	既存field_name	変更区分	メモ_移行マッピング
+User	User（会員・アカウント）	email	メール（ログイン）	Text		No	ログインキー。ユニークはアプリ側			新規作成	Bubble As-Isにログイン専用メールがない前提
+User	User（会員・アカウント）	name	氏名	Text		No		User	name	継続	
+User	User（会員・アカウント）	name_kana	氏名（カナ）	Text		No		User	name_kana	継続	
+User	User（会員・アカウント）	birth_date	生年月日	Date		No		User	birth	移行改名	
+User	User（会員・アカウント）	height_cm	身長(cm)	Number		No		User	tall	移行改名	
+User	User（会員・アカウント）	postal_code	郵便番号	Text		No		User	post_number	移行改名	
+User	User（会員・アカウント）	address	住所	Text		No		User	address	継続	
+User	User（会員・アカウント）	contact_email	連絡用メール	Text		No		User	contact_mail	移行改名	
+User	User（会員・アカウント）	profile_image	プロフィール画像	Image		No		User	image	移行改名	
+User	User（会員・アカウント）	right	アクセス権限	Option set	Rights	No		User	Right	移行改名	
+User	User（会員・アカウント）	assigned_shop	所属店舗	Reference	Shop	No	加盟店スタッフ用			新規作成	加盟店スタッフ
+User	User（会員・アカウント）	cus_id_payjp	Pay.JP 顧客ID	Text		No	機微情報	User	cus_id	継続	
+User	User（会員・アカウント）	tenant_id_payjp	Pay.JP テナントID	Text		No	加盟店用	User	tenant_id	移行改名	
+User	User（会員・アカウント）	user_id_payjp	Pay.JP ユーザーID	Text		No		User	user_id_payjp	継続	
+User	User（会員・アカウント）	payjp_public_key_live	Pay.JP 公開鍵（本番）	Text		No	Secrets 推奨	User	shop_pay_real	移行改名	
+User	User（会員・アカウント）	is_archived	アーカイブ済み	Yes/No		No		User	archive	移行改名	
+User	User（会員・アカウント）	is_campaign_notify	キャンペーン通知	Yes/No		No		User	is_キャンペーン通知	移行改名	
+User	User（会員・アカウント）	last_visit_at	最終訪問日	Date		No		User	last-visit	移行改名	
+User	User（会員・アカウント）	auth_verified	認証済み	Yes/No		No		User	認証	移行改名	
+User	User（会員・アカウント）	auth_code	認証番号	Text		No		User	認証番号	継続	
+User	User（会員・アカウント）	business_name	事業者名	Text		No		User	事業者名	継続	
+User	User（会員・アカウント）	business_address	事業者住所	Text		No		User	business_address	継続	
+User	User（会員・アカウント）	car_id	car_id	Text		No		User	car_id	継続	
+User	User（会員・アカウント）	home_page_url	ホームページURL	Text		No		User	HP	移行改名	
+User	User（会員・アカウント）	brand_review_status	ブランドレビュー	Option set	brand_status	No		User	reviewed_brand	移行改名	
+User	User（会員・アカウント）	prefecture	都道府県	Option set	Prefecture	No	Thing 廃止し optionset 化する案	User	prefecture	型変更	ref→Option Set案
+User	User（会員・アカウント）	payment_methods_allowed	利用可能な支払い方法	Option set	支払い方法	Yes	加盟店	User	支払い方法	継続	
+User	User（会員・アカウント）	reservation_cart	カート中の予約	Reference	Reservation	No		User	cart	継続	
+User	User（会員・アカウント）	default_prior_day_rental	前日貸し出し設定値	Number		No		User	前日貸し出し	継続	
+Shop	Shop（店舗）	code	店舗コード	Text		No	任意の内部識別子			新規作成	
+Shop	Shop（店舗）	name	店舗名	Text		No		User	shop_name	統合移行	User→Shop
+Shop	Shop（店舗）	address	店舗住所	Text		No		User	shop_address	統合移行	
+Shop	Shop（店舗）	access_guide	店舗アクセス	Text		No		User	shop_access	統合移行	
+Shop	Shop（店舗）	comment	店舗コメント	Text		No		User	shop_comment	統合移行	
+Shop	Shop（店舗）	contact_staff_name	担当者名	Text		No		User	担当者	統合移行	
+Shop	Shop（店舗）	onboarding_completed	オンボーディング完了	Yes/No		No		User	shop_onboading	統合移行	スペルはAs-Is踏襲
+Shop	Shop（店舗）	service_prefectures	サービスエリア都道府県	Option set	Prefecture	Yes				新規作成	Prefecture Option Set
+Product	Product（貸出商品）	shop	店舗	Reference	Shop	No	Bicycle と Sub_Option 統合案	Bicycle	Shop	移行先変更	ref user→Shop想定
+Product	Product（貸出商品）	product_type	商品種別	Option set	ProductType	No	新設想定: bicycle / helmet / option 等			新規作成	ProductType OS
+Product	Product（貸出商品）	name	商品名	Text		No		Bicycle	name	統合移行	Sub_Option.nameも統合
+Product	Product（貸出商品）	manage_no	管理番号	Number		No		Bicycle	No	継続	
+Product	Product（貸出商品）	serial_no	シリアル番号	Text		No		Bicycle	serial number	移行改名	
+Product	Product（貸出商品）	price_menu	料金プラン	Reference	Price_Menu	No		Bicycle	Price_Menu	継続	
+Product	Product（貸出商品）	bicycle_category	自転車カテゴリ	Option set	Bicycle Category	No		Bicycle	Bicycle Category	継続	
+Product	Product（貸出商品）	brand_name	ブランド名	Text		No		Bicycle	Brand name	移行改名	
+Product	Product（貸出商品）	color	カラー	Text		No		Bicycle	color	継続	
+Product	Product（貸出商品）	size	サイズ	Text		No		Bicycle	size	継続	
+Product	Product（貸出商品）	description	説明・コメント	Text		No		Sub_Option	description	統合移行	Bicycle.commentは廃止
+Product	Product（貸出商品）	is_ebike	電動アシスト	Yes/No		No		Bicycle	ebike	移行改名	
+Product	Product（貸出商品）	max_rental_days	最大貸出日数	Number		No		Bicycle	max date	移行改名	
+Product	Product（貸出商品）	default_stock_qty	デフォルト在庫数	Number		No		Sub_Option	max_number	統合移行	
+Product	Product（貸出商品）	parent_product	親オプション	Reference	Product	No	階層オプション	Sub_Option	Parent Option	統合移行	option→Product
+Product	Product（貸出商品）	rental_visibility	貸出ステータス	Option set	貸し出し可能ステータス	No		Bicycle	貸出ステータス	統合移行	Sub_Option同名
+Product	Product（貸出商品）	is_archived	アーカイブ済み	Yes/No		No		Bicycle	is_archive	統合移行	Sub_Optionも
+Product	Product（貸出商品）	images	画像	Image		Yes		Bicycle	images	継続	
+Product	Product（貸出商品）	compatible_products	対応商品	Reference	Product	Yes		Sub_Option	Bicycles	統合移行	
+Price_Menu	Price_Menu（料金プラン）	shop	店舗	Reference	Shop	No		Price_Menu	Shop	移行先変更	ref user→Shop
+Price_Menu	Price_Menu（料金プラン）	plan_name	プラン名	Text		No		Price_Menu	name	移行改名	
+Price_Menu	Price_Menu（料金プラン）	tax_rate	税率(%)	Number		No		Price_Menu	tax percent	移行改名	
+Price_Menu	Price_Menu（料金プラン）	is_default	デフォルトフラグ	Yes/No		No		Price_Menu	default	継続	
+Price_Menu	Price_Menu（料金プラン）	for_simulation	シミュレーション用	Yes/No		No		Price_Menu	for simulation	継続	
+Price_Menu	Price_Menu（料金プラン）	price_4h	4時間プラン単価	Number		No		Price_Menu	4時間プラン料金	継続	
+Price_Menu	Price_Menu（料金プラン）	price_1d	1日プラン単価	Number		No		Price_Menu	1日プラン料金	継続	
+Price_Menu	Price_Menu（料金プラン）	price_2d	2日プラン単価	Number		No		Price_Menu	2日間プラン料金	継続	
+Price_Menu	Price_Menu（料金プラン）	price_3d	3日プラン単価	Number		No		Price_Menu	3日間プラン料金	継続	
+Price_Menu	Price_Menu（料金プラン）	price_7d	7日プラン単価	Number		No		Price_Menu	7日間プラン料金	継続	
+Price_Menu	Price_Menu（料金プラン）	price_14d	14日プラン単価	Number		No		Price_Menu	14日間プラン料金	継続	
+Price_Menu	Price_Menu（料金プラン）	price_30d	30日プラン単価	Number		No		Price_Menu	30日間プラン料金	継続	
+Price_Menu	Price_Menu（料金プラン）	price_2w	2週間単価	Number		No		Price_Menu	two weeks price	継続	
+Price_Menu	Price_Menu（料金プラン）	price_3w	3週間単価	Number		No		Price_Menu	three weeks price	継続	
+Price_Menu	Price_Menu（料金プラン）	price_4w	4週間単価	Number		No		Price_Menu	four weeks price	継続	
+Price_Menu	Price_Menu（料金プラン）	extra_day_price	延長日単価	Number		No		Price_Menu	1日延長	移行改名	
+Price_Menu	Price_Menu（料金プラン）	extra_hour_price	延長時間単価	Number		No		Price_Menu	1時間延長	移行改名	
+Weekly_Business_Hours	Weekly_Business_Hours（曜日営業）	shop	店舗	Reference	Shop	No	To-Be は店舗単位	営業カレンダー（曜日）	加盟店	移行先変更	
+Weekly_Business_Hours	Weekly_Business_Hours（曜日営業）	weekday	曜日	Option set	曜日	No		営業カレンダー（曜日）	曜日	継続	
+Weekly_Business_Hours	Weekly_Business_Hours（曜日営業）	open_status	営業状態	Option set	営業状態op	No		営業カレンダー（曜日）	営業状態	継続	
+Weekly_Business_Hours	Weekly_Business_Hours（曜日営業）	start_time	開始時刻	Option set	Time	No		営業カレンダー（曜日）	startTime	継続	
+Weekly_Business_Hours	Weekly_Business_Hours（曜日営業）	end_time	終了時刻	Option set	Time	No		営業カレンダー（曜日）	endTime	継続	
+Weekly_Business_Hours	Weekly_Business_Hours（曜日営業）	effective_from	適用開始日	Date		No	任意			新規作成	履歴用
+Weekly_Business_Hours	Weekly_Business_Hours（曜日営業）	effective_to	適用終了日	Date		No	任意			新規作成	履歴用
+Calendar_Exception	Calendar_Exception（営業カレンダー例外）	shop	店舗	Reference	Shop	No	(A) 臨時のみ保持	営業カレンダー（日付）	加盟店	移行先変更	
+Calendar_Exception	Calendar_Exception（営業カレンダー例外）	target_date	対象日	Date		No		営業カレンダー（日付）	日付	継続	在庫大量行は廃止方針
+Calendar_Exception	Calendar_Exception（営業カレンダー例外）	open_status	営業状態	Option set	営業状態op	No		営業カレンダー（日付）	営業状態	継続	
+Calendar_Exception	Calendar_Exception（営業カレンダー例外）	start_time	開始時刻	Option set	Time	No		営業カレンダー（日付）	startTime	継続	
+Calendar_Exception	Calendar_Exception（営業カレンダー例外）	end_time	終了時刻	Option set	Time	No		営業カレンダー（日付）	endTime	継続	
+Calendar_Exception	Calendar_Exception（営業カレンダー例外）	note	メモ	Text		No				新規作成	
+Product_Unavailable_Date	Product_Unavailable_Date（商品貸出不可日）	product	商品	Reference	Product	No				新規作成	
+Product_Unavailable_Date	Product_Unavailable_Date（商品貸出不可日）	target_date	対象日	Date		No				新規作成	
+Product_Unavailable_Date	Product_Unavailable_Date（商品貸出不可日）	reason	理由	Text		No				新規作成	
+Product_Daily_Stock	Product_Daily_Stock（商品在庫・日別上書き）	product	商品	Reference	Product	No	shop_schedule 非依存			新規作成	
+Product_Daily_Stock	Product_Daily_Stock（商品在庫・日別上書き）	target_date	対象日	Date		No				新規作成	
+Product_Daily_Stock	Product_Daily_Stock（商品在庫・日別上書き）	quantity	在庫数	Number		No				新規作成	
+Holiday	Holiday（祝日・日付マスタ）	target_date	日付	Date		No	Holidays 統合想定	Holidays	date	統合移行	
+Holiday	Holiday（祝日・日付マスタ）	label	名称	Text		No				新規作成	
+Holiday	Holiday（祝日・日付マスタ）	is_no_rental	貸出不可	Yes/No		No		日付データ Defaults	holiday	統合移行	Default/追加のholiday統合
+Reservation	Reservation（予約）	booker_user	予約者	Reference	User	No				新規作成	予約ヘッダに予約者明示
+Reservation	Reservation（予約）	shop	店舗	Reference	Shop	No		予約情報	店舗	移行先変更	ref user→Shop
+Reservation	Reservation（予約）	rental_start_date	貸出日	Date		No		予約情報	貸出日	継続	
+Reservation	Reservation（予約）	rental_end_date	返却日	Date		No		予約情報	返却日	継続	
+Reservation	Reservation（予約）	status	ステータス	Option set	予約ステータス	No		予約情報	ステータス	継続	
+Reservation	Reservation（予約）	reservation_no	予約番号	Number		No	ユニーク推奨	予約情報	予約番号	継続	
+Reservation	Reservation（予約）	prior_day_pickup	前日貸し出し	Yes/No		No		予約情報	前日貸し出し	継続	
+Reservation	Reservation（予約）	total_amount	合計金額	Number		No		予約情報	合計金額	継続	
+Reservation	Reservation（予約）	extension_amount	延長料金	Number		No		予約情報	延長料金	継続	
+Reservation	Reservation（予約）	extension_end_date	延長返却日	Date		No		予約情報	延長返却日	継続	
+Reservation	Reservation（予約）	payment_method_note	支払い方法	Text		No	表示用	予約情報	支払い方法	継続	
+Reservation	Reservation（予約）	charge_id_payjp	Pay.JP チャージID	Text		No		予約情報	charge_id	継続	
+Reservation	Reservation（予約）	payment_token	決済トークン	Text		No		予約情報	token	移行改名	
+Reservation	Reservation（予約）	extension_charge_id_payjp	延長チャージID	Text		No		予約情報	延長charge_id	継続	
+Reservation	Reservation（予約）	fee_aux	手数料補助	Reference	Reservation_Fee_Aux	No		予約情報	手数料	移行改名	ref 管理者手数料
+Reservation	Reservation（予約）	default_fee_rate_snapshot	手数料デフォルト	Number		No		予約情報	手数料デフォルト	継続	
+Reservation	Reservation（予約）	is_invoiced	請求済み	Yes/No		No		予約情報	請求済み	継続	
+Reservation	Reservation（予約）	refund_id	返金ID	Text		No		予約情報	返金_id	継続	
+Reservation	Reservation（予約）	refund_charge_id_payjp	返金チャージID	Text		No		予約情報	返金charge_id	継続	
+Reservation	Reservation（予約）	is_refunded	返金済み	Yes/No		No		予約情報	返金済み	継続	
+Reservation_Fee_Aux	Reservation_Fee_Aux（管理者手数料補助）	count_value	数値	Number		No	旧 管理者手数料	管理者手数料	number	継続	
+Reservation_Line	Reservation_Line（自転車予約明細）	reservation	予約	Reference	Reservation	No		自転車予約詳細	予約情報	継続	
+Reservation_Line	Reservation_Line（自転車予約明細）	product	商品	Reference	Product	No	自転車種別の Product	自転車予約詳細	自転車	移行先変更	bicycle→Product
+Reservation_Line	Reservation_Line（自転車予約明細）	price_menu	料金プラン	Reference	Price_Menu	No	スナップショット	自転車予約詳細	price_menu	継続	
+Reservation_Line	Reservation_Line（自転車予約明細）	base_amount	基本料金	Number		No		自転車予約詳細	基本料金	継続	
+Reservation_Line	Reservation_Line（自転車予約明細）	line_total	行合計	Number		No		自転車予約詳細	合計金額	移行改名	
+Reservation_Line	Reservation_Line（自転車予約明細）	option_lines	オプション明細	Reference	Reservation_Option_Line	Yes		自転車予約詳細	オプション予約詳細	継続	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_name	乗車者氏名	Text		No	乗車人情報 Thing を廃止し直書き案	乗車人情報	name	統合移行	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_name_kana	乗車者氏名カナ	Text		No		乗車人情報	name kana	統合移行	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_email	乗車者メール	Text		No		乗車人情報	email	統合移行	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_phone	乗車者電話	Text		No		乗車人情報	phone_text	統合移行	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_postal_code	乗車者郵便番号	Text		No		乗車人情報	郵便番号	統合移行	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_address	乗車者住所	Text		No		乗車人情報	住所	統合移行	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_birth_date	乗車者生年月日	Date		No		乗車人情報	生年月日	統合移行	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_height_cm	乗車者身長	Number		No		乗車人情報	身長	統合移行	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_is_signup_member	会員登録フラグ	Yes/No		No		乗車人情報	SignUp User	統合移行	
+Reservation_Line	Reservation_Line（自転車予約明細）	rider_user	乗車者会員	Reference	User	No	会員乗車時のみ			新規作成	会員の乗車者用
+Reservation_Option_Line	Reservation_Option_Line（オプション予約明細）	product	オプション商品	Reference	Product	No	種別 option の Product	オプション予約詳細	オプション	移行先変更	sub_option→Product
+Reservation_Option_Line	Reservation_Option_Line（オプション予約明細）	price_menu	料金プラン	Reference	Price_Menu	No		オプション予約詳細	price_menu	継続	
+Reservation_Option_Line	Reservation_Option_Line（オプション予約明細）	line_amount	金額	Number		No		オプション予約詳細	料金	移行改名	
+Monthly_Shop_Fee	Monthly_Shop_Fee（手数料月次）	shop	店舗	Reference	Shop	No		手数料月ごと	shop	移行先変更	ref user→Shop
+Monthly_Shop_Fee	Monthly_Shop_Fee（手数料月次）	record_date	記録日	Date		No		手数料月ごと	date	継続	
+Monthly_Shop_Fee	Monthly_Shop_Fee（手数料月次）	year	年	Number		No		手数料月ごと	年	継続	
+Monthly_Shop_Fee	Monthly_Shop_Fee（手数料月次）	month	月	Number		No		手数料月ごと	月	継続	
+Monthly_Shop_Fee	Monthly_Shop_Fee（手数料月次）	fee_amount	手数料額	Number		No		手数料月ごと	手数料	継続	
+Monthly_Shop_Fee	Monthly_Shop_Fee（手数料月次）	payout_status	振込ステータス	Option set	振り込みステータス	No		手数料月ごと	振り込みステータス	継続	
+Monthly_Shop_Fee	Monthly_Shop_Fee（手数料月次）	is_processed	処理済み	Yes/No		No		手数料月ごと	請求	移行改名	処理済み

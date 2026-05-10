@@ -18,3 +18,7 @@ Thumbs.db
 
 # Claude Code
 .claude/
+documents/2_requirements/05_db/flow_sequences/parse_bubble_workflow_json.py
+documents/2_requirements/05_db/flow_sequences/parse_bubble_workflow_json.py
+documents/2_requirements/05_db/flow_sequences/parse_bubble_workflow_json.py
+documents/2_requirements/05_db/generate_full_schema_csv.py
