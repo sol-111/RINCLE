@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pay.JP オーソリ実装 完全ガイド</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --accent: #e94560;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+    --gray-900: #0f172a;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.1);
+    --guide-teal: #0d9488;
+    --guide-teal-light: #ccfbf1;
+    --guide-emerald: #059669;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #064e3b 0%, #059669 40%, #10b981 100%);
+    color: #fff;
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -30%; left: -10%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(52,211,153,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 16px; opacity: 0.85; max-width: 600px; }
+  .hero-meta { margin-top: 16px; display: flex; gap: 24px; font-size: 13px; opacity: 0.7; }
+
+  /* Layout */
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 32px 80px; }
+
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: -40px auto 40px;
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    padding: 0 32px;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    border-top: 3px solid var(--guide-teal);
+  }
+  .summary-card h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--guide-teal);
+    margin-bottom: 6px;
+  }
+  .summary-card p { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+
+  /* Sections */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .section-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; height: 40px;
+    background: var(--guide-emerald);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 22px; font-weight: 700; }
+  .section-desc { color: var(--gray-500); font-size: 14px; margin-bottom: 20px; }
+
+  /* Cards / callouts */
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+  }
+  .callout {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon { font-size: 20px; flex-shrink: 0; line-height: 1.4; }
+  .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .callout.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+  .callout.danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+  .callout.success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+  .callout.tip { background: #f5f3ff; border: 1px solid #c4b5fd; color: #5b21b6; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
+  th {
+    background: var(--gray-900);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); }
+  tr:hover td { background: var(--gray-50); }
+
+  /* Code */
+  code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    background: #f1f5f9;
+    color: #059669;
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+  }
+  td code { font-size: 12px; white-space: nowrap; }
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  pre .comment { color: #64748b; }
+  pre .highlight { color: #fbbf24; font-weight: 700; }
+  pre .good { color: #34d399; }
+  pre .bad { color: #f87171; }
+  pre .param { color: #93c5fd; }
+
+  /* Flow diagram */
+  .flow-diagram {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .flow-box {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .flow-box h4 { font-size: 14px; margin-bottom: 8px; color: var(--gray-700); }
+  .flow-box .flow-action { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .flow-box .flow-api { font-size: 12px; color: var(--gray-500); font-family: monospace; }
+  .flow-box .flow-status { font-size: 13px; margin-top: 8px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: inline-block; }
+  .flow-box.bad { border-top: 3px solid var(--danger); }
+  .flow-box.bad .flow-status { background: #fef2f2; color: var(--danger); }
+  .flow-box.good { border-top: 3px solid var(--success); }
+  .flow-box.good .flow-status { background: #ecfdf5; color: var(--success); }
+  .flow-arrow { display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--gray-300); }
+
+  /* Pitfall cards */
+  .pitfall {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+    border-left: 4px solid var(--danger);
+  }
+  .pitfall-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .pitfall-num {
+    background: var(--danger);
+    color: #fff;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .pitfall-header h4 { font-size: 16px; font-weight: 700; color: var(--danger); }
+  .pitfall-severity {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+  }
+  .pitfall-severity.critical { background: #fef2f2; color: var(--danger); }
+  .pitfall-severity.high { background: #fffbeb; color: #d97706; }
+  .pitfall-severity.medium { background: #eff6ff; color: var(--primary); }
+
+  /* Sub heading */
+  .sub-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--guide-emerald);
+    margin: 28px 0 12px;
+    padding-left: 12px;
+    border-left: 3px solid var(--guide-emerald);
+  }
+
+  /* Step cards */
+  .step-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--guide-emerald);
+  }
+  .step-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--guide-emerald);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .step-num {
+    background: var(--guide-emerald);
+    color: #fff;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    padding: 8px 0 8px 28px;
+    position: relative;
+    font-size: 14px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 10px;
+    width: 18px; height: 18px;
+    border: 2px solid var(--gray-300);
+    border-radius: 4px;
+  }
+
+  /* Estimate table */
+  .estimate-total {
+    background: linear-gradient(135deg, #064e3b, #059669);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .estimate-total h3 { font-size: 14px; font-weight: 600; opacity: 0.8; margin-bottom: 8px; }
+  .estimate-total .total-num { font-size: 36px; font-weight: 800; }
+  .estimate-total .total-sub { font-size: 14px; opacity: 0.7; margin-top: 4px; }
+
+  /* Phase header */
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 12px;
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .phase-header.phase0 { background: linear-gradient(135deg, #6b7280, #374151); }
+  .phase-header.phase1 { background: linear-gradient(135deg, #059669, #10b981); }
+  .phase-header.phase2 { background: linear-gradient(135deg, #2563eb, #3b82f6); }
+
+  /* Scenario card */
+  .scenario-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+    margin: 12px 0;
+  }
+  .scenario-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .scenario-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #fff;
+  }
+  .scenario-badge.normal { background: var(--success); }
+  .scenario-badge.cancel { background: var(--warning); }
+  .scenario-badge.error { background: var(--danger); }
+  .scenario-badge.extend { background: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-label">Implementation Guide</div>
+  <h1>Pay.JP オーソリ実装 完全ガイド</h1>
+  <p>Jr.エンジニアでもわかる、オーソリ（与信確保）の実装手順とはまりポイント集</p>
+  <div class="hero-meta">
+    <span>対象: Jr.エンジニア / Bubble開発者</span>
+    <span>最終更新: 2026-05-15</span>
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="summary-grid">
+  <div class="summary-card">
+    <h3>実装ステップ</h3>
+    <p><strong>6ステップ</strong>でオーソリ実装完了</p>
+  </div>
+  <div class="summary-card">
+    <h3>はまりポイント</h3>
+    <p><strong>10個</strong>の要注意ポイント</p>
+  </div>
+  <div class="summary-card">
+    <h3>テストシナリオ</h3>
+    <p><strong>4パターン</strong>のE2Eテスト</p>
+  </div>
+  <div class="summary-card">
+    <h3>開発見積もり</h3>
+    <p>約<strong>2〜2.5週間</strong>（リスク込み3週間）</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Section 1: What is Authorization -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>そもそもオーソリとは？</h2>
+    </div>
+
+    <div class="card">
+      <h3 class="sub-heading">一言で言うと</h3>
+      <p style="font-size:18px; font-weight:700; color:var(--guide-emerald); margin:12px 0;">
+        「お金を引き落とさずに、カードの与信枠だけ確保すること」
+      </p>
+    </div>
+
+    <h3 class="sub-heading">ホテル予約で例えると</h3>
+    <div class="flow-diagram">
+      <div class="flow-box good">
+        <h4>チェックイン時</h4>
+        <div class="flow-action">オーソリ</div>
+        <div class="flow-api">カード枠を押さえる</div>
+        <div class="flow-status">引き落としなし</div>
+      </div>
+      <div class="flow-box good">
+        <h4>チェックアウト時</h4>
+        <div class="flow-action">キャプチャ</div>
+        <div class="flow-api">宿泊料を確定</div>
+        <div class="flow-status">実際に引き落とし</div>
+      </div>
+      <div class="flow-box good">
+        <h4>キャンセル時</h4>
+        <div class="flow-action">オーソリ解放</div>
+        <div class="flow-api">枠を解放</div>
+        <div class="flow-status">返金処理は不要</div>
+      </div>
+    </div>
+
+    <h3 class="sub-heading">Pay.JP API での対応</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>概念</th><th>Pay.JP API</th><th>パラメータ</th></tr>
+        <tr><td><strong>オーソリ</strong>（与信確保）</td><td><code>POST /v1/charges</code></td><td><code>capture=false</code></td></tr>
+        <tr><td><strong>キャプチャ</strong>（売上確定）</td><td><code>POST /v1/charges/{id}/capture</code></td><td>-</td></tr>
+        <tr><td><strong>即時課金</strong>（現行方式）</td><td><code>POST /v1/charges</code></td><td><code>capture=true</code>（デフォルト）</td></tr>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">なぜオーソリが必要？</h3>
+    <div class="callout danger">
+      <div class="callout-icon">!</div>
+      <div>
+        <strong>【現行の問題】</strong><br>
+        予約確定 → （数日〜数週間のタイムラグ） → ライド当日に課金<br>
+        この間にカードが使えなくなると<strong>お金を回収できない（未回収リスク）</strong>
+      </div>
+    </div>
+    <div class="callout success">
+      <div class="callout-icon">&#10003;</div>
+      <div>
+        <strong>【オーソリを入れると】</strong><br>
+        予約確定時にオーソリ（枠確保） → カード枠を確保済み → ライド当日にキャプチャ（確実に回収）
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Current Flow -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>現行の決済フロー（問題点）</h2>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-box bad">
+        <h4>予約確定時</h4>
+        <div class="flow-action">カード登録のみ</div>
+        <div class="flow-api">課金なし</div>
+        <div class="flow-status">枠確保なし</div>
+      </div>
+      <div class="flow-box bad">
+        <h4>ライド開始時</h4>
+        <div class="flow-action">直接課金</div>
+        <div class="flow-api">capture=true</div>
+        <div class="flow-status">失敗リスクあり</div>
+      </div>
+      <div class="flow-box bad">
+        <h4>キャンセル時</h4>
+        <div class="flow-action">返金処理</div>
+        <div class="flow-api">/refund</div>
+        <div class="flow-status">手間がかかる</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>#</th><th>問題</th><th>影響</th></tr>
+        <tr><td>1</td><td>予約時にカード枠を確保していない</td><td>ライド当日にカードが使えなくなっている可能性がある</td></tr>
+        <tr><td>2</td><td>キャンセル時に「返金」処理が必要</td><td>まだお金を取っていないのに返金するのは無駄な手順</td></tr>
+        <tr><td>3</td><td>返金処理は手数料が発生する場合がある</td><td>コスト増</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 3: New Flow -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>オーソリを使った新しい決済フロー</h2>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-box good">
+        <h4>予約確定時</h4>
+        <div class="flow-action">オーソリ</div>
+        <div class="flow-api">capture=false</div>
+        <div class="flow-status">枠確保済み</div>
+      </div>
+      <div class="flow-box good">
+        <h4>ライド開始時</h4>
+        <div class="flow-action">キャプチャ</div>
+        <div class="flow-api">/capture</div>
+        <div class="flow-status">確実に回収</div>
+      </div>
+      <div class="flow-box good">
+        <h4>キャンセル時</h4>
+        <div class="flow-action">何もしない</div>
+        <div class="flow-api">自動解放</div>
+        <div class="flow-status">手間ゼロ</div>
+      </div>
+    </div>
+
+    <h3 class="sub-heading">Step 1: 予約時 &mdash; オーソリ（与信確保）</h3>
+    <pre><span class="param">POST</span> https://api.pay.jp/v1/charges
+
+<span class="comment">// パラメータ</span>
+  customer:     <span class="param">cus_xxxxx</span>        <span class="comment">// 顧客ID</span>
+  amount:       <span class="param">10000</span>            <span class="comment">// 金額（円）</span>
+  currency:     jpy
+  <span class="highlight">capture:      false</span>            <span class="comment">// ★ これがオーソリのキモ！</span>
+  <span class="highlight">expiry_days:  60</span>               <span class="comment">// ★ 与信枠の有効期限（最大60日）</span>
+  tenant:       <span class="param">ten_xxxxx</span>        <span class="comment">// 店舗テナントID</span>
+  platform_fee: <span class="param">1000</span>             <span class="comment">// プラットフォーム手数料</span>
+
+<span class="comment">// レスポンス</span>
+  {
+    "id": "<span class="good">ch_xxxxx</span>",            <span class="comment">// ← このIDを必ず保存する！</span>
+    "captured": <span class="highlight">false</span>,           <span class="comment">// ← falseならオーソリ状態</span>
+    "amount": 10000,
+    "expiry_days": 60
+  }</pre>
+
+    <h3 class="sub-heading">Step 2: ライド開始時 &mdash; キャプチャ（売上確定）</h3>
+    <pre><span class="param">POST</span> https://api.pay.jp/v1/charges/<span class="highlight">{charge_id}</span>/capture
+
+<span class="comment">// パラメータ: なし（オーソリ時の金額で確定）</span>
+<span class="comment">// ※ 金額を変更したい場合は amount パラメータを指定可能</span>
+
+<span class="comment">// レスポンス</span>
+  {
+    "id": "<span class="good">ch_xxxxx</span>",
+    "captured": <span class="good">true</span>,            <span class="comment">// ← trueに変わる = 課金確定</span>
+    "amount": 10000
+  }</pre>
+
+    <h3 class="sub-heading">Step 3: キャンセル時 &mdash; オーソリ解放</h3>
+    <div class="callout success">
+      <div class="callout-icon">&#10003;</div>
+      <div>
+        <strong>特別なAPI呼び出しは不要！</strong><br>
+        <code>expiry_days</code> で指定した期間が過ぎると自動的に解放される。<br>
+        または、Charge を refund すると即座に解放される（オーソリ状態の refund = 枠の解放。返金ではない）。
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Implementation Steps -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>実装手順（ステップバイステップ）</h2>
+    </div>
+
+    <p class="section-desc">現在設定済みのAPIコネクタ</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Bubble WF ID</th><th>名前</th><th>用途</th></tr>
+        <tr><td><code>bTVIE</code></td><td><code>Charge_by_car_id</code></td><td>課金実行（<code>capture=true</code> 固定）</td></tr>
+        <tr><td><code>bTVFu</code></td><td><code>Charge_refund</code></td><td>返金</td></tr>
+      </table>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <h4><span class="step-num">1</span> API Connector に「キャプチャ用API」を追加</h4>
+      <div class="callout info">
+        <div class="callout-icon">i</div>
+        <div><strong>なぜ必要？</strong> 現在 <code>/charges/{id}/capture</code> のAPIコネクタが存在しない。</div>
+      </div>
+      <p>Bubble エディタ &rarr; Plugins &rarr; API Connector &rarr; Pay.JP API (<code>bTHZi</code>) に新しい API Call を追加:</p>
+      <pre><span class="good">Name:</span>           Charge_capture
+<span class="good">Method:</span>         POST
+<span class="good">URL:</span>            https://api.pay.jp/v1/charges/<span class="highlight">[charge_id]</span>/capture
+<span class="good">Authentication:</span> Basic (Secret Key をユーザー名に設定)
+
+<span class="comment">// URL Parameters</span>
+  charge_id   <span class="param">text</span>     required    <span class="comment">← URLパスに埋め込む</span>
+
+<span class="comment">// Body Parameters</span>
+  amount      <span class="param">number</span>   optional    <span class="comment">← 金額変更時のみ指定</span></pre>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <h4><span class="step-num">2</span> 既存の <code>Charge_by_car_id</code> を修正</h4>
+      <p><code>Charge_by_car_id</code> (<code>bTVIE</code>) の Body Parameters に以下を追加:</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>パラメータ</th><th>型</th><th>必須</th><th>説明</th></tr>
+          <tr><td><code>capture</code></td><td>boolean</td><td>optional</td><td><code>false</code>=オーソリ, <code>true</code>=即時課金</td></tr>
+          <tr><td><code>expiry_days</code></td><td>number</td><td>optional</td><td>オーソリの有効期限（日数、最大60）</td></tr>
+        </table>
+      </div>
+      <p style="font-size:13px; color:var(--gray-500);">既存パラメータ（customer, amount, currency, tenant, platform_fee）は変更不要。</p>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-card">
+      <h4><span class="step-num">3</span> 予約ワークフローの修正</h4>
+      <p style="font-size:13px; color:var(--gray-500); margin-bottom:12px;">場所: 予約確定ボタンのワークフロー</p>
+      <pre><span class="comment">// 変更後（オーソリ追加）</span>
+予約確定ボタン クリック時:
+  1. 予約データを作成
+  2. 在庫を確保
+  3. <span class="highlight">★ Pay.JP API → Charge_by_car_id を実行</span>
+     - customer:     Current User の cus_id
+     - amount:       予約金額
+     - currency:     "jpy"
+     - tenant:       店舗の tenant_id
+     - platform_fee: 予約金額 × 10%
+     - <span class="highlight">capture:      false</span>               <span class="comment">← ★ オーソリ！</span>
+     - <span class="highlight">expiry_days:  60</span>                   <span class="comment">← ★ 有効期限60日</span>
+  4. <span class="highlight">★ 予約データの charge_id にレスポンスの id を保存</span>
+  5. <span class="highlight">★ 予約データの payment_status を "authorized" に更新</span></pre>
+      <div class="callout danger">
+        <div class="callout-icon">!</div>
+        <div><strong>超重要: charge_id を必ず保存すること！</strong><br>保存しないとキャプチャ時に charge_id がわからず、課金確定ができない。</div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-card">
+      <h4><span class="step-num">4</span> ライド開始ワークフローの修正</h4>
+      <p style="font-size:13px; color:var(--gray-500); margin-bottom:12px;">場所: shop_admin の「ライド開始」ボタン</p>
+      <pre><span class="comment">// 変更後（キャプチャに変更）</span>
+ライド開始ボタン クリック時:
+  1. <span class="highlight">★ Pay.JP API → Charge_capture を実行</span>
+     - charge_id: 予約データの charge_id    <span class="comment">← オーソリ時に保存したID</span>
+  2. <span class="highlight">★ 予約データの payment_status を "captured" に更新</span>
+  3. ステータスを更新</pre>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step-card">
+      <h4><span class="step-num">5</span> キャンセルワークフローの修正</h4>
+      <pre><span class="comment">// 変更後（条件分岐を追加）</span>
+キャンセルボタン クリック時:
+  1. 条件分岐:
+
+     <span class="highlight">【payment_status が "authorized" の場合】</span>
+     <span class="comment">  → オーソリ状態 = まだお金を取っていない</span>
+       → Charge_refund を実行 <span class="comment">(枠の解放)</span>
+       → payment_status を <span class="good">"cancelled"</span> に更新
+
+     <span class="highlight">【payment_status が "captured" の場合】</span>
+     <span class="comment">  → キャプチャ済み = お金を取った後</span>
+       → Charge_refund を実行 <span class="comment">(実際の返金)</span>
+       → payment_status を <span class="good">"refunded"</span> に更新
+
+  2. 予約ステータスをキャンセルに更新</pre>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step-card">
+      <h4><span class="step-num">6</span> DBフィールドの追加</h4>
+      <p style="font-size:13px; color:var(--gray-500); margin-bottom:12px;">テーブル: 予約（Reservation）</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>フィールド名</th><th>型</th><th>説明</th></tr>
+          <tr><td><code>payment_status</code></td><td>text</td><td>決済状態（"authorized" / "captured" / "cancelled" / "refunded"）</td></tr>
+        </table>
+      </div>
+      <p style="font-size:13px; color:var(--gray-500); margin-top:8px;">既存フィールド <code>charge_id</code>、<code>__charge_id</code> は変更不要。</p>
+    </div>
+  </div>
+
+  <!-- Section 5: Pitfalls -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>はまりポイント集（よくあるミス）</h2>
+    </div>
+
+    <!-- Pitfall 1 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">1</div>
+        <h4>capture=false の指定忘れ</h4>
+        <span class="pitfall-severity critical">CRITICAL</span>
+      </div>
+      <pre><span class="bad">// NG: capture パラメータなし（デフォルト true = 即時課金！）</span>
+POST /v1/charges
+  customer: cus_xxx
+  amount: 10000
+  currency: jpy
+
+<span class="good">// OK: capture=false を必ず指定</span>
+POST /v1/charges
+  customer: cus_xxx
+  amount: 10000
+  currency: jpy
+  <span class="highlight">capture: false</span></pre>
+      <p><strong>被害:</strong> お客さんの予約確定時に即座にお金が引き落とされる。</p>
+      <p><strong>対策:</strong> Bubble のワークフローで <code>capture</code> に <code>false</code> をハードコーディング。</p>
+    </div>
+
+    <!-- Pitfall 2 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">2</div>
+        <h4>charge_id の保存忘れ</h4>
+        <span class="pitfall-severity critical">CRITICAL</span>
+      </div>
+      <pre><span class="bad">// NG: charge_id を保存しない → キャプチャできない！</span>
+  オーソリ実行 → レスポンス受け取る → <span class="bad">保存しない</span>
+
+<span class="good">// OK: レスポンスの id を即座に保存</span>
+  オーソリ実行 → レスポンスの id → <span class="good">予約の charge_id フィールドに保存</span></pre>
+      <p><strong>被害:</strong> キャプチャ不可 = お金を回収できない。<strong>最悪のシナリオ。</strong></p>
+      <div class="callout danger">
+        <div class="callout-icon">!</div>
+        <div><strong>実際にこのバグが起きている！</strong><br>現行システムの延長決済で <code>__charge_id</code> の保存漏れが発生中。延長分の返金ができない状態。同じミスを絶対に繰り返さないこと。</div>
+      </div>
+    </div>
+
+    <!-- Pitfall 3 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">3</div>
+        <h4>expiry_days の上限は60日</h4>
+        <span class="pitfall-severity high">HIGH</span>
+      </div>
+      <pre><span class="bad">expiry_days: 90</span>    <span class="comment">← 60日を超える値は無視される</span>
+<span class="good">expiry_days: 60</span>    <span class="comment">← 最大60日</span></pre>
+      <p><strong>被害:</strong> 予約日が60日以上先だとキャプチャ時に失効済み。</p>
+      <p><strong>対策:</strong> 営業カレンダーの予約可能範囲を60日以内に制限する。</p>
+    </div>
+
+    <!-- Pitfall 4 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">4</div>
+        <h4>海外カードのオーソリ有効期限は7日！</h4>
+        <span class="pitfall-severity high">HIGH</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>カード種類</th><th>expiry_days 上限</th></tr>
+          <tr><td>日本発行カード</td><td><strong>最大60日</strong></td></tr>
+          <tr><td>海外発行カード</td><td><strong style="color:var(--danger);">最大7日</strong></td></tr>
+        </table>
+      </div>
+      <p><strong>確認方法:</strong> テストカード <code>4000000900000003</code>（<code>is_jp=false</code>）で検証可能。</p>
+    </div>
+
+    <!-- Pitfall 5 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">5</div>
+        <h4>キャプチャ時の金額変更に要注意</h4>
+        <span class="pitfall-severity high">HIGH</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>条件</th><th>結果</th></tr>
+          <tr><td>キャプチャ金額 &le; オーソリ金額</td><td style="color:var(--success); font-weight:700;">OK</td></tr>
+          <tr><td>キャプチャ金額 &gt; オーソリ金額</td><td style="color:var(--danger); font-weight:700;">NG（エラー）</td></tr>
+        </table>
+      </div>
+      <pre><span class="comment">// 推奨パターン: 延長分は別チャージ</span>
+  予約時:     オーソリ 10,000円   (charge_id = <span class="param">ch_001</span>)
+  ライド開始: キャプチャ 10,000円 (<span class="param">ch_001</span> をキャプチャ)
+  延長発生:   <span class="highlight">新規課金 3,000円</span>   (capture=true で別チャージ <span class="param">ch_002</span>)</pre>
+    </div>
+
+    <!-- Pitfall 6 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">6</div>
+        <h4>テスト環境で本番キーを使わない</h4>
+        <span class="pitfall-severity critical">CRITICAL</span>
+      </div>
+      <pre><span class="bad">// NG: テスト時に sk_live_xxxx を使う</span>
+<span class="bad">→ テストカードが使えない！ 本物の課金が走る！</span>
+
+<span class="good">// OK: テスト時は sk_test_xxxx / pk_test_xxxx を使う</span>
+<span class="good">→ テストカードが使える、本物の課金は発生しない</span></pre>
+      <div class="callout danger">
+        <div class="callout-icon">!</div>
+        <div><strong>実際にこの問題が起きている！</strong><br>現行システムで本番キーが開発環境に設定されている。Issue #3 で対応中。</div>
+      </div>
+    </div>
+
+    <!-- Pitfall 7 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">7</div>
+        <h4>オーソリ失効後のキャプチャ</h4>
+        <span class="pitfall-severity high">HIGH</span>
+      </div>
+      <pre><span class="bad">5月1日: オーソリ（expiry_days=60）</span>
+<span class="bad">7月5日: キャプチャ（65日後） → エラー!</span>
+
+<span class="good">5月1日: オーソリ（expiry_days=60）</span>
+<span class="good">6月25日: キャプチャ（55日後） → 成功</span></pre>
+      <p><strong>対策:</strong> キャプチャ前に <code>GET /v1/charges/{id}</code> で状態確認。失効済みなら再オーソリ。</p>
+    </div>
+
+    <!-- Pitfall 8 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">8</div>
+        <h4>二重キャプチャ</h4>
+        <span class="pitfall-severity medium">MEDIUM</span>
+      </div>
+      <p><strong>対策:</strong> キャプチャ前に <code>payment_status</code> を確認し、<code>"authorized"</code> の場合のみ実行。ボタンの連打防止も設定。</p>
+    </div>
+
+    <!-- Pitfall 9 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">9</div>
+        <h4>Platform API での tenant 指定忘れ</h4>
+        <span class="pitfall-severity high">HIGH</span>
+      </div>
+      <p>RINCLE は Marketplace型の Platform API を使っているため、<code>tenant</code> と <code>platform_fee</code> は<strong>常に必須</strong>。</p>
+    </div>
+
+    <!-- Pitfall 10 -->
+    <div class="pitfall">
+      <div class="pitfall-header">
+        <div class="pitfall-num">10</div>
+        <h4>Webhook の charge.captured イベント</h4>
+        <span class="pitfall-severity medium">MEDIUM</span>
+      </div>
+      <p>即時課金でもオーソリ→キャプチャでも <code>charge.captured</code> は発火する。区別が必要な場合は独自の <code>payment_status</code> で管理すること。</p>
+    </div>
+  </div>
+
+  <!-- Section 6: Test -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>テスト手順</h2>
+    </div>
+
+    <h3 class="sub-heading">テストカード一覧（正常系）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>カード番号</th><th>ブランド</th><th>用途</th></tr>
+        <tr><td><code>4242 4242 4242 4242</code></td><td>Visa</td><td><strong>基本テストに使用</strong></td></tr>
+        <tr><td><code>5555 5555 5555 4444</code></td><td>Mastercard</td><td>ブランド別テスト</td></tr>
+        <tr><td><code>3530 1113 3330 0000</code></td><td>JCB</td><td>ブランド別テスト</td></tr>
+      </table>
+    </div>
+    <p style="font-size:13px; color:var(--gray-500);">有効期限: 未来の任意の年月（例: 12/30）、CVC: 任意の3桁（例: 123）</p>
+
+    <h3 class="sub-heading">テストカード一覧（異常系）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>カード番号</th><th>エラー</th><th>テスト内容</th></tr>
+        <tr><td><code>4000 0000 0000 0002</code></td><td><code>card_declined</code></td><td>カード利用不可</td></tr>
+        <tr><td><code>4000 0000 0008 0319</code></td><td><code>card_declined</code>（Charge時）</td><td><strong>トークンは成功、課金時にエラー</strong></td></tr>
+        <tr><td><code>4000 0000 0008 0202</code></td><td><code>card_declined</code></td><td>10,000円超で与信枠超過</td></tr>
+        <tr><td><code>4000 0009 0000 0003</code></td><td>海外カード</td><td><strong>オーソリ有効期限が7日に制限</strong></td></tr>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">テストシナリオ</h3>
+
+    <div class="scenario-card">
+      <h4><span class="scenario-badge normal">A</span> 正常フロー（オーソリ → キャプチャ）</h4>
+      <ol style="font-size:14px; padding-left:20px;">
+        <li>テストカード <code>4242424242424242</code> でカード登録</li>
+        <li>予約を作成・確定 → オーソリ実行</li>
+        <li>確認: <code>charge_id</code> が保存、<code>payment_status</code> が "authorized"、Pay.JP管理画面で <code>captured=false</code></li>
+        <li>ライド開始 → キャプチャ実行</li>
+        <li>確認: <code>payment_status</code> が "captured"、Pay.JP管理画面で <code>captured=true</code></li>
+      </ol>
+    </div>
+
+    <div class="scenario-card">
+      <h4><span class="scenario-badge cancel">B</span> キャンセルフロー（オーソリ → 解放）</h4>
+      <ol style="font-size:14px; padding-left:20px;">
+        <li>予約を作成・確定（オーソリ実行）</li>
+        <li>予約をキャンセル</li>
+        <li>確認: <code>payment_status</code> が "cancelled"、Pay.JP管理画面で <code>refunded=true</code></li>
+      </ol>
+    </div>
+
+    <div class="scenario-card">
+      <h4><span class="scenario-badge error">C</span> カードエラーフロー</h4>
+      <ol style="font-size:14px; padding-left:20px;">
+        <li>テストカード <code>4000000000080319</code> でカード登録（登録自体は成功）</li>
+        <li>予約を作成・確定 → オーソリ実行 → <code>card_declined</code> エラー</li>
+        <li>確認: エラーが分かりやすく表示、予約がキャンセルまたは保留、<code>charge_id</code> は未保存</li>
+      </ol>
+    </div>
+
+    <div class="scenario-card">
+      <h4><span class="scenario-badge extend">D</span> 延長決済フロー</h4>
+      <ol style="font-size:14px; padding-left:20px;">
+        <li>正常フローでオーソリ → キャプチャまで完了</li>
+        <li>延長操作を実行</li>
+        <li>確認: 延長分は別の <code>charge_id</code> で新規課金、<code>__charge_id</code> に保存済み、返金が可能</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Section 7: Error Codes -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>エラーコード一覧と対処法</h2>
+    </div>
+
+    <h3 class="sub-heading">オーソリ時に発生しうるエラー</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>エラーコード</th><th>意味</th><th>ユーザーへの表示例</th><th>対処法</th></tr>
+        <tr><td><code>card_declined</code></td><td>カード利用不可</td><td>このカードはご利用いただけません。別のカードをお試しください</td><td>別カードを登録してもらう</td></tr>
+        <tr><td><code>expired_card</code></td><td>有効期限切れ</td><td>カードの有効期限が切れています。新しいカードを登録してください</td><td>カード再登録</td></tr>
+        <tr><td><code>insufficient_fund</code></td><td>与信枠不足</td><td>カードの利用限度額を超えています</td><td>別カードまたはカード会社に連絡</td></tr>
+        <tr><td><code>processing_error</code></td><td>Pay.JP側エラー</td><td>一時的なエラーが発生しました。しばらくしてからお試しください</td><td>リトライ</td></tr>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">キャプチャ時に発生しうるエラー</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>エラーコード</th><th>意味</th><th>対処法</th></tr>
+        <tr><td><code>already_captured</code></td><td>二重キャプチャ</td><td>payment_status を確認、すでに captured なら何もしない</td></tr>
+        <tr><td><code>charge_expired</code></td><td>オーソリ失効</td><td>再オーソリを取り直す → 成功したらキャプチャ</td></tr>
+        <tr><td><code>invalid_amount</code></td><td>金額超過</td><td>オーソリ時の金額以下でキャプチャする</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- Section 8: Checklist -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>チェックリスト</h2>
+    </div>
+
+    <h3 class="sub-heading">実装前チェック</h3>
+    <div class="card">
+      <ul class="checklist">
+        <li>テスト環境の API キーが <code>sk_test_</code> / <code>pk_test_</code> であることを確認</li>
+        <li>API Connector に <code>Charge_capture</code>（キャプチャ用）を追加した</li>
+        <li><code>Charge_by_car_id</code> に <code>capture</code> と <code>expiry_days</code> パラメータを追加した</li>
+        <li>予約テーブルに <code>payment_status</code> フィールドを追加した</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-heading">実装中チェック</h3>
+    <div class="card">
+      <ul class="checklist">
+        <li>予約ワークフローで <code>capture=false</code> を指定している</li>
+        <li>予約ワークフローで <code>expiry_days=60</code> を指定している</li>
+        <li>オーソリ成功後に <code>charge_id</code> を予約に保存している</li>
+        <li>オーソリ成功後に <code>payment_status</code> を "authorized" に更新している</li>
+        <li>ライド開始ワークフローで <code>Charge_capture</code> を呼び出している</li>
+        <li>キャプチャ成功後に <code>payment_status</code> を "captured" に更新している</li>
+        <li>キャンセル時の条件分岐（authorized / captured）が正しい</li>
+        <li>延長料金は別チャージで処理している（オーソリ金額を超えない）</li>
+        <li><code>tenant</code> と <code>platform_fee</code> を必ず指定している</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-heading">テスト完了チェック</h3>
+    <div class="card">
+      <ul class="checklist">
+        <li>シナリオ A（正常フロー）が成功する</li>
+        <li>シナリオ B（キャンセルフロー）が成功する</li>
+        <li>シナリオ C（エラーフロー）でユーザーに分かりやすいメッセージが出る</li>
+        <li>シナリオ D（延長決済フロー）が成功する</li>
+        <li>Pay.JP 管理画面で charge の状態が正しいことを確認</li>
+        <li>海外カード（<code>4000000900000003</code>）でのテストを実施</li>
+      </ul>
+    </div>
+
+    <h3 class="sub-heading">リリース前チェック</h3>
+    <div class="card">
+      <ul class="checklist">
+        <li>API キーを本番キー（<code>sk_live_</code> / <code>pk_live_</code>）に切り替えた</li>
+        <li>営業カレンダーの予約可能範囲が60日以内に制限されている</li>
+        <li>エラーメッセージがユーザーフレンドリーであることを確認</li>
+        <li>管理者へのエラー通知が設定されている</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section 9: Estimate -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>開発見積もり</h2>
+    </div>
+
+    <div class="estimate-total">
+      <h3>TOTAL ESTIMATE</h3>
+      <div class="total-num">約 2〜2.5 週間</div>
+      <div class="total-sub">9.5〜12日 / リスク込み 最大3週間</div>
+    </div>
+
+    <div class="phase-header phase0">Phase 0: 前提修正（先にやらないと進めない）</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>タスク</th><th>規模</th><th>目安</th></tr>
+        <tr><td>テスト/本番キーの切り替え（Issue #3）</td><td>小</td><td>0.5日</td></tr>
+        <tr><td>延長決済 charge_id 保存漏れ修正（Issue #1）</td><td>小</td><td>0.5日</td></tr>
+        <tr><td>デフォルトカード選択バグ修正（Issue #5）</td><td>小〜中</td><td>0.5〜1日</td></tr>
+        <tr><td><strong>小計</strong></td><td></td><td><strong>1.5〜2日</strong></td></tr>
+      </table>
+    </div>
+
+    <div class="phase-header phase1">Phase 1: オーソリ本体実装</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>タスク</th><th>規模</th><th>目安</th></tr>
+        <tr><td>API Connector に <code>Charge_capture</code> 追加</td><td>小</td><td>0.5日</td></tr>
+        <tr><td><code>Charge_by_car_id</code> に capture/expiry_days 追加</td><td>小</td><td>0.5日</td></tr>
+        <tr><td>予約WF修正（オーソリ実行 + charge_id保存）</td><td>中</td><td>1日</td></tr>
+        <tr><td>ライド開始WF修正（キャプチャに変更）</td><td>中</td><td>0.5〜1日</td></tr>
+        <tr><td>キャンセルWF修正（条件分岐追加）</td><td>中</td><td>0.5〜1日</td></tr>
+        <tr><td>DB フィールド追加（payment_status）</td><td>小</td><td>0.5日</td></tr>
+        <tr><td>エラーハンドリング（ユーザー向けメッセージ）</td><td>中</td><td>1日</td></tr>
+        <tr><td><strong>小計</strong></td><td></td><td><strong>4.5〜5.5日</strong></td></tr>
+      </table>
+    </div>
+
+    <div class="phase-header phase2">Phase 2: テスト・検証</div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>タスク</th><th>規模</th><th>目安</th></tr>
+        <tr><td>正常フロー（オーソリ→キャプチャ）テスト</td><td>中</td><td>0.5日</td></tr>
+        <tr><td>キャンセルフロー テスト</td><td>小</td><td>0.5日</td></tr>
+        <tr><td>エラー系テスト（異常カード等）</td><td>中</td><td>0.5日</td></tr>
+        <tr><td>延長決済との組み合わせテスト</td><td>中</td><td>0.5日</td></tr>
+        <tr><td>Pay.JP管理画面での状態確認</td><td>小</td><td>0.5日</td></tr>
+        <tr><td>バグ修正・手戻り（バッファ）</td><td>-</td><td>1〜2日</td></tr>
+        <tr><td><strong>小計</strong></td><td></td><td><strong>3.5〜4.5日</strong></td></tr>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">リスク要因</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>リスク</th><th>影響</th><th>発生確率</th></tr>
+        <tr><td>Bubble の API Connector で <code>capture=false</code> の boolean 送信がうまくいかない</td><td>+1〜2日</td><td>中</td></tr>
+        <tr><td>既存ワークフローの依存関係が想定より複雑</td><td>+1〜2日</td><td>中</td></tr>
+        <tr><td>営業カレンダー60日制限の UI 変更が必要</td><td>+1日</td><td>高</td></tr>
+        <tr><td>海外カード対応（7日制限）の追加要件が入る</td><td>+0.5日</td><td>低</td></tr>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-icon">*</div>
+      <div>
+        <strong>ポイント:</strong> Bubble での作業なのでコードを書くよりは設定変更が中心。
+        ただし API Connector のパラメータ設定やワークフローの条件分岐は検証に時間がかかりがち。
+        <strong>テスト期間（Phase 2）は絶対に削らないこと。</strong>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
