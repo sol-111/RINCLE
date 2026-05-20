@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RINCLE 競合調査レポート</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      line-height: 1.7;
+      padding: 40px;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1a1a2e;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 32px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e94560;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0f3460;
+      margin: 24px 0 12px;
+    }
+    h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #555;
+      margin: 16px 0 8px;
+    }
+
+    /* Overview cards */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .overview-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .overview-card .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .overview-card .card-num {
+      background: #e94560;
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .overview-card .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+    .overview-card .card-subtitle {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .overview-card .card-body {
+      font-size: 13px;
+      color: #555;
+    }
+    .overview-card .card-body a {
+      color: #0f3460;
+      text-decoration: none;
+      font-size: 12px;
+    }
+    .overview-card .card-body a:hover { text-decoration: underline; }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin: 2px 2px;
+      font-weight: 500;
+    }
+    .tag-area { background: #dbeafe; color: #1e40af; }
+    .tag-model { background: #fce7f3; color: #9d174d; }
+    .tag-scale { background: #d1fae5; color: #065f46; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 20px;
+      font-size: 13px;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    th {
+      background: #f1f5f9;
+      font-weight: 600;
+      color: #475569;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    tr:hover td { background: #f8fafc; }
+    td:first-child { font-weight: 500; }
+
+    /* Competitor section */
+    .competitor-section {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px;
+      margin: 24px 0;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .competitor-section h2 {
+      margin-top: 0;
+    }
+
+    /* Badges */
+    .strength { color: #059669; font-weight: 600; }
+    .weakness { color: #dc2626; font-weight: 600; }
+    .neutral { color: #d97706; font-weight: 600; }
+
+    /* Summary box */
+    .summary-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+    .summary-box.blue {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .summary-box.green {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+    .summary-box.red {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    ul { margin: 8px 0 8px 20px; font-size: 13px; }
+    li { margin: 4px 0; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 768px) {
+      .two-col { grid-template-columns: 1fr; }
+      .overview-grid { grid-template-columns: 1fr; }
+      body { padding: 20px; }
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 32px 0;
+    }
+
+    /* RINCLE highlight row */
+    tr.rincle-row { background: #eff6ff !important; }
+    tr.rincle-row td { font-weight: 600; color: #1e40af; }
+
+    /* RINCLE card */
+    .rincle-card {
+      background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+      color: #fff;
+      border: none;
+    }
+    .rincle-card .card-num { background: #fff; color: #e94560; }
+    .rincle-card .card-title { color: #fff; }
+    .rincle-card .card-subtitle { color: #94a3b8; }
+    .rincle-card .card-body { color: #cbd5e1; }
+    .rincle-card .card-body a { color: #93c5fd; }
+    .rincle-card .tag { opacity: 0.9; }
+
+    /* VS table */
+    .vs-table { margin: 16px 0 24px; }
+    .vs-table th:first-child { width: 200px; }
+    .vs-table .vs-header-rincle { background: #1e40af; color: #fff; }
+    .vs-table .vs-header-comp { background: #f1f5f9; color: #475569; }
+    .vs-win { background: #ecfdf5 !important; }
+    .vs-lose { background: #fef2f2 !important; }
+    .vs-draw { background: #fffbeb !important; }
+
+    /* Score badge */
+    .score {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
+    .score-win { background: #059669; color: #fff; }
+    .score-lose { background: #dc2626; color: #fff; }
+    .score-draw { background: #d97706; color: #fff; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>RINCLE 競合調査レポート</h1>
+  <p class="subtitle">調査日: 2026-05-19 | 対象: スポーツバイクレンタル市場の主要5サービス</p>
+
+  <!-- ===== RINCLE基本情報 ===== -->
+  <h2>RINCLE 基本情報</h2>
+  <div class="overview-grid" style="grid-template-columns: 1fr;">
+    <div class="overview-card rincle-card">
+      <div class="card-header">
+        <span class="card-num" style="font-size:16px;">R</span>
+        <div>
+          <div class="card-title" style="font-size:18px;">RINCLE（リンクル）</div>
+          <div class="card-subtitle">PEDALSTANDARD株式会社</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table style="color:#cbd5e1; font-size:13px; margin:8px 0;">
+          <tr><td style="color:#94a3b8; padding:4px 12px 4px 0; border:none;">サービスURL</td><td style="border:none; padding:4px 0;"><a href="https://rincle.co.jp/" target="_blank">https://rincle.co.jp/</a></td></tr>
+          <tr><td style="color:#94a3b8; padding:4px 12px 4px 0; border:none;">運営会社</td><td style="border:none; padding:4px 0;">PEDALSTANDARD株式会社（代表: 増永康已）</td></tr>
+          <tr><td style="color:#94a3b8; padding:4px 12px 4px 0; border:none;">設立</td><td style="border:none; padding:4px 0;">2024年6月（サービス開始: 2026年2月5日）</td></tr>
+          <tr><td style="color:#94a3b8; padding:4px 12px 4px 0; border:none;">資本金</td><td style="border:none; padding:4px 0;">800万円</td></tr>
+          <tr><td style="color:#94a3b8; padding:4px 12px 4px 0; border:none;">本社</td><td style="border:none; padding:4px 0;">兵庫県神戸市中央区下山手通2-13-3 建創ビル9F</td></tr>
+          <tr><td style="color:#94a3b8; padding:4px 12px 4px 0; border:none;">展開規模</td><td style="border:none; padding:4px 0;">12都府県・24店舗（5社のパートナーショップ）</td></tr>
+          <tr><td style="color:#94a3b8; padding:4px 12px 4px 0; border:none;">目標</td><td style="border:none; padding:4px 0;">全国47都道府県・300店舗・3,000台</td></tr>
+          <tr><td style="color:#94a3b8; padding:4px 12px 4px 0; border:none;">ビジネスモデル</td><td style="border:none; padding:4px 0;"><strong style="color:#fff;">プロショップネットワーク型プラットフォーム</strong>（在庫リスクなし）</td></tr>
+        </table>
+        <p style="margin-top:8px;">
+          <span class="tag tag-area">12都府県 24店舗</span>
+          <span class="tag tag-model">プラットフォーム型</span>
+          <span class="tag tag-scale">目標: 3,000台</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 調査対象一覧 ===== -->
+  <h2>調査対象サービス一覧</h2>
+  <div class="overview-grid">
+
+    <div class="overview-card">
+      <div class="card-header">
+        <span class="card-num">1</span>
+        <div>
+          <div class="card-title">CycleTrip BASE</div>
+          <div class="card-subtitle">ZuttoRide Sharing株式会社</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>日本最大級のスポーツバイクレンタル専門店。約300台保有。自社BtoC＋個人間CtoC＋サブスクのハイブリッドモデル。</p>
+        <p style="margin-top:8px;">
+          <span class="tag tag-area">東京・名古屋・羽田</span>
+          <span class="tag tag-model">ハイブリッド型</span>
+          <span class="tag tag-scale">約300台</span>
+        </p>
+        <p style="margin-top:8px;">
+          <a href="https://cycletrip.jp/ja/" target="_blank">サービスURL</a> |
+          <a href="https://zuttoridesharing.jp/" target="_blank">運営会社URL</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="overview-card">
+      <div class="card-header">
+        <span class="card-num">2</span>
+        <div>
+          <div class="card-title">ジャイアントストア レンタサイクル</div>
+          <div class="card-subtitle">株式会社ジャイアント（Giant Japan）</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>世界最大の自転車メーカー直営。GIANT/Livブランドのみ取扱。観光地中心に12店舗でレンタル展開。</p>
+        <p style="margin-top:8px;">
+          <span class="tag tag-area">全国12店舗（観光地中心）</span>
+          <span class="tag tag-model">メーカー直営</span>
+        </p>
+        <p style="margin-top:8px;">
+          <a href="https://bicyclerental.jp/" target="_blank">サービスURL</a> |
+          <a href="https://www.giant.co.jp/" target="_blank">運営会社URL</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="overview-card">
+      <div class="card-header">
+        <span class="card-num">3</span>
+        <div>
+          <div class="card-title">クロスビープランニング</div>
+          <div class="card-subtitle">個人事業（代表: 内村晋也）</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>入門者特化型サイクリングショップ。レンタル＋ガイドツアーの体験型モデル。顧客の9割以上がスポーツサイクル未経験者。</p>
+        <p style="margin-top:8px;">
+          <span class="tag tag-area">大阪（1店舗）</span>
+          <span class="tag tag-model">体験型（レンタル+ツアー）</span>
+          <span class="tag tag-scale">数十台</span>
+        </p>
+        <p style="margin-top:8px;">
+          <a href="https://xb-planning.com/" target="_blank">サービスURL</a> |
+          <a href="https://xb-planning.com/about/" target="_blank">運営者情報</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="overview-card">
+      <div class="card-header">
+        <span class="card-num">4</span>
+        <div>
+          <div class="card-title">東京サイクリングツアー＆レンタサイクル</div>
+          <div class="card-subtitle">株式会社ジャパンライド</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>店舗を持たない完全デリバリー型。東京23区内への無料配送・乗り捨て自由が最大の特徴。</p>
+        <p style="margin-top:8px;">
+          <span class="tag tag-area">東京23区</span>
+          <span class="tag tag-model">デリバリー型（無店舗）</span>
+          <span class="tag tag-scale">約40台</span>
+        </p>
+        <p style="margin-top:8px;">
+          <a href="https://www.tokyo-cyclingtour.com/" target="_blank">サービスURL</a> |
+          <a href="https://www.tokyo-cyclingtour.com/company/" target="_blank">運営会社URL</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="overview-card">
+      <div class="card-header">
+        <span class="card-num">5</span>
+        <div>
+          <div class="card-title">Power Kids（パワーキッズ）</div>
+          <div class="card-subtitle">株式会社POWER-KIDS</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>創業1920年の老舗プロショップ。宅配レンタルで全国対応。決戦ホイールレンタルは国内ユニーク。本業は販売・メンテナンス。</p>
+        <p style="margin-top:8px;">
+          <span class="tag tag-area">群馬（宅配で全国）</span>
+          <span class="tag tag-model">プロショップ副次型</span>
+          <span class="tag tag-scale">少数</span>
+        </p>
+        <p style="margin-top:8px;">
+          <a href="https://power-kids.co.jp/" target="_blank">サービスURL</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 比較サマリー ===== -->
+  <h2>競合比較サマリー</h2>
+
+  <h3>料金比較（ロードバイク 1日あたり）</h3>
+  <table>
+    <tr>
+      <th>サービス</th>
+      <th>エントリー</th>
+      <th>ミドル</th>
+      <th>ハイエンド</th>
+    </tr>
+    <tr>
+      <td>CycleTrip BASE</td>
+      <td>3,500円</td>
+      <td>6,500〜7,500円</td>
+      <td>9,000〜14,000円</td>
+    </tr>
+    <tr>
+      <td>ジャイアントストア</td>
+      <td>4,950〜6,600円</td>
+      <td>6,930〜9,240円</td>
+      <td>12,870〜17,160円</td>
+    </tr>
+    <tr>
+      <td>クロスビープランニング</td>
+      <td>4,500円</td>
+      <td>5,500〜7,500円</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>東京サイクリングツアー</td>
+      <td>5,940円</td>
+      <td>6,380〜7,480円</td>
+      <td>7,920円</td>
+    </tr>
+    <tr>
+      <td>Power Kids</td>
+      <td>-</td>
+      <td>〜3,000円/日相当<br><small>(5日15,000円)</small></td>
+      <td>-</td>
+    </tr>
+    <tr class="rincle-row">
+      <td>RINCLE</td>
+      <td>店舗により異なる<br><small>（参考: 2,500円〜）</small></td>
+      <td>店舗により異なる<br><small>（参考: 6,000円〜）</small></td>
+      <td>店舗により異なる<br><small>（参考: 13,200円〜）</small></td>
+    </tr>
+  </table>
+  <div class="summary-box blue" style="font-size:12px;">
+    ※ RINCLEの料金はパートナーショップごとに設定。参考値はSpecialized店舗の実績に基づく。プラットフォーム型のため、各店の料金設定に柔軟性がある点が特徴。
+  </div>
+
+  <h3>ビジネスモデル比較</h3>
+  <table>
+    <tr>
+      <th>サービス</th>
+      <th>モデル</th>
+      <th>台数</th>
+      <th>店舗数</th>
+      <th>全国展開</th>
+    </tr>
+    <tr>
+      <td>CycleTrip BASE</td>
+      <td>自社保有＋CtoC＋サブスク</td>
+      <td>約300台</td>
+      <td>3店舗</td>
+      <td>限定的</td>
+    </tr>
+    <tr>
+      <td>ジャイアントストア</td>
+      <td>メーカー直営</td>
+      <td>非公開</td>
+      <td>12店舗</td>
+      <td>観光地中心</td>
+    </tr>
+    <tr>
+      <td>クロスビープランニング</td>
+      <td>自社保有＋ツアー</td>
+      <td>数十台</td>
+      <td>1店舗</td>
+      <td>大阪のみ</td>
+    </tr>
+    <tr>
+      <td>東京サイクリングツアー</td>
+      <td>自社保有・デリバリー型</td>
+      <td>約40台</td>
+      <td>0店舗</td>
+      <td>東京のみ</td>
+    </tr>
+    <tr>
+      <td>Power Kids</td>
+      <td>自社保有・宅配</td>
+      <td>少数</td>
+      <td>2店舗</td>
+      <td>宅配で全国</td>
+    </tr>
+    <tr class="rincle-row">
+      <td>RINCLE</td>
+      <td>プロショップネットワーク型</td>
+      <td>ショップ保有</td>
+      <td>24店舗（5社連携）</td>
+      <td>12都府県（目標: 47都道府県）</td>
+    </tr>
+  </table>
+
+  <h3>機能・対応比較</h3>
+  <table>
+    <tr>
+      <th>機能</th>
+      <th style="background:#1e40af;color:#fff;">RINCLE</th>
+      <th>CycleTrip BASE</th>
+      <th>ジャイアントストア</th>
+      <th>クロスビー</th>
+      <th>東京サイクリング</th>
+      <th>Power Kids</th>
+    </tr>
+    <tr>
+      <td>Web予約</td>
+      <td class="strength">○（リアルタイム在庫）</td>
+      <td class="strength">○</td>
+      <td class="strength">○</td>
+      <td class="neutral">△（48h確認）</td>
+      <td class="strength">○</td>
+      <td class="neutral">△</td>
+    </tr>
+    <tr>
+      <td>アプリ</td>
+      <td class="neutral">△（Webアプリ）</td>
+      <td class="neutral">△（CtoC側のみ）</td>
+      <td class="weakness">×</td>
+      <td class="weakness">×</td>
+      <td class="weakness">×</td>
+      <td class="weakness">×</td>
+    </tr>
+    <tr>
+      <td>多言語対応</td>
+      <td class="neutral">△（今後対応予定）</td>
+      <td class="strength">○（日英）</td>
+      <td class="strength">○（日英中）</td>
+      <td class="neutral">△（英語一部）</td>
+      <td class="weakness">×</td>
+      <td class="weakness">×</td>
+    </tr>
+    <tr>
+      <td>E-Bike</td>
+      <td class="strength">○（店舗依存）</td>
+      <td class="strength">○（約90台）</td>
+      <td class="strength">○</td>
+      <td class="strength">○</td>
+      <td class="weakness">×（1台のみ）</td>
+      <td class="weakness">×</td>
+    </tr>
+    <tr>
+      <td>グラベルバイク</td>
+      <td class="neutral">△（店舗依存）</td>
+      <td class="weakness">×</td>
+      <td class="weakness">×</td>
+      <td class="strength">○</td>
+      <td class="strength">○</td>
+      <td class="weakness">×</td>
+    </tr>
+    <tr>
+      <td>配送サービス</td>
+      <td class="weakness">×（店舗受取）</td>
+      <td class="strength">○（23区内）</td>
+      <td class="weakness">×</td>
+      <td class="neutral">△（要問合せ）</td>
+      <td class="strength">○（無料）</td>
+      <td class="strength">○（全国宅配）</td>
+    </tr>
+    <tr>
+      <td>乗り捨て</td>
+      <td class="weakness">×（同一店舗返却）</td>
+      <td class="neutral">△（店舗間）</td>
+      <td class="neutral">△（今治⇔尾道）</td>
+      <td class="weakness">×</td>
+      <td class="strength">○（自由）</td>
+      <td class="weakness">×</td>
+    </tr>
+    <tr>
+      <td>保険付帯</td>
+      <td class="neutral">要確認</td>
+      <td class="strength">○（自動付帯）</td>
+      <td class="strength">○（料金込）</td>
+      <td class="neutral">△（300円/日）</td>
+      <td class="strength">○（料金込）</td>
+      <td class="weakness">不明</td>
+    </tr>
+    <tr>
+      <td>月額/サブスク</td>
+      <td class="weakness">×</td>
+      <td class="strength">○</td>
+      <td class="weakness">×</td>
+      <td class="weakness">×</td>
+      <td class="weakness">×</td>
+      <td class="neutral">△（長期あり）</td>
+    </tr>
+    <tr>
+      <td>ツアー/ガイド</td>
+      <td class="weakness">×</td>
+      <td class="neutral">△</td>
+      <td class="neutral">△（一部店舗）</td>
+      <td class="strength">○（主力事業）</td>
+      <td class="strength">○（プライベート）</td>
+      <td class="weakness">×</td>
+    </tr>
+    <tr>
+      <td>試乗→購入導線</td>
+      <td class="strength">○（プロショップ連携）</td>
+      <td class="neutral">△（中古販売）</td>
+      <td class="strength">○（直営強力）</td>
+      <td class="weakness">×（売らないポリシー）</td>
+      <td class="weakness">×</td>
+      <td class="strength">○</td>
+    </tr>
+    <tr>
+      <td>プロ整備品質</td>
+      <td class="strength">○（プロショップ直営整備）</td>
+      <td class="strength">○（30項目整備）</td>
+      <td class="strength">○（メーカー直営）</td>
+      <td class="neutral">△</td>
+      <td class="weakness">×</td>
+      <td class="strength">○（シマノ認定）</td>
+    </tr>
+    <tr>
+      <td>全国展開力</td>
+      <td class="strength">○（24店舗→300店舗目標）</td>
+      <td class="weakness">×（3店舗・都市限定）</td>
+      <td class="neutral">△（12店舗・観光地中心）</td>
+      <td class="weakness">×（1店舗）</td>
+      <td class="weakness">×（東京のみ）</td>
+      <td class="weakness">×（群馬2店舗）</td>
+    </tr>
+    <tr>
+      <td>マルチブランド</td>
+      <td class="strength">○（ショップ依存で多様）</td>
+      <td class="strength">○（11ブランド+）</td>
+      <td class="weakness">×（GIANT/Livのみ）</td>
+      <td class="strength">○（7ブランド）</td>
+      <td class="strength">○（12ブランド+）</td>
+      <td class="neutral">△（Specialized/Trek）</td>
+    </tr>
+  </table>
+
+  <hr class="section-divider">
+
+  <!-- ===== 各社詳細 ===== -->
+
+  <!-- 1. CycleTrip BASE -->
+  <div class="competitor-section">
+    <h2>1. CycleTrip BASE</h2>
+
+    <h3>基本情報</h3>
+    <table>
+      <tr><th style="width:180px;">項目</th><th>内容</th></tr>
+      <tr><td>サービスURL</td><td><a href="https://cycletrip.jp/ja/" target="_blank">https://cycletrip.jp/ja/</a></td></tr>
+      <tr><td>運営会社</td><td>ZuttoRide Sharing株式会社（<a href="https://zuttoridesharing.jp/" target="_blank">https://zuttoridesharing.jp/</a>）</td></tr>
+      <tr><td>代表</td><td>中村 大</td></tr>
+      <tr><td>設立</td><td>2018年6月</td></tr>
+      <tr><td>資本金</td><td>3,000万円</td></tr>
+      <tr><td>親会社</td><td>ZuttoRide Group株式会社（100%出資）</td></tr>
+      <tr><td>ビジネスモデル</td><td>自社保有BtoC＋個人間CtoC＋サブスク</td></tr>
+    </table>
+
+    <div class="two-col">
+      <div>
+        <h3>強み</h3>
+        <div class="summary-box green">
+          <ul>
+            <li>日本最大級の台数（約300台以上）</li>
+            <li>24時間無人レンタル（日本初、2022年〜）</li>
+            <li>宅配デリバリー（23区内）</li>
+            <li>全車両に保険自動付帯（賠償最大1億円）</li>
+            <li>30項目以上の安全整備</li>
+            <li>多様なプラン（日/週/月/年/法人/撮影）</li>
+            <li>CtoC+BtoCのハイブリッドモデル</li>
+            <li>観光庁実証事業に採択</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3>弱み</h3>
+        <div class="summary-box red">
+          <ul>
+            <li>料金高め（日額6,500〜14,000円）</li>
+            <li>受付ワンオペで待ち時間発生</li>
+            <li>営業時間が短い（9:30〜17:30）</li>
+            <li>地方エリア未対応</li>
+            <li>自社保有型のため拡大に大きな投資必要</li>
+            <li>7年間で3店舗と展開ペースが遅い</li>
+            <li>サブスク解約ペナルティが重い</li>
+            <li>グラベルバイクカテゴリが弱い</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>料金体系</h3>
+    <table>
+      <tr><th>カテゴリ</th><th>初日</th><th>2日目以降</th><th>対象車種</th></tr>
+      <tr><td>P0</td><td>3,500円</td><td>2,500円</td><td>エントリークロスバイク</td></tr>
+      <tr><td>P3</td><td>6,500円</td><td>4,500円</td><td>クロスバイク上位、E-Bike、ロード(SORA)</td></tr>
+      <tr><td>P4</td><td>7,500円</td><td>5,500円</td><td>E-Bike上位</td></tr>
+      <tr><td>P5</td><td>9,000円</td><td>7,000円</td><td>競技専用ロード</td></tr>
+      <tr><td>S1</td><td>14,000円</td><td>-</td><td>ハイエンド</td></tr>
+    </table>
+
+    <h3>店舗展開</h3>
+    <table>
+      <tr><th>店舗</th><th>所在地</th><th>特徴</th></tr>
+      <tr><td>Akihabara（旗艦店）</td><td>東京都千代田区</td><td>9:30〜17:30 年中無休</td></tr>
+      <tr><td>Nagoya</td><td>愛知県名古屋市</td><td>9:30〜17:30 年中無休</td></tr>
+      <tr><td>Haneda（2025年9月〜）</td><td>東京都大田区</td><td>24時間無人レンタル</td></tr>
+    </table>
+  </div>
+
+  <!-- 2. ジャイアントストア -->
+  <div class="competitor-section">
+    <h2>2. ジャイアントストア レンタサイクル</h2>
+
+    <h3>基本情報</h3>
+    <table>
+      <tr><th style="width:180px;">項目</th><th>内容</th></tr>
+      <tr><td>サービスURL</td><td><a href="https://bicyclerental.jp/" target="_blank">https://bicyclerental.jp/</a></td></tr>
+      <tr><td>予約サイト</td><td><a href="https://giant-store-rental.jp/" target="_blank">https://giant-store-rental.jp/</a></td></tr>
+      <tr><td>運営会社</td><td>株式会社ジャイアント（<a href="https://www.giant.co.jp/" target="_blank">https://www.giant.co.jp/</a>）</td></tr>
+      <tr><td>親会社</td><td>Giant Manufacturing Co., Ltd.（台湾・世界最大規模の自転車メーカー）</td></tr>
+      <tr><td>日本法人設立</td><td>1989年2月</td></tr>
+      <tr><td>資本金</td><td>2億円（親会社100%子会社）</td></tr>
+      <tr><td>従業員数</td><td>115名</td></tr>
+      <tr><td>ビジネスモデル</td><td>メーカー直営・自社保有型（GIANT/Livのみ）</td></tr>
+    </table>
+
+    <div class="two-col">
+      <div>
+        <h3>強み</h3>
+        <div class="summary-box green">
+          <ul>
+            <li>世界最大メーカー直営のブランド力</li>
+            <li>プロメカニックによる整備品質</li>
+            <li>エントリー〜ハイエンドまで幅広いグレード</li>
+            <li>しまなみ海道ワンウェイ（今治⇔尾道）</li>
+            <li>観光地に最適配置された12店舗</li>
+            <li>「試乗→購入」導線が強力</li>
+            <li>手ぶらサービス充実（ヘルメット等無料）</li>
+            <li>多言語対応（日英中）</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3>弱み</h3>
+        <div class="summary-box red">
+          <ul>
+            <li>GIANT/Livのみ（車種の幅に限界）</li>
+            <li>都市部（東京・大阪・名古屋）にレンタル店なし</li>
+            <li>月額/サブスクモデルなし</li>
+            <li>配送サービスなし</li>
+            <li>アプリ不在、予約サイトと情報サイト分離</li>
+            <li>全店火曜定休</li>
+            <li>早期返却の返金なし</li>
+            <li>ロードサービス（出張修理）なし</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>料金体系</h3>
+    <table>
+      <tr><th>車種</th><th>5時間</th><th>日帰り</th><th>1泊2日</th></tr>
+      <tr><td>プレミアムカーボンロード</td><td>8,910〜11,880円</td><td>12,870〜17,160円</td><td>19,800〜26,400円</td></tr>
+      <tr><td>カーボンロード</td><td>4,950〜6,600円</td><td>6,930〜9,240円</td><td>11,880〜15,840円</td></tr>
+      <tr><td>アルミロード</td><td>3,465〜4,620円</td><td>4,950〜6,600円</td><td>7,920〜10,560円</td></tr>
+      <tr><td>クロスバイク</td><td>2,970〜3,960円</td><td>3,960〜5,280円</td><td>6,435〜8,580円</td></tr>
+    </table>
+
+    <h3>店舗展開（レンタル対応12店舗）</h3>
+    <table>
+      <tr><th>店舗</th><th>所在地</th><th>出店タイプ</th></tr>
+      <tr><td>仙台アウトレット</td><td>宮城県仙台市</td><td>都市型</td></tr>
+      <tr><td>前橋</td><td>群馬県前橋市</td><td>ルート沿い型</td></tr>
+      <tr><td>びわ湖守山</td><td>滋賀県守山市（琵琶湖マリオットホテル1F）</td><td>観光地型</td></tr>
+      <tr><td>松江</td><td>島根県松江市</td><td>観光地型</td></tr>
+      <tr><td>尾道</td><td>広島県尾道市（ONOMICHI U2内）</td><td>観光地型</td></tr>
+      <tr><td>今治</td><td>愛媛県今治市</td><td>観光地型</td></tr>
+      <tr><td>高松</td><td>香川県高松市</td><td>都市型</td></tr>
+      <tr><td>別府</td><td>大分県別府市</td><td>観光地型</td></tr>
+      <tr><td>南紀白浜</td><td>和歌山県白浜町</td><td>観光地型</td></tr>
+      <tr><td>松山</td><td>愛媛県松山市</td><td>都市型</td></tr>
+      <tr><td>富山</td><td>富山県富山市</td><td>都市型</td></tr>
+      <tr><td>宮崎西都</td><td>宮崎県西都市</td><td>地方型</td></tr>
+    </table>
+  </div>
+
+  <!-- 3. クロスビープランニング -->
+  <div class="competitor-section">
+    <h2>3. クロスビープランニング</h2>
+
+    <h3>基本情報</h3>
+    <table>
+      <tr><th style="width:180px;">項目</th><th>内容</th></tr>
+      <tr><td>サービスURL</td><td><a href="https://xb-planning.com/" target="_blank">https://xb-planning.com/</a></td></tr>
+      <tr><td>運営者</td><td>代表 内村晋也（個人事業主と推定）</td></tr>
+      <tr><td>所在地</td><td>大阪府大阪市住之江区新北島1-5-13</td></tr>
+      <tr><td>設立</td><td>2018年夏</td></tr>
+      <tr><td>ミッション</td><td>「サイクリングを日本の文化に」</td></tr>
+      <tr><td>ビジネスモデル</td><td>自社保有型（レンタル＋ガイドツアー複合型）</td></tr>
+    </table>
+
+    <div class="two-col">
+      <div>
+        <h3>強み</h3>
+        <div class="summary-box green">
+          <ul>
+            <li>入門者特化の徹底（9割以上が未経験者）</li>
+            <li>「安全＋グルメ」のツアー設計が秀逸</li>
+            <li>7歳〜78歳の幅広い年齢対応</li>
+            <li>グラベル・MTBにも対応</li>
+            <li>イベント企画力（富士ヒルクライムバスツアー等）</li>
+            <li>手ぶら参加OK</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3>弱み</h3>
+        <div class="summary-box red">
+          <ul>
+            <li>1店舗・個人事業でスケーラビリティに限界</li>
+            <li>予約から確定まで最大48時間</li>
+            <li>口コミ・レビューが極めて少ない</li>
+            <li>Webサイトの完成度が低い</li>
+            <li>ハイエンド層に非対応</li>
+            <li>住之江区は大阪中心部から遠い</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>料金体系（レンタル）</h3>
+    <table>
+      <tr><th>カテゴリ</th><th>4時間</th><th>1日</th></tr>
+      <tr><td>ロード（エントリー）</td><td>4,500円</td><td>6,000円</td></tr>
+      <tr><td>ロード（ミドル）/ グラベル</td><td>5,500円</td><td>7,500円</td></tr>
+      <tr><td>クロスバイク / MTB</td><td>3,500円</td><td>4,500円</td></tr>
+      <tr><td>e-Bike</td><td>3,500〜4,500円</td><td>4,500〜6,000円</td></tr>
+      <tr><td>キッズ</td><td>2,000円</td><td>3,000円</td></tr>
+    </table>
+
+    <h3>主要ツアー</h3>
+    <table>
+      <tr><th>ツアー名</th><th>時間</th><th>距離</th><th>料金</th></tr>
+      <tr><td>朝ごパンサイクリング</td><td>3h</td><td>約15km</td><td>3,000円</td></tr>
+      <tr><td>カフェサイクリング</td><td>4h</td><td>約25-30km</td><td>5,000円</td></tr>
+      <tr><td>のんびりランチサイクリング</td><td>6-8h</td><td>約40-60km</td><td>8,000円</td></tr>
+      <tr><td>アワイチチャレンジ</td><td>10h</td><td>約150km</td><td>15,000円</td></tr>
+      <tr><td>しまなみ海道サイクリング</td><td>8h</td><td>約70km</td><td>18,000円</td></tr>
+    </table>
+  </div>
+
+  <!-- 4. 東京サイクリングツアー -->
+  <div class="competitor-section">
+    <h2>4. 東京サイクリングツアー＆レンタサイクル</h2>
+
+    <h3>基本情報</h3>
+    <table>
+      <tr><th style="width:180px;">項目</th><th>内容</th></tr>
+      <tr><td>サービスURL</td><td><a href="https://www.tokyo-cyclingtour.com/" target="_blank">https://www.tokyo-cyclingtour.com/</a></td></tr>
+      <tr><td>運営会社</td><td>株式会社ジャパンライド（<a href="https://www.tokyo-cyclingtour.com/company/" target="_blank">会社概要</a>）</td></tr>
+      <tr><td>代表</td><td>二宮浩司</td></tr>
+      <tr><td>所在地</td><td>千葉県市川市大洲3丁目10-14</td></tr>
+      <tr><td>ビジネスモデル</td><td>自社保有型・完全デリバリー型（実店舗なし）</td></tr>
+    </table>
+
+    <div class="two-col">
+      <div>
+        <h3>強み</h3>
+        <div class="summary-box green">
+          <ul>
+            <li>完全デリバリー型（店舗に行く必要なし）</li>
+            <li>乗り捨て自由（事前連絡不要）</li>
+            <li>長時間利用（最大23時まで）</li>
+            <li>サービスエリア内は配送無料</li>
+            <li>完全プライベートツアー</li>
+            <li>撮影用レンタル対応</li>
+            <li>低コストの無店舗運営</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3>弱み</h3>
+        <div class="summary-box red">
+          <ul>
+            <li>約40台・1拠点でキャパシティ逼迫</li>
+            <li>e-Bike非対応（電動1台のみ）</li>
+            <li>サイトデザインが古い、アプリなし</li>
+            <li>多言語未対応（英語サイトなし）</li>
+            <li>Instagram 304フォロワーと認知度低い</li>
+            <li>ハイエンド車種不足（105が上限）</li>
+            <li>東京23区＋千葉一部のみ</li>
+            <li>個人経営的限界</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>料金体系</h3>
+    <table>
+      <tr><th>車種</th><th>1日目</th><th>2日目以降</th></tr>
+      <tr><td>クロスバイク</td><td>3,850〜4,730円</td><td>2,420円〜</td></tr>
+      <tr><td>ロード エントリー</td><td>5,940円</td><td>2,970円</td></tr>
+      <tr><td>ロード ミドル</td><td>6,380〜6,490円</td><td>2,970円〜</td></tr>
+      <tr><td>ロード アッパー / グラベル</td><td>7,480円</td><td>3,520円〜</td></tr>
+      <tr><td>ロード プレミアム（カーボン）</td><td>7,920円</td><td>3,960円</td></tr>
+    </table>
+  </div>
+
+  <!-- 5. Power Kids -->
+  <div class="competitor-section">
+    <h2>5. Power Kids（パワーキッズ）</h2>
+
+    <h3>基本情報</h3>
+    <table>
+      <tr><th style="width:180px;">項目</th><th>内容</th></tr>
+      <tr><td>サービスURL</td><td><a href="https://power-kids.co.jp/" target="_blank">https://power-kids.co.jp/</a></td></tr>
+      <tr><td>運営会社</td><td>株式会社POWER-KIDS</td></tr>
+      <tr><td>代表</td><td>髙庭英彰</td></tr>
+      <tr><td>所在地</td><td>群馬県伊勢崎市三光町16-1</td></tr>
+      <tr><td>創業</td><td>1920年（大正9年）</td></tr>
+      <tr><td>従業員数</td><td>4名</td></tr>
+      <tr><td>ビジネスモデル</td><td>自社保有型。本業は販売・メンテナンス。レンタルは付帯サービス</td></tr>
+    </table>
+
+    <div class="two-col">
+      <div>
+        <h3>強み</h3>
+        <div class="summary-box green">
+          <ul>
+            <li>創業100年超の信頼と技術力</li>
+            <li>Specialized/Trekコンセプトストア</li>
+            <li>シマノサービスセンター認定</li>
+            <li>独自「120%チューニング」技術</li>
+            <li>決戦ホイール宅配レンタル（国内ユニーク）</li>
+            <li>ジュニアレンタル（成長期の子供向け）</li>
+            <li>Body Geometry Fitサービス</li>
+            <li>「試乗→購入」導線あり</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3>弱み</h3>
+        <div class="summary-box red">
+          <ul>
+            <li>従業員4名で超小規模</li>
+            <li>熊谷店を事業承継（縮小傾向の可能性）</li>
+            <li>レンタル予約がオンライン完結しない</li>
+            <li>料金体系がWebで不透明</li>
+            <li>インバウンド未対応</li>
+            <li>e-Bike/グラベルのレンタルなし</li>
+            <li>保険・保証金の情報が不明確</li>
+            <li>レンタルは「副次サービス」の域</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>料金体系</h3>
+    <table>
+      <tr><th>プラン</th><th>料金</th></tr>
+      <tr><td>ロードバイク 5日間</td><td>15,000円〜</td></tr>
+      <tr><td>ロードバイク 10日間</td><td>25,000円〜</td></tr>
+      <tr><td>長期（半年〜1年）</td><td>要問い合わせ</td></tr>
+      <tr><td>決戦ホイール（7日間）</td><td>10,000円</td></tr>
+    </table>
+
+    <h3>店舗展開</h3>
+    <table>
+      <tr><th>店舗</th><th>所在地</th><th>特徴</th></tr>
+      <tr><td>伊勢崎店</td><td>群馬県伊勢崎市</td><td>Specializedコンセプトストア / シマノサービスセンター</td></tr>
+      <tr><td>高崎店</td><td>群馬県高崎市</td><td>Trek / Cannondale等セレクト</td></tr>
+      <tr><td><s>熊谷店</s>（閉店）</td><td>埼玉県熊谷市</td><td>2022年10月にワイズロードへ事業承継</td></tr>
+    </table>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ===== RINCLE vs 各社 1対1比較 ===== -->
+  <div class="competitor-section" style="border: 2px solid #1e40af;">
+    <h2 style="border-bottom-color: #1e40af;">RINCLE vs 各社 比較分析</h2>
+
+    <!-- vs CycleTrip BASE -->
+    <h3>RINCLE vs CycleTrip BASE <small style="color:#94a3b8;">（最大の直接競合）</small></h3>
+    <table class="vs-table">
+      <tr>
+        <th>比較軸</th>
+        <th class="vs-header-rincle">RINCLE</th>
+        <th class="vs-header-comp">CycleTrip BASE</th>
+        <th style="width:60px;">優劣</th>
+      </tr>
+      <tr>
+        <td>ビジネスモデル</td>
+        <td>プロショップネットワーク型（在庫リスクなし）</td>
+        <td>自社保有300台＋CtoC＋サブスク</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>店舗数・エリア</td>
+        <td>24店舗/12都府県（開始3ヶ月）</td>
+        <td>3店舗/2都市（7年間）</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>スケーラビリティ</td>
+        <td>在庫不要で急速拡大可能（目標300店舗）</td>
+        <td>自社保有型のため設備投資が必要</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>整備品質</td>
+        <td>各地プロショップの専門整備</td>
+        <td>30項目安全整備（公益財団法人登録）</td>
+        <td><span class="score score-draw">同</span></td>
+      </tr>
+      <tr>
+        <td>台数・車種の豊富さ</td>
+        <td>店舗依存（各ショップの在庫）</td>
+        <td>約300台、11ブランド以上を一元管理</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>料金プランの多様性</td>
+        <td>店舗ごとに設定</td>
+        <td>日/週/月/年/法人/撮影プランが充実</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>配送サービス</td>
+        <td>店舗受取のみ</td>
+        <td>23区内デリバリー＋24h無人レンタル</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>多言語対応</td>
+        <td>今後対応予定</td>
+        <td>日英対応済み</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>サービス歴</td>
+        <td>2026年2月〜（約3ヶ月）</td>
+        <td>2018年〜（約8年）</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>試乗→購入導線</td>
+        <td>プロショップでそのまま購入相談可</td>
+        <td>中古車販売サイトのみ</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+    </table>
+    <div class="summary-box blue">
+      <strong>総評:</strong> 最大の直接競合。CycleTrip BASEは「自社保有で品質統一、プランの多様性」が強み。RINCLEは「プラットフォーム型のスケーラビリティ」で圧倒的に有利。CycleTrip BASEが7年で3店舗に対し、RINCLEは3ヶ月で24店舗。ただし、デリバリー・多言語・料金プランの多様性では差を詰める必要あり。
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- vs ジャイアントストア -->
+    <h3>RINCLE vs ジャイアントストア <small style="color:#94a3b8;">（ブランド力の巨人）</small></h3>
+    <table class="vs-table">
+      <tr>
+        <th>比較軸</th>
+        <th class="vs-header-rincle">RINCLE</th>
+        <th class="vs-header-comp">ジャイアントストア</th>
+        <th style="width:60px;">優劣</th>
+      </tr>
+      <tr>
+        <td>ビジネスモデル</td>
+        <td>独立系プロショップのネットワーク</td>
+        <td>世界最大メーカー直営</td>
+        <td><span class="score score-draw">同</span></td>
+      </tr>
+      <tr>
+        <td>ブランド選択肢</td>
+        <td>ショップごとに多ブランド対応</td>
+        <td>GIANT/Livのみ</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>店舗数</td>
+        <td>24店舗（目標300）</td>
+        <td>12店舗（レンタル対応、全体45店中27%）</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>エリアカバー</td>
+        <td>12都府県（都市部含む）</td>
+        <td>観光地中心（東京・大阪・名古屋にレンタル店なし）</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>ブランド認知度</td>
+        <td>新興サービス（2026年2月〜）</td>
+        <td>世界最大メーカーの絶大な知名度</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>試乗→購入導線</td>
+        <td>プロショップで多ブランド購入可能</td>
+        <td>GIANT製品の直接購入が可能（非常に強力）</td>
+        <td><span class="score score-draw">同</span></td>
+      </tr>
+      <tr>
+        <td>ワンウェイ（乗り捨て）</td>
+        <td>非対応</td>
+        <td>今治⇔尾道間で対応</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>多言語対応</td>
+        <td>今後対応予定</td>
+        <td>日英中の3言語対応</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>拡大スピード</td>
+        <td>プラットフォーム型で高速拡大可能</td>
+        <td>直営のため年2〜4店舗ペース</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+    </table>
+    <div class="summary-box blue">
+      <strong>総評:</strong> ジャイアントストアはブランド力と整備品質で最強の競合。しかし「GIANT/Livのみ」「都市部にレンタル店なし」という構造的制約がある。RINCLEはマルチブランド＋都市部カバーで差別化可能。ただし、ジャイアントストアのブランド信頼度はプラットフォーム型では再現困難。
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- vs クロスビープランニング -->
+    <h3>RINCLE vs クロスビープランニング <small style="color:#94a3b8;">（入門者特化の個人店）</small></h3>
+    <table class="vs-table">
+      <tr>
+        <th>比較軸</th>
+        <th class="vs-header-rincle">RINCLE</th>
+        <th class="vs-header-comp">クロスビープランニング</th>
+        <th style="width:60px;">優劣</th>
+      </tr>
+      <tr>
+        <td>スケール</td>
+        <td>24店舗/12都府県</td>
+        <td>1店舗/大阪のみ</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>予約UX</td>
+        <td>Webでリアルタイム在庫確認・即時予約</td>
+        <td>フォーム送信→48時間後にメール確認</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>初心者対応</td>
+        <td>プロショップスタッフが対応</td>
+        <td>9割以上が未経験者、徹底した初心者特化</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>ツアー・体験設計</td>
+        <td>レンタルに特化</td>
+        <td>グルメ×サイクリングの秀逸なツアー設計</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>車種カテゴリ</td>
+        <td>ロード・E-Bike中心</td>
+        <td>ロード/クロス/グラベル/MTB/e-Bike/キッズまで網羅</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>サイト品質</td>
+        <td>Bubble.ioベースのWebアプリ</td>
+        <td>WordPressテンプレート（洗練度低い）</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+    </table>
+    <div class="summary-box blue">
+      <strong>総評:</strong> 直接的な脅威は低い（1店舗の個人事業）。ただし、初心者向けツアー体験の設計力は参考にすべき。RINCLEのパートナーショップネットワークに、このようなショップを取り込むことで相互にメリットが生まれる可能性あり。
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- vs 東京サイクリングツアー -->
+    <h3>RINCLE vs 東京サイクリングツアー <small style="color:#94a3b8;">（デリバリー型の先駆者）</small></h3>
+    <table class="vs-table">
+      <tr>
+        <th>比較軸</th>
+        <th class="vs-header-rincle">RINCLE</th>
+        <th class="vs-header-comp">東京サイクリングツアー</th>
+        <th style="width:60px;">優劣</th>
+      </tr>
+      <tr>
+        <td>スケール</td>
+        <td>24店舗/12都府県</td>
+        <td>約40台/1拠点/東京のみ</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>受取の利便性</td>
+        <td>全国のプロショップで受取</td>
+        <td>東京23区内に無料配送（店舗不要）</td>
+        <td><span class="score score-draw">同</span></td>
+      </tr>
+      <tr>
+        <td>乗り捨て</td>
+        <td>同一店舗返却</td>
+        <td>サービスエリア内なら事前連絡不要で自由</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>利用時間</td>
+        <td>店舗営業時間に準じる</td>
+        <td>最大23時まで（無料延長あり）</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>整備品質</td>
+        <td>プロショップ専門整備</td>
+        <td>個人経営レベル</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>E-Bike対応</td>
+        <td>対応（店舗依存）</td>
+        <td>ほぼ非対応（電動1台のみ）</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+    </table>
+    <div class="summary-box blue">
+      <strong>総評:</strong> 直接的脅威は低い（東京限定・40台の個人経営）。「デリバリー型」「乗り捨て自由」「長時間利用」は、RINCLEが将来検討すべきUX改善のヒントになる。
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- vs Power Kids -->
+    <h3>RINCLE vs Power Kids <small style="color:#94a3b8;">（老舗プロショップの宅配モデル）</small></h3>
+    <table class="vs-table">
+      <tr>
+        <th>比較軸</th>
+        <th class="vs-header-rincle">RINCLE</th>
+        <th class="vs-header-comp">Power Kids</th>
+        <th style="width:60px;">優劣</th>
+      </tr>
+      <tr>
+        <td>ビジネスモデル</td>
+        <td>プラットフォーム型（多数ショップ連携）</td>
+        <td>自社保有の副次サービス</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>店舗数</td>
+        <td>24店舗</td>
+        <td>2店舗</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>予約UX</td>
+        <td>Webでリアルタイム予約・決済</td>
+        <td>電話中心、料金も非公開</td>
+        <td><span class="score score-win">優</span></td>
+      </tr>
+      <tr>
+        <td>宅配対応</td>
+        <td>店舗受取のみ</td>
+        <td>全国宅配対応（2016年〜）</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>ホイールレンタル</td>
+        <td>なし</td>
+        <td>DURA-ACEグレード含む10モデル（国内ユニーク）</td>
+        <td><span class="score score-lose">劣</span></td>
+      </tr>
+      <tr>
+        <td>メーカー関係</td>
+        <td>パートナーショップ経由で多ブランド</td>
+        <td>Specialized/Trekコンセプトストア、シマノ認定</td>
+        <td><span class="score score-draw">同</span></td>
+      </tr>
+    </table>
+    <div class="summary-box blue">
+      <strong>総評:</strong> 直接的脅威は低い（群馬2店舗・従業員4名）。ただし、同じ「プロショップがレンタルを提供する」モデルの先行事例として参考になる。Power Kidsのようなプロショップこそ、RINCLEのパートナーショップ候補。
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ===== RINCLE ポジショニングマップ ===== -->
+  <div class="competitor-section" style="border: 2px solid #e94560;">
+    <h2 style="border-bottom-color: #e94560;">RINCLE 強み・弱み・機会・脅威</h2>
+
+    <div class="two-col">
+      <div>
+        <h3>強み（Strengths）</h3>
+        <div class="summary-box green">
+          <ul>
+            <li><strong>プラットフォームモデル</strong>: 在庫リスクなしで急速拡大（3ヶ月で24店舗）</li>
+            <li><strong>プロショップ品質</strong>: 専門店の整備・対面サポートを全国で統一提供</li>
+            <li><strong>試乗→購入の自然な導線</strong>: プロショップだからこそ可能</li>
+            <li><strong>マルチブランド</strong>: 各ショップの取扱ブランドを活かした多様な選択肢</li>
+            <li><strong>リアルタイムWeb予約</strong>: 競合の多くが電話/メール型の中、即時予約可能</li>
+            <li><strong>拡大目標の明確さ</strong>: 47都道府県300店舗3,000台</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3>弱み（Weaknesses）</h3>
+        <div class="summary-box red">
+          <ul>
+            <li><strong>サービス歴が浅い</strong>: 2026年2月開始（約3ヶ月）、口コミ・実績がまだ少ない</li>
+            <li><strong>多言語未対応</strong>: インバウンド需要を取りこぼしている</li>
+            <li><strong>配送・乗り捨て非対応</strong>: 店舗受取・同一店舗返却のみ</li>
+            <li><strong>料金プランの限定性</strong>: 月額/サブスク等の多様なプランがない</li>
+            <li><strong>品質統一の難しさ</strong>: 各ショップの対応にばらつきが出るリスク</li>
+            <li><strong>ツアー・ガイドサービスなし</strong>: 体験型ニーズへの対応が弱い</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="two-col" style="margin-top:16px;">
+      <div>
+        <h3>機会（Opportunities）</h3>
+        <div class="summary-box blue">
+          <ul>
+            <li><strong>競合の地方空白地帯</strong>: CycleTrip BASEは都市限定、ジャイアントは観光地限定</li>
+            <li><strong>小規模競合の取り込み</strong>: クロスビー/Power Kids等をパートナー化</li>
+            <li><strong>インバウンド市場</strong>: サイクルツーリズム需要の急成長</li>
+            <li><strong>自治体連携</strong>: 地域観光振興×スポーツバイク体験の提案</li>
+            <li><strong>E-Bike市場の成長</strong>: 初心者・シニア層の取り込み</li>
+            <li><strong>競合のDX遅れ</strong>: 全社でアプリなし、UXに改善余地大</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h3>脅威（Threats）</h3>
+        <div class="summary-box">
+          <ul>
+            <li><strong>CycleTrip BASEのCtoC拡大</strong>: 個人間シェアリングで全国展開される可能性</li>
+            <li><strong>ジャイアントストアの方針転換</strong>: 都市部レンタル拡大やプラットフォーム化</li>
+            <li><strong>シェアサイクル大手の参入</strong>: HELLO CYCLING等がスポーツバイクに拡大</li>
+            <li><strong>プロショップの離反リスク</strong>: 自社で同様のWeb予約を構築される</li>
+            <li><strong>品質トラブル</strong>: 1店舗の問題がプラットフォーム全体のブランドに影響</li>
+            <li><strong>メーカー直販レンタルの拡大</strong>: Specialized等が自社レンタルを強化</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== RINCLEへの示唆 ===== -->
+  <div class="competitor-section" style="border-color: #e94560;">
+    <h2 style="border-bottom-color: #0f3460;">RINCLEの競合優位性と戦略示唆</h2>
+
+    <h3>RINCLEの構造的優位性</h3>
+    <div class="summary-box blue">
+      <ul>
+        <li><strong>プロショップネットワーク型</strong> — 競合5社は全て「自社保有型」。在庫リスクなしで拡大できるRINCLEのプラットフォームモデルは、スケーラビリティで圧倒的に有利</li>
+        <li><strong>既に24店舗/12都府県</strong> — CycleTrip BASEは7年で3店舗、ジャイアントストアは12店舗。RINCLEのネットワーク拡大スピードは競合を凌駕</li>
+        <li><strong>プロショップの整備品質</strong> — 各地の専門店が整備するため、品質を担保しつつ全国展開が可能</li>
+        <li><strong>47都道府県/300店舗/3,000台</strong>の目標は、競合のいずれも設定していないスケール</li>
+      </ul>
+    </div>
+
+    <h3>競合各社の課題 = RINCLEのチャンス</h3>
+    <table>
+      <tr><th>課題</th><th>該当する競合</th><th>RINCLEの機会</th></tr>
+      <tr>
+        <td>スケーラビリティの限界</td>
+        <td>全社共通</td>
+        <td>プラットフォーム型は在庫リスクなしで急速拡大可能</td>
+      </tr>
+      <tr>
+        <td>デジタル体験の未成熟</td>
+        <td>全社共通（アプリなし多数）</td>
+        <td>優れた予約UX・アプリで差別化</td>
+      </tr>
+      <tr>
+        <td>地方展開の遅さ</td>
+        <td>CycleTrip BASE / 東京サイクリング</td>
+        <td>地方プロショップとの連携で空白地帯を埋める</td>
+      </tr>
+      <tr>
+        <td>自社ブランドのみ</td>
+        <td>ジャイアントストア</td>
+        <td>多ブランド対応でユーザーの選択肢を拡大</td>
+      </tr>
+      <tr>
+        <td>個人・小規模経営の限界</td>
+        <td>クロスビー / 東京サイクリング / Power Kids</td>
+        <td>これらのショップをRINCLEネットワークに取り込む余地あり</td>
+      </tr>
+      <tr>
+        <td>インバウンド対応の弱さ</td>
+        <td>クロスビー / 東京サイクリング / Power Kids</td>
+        <td>多言語プラットフォームで一括対応</td>
+      </tr>
+    </table>
+
+    <h3>注意すべきリスク</h3>
+    <div class="summary-box">
+      <ul>
+        <li><strong>CycleTrip BASEのCtoC展開</strong> — 個人間シェアリングで全国の車種にアクセスする仕組みは、RINCLEと類似のネットワーク効果を持ちうる</li>
+        <li><strong>ジャイアントストアのブランド力</strong> — 世界最大メーカー直営の信頼感は、プラットフォーム型では再現が難しい</li>
+        <li><strong>サービス品質の統一</strong> — 各プロショップの対応品質にばらつきが出るリスクへの対策が重要</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

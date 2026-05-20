@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RINCLE プロダクト改善 - CTO分析</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+      background: #f8f9fa; color: #333; line-height: 1.8; padding: 40px;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    h1 { font-size: 32px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 40px; }
+    h2 {
+      font-size: 22px; font-weight: 700; color: #1a1a2e;
+      margin: 48px 0 20px; padding-bottom: 8px;
+      border-bottom: 2px solid #e94560;
+    }
+    h3 { font-size: 17px; font-weight: 600; color: #0f3460; margin: 28px 0 12px; }
+    h4 { font-size: 14px; font-weight: 600; color: #555; margin: 20px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    p { font-size: 14px; color: #444; margin: 8px 0; }
+    strong { color: #1a1a2e; }
+    a { color: #2563eb; }
+
+    /* Section card */
+    .section {
+      background: #fff; border-radius: 12px; padding: 28px; margin: 20px 0;
+      border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .section.critical { border-color: #dc2626; border-width: 2px; }
+    .section.important { border-color: #d97706; }
+    .section.growth { border-color: #059669; }
+
+    /* Funnel */
+    .funnel { margin: 24px 0; }
+    .funnel-step {
+      display: flex; align-items: stretch; margin: 4px 0; gap: 0;
+    }
+    .funnel-bar {
+      width: 8px; border-radius: 4px; flex-shrink: 0; margin-right: 16px;
+    }
+    .funnel-content {
+      flex: 1; background: #fff; border-radius: 8px; padding: 16px 20px;
+      border: 1px solid #e2e8f0; margin: 4px 0;
+    }
+    .funnel-content h4 { margin: 0 0 6px; font-size: 14px; color: #333; text-transform: none; letter-spacing: 0; }
+    .funnel-content p { font-size: 13px; margin: 4px 0; }
+    .f-red .funnel-bar { background: #dc2626; }
+    .f-yellow .funnel-bar { background: #d97706; }
+    .f-green .funnel-bar { background: #059669; }
+
+    /* Problem card */
+    .problem {
+      background: #fef2f2; border-radius: 10px; padding: 20px; margin: 12px 0;
+      border-left: 4px solid #dc2626;
+    }
+    .problem.warn { border-left-color: #d97706; background: #fffbeb; }
+    .problem.info { border-left-color: #2563eb; background: #eff6ff; }
+    .problem .problem-title {
+      font-size: 15px; font-weight: 700; color: #991b1b; margin-bottom: 6px;
+    }
+    .problem .problem-body { font-size: 13px; color: #555; }
+
+    /* Solution card */
+    .solution {
+      background: #f0fdf4; border-radius: 10px; padding: 20px; margin: 12px 0;
+      border-left: 4px solid #059669;
+    }
+    .solution .solution-title {
+      font-size: 15px; font-weight: 700; color: #065f46; margin-bottom: 6px;
+    }
+    .solution .solution-body { font-size: 13px; color: #444; }
+
+    /* Code/UI block */
+    .ui-block {
+      background: #f1f5f9; border-radius: 8px; padding: 18px 22px; margin: 12px 0;
+      font-family: 'SF Mono', 'Fira Code', 'Menlo', monospace;
+      font-size: 13px; color: #333; line-height: 1.6;
+      border: 1px solid #e2e8f0; overflow-x: auto;
+    }
+    .ui-label {
+      font-size: 11px; color: #e94560; font-weight: 700; margin-bottom: 8px;
+      font-family: -apple-system, sans-serif; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* Metric */
+    .metrics { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+    .metric {
+      background: #fff; border-radius: 8px; padding: 14px 18px;
+      border: 1px solid #e2e8f0; min-width: 160px; flex: 1;
+    }
+    .metric .metric-value { font-size: 24px; font-weight: 700; color: #1a1a2e; }
+    .metric .metric-label { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .metric.red .metric-value { color: #dc2626; }
+    .metric.green .metric-value { color: #059669; }
+    .metric.yellow .metric-value { color: #d97706; }
+
+    /* Tag */
+    .tag {
+      display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 4px; margin: 2px; text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .tag-critical { background: #dc2626; color: #fff; }
+    .tag-high { background: #d97706; color: #fff; }
+    .tag-medium { background: #2563eb; color: #fff; }
+    .tag-quick { background: #059669; color: #fff; }
+
+    ul { margin: 8px 0 8px 20px; font-size: 13px; color: #444; }
+    li { margin: 5px 0; }
+
+    .divider { border: none; border-top: 1px solid #e2e8f0; margin: 40px 0; }
+
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+    th { background: #f1f5f9; color: #555; font-size: 11px; font-weight: 600; padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e8f0; text-transform: uppercase; letter-spacing: 0.3px; }
+    td { padding: 10px 12px; border-bottom: 1px solid #e2e8f0; color: #444; }
+    tr:hover td { background: #f8f9fa; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 768px) {
+      body { padding: 20px; }
+      .two-col { grid-template-columns: 1fr; }
+      .metrics { flex-direction: column; }
+    }
+
+    .callout {
+      background: #fef2f2; border: 1px solid #dc2626; border-radius: 8px;
+      padding: 16px 20px; margin: 16px 0; font-size: 14px; color: #991b1b;
+    }
+    .callout.blue {
+      background: #eff6ff; border-color: #2563eb; color: #1e40af;
+    }
+    .callout.green {
+      background: #f0fdf4; border-color: #059669; color: #065f46;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <h1>RINCLE プロダクト改善</h1>
+  <p class="subtitle">CTO視点の分析 | 2026-05-19</p>
+
+  <!-- ===== 0. 前提認識 ===== -->
+  <div class="section critical">
+    <h2 style="margin-top:0; border:none; padding:0;">まず、現状の致命的な問題を直視する</h2>
+    <p>競合との比較の前に、RINCLEが今すぐ対処すべき技術的・プロダクト的な課題がある。</p>
+
+    <h3>Bubble.ioベースのSPA問題</h3>
+    <p>RINCLEはBubble.ioで構築されている。これは立ち上げスピードでは正解だったが、以下の問題を抱えている:</p>
+
+    <div class="problem">
+      <div class="problem-title">SEOが壊滅的に弱い可能性</div>
+      <div class="problem-body">
+        Bubble.ioはクライアントサイドレンダリング。GoogleのクローラーはJSを実行するが、動的に生成されるコンテンツ（車種一覧・料金・店舗情報）がインデックスされていない可能性が高い。「神戸 ロードバイク レンタル」で検索しても、RINCLEの店舗ページが出てこないなら、オーガニック流入はほぼゼロ。<br><br>
+        <strong>確認方法:</strong> <code>site:rincle.co.jp</code> でGoogleに何ページインデックスされているか確認。Search Consoleでカバレッジレポートを見る。
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-title">初回ロードが遅い</div>
+      <div class="problem-body">
+        Bubble.ioのSPAは初回ロード時にJSバンドル全体を読み込む。4G回線のモバイルだとLCP（Largest Contentful Paint）が3〜5秒以上かかる可能性。<strong>モバイルユーザーの53%は3秒以上かかるサイトを離脱する（Google調査）</strong>。つまり、ユーザーがサイトの中身を見る前に半分以上が帰っている可能性がある。<br><br>
+        <strong>確認方法:</strong> PageSpeed Insightsでrincle.co.jpを計測。Core Web Vitals（LCP/FID/CLS）を確認。
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-title">料金・車種情報がクローラーに見えない</div>
+      <div class="problem-body">
+        前回の調査でWebFetchを実行した結果、rincle.co.jpのHTMLからはサービス内容が一切取得できなかった。JSレンダリング後のAPIレスポンスでのみコンテンツが表示される構造。これはGoogleクローラーにも料金・車種情報が見えていない可能性を示す。「RINCLE 料金」「RINCLE ロードバイク」で検索しても、自社サイトの該当ページが引っかからないかもしれない。
+      </div>
+    </div>
+
+    <div class="solution">
+      <div class="solution-title">対策: SEOランディングページの別建て</div>
+      <div class="solution-body">
+        Bubble.ioの制約を回避するために、<strong>静的なSEO用ランディングページ</strong>を別途構築する。Next.js/Astro等のSSRフレームワークで、各店舗×車種カテゴリのページを生成。ここからBubble.ioの予約フローへ誘導する。<br><br>
+        例: <code>rincle.co.jp/area/kobe/road-bike</code> → 「神戸でロードバイクをレンタル」のSEO最適化ページ → 「予約する」ボタンでBubble.ioの予約フローへ<br><br>
+        <strong>これは技術的にはサブドメインやサブディレクトリでの運用で実現可能。Bubble.ioを捨てる必要はない。</strong>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 1. ファネル分析 ===== -->
+  <h2>1. コンバージョンファネルの全ステップを潰す</h2>
+  <p>ユーザーが「RINCLEを知る」から「リピートする」までの全ステップを分解し、各ステップで何が壊れているか/何がないかを特定する。</p>
+
+  <div class="funnel">
+
+    <div class="funnel-step f-red">
+      <div class="funnel-bar"></div>
+      <div class="funnel-content">
+        <h4>Step 0: 認知 — 「RINCLEを知る」 <span class="tag tag-critical">致命的</span></h4>
+        <p><strong>現状の問題:</strong></p>
+        <ul>
+          <li>SEO流入がほぼゼロの可能性（Bubble.ioのクライアントサイドレンダリング問題）</li>
+          <li>SNSアカウントの存在感が薄い（未確認だが、競合も弱い市場）</li>
+          <li>「スポーツバイク レンタル 〇〇（地域名）」でRINCLEが出てこない</li>
+          <li>PR TIMESのプレスリリース1本と数本のメディア掲載のみ</li>
+        </ul>
+        <p><strong>やるべきこと:</strong></p>
+        <ul>
+          <li>SSR/SSGで24店舗分のSEOランディングページを作る（最優先）</li>
+          <li>各パートナーショップのブログ/SNSからの導線を整備</li>
+          <li>Google Business Profileに各店舗を登録（「近くのレンタサイクル」検索対策）</li>
+          <li>Instagram/X運用を本格開始（競合も弱いので少しの投資で目立てる）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="funnel-step f-red">
+      <div class="funnel-bar"></div>
+      <div class="funnel-content">
+        <h4>Step 1: ランディング — 「最初の5秒」 <span class="tag tag-critical">致命的</span></h4>
+        <p><strong>現状の問題:</strong></p>
+        <ul>
+          <li>Bubble.ioのSPAが3〜5秒でロードされる間、ユーザーは白画面 or ローディングを見る</li>
+          <li>ロード後、「ここで何ができるか」が5秒で伝わるか？</li>
+          <li>ファーストビューに検索バー（エリア×日付×車種）があるか？</li>
+          <li>「全国24店舗のプロショップでスポーツバイクをレンタル」が一瞬で伝わるか？</li>
+        </ul>
+        <p><strong>やるべきこと:</strong></p>
+        <ul>
+          <li>ファーストビューの構成を固める: ① ヘッドライン ② 検索バー ③ 信頼指標（24店舗/12都府県/★4.8）</li>
+          <li>Bubble.ioのロード中にスケルトンUIを表示（白画面を避ける）</li>
+          <li>ファーストビューだけは静的HTML/CSSで即時表示し、残りを非同期ロード</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="funnel-step f-red">
+      <div class="funnel-bar"></div>
+      <div class="funnel-content">
+        <h4>Step 2: 検索・探索 — 「自分に合うバイクを見つける」 <span class="tag tag-critical">致命的</span></h4>
+        <p><strong>現状の問題:</strong></p>
+        <ul>
+          <li>「日付×エリア×車種」で横断検索できない（競合も全社できない。だからこそ作れば勝てる）</li>
+          <li>フィルタ・ソート機能がない or 弱い</li>
+          <li>初心者は「何を借りればいいか分からない」まま離脱する</li>
+          <li>検索結果が0件のときの体験が設計されていない</li>
+        </ul>
+        <p><strong>やるべきこと:</strong></p>
+        <ul>
+          <li><strong>検索バー:</strong> [エリア] [日付] [車種カテゴリ] → 検索。じゃらん/Booking.com型</li>
+          <li><strong>フィルタ:</strong> ブランド / 予算帯 / グレード / E-Bike対応 / 初心者おすすめ</li>
+          <li><strong>ソート:</strong> 料金順 / 距離順 / レビュー評価順 / 空き台数順</li>
+          <li><strong>0件時:</strong> 「条件を広げる」提案 / 近隣エリア表示 / 別日程の空き状況</li>
+          <li><strong>初心者向け:</strong> 3問診断で最適車種を提案（経験/目的/体力）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="funnel-step f-red">
+      <div class="funnel-bar"></div>
+      <div class="funnel-content">
+        <h4>Step 2.5: 比較・検討 — 「どれにするか決める」 <span class="tag tag-high">重要</span></h4>
+        <p><strong>現状の問題:</strong></p>
+        <ul>
+          <li>複数店舗の空き状況を一覧比較できない</li>
+          <li>自転車のスペック・料金を並べて比較できない</li>
+          <li>満車 or 予算オーバーで離脱 → 代替案の提案がない</li>
+          <li>「後で予約しよう」→ 忘れる → 二度と戻ってこない</li>
+        </ul>
+        <p><strong>やるべきこと:</strong></p>
+        <ul>
+          <li><strong>空き状況一覧:</strong> 複数店舗の空き・料金を一画面で横並び比較</li>
+          <li><strong>自転車比較:</strong> 2〜3台のスペック・料金・レビューを横並び表示（価格.com型）</li>
+          <li><strong>初心者/経験者モード:</strong> 初心者には「街乗り向き」ラベル、経験者にはスペック表</li>
+          <li><strong>レコメンド:</strong> 「似た自転車」「この車種を借りた人はこちらも」</li>
+          <li><strong>お気に入り保存:</strong> 保存→空き通知で再訪問を誘導</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="funnel-step f-yellow">
+      <div class="funnel-bar"></div>
+      <div class="funnel-content">
+        <h4>Step 3: 詳細確認 — 「これに決めた、でも本当に大丈夫？」 <span class="tag tag-high">重要</span></h4>
+        <p><strong>現状の問題:</strong></p>
+        <ul>
+          <li>料金の総額が不明確（本体+オプション+保険=いくら？）</li>
+          <li>口コミ・レビューがゼロ（信頼の根拠がない）</li>
+          <li>キャンセルポリシーが分からない（「雨だったらどうしよう」で離脱）</li>
+          <li>店舗の写真・スタッフ情報が薄い（「怪しくない？」の不安）</li>
+          <li>「どんなサイズが合うのか」が分からない</li>
+        </ul>
+        <p><strong>やるべきこと:</strong></p>
+        <ul>
+          <li><strong>料金シミュレーター:</strong> 車種+日数+オプション→合計金額を即時表示。「保険込み・追加料金なし」を明示</li>
+          <li><strong>レビューシステム:</strong> 3軸評価（バイク状態/ショップ対応/コースの楽しさ）+ 写真 + ショップ返信</li>
+          <li><strong>キャンセルポリシー明示:</strong> 悪天候時無料キャンセルを大きく表示</li>
+          <li><strong>店舗ページ充実:</strong> スタッフ写真・自己紹介、店内写真、おすすめルート</li>
+          <li><strong>サイズガイド:</strong> 身長入力→推奨サイズ表示。「合わなかったら当日変更OK」の安心メッセージ</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="funnel-step f-yellow">
+      <div class="funnel-bar"></div>
+      <div class="funnel-content">
+        <h4>Step 4: 予約・決済 — 「予約を完了する」 <span class="tag tag-high">重要</span></h4>
+        <p><strong>現状の問題:</strong></p>
+        <ul>
+          <li>予約フローのステップ数・入力項目が多すぎないか？（要検証）</li>
+          <li>会員登録必須なら衝動的な予約を逃す</li>
+          <li>決済手段が限定的でないか？（クレカのみ？コンビニ払い？）</li>
+          <li>予約完了後の画面で「次に何をすべきか」が明確か？</li>
+        </ul>
+        <p><strong>やるべきこと:</strong></p>
+        <ul>
+          <li><strong>3ステップ予約:</strong> ①車種・日時 ②オプション・身長 ③決済。2分以内で完了</li>
+          <li><strong>ゲスト予約:</strong> メアドだけで予約可能（会員登録は任意）</li>
+          <li><strong>カート放棄対策:</strong> 予約途中で離脱→「予約を続ける」メール/LINE送信</li>
+          <li><strong>予約完了画面:</strong> Googleカレンダー追加ボタン / ショップへのアクセス情報 / 当日の持ち物</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="funnel-step f-yellow">
+      <div class="funnel-bar"></div>
+      <div class="funnel-content">
+        <h4>Step 5: 予約後〜当日 — 「ちゃんと来てもらう」 <span class="tag tag-medium">中</span></h4>
+        <p><strong>現状の問題:</strong></p>
+        <ul>
+          <li>予約確認メール1通で放置（競合も全社同じ）</li>
+          <li>No-show（無断キャンセル）が発生する</li>
+          <li>天気が悪い日に当日ドタキャン→ショップが準備損</li>
+          <li>当日来店→受付→サイズ調整→説明→出発 に時間がかかる</li>
+        </ul>
+        <p><strong>やるべきこと:</strong></p>
+        <ul>
+          <li><strong>マイページ充実:</strong> 天気予報 / おすすめルート3選 / 持ち物チェックリスト</li>
+          <li><strong>前日リマインド:</strong> メール+LINE。天気情報付き。悪天候時は早めのキャンセル/変更を促す</li>
+          <li><strong>事前チェックイン:</strong> 免責同意書のWeb事前サイン / 身長入力で事前サイズ調整</li>
+          <li><strong>当日QRチェックイン:</strong> QR見せる→5分で出発</li>
+          <li><strong>初心者向け操作動画:</strong> 予約後に自動送信（ブレーキ/変速/乗り降り）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="funnel-step f-green">
+      <div class="funnel-bar"></div>
+      <div class="funnel-content">
+        <h4>Step 6: 利用中 — 「最高の体験をしてもらう」 <span class="tag tag-medium">中</span></h4>
+        <p><strong>やるべきこと:</strong></p>
+        <ul>
+          <li><strong>「困ったとき」ボタン:</strong> パンク→修理動画+最寄り店 / 道に迷った→帰り道ルート / 緊急連絡先</li>
+          <li><strong>ルートマップ:</strong> ショップスタッフ監修のおすすめコース（初級/中級/上級、カフェ・トイレ情報付き）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="funnel-step f-green">
+      <div class="funnel-bar"></div>
+      <div class="funnel-content">
+        <h4>Step 7: 利用後 — 「また来てもらう / 広めてもらう」 <span class="tag tag-high">重要</span></h4>
+        <p><strong>やるべきこと:</strong></p>
+        <ul>
+          <li><strong>ライドサマリー:</strong> 利用車種の写真 + 「次のチャレンジ」提案（クロス→ロードへのステップアップ）</li>
+          <li><strong>次回クーポン:</strong> 10%OFF（30日有効）→ リピート促進</li>
+          <li><strong>レビュー依頼:</strong> 自動送信。投稿で次回100円OFF</li>
+          <li><strong>SNSシェア:</strong> Instagram/X用の画像テンプレート自動生成</li>
+          <li><strong>購入導線:</strong> 「この車種、気に入りましたか？→ショップで購入相談できます」</li>
+          <li><strong>会員ランク:</strong> ブロンズ→シルバー→ゴールド。ペナルティなし、使うほど得するモデル</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 2. プラットフォームの生死を分ける問題 ===== -->
+  <h2>2. プラットフォームの生死を分ける問題</h2>
+  <p>RINCLEは「プロショップのプラットフォーム」。プラットフォームが死ぬパターンは決まっている。</p>
+
+  <div class="section critical">
+    <h3>ショップ側の体験が崩壊したら終わり</h3>
+    <p>ユーザー側のUIをいくら磨いても、<strong>ショップがRINCLEを使い続けてくれなければプラットフォームは死ぬ</strong>。</p>
+
+    <div class="problem">
+      <div class="problem-title">在庫管理の二重入力問題</div>
+      <div class="problem-body">
+        ショップは自店の在庫管理システムを持っている。RINCLEの在庫を別途手動更新する必要があるなら、面倒→更新されない→在庫ズレ→オーバーブッキング or 空きがあるのに「満車」表示→ユーザー体験崩壊。<br><br>
+        <strong>対策:</strong> ショップ側の管理画面をとにかくシンプルにする。Googleカレンダー連携/CSVインポート/API提供で、既存の管理フローに乗せる。理想は「RINCLEの管理画面だけで全部完結する」レベル。
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-title">ショップのROIが見えない</div>
+      <div class="problem-body">
+        「RINCLEに参加して、結局いくら儲かったの？」にショップが答えられないと、契約更新時に離脱する。<br><br>
+        <strong>対策:</strong> ショップ向けダッシュボードで、月次の予約数/売上/レビュー評価/「レンタル後に購入相談があった件数」を可視化。特に「購入相談への転換」は、プロショップにとって最大のインセンティブ。
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-title">写真・データの品質がバラバラ</div>
+      <div class="problem-body">
+        あるショップは高画質な写真と詳細なスペック。別のショップはスマホで撮ったぼやけた写真1枚。この差がユーザーの印象と予約率に直結する。<br><br>
+        <strong>対策:</strong> 写真撮影ガイドラインの提供。テンプレート的な商品登録フォーム（必須項目を明確に）。品質基準を満たさない掲載は非公開にするルール。優秀なショップは検索上位に表示するインセンティブ設計。
+      </div>
+    </div>
+
+    <div class="problem">
+      <div class="problem-title">サービス品質のばらつき</div>
+      <div class="problem-body">
+        あるショップは丁寧に接客、別のショップは無愛想。1店舗の悪い体験がRINCLE全体のブランドを毀損する。<br><br>
+        <strong>対策:</strong> レビュースコアのモニタリング。低評価店舗への改善サポート。認定制度（ブロンズ/シルバー/ゴールド）で品質を可視化。
+      </div>
+    </div>
+  </div>
+
+  <div class="section important">
+    <h3>コールドスタート問題を突破する</h3>
+    <p>サービス開始3ヶ月。レビューゼロ、ブランド認知ゼロ。この状態で新規ユーザーを獲得するには？</p>
+
+    <div class="solution">
+      <div class="solution-title">レビューの種まき戦略</div>
+      <div class="solution-body">
+        <ul>
+          <li>パートナーショップの既存顧客に「RINCLE経由で予約してレビューを書いてください」と依頼</li>
+          <li>体験モニターを募集（無料 or 50%OFFで体験→レビュー投稿を条件に）</li>
+          <li>自転車メディア・ブロガーに体験取材を依頼</li>
+          <li>目標: 各店舗最低5件のレビュー。合計120件あれば「選ばれているサービス」感が出る</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="solution">
+      <div class="solution-title">パートナーショップの既存チャネルを活用</div>
+      <div class="solution-body">
+        <ul>
+          <li>各ショップのWebサイト・SNS・店頭POPにRINCLEへの導線を設置</li>
+          <li>ショップの既存顧客にRINCLEを紹介するメールを配信</li>
+          <li>ショップのGoogleビジネスプロフィールにRINCLEのリンクを追加</li>
+          <li><strong>ポイント: 自社でゼロから集客するより、24店舗の既存集客力を借りる方がはるかに効率的</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 3. データで意思決定する ===== -->
+  <h2>3. 計測できていないものは改善できない</h2>
+  <p>今のRINCLEが以下の数値を把握できているか？把握できていないなら、改善の方向が正しいかすら分からない。</p>
+
+  <div class="metrics">
+    <div class="metric red">
+      <div class="metric-value">???</div>
+      <div class="metric-label">月間サイト訪問数</div>
+    </div>
+    <div class="metric red">
+      <div class="metric-value">???</div>
+      <div class="metric-label">検索→詳細 遷移率</div>
+    </div>
+    <div class="metric red">
+      <div class="metric-value">???</div>
+      <div class="metric-label">詳細→予約開始率</div>
+    </div>
+    <div class="metric red">
+      <div class="metric-value">???</div>
+      <div class="metric-label">予約完了率（カート放棄率）</div>
+    </div>
+    <div class="metric red">
+      <div class="metric-value">???</div>
+      <div class="metric-label">No-show率</div>
+    </div>
+    <div class="metric red">
+      <div class="metric-value">???</div>
+      <div class="metric-label">リピート率</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>これらの数値が1つでも取れていないなら、まずアナリティクスの整備が最優先。</strong> どの施策をやるべきかは、ファネルのどこで一番漏れているかで決まる。感覚ではなくデータで判断する。
+  </div>
+
+  <h3>最低限入れるべき計測ポイント</h3>
+  <table>
+    <tr><th>イベント名</th><th>タイミング</th><th>目的</th></tr>
+    <tr><td>page_view</td><td>各ページ表示</td><td>流入元・ページ別PV</td></tr>
+    <tr><td>search_executed</td><td>検索実行時</td><td>検索条件・結果件数</td></tr>
+    <tr><td>search_zero_result</td><td>検索結果0件時</td><td>ユーザーが求めているが提供できていないもの</td></tr>
+    <tr><td>bike_detail_view</td><td>車種詳細ページ表示</td><td>人気車種の特定</td></tr>
+    <tr><td>compare_add</td><td>比較に追加</td><td>比較機能の利用率</td></tr>
+    <tr><td>booking_start</td><td>予約フロー開始</td><td>予約意向の計測</td></tr>
+    <tr><td>booking_step_N</td><td>予約フローの各ステップ</td><td>離脱ポイントの特定</td></tr>
+    <tr><td>booking_complete</td><td>予約完了</td><td>CVR計算</td></tr>
+    <tr><td>booking_abandon</td><td>予約途中離脱</td><td>カート放棄率・放棄ステップ</td></tr>
+    <tr><td>review_submit</td><td>レビュー投稿</td><td>レビュー投稿率</td></tr>
+    <tr><td>purchase_inquiry</td><td>購入相談クリック</td><td>購入転換の計測（ショップROI）</td></tr>
+  </table>
+
+  <hr class="divider">
+
+  <!-- ===== 4. 本当にやるべき優先順位 ===== -->
+  <h2>4. 本当にやるべき順番</h2>
+  <p>「全部やりたい」は「何もやらない」と同じ。CTOとして判断する優先順位はこう。</p>
+
+  <div class="section critical">
+    <h3>Tier 0: 今週やる（これがないと他の施策が全部無駄）</h3>
+    <table>
+      <tr><th>#</th><th>施策</th><th>理由</th></tr>
+      <tr>
+        <td><span class="tag tag-critical">T0-1</span></td>
+        <td><strong>アナリティクス整備</strong><br>GA4 + イベントトラッキング</td>
+        <td>何が起きているか分からなければ、何をすべきかも分からない。ファネルの全ステップにイベント計測を入れる</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-critical">T0-2</span></td>
+        <td><strong>PageSpeed計測</strong><br>Core Web Vitals確認</td>
+        <td>もしLCPが5秒以上なら、UIを改善する以前にユーザーがサイトを見ていない。確認だけなら5分</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-critical">T0-3</span></td>
+        <td><strong>SEOインデックス確認</strong><br><code>site:rincle.co.jp</code></td>
+        <td>インデックスされていなければ、どんなにいいページを作ってもGoogleに存在しない</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section critical">
+    <h3>Tier 1: 今月やる（ユーザーが来ても予約できない問題を解消）</h3>
+    <table>
+      <tr><th>#</th><th>施策</th><th>理由</th></tr>
+      <tr>
+        <td><span class="tag tag-critical">T1-1</span></td>
+        <td><strong>検索バーの実装</strong><br>[エリア][日付][車種]→検索</td>
+        <td>ユーザーが来ても「探せない」なら予約されない。ファーストビューに検索バーを置く</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-critical">T1-2</span></td>
+        <td><strong>リアルタイム空き表示</strong><br>カレンダー + 残数</td>
+        <td>「空いてるか分からない→離脱」を防ぐ。全競合ができていない</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-critical">T1-3</span></td>
+        <td><strong>料金の明示</strong><br>シミュレーター or 料金ガイド</td>
+        <td>「いくらか分からない→離脱」を防ぐ。保険込み・追加料金なしを明示</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-critical">T1-4</span></td>
+        <td><strong>キャンセルポリシーの明示</strong><br>悪天候時無料キャンセル</td>
+        <td>「雨だったらどうしよう→予約しない」を防ぐ。1行追加するだけ</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section important">
+    <h3>Tier 2: 来月やる（CVRと信頼性を上げる）</h3>
+    <table>
+      <tr><th>#</th><th>施策</th><th>理由</th></tr>
+      <tr>
+        <td><span class="tag tag-high">T2-1</span></td>
+        <td><strong>空き状況の一覧比較</strong><br>複数店舗を横並びで比較</td>
+        <td>プラットフォームならではの体験。単店舗の競合には不可能</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-high">T2-2</span></td>
+        <td><strong>自転車の比較機能</strong><br>2〜3台を並べてスペック・料金比較</td>
+        <td>「どれがいいか分からない」の離脱を防ぐ。価格.com型</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-high">T2-3</span></td>
+        <td><strong>レビューシステム</strong><br>3軸評価 + ショップ返信</td>
+        <td>信頼の根拠を作る。業界全体でレビューが少ないから先行者利益</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-high">T2-4</span></td>
+        <td><strong>SEOランディングページ</strong><br>SSR/SSGで店舗×地域ページ</td>
+        <td>Bubble.ioの限界を回避してオーガニック流入を作る</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-high">T2-5</span></td>
+        <td><strong>店舗詳細ページの充実</strong><br>写真/スタッフ/ルート/レビュー</td>
+        <td>「この店舗に行きたい」と思わせるコンテンツ</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-high">T2-6</span></td>
+        <td><strong>初心者おすすめ診断</strong><br>3問で最適車種を提案</td>
+        <td>初心者のCVRを上げる。競合ゼロの機能</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-high">T2-7</span></td>
+        <td><strong>初心者/経験者モード</strong><br>表示情報の切替</td>
+        <td>同じ画面で両方のCVRを最大化</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section growth">
+    <h3>Tier 3: 3ヶ月以内にやる（リピートと成長のエンジン）</h3>
+    <table>
+      <tr><th>#</th><th>施策</th><th>理由</th></tr>
+      <tr>
+        <td><span class="tag tag-medium">T3-1</span></td>
+        <td><strong>「似た自転車」レコメンド</strong></td>
+        <td>満車・予算オーバーでの離脱を代替案で防ぐ</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-medium">T3-2</span></td>
+        <td><strong>お気に入り保存 + 空き通知</strong></td>
+        <td>初回訪問で予約しなかったユーザーを取り戻す</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-medium">T3-3</span></td>
+        <td><strong>LINE連携</strong><br>通知・リマインド・クーポン</td>
+        <td>メールよりLINEの開封率が3倍以上。リピートチャネルとして最強</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-medium">T3-4</span></td>
+        <td><strong>予約後体験の設計</strong><br>天気/ルート/リマインド/QRチェックイン</td>
+        <td>No-show防止 + 当日満足度の向上</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-medium">T3-5</span></td>
+        <td><strong>返却後フォロー</strong><br>サマリー/次回提案/購入導線/クーポン</td>
+        <td>リピート率が全てを決める</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-medium">T3-6</span></td>
+        <td><strong>ショップ向けダッシュボード</strong></td>
+        <td>ショップのROI可視化 → 継続率UP → 新規ショップ営業の武器</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-medium">T3-7</span></td>
+        <td><strong>会員ランク制度</strong><br>ペナルティなし、使うほど得する</td>
+        <td>CycleTripのサブスク解約ペナルティへのアンチテーゼ</td>
+      </tr>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 5. 主要機能の具体UIイメージ ===== -->
+  <h2>5. 主要機能の具体UIイメージ</h2>
+  <p>Tier 1〜2の施策について、実装のゴールイメージを明確にする。</p>
+
+  <div class="section">
+    <h3>検索バー（Tier 1-1）</h3>
+    <div class="ui-block">
+      <div class="ui-label">トップページ ファーストビュー</div>
+      <br>
+      ┌─────────────────────────────────────────────────┐<br>
+      │                                                           │<br>
+      │   全国のプロショップでスポーツバイクをレンタル               │<br>
+      │   24店舗 / 12都府県 / プロ整備済み                          │<br>
+      │                                                           │<br>
+      │   📍 [エリア ▼]  📅 [日付 ▼]  🚴 [車種 ▼]  [🔍 検索]     │<br>
+      │                                                           │<br>
+      │   人気: 神戸 | 東京 | 福岡 | 広島 | 名古屋                  │<br>
+      │                                                           │<br>
+      └─────────────────────────────────────────────────┘
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>検索結果 + 空き状況一覧比較（Tier 1-2, 2-1）</h3>
+    <div class="ui-block">
+      <div class="ui-label">検索結果ページ</div>
+      <br>
+      ┌─ 神戸エリア / 5/24(土) / ロードバイク ──────────────────────┐<br>
+      │                                                             │<br>
+      │ フィルタ: [予算 ▼] [ブランド ▼] [グレード ▼] [初心者向け ☐]   │<br>
+      │ ソート:  料金が安い順 ▼                                      │<br>
+      │                                                             │<br>
+      │ ┌───────────────────────────────────────────┐ │<br>
+      │ │ 📷 Specialized Allez    ¥6,000/日   🟢 空きあり(3台)      │ │<br>
+      │ │    ★★★★★ 4.9 (12件)   アルミ / Sora / 9.2kg            │ │<br>
+      │ │    スペシャライズド神戸   [詳細] [比較に追加 ☐]            │ │<br>
+      │ ├───────────────────────────────────────────┤ │<br>
+      │ │ 📷 S-Works Tarmac      ¥13,200/日  🟡 残り1台           │ │<br>
+      │ │    ★★★★★ 5.0 (8件)    カーボン / Ultegra / 6.7kg       │ │<br>
+      │ │    スペシャライズド神戸   [詳細] [比較に追加 ☐]            │ │<br>
+      │ └───────────────────────────────────────────┘ │<br>
+      │                                                             │<br>
+      │ 💡 初心者の方へ → [おすすめ診断を試す]                        │<br>
+      └─────────────────────────────────────────────┘
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>自転車比較機能（Tier 2-2）</h3>
+    <div class="ui-block">
+      <div class="ui-label">比較画面（2〜3台）</div>
+      <br>
+      ┌─ 自転車を比較する（2台選択中）──────────────────────────┐<br>
+      │                │ Specialized Allez  │ TREK Domane AL2    │<br>
+      │ ───────────┼─────────────┼─────────────│<br>
+      │ 写真            │ [📷]              │ [📷]              │<br>
+      │ 料金/日         │ ¥6,000            │ ¥5,500            │<br>
+      │ フレーム        │ アルミ (E5)        │ アルミ (Alpha)     │<br>
+      │ コンポ          │ Shimano Sora 2x9  │ Shimano Claris 2x8│<br>
+      │ 重量            │ 9.2kg             │ 9.8kg             │<br>
+      │ レビュー        │ ★4.9 (12件)      │ ★4.7 (8件)       │<br>
+      │ 店舗            │ SPZ神戸           │ 〇〇サイクル渋谷  │<br>
+      │ 空き            │ 🟢 3台           │ 🟢 5台            │<br>
+      │                │ [予約する →]      │ [予約する →]      │<br>
+      ├──────────────────────────────────────────┤<br>
+      │ 💡 走りの軽さ重視なら「Allez」（レビュー評価No.1）          │<br>
+      │ 💡 価格重視なら「Domane」（¥500/日 安い）                   │<br>
+      └──────────────────────────────────────────┘
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>初心者/経験者モード（Tier 2-7）</h3>
+    <div class="two-col">
+      <div class="ui-block">
+        <div class="ui-label">初心者モード</div>
+        <br>
+        📷 [写真]<br>
+        🏷 街乗り・初心者向き<br>
+        ¥6,000/日<br><br>
+        「安定感があって初めて<br>
+        &nbsp;でも安心。街中の<br>
+        &nbsp;サイクリングにぴったり」<br><br>
+        ★★★★★ 4.9<br>
+        [予約する →]
+      </div>
+      <div class="ui-block">
+        <div class="ui-label">経験者モード</div>
+        <br>
+        📷 [写真]<br>
+        Specialized Allez E5 Disc<br>
+        ¥6,000/日<br><br>
+        Frame: アルミ (E5)<br>
+        Comp: Shimano Sora 2x9<br>
+        Weight: 9.2kg<br>
+        Size: 49/52/54/56<br><br>
+        ★★★★★ 4.9 (12件)<br>
+        [予約する →] [比較に追加]
+      </div>
+    </div>
+    <div class="callout blue">
+      <strong>なぜ2モード必要か:</strong> 初心者は「Shimano Sora 2x9」が意味不明で離脱する。経験者は「街乗り向き」のラベルが冗長でイライラする。同じ画面で両方のCVRを最大化するには、表示情報を切り替えるしかない。競合は全社ここが未対応。
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>レビューシステム（Tier 2-3）</h3>
+    <div class="ui-block">
+      <div class="ui-label">レビュー表示UI</div>
+      <br>
+      バイクの状態    ★★★★★ 5.0<br>
+      ショップの対応  ★★★★☆ 4.5<br>
+      コースの楽しさ  ★★★★★ 5.0<br>
+      <br>
+      「初めてのロードバイクでしたが、<br>
+      &nbsp;スタッフさんが丁寧に教えてくれて<br>
+      &nbsp;安心して楽しめました！」<br>
+      <br>
+      📸 [写真1] [写真2]<br>
+      <br>
+      💬 ショップからの返信:<br>
+      「ありがとうございます！次回は<br>
+      &nbsp;六甲山コースもおすすめですよ！」
+    </div>
+    <div class="callout blue">
+      <strong>業界全体でレビューが少ない = 先に貯めた者勝ち。</strong>ショップ返信は食べログ効果で信頼感倍増。目標: 各店舗5件、合計120件。
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>予約後〜返却後の体験フロー（Tier 3-4, 3-5）</h3>
+    <div class="ui-block">
+      <div class="ui-label">タッチポイント設計</div>
+      <br>
+      予約完了 ── マイページに天気/ルート/持ち物チェックリスト表示<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Googleカレンダー追加ボタン<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;初心者向け操作動画を自動送信<br>
+      <br>
+      前日18:00 ─ 「明日は晴れです！」+ 予約確認 + キャンセル/変更ボタン<br>
+      当日08:00 ─ チェックインQRコード + ショップへのアクセス<br>
+      <br>
+      ライド中 ── 「困ったとき」ボタン（パンク/道迷い/緊急）<br>
+      <br>
+      返却後 ──── ライドサマリー + 次のチャレンジ提案<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;「クロスバイク → 次はロードバイクを試しませんか？」<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次回10%OFFクーポン（30日有効）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;レビュー投稿依頼 + SNSシェアボタン<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;「この車種、気に入った？→購入相談予約」
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ===== 6. 競合弱点マッピング ===== -->
+  <h2>6. 競合弱点 → RINCLE機能マッピング</h2>
+  <p>各施策が「どの競合の弱点を突いているか」を明確にする。</p>
+
+  <table>
+    <tr><th>競合の弱点</th><th>該当する競合</th><th>RINCLE施策</th><th>Tier</th></tr>
+    <tr><td>日付×エリア×車種の横断検索ができない</td><td>全社</td><td>統合検索バー</td><td><span class="tag tag-critical">T1</span></td></tr>
+    <tr><td>空き状況がリアルタイムで見えない</td><td>クロスビー/PK/東京CT</td><td>カレンダー空き表示（残数付き）</td><td><span class="tag tag-critical">T1</span></td></tr>
+    <tr><td>料金がWebに載っていない / 不明確</td><td>PK / RINCLE自身</td><td>料金シミュレーター</td><td><span class="tag tag-critical">T1</span></td></tr>
+    <tr><td>悪天候時の不安で予約しない</td><td>全社（明示不足）</td><td>キャンセルポリシー明示</td><td><span class="tag tag-critical">T1</span></td></tr>
+    <tr><td>複数店舗の空きを比較できない</td><td>全社（特にジャイアント12店舗）</td><td>空き状況一覧比較</td><td><span class="tag tag-high">T2</span></td></tr>
+    <tr><td>自転車スペックを並べて比較できない</td><td>全社</td><td>自転車比較機能（価格.com型）</td><td><span class="tag tag-high">T2</span></td></tr>
+    <tr><td>口コミ・レビューがゼロ</td><td>クロスビー/PK/東京CT</td><td>3軸レビュー + ショップ返信</td><td><span class="tag tag-high">T2</span></td></tr>
+    <tr><td>初心者が何を借りればいいか分からない</td><td>全社</td><td>おすすめ診断 + 初心者/経験者モード</td><td><span class="tag tag-high">T2</span></td></tr>
+    <tr><td>情報サイトと予約サイトが分離</td><td>ジャイアント</td><td>ワンストップの統一UI</td><td><span class="tag tag-high">T2</span></td></tr>
+    <tr><td>受付30分 / ワンオペ待ち</td><td>ジャイアント/CycleTrip</td><td>QRチェックイン + 事前サイズ入力</td><td><span class="tag tag-medium">T3</span></td></tr>
+    <tr><td>満車で離脱して終わり</td><td>全社</td><td>「似た自転車」レコメンド + 別店舗提案</td><td><span class="tag tag-medium">T3</span></td></tr>
+    <tr><td>後で予約しようと思って忘れる</td><td>全社</td><td>お気に入り保存 + 空き通知</td><td><span class="tag tag-medium">T3</span></td></tr>
+    <tr><td>予約後〜当日まで連絡なし</td><td>全社</td><td>天気/ルート/リマインド自動通知</td><td><span class="tag tag-medium">T3</span></td></tr>
+    <tr><td>返却後フォローなし</td><td>全社</td><td>サマリー + 次回提案 + 購入導線 + クーポン</td><td><span class="tag tag-medium">T3</span></td></tr>
+    <tr><td>サブスク解約ペナルティが重い</td><td>CycleTrip</td><td>ペナルティなし会員ランク制度</td><td><span class="tag tag-medium">T3</span></td></tr>
+    <tr><td>LINE連携なし</td><td>全社</td><td>LINE通知 + 予約 + クーポン</td><td><span class="tag tag-medium">T3</span></td></tr>
+    <tr><td>アプリなし</td><td>全社</td><td>PWA → ネイティブアプリ</td><td>将来</td></tr>
+  </table>
+
+  <hr class="divider">
+
+  <!-- ===== 7. CTOとして絶対に忘れてはいけないこと ===== -->
+  <h2>7. CTOとして絶対に忘れてはいけないこと</h2>
+
+  <div class="section" style="border-color: #e94560; border-width: 2px;">
+    <h3 style="color: #dc2626;">プラットフォームのフライホイール</h3>
+    <p>RINCLEの成長エンジンは1つの循環構造でできている。どこか1つが止まると全体が止まる。</p>
+
+    <div class="ui-block">
+      <div class="ui-label">フライホイール</div>
+      <br>
+      ショップが増える → 選べる車種・エリアが増える<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+      ユーザーが増える → 予約が増える<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+      レビューが溜まる → 信頼が生まれる<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+      さらにユーザーが増える → ショップのROIが上がる<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+      ショップが離脱しない + 新規ショップが参加する<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+      ショップが増える → ...(繰り返し)<br>
+    </div>
+
+    <div class="callout blue">
+      <strong>今、最もボトルネックになっているのはどこか？</strong><br><br>
+      おそらく「ユーザーが増える」のステップ。ショップは24店舗ある。でもユーザーが来ていない（SEO問題/認知問題）。だからレビューも溜まらず、ショップのROIも見えない。<br><br>
+      <strong>つまり、全施策の中で最も重要なのは「ユーザーを連れてくること」</strong>。UIを磨くのはその次。来てくれたユーザーを逃さない仕組みがその次。
+    </div>
+
+    <h3 style="color: #dc2626;">だからこの順番</h3>
+    <div class="ui-block">
+      <div class="ui-label">実行順序</div>
+      <br>
+      1. 計測を入れる（今何が起きているか知る）<br>
+      2. サイトの速度問題を確認・対処（来た人が離脱していないか）<br>
+      3. SEO/集客を立て直す（そもそもユーザーを連れてくる）<br>
+      4. 検索・比較・料金表示を作る（来た人が予約まで辿り着ける）<br>
+      5. レビュー・信頼構築（予約を後押しする根拠を作る）<br>
+      6. 予約後体験・リピート設計（一度来た人を逃さない）<br>
+      7. ショップ側の体験を磨く（プラットフォームの持続性を確保）<br>
+    </div>
+
+    <p style="color: #dc2626; font-weight: 700; font-size: 15px; margin-top: 20px;">
+      UIの細部を磨く前に、そもそもユーザーがサイトに到達しているのか。到達した人が離脱せずに中身を見ているのか。そこから確認する。
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
