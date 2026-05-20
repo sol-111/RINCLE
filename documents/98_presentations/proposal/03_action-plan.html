@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RINCLE アクションプラン</title>
+<style>
+  :root {
+    --red: #e94560;
+    --navy: #0f3460;
+    --dark: #1a1a2e;
+    --phase1: #dc2626;
+    --phase2: #2563eb;
+    --phase3: #7c3aed;
+    --phase4: #059669;
+    --bg: #f8f9fb;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #5a5a72;
+    --border: #e8e8ef;
+    --shadow: 0 4px 24px rgba(0,0,0,.07);
+    --shadow-hover: 0 8px 32px rgba(0,0,0,.12);
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ─── Hero ─── */
+  .hero {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--dark);
+    letter-spacing: .02em;
+  }
+  .hero h1 span { color: var(--red); }
+  .hero p {
+    margin-top: 10px;
+    font-size: 1.05rem;
+    color: var(--text-sub);
+  }
+
+  /* ─── Section ─── */
+  .section {
+    margin-bottom: 56px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .section-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 1rem;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  /* ─── Card ─── */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 32px;
+    transition: box-shadow .2s;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); }
+
+  /* ─── Competitor Grid ─── */
+  .competitor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  .competitor-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 20px;
+    border-top: 4px solid var(--navy);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .competitor-card .cc-name {
+    font-weight: 700;
+    font-size: .95rem;
+    color: var(--dark);
+  }
+  .competitor-card .cc-model {
+    font-size: .82rem;
+    color: var(--text-sub);
+  }
+  .competitor-card .cc-scale {
+    font-size: .8rem;
+    background: #eef2ff;
+    color: var(--navy);
+    border-radius: 6px;
+    padding: 4px 10px;
+    display: inline-block;
+    font-weight: 600;
+    margin-top: auto;
+  }
+
+  /* ─── Conclusion Cards ─── */
+  .conclusion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px;
+  }
+  .conclusion-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 26px;
+    border-left: 5px solid var(--red);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .conclusion-card .cc-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .conclusion-card .cc-text {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--dark);
+    line-height: 1.6;
+  }
+
+  /* ─── SEO Problem ─── */
+  .seo-problem { padding: 32px; }
+  .seo-bar-wrap {
+    margin: 20px 0 28px;
+  }
+  .seo-bar-label {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--text-sub);
+    margin-bottom: 8px;
+  }
+  .seo-bar-track {
+    background: #f0f0f5;
+    border-radius: 8px;
+    height: 38px;
+    position: relative;
+    overflow: hidden;
+  }
+  .seo-bar-fill {
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    font-weight: 800;
+    font-size: .85rem;
+    color: #fff;
+  }
+  .seo-bar-total {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--text-sub);
+  }
+  .seo-keyword-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0 24px;
+  }
+  .seo-keyword {
+    background: #fff0f0;
+    color: var(--red);
+    font-weight: 600;
+    font-size: .82rem;
+    border-radius: 20px;
+    padding: 6px 16px;
+    border: 1px solid #ffd6d6;
+  }
+  .seo-cause {
+    background: #fff8f0;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: .9rem;
+    color: #92400e;
+  }
+  .seo-cause strong { color: #b45309; }
+
+  /* ─── Flywheel ─── */
+  .flywheel-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+  .flywheel-ring {
+    position: relative;
+    width: 420px;
+    height: 420px;
+  }
+  .fw-node {
+    position: absolute;
+    background: var(--card-bg);
+    border: 2px solid var(--navy);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: .75rem;
+    font-weight: 700;
+    color: var(--dark);
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    line-height: 1.3;
+    z-index: 2;
+    transition: transform .2s;
+  }
+  .fw-node:hover { transform: scale(1.08); }
+  .fw-node.bottleneck {
+    border-color: var(--red);
+    background: #fff0f3;
+    color: var(--red);
+    box-shadow: 0 0 0 4px rgba(233,69,96,.15), 0 2px 12px rgba(0,0,0,.08);
+  }
+  /* positions for 8 nodes in a circle (r=160) */
+  .fw-node:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+  .fw-node:nth-child(2) { top: 12%; right: 2%; }
+  .fw-node:nth-child(3) { top: 50%; right: -8%; transform: translateY(-50%); }
+  .fw-node:nth-child(4) { bottom: 12%; right: 2%; }
+  .fw-node:nth-child(5) { bottom: 0; left: 50%; transform: translateX(-50%); }
+  .fw-node:nth-child(6) { bottom: 12%; left: 2%; }
+  .fw-node:nth-child(7) { top: 50%; left: -8%; transform: translateY(-50%); }
+  .fw-node:nth-child(8) { top: 12%; left: 2%; }
+
+  .fw-arrow-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 260px; height: 260px;
+    margin-top: -130px;
+    margin-left: -130px;
+    border: 3px dashed var(--navy);
+    border-radius: 50%;
+    opacity: .25;
+    z-index: 1;
+  }
+  .fw-center-label {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: .85rem;
+    font-weight: 800;
+    color: var(--navy);
+    text-align: center;
+    z-index: 3;
+    line-height: 1.4;
+    opacity: .6;
+  }
+  .bottleneck-banner {
+    margin-top: 28px;
+    background: var(--red);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(233,69,96,.3);
+  }
+
+  /* ─── Phase Timeline ─── */
+  .phase-timeline {
+    position: relative;
+  }
+  .phase-block {
+    position: relative;
+    padding-left: 44px;
+    margin-bottom: 36px;
+  }
+  .phase-block:last-child { margin-bottom: 0; }
+  .phase-block::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 40px;
+    bottom: -36px;
+    width: 3px;
+    background: var(--border);
+  }
+  .phase-block:last-child::before { display: none; }
+  .phase-dot {
+    position: absolute;
+    left: 4px;
+    top: 10px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .7rem;
+    font-weight: 800;
+    color: #fff;
+  }
+  .phase-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .phase-label {
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+  .phase-period {
+    font-size: .78rem;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 3px 14px;
+    color: #fff;
+  }
+  .phase-subtitle {
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--text-sub);
+    margin-bottom: 12px;
+  }
+  .task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+  }
+  .task-item {
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: .88rem;
+    font-weight: 500;
+    border-left: 4px solid transparent;
+  }
+  .task-item .t-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .task-item .t-time {
+    font-size: .72rem;
+    font-weight: 700;
+    background: #f5f5fa;
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-left: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .tier-block {
+    margin-bottom: 16px;
+  }
+  .tier-label {
+    font-size: .82rem;
+    font-weight: 700;
+    border-radius: 6px;
+    padding: 4px 12px;
+    display: inline-block;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  .tier-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tier-chip {
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+    padding: 8px 16px;
+    font-size: .84rem;
+    font-weight: 500;
+    border-left: 4px solid transparent;
+  }
+
+  /* ─── Gantt Schedule ─── */
+  .gantt-card { padding: 32px; overflow-x: auto; }
+  .gantt-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .gantt-table th {
+    text-align: center;
+    font-size: .75rem;
+    font-weight: 700;
+    color: var(--text-sub);
+    padding: 8px 6px 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .gantt-table td {
+    padding: 10px 6px;
+    vertical-align: middle;
+  }
+  .gantt-table .g-label {
+    font-size: .84rem;
+    font-weight: 700;
+    white-space: nowrap;
+    padding-right: 14px;
+    min-width: 120px;
+  }
+  .gantt-bar {
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .72rem;
+    font-weight: 700;
+    color: #fff;
+    opacity: .92;
+  }
+
+  /* ─── Data List ─── */
+  .data-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .data-chip {
+    background: #eff6ff;
+    color: var(--phase2);
+    font-weight: 600;
+    font-size: .84rem;
+    border-radius: 8px;
+    padding: 8px 16px;
+    border: 1px solid #bfdbfe;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.6rem; }
+    .flywheel-ring { width: 320px; height: 320px; }
+    .fw-node { width: 76px; height: 76px; font-size: .65rem; }
+    .conclusion-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1><span>RINCLE</span> アクションプラン</h1>
+    <p>競合分析に基づく成長戦略と実行ロードマップ</p>
+  </div>
+
+  <!-- ===== 0. 市場概況 ===== -->
+  <div class="section">
+    <h2 style="display:inline-block; border-bottom:2px solid #e94560; padding-bottom:8px;">0. 市場概況 — なぜ今このサービスに投資すべきか</h2>
+    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:20px;">
+      <div style="background:#fff; border-radius:12px; padding:24px; border:1px solid #e8e8e8; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+        <div style="font-size:12px; color:#666; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">サイクルツーリズム市場（日本）</div>
+        <div style="font-size:28px; font-weight:700; color:#0f3460;">CAGR 11.4%</div>
+        <div style="font-size:13px; color:#666; margin-top:8px;">2024年 約63.4億ドル → 2033年 164億ドル</div>
+        <div style="font-size:11px; color:#999; margin-top:4px;">出典: Mordor Intelligence / GVR</div>
+      </div>
+      <div style="background:#fff; border-radius:12px; padding:24px; border:1px solid #e8e8e8; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+        <div style="font-size:12px; color:#666; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">E-Bike市場（グローバル）</div>
+        <div style="font-size:28px; font-weight:700; color:#0f3460;">CAGR 14.4%</div>
+        <div style="font-size:13px; color:#666; margin-top:8px;">2025年 575億ドル → 2034年 1,932億ドル</div>
+        <div style="font-size:11px; color:#999; margin-top:4px;">出典: Fortune Business Insights</div>
+      </div>
+      <div style="background:#fff; border-radius:12px; padding:24px; border:1px solid #e8e8e8; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+        <div style="font-size:12px; color:#666; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">国内レンタル市場</div>
+        <div style="font-size:28px; font-weight:700; color:#e94560;">空白市場</div>
+        <div style="font-size:13px; color:#666; margin-top:8px;">大手プラットフォーマー不在。最大でもCycleTrip BASEの300台/3店舗</div>
+      </div>
+    </div>
+    <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:14px 18px; margin-top:16px; font-size:13px; color:#1e40af;">
+      <strong>RINCLEにとっての意味:</strong> 年10%以上成長する市場に、大手プラットフォーマーがまだいない。競合は全て自社保有型でスケーラビリティに限界。プラットフォーム型のRINCLEが先にポジションを取れば、市場成長の恩恵を最大限受けられる。
+    </div>
+  </div>
+
+  <!-- ===== 1. 競合調査サマリー ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--navy);">1</div>
+      <div class="section-title">競合調査サマリー</div>
+    </div>
+
+    <div class="competitor-grid">
+      <div class="competitor-card">
+        <div class="cc-name">CycleTrip BASE</div>
+        <div class="cc-model">自社保有 + CtoC + サブスク</div>
+        <div class="cc-scale">約300台 / 3店舗</div>
+      </div>
+      <div class="competitor-card">
+        <div class="cc-name">ジャイアントストア</div>
+        <div class="cc-model">メーカー直営</div>
+        <div class="cc-scale">12店舗</div>
+      </div>
+      <div class="competitor-card">
+        <div class="cc-name">クロスビープランニング</div>
+        <div class="cc-model">自社保有 + ツアー</div>
+        <div class="cc-scale">数十台 / 1店舗</div>
+      </div>
+      <div class="competitor-card">
+        <div class="cc-name">東京サイクリングツアー</div>
+        <div class="cc-model">デリバリー型</div>
+        <div class="cc-scale">約40台 / 0店舗</div>
+      </div>
+      <div class="competitor-card">
+        <div class="cc-name">Power Kids</div>
+        <div class="cc-model">宅配レンタル</div>
+        <div class="cc-scale">少数 / 2店舗</div>
+      </div>
+    </div>
+
+    <div class="conclusion-grid">
+      <div class="conclusion-card">
+        <div class="cc-icon">&#x1F3AF;</div>
+        <div class="cc-text">競合5社は全て自社保有型。<br>プラットフォーム型はRINCLEだけ</div>
+      </div>
+      <div class="conclusion-card">
+        <div class="cc-icon">&#x1F680;</div>
+        <div class="cc-text">CycleTrip BASEは7年で3店舗。<br>RINCLEは3ヶ月で24店舗</div>
+      </div>
+      <div class="conclusion-card">
+        <div class="cc-icon">&#x1F4A1;</div>
+        <div class="cc-text">業界全体でデジタル体験が未成熟。<br>先に作れば勝てる</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 2. 現状の致命的問題 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--red);">2</div>
+      <div class="section-title">現状の致命的問題</div>
+    </div>
+
+    <div class="card seo-problem">
+      <h3 style="font-size:1.1rem; margin-bottom:6px; color:var(--red);">&#x26A0;&#xFE0F; SEO壊滅状態</h3>
+
+      <div class="seo-bar-wrap">
+        <div class="seo-bar-label">Googleインデックス数</div>
+        <div class="seo-bar-track">
+          <div class="seo-bar-fill" style="width:4%; background:var(--red);">2</div>
+          <div class="seo-bar-total">目標: 50+ ページ</div>
+        </div>
+        <div style="margin-top:6px; font-size:.78rem; color:var(--text-sub);">現在 <strong style="color:var(--red);">2ページ</strong> のみインデックス済み</div>
+      </div>
+
+      <div class="seo-bar-label">主要キーワード検索順位</div>
+      <div class="seo-keyword-list">
+        <span class="seo-keyword">&#x274C; 自転車 レンタル ── 圏外</span>
+        <span class="seo-keyword">&#x274C; ロードバイク レンタル ── 圏外</span>
+        <span class="seo-keyword">&#x274C; サイクリング レンタル ── 圏外</span>
+        <span class="seo-keyword">&#x274C; 東京 自転車 レンタル ── 圏外</span>
+      </div>
+
+      <div class="seo-cause">
+        <strong>原因:</strong> SEO基本設定が未実施（title / description / sitemap 等）+ Bubble.io の構造的なSEO制約
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 3. 成長の好循環（フライホイール） ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--navy);">3</div>
+      <div class="section-title">成長の好循環（フライホイール）</div>
+    </div>
+
+    <div class="card flywheel-wrap">
+      <div class="flywheel-ring">
+        <div class="fw-arrow-ring"></div>
+        <div class="fw-center-label">&#x1F504;<br>好循環</div>
+
+        <div class="fw-node">ショップ増</div>
+        <div class="fw-node">車種・<br>エリア増</div>
+        <div class="fw-node bottleneck">ユーザー増<br><span style="font-size:.6rem;">&#x26A0; ボトルネック</span></div>
+        <div class="fw-node">予約増</div>
+        <div class="fw-node">レビュー増</div>
+        <div class="fw-node">信頼増</div>
+        <div class="fw-node">さらに<br>ユーザー増</div>
+        <div class="fw-node">ショップ<br>ROI向上</div>
+      </div>
+      <div class="bottleneck-banner">
+        &#x26A0; ボトルネック: ユーザーが来ていない ── ここを解消しなければ循環が回らない
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 3.5. ターゲットペルソナ ===== -->
+  <div class="section">
+    <h2 style="display:inline-block; border-bottom:2px solid #e94560; padding-bottom:8px;">3.5. ターゲットペルソナ</h2>
+    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; margin-top:20px;">
+      <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e8e8e8;">
+        <div style="font-size:11px; font-weight:700; color:#fff; background:#e94560; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">A</div>
+        <div style="font-size:15px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">スポーツバイクデビューの会社員</div>
+        <div style="font-size:12px; color:#666; margin-bottom:10px;">30代男性・都市部在住</div>
+        <div style="font-size:13px; color:#444; line-height:1.7;">「ロードバイクに興味あるけど、いきなり30万円は出せない。まず試してみたい」<br>→ プロショップの対面サポート + 気に入ったらその場で購入相談</div>
+      </div>
+      <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e8e8e8;">
+        <div style="font-size:11px; font-weight:700; color:#fff; background:#2563eb; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">B</div>
+        <div style="font-size:15px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">旅先でサイクリングを楽しみたい旅行者</div>
+        <div style="font-size:12px; color:#666; margin-bottom:10px;">40代夫婦・観光旅行中</div>
+        <div style="font-size:13px; color:#444; line-height:1.7;">「しまなみ海道をサイクリングしたい。でも自転車を持っていくのは面倒」<br>→ 全国24店舗のネットワーク + ショップ監修ルート情報</div>
+      </div>
+      <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e8e8e8;">
+        <div style="font-size:11px; font-weight:700; color:#fff; background:#7c3aed; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">C</div>
+        <div style="font-size:15px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">購入前にいろいろ試したい経験者</div>
+        <div style="font-size:12px; color:#666; margin-bottom:10px;">20〜30代男性・クロスバイク所有</div>
+        <div style="font-size:13px; color:#444; line-height:1.7;">「次はロードバイクが欲しいけど、ブランドが多すぎて決められない」<br>→ マルチブランド対応 + プロショップで購入相談 + レンタル料金割引</div>
+      </div>
+      <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e8e8e8;">
+        <div style="font-size:11px; font-weight:700; color:#fff; background:#059669; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">D</div>
+        <div style="font-size:15px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">健康目的のシニア層</div>
+        <div style="font-size:12px; color:#666; margin-bottom:10px;">50〜60代・体力に自信がない</div>
+        <div style="font-size:13px; color:#444; line-height:1.7;">「健康のために運動したいけど、ランニングは膝が心配。E-Bikeなら続けられそう」<br>→ E-Bike対応ショップ + 初心者向け操作説明 + おすすめルート</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 4. 提案: 実行フェーズ ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--dark);">4</div>
+      <div class="section-title">提案: 実行フェーズ</div>
+    </div>
+
+    <div class="card phase-timeline">
+
+      <!-- Phase 1 -->
+      <div class="phase-block">
+        <div class="phase-dot" style="background:var(--phase1);">1</div>
+        <div class="phase-head">
+          <span class="phase-label" style="color:var(--phase1);">Phase 1</span>
+          <span class="phase-period" style="background:var(--phase1);">今週</span>
+        </div>
+        <div class="phase-subtitle">計測 + SEO基盤整備</div>
+        <div class="task-grid">
+          <div class="task-item" style="border-left-color:var(--phase1);">
+            <span class="t-icon">&#x1F4CA;</span> GA4導入
+            <span class="t-time">30分</span>
+          </div>
+          <div class="task-item" style="border-left-color:var(--phase1);">
+            <span class="t-icon">&#x1F3F7;&#xFE0F;</span> title / description 設定
+            <span class="t-time">1〜2日</span>
+          </div>
+          <div class="task-item" style="border-left-color:var(--phase1);">
+            <span class="t-icon">&#x1F310;</span> OGP設定
+            <span class="t-time">半日</span>
+          </div>
+          <div class="task-item" style="border-left-color:var(--phase1);">
+            <span class="t-icon">&#x1F5FA;&#xFE0F;</span> sitemap.xml + robots.txt
+            <span class="t-time">半日</span>
+          </div>
+          <div class="task-item" style="border-left-color:var(--phase1);">
+            <span class="t-icon">&#x1F50D;</span> Search Console登録
+            <span class="t-time">1時間</span>
+          </div>
+          <div class="task-item" style="border-left-color:var(--phase1);">
+            <span class="t-icon">&#x1F9F1;</span> h1 / alt / canonical
+            <span class="t-time">1〜2日</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-block">
+        <div class="phase-dot" style="background:var(--phase2);">2</div>
+        <div class="phase-head">
+          <span class="phase-label" style="color:var(--phase2);">Phase 2</span>
+          <span class="phase-period" style="background:var(--phase2);">1〜2週間</span>
+        </div>
+        <div class="phase-subtitle">データ取得 + デザイン改善設計</div>
+        <div style="font-size:.9rem; color:var(--text-sub); margin-bottom:8px;">取得データ:</div>
+        <div class="data-list">
+          <span class="data-chip">&#x1F4C8; 訪問数</span>
+          <span class="data-chip">&#x1F517; 流入元</span>
+          <span class="data-chip">&#x1F6AA; 離脱率</span>
+          <span class="data-chip">&#x2705; 予約完了率</span>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-block">
+        <div class="phase-dot" style="background:var(--phase3);">3</div>
+        <div class="phase-head">
+          <span class="phase-label" style="color:var(--phase3);">Phase 3</span>
+          <span class="phase-period" style="background:var(--phase3);">UI/UX改善</span>
+        </div>
+        <div class="phase-subtitle">段階的にUXを強化</div>
+
+        <div class="tier-block">
+          <span class="tier-label" style="background:var(--phase3);">Tier 1 ── 今月</span>
+          <div class="tier-items">
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F50E; 検索バー</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F7E2; 空き表示</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F4B0; 料金明示</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F4DD; キャンセルポリシー</span>
+          </div>
+        </div>
+
+        <div class="tier-block">
+          <span class="tier-label" style="background:var(--phase3); opacity:.8;">Tier 2 ── 来月</span>
+          <div class="tier-items">
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F4CB; 一覧比較</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F6B2; 自転車比較</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x2B50; レビュー</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F4C4; SEOページ</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F3EA; 店舗充実</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F9ED; 初心者診断</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F504; モード切替</span>
+          </div>
+        </div>
+
+        <div class="tier-block">
+          <span class="tier-label" style="background:var(--phase3); opacity:.6;">Tier 3 ── 3ヶ月</span>
+          <div class="tier-items">
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F4A1; レコメンド</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x2764;&#xFE0F; お気に入り</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F4AC; LINE連携</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F4E6; 予約後体験</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F64F; 返却後フォロー</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F4CA; ダッシュボード</span>
+            <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F451; 会員ランク</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="phase-block">
+        <div class="phase-dot" style="background:var(--phase4);">4</div>
+        <div class="phase-head">
+          <span class="phase-label" style="color:var(--phase4);">Phase 4</span>
+          <span class="phase-period" style="background:var(--phase4);">集客</span>
+        </div>
+        <div class="phase-subtitle">トラフィック獲得施策</div>
+        <div class="tier-items">
+          <span class="tier-chip" style="border-left-color:var(--phase4);">&#x1F4C4; SEOページ</span>
+          <span class="tier-chip" style="border-left-color:var(--phase4);">&#x1F4E3; Google広告</span>
+          <span class="tier-chip" style="border-left-color:var(--phase4);">&#x1F3EA; ショップチャネル活用</span>
+          <span class="tier-chip" style="border-left-color:var(--phase4);">&#x1F4F1; SNS運用</span>
+          <span class="tier-chip" style="border-left-color:var(--phase4);">&#x1F5E3;&#xFE0F; 口コミ種まき</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== 5. 全体スケジュール ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--dark);">5</div>
+      <div class="section-title">全体スケジュール</div>
+    </div>
+
+    <div class="card gantt-card">
+      <table class="gantt-table">
+        <thead>
+          <tr>
+            <th style="text-align:left;"></th>
+            <th>Week 1</th>
+            <th>Week 2-3</th>
+            <th>Week 4-6</th>
+            <th>Week 7-10</th>
+            <th>Month 4-6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="g-label" style="color:var(--phase1);">Phase 1<br><span style="font-size:.72rem; color:var(--text-sub);">計測+SEO基盤</span></td>
+            <td><div class="gantt-bar" style="background:var(--phase1);">&#x25C9;</div></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="g-label" style="color:var(--phase2);">Phase 2<br><span style="font-size:.72rem; color:var(--text-sub);">データ取得+設計</span></td>
+            <td></td>
+            <td><div class="gantt-bar" style="background:var(--phase2);">&#x25C9;</div></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="g-label" style="color:var(--phase3);">Phase 3<br><span style="font-size:.72rem; color:var(--text-sub);">UI/UX改善</span></td>
+            <td></td>
+            <td></td>
+            <td colspan="2"><div class="gantt-bar" style="background:var(--phase3);">Tier 1 → Tier 2 → Tier 3</div></td>
+            <td><div class="gantt-bar" style="background:var(--phase3); opacity:.5;">継続</div></td>
+          </tr>
+          <tr>
+            <td class="g-label" style="color:var(--phase4);">Phase 4<br><span style="font-size:.72rem; color:var(--text-sub);">集客</span></td>
+            <td></td>
+            <td></td>
+            <td><div class="gantt-bar" style="background:var(--phase4); opacity:.4;">準備</div></td>
+            <td><div class="gantt-bar" style="background:var(--phase4);">&#x25C9;</div></td>
+            <td><div class="gantt-bar" style="background:var(--phase4);">本格運用</div></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:24px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
+        <span style="display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600;">
+          <span style="width:14px; height:14px; border-radius:4px; background:var(--phase1); display:inline-block;"></span> Phase 1: 計測+SEO基盤
+        </span>
+        <span style="display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600;">
+          <span style="width:14px; height:14px; border-radius:4px; background:var(--phase2); display:inline-block;"></span> Phase 2: データ+設計
+        </span>
+        <span style="display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600;">
+          <span style="width:14px; height:14px; border-radius:4px; background:var(--phase3); display:inline-block;"></span> Phase 3: UI/UX
+        </span>
+        <span style="display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600;">
+          <span style="width:14px; height:14px; border-radius:4px; background:var(--phase4); display:inline-block;"></span> Phase 4: 集客
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 5.5. KPI目標 ===== -->
+  <div class="section">
+    <h2 style="display:inline-block; border-bottom:2px solid #e94560; padding-bottom:8px;">5.5. KPI目標</h2>
+    <p style="font-size:13px; color:#666; margin:8px 0 16px;">Phase 1でベースラインを取得した上で、以下のKPIを追跡する。</p>
+    <div style="overflow-x:auto; border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border:1px solid #e8e8e8;">
+      <table style="width:100%; border-collapse:collapse; font-size:13px; background:#fff;">
+        <thead>
+          <tr>
+            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">KPI</th>
+            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">ベースライン</th>
+            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">Phase 2終了時</th>
+            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">Phase 3終了時</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">月間サイト訪問数</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; color:#999;">要計測</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">現状の2倍</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">現状の5倍</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">予約完了率（CVR）</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; color:#999;">要計測</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">現状+1%</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">現状+3%</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">月間予約数</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; color:#999;">要計測</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">現状の2倍</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">現状の5倍</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">レビュー数（累計）</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">0件</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">72件</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">120件</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">リピート率</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; color:#999;">要計測</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">10%</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">20%</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">Googleインデックス数</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">2ページ</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">30ページ以上</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">50ページ以上</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">主要KW検索順位</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">圏外</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">50位以内</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">20位以内</td></tr>
+          <tr><td style="padding:10px 16px;">パートナーショップ数</td><td style="padding:10px 16px;">24店舗</td><td style="padding:10px 16px;">30店舗</td><td style="padding:10px 16px; font-weight:700;">50店舗</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px; color:#999; margin-top:8px;">※ 具体的な数値目標はPhase 1のベースラインデータ取得後に調整</p>
+  </div>
+
+  <!-- ===== 5.6. 概算費用 ===== -->
+  <div class="section">
+    <h2 style="display:inline-block; border-bottom:2px solid #e94560; padding-bottom:8px;">5.6. 概算費用</h2>
+    <div style="overflow-x:auto; border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border:1px solid #e8e8e8;">
+      <table style="width:100%; border-collapse:collapse; font-size:13px; background:#fff;">
+        <thead>
+          <tr>
+            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">Phase</th>
+            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">主な施策</th>
+            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">概算工数</th>
+            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">外注する場合の目安</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 1</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">GA4導入 + SEO基本設定</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">3〜5人日</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">10〜30万円</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 2</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">データ取得 + デザイン改善設計</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">5〜10人日</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">30〜80万円</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 3 Tier 1</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">検索バー/空き表示/料金明示</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">10〜20人日</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">50〜150万円</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 3 Tier 2</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">比較機能/レビュー/SEOページ</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">20〜40人日</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">100〜300万円</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 3 Tier 3</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">LINE/リピート設計/ダッシュボード</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">20〜40人日</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">100〜300万円</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 4</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">Google広告（月額）</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">—</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">月5〜30万円</td></tr>
+          <tr><td style="padding:10px 16px; font-weight:600;">Phase 4</td><td style="padding:10px 16px;">SNS運用</td><td style="padding:10px 16px;">月2〜4人日</td><td style="padding:10px 16px;">月10〜30万円</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px; color:#999; margin-top:8px;">※ Bubble.ioベースの開発か別途フロントエンド開発かで大きく変動。内製の場合はエンジニア1〜2名で対応可能な範囲。</p>
+  </div>
+
+</div>
+</body>
+</html>

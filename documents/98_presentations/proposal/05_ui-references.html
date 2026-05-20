@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI/UX リファレンス — 参考サービス集</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    line-height: 1.7;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ===== Header ===== */
+  .page-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .page-header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0f3460;
+    margin-bottom: 8px;
+  }
+  .page-header .subtitle {
+    font-size: 1.05rem;
+    color: #666;
+  }
+
+  /* ===== Section Title ===== */
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f3460;
+    margin: 56px 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #e94560;
+    display: inline-block;
+  }
+  .section-number {
+    display: inline-block;
+    background: #e94560;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* ===== Honda GO Featured Card ===== */
+  .hero-card {
+    background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+    color: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(15,52,96,0.25);
+    margin-bottom: 16px;
+  }
+  .hero-card h3 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .hero-card .hero-sub {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 20px;
+  }
+  .hero-card .hero-url {
+    display: inline-block;
+    color: #58d5ff;
+    text-decoration: none;
+    font-size: 0.92rem;
+    margin-bottom: 24px;
+    word-break: break-all;
+  }
+  .hero-card .hero-url:hover { text-decoration: underline; }
+
+  .hero-card blockquote {
+    background: rgba(255,255,255,0.08);
+    border-left: 4px solid #e94560;
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin-bottom: 28px;
+    font-style: italic;
+    line-height: 1.8;
+    font-size: 0.95rem;
+  }
+  .hero-card blockquote span {
+    display: block;
+    text-align: right;
+    font-style: normal;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 8px;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .feature-chip {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    text-align: center;
+  }
+  .feature-chip .chip-icon {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+  }
+
+  .takeaway-box {
+    background: rgba(39,174,96,0.15);
+    border: 1px solid rgba(39,174,96,0.3);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+  .takeaway-box h4 {
+    color: #27ae60;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+  .takeaway-box ul {
+    list-style: none;
+    padding: 0;
+  }
+  .takeaway-box ul li {
+    padding: 4px 0;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.85);
+  }
+  .takeaway-box ul li::before {
+    content: "\2714  ";
+    color: #27ae60;
+  }
+
+  /* ===== Reference Cards Grid ===== */
+  .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 768px) {
+    .ref-grid { grid-template-columns: 1fr; }
+  }
+
+  .ref-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .ref-card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .ref-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .ref-card .card-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    background: #0f3460;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-right: 10px;
+  }
+  .ref-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1d1d1f;
+  }
+  .ref-card .card-sub {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 12px;
+  }
+  .ref-card .card-url {
+    display: inline-block;
+    color: #0f3460;
+    text-decoration: none;
+    font-size: 0.82rem;
+    margin-bottom: 14px;
+    word-break: break-all;
+  }
+  .ref-card .card-url:hover { text-decoration: underline; }
+
+  .badge {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .badge-5 { background: #e94560; color: #fff; }
+  .badge-4 { background: #0f3460; color: #fff; }
+  .badge-3 { background: #ddd; color: #333; }
+
+  .ref-card .learn-points {
+    background: #f0faf4;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: auto;
+  }
+  .ref-card .learn-points h4 {
+    font-size: 0.82rem;
+    color: #27ae60;
+    margin-bottom: 6px;
+  }
+  .ref-card .learn-points ul {
+    list-style: none;
+    padding: 0;
+  }
+  .ref-card .learn-points ul li {
+    font-size: 0.84rem;
+    color: #444;
+    padding: 2px 0;
+  }
+  .ref-card .learn-points ul li::before {
+    content: "\25B6  ";
+    color: #27ae60;
+    font-size: 0.65rem;
+  }
+
+  /* ===== Mapping Table ===== */
+  .table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-top: 24px;
+  }
+  .mapping-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 0.88rem;
+  }
+  .mapping-table thead th {
+    background: #0f3460;
+    color: #fff;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .mapping-table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background 0.15s;
+  }
+  .mapping-table tbody tr:hover {
+    background: #f9f9fb;
+  }
+  .mapping-table tbody td {
+    padding: 12px 16px;
+    vertical-align: top;
+  }
+  .mapping-table tbody td:first-child {
+    font-weight: 600;
+    color: #0f3460;
+    white-space: nowrap;
+  }
+  .mapping-table a {
+    color: #e94560;
+    text-decoration: none;
+    font-size: 0.82rem;
+  }
+  .mapping-table a:hover { text-decoration: underline; }
+
+  /* ===== Footer ===== */
+  .page-footer {
+    text-align: center;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid #ddd;
+    color: #999;
+    font-size: 0.82rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ==================== Header ==================== -->
+  <header class="page-header">
+    <h1>UI/UX リファレンス</h1>
+    <p class="subtitle">RINCLE 開発のための参考サービス集</p>
+  </header>
+
+  <!-- ==================== Section 1: Honda GO ==================== -->
+  <h2 class="section-title"><span class="section-number">1</span>クライアント指定: Honda GO Bike Rental</h2>
+
+  <div class="hero-card">
+    <h3>Honda GO Bike Rental</h3>
+    <p class="hero-sub">クライアントが「これに近いイメージ」と指定したサービス</p>
+    <a class="hero-url" href="https://hondago-bikerental.jp/" target="_blank" rel="noopener">https://hondago-bikerental.jp/</a>
+
+    <blockquote>
+      「店舗、バイクのリスト表示、会員登録などみやすくモバイルのUIなどは理想」
+      <span>-- クライアントコメントより</span>
+    </blockquote>
+
+    <h4 style="font-size:0.95rem; margin-bottom:14px; color:rgba(255,255,255,0.7);">UI/UXの特徴</h4>
+    <div class="feature-grid">
+      <div class="feature-chip">
+        <span class="chip-icon">&#128269;</span>
+        検索UI<br><small>日付 + エリアのシンプル検索</small>
+      </div>
+      <div class="feature-chip">
+        <span class="chip-icon">&#128203;</span>
+        車種リスト<br><small>写真 + スペック + 料金の一覧</small>
+      </div>
+      <div class="feature-chip">
+        <span class="chip-icon">&#128200;</span>
+        料金シミュレーター<br><small>オプション込みの即時見積もり</small>
+      </div>
+      <div class="feature-chip">
+        <span class="chip-icon">&#128197;</span>
+        予約フロー<br><small>ステップ形式の予約ガイド</small>
+      </div>
+      <div class="feature-chip">
+        <span class="chip-icon">&#128100;</span>
+        会員登録<br><small>事前登録で予約時間を短縮</small>
+      </div>
+      <div class="feature-chip">
+        <span class="chip-icon">&#127891;</span>
+        初心者導線<br><small>はじめての方向けガイド</small>
+      </div>
+    </div>
+
+    <div class="takeaway-box">
+      <h4>RINCLE が学ぶべきポイント</h4>
+      <ul>
+        <li>検索 &rarr; 車種選択 &rarr; 見積もり &rarr; 予約 の4ステップ完結</li>
+        <li>料金シミュレーターで「いくらかかるか」を予約前に解消</li>
+        <li>初心者向けガイド（/beginner）で不安を先に取り除く</li>
+        <li>会員事前登録で予約フローを短縮し離脱を防止</li>
+        <li>車種ページの写真品質・スペック情報の充実度</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== Section 2: 参考サービス10社 ==================== -->
+  <h2 class="section-title"><span class="section-number">2</span>参考サービス 10社</h2>
+
+  <div class="ref-grid">
+
+    <!-- 1. たびらいレンタカー -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">1</span>
+          <h3>たびらいレンタカー</h3>
+        </div>
+        <span class="badge badge-5">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+      </div>
+      <p class="card-sub">「コミコミ価格比較」の教科書</p>
+      <a class="card-url" href="https://www.tabirai.net/car/" target="_blank" rel="noopener">https://www.tabirai.net/car/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>コミコミ価格表示（免責補償・ETC込み）</li>
+          <li>シンプル検索（出発地 + 日時だけ）</li>
+          <li>LINE連携でリピーター育成</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. Booking.com -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">2</span>
+          <h3>Booking.com</h3>
+        </div>
+        <span class="badge badge-4">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+      </div>
+      <p class="card-sub">「予約を後押しする心理設計」の教科書</p>
+      <a class="card-url" href="https://www.booking.com/" target="_blank" rel="noopener">https://www.booking.com/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>「残り○台」表示で緊急性を演出</li>
+          <li>無料キャンセル表示で安心感を付与</li>
+          <li>レビュー設計（スコア + コメント + 属性）</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3. Airbnb -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">3</span>
+          <h3>Airbnb</h3>
+        </div>
+        <span class="badge badge-4">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+      </div>
+      <p class="card-sub">「写真と感情で選ばせる」UIの教科書</p>
+      <a class="card-url" href="https://www.airbnb.jp/" target="_blank" rel="noopener">https://www.airbnb.jp/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>写真ファーストのカードUI</li>
+          <li>感情的カテゴリ（アイコン+ラベル）</li>
+          <li>フローティングCTA「予約する」</li>
+          <li>下部メニューバーのナビゲーション</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4. アソビュー -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">4</span>
+          <h3>アソビュー</h3>
+        </div>
+        <span class="badge badge-4">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+      </div>
+      <p class="card-sub">「体験を検索する」UIの教科書</p>
+      <a class="card-url" href="https://www.asoview.com/" target="_blank" rel="noopener">https://www.asoview.com/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>カルーセルより縦並びリスト</li>
+          <li>シーン別カテゴリ分け</li>
+          <li>マップ検索の統合</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5. Klook -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">5</span>
+          <h3>Klook</h3>
+        </div>
+        <span class="badge badge-4">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+      </div>
+      <p class="card-sub">「5ステップ予約」の教科書</p>
+      <a class="card-url" href="https://www.klook.com/ja/" target="_blank" rel="noopener">https://www.klook.com/ja/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>2つの検索導線（キーワード + カテゴリ）</li>
+          <li>ウィッシュリスト機能</li>
+          <li>QRバウチャーで現地スムーズ</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 6. じゃらんnet -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">6</span>
+          <h3>じゃらんnet</h3>
+        </div>
+        <span class="badge badge-3">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+      </div>
+      <p class="card-sub">「目的別ショートカット」の教科書</p>
+      <a class="card-url" href="https://www.jalan.net/" target="_blank" rel="noopener">https://www.jalan.net/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>目的別ショートカット導線</li>
+          <li>閲覧履歴の活用</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 7. Anyca -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">7</span>
+          <h3>Anyca</h3>
+        </div>
+        <span class="badge badge-3">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+      </div>
+      <p class="card-sub">「C2C写真品質管理」の教科書</p>
+      <a class="card-url" href="https://anyca.net/" target="_blank" rel="noopener">https://anyca.net/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>プロ撮影支援の仕組み</li>
+          <li>クイック予約フロー</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 8. VELTRA -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">8</span>
+          <h3>VELTRA</h3>
+        </div>
+        <span class="badge badge-3">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+      </div>
+      <p class="card-sub">「口コミ35万件」の教科書</p>
+      <a class="card-url" href="https://www.veltra.com/jp/" target="_blank" rel="noopener">https://www.veltra.com/jp/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>写真投稿ポイント還元で口コミ促進</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 9. LUUP -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">9</span>
+          <h3>LUUP</h3>
+        </div>
+        <span class="badge badge-3">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+      </div>
+      <p class="card-sub">「マップ中心UI」の教科書</p>
+      <a class="card-url" href="https://luup.sc/" target="_blank" rel="noopener">https://luup.sc/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>マップ中心のUI設計</li>
+          <li>アニメーションによる体験向上</li>
+          <li>QRスキャンで即利用開始</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 10. HELLO CYCLING -->
+    <div class="ref-card">
+      <div class="ref-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="card-number">10</span>
+          <h3>HELLO CYCLING</h3>
+        </div>
+        <span class="badge badge-3">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+      </div>
+      <p class="card-sub">「マップピン視認性」の教科書</p>
+      <a class="card-url" href="https://www.hellocycling.jp/" target="_blank" rel="noopener">https://www.hellocycling.jp/</a>
+      <div class="learn-points">
+        <h4>学ぶべきポイント</h4>
+        <ul>
+          <li>大きなマップピンで視認性確保</li>
+          <li>16サービス統合プラットフォーム</li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /ref-grid -->
+
+  <!-- ==================== Section 3: 機能マッピングテーブル ==================== -->
+  <h2 class="section-title"><span class="section-number">3</span>機能マッピングテーブル</h2>
+
+  <div class="table-wrapper">
+    <table class="mapping-table">
+      <thead>
+        <tr>
+          <th>RINCLE の機能</th>
+          <th>参考サービス</th>
+          <th>何を真似るか</th>
+          <th>参考ページ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>検索バー</td>
+          <td>Honda GO / たびらい</td>
+          <td>日付+エリアだけのシンプル検索</td>
+          <td>
+            <a href="https://hondago-bikerental.jp/" target="_blank" rel="noopener">Honda GO トップ</a><br>
+            <a href="https://www.tabirai.net/car/" target="_blank" rel="noopener">たびらい トップ</a>
+          </td>
+        </tr>
+        <tr>
+          <td>検索結果リスト</td>
+          <td>Airbnb / アソビュー</td>
+          <td>写真ファースト+縦並びカードUI</td>
+          <td>
+            <a href="https://www.airbnb.jp/s/Tokyo/homes" target="_blank" rel="noopener">Airbnb 検索結果</a><br>
+            <a href="https://www.asoview.com/area/kanto/pref-tokyo/" target="_blank" rel="noopener">アソビュー 東京</a>
+          </td>
+        </tr>
+        <tr>
+          <td>フィルタ</td>
+          <td>Booking.com</td>
+          <td>左サイドバー+即時反映フィルタ</td>
+          <td>
+            <a href="https://www.booking.com/searchresults.ja.html?ss=Tokyo" target="_blank" rel="noopener">Booking.com 検索</a>
+          </td>
+        </tr>
+        <tr>
+          <td>マップ検索</td>
+          <td>LUUP</td>
+          <td>マップ中心+ピン選択で詳細表示</td>
+          <td>
+            <a href="https://www.ui-pocket.com/mobile/apps/luup/2024-02" target="_blank" rel="noopener">LUUP UIスクショ集</a>
+          </td>
+        </tr>
+        <tr>
+          <td>料金表示</td>
+          <td>Honda GO</td>
+          <td>シミュレーター+コミコミ価格</td>
+          <td>
+            <a href="https://hondago-bikerental.jp/simulator" target="_blank" rel="noopener">Honda GO シミュレーター</a><br>
+            <a href="https://hondago-bikerental.jp/price" target="_blank" rel="noopener">Honda GO 料金表</a>
+          </td>
+        </tr>
+        <tr>
+          <td>空き状況</td>
+          <td>Booking.com</td>
+          <td>「残り○台」+カレンダー表示</td>
+          <td>
+            <a href="https://www.booking.com/searchresults.ja.html?ss=Osaka" target="_blank" rel="noopener">Booking.com 検索</a>
+          </td>
+        </tr>
+        <tr>
+          <td>比較機能</td>
+          <td>たびらい</td>
+          <td>横並び比較テーブル</td>
+          <td>
+            <a href="https://www.tabirai.net/car/" target="_blank" rel="noopener">たびらい</a>
+          </td>
+        </tr>
+        <tr>
+          <td>予約フロー</td>
+          <td>Honda GO / Klook</td>
+          <td>ステップ形式+進捗バー</td>
+          <td>
+            <a href="https://hondago-bikerental.jp/beginner/reserve" target="_blank" rel="noopener">Honda GO 予約ガイド</a><br>
+            <a href="https://www.klook.com/ja/blog/whatis-klook-howto-klook/" target="_blank" rel="noopener">Klook 使い方</a>
+          </td>
+        </tr>
+        <tr>
+          <td>レビュー</td>
+          <td>Booking.com / VELTRA</td>
+          <td>スコア+写真付き口コミ</td>
+          <td>
+            <a href="https://www.booking.com/hotel/jp/apa-shinjuku-kabukicho-tower.ja.html" target="_blank" rel="noopener">Booking.com レビュー例</a><br>
+            <a href="https://www.veltra.com/jp/japan/tokyo/" target="_blank" rel="noopener">VELTRA 東京</a>
+          </td>
+        </tr>
+        <tr>
+          <td>お気に入り</td>
+          <td>Airbnb</td>
+          <td>ハートアイコン+リスト管理</td>
+          <td>
+            <a href="https://www.ui-pocket.com/mobile/apps/airbnb/2023-10" target="_blank" rel="noopener">Airbnb UIスクショ</a>
+          </td>
+        </tr>
+        <tr>
+          <td>初心者導線</td>
+          <td>Honda GO / アソビュー</td>
+          <td>はじめての方向け専用ページ</td>
+          <td>
+            <a href="https://hondago-bikerental.jp/beginner" target="_blank" rel="noopener">Honda GO はじめて</a><br>
+            <a href="https://www.asoview.com/" target="_blank" rel="noopener">アソビュー トップ</a>
+          </td>
+        </tr>
+        <tr>
+          <td>モバイルUI</td>
+          <td>LUUP</td>
+          <td>下部ナビ+大きなタップ領域</td>
+          <td>
+            <a href="https://www.ui-pocket.com/mobile/apps/luup/2024-02" target="_blank" rel="noopener">LUUP UIスクショ</a>
+          </td>
+        </tr>
+        <tr>
+          <td>写真品質</td>
+          <td>Anyca</td>
+          <td>プロ撮影ガイドライン提供</td>
+          <td>
+            <a href="https://blog.adobe.com/jp/publish/2016/08/17/web-xd-anyca-ui-designer-interview" target="_blank" rel="noopener">Anyca UIデザイン解説</a>
+          </td>
+        </tr>
+        <tr>
+          <td>緊急性演出</td>
+          <td>Booking.com</td>
+          <td>「残りわずか」バッジ+閲覧数表示</td>
+          <td>
+            <a href="https://www.booking.com/searchresults.ja.html?ss=Kyoto" target="_blank" rel="noopener">Booking.com 検索</a>
+          </td>
+        </tr>
+        <tr>
+          <td>会員登録</td>
+          <td>Honda GO</td>
+          <td>事前登録で予約時間短縮</td>
+          <td>
+            <a href="https://hondago-bikerental.jp/member/pre_register" target="_blank" rel="noopener">Honda GO 会員登録</a>
+          </td>
+        </tr>
+        <tr>
+          <td>車種リスト</td>
+          <td>Honda GO</td>
+          <td>写真+スペック+料金の一覧</td>
+          <td>
+            <a href="https://hondago-bikerental.jp/vehicle/list" target="_blank" rel="noopener">Honda GO 車種一覧</a>
+          </td>
+        </tr>
+        <tr>
+          <td>保険比較</td>
+          <td>Honda GO</td>
+          <td>プラン別の補償内容比較表</td>
+          <td>
+            <a href="https://hondago-bikerental.jp/insurance" target="_blank" rel="noopener">Honda GO 保険</a>
+          </td>
+        </tr>
+        <tr>
+          <td>LINE連携</td>
+          <td>たびらい</td>
+          <td>LINE通知+クーポン配信</td>
+          <td>
+            <a href="https://www.tabirai.net/car/about/app/" target="_blank" rel="noopener">たびらい アプリ</a>
+          </td>
+        </tr>
+        <tr>
+          <td>口コミ促進</td>
+          <td>VELTRA</td>
+          <td>写真投稿でポイント還元</td>
+          <td>
+            <a href="https://www.veltra.com/jp/" target="_blank" rel="noopener">VELTRA</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ==================== Footer ==================== -->
+  <footer class="page-footer">
+    <p>RINCLE UI/UX Reference Collection &mdash; Internal Use Only</p>
+  </footer>
+
+</div><!-- /container -->
+
+</body>
+</html>

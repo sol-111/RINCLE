@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RINCLE SEO設定ガイド（初心者向け）</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;
+    background:#f5f6fa;
+    color:#2d3436;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrapper{max-width:1100px;margin:0 auto;padding:40px 24px}
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:linear-gradient(135deg,#0f3460 0%,#1a4a8a 100%);
+    color:#fff;
+    border-radius:12px;
+    padding:48px 40px;
+    margin-bottom:40px;
+    box-shadow:0 8px 30px rgba(15,52,96,.25);
+    text-align:center;
+  }
+  .hero h1{font-size:2rem;font-weight:800;margin-bottom:8px}
+  .hero p{font-size:1.05rem;opacity:.88}
+
+  /* ---------- card ---------- */
+  .card{
+    background:#fff;
+    border-radius:12px;
+    padding:36px 40px;
+    margin-bottom:32px;
+    box-shadow:0 2px 16px rgba(0,0,0,.06);
+  }
+  .card h2{
+    font-size:1.35rem;font-weight:700;color:#0f3460;
+    margin-bottom:18px;
+    padding-bottom:10px;
+    border-bottom:3px solid #e94560;
+    display:inline-block;
+  }
+  .card h3{font-size:1.1rem;font-weight:700;color:#0f3460;margin:20px 0 10px}
+  .card p,.card li{font-size:.95rem}
+  .card ul,.card ol{padding-left:1.4em;margin-bottom:14px}
+  .card li{margin-bottom:6px}
+
+  /* ---------- alert cards ---------- */
+  .alert{
+    border-radius:10px;
+    padding:20px 24px;
+    margin:16px 0;
+    font-size:.93rem;
+    display:flex;align-items:flex-start;gap:12px;
+  }
+  .alert-red{background:#ffeef0;border-left:4px solid #e94560;color:#a0132e}
+  .alert-green{background:#eefbf3;border-left:4px solid #27ae60;color:#1a7a42}
+  .alert-blue{background:#eef4ff;border-left:4px solid #0f3460;color:#0f3460}
+  .alert-icon{font-size:1.3rem;flex-shrink:0}
+
+  /* ---------- compare boxes ---------- */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0}
+  .compare-box{border-radius:10px;padding:24px;text-align:center}
+  .compare-box.good{background:#eefbf3;border:2px solid #27ae60}
+  .compare-box.bad{background:#ffeef0;border:2px solid #e94560}
+  .compare-box .label{font-weight:700;font-size:1rem;margin-bottom:8px}
+  .compare-box .desc{font-size:.88rem;color:#555}
+  .compare-box .icon{font-size:2rem;margin-bottom:8px}
+
+  /* ---------- arrow ---------- */
+  .arrow-down{text-align:center;font-size:1.4rem;color:#999;margin:4px 0}
+
+  /* ---------- stepper ---------- */
+  .stepper{counter-reset:step}
+  .step{
+    position:relative;
+    padding-left:60px;
+    margin-bottom:36px;
+    counter-increment:step;
+  }
+  .step::before{
+    content:counter(step);
+    position:absolute;left:0;top:0;
+    width:42px;height:42px;
+    background:#e94560;color:#fff;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:1.1rem;
+    box-shadow:0 3px 10px rgba(233,69,96,.35);
+  }
+  .step h3{margin-top:0;font-size:1.15rem;color:#0f3460;margin-bottom:10px}
+
+  /* ---------- sub-item ---------- */
+  .sub-item{
+    background:#f8f9fb;
+    border-radius:8px;
+    padding:16px 20px;
+    margin:12px 0;
+    border-left:3px solid #0f3460;
+  }
+  .sub-item h4{font-size:.98rem;font-weight:700;color:#0f3460;margin-bottom:6px}
+  .sub-item p{font-size:.9rem;margin-bottom:6px}
+
+  /* ---------- table ---------- */
+  table{
+    width:100%;border-collapse:collapse;margin:14px 0 20px;
+    font-size:.9rem;
+  }
+  thead{background:#0f3460;color:#fff}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid #e0e0e0}
+  th{font-weight:600}
+  tbody tr:nth-child(even){background:#f8f9fb}
+  tbody tr:hover{background:#eef4ff}
+
+  /* ---------- code ---------- */
+  pre{
+    background:#1e1e2e;color:#cdd6f4;
+    border-radius:8px;padding:20px;
+    overflow-x:auto;font-size:.85rem;
+    line-height:1.6;margin:14px 0;
+    font-family:'SF Mono','Fira Code',monospace;
+  }
+  code{
+    background:#eef0f5;padding:2px 6px;border-radius:4px;
+    font-size:.88rem;font-family:'SF Mono','Fira Code',monospace;
+    color:#e94560;
+  }
+  pre code{background:none;padding:0;color:inherit}
+
+  /* ---------- mini-card (for GSC steps etc.) ---------- */
+  .mini-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:16px 0}
+  .mini-card{
+    background:#fff;border:1px solid #e0e4ea;border-radius:10px;
+    padding:20px;text-align:center;
+    box-shadow:0 1px 6px rgba(0,0,0,.04);
+  }
+  .mini-card .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;background:#0f3460;color:#fff;
+    border-radius:50%;font-weight:700;font-size:.9rem;margin-bottom:8px;
+  }
+  .mini-card .txt{font-size:.88rem;color:#444}
+
+  /* ---------- checklist ---------- */
+  .checklist{list-style:none;padding:0}
+  .checklist li{
+    position:relative;
+    padding:10px 12px 10px 40px;
+    margin-bottom:6px;
+    background:#f8f9fb;
+    border-radius:8px;
+    font-size:.92rem;
+    cursor:default;
+    transition:background .15s;
+  }
+  .checklist li:hover{background:#eef4ff}
+  .checklist li::before{
+    content:'';
+    position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    width:18px;height:18px;
+    border:2px solid #0f3460;border-radius:4px;
+    background:#fff;
+  }
+  .checklist li.done::before{
+    background:#0f3460;
+    border-color:#0f3460;
+  }
+  .checklist li.done::after{
+    content:'';
+    position:absolute;left:16px;top:50%;
+    width:6px;height:10px;
+    border:solid #fff;border-width:0 2px 2px 0;
+    transform:translateY(-60%) rotate(45deg);
+  }
+
+  /* ---------- glossary ---------- */
+  .glossary-table td:first-child{
+    font-weight:700;color:#0f3460;white-space:nowrap;
+  }
+
+  /* ---------- badge ---------- */
+  .badge{
+    display:inline-block;
+    padding:2px 10px;border-radius:20px;
+    font-size:.78rem;font-weight:600;
+    margin-left:6px;vertical-align:middle;
+  }
+  .badge-red{background:#ffeef0;color:#e94560}
+  .badge-blue{background:#eef4ff;color:#0f3460}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:700px){
+    .wrapper{padding:20px 14px}
+    .hero{padding:32px 20px}
+    .hero h1{font-size:1.5rem}
+    .card{padding:24px 20px}
+    .compare{grid-template-columns:1fr}
+    .step{padding-left:50px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+<!-- ============================================================ -->
+<!-- HERO -->
+<!-- ============================================================ -->
+<div class="hero">
+  <h1>RINCLE SEO設定ガイド</h1>
+  <p>初心者向け -- 専門知識ゼロから始められます</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- SEOって何？ -->
+<!-- ============================================================ -->
+<div class="card">
+  <h2>SEOって何？</h2>
+  <p>
+    ひとことで言えば<strong>「Googleで検索したとき、自分のサイトをできるだけ上に表示させるための工夫」</strong>です。<br>
+    検索結果で上のほうに出れば、お金をかけなくても多くの人にサイトを見てもらえます。
+  </p>
+
+  <div class="alert alert-red" style="margin-top:20px">
+    <span class="alert-icon">!</span>
+    <div>
+      <strong>RINCLEの現状</strong><br>
+      Googleにインデックス（登録）されているページは<strong>わずか2ページ</strong>。<br>
+      「スポーツバイク レンタル」「ロードバイク レンタル 神戸」「スポーツバイク 試乗」など主要キーワードで<strong>検索圏外</strong>です。<br>
+      つまり、検索からの流入がほぼゼロの状態です。
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- なぜこうなっているのか -->
+<!-- ============================================================ -->
+<div class="card">
+  <h2>なぜこうなっているのか</h2>
+  <p>RINCLEは<strong>Bubble.io</strong>（ノーコードツール）で作られています。Bubble.ioで作ったサイトは、普通のサイトとHTMLの構造が異なり、Googleが内容を理解しにくいという問題があります。</p>
+
+  <div class="compare">
+    <div class="compare-box good">
+      <div class="icon">O</div>
+      <div class="label">普通のサイト</div>
+      <div class="arrow-down">|</div>
+      <div class="desc">HTMLにタイトル・説明文・見出しなどの情報がしっかり書かれている</div>
+      <div class="arrow-down">|</div>
+      <div class="desc" style="font-weight:700;color:#27ae60">Googleが内容を理解できる</div>
+    </div>
+    <div class="compare-box bad">
+      <div class="icon">X</div>
+      <div class="label">RINCLE（現状）</div>
+      <div class="arrow-down">|</div>
+      <div class="desc">HTMLがほぼ空っぽ。JavaScriptで後から描画するためGoogleに情報が伝わらない</div>
+      <div class="arrow-down">|</div>
+      <div class="desc" style="font-weight:700;color:#e94560">Googleが内容を理解できない</div>
+    </div>
+  </div>
+
+  <div class="alert alert-blue">
+    <span class="alert-icon">i</span>
+    <div>Bubble.ioでも設定できる項目はあります。以下の5ステップで、できる限りの対策を行いましょう。</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- やるべきこと 5ステップ -->
+<!-- ============================================================ -->
+<div class="card">
+  <h2>やるべきこと 5ステップ</h2>
+  <p style="margin-bottom:28px">上から順番に取り組んでください。Step 1が最も重要です。</p>
+
+  <div class="stepper">
+
+    <!-- ===== Step 1 ===== -->
+    <div class="step">
+      <h3>メタ情報の設定 <span class="badge badge-red">最重要</span></h3>
+      <p>検索結果に表示される情報や、SNSでシェアされたときの見え方を設定します。</p>
+
+      <!-- title -->
+      <div class="sub-item">
+        <h4>titleタグ（タイトルタグ）</h4>
+        <p><strong>何？</strong> ブラウザのタブに表示される文字であり、Google検索結果の<strong>青い文字のリンク</strong>部分です。</p>
+        <p><strong>文字数:</strong> 30〜60文字が目安。長すぎると「...」で切れます。</p>
+        <p><strong>ポイント:</strong> ページの内容を端的に表し、狙いたいキーワードを前半に入れる。</p>
+        <table>
+          <thead><tr><th>ページ</th><th>title 設定例</th></tr></thead>
+          <tbody>
+            <tr><td>トップページ</td><td>スポーツバイクをレンタル・試乗するならRINCLE｜全国のプロショップで安心体験</td></tr>
+            <tr><td>店舗一覧</td><td>店舗一覧｜RINCLE - スポーツバイクレンタル</td></tr>
+            <tr><td>店舗詳細</td><td>スペシャライズド神戸｜ロードバイク・E-Bikeレンタル｜RINCLE</td></tr>
+            <tr><td>車種一覧</td><td>レンタルできる車種一覧｜RINCLE - スポーツバイクレンタル</td></tr>
+            <tr><td>料金</td><td>料金プラン｜RINCLE - スポーツバイクレンタル</td></tr>
+            <tr><td>はじめての方へ</td><td>はじめての方へ｜RINCLEの使い方ガイド</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Bubble.ioでの設定方法:</strong><br>
+          各ページのエディタを開き、左上の<strong>「Page」</strong>メニュー &rarr; <strong>「SEO / metatags」タブ</strong> &rarr; <strong>「Page title」</strong>欄に入力します。動的な値を入れたい場合は「Insert dynamic data」を使います。
+        </p>
+      </div>
+
+      <!-- meta description -->
+      <div class="sub-item">
+        <h4>meta description（メタ ディスクリプション）</h4>
+        <p><strong>何？</strong> Google検索結果でタイトルの下に表示される<strong>グレーの説明文</strong>です。</p>
+        <p><strong>文字数:</strong> 70〜120文字が目安。</p>
+        <p><strong>ポイント:</strong> ユーザーが「このページを見たい」と思うような説明を書く。キーワードを自然に含める。</p>
+        <table>
+          <thead><tr><th>ページ</th><th>meta description 設定例</th></tr></thead>
+          <tbody>
+            <tr><td>トップページ</td><td>全国24店舗のプロショップでロードバイク・E-Bikeをレンタル。プロの整備で安心、ネットで簡単予約。初めてのスポーツバイク体験にも最適です。</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Bubble.ioでの設定方法:</strong><br>
+          titleタグと同じ「SEO / metatags」タブ内の<strong>「Meta description」</strong>欄に入力します。
+        </p>
+      </div>
+
+      <!-- OGP -->
+      <div class="sub-item">
+        <h4>OGP（Open Graph Protocol）</h4>
+        <p><strong>何？</strong> LINE・X（旧Twitter）・FacebookなどでURLを送ったときに表示される<strong>カード（画像+タイトル+説明）</strong>の設定です。</p>
+        <p><strong>設定項目:</strong></p>
+        <ul>
+          <li><code>og:title</code> -- カードのタイトル（titleタグと同じでOK）</li>
+          <li><code>og:description</code> -- カードの説明文（meta descriptionと同じでOK）</li>
+          <li><code>og:image</code> -- カードの画像（推奨: 1200 x 630px）</li>
+          <li><code>og:url</code> -- ページのURL</li>
+        </ul>
+        <p><strong>Bubble.ioでの設定方法:</strong><br>
+          「SEO / metatags」タブ内にOGP用の入力欄（<strong>「OG Title」「OG Description」「OG Image」</strong>）があります。それぞれ入力してください。
+        </p>
+      </div>
+
+      <!-- h1タグ -->
+      <div class="sub-item">
+        <h4>h1タグ（大見出し）</h4>
+        <p><strong>何？</strong> そのページで一番大きな見出し。Googleは「このページは何について書かれているか」をh1タグから判断します。</p>
+        <p><strong>ポイント:</strong> 各ページに1つだけ設定する。titleタグと似た内容でOK。</p>
+        <p><strong>Bubble.ioでの設定方法:</strong><br>
+          ページ内の一番重要なテキスト要素を選択 &rarr; 右パネルの<strong>「HTML tag」</strong>から<strong>「H1」</strong>を選択します。各ページに1つだけH1を設定してください。
+        </p>
+      </div>
+
+      <!-- alt属性 -->
+      <div class="sub-item">
+        <h4>alt属性（画像の説明テキスト）</h4>
+        <p><strong>何？</strong> 画像が表示されなかったときに代わりに表示されるテキスト。Googleの画像認識の手がかりにもなります。</p>
+        <p><strong>ポイント:</strong> 「IMG_0234.jpg」のようなファイル名ではなく、「ロードバイクのレンタル車体イメージ」のように内容を説明する。</p>
+        <p><strong>Bubble.ioでの設定方法:</strong><br>
+          画像要素を選択 &rarr; プロパティ内の<strong>「Describe the image for accessibility」</strong>欄にテキストを入力します。
+        </p>
+      </div>
+
+      <!-- canonical URL -->
+      <div class="sub-item">
+        <h4>canonical URL（正式URLの指定）</h4>
+        <p><strong>何？</strong> 同じ内容のページが複数のURLで表示される場合に、「正式なURLはこれです」とGoogleに伝える仕組みです。重複ページの評価分散を防ぎます。</p>
+        <p><strong>例:</strong> <code>https://rincle.co.jp/top</code> と <code>https://rincle.co.jp/top?param=xxx</code> が同じ内容なら、前者をcanonicalに指定。</p>
+        <p><strong>Bubble.ioでの設定方法:</strong><br>
+          「SEO / metatags」タブ内の<strong>「Canonical URL」</strong>欄にそのページの正式なURLを入力します。全ページに設定することを推奨します。
+        </p>
+      </div>
+    </div>
+
+    <!-- ===== Step 2 ===== -->
+    <div class="step">
+      <h3>sitemapの作成</h3>
+      <p><strong>sitemap（サイトマップ）</strong>とは、サイトの全ページの一覧を記した「地図」です。Googleに「うちのサイトにはこんなページがありますよ」と教えるためのファイルです。</p>
+
+      <h4 style="margin-top:16px">XMLサイトマップの例</h4>
+      <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://rincle.co.jp/&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-19&lt;/lastmod&gt;
+    &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+    &lt;priority&gt;1.0&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://rincle.co.jp/shops&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-19&lt;/lastmod&gt;
+    &lt;changefreq&gt;monthly&lt;/changefreq&gt;
+    &lt;priority&gt;0.8&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://rincle.co.jp/bikes&lt;/loc&gt;
+    &lt;lastmod&gt;2026-05-19&lt;/lastmod&gt;
+    &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+    &lt;priority&gt;0.8&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;!-- 他のページも同様に追加 --&gt;
+&lt;/urlset&gt;</code></pre>
+
+      <h4 style="margin-top:16px">robots.txt への追記</h4>
+      <p><code>robots.txt</code> はGoogleのクローラー（情報収集ロボット）に指示を出すファイルです。ここにsitemapの場所を書いておくと、Googleが自動で読み取ってくれます。</p>
+      <pre><code>User-agent: *
+Allow: /
+
+Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
+      <p><strong>Bubble.ioでの設定方法:</strong><br>
+        Settings &rarr; <strong>「SEO / metatags」</strong> &rarr; 下のほうにある<strong>「robots.txt」</strong>欄に上記内容を貼り付けます。サイトマップはBubble.ioが自動生成するものを使うか、手動でXMLファイルを用意してホスティングします。
+      </p>
+    </div>
+
+    <!-- ===== Step 3 ===== -->
+    <div class="step">
+      <h3>Google Search Console 登録</h3>
+      <p><strong>Google Search Console（サーチコンソール）</strong>は、Googleが提供する無料ツールです。サイトがGoogleにどう見えているかを確認・管理できます。</p>
+
+      <div class="mini-cards">
+        <div class="mini-card">
+          <div class="num">1</div>
+          <div class="txt"><a href="https://search.google.com/search-console" target="_blank">Search Console</a>にGoogleアカウントでログイン</div>
+        </div>
+        <div class="mini-card">
+          <div class="num">2</div>
+          <div class="txt">「プロパティを追加」から「URLプレフィックス」を選び、<code>https://rincle.co.jp</code>を入力</div>
+        </div>
+        <div class="mini-card">
+          <div class="num">3</div>
+          <div class="txt">所有権の確認方法で「HTMLタグ」を選択し、表示されたmetaタグをコピー</div>
+        </div>
+        <div class="mini-card">
+          <div class="num">4</div>
+          <div class="txt">Bubble.io Settings &rarr; SEO / metatags &rarr;「Script in header」にmetaタグを貼り付けて保存</div>
+        </div>
+        <div class="mini-card">
+          <div class="num">5</div>
+          <div class="txt">Search Consoleに戻り「確認」ボタンをクリック。「所有権を確認しました」が出ればOK</div>
+        </div>
+      </div>
+
+      <div class="alert alert-green">
+        <span class="alert-icon">+</span>
+        <div>登録後、左メニューの「サイトマップ」からStep 2で作ったsitemapのURLを送信しましょう。</div>
+      </div>
+    </div>
+
+    <!-- ===== Step 4 ===== -->
+    <div class="step">
+      <h3>GA4（Googleアナリティクス）導入</h3>
+      <p><strong>GA4</strong>は、サイトに何人来て、どのページを見て、どれくらい滞在したかを計測する無料ツールです。</p>
+
+      <h4 style="margin-top:16px">導入手順</h4>
+      <ol>
+        <li><a href="https://analytics.google.com/" target="_blank">Googleアナリティクス</a>にログイン &rarr; 「管理」 &rarr; 「プロパティを作成」</li>
+        <li>プロパティ名（例: RINCLE）、タイムゾーン（日本）、通貨（日本円）を設定</li>
+        <li>データストリーム &rarr; 「ウェブ」を選択 &rarr; URLに <code>https://rincle.co.jp</code> を入力</li>
+        <li>表示された<strong>測定ID（G-XXXXXXXXXX）</strong>をコピー</li>
+        <li>以下のコードをBubble.ioの「Script in header」に貼り付け</li>
+      </ol>
+
+      <h4>設置コード例</h4>
+      <pre><code>&lt;!-- Google tag (gtag.js) --&gt;
+&lt;script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"&gt;&lt;/script&gt;
+&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+&lt;/script&gt;</code></pre>
+      <p style="font-size:.88rem;color:#888">※ <code>G-XXXXXXXXXX</code> の部分を実際の測定IDに置き換えてください。</p>
+
+      <h4 style="margin-top:16px">見るべき指標</h4>
+      <table>
+        <thead><tr><th>指標</th><th>意味</th><th>見る場所</th></tr></thead>
+        <tbody>
+          <tr><td>ユーザー数</td><td>サイトに来た人の数</td><td>レポート &rarr; 概要</td></tr>
+          <tr><td>ページビュー数</td><td>ページが表示された回数</td><td>レポート &rarr; ページとスクリーン</td></tr>
+          <tr><td>平均エンゲージメント時間</td><td>1回の訪問で実際に操作していた時間</td><td>レポート &rarr; 概要</td></tr>
+          <tr><td>直帰率</td><td>1ページだけ見て帰った割合</td><td>レポート &rarr; ページとスクリーン</td></tr>
+          <tr><td>流入経路</td><td>どこからサイトに来たか（検索/SNS/直接）</td><td>レポート &rarr; 集客 &rarr; トラフィック獲得</td></tr>
+          <tr><td>コンバージョン</td><td>レンタル予約などの目標達成数</td><td>管理 &rarr; コンバージョン</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ===== Step 5 ===== -->
+    <div class="step">
+      <h3>効果測定</h3>
+      <p>設定して終わりではありません。定期的にチェックして改善を続けましょう。</p>
+
+      <h4 style="margin-top:16px">1週間後にチェックすること</h4>
+      <ul class="checklist">
+        <li>Search Consoleでインデックス登録されたページ数が増えているか</li>
+        <li>GA4でデータが取れているか（リアルタイムレポートで確認）</li>
+        <li>Search Consoleにエラーが出ていないか</li>
+        <li>OGPが正しく表示されるか（LINEやXにURLを貼って確認）</li>
+      </ul>
+
+      <h4 style="margin-top:16px">2〜4週間後にチェックすること</h4>
+      <ul class="checklist">
+        <li>Search Consoleの「検索パフォーマンス」で表示回数・クリック数を確認</li>
+        <li>狙ったキーワードで検索順位が付き始めているか</li>
+        <li>GA4で自然検索（Organic Search）からの流入が発生しているか</li>
+        <li>ページごとのtitle・descriptionに改善の余地がないか見直す</li>
+        <li>新しいページを追加したらsitemapを更新し、再送信する</li>
+      </ul>
+    </div>
+
+  </div><!-- /stepper -->
+</div>
+
+<!-- ============================================================ -->
+<!-- 用語集 -->
+<!-- ============================================================ -->
+<div class="card">
+  <h2>用語集</h2>
+  <p style="margin-bottom:14px">このガイドに出てくる用語をまとめました。</p>
+  <table class="glossary-table">
+    <thead><tr><th>用語</th><th>意味</th></tr></thead>
+    <tbody>
+      <tr><td>SEO</td><td>Search Engine Optimization の略。検索エンジンで上位表示するための施策全般。</td></tr>
+      <tr><td>インデックス</td><td>Googleがページの情報をデータベースに登録すること。インデックスされないと検索結果に出ない。</td></tr>
+      <tr><td>クローラー</td><td>Googleがウェブを巡回してページ情報を集める自動プログラム（ロボット）。</td></tr>
+      <tr><td>titleタグ</td><td>ブラウザのタブと検索結果の青文字リンクに使われるページタイトル。</td></tr>
+      <tr><td>meta description</td><td>検索結果でタイトル下に表示されるグレーの説明文。クリック率に影響する。</td></tr>
+      <tr><td>OGP</td><td>Open Graph Protocol。SNSでURLを共有したときに表示されるカードの設定。</td></tr>
+      <tr><td>h1タグ</td><td>ページの大見出し。そのページのテーマをGoogleに伝える役割。</td></tr>
+      <tr><td>alt属性</td><td>画像の代替テキスト。画像が表示できないときやGoogleの画像理解に使われる。</td></tr>
+      <tr><td>canonical URL</td><td>複数URLで同じ内容がある場合に「正式なURL」を指定するタグ。</td></tr>
+      <tr><td>sitemap</td><td>サイト内の全ページURLをまとめたXMLファイル。Googleにページの存在を知らせる。</td></tr>
+      <tr><td>robots.txt</td><td>クローラーに対して「見てよい/見ないでほしい」ページを指示するファイル。</td></tr>
+      <tr><td>Search Console</td><td>Google提供の無料ツール。検索結果での見え方やエラーを確認・管理できる。</td></tr>
+      <tr><td>GA4</td><td>Google Analytics 4。サイト訪問者の行動を計測する無料のアクセス解析ツール。</td></tr>
+      <tr><td>オーガニック検索</td><td>広告でなく自然な検索結果からのアクセスのこと。SEOで増やすのはこの流入。</td></tr>
+      <tr><td>直帰率</td><td>サイトに来て1ページだけ見て帰った訪問の割合。</td></tr>
+      <tr><td>コンバージョン</td><td>サイト上で達成してほしい目標行動（例: レンタル予約の完了）。</td></tr>
+      <tr><td>ページビュー（PV）</td><td>ページが表示された回数。同じ人が2回見たら2PV。</td></tr>
+      <tr><td>検索クエリ</td><td>ユーザーがGoogleの検索窓に入力した言葉（キーワード）。</td></tr>
+      <tr><td>CTR</td><td>Click Through Rate（クリック率）。検索結果に表示された回数のうち実際にクリックされた割合。</td></tr>
+      <tr><td>ドメイン</td><td>サイトのアドレス（例: rincle.co.jp）。インターネット上の住所のようなもの。</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!-- チェックリスト -->
+<!-- ============================================================ -->
+<div class="card">
+  <h2>SEO設定チェックリスト</h2>
+  <p style="margin-bottom:14px">全項目にチェックが入れば、基本的なSEO対策は完了です。</p>
+
+  <h3>Step 1: メタ情報</h3>
+  <ul class="checklist">
+    <li>全ページにtitleタグを設定した（30〜60文字）</li>
+    <li>全ページにmeta descriptionを設定した（70〜120文字）</li>
+    <li>全ページにOGP（og:title, og:description, og:image）を設定した</li>
+    <li>各ページにh1タグを1つ設定した</li>
+    <li>主要な画像にalt属性を設定した</li>
+    <li>全ページにcanonical URLを設定した</li>
+  </ul>
+
+  <h3>Step 2: サイトマップ</h3>
+  <ul class="checklist">
+    <li>XMLサイトマップを作成した</li>
+    <li>robots.txtにサイトマップのURLを記載した</li>
+  </ul>
+
+  <h3>Step 3: Search Console</h3>
+  <ul class="checklist">
+    <li>Google Search Consoleにサイトを登録した</li>
+    <li>所有権の確認が完了した</li>
+    <li>サイトマップをSearch Consoleから送信した</li>
+  </ul>
+
+  <h3>Step 4: GA4</h3>
+  <ul class="checklist">
+    <li>GA4のプロパティを作成した</li>
+    <li>測定コードをサイトに設置した</li>
+    <li>リアルタイムレポートでデータ取得を確認した</li>
+  </ul>
+
+  <h3>Step 5: 効果測定</h3>
+  <ul class="checklist">
+    <li>1週間後チェックの日をカレンダーに登録した</li>
+    <li>インデックス数の増加を確認した</li>
+    <li>検索パフォーマンス（表示回数・クリック数）を定期確認する体制を作った</li>
+  </ul>
+</div>
+
+<!-- footer -->
+<div style="text-align:center;padding:24px 0 8px;color:#999;font-size:.82rem">
+  RINCLE SEO設定ガイド -- 作成日 2026-05-19
+</div>
+
+</div><!-- /wrapper -->
+</body>
+</html>

@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RINCLE 競合調査レポート</title>
+<style>
+  :root {
+    --accent-red: #e94560;
+    --accent-navy: #0f3460;
+    --accent-dark: #1a1a2e;
+    --bg: #f8f9fa;
+    --card-bg: #ffffff;
+    --text: #333333;
+    --text-light: #666666;
+    --border: #e8e8e8;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 8px;
+  }
+
+  .report-date {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 40px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent-red);
+    display: inline-block;
+  }
+
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    border: 1px solid var(--border);
+  }
+
+  /* RINCLE Hero Card */
+  .rincle-hero {
+    background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent-navy) 100%);
+    color: #ffffff;
+    border-radius: var(--radius);
+    padding: 36px;
+    box-shadow: var(--shadow-lg);
+    border: none;
+    margin-bottom: 12px;
+  }
+
+  .rincle-hero h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .rincle-hero .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .rincle-hero .info-item {
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .rincle-hero .info-label {
+    color: rgba(255,255,255,0.6);
+    min-width: 70px;
+    flex-shrink: 0;
+  }
+
+  .rincle-hero .info-value {
+    color: #ffffff;
+  }
+
+  .rincle-hero a {
+    color: #8ecae6;
+    text-decoration: none;
+  }
+
+  .rincle-hero a:hover {
+    text-decoration: underline;
+  }
+
+  .tag-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(233, 69, 96, 0.25);
+    color: #ff8fa3;
+    border: 1px solid rgba(233, 69, 96, 0.3);
+  }
+
+  /* Competitor Grid */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .comp-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    border: 1px solid var(--border);
+    transition: box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comp-card:hover {
+    box-shadow: var(--shadow-lg);
+  }
+
+  .comp-card .comp-links {
+    margin-top: auto;
+  }
+
+  /* RINCLE card in grid */
+  .comp-card.rincle {
+    background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent-navy) 100%);
+    color: #fff;
+    border: 2px solid var(--accent-red);
+  }
+  .comp-card.rincle .comp-num {
+    background: #fff;
+    color: var(--accent-red);
+  }
+  .comp-card.rincle h4 { color: #fff; }
+  .comp-card.rincle .comp-company { color: rgba(255,255,255,0.6); }
+  .comp-card.rincle .comp-detail .label { color: rgba(255,255,255,0.5); }
+  .comp-card.rincle .comp-detail { color: #fff; }
+  .comp-card.rincle .comp-links { border-top-color: rgba(255,255,255,0.15); }
+  .comp-card.rincle .comp-links a { color: #8ecae6; }
+  .comp-card.rincle .comp-links a:hover { color: #fff; }
+
+  .comp-card .comp-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .comp-card h4 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    margin-bottom: 4px;
+  }
+
+  .comp-card .comp-company {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 14px;
+  }
+
+  .comp-card .comp-detail {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .comp-card .comp-detail .label {
+    color: var(--text-light);
+    min-width: 65px;
+    flex-shrink: 0;
+  }
+
+  .comp-card .comp-links {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .comp-card .comp-links a {
+    font-size: 12px;
+    color: var(--accent-navy);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .comp-card .comp-links a:hover {
+    text-decoration: underline;
+    color: var(--accent-red);
+  }
+
+  /* Tables */
+  .table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: var(--card-bg);
+  }
+
+  thead th {
+    background: var(--accent-dark);
+    color: #ffffff;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:hover {
+    background: #f5f7fa;
+  }
+
+  tr.highlight {
+    background: #e8f0fe !important;
+    font-weight: 600;
+  }
+
+  tr.highlight td {
+    color: var(--accent-navy);
+  }
+
+  /* 1v1 Comparison */
+  .vs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+  }
+
+  .vs-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .vs-card-header {
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent-navy));
+    color: #ffffff;
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .vs-card-body {
+    padding: 20px;
+  }
+
+  .vs-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    color: var(--text-light);
+  }
+
+  .vs-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .vs-items:last-child {
+    margin-bottom: 0;
+  }
+
+  .vs-summary {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .vs-summary .vs-section-label {
+    margin-bottom: 4px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge-win {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .badge-lose {
+    background: #fde8ec;
+    color: #9b1c31;
+  }
+
+  .badge-draw {
+    background: #e2e3e5;
+    color: #495057;
+  }
+
+  /* SWOT */
+  .swot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .swot-card {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .swot-header {
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .swot-header.strength { background: #28a745; }
+  .swot-header.weakness { background: var(--accent-red); }
+  .swot-header.opportunity { background: #007bff; }
+  .swot-header.threat { background: #ffc107; color: #333; }
+
+  .swot-body {
+    background: var(--card-bg);
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+  }
+
+  .swot-body ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .swot-body li {
+    position: relative;
+    padding: 6px 0 6px 20px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .swot-body li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .swot-card:nth-child(1) li::before { background: #28a745; }
+  .swot-card:nth-child(2) li::before { background: var(--accent-red); }
+  .swot-card:nth-child(3) li::before { background: #007bff; }
+  .swot-card:nth-child(4) li::before { background: #ffc107; }
+
+  @media (max-width: 768px) {
+    body { padding: 20px 12px; }
+    .comp-grid { grid-template-columns: 1fr 1fr; }
+    .vs-grid { grid-template-columns: 1fr; }
+    .swot-grid { grid-template-columns: 1fr; }
+    .rincle-hero .info-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Title -->
+  <h1>RINCLE 競合調査レポート</h1>
+  <p class="report-date">調査日: 2026-05-19</p>
+
+  <!-- 調査対象 RINCLE + 競合5社 -->
+  <div class="section">
+    <h2>RINCLE + 競合 5社</h2>
+    <div class="comp-grid">
+
+      <!-- RINCLE -->
+      <div class="comp-card rincle">
+        <span class="comp-num">R</span>
+        <h4>RINCLE（リンクル）</h4>
+        <p class="comp-company">PEDALSTANDARD株式会社（代表: 増永康已）</p>
+        <div class="comp-detail"><span class="label">モデル</span><span>プロショップネットワーク型PF</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>12都府県・24店舗</span></div>
+        <div class="comp-detail"><span class="label">設立</span><span>2024年6月（サービス: 2026年2月〜）</span></div>
+        <div class="comp-detail"><span class="label">資本金</span><span>800万円</span></div>
+        <div class="comp-detail"><span class="label">目標</span><span>47都道府県・300店舗・3,000台</span></div>
+        <div class="comp-links">
+          <a href="https://rincle.co.jp/" target="_blank">サービスサイト</a>
+        </div>
+      </div>
+
+      <!-- 1. CycleTrip BASE -->
+      <div class="comp-card">
+        <span class="comp-num">1</span>
+        <h4>CycleTrip BASE</h4>
+        <p class="comp-company">ZuttoRide Sharing株式会社</p>
+        <div class="comp-detail"><span class="label">モデル</span><span>自社BtoC＋個人間CtoC＋サブスク</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>東京・名古屋・羽田</span></div>
+        <div class="comp-detail"><span class="label">設立</span><span>2018年6月</span></div>
+        <div class="comp-detail"><span class="label">資本金</span><span>3,000万円</span></div>
+        <div class="comp-detail"><span class="label">台数</span><span>約300台</span></div>
+        <div class="comp-links">
+          <a href="https://cycletrip.jp/ja/" target="_blank">サービスサイト</a>
+          <a href="https://zuttoridesharing.jp/" target="_blank">運営会社</a>
+        </div>
+      </div>
+
+      <!-- 2. ジャイアントストア -->
+      <div class="comp-card">
+        <span class="comp-num">2</span>
+        <h4>ジャイアントストア</h4>
+        <p class="comp-company">株式会社ジャイアント</p>
+        <div class="comp-detail"><span class="label">モデル</span><span>メーカー直営（GIANT/Livのみ）</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>全国12店舗（観光地中心）</span></div>
+        <div class="comp-detail"><span class="label">設立</span><span>1989年2月（親会社: 1972年 台湾）</span></div>
+        <div class="comp-detail"><span class="label">資本金</span><span>2億円</span></div>
+        <div class="comp-detail"><span class="label">従業員</span><span>125名</span></div>
+        <div class="comp-links">
+          <a href="https://bicyclerental.jp/" target="_blank">サービスサイト</a>
+          <a href="https://www.giant.co.jp/" target="_blank">運営会社</a>
+        </div>
+      </div>
+
+      <!-- 3. クロスビープランニング -->
+      <div class="comp-card">
+        <span class="comp-num">3</span>
+        <h4>クロスビープランニング</h4>
+        <p class="comp-company">個人事業（代表: 内村晋也）</p>
+        <div class="comp-detail"><span class="label">モデル</span><span>レンタル＋ガイドツアー体験型</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>大阪（1店舗）</span></div>
+        <div class="comp-detail"><span class="label">設立</span><span>2018年夏</span></div>
+        <div class="comp-detail"><span class="label">規模</span><span>数十台・個人事業</span></div>
+        <div class="comp-detail"><span class="label">特徴</span><span>顧客の9割以上が未経験者</span></div>
+        <div class="comp-links">
+          <a href="https://xb-planning.com/" target="_blank">サービスサイト</a>
+          <a href="https://xb-planning.com/about/" target="_blank">運営会社</a>
+        </div>
+      </div>
+
+      <!-- 4. 東京サイクリングツアー -->
+      <div class="comp-card">
+        <span class="comp-num">4</span>
+        <h4>東京サイクリングツアー</h4>
+        <p class="comp-company">株式会社ジャパンライド</p>
+        <div class="comp-detail"><span class="label">モデル</span><span>デリバリー型（無店舗）</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>東京23区</span></div>
+        <div class="comp-detail"><span class="label">設立</span><span>2015年以前</span></div>
+        <div class="comp-detail"><span class="label">台数</span><span>約40台</span></div>
+        <div class="comp-detail"><span class="label">特徴</span><span>無料配送・乗り捨て自由</span></div>
+        <div class="comp-links">
+          <a href="https://www.tokyo-cyclingtour.com/" target="_blank">サービスサイト</a>
+          <a href="https://www.tokyo-cyclingtour.com/company/" target="_blank">運営会社</a>
+        </div>
+      </div>
+
+      <!-- 5. Power Kids -->
+      <div class="comp-card">
+        <span class="comp-num">5</span>
+        <h4>Power Kids</h4>
+        <p class="comp-company">株式会社POWER-KIDS</p>
+        <div class="comp-detail"><span class="label">モデル</span><span>プロショップ副次型（宅配）</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>群馬（宅配で全国）</span></div>
+        <div class="comp-detail"><span class="label">創業</span><span>1920年（大正9年）</span></div>
+        <div class="comp-detail"><span class="label">従業員</span><span>4名</span></div>
+        <div class="comp-detail"><span class="label">特徴</span><span>Specialized/Trekコンセプトストア</span></div>
+        <div class="comp-links">
+          <a href="https://power-kids.co.jp/" target="_blank">サービスサイト</a>
+          <a href="https://power-kids.co.jp/" target="_blank">運営会社</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ビジネスモデル比較テーブル -->
+  <div class="section">
+    <h2>ビジネスモデル比較</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>サービス</th>
+            <th>ビジネスモデル</th>
+            <th>台数</th>
+            <th>店舗数</th>
+            <th>全国展開</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td>RINCLE</td>
+            <td>プロショップネットワーク型PF</td>
+            <td>—（店舗依存）</td>
+            <td>24店舗</td>
+            <td>12都府県（拡大中）</td>
+          </tr>
+          <tr>
+            <td>CycleTrip BASE</td>
+            <td>自社BtoC＋CtoC＋サブスク</td>
+            <td>約300台</td>
+            <td>3拠点</td>
+            <td>東京・名古屋・羽田</td>
+          </tr>
+          <tr>
+            <td>ジャイアントストア</td>
+            <td>メーカー直営</td>
+            <td>—</td>
+            <td>12店舗</td>
+            <td>観光地中心</td>
+          </tr>
+          <tr>
+            <td>クロスビープランニング</td>
+            <td>レンタル＋ガイドツアー</td>
+            <td>数十台</td>
+            <td>1店舗</td>
+            <td>大阪のみ</td>
+          </tr>
+          <tr>
+            <td>東京サイクリングツアー</td>
+            <td>デリバリー型（無店舗）</td>
+            <td>約40台</td>
+            <td>0（配送）</td>
+            <td>東京23区</td>
+          </tr>
+          <tr>
+            <td>Power Kids</td>
+            <td>プロショップ副次型（宅配）</td>
+            <td>—</td>
+            <td>2店舗</td>
+            <td>群馬（宅配で全国）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 料金比較テーブル -->
+  <div class="section">
+    <h2>料金比較（ロードバイク 1日あたり）</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>サービス</th>
+            <th>エントリー</th>
+            <th>ミドル</th>
+            <th>ハイエンド</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight">
+            <td>RINCLE</td>
+            <td colspan="3" style="text-align:center;">店舗により異なる（参考: 2,500円〜 / 6,000円〜 / 13,200円〜）</td>
+          </tr>
+          <tr>
+            <td>CycleTrip BASE</td>
+            <td>3,500円</td>
+            <td>6,500〜7,500円</td>
+            <td>9,000〜14,000円</td>
+          </tr>
+          <tr>
+            <td>ジャイアントストア</td>
+            <td>4,950〜6,600円</td>
+            <td>6,930〜9,240円</td>
+            <td>12,870〜17,160円</td>
+          </tr>
+          <tr>
+            <td>クロスビープランニング</td>
+            <td>4,500円</td>
+            <td>5,500〜7,500円</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>東京サイクリングツアー</td>
+            <td>5,940円</td>
+            <td>6,380〜7,480円</td>
+            <td>7,920円</td>
+          </tr>
+          <tr>
+            <td>Power Kids</td>
+            <td>—</td>
+            <td>〜3,000円/日相当（5日15,000円）</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RINCLE vs 各社 1対1比較 -->
+  <div class="section">
+    <h2>RINCLE vs 各社（1対1比較）</h2>
+    <div class="vs-grid">
+
+      <!-- vs CycleTrip BASE -->
+      <div class="vs-card">
+        <div class="vs-card-header">RINCLE vs CycleTrip BASE</div>
+        <div class="vs-card-body">
+          <p class="vs-section-label">RINCLE が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-win">店舗数</span>
+            <span class="badge badge-win">スケーラビリティ</span>
+            <span class="badge badge-win">試乗→購入</span>
+          </div>
+          <p class="vs-section-label">CycleTrip が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-lose">台数</span>
+            <span class="badge badge-lose">料金プラン</span>
+            <span class="badge badge-lose">配送</span>
+            <span class="badge badge-lose">多言語</span>
+          </div>
+          <div class="vs-summary">
+            <p class="vs-section-label">総評</p>
+            <p>最大の直接競合。CycleTrip BASEは品質統一とプランの多様性が強み。RINCLEはスケーラビリティで圧倒（7年3店舗 vs 3ヶ月24店舗）。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- vs ジャイアントストア -->
+      <div class="vs-card">
+        <div class="vs-card-header">RINCLE vs ジャイアントストア</div>
+        <div class="vs-card-body">
+          <p class="vs-section-label">RINCLE が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-win">ブランド選択肢</span>
+            <span class="badge badge-win">店舗数</span>
+            <span class="badge badge-win">エリアカバー</span>
+            <span class="badge badge-win">拡大スピード</span>
+          </div>
+          <p class="vs-section-label">ジャイアント が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-lose">ブランド認知度</span>
+            <span class="badge badge-lose">ワンウェイ</span>
+            <span class="badge badge-lose">多言語</span>
+          </div>
+          <div class="vs-summary">
+            <p class="vs-section-label">総評</p>
+            <p>ブランド力最強の競合。ただしGIANT/Livのみ、都市部にレンタル店なしの構造的制約あり。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- vs クロスビープランニング -->
+      <div class="vs-card">
+        <div class="vs-card-header">RINCLE vs クロスビープランニング</div>
+        <div class="vs-card-body">
+          <p class="vs-section-label">RINCLE が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-win">スケール</span>
+            <span class="badge badge-win">予約UX</span>
+            <span class="badge badge-win">サイト品質</span>
+          </div>
+          <p class="vs-section-label">クロスビー が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-lose">初心者対応</span>
+            <span class="badge badge-lose">ツアー設計</span>
+          </div>
+          <div class="vs-summary">
+            <p class="vs-section-label">総評</p>
+            <p>直接的脅威は低い。初心者向けツアー設計力は参考にすべき。パートナーショップ候補。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- vs 東京サイクリングツアー -->
+      <div class="vs-card">
+        <div class="vs-card-header">RINCLE vs 東京サイクリングツアー</div>
+        <div class="vs-card-body">
+          <p class="vs-section-label">RINCLE が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-win">スケール</span>
+            <span class="badge badge-win">整備品質</span>
+            <span class="badge badge-win">E-Bike</span>
+          </div>
+          <p class="vs-section-label">東京CT が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-lose">乗り捨て</span>
+            <span class="badge badge-lose">利用時間</span>
+          </div>
+          <div class="vs-summary">
+            <p class="vs-section-label">総評</p>
+            <p>直接的脅威は低い。デリバリー型・乗り捨て自由はUX改善のヒント。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- vs Power Kids -->
+      <div class="vs-card">
+        <div class="vs-card-header">RINCLE vs Power Kids</div>
+        <div class="vs-card-body">
+          <p class="vs-section-label">RINCLE が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-win">ビジネスモデル</span>
+            <span class="badge badge-win">店舗数</span>
+            <span class="badge badge-win">予約UX</span>
+          </div>
+          <p class="vs-section-label">Power Kids が優位</p>
+          <div class="vs-items">
+            <span class="badge badge-lose">宅配</span>
+            <span class="badge badge-lose">ホイールレンタル</span>
+          </div>
+          <div class="vs-summary">
+            <p class="vs-section-label">総評</p>
+            <p>直接的脅威は低い。プロショップがレンタルを提供する先行事例。パートナーショップ候補。</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SWOT分析 -->
+  <div class="section">
+    <h2>SWOT 分析</h2>
+    <div class="swot-grid">
+
+      <!-- 強み -->
+      <div class="swot-card">
+        <div class="swot-header strength">Strengths（強み）</div>
+        <div class="swot-body">
+          <ul>
+            <li>プラットフォームモデルによるスケーラビリティ</li>
+            <li>プロショップ品質の整備・接客</li>
+            <li>試乗→購入導線の差別化</li>
+            <li>マルチブランド対応</li>
+            <li>Web予約システム</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 弱み -->
+      <div class="swot-card">
+        <div class="swot-header weakness">Weaknesses（弱み）</div>
+        <div class="swot-body">
+          <ul>
+            <li>サービス歴が浅い（2026年2月開始）</li>
+            <li>ユーザーレビューがゼロ</li>
+            <li>多言語未対応</li>
+            <li>配送非対応</li>
+            <li>パートナー間の品質統一が難しい</li>
+            <li>ガイドツアー未提供</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 機会 -->
+      <div class="swot-card">
+        <div class="swot-header opportunity">Opportunities（機会）</div>
+        <div class="swot-body">
+          <ul>
+            <li>競合のスケール限界（自社運営モデルの壁）</li>
+            <li>業界全体のDX遅れ</li>
+            <li>レビュー空白市場（先行者利益）</li>
+            <li>地方空白エリアの開拓</li>
+            <li>小規模競合の取り込み</li>
+            <li>インバウンド需要の拡大</li>
+            <li>自治体との連携（観光振興）</li>
+            <li>E-Bike市場の成長</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 脅威 -->
+      <div class="swot-card">
+        <div class="swot-header threat">Threats（脅威）</div>
+        <div class="swot-body">
+          <ul>
+            <li>CycleTripのCtoC拡大</li>
+            <li>ジャイアントの方針転換</li>
+            <li>シェアサイクル大手の参入</li>
+            <li>パートナーショップの離反</li>
+            <li>品質トラブルによるブランド毀損</li>
+            <li>メーカー直販レンタルの拡大</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 追加調査: 注目すべきサービス -->
+  <div class="section">
+    <h2>追加調査: 注目すべきサービス</h2>
+    <div class="comp-grid" style="grid-template-columns: repeat(2, 1fr);">
+      <div class="comp-card">
+        <span class="comp-num" style="background:#d97706;">!</span>
+        <h4>モンベル スポーツサイクルレンタル</h4>
+        <p class="comp-company">株式会社モンベル（アウトドア大手）</p>
+        <div class="comp-detail"><span class="label">モデル</span><span>自社ブランド「SCHEIDEGG」のバイクを提供</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>ひたちなか/富士吉田/横浜/立山/坂/福岡等</span></div>
+        <div class="comp-detail"><span class="label">脅威度</span><span style="color:#d97706;font-weight:700;">中 — 全国店舗網+ブランド力で将来的に競合化リスク</span></div>
+        <div class="comp-links">
+          <a href="https://www.montbell.jp/generalpage/disp.php?id=914" target="_blank">サービスサイト</a>
+        </div>
+      </div>
+      <div class="comp-card">
+        <span class="comp-num" style="background:#d97706;">!</span>
+        <h4>RIDEAWAY（ライドアウェイ）</h4>
+        <p class="comp-company">シンメトリック社</p>
+        <div class="comp-detail"><span class="label">モデル</span><span>無人レンタル実験店舗（立川）を展開</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>多摩川エリア中心</span></div>
+        <div class="comp-detail"><span class="label">脅威度</span><span style="color:#64748b;font-weight:700;">低〜中 — 規模は小さいが無人モデルは注目</span></div>
+        <div class="comp-links">
+          <a href="https://www.rideaway.bike/" target="_blank">サービスサイト</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
