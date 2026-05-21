@@ -299,6 +299,41 @@
   <p><strong>改善案:</strong> 生成範囲を予約上限+バッファ（例: 70日先）に制限する。これだけで生成レコード数が約1/5になり、WU を大幅に節約できる。</p>
 </div>
 
+<div class="issue">
+  <div class="issue-title">(i) レンタル可能な自転車s の設定が生成経路で異なる <span class="tag tag-bug">バグ</span></div>
+  <p>営業カレンダー（日付）の「レンタル可能な自転車s」フィールドは、その日に貸出可能な自転車のリスト。しかし生成経路によってセットされたりされなかったりする:</p>
+  <table style="margin:8px 0;">
+    <tr><th>経路</th><th>自転車リスト</th></tr>
+    <tr><td>B. 日次生成（デフォルト作成_item）</td><td style="color:#00b894;"><strong>セットする</strong>（Shop の貸出可能自転車を検索）</td></tr>
+    <tr><td>C. 定期補充（営業カレ作成4）</td><td style="color:#e17055;"><strong>セットしない</strong></td></tr>
+    <tr><td>A. 初期登録（営業日付_初期登録_item）</td><td style="color:#e17055;"><strong>セットしない</strong></td></tr>
+  </table>
+  <p><strong>問題:</strong> A / C 経由で作られた営業カレンダーは自転車リストが空。ユーザーが予約しようとしても「レンタル可能な自転車がない」状態になる可能性がある。</p>
+  <p><strong>改善案:</strong> 全経路で自転車リストをセットする。または営業カレンダー作成後に別途自転車リストを一括セットするワークフローを用意する。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(j) Sub_Option の在庫管理が number0~5 のハードコード <span class="tag tag-risk">設計</span></div>
+  <p>オプション品（ヘルメット等）の日別在庫を、<code>Sub_Option.number0</code>～<code>number5</code> の6フィールドで管理している。</p>
+  <p>仕組み: <code>numberN</code> = 「残り N 個利用可能な日付」の営業カレンダーリスト。予約確定で numberN → numberN-1 にシフト、キャンセルで逆方向にシフト。</p>
+  <p><strong>問題 1:</strong> <code>max_number=5</code> が上限。オプション品を6個以上在庫できない。</p>
+  <p><strong>問題 2:</strong> 5段階の if 分岐（max_number==5なら number5 に set, ==4 なら number4 に set…）を WF でハードコード。拡張時にフィールド追加 + WF 修正が必要。</p>
+  <p><strong>改善案:</strong> 在庫数を number フィールドで直接持つ設計に変更し、予約/キャンセル時に +1/-1 する方式に簡素化する。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(k) 日付データ 追加用テーブルが完全に未使用 <span class="tag tag-dup">残骸</span></div>
+  <p><code>日付データ 追加用</code> テーブルはどのワークフローからも検索・参照されていない。カラム名も <code>hliday</code>（typo）のまま放置されている。</p>
+  <p><strong>改善案:</strong> 削除する。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(l) business_hour（テキスト）と営業カレンダーの二重管理 <span class="tag tag-dup">不整合リスク</span></div>
+  <p><code>User.business_hour</code>（text型）は17箇所で参照されており、ショップ詳細ページやメール本文で「営業時間」として表示されている。一方、構造化された営業カレンダー（曜日/日付）とは完全に独立しており、どちらか一方を更新してももう一方には反映されない。</p>
+  <p><strong>問題:</strong> ショップが営業カレンダーで時間を変更しても、表示上の営業時間テキストは古いまま（逆も同様）。</p>
+  <p><strong>改善案:</strong> business_hour を廃止し、営業カレンダー（曜日）から表示用テキストを動的に生成する。または営業カレンダー変更時に business_hour を自動更新する。</p>
+</div>
+
 </div>
 </body>
 </html>
