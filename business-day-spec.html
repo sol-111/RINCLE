@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>店舗の営業日周りの仕様</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: #f5f6fa; color: #2d3436; line-height: 1.7; padding: 40px 20px; }
+  .container { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 1.8rem; margin-bottom: 32px; padding-bottom: 12px; border-bottom: 3px solid #6c5ce7; }
+  h2 { font-size: 1.35rem; margin: 36px 0 16px; padding: 8px 14px; background: #6c5ce7; color: #fff; border-radius: 6px; }
+  h3 { font-size: 1.1rem; margin: 24px 0 10px; padding-left: 12px; border-left: 4px solid #a29bfe; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  th { background: #dfe6e9; text-align: left; padding: 10px 14px; font-size: .85rem; white-space: nowrap; }
+  td { padding: 10px 14px; border-top: 1px solid #eee; font-size: .88rem; vertical-align: top; }
+  tr:hover td { background: #f8f9ff; }
+  code { background: #eee; padding: 2px 6px; border-radius: 4px; font-size: .85em; font-family: 'SF Mono', 'Fira Code', monospace; }
+  .flow-box { background: #fff; border-radius: 8px; padding: 20px 24px; margin: 12px 0 20px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .flow-box ol { padding-left: 20px; }
+  .flow-box li { margin: 6px 0; }
+  .flow-label { display: inline-block; background: #00b894; color: #fff; font-size: .75rem; padding: 2px 8px; border-radius: 4px; margin-right: 6px; font-weight: 600; }
+  .flow-label.recurring { background: #e17055; }
+  .flow-label.api { background: #0984e3; }
+  .issue { background: #fff; border-left: 4px solid #e17055; border-radius: 0 8px 8px 0; padding: 16px 20px; margin: 12px 0; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .issue-title { font-weight: 700; color: #e17055; margin-bottom: 4px; }
+  .issue p { font-size: .9rem; margin: 4px 0; }
+  .tag { display: inline-block; font-size: .7rem; padding: 1px 7px; border-radius: 3px; margin-left: 6px; font-weight: 600; }
+  .tag-risk { background: #ffeaa7; color: #d35400; }
+  .tag-dup { background: #dfe6e9; color: #636e72; }
+  .tag-bug { background: #fab1a0; color: #c0392b; }
+  .tag-perf { background: #81ecec; color: #00695c; }
+  .arrow { text-align: center; color: #6c5ce7; font-size: 1.2rem; margin: 4px 0; }
+  .mermaid-like { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .mermaid-like .step { background: #fff; border: 2px solid #a29bfe; border-radius: 8px; padding: 10px 20px; min-width: 340px; text-align: center; font-size: .88rem; }
+  .mermaid-like .step.recurring { border-color: #e17055; }
+  .note { font-size: .82rem; color: #636e72; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>店舗の営業日周りの仕様</h1>
+
+<!-- ============================== -->
+<h2>1. 関連するDB・カラム</h2>
+
+<h3>主要テーブル</h3>
+<table>
+  <tr>
+    <th>テーブル名</th><th>用途</th><th>カラム</th>
+  </tr>
+  <tr>
+    <td><strong>営業カレンダー（曜日）</strong></td>
+    <td>店舗ごとの曜日別デフォルト設定</td>
+    <td>
+      <code>加盟店</code> (ref → User)<br>
+      <code>曜日</code> (option: 曜日)<br>
+      <code>営業状態</code> (option: 営業状態op, 初期値=営業)<br>
+      <code>startTime</code> (option: Time)<br>
+      <code>endTime</code> (option: Time)
+    </td>
+  </tr>
+  <tr>
+    <td><strong>営業カレンダー（日付）</strong></td>
+    <td>店舗ごとの日単位の営業データ<br>（予約時に実際に参照される）</td>
+    <td>
+      <code>日付</code> (date)<br>
+      <code>加盟店</code> (ref → User)<br>
+      <code>営業状態</code> (option: 営業状態op)<br>
+      <code>startTime</code> (option: Time)<br>
+      <code>endTime</code> (option: Time)<br>
+      <code>レンタル可能な自転車s</code> (list → Bicycle)
+    </td>
+  </tr>
+  <tr>
+    <td><strong>日付データ Defaults</strong></td>
+    <td>全店舗共通の日付マスタ（1日1レコード）</td>
+    <td>
+      <code>date</code> (date)<br>
+      <code>holiday</code> (boolean)
+    </td>
+  </tr>
+  <tr>
+    <td><strong>日付データ 追加用</strong></td>
+    <td>日付追加用の一時テーブル</td>
+    <td>
+      <code>date</code> (date)<br>
+      <code>hliday</code> (boolean) ※typo
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Holidays</strong></td>
+    <td>祝日データ</td>
+    <td><code>date</code> (date)</td>
+  </tr>
+  <tr>
+    <td><strong>User（加盟店）</strong></td>
+    <td>店舗情報</td>
+    <td>
+      <code>business_hour</code> (text)<br>
+      <code>前日貸し出し</code> (number)<br>
+      ほか
+    </td>
+  </tr>
+</table>
+
+<h3>Option Sets</h3>
+<table>
+  <tr><th>名前</th><th>値</th></tr>
+  <tr>
+    <td><strong>曜日</strong></td>
+    <td>月曜 / 火曜 / 水曜 / 木曜 / 金曜 / 土曜 / 日曜 / 祝日<br><span class="note">slug: 月/火/水/木/金/土/日/祝</span></td>
+  </tr>
+  <tr>
+    <td><strong>営業状態op</strong></td>
+    <td>営業 / 休業</td>
+  </tr>
+  <tr>
+    <td><strong>Time</strong></td>
+    <td>0:00 ～ 23:50（10分刻み・全144件）</td>
+  </tr>
+</table>
+
+<!-- ============================== -->
+<h2>2. データがいつ・どう作られるか</h2>
+
+<h3>前提: 日付データ Defaults（日付マスタ）</h3>
+<div class="flow-box">
+  <p>全店舗共通の「日付の台帳」。約365日先まで1日1レコードで存在する。</p>
+  <table style="margin-top:12px;">
+    <tr><th>作成方法</th><th>内容</th></tr>
+    <tr>
+      <td><strong>初期シード</strong><br><span class="note">管理者ページのボタン</span></td>
+      <td>管理者が admin ページから手動で一括作成（<code>営業日付_初期作成_list</code>）<br>ListofDates 要素から日付リストを受け取り、各日付の Defaults レコードを生成</td>
+    </tr>
+    <tr>
+      <td><strong>日次延伸</strong><br><span class="note">RecurringEvent</span></td>
+      <td><code>営業カレンダーデフォルト作成_リカー</code> が毎日実行<br>Defaults の最新日 +1日 のレコードを追加し、水平線を維持</td>
+    </tr>
+  </table>
+</div>
+
+<h3>A. 店舗の新規登録時（shop_form ページ SignUp）</h3>
+<p class="note" style="margin-bottom:8px;">SignUp 完了後に自動実行。<strong>約365件の営業カレンダー（日付）が一括作成される。</strong></p>
+<div class="mermaid-like">
+  <div class="step" style="border-color:#00b894;"><span class="flow-label">SignUp</span> shop_form ページ<br><span class="note">Action 0: ユーザー登録<br>Action 2-5: Pay.JP テナント作成<br><strong>Action 6: 営業日付_初期登録_list を呼び出し</strong></span></div>
+  <div class="arrow">&#x25BC;</div>
+  <div class="step"><span class="flow-label api">API</span> 営業日付_初期登録_list<br><span class="note">日付データ Defaults から<br><code>date &gt; 今日 - 10日 → 月初に丸め</code> の全レコードを取得<br>（≒ 今月初 ～ 約1年先 → <strong>約365件</strong>）</span></div>
+  <div class="arrow">&#x25BC; 各日付（約365回）</div>
+  <div class="step"><span class="flow-label api">API</span> 営業日付_初期登録_item<br><span class="note">営業カレンダー（日付）を新規作成<br>営業状態 = <strong style="color:#e17055;">休業</strong><br>startTime / endTime = <strong style="color:#e17055;">空</strong><br>レンタル可能な自転車s = <strong style="color:#e17055;">空</strong></span></div>
+</div>
+<div class="issue" style="border-left-color:#fdcb6e; margin-top:16px;">
+  <div class="issue-title" style="color:#f39c12;">注意: 初期登録時の落とし穴</div>
+  <p>全日付が「休業・時間なし」で作成される。この時点では曜日テンプレートは参照されない。</p>
+  <p>その後ショップがオンボーディングで曜日テンプレートを設定しても、<strong>既に作成済みの約365件には反映されない</strong>。</p>
+  <p>リカーリング B は「レコードが既にあればスキップ」するため、上書きもされない。</p>
+</div>
+
+<h3>B. 日次の営業カレンダー自動生成（既存店舗向け）</h3>
+<p class="note" style="margin-bottom:8px;">RecurringEvent「営業カレンダーデフォルト作成_リカー」が毎日実行</p>
+<div class="mermaid-like">
+  <div class="step recurring"><span class="flow-label recurring">Recurring</span> 営業カレンダーデフォルト作成_リカー</div>
+  <div class="arrow">&#x25BC;</div>
+  <div class="step"><span class="flow-label api">API</span> 営業カレンダーデフォルト作成_list<br><span class="note">1. Defaults の最新日+1日 → 新レコード作成（日付マスタ延伸）<br>2. 全店舗に対してループ</span></div>
+  <div class="arrow">&#x25BC; 各ショップごと</div>
+  <div class="step"><span class="flow-label api">API</span> 営業カレンダーデフォルト作成_item<br><span class="note">該当日の曜日 → <strong>営業カレンダー（曜日）から設定を取得</strong><br>startTime / endTime / 営業状態 を引き継いで<br>営業カレンダー（日付）を新規作成</span></div>
+</div>
+
+<h3>C. 営業カレンダーの定期補充（歯抜け埋め）</h3>
+<p class="note" style="margin-bottom:8px;">RecurringEvent「営業カレ作成1_リカーリング」が定期実行 — 翌年分まで先行生成</p>
+<div class="mermaid-like">
+  <div class="step recurring"><span class="flow-label recurring">Recurring</span> 営業カレ作成1_リカーリング</div>
+  <div class="arrow">&#x25BC; 各ショップ</div>
+  <div class="step"><span class="flow-label api">API</span> 営業カレ作成2_リカーリング<br><span class="note">ショップの「営業カレンダー（曜日）」を取得<br>Defaults から翌年分の日付リストを取得</span></div>
+  <div class="arrow">&#x25BC; 各曜日テンプレート</div>
+  <div class="step"><span class="flow-label api">API</span> 営業カレ作成3_リカーリング<br><span class="note">日付リストを <code>format_date("ddd曜")</code> でフィルタし<br>該当曜日の日付だけ抽出</span></div>
+  <div class="arrow">&#x25BC; 各日付</div>
+  <div class="step"><span class="flow-label api">API</span> 営業カレ作成4_リカーリング<br><span class="note"><strong>既にその日付のレコードがなければ</strong><br>曜日テンプレートの設定を引き継いで新規作成</span></div>
+</div>
+
+<h3>A / B / C の関係</h3>
+<div class="flow-box">
+  <table>
+    <tr>
+      <th></th>
+      <th>A. 初期登録</th>
+      <th>B. 日次生成</th>
+      <th>C. 定期補充</th>
+    </tr>
+    <tr>
+      <td><strong>タイミング</strong></td>
+      <td>店舗 SignUp 時（1回）</td>
+      <td>毎日（Recurring）</td>
+      <td>定期（Recurring）</td>
+    </tr>
+    <tr>
+      <td><strong>対象日付</strong></td>
+      <td>今月初 ～ 約1年先<br>（約365日分）</td>
+      <td>Defaults 最新+1日<br>（1日分）</td>
+      <td>翌年分の歯抜け<br>（不足分のみ）</td>
+    </tr>
+    <tr>
+      <td><strong>曜日テンプレ参照</strong></td>
+      <td style="color:#e17055;"><strong>しない</strong></td>
+      <td style="color:#00b894;"><strong>する</strong></td>
+      <td style="color:#00b894;"><strong>する</strong></td>
+    </tr>
+    <tr>
+      <td><strong>既存チェック</strong></td>
+      <td style="color:#e17055;">なし</td>
+      <td style="color:#e17055;">なし</td>
+      <td style="color:#00b894;">あり（スキップ）</td>
+    </tr>
+    <tr>
+      <td><strong>初期値</strong></td>
+      <td>全て休業・時間なし</td>
+      <td>曜日テンプレの値</td>
+      <td>曜日テンプレの値</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ============================== -->
+<h2>3. 仕様まとめ</h2>
+<div class="flow-box">
+  <ul style="padding-left:20px;">
+    <li><strong>曜日テンプレート</strong>（営業カレンダー（曜日））で、月～日＋祝日の8パターンの営業時間・営業/休業を設定</li>
+    <li><strong>日付実体</strong>（営業カレンダー（日付））が曜日テンプレートから自動生成され、個別の日の営業状態・時間を管理</li>
+    <li>日付実体には「レンタル可能な自転車s」リストがあり、その日に貸し出せる自転車を管理</li>
+    <li><code>Time</code> option set は10分刻み（0:00～23:50）で営業開始/終了を指定</li>
+    <li>予約処理で実際に参照されるのは「営業カレンダー（日付）」側のレコード</li>
+    <li><code>Sub_Option</code> テーブルに <code>number0~5</code> として営業カレンダー（日付）のリストが紐づいており、オプション品の在庫管理にも利用</li>
+  </ul>
+</div>
+
+<!-- ============================== -->
+<h2>4. 改善した方が良い点</h2>
+
+<div class="issue">
+  <div class="issue-title">(a) 曜日マッチングが文字列比較に依存 <span class="tag tag-risk">リスク</span></div>
+  <p><code>format_date("ddd曜")</code> で日付を「月曜」「火曜」等にフォーマットし、曜日 option set の display と一致判定している。</p>
+  <p><strong>問題:</strong> ロケール依存。Bubble サーバーのロケール設定が変わると壊れる。</p>
+  <p><strong>改善案:</strong> 曜日番号（1-7）での比較に変更する。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(b) 祝日の扱いが不完全 <span class="tag tag-bug">バグ疑い</span></div>
+  <p>曜日 option set に「祝日」が定義されており、<code>holidays</code> テーブルや <code>日付データ defaults.holiday</code> フラグも存在する。</p>
+  <p><strong>問題:</strong> 日付レコード生成時に祝日判定→祝日テンプレート適用するフローが見当たらない。祝日テンプレートを設定しても反映されていない可能性。</p>
+  <p><strong>改善案:</strong> 日付レコード生成時に holidays テーブル or defaults.holiday を参照し、祝日なら祝日テンプレートを優先適用するロジックを追加。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(c) 日付データ系テーブルが冗長 <span class="tag tag-dup">重複</span></div>
+  <p><code>日付データ defaults</code>、<code>日付データ 追加用</code>、<code>Holidays</code> の3テーブルが類似の役割で分散。</p>
+  <p><code>日付データ 追加用</code> はカラム名が <code>hliday</code>（typo: holiday の o 抜け）。</p>
+  <p><strong>改善案:</strong> 1テーブルに統合し、typo も修正。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(d) 初期登録で約365日分が全て「休業」で作成される <span class="tag tag-bug">仕様課題</span></div>
+  <p><code>shop_form</code> の SignUp 時に <code>営業日付_初期登録_list</code> が呼ばれ、Defaults の全日付（約365日分）に対して<code>営業状態=休業</code>, <code>startTime/endTime=空</code> で一括作成される。<strong>曜日テンプレートは参照しない。</strong></p>
+  <p><strong>問題 1:</strong> ショップがオンボーディングで曜日テンプレートを設定しても、既に作成済みの約365件には反映されない。</p>
+  <p><strong>問題 2:</strong> リカーリング C（営業カレ作成1~4）は「レコードが既にあればスキップ」するため、休業レコードが上書きされることもない。</p>
+  <p><strong>問題 3:</strong> 結果として、ショップは365日分を1日ずつ手動で営業に変更する必要がある。</p>
+  <p><strong>改善案:</strong> 曜日テンプレート変更時に、未来の日付レコードを曜日に応じて一括更新する仕組みを追加。または初期登録の順序を変え、曜日テンプレート設定後に日付レコードを生成する。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(e) B（日次生成）と C（定期補充）が実質的に二重処理 <span class="tag tag-perf">パフォーマンス</span></div>
+  <p>B は「毎日1日分を全店舗に作成」、C は「翌年分の歯抜けを全店舗に補充」。C があれば B のカレンダー作成は不要（逆も然り）。</p>
+  <p><strong>問題:</strong> 二重実行で WU を無駄に消費。また B で Defaults が作られない日があると C も空振り（Defaults の日付がないと C のリストに出てこない）。</p>
+  <p><strong>改善案:</strong> B は Defaults 延伸のみに限定し、カレンダー作成は C に一本化する。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(f) リカーリングの冪等性の懸念 <span class="tag tag-risk">リスク</span></div>
+  <p>営業カレ作成4 は「既存チェック → なければ作成」をしているが、タイミング次第で重複作成のリスクがある。</p>
+  <p><strong>改善案:</strong> ユニーク制約（店舗+日付）や、作成後の重複チェック処理を追加。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(g) business_hour がテキスト型 <span class="tag tag-dup">曖昧</span></div>
+  <p>User テーブルの <code>business_hour</code> が text 型。構造化された営業カレンダーとの使い分けが不明確。</p>
+  <p><strong>改善案:</strong> 表示専用なら OK。ロジックに使われているなら構造化データに統一すべき。</p>
+</div>
+
+<div class="issue">
+  <div class="issue-title">(h) 予約上限59日なのに365日分を生成している <span class="tag tag-perf">パフォーマンス</span><span class="tag tag-bug">過剰</span></div>
+  <p>予約UIの日付ピッカーの上限は以下の通り:</p>
+  <table style="margin:8px 0;">
+    <tr><th>項目</th><th>制約</th><th>実質上限</th></tr>
+    <tr><td>貸出日</td><td><code>plus_days(31)</code></td><td>最大31日先</td></tr>
+    <tr><td>返却日</td><td><code>plus_days(59)</code></td><td>最大59日先（≒約2ヶ月）</td></tr>
+  </table>
+  <p><strong>問題:</strong> 予約は最大59日先までしかできないのに、営業カレンダー（日付）は Defaults の全期間（約365日先）分を一括作成している。<strong>約300日分のレコードが完全に無駄。</strong></p>
+  <p>新規店舗登録時だけでなく、リカーリング B/C も翌年分まで先行生成しており、全店舗で不要なレコードと WU を消費し続けている。</p>
+  <p><strong>改善案:</strong> 生成範囲を予約上限+バッファ（例: 70日先）に制限する。これだけで生成レコード数が約1/5になり、WU を大幅に節約できる。</p>
+</div>
+
+</div>
+</body>
+</html>
