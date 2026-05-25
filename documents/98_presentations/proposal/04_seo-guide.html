@@ -480,6 +480,95 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
       </table>
     </div>
 
+    <!-- ===== Step 4.5: Microsoft Clarity ===== -->
+    <div class="step" style="counter-increment:none;">
+      <!-- override stepper counter for 4.5 -->
+      <div style="position:absolute;left:0;top:0;width:42px;height:42px;background:#e94560;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;box-shadow:0 3px 10px rgba(233,69,96,.35);">4.5</div>
+      <h3>Microsoft Clarity（クラリティ）の導入</h3>
+      <p style="font-size:13px; color:#666; margin-bottom:16px;">ユーザーの画面操作を録画・可視化する無料ツール</p>
+
+      <!-- クラリティとは -->
+      <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e8e8e8; box-shadow:0 1px 3px rgba(0,0,0,0.06); margin-bottom:16px;">
+        <h4 style="font-size:15px; font-weight:700; color:#0f3460; margin-bottom:12px;">クラリティとは</h4>
+        <p style="font-size:13px; color:#555; line-height:1.7; margin-bottom:12px;">
+          Microsoftが<strong>無料</strong>で提供する、ユーザーがサイト上でどう動いているかを録画・可視化するツール。<br>
+          GA4が「何人来て、どのページを見たか」の<strong>数字</strong>を教えてくれるのに対し、クラリティは「どこをクリックし、どこで迷っているか」を<strong>映像</strong>で見せてくれる。
+        </p>
+        <!-- GA4 vs Clarity -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div style="background:#f1f5f9; border-radius:8px; padding:14px;">
+            <div style="font-size:12px; font-weight:700; color:#0f3460; margin-bottom:6px;">GA4だけの場合</div>
+            <div style="font-size:12px; color:#555;">「予約フローで60%が離脱している」<br>→ 分かるけど<strong style="color:#dc2626;">「なぜ」は分からない</strong></div>
+          </div>
+          <div style="background:#ecfdf5; border-radius:8px; padding:14px;">
+            <div style="font-size:12px; font-weight:700; color:#059669; margin-bottom:6px;">GA4 + クラリティの場合</div>
+            <div style="font-size:12px; color:#555;">「60%が離脱」（GA4）<br>→ 録画で「料金が見つからず戻っている」（クラリティ）<br>→ <strong style="color:#059669;">「料金を明示すれば改善」と判断できる</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 主な機能 -->
+      <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e8e8e8; box-shadow:0 1px 3px rgba(0,0,0,0.06); margin-bottom:16px;">
+        <h4 style="font-size:15px; font-weight:700; color:#0f3460; margin-bottom:12px;">主な機能</h4>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div style="background:#f8f9fa; border-radius:8px; padding:12px;">
+            <div style="font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">🎥 セッション録画</div>
+            <div style="font-size:12px; color:#666;">ユーザーの画面操作を動画で再生。「ここで迷ってる」が一目で分かる</div>
+          </div>
+          <div style="background:#f8f9fa; border-radius:8px; padding:12px;">
+            <div style="font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">🔥 ヒートマップ</div>
+            <div style="font-size:12px; color:#666;">ページのどこがよくクリックされているか、どこまでスクロールされているかを色で可視化</div>
+          </div>
+          <div style="background:#f8f9fa; border-radius:8px; padding:12px;">
+            <div style="font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">👆 デッドクリック検出</div>
+            <div style="font-size:12px; color:#666;">クリックしても何も起きなかった箇所を自動検出（= UIが分かりにくい箇所）</div>
+          </div>
+          <div style="background:#f8f9fa; border-radius:8px; padding:12px;">
+            <div style="font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">😤 レイジクリック検出</div>
+            <div style="font-size:12px; color:#666;">同じ場所を何度もクリックした箇所を検出（= 反応が遅い or 動かないと思われた箇所）</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 導入手順 -->
+      <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e8e8e8; box-shadow:0 1px 3px rgba(0,0,0,0.06); margin-bottom:16px;">
+        <h4 style="font-size:15px; font-weight:700; color:#0f3460; margin-bottom:12px;">導入手順</h4>
+        <div style="font-size:13px; color:#555; line-height:1.8;">
+          <strong>1. アカウント作成</strong><br>
+          <a href="https://clarity.microsoft.com/" target="_blank" style="color:#2563eb;">https://clarity.microsoft.com/</a> にアクセス → Microsoft/Google/Facebookアカウントでログイン → New project → URL: <code style="background:#f1f5f9; padding:2px 6px; border-radius:4px;">https://rincle.co.jp</code><br><br>
+          <strong>2. Bubble.ioに設置</strong><br>
+          表示されるスニペットをコピーし、Bubble.io の Settings > SEO/metatags > Script/meta tags in header に貼り付け（GA4スニペットの下に追加）<br><br>
+          <strong>3. 動作確認</strong><br>
+          別ブラウザでrincle.co.jpにアクセスして操作 → 数分後にクラリティのダッシュボードに録画が表示されればOK
+        </div>
+      </div>
+
+      <!-- GA4との使い分け -->
+      <div style="background:#fff; border-radius:12px; padding:20px; border:1px solid #e8e8e8; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+        <h4 style="font-size:15px; font-weight:700; color:#0f3460; margin-bottom:12px;">GA4 との使い分け</h4>
+        <table style="width:100%; border-collapse:collapse; font-size:12px;">
+          <thead>
+            <tr>
+              <th style="background:#f1f5f9; padding:8px 12px; text-align:left; border-bottom:1px solid #e2e8f0; color:#666;">知りたいこと</th>
+              <th style="background:#f1f5f9; padding:8px 12px; text-align:center; border-bottom:1px solid #e2e8f0; color:#666;">GA4</th>
+              <th style="background:#f1f5f9; padding:8px 12px; text-align:center; border-bottom:1px solid #e2e8f0; color:#666;">クラリティ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9;">何人来たか、どこから来たか</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#059669; font-weight:600;">●</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#ccc;">-</td></tr>
+            <tr><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9;">どのページで離脱しているか（数字）</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#059669; font-weight:600;">●</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#ccc;">-</td></tr>
+            <tr><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9;">なぜ離脱しているか（映像）</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#ccc;">-</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#059669; font-weight:600;">●</td></tr>
+            <tr><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9;">どこがクリックされているか</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#ccc;">-</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#059669; font-weight:600;">●</td></tr>
+            <tr><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9;">広告の効果測定</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#059669; font-weight:600;">●</td><td style="padding:8px 12px; text-align:center; border-bottom:1px solid #f1f5f9; color:#ccc;">-</td></tr>
+            <tr><td style="padding:8px 12px;">UIの改善ポイント発見</td><td style="padding:8px 12px; text-align:center; color:#ccc;">-</td><td style="padding:8px 12px; text-align:center; color:#059669; font-weight:600;">●</td></tr>
+          </tbody>
+        </table>
+        <div style="background:#eff6ff; border-radius:6px; padding:10px 14px; margin-top:12px; font-size:12px; color:#1e40af;">
+          <strong>両方とも完全無料。</strong> GA4で「どこで」離脱しているかを数字で把握し、クラリティで「なぜ」離脱しているかを映像で確認する。
+        </div>
+      </div>
+    </div>
+
     <!-- ===== Step 5 ===== -->
     <div class="step">
       <h3>効果測定</h3>
@@ -528,6 +617,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
       <tr><td>robots.txt</td><td>クローラーに対して「見てよい/見ないでほしい」ページを指示するファイル。</td></tr>
       <tr><td>Search Console</td><td>Google提供の無料ツール。検索結果での見え方やエラーを確認・管理できる。</td></tr>
       <tr><td>GA4</td><td>Google Analytics 4。サイト訪問者の行動を計測する無料のアクセス解析ツール。</td></tr>
+      <tr><td>Microsoft Clarity</td><td>Microsoftが無料で提供するユーザー行動分析ツール。セッション録画やヒートマップで「なぜ離脱するか」を映像で確認できる。</td></tr>
       <tr><td>オーガニック検索</td><td>広告でなく自然な検索結果からのアクセスのこと。SEOで増やすのはこの流入。</td></tr>
       <tr><td>直帰率</td><td>サイトに来て1ページだけ見て帰った訪問の割合。</td></tr>
       <tr><td>コンバージョン</td><td>サイト上で達成してほしい目標行動（例: レンタル予約の完了）。</td></tr>
@@ -574,6 +664,13 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
     <li>GA4のプロパティを作成した</li>
     <li>測定コードをサイトに設置した</li>
     <li>リアルタイムレポートでデータ取得を確認した</li>
+  </ul>
+
+  <h3>Step 4.5: Microsoft Clarity</h3>
+  <ul class="checklist">
+    <li>Clarityのアカウントを作成し、プロジェクトを追加した</li>
+    <li>スニペットをBubble.ioのheaderに設置した</li>
+    <li>ダッシュボードで録画データの取得を確認した</li>
   </ul>
 
   <h3>Step 5: 効果測定</h3>
