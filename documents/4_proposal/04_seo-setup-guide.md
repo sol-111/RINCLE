@@ -277,6 +277,54 @@ Googleロボット: 「sitemapを見たら24店舗分のページと車種ペー
 </urlset>
 ```
 
+### sitemapに登録するURL一覧
+
+sitemapには**サイト内の全ページ**のURLを登録する。
+
+```
+静的ページ（固定）:
+  /                  トップページ
+  /shop_list         店舗一覧
+  /bike_list         車種一覧
+  /search            検索
+  /beginner          はじめての方へ
+  /pricing           料金
+  /faq               よくある質問
+  /register          会員登録
+  /contact           お問い合わせ
+  /terms             利用規約
+  /privacy           プライバシーポリシー
+  → 計11ページ（固定で書く）
+
+動的ページ（データに応じて増える）:
+  /shop_detail/specialized-kobe    店舗詳細 × 店舗数分
+  /shop_detail/specialized-kyoto
+  /shop_detail/winds-bikes
+  ... 全24店舗分（今後100店舗になったら100URL）
+
+  /bike_detail/specialized-allez   車種詳細 × 車種数分
+  /bike_detail/trek-domane-al2
+  /bike_detail/giant-escape-r3
+  ... 全車種分
+```
+
+例えば店舗100 + 車種200の場合:
+```
+静的ページ:    11 URL
+店舗詳細:     100 URL
+車種詳細:     200 URL
+──────────────
+合計:         311 URL → 全部sitemapに登録する
+```
+
+### 各タグの意味
+
+| タグ | 意味 | 設定例 |
+|------|------|--------|
+| `<loc>` | ページのURL | `https://rincle.co.jp/shop_detail/specialized-kobe` |
+| `<changefreq>` | 更新頻度のヒント | daily / weekly / monthly / yearly |
+| `<priority>` | サイト内での重要度（0.0〜1.0） | トップ=1.0、店舗詳細=0.8、規約=0.2 |
+
 ### RINCLEの現状
 
 ```
@@ -285,7 +333,10 @@ https://rincle.co.jp/sitemap.xml → 404エラー（存在しない）
 
 ### 作成方法
 
-**方法A: Bubble.ioプラグインを使う**
+**方法A: Bubble.ioプラグインを使う（推奨）**
+
+店舗や車種が増えるたびに手動でURLを追加するのは現実的ではない。Bubble.ioのプラグインを使えば、DBのデータから自動生成される。
+
 1. Bubble.ioのプラグインストアで「SEO」「sitemap」で検索
 2. 「Simple Sitemap」等のプラグインをインストール
 3. プラグインの設定でページ一覧を登録
