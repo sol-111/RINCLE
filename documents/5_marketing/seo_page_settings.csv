@@ -1,0 +1,16 @@
+画面名,title,meta_description,og_title,og_description,og_image,h1,canonical_url
+トップページ,スポーツバイクをレンタル・試乗するならRINCLE｜全国のプロショップで安心体験,全国24店舗のプロショップでロードバイク・E-Bikeをレンタル。プロの整備で安心、ネットで簡単予約。初めてのスポーツバイク体験にも最適です。,スポーツバイクをレンタル・試乗するならRINCLE,全国24店舗のプロショップでロードバイク・E-Bikeをレンタル。プロの整備で安心、ネットで簡単予約。,https://rincle.co.jp/og-image.png,全国のプロショップでスポーツバイクをレンタル,https://rincle.co.jp/
+店舗一覧,店舗一覧｜RINCLE - スポーツバイクレンタル,RINCLEのパートナーショップを検索。全国12都府県24店舗から最寄りの店舗を見つけてスポーツバイクをレンタルできます。,店舗一覧｜RINCLE,全国12都府県24店舗から最寄りの店舗を検索,https://rincle.co.jp/og-image.png,店舗を探す,https://rincle.co.jp/shop_list
+店舗詳細（動的）,{店舗名}｜ロードバイク・E-Bikeレンタル｜RINCLE,{店舗名}でロードバイク・E-Bikeをレンタル。{最寄り駅}からアクセス良好。プロスタッフが初心者にも丁寧にサポートします。,{店舗名}｜RINCLE,{店舗名}でスポーツバイクをレンタル。プロの整備で安心体験。,{店舗画像URL},{店舗名},https://rincle.co.jp/shop_detail/{店舗ID}
+車種一覧,レンタルできる車種一覧｜RINCLE - スポーツバイクレンタル,ロードバイク・クロスバイク・E-Bikeなど多数の車種からレンタル可能。ブランド・予算・目的で絞り込み検索できます。,レンタルできる車種一覧｜RINCLE,ロードバイク・クロスバイク・E-Bikeなど多数の車種をレンタル,https://rincle.co.jp/og-image.png,レンタルできる車種一覧,https://rincle.co.jp/bike_list
+車種詳細（動的）,{車種名}をレンタル｜{店舗名}｜RINCLE,{車種名}を{店舗名}でレンタル。{フレーム素材}フレーム、{コンポーネント}搭載。1日{料金}円〜。プロの整備で安心。,{車種名}をレンタル｜RINCLE,{車種名}を1日{料金}円〜でレンタル。プロの整備で安心。,{車種画像URL},{車種名},https://rincle.co.jp/bike_detail/{車種ID}
+予約ページ,レンタル予約｜RINCLE - スポーツバイクレンタル,RINCLEでスポーツバイクのレンタル予約。最短2分で完了。悪天候時は無料キャンセル。,レンタル予約｜RINCLE,スポーツバイクのレンタル予約。最短2分で完了。,https://rincle.co.jp/og-image.png,レンタル予約,https://rincle.co.jp/reserve
+会員登録,無料会員登録｜RINCLE - スポーツバイクレンタル,RINCLEの会員登録は無料。メールアドレスだけで簡単登録。全国のプロショップでスポーツバイクをレンタルできます。,無料会員登録｜RINCLE,無料会員登録。メールアドレスだけで簡単。,https://rincle.co.jp/og-image.png,無料会員登録,https://rincle.co.jp/register
+ログイン,ログイン｜RINCLE - スポーツバイクレンタル,RINCLEにログインして予約状況の確認・新規予約ができます。,ログイン｜RINCLE,RINCLEにログイン,https://rincle.co.jp/og-image.png,ログイン,https://rincle.co.jp/login
+マイページ,マイページ｜RINCLE - スポーツバイクレンタル,予約履歴の確認・会員情報の変更・レビュー投稿ができます。,マイページ｜RINCLE,予約履歴の確認・会員情報の変更,https://rincle.co.jp/og-image.png,マイページ,https://rincle.co.jp/mypage
+はじめての方へ,はじめての方へ｜RINCLEの使い方ガイド,初めてのスポーツバイクレンタルでも安心。予約から返却までの流れを4ステップで解説。手ぶらでOK、ヘルメット無料。,はじめての方へ｜RINCLE,初めてでも安心。予約から返却まで4ステップで解説。,https://rincle.co.jp/og-image.png,はじめての方へ — RINCLEの使い方,https://rincle.co.jp/beginner
+料金,料金プラン｜RINCLE - スポーツバイクレンタル,RINCLEのレンタル料金一覧。ロードバイク1日6000円〜。保険込み・追加料金なし。悪天候時は無料キャンセル。,料金プラン｜RINCLE,レンタル料金一覧。保険込み・追加料金なし。,https://rincle.co.jp/og-image.png,料金プラン,https://rincle.co.jp/pricing
+よくある質問,よくある質問｜RINCLE - スポーツバイクレンタル,RINCLEのよくある質問。予約方法・キャンセル・保険・持ち物など、気になる疑問にお答えします。,よくある質問｜RINCLE,予約方法・キャンセル・保険・持ち物のQ&A,https://rincle.co.jp/og-image.png,よくある質問,https://rincle.co.jp/faq
+利用規約,利用規約｜RINCLE - スポーツバイクレンタル,RINCLEの利用規約です。,利用規約｜RINCLE,RINCLEの利用規約,https://rincle.co.jp/og-image.png,利用規約,https://rincle.co.jp/terms
+プライバシーポリシー,プライバシーポリシー｜RINCLE - スポーツバイクレンタル,RINCLEのプライバシーポリシーです。,プライバシーポリシー｜RINCLE,RINCLEのプライバシーポリシー,https://rincle.co.jp/og-image.png,プライバシーポリシー,https://rincle.co.jp/privacy
+お問い合わせ,お問い合わせ｜RINCLE - スポーツバイクレンタル,RINCLEへのお問い合わせはこちら。レンタル・予約・パートナーショップ加盟に関するご質問を受け付けています。,お問い合わせ｜RINCLE,お問い合わせ,https://rincle.co.jp/og-image.png,お問い合わせ,https://rincle.co.jp/contact
