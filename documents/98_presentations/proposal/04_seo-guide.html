@@ -372,28 +372,78 @@
       <h3>sitemapの作成</h3>
       <p><strong>sitemap（サイトマップ）</strong>とは、サイトの全ページの一覧を記した「地図」です。Googleに「うちのサイトにはこんなページがありますよ」と教えるためのファイルです。</p>
 
+      <h4 style="margin-top:16px">sitemapに登録するURL一覧</h4>
+      <p style="font-size:13px; color:#666; margin-bottom:12px;">サイト内の<strong>全ページ</strong>のURLを登録する。</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px;">
+        <div style="background:#fff; border-radius:8px; padding:14px; border:1px solid #e8e8e8;">
+          <div style="font-size:12px; color:#999; margin-bottom:4px;">静的ページ（固定）</div>
+          <div style="font-size:24px; font-weight:700; color:#0f3460;">11</div>
+          <div style="font-size:11px; color:#666; margin-top:4px;">トップ/一覧/FAQ/料金/登録 等</div>
+        </div>
+        <div style="background:#fff; border-radius:8px; padding:14px; border:1px solid #e8e8e8;">
+          <div style="font-size:12px; color:#999; margin-bottom:4px;">店舗詳細（動的）</div>
+          <div style="font-size:24px; font-weight:700; color:#0f3460;">24+</div>
+          <div style="font-size:11px; color:#666; margin-top:4px;">店舗数に応じて増加</div>
+        </div>
+        <div style="background:#fff; border-radius:8px; padding:14px; border:1px solid #e8e8e8;">
+          <div style="font-size:12px; color:#999; margin-bottom:4px;">車種詳細（動的）</div>
+          <div style="font-size:24px; font-weight:700; color:#0f3460;">N件</div>
+          <div style="font-size:11px; color:#666; margin-top:4px;">車種数に応じて増加</div>
+        </div>
+      </div>
+
+      <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px 16px; margin-bottom:16px; font-size:12px; color:#1e40af;">
+        <strong>例:</strong> 店舗100 + 車種200の場合 → 静的11 + 店舗100 + 車種200 = <strong>合計311 URL</strong> を全部sitemapに登録する。<br>
+        店舗や車種が増えるたびに手動で追加するのは現実的ではないので、<strong>Bubble.ioプラグインで自動生成が推奨</strong>。
+      </div>
+
+      <h4 style="margin-top:16px">各タグの意味</h4>
+      <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:16px;">
+        <thead>
+          <tr>
+            <th style="background:#f1f5f9; padding:8px 12px; text-align:left; border-bottom:1px solid #e2e8f0; color:#666;">タグ</th>
+            <th style="background:#f1f5f9; padding:8px 12px; text-align:left; border-bottom:1px solid #e2e8f0; color:#666;">意味</th>
+            <th style="background:#f1f5f9; padding:8px 12px; text-align:left; border-bottom:1px solid #e2e8f0; color:#666;">設定例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9; font-family:monospace; font-size:11px;">&lt;loc&gt;</td><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9;">ページのURL</td><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9;">https://rincle.co.jp/shop_detail/specialized-kobe</td></tr>
+          <tr><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9; font-family:monospace; font-size:11px;">&lt;changefreq&gt;</td><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9;">更新頻度のヒント</td><td style="padding:8px 12px; border-bottom:1px solid #f1f5f9;">daily / weekly / monthly / yearly</td></tr>
+          <tr><td style="padding:8px 12px; font-family:monospace; font-size:11px;">&lt;priority&gt;</td><td style="padding:8px 12px;">サイト内での重要度（0.0〜1.0）</td><td style="padding:8px 12px;">トップ=1.0、店舗=0.8、規約=0.2</td></tr>
+        </tbody>
+      </table>
+
       <h4 style="margin-top:16px">XMLサイトマップの例</h4>
       <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;
+  &lt;!-- 静的ページ --&gt;
   &lt;url&gt;
     &lt;loc&gt;https://rincle.co.jp/&lt;/loc&gt;
-    &lt;lastmod&gt;2026-05-19&lt;/lastmod&gt;
     &lt;changefreq&gt;weekly&lt;/changefreq&gt;
     &lt;priority&gt;1.0&lt;/priority&gt;
   &lt;/url&gt;
   &lt;url&gt;
-    &lt;loc&gt;https://rincle.co.jp/shops&lt;/loc&gt;
-    &lt;lastmod&gt;2026-05-19&lt;/lastmod&gt;
-    &lt;changefreq&gt;monthly&lt;/changefreq&gt;
-    &lt;priority&gt;0.8&lt;/priority&gt;
+    &lt;loc&gt;https://rincle.co.jp/shop_list&lt;/loc&gt;
+    &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+    &lt;priority&gt;0.9&lt;/priority&gt;
   &lt;/url&gt;
+
+  &lt;!-- 動的ページ: 店舗詳細（全店舗分） --&gt;
   &lt;url&gt;
-    &lt;loc&gt;https://rincle.co.jp/bikes&lt;/loc&gt;
-    &lt;lastmod&gt;2026-05-19&lt;/lastmod&gt;
+    &lt;loc&gt;https://rincle.co.jp/shop_detail/specialized-kobe&lt;/loc&gt;
     &lt;changefreq&gt;weekly&lt;/changefreq&gt;
     &lt;priority&gt;0.8&lt;/priority&gt;
   &lt;/url&gt;
-  &lt;!-- 他のページも同様に追加 --&gt;
+  &lt;!-- ... 残りの店舗も同様 ... --&gt;
+
+  &lt;!-- 動的ページ: 車種詳細（全車種分） --&gt;
+  &lt;url&gt;
+    &lt;loc&gt;https://rincle.co.jp/bike_detail/specialized-allez-e5&lt;/loc&gt;
+    &lt;changefreq&gt;weekly&lt;/changefreq&gt;
+    &lt;priority&gt;0.7&lt;/priority&gt;
+  &lt;/url&gt;
+  &lt;!-- ... 残りの車種も同様 ... --&gt;
 &lt;/urlset&gt;</code></pre>
 
       <h4 style="margin-top:16px">robots.txt への追記</h4>
