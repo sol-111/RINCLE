@@ -329,7 +329,7 @@
   </div>
   <div class="summary-card">
     <h3>手数料</h3>
-    <p>Rincle: 売上の10% / カード手数料 約3.5%: 店舗負担</p>
+    <p>Rincle: 売上の15% / カード手数料 約3.5%: 店舗負担</p>
   </div>
   <div class="summary-card">
     <h3>審査</h3>
@@ -395,7 +395,7 @@
           <div class="flow-body">
             <div class="flow-actor system">Rincle（自動）</div>
             <div class="flow-text">Pay.JPに「この店舗の決済口座を作ってください」と依頼する</div>
-            <div class="flow-note">店舗名 / 銀行口座情報 / 手数料率: 10% / 最低振込金額: 1,000円</div>
+            <div class="flow-note">店舗名 / 銀行口座情報 / 手数料率: 15% / 最低振込金額: 1,000円</div>
           </div>
         </div>
         <div class="flow-step">
@@ -633,7 +633,7 @@
           <div class="flow-body">
             <div class="flow-actor system">Rincle（自動）</div>
             <div class="flow-text">Pay.JPに「このお客さんのカードから引き落としてください」と依頼する</div>
-            <div class="flow-note">顧客ID（cus_xxxxx）/ 合計金額 / 店舗テナントID（ten_xxxxx）/ 手数料 = 金額 x 10%</div>
+            <div class="flow-note">顧客ID（cus_xxxxx）/ 合計金額 / 店舗テナントID（ten_xxxxx）/ 手数料 = 金額 x 15%</div>
           </div>
         </div>
         <div class="flow-step">
@@ -839,8 +839,8 @@
       </div>
       <div class="money-row" style="margin-left:48px;">
         <span class="money-arrow">&rarr;</span>
-        <span><strong>Rincleへ: 1,000円</strong></span>
-        <span class="money-label">（プラットフォーム手数料 10%）</span>
+        <span><strong>Rincleへ: 1,500円</strong></span>
+        <span class="money-label">（プラットフォーム手数料 15%）</span>
       </div>
       <div class="money-row" style="margin-left:48px;">
         <span class="money-arrow">&rarr;</span>
@@ -849,8 +849,8 @@
       </div>
       <div class="money-row" style="margin-left:48px;">
         <span class="money-arrow">&rarr;</span>
-        <span><strong>店舗へ: 約8,650円</strong></span>
-        <span class="money-label">（10,000 - 1,000 - 350）</span>
+        <span><strong>店舗へ: 約8,150円</strong></span>
+        <span class="money-label">（10,000 - 1,500 - 350）</span>
       </div>
     </div>
 
@@ -858,9 +858,9 @@
     <div class="table-wrap">
       <table>
         <tr><th>受取人</th><th>金額（1万円あたり）</th><th>計算</th></tr>
-        <tr><td>Rincle（PEDALSTANDARD）</td><td><strong>1,000円</strong></td><td>10,000 x 10%</td></tr>
+        <tr><td>Rincle（PEDALSTANDARD）</td><td><strong>1,500円</strong></td><td>10,000 x 15%</td></tr>
         <tr><td>Pay.JP（カード手数料）</td><td><strong>約350円</strong></td><td>10,000 x 約3.5%</td></tr>
-        <tr><td>店舗（ネット入金）</td><td><strong>約8,650円</strong></td><td>10,000 - 1,000 - 350</td></tr>
+        <tr><td>店舗（ネット入金）</td><td><strong>約8,150円</strong></td><td>10,000 - 1,500 - 350</td></tr>
       </table>
     </div>
 
@@ -868,9 +868,9 @@
     <div class="table-wrap">
       <table>
         <tr><th>店舗から見た負担</th><th>率</th><th>支払先</th></tr>
-        <tr><td>プラットフォーム手数料</td><td><strong>10%</strong></td><td>Rincle（PEDALSTANDARD）</td></tr>
+        <tr><td>プラットフォーム手数料</td><td><strong>15%</strong></td><td>Rincle（PEDALSTANDARD）</td></tr>
         <tr><td>カード手数料</td><td><strong>約3.5%</strong></td><td>Pay.JP</td></tr>
-        <tr style="background:#fee2e2;"><td><strong>合計負担</strong></td><td><strong>約13.5%</strong></td><td></td></tr>
+        <tr style="background:#fee2e2;"><td><strong>合計負担</strong></td><td><strong>約18.5%</strong></td><td></td></tr>
       </table>
     </div>
 
@@ -882,10 +882,10 @@
       </div>
     </div>
 
-    <div class="callout" style="background:#fee2e2; border:1px solid #fecaca; color:#991b1b;">
-      <div class="callout-icon">&#x1f6a8;</div>
+    <div class="callout success">
+      <div class="callout-icon">&#x2705;</div>
       <div>
-        <strong>契約と実装のズレ:</strong> 契約上のRINCLE取り分は <strong>15%</strong> ですが、現在のシステムでは <strong>10%</strong> に設定されています。<strong>5%分の差額</strong>が発生しており、修正が必要です。
+        <strong>契約と実装のズレは解消済み:</strong> 旧実装では10%に設定されていましたが、契約通りの <strong>15%</strong> に修正済みです（2026-06時点）。切り替え前に作成された既存テナントへの適用状況は要確認。
       </div>
     </div>
   </div>
