@@ -350,37 +350,39 @@
 
   <!-- ===== Section 1: SEO Problems ===== -->
   <div class="section">
-    <h2>致命的問題: Bubble.ioのSEO問題</h2>
+    <h2>致命的問題: Bubble.ioのSEO問題 <span style="font-size:0.75rem; color:#666; font-weight:400;">（2026-06-11 実測で更新）</span></h2>
 
     <div class="card card-red">
       <div class="card-header">
         <span class="problem-number">1</span>
-        <h3>SEOが壊滅的に弱い</h3>
+        <h3>インデックスは2〜3ページのみ — 真因は「CSRだから」ではなくディスカバリー問題</h3>
       </div>
-      <p>Bubble.ioのクライアントサイドレンダリング（CSR）では、GoogleクローラーにHTMLコンテンツが見えない。<br>
-      現状インデックスされているのは<strong>わずか2ページのみ</strong>。検索流入はほぼゼロ。</p>
+      <p>2026-06実測: title/meta/OGPはサーバー側で出力済み（旧記述「メタ情報すらない」は誤り）。GooglebotはCSRページもレンダリングできる（Vercel×MERJ調査）。<br>
+      <strong>真因は「sitemap.xmlが404」+「初期HTMLに内部リンク（&lt;a&gt;）が皆無」</strong> → Googleがそもそもページを発見できない。canonical不在で検索パラメータ付きURLがインデックスされる実害も確認済み。</p>
     </div>
 
     <div class="card card-red">
       <div class="card-header">
         <span class="problem-number">2</span>
-        <h3>初回ロードが遅い</h3>
+        <h3>初回ロードは想定よりさらに遅い（Lighthouse実測）</h3>
       </div>
-      <p>LCP（Largest Contentful Paint）が<strong>3〜5秒</strong>。Googleの調査によると、モバイルユーザーの<strong>53%が3秒以上で離脱</strong>する。ファーストインプレッションで負けている。</p>
+      <p>旧記述「LCP 3〜5秒」は過小評価だった。Lighthouse実測（モバイル）: <strong>スコア25/100、FCP 20.3秒、LCP 49.3秒、総重量9.2MB</strong>。<br>
+      ラボ値のため実回線の体感はこれより短いが、この重量ではどの回線でもLCP 2.5秒合格（Core Web Vitals）はほぼ不可能。モバイルユーザーの<strong>53%は3秒以上で離脱</strong>する（Google/SOASTA調査）。</p>
     </div>
 
     <div class="card card-red">
       <div class="card-header">
         <span class="problem-number">3</span>
-        <h3>料金・車種情報がクローラーに見えない</h3>
+        <h3>料金・車種情報がクローラーに見えない（実測で裏付け）</h3>
       </div>
-      <p>料金表や車種一覧などの重要コンテンツは、JavaScript実行後にのみ表示される。構造化データ（JSON-LD）も未実装のため、リッチスニペットにも表示されない。</p>
+      <p>初期HTMLの可視テキストはトップ6文字・店舗詳細31文字のみ。<strong>料金・車種・住所はゼロ</strong>。本文コンテンツだけがJS依存になっている。</p>
     </div>
 
     <div class="card card-green" style="margin-top: 24px;">
-      <h3>対策: SSR/SSGで静的SEOランディングページを別建て</h3>
-      <p>Next.js等でSSR/SSG対応の静的ランディングページを構築し、SEO流入を獲得する。<br>
-      Bubble.ioアプリとは別ドメイン or サブディレクトリで運用し、予約導線へつなげる。</p>
+      <h3>対策: 段階導入（いきなりSSR/SSG別建てに飛ばない）</h3>
+      <p style="margin-bottom:8px;"><strong style="color:#27ae60;">Phase 1（無料・即日〜数日）:</strong> Bubbleネイティブ設定の完遂 — sitemap自動生成ON / canonical有効化 / ページ別title・meta / Search Console登録。真因がディスカバリー問題である以上、これだけで大きく改善する可能性が十分ある。インデックス数を2〜4週間実測してから次の投資判断。</p>
+      <p style="margin-bottom:8px;"><strong style="color:#27ae60;">Phase 2（$49/月〜）:</strong> Prerender.io + Cloudflare Worker — ボットにのみレンダリング済みHTMLを配信（公式統合手順あり、所要30〜45分。人間の表示速度は改善しない点に注意）。</p>
+      <p><strong style="color:#27ae60;">Phase 3:</strong> SSG（Astro等）でSEOランディングページを別建て — 店舗×車種カテゴリページをサブディレクトリ配信。予約フローはBubbleのまま誘導。Bubble.ioを捨てる必要はない。</p>
     </div>
   </div>
 
@@ -405,11 +407,11 @@
         <div class="step-label red">Step 0<br>認知</div>
         <div class="step-issue">
           <strong>課題</strong>
-          SEO流入ゼロ、SNSも弱い。そもそもユーザーがRINCLEを知る手段がない。
+          SEO流入ほぼゼロ（2026-06実測: インデックス2〜3ページのみ）、SNSも弱い。そもそもユーザーがRINCLEを知る手段がない。
         </div>
         <div class="step-solution">
           <strong>施策</strong>
-          SEOランディングページ / Google Business Profile最適化 / SNS運用（Instagram・X）
+          SEO段階導入（まずPhase 1: Bubbleネイティブ設定・無料 → 効果実測 → SSGランディングページ） / Google Business Profile登録 / SNS運用（Instagram・X）
         </div>
       </div>
 
@@ -417,11 +419,11 @@
         <div class="step-label red">Step 1<br>ランディング</div>
         <div class="step-issue">
           <strong>課題</strong>
-          SPA読み込みが遅い。5秒以内にサービスの価値が伝わるか疑問。
+          SPA読み込みが極端に遅い（実測FCP 20.3秒）、その間は白画面 or ローディング。5秒以内にサービスの価値が伝わるか疑問。
         </div>
         <div class="step-solution">
           <strong>施策</strong>
-          ファーストビュー最適化 / 検索バーをヒーロー領域に配置 / 3秒以内のLCP
+          ファーストビュー最適化（ヘッドライン+検索バー+信頼指標。★評価はレビューが溜まってから） / スケルトンUIで白画面回避 / ファーストビューだけ静的HTML/CSSで即時表示
         </div>
       </div>
 
@@ -438,12 +440,16 @@
         <div class="step-label red">Step 2<br>検索・探索</div>
         <div class="step-issue">
           <strong>課題</strong>
-          横断検索なし、フィルタなし。初心者はどの自転車を選べばいいか分からない。
+          横断検索なし、フィルタなし。初心者はどの自転車を選べばいいか分からない。検索結果0件の体験も未設計。
         </div>
         <div class="step-solution">
           <strong>施策</strong>
-          統合検索バー / フィルタ・ソート / 初心者診断モード
+          統合検索バー / フィルタ・ソート / 0件時の代替提案 / 初心者診断モード
         </div>
+      </div>
+
+      <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:14px 18px; margin-top:12px; margin-bottom:12px; font-size:13px; color:#92400e;">
+        <strong>⚠️ 日付範囲をまたぐ空き検索のDB設計は地雷:</strong> Bubbleでは「予約済みレコードを除外する方式」が定石で、advancedフィルタ多用はクライアント処理のため件数増で破綻する。検索バー実装前にDB再構築プロジェクトと整合を取り、設計レビューを必須とする。
       </div>
 
       <div class="funnel-step">
@@ -479,11 +485,11 @@
         <div class="step-label yellow">Step 4<br>予約・決済</div>
         <div class="step-issue">
           <strong>課題</strong>
-          フォーム項目が多い。会員登録が必須。離脱ポイント。
+          フォーム項目が多い。会員登録が必須。最大の離脱ポイント。
         </div>
         <div class="step-solution">
           <strong>施策</strong>
-          3ステップ予約フロー / ゲスト予約対応 / カート放棄メール対策
+          フォームは<strong style="display:inline; text-transform:none; letter-spacing:0;">合計8項目以下</strong>に（9項目以上はCVR約1/4: 4.2% vs 1項目18.2%・Baymard） / ゲスト予約OK（登録強制の撤廃でCVR 20〜30%向上） / カート放棄メール（放棄者の46%は24時間以内に再検索 → 1時間以内+翌朝の2通）
         </div>
       </div>
 
@@ -512,7 +518,7 @@
         </div>
         <div class="step-solution">
           <strong>施策</strong>
-          困ったときボタン / ライドサマリー / リピートクーポン / 購入導線
+          困ったときボタン / ライドサマリー / リピートクーポン / レビュー依頼は<strong style="display:inline; text-transform:none; letter-spacing:0;">返却後24〜48時間以内</strong>（投稿レビューの約70%は依頼メール経由） / 購入導線は「試乗履歴つき購入相談予約」として実装
         </div>
       </div>
     </div>
@@ -938,6 +944,15 @@
     <h2 style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:20px; padding-bottom:8px; border-bottom:2px solid #e94560; display:inline-block;">プラットフォームの生死を分ける問題</h2>
     <p style="font-size:14px; color:#666; margin-bottom:16px;">ユーザー側のUIをいくら磨いても、ショップがRINCLEを使い続けてくれなければプラットフォームは死ぬ。</p>
 
+    <div style="background:#1a1a2e; color:#fff; border-radius:10px; padding:18px 22px; margin:12px 0 20px;">
+      <div style="font-size:14px; font-weight:700; margin-bottom:6px;">先行事例の教訓（2026-06リサーチ）</div>
+      <div style="font-size:13px; line-height:1.7; opacity:0.9;">
+        <strong>Anyca</strong>（個人間カーシェア、2024年終了）: 利用会員は直近3年で約2倍に増えたのに、手数料15〜35%と供給側体験の悪化でオーナーが増えず終了。<br>
+        <strong>Spinlister</strong>（米P2P自転車レンタル、2018年終了）: 貸し手の手間に報酬が見合わず供給が崩壊（ショップ在庫集約型のListNRideは存続）。<br>
+        → <strong>需要が伸びても「ショップの手取り・手間・ROI」が見合わなければフライホイールは止まる。</strong>ショップ側体験はUX改善と同格の生存条件。
+      </div>
+    </div>
+
     <div style="border-left:4px solid #dc2626; background:#fef2f2; border-radius:0 10px 10px 0; padding:16px 20px; margin:12px 0;">
       <div style="font-size:15px; font-weight:700; color:#991b1b; margin-bottom:6px;">在庫管理の二重入力問題</div>
       <div style="font-size:13px; color:#555;">ショップが自店の在庫管理とRINCLEの在庫を別々に管理 → 面倒 → 更新されない → 在庫ズレ → オーバーブッキング or 「満車」誤表示。<br>対策: 管理画面をとにかくシンプルに。Googleカレンダー連携/CSV/API提供。</div>
@@ -959,6 +974,43 @@
     </div>
   </div>
 
+  <!-- ===== Section 5.5: Revenue Model (2026-06 added) ===== -->
+  <div style="margin-bottom:48px;">
+    <h2 style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:20px; padding-bottom:8px; border-bottom:2px solid #e94560; display:inline-block;">収益モデルが未定義 — 「誰からいくら取るか」を決める <span style="font-size:12px; color:#666; font-weight:400;">（2026-06追加）</span></h2>
+
+    <div class="card card-red">
+      <h3>レンタル手数料だけでは事業が立たない</h3>
+      <p>体験OTAの送客手数料相場は10〜20%（アソビュー・KLOOK）。掲載無料+成果報酬が業界標準。Anycaの15〜35%は供給離反を招いた危険域。<br>
+      試算: レンタル単価6,000〜13,200円 × 手数料18% = <strong>1予約あたり1,080〜2,376円</strong>。初期の予約数では手数料収益だけで事業は成立しない。</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>本命収益源は物販送客（try-before-buy）</h3>
+      <p style="margin-bottom:8px;">米Trekは<strong>「レンタル料の100%を購入代金に充当」</strong>を標準特典化。国内スポーツバイクでは未確立の差別化余地。レンティオ公表値では、レンタル機会の提供で<strong>購入数が4倍以上</strong>になるケースもある（購入転換率3%の商品でも）。</p>
+      <p>購入成約への送客フィー（例: 車体価格の3〜5%）なら30万円の完成車で<strong>9,000〜15,000円/台</strong> — レンタル手数料の数倍。「レンタル料の購入充当」をRINCLE標準特典として全店共通化し、Step 7の「試乗履歴つき購入相談予約」と接続する。</p>
+    </div>
+
+    <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px 18px; font-size:13px; color:#1e40af;">
+      KPIに<strong>「テイクレート」「GMV」「レンタル→購入相談率・購入転換率」</strong>を追加する。
+    </div>
+  </div>
+
+  <!-- ===== Section 5.6: Insurance Gap (2026-06 added) ===== -->
+  <div style="margin-bottom:48px;">
+    <h2 style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:20px; padding-bottom:8px; border-bottom:2px solid #e94560; display:inline-block;">保険・賠償の構造的な穴 <span style="font-size:12px; color:#666; font-weight:400;">（2026-06追加）</span></h2>
+
+    <div class="card card-red">
+      <h3>施設賠償責任保険は「利用者の運転ミス」を補償しない</h3>
+      <p>一般的な施設賠償責任保険の対象は事業者の整備・管理ミス起因のみ。<strong>大半の交通事故である利用者の運転ミスは補償されない</strong>。自転車事故は数千万円の賠償判例があり、保険加入を条例で義務化する自治体が拡大中。無保険の重大事故1件でプラットフォーム全体の信用が崩壊し得る。</p>
+    </div>
+
+    <div class="card card-green">
+      <h3>対策: 24店舗の保険加入状況の棚卸しが最優先</h3>
+      <p style="margin-bottom:8px;">レンタサイクル事業者専用保険（最大1億円補償、6台で年12,000円。自転車安全対策協議会）の加入を加盟基準として義務化を検討。</p>
+      <p>高額車両（カーボンロード等）の破損時負担ルールと免責補償オプション（レンタルバイク業界の定番、収益源も兼ねる）を予約前に明示 — Step 3「本当に大丈夫？」の不安解消に直結。</p>
+    </div>
+  </div>
+
   <!-- ===== Section 6: Cold Start Problem ===== -->
   <div style="margin-bottom:48px;">
     <h2 style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:20px; padding-bottom:8px; border-bottom:2px solid #e94560; display:inline-block;">コールドスタート問題の突破</h2>
@@ -968,11 +1020,12 @@
       <div style="font-size:15px; font-weight:700; color:#065f46; margin-bottom:6px;">レビューの種まき戦略</div>
       <div style="font-size:13px; color:#444;">
         <ul style="margin:8px 0 0 16px;">
-          <li>パートナーショップの既存顧客に「RINCLE経由で予約してレビューを書いてください」と依頼</li>
-          <li>体験モニター募集（無料 or 50%OFFで体験 → レビュー投稿を条件に）</li>
+          <li>パートナーショップの既存顧客にレビュー依頼</li>
+          <li>体験モニター募集（無料 or 50%OFF）— ただし投稿は任意とし、対価と紐づけない</li>
           <li>自転車メディア・ブロガーに体験取材を依頼</li>
           <li>目標: 各店舗最低5件、合計120件</li>
         </ul>
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:6px; padding:10px 14px; margin-top:10px; font-size:12px; color:#92400e;"><strong>⚠️ ステマ規制（景表法、2023年10月施行）:</strong> 「レビュー投稿を条件」に対価を提供すると広告表示義務が発生し、措置命令・課徴金の対象になり得る。投稿してもらう場合は「モニター利用」である旨の表示を徹底。インセンティブは投稿行為のみに付与し、評価内容を条件にしない。</div>
       </div>
     </div>
 
@@ -1012,6 +1065,10 @@
       <div style="background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #e8e8e8; min-width:160px; flex:1;">
         <div style="font-size:24px; font-weight:700; color:#dc2626;">???</div>
         <div style="font-size:11px; color:#999; margin-top:2px;">リピート率</div>
+      </div>
+      <div style="background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #e8e8e8; min-width:160px; flex:1;">
+        <div style="font-size:24px; font-weight:700; color:#dc2626;">???</div>
+        <div style="font-size:11px; color:#999; margin-top:2px;">GMV・テイクレート・レンタル→購入相談率</div>
       </div>
     </div>
     <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:14px 18px; font-size:14px; color:#991b1b;">
