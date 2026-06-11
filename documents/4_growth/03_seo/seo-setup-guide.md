@@ -1,6 +1,6 @@
 # RINCLE SEO設定ガイド
 
-> 作成日: 2026-05-20 / 最終更新: 2026-06-11（実測値・Bubbleネイティブ機能・Prerender最新情報を反映）
+> 作成日: 2026-05-20 / 最終更新: 2026-06-11（実測値・Bubbleネイティブ機能・Prerender最新情報を反映。同日追記: 本番DB実測の店舗54・車種369、アクセスログ実測の流入/CVRデータ）
 > 対象: SEO初心者向け。専門用語をできるだけ噛み砕いて説明
 
 ---
@@ -25,6 +25,23 @@ Googleに認識されているページ: 実質2〜3ページのみ
 ```
 
 **つまり、今のRINCLEはGoogleから見てほぼ存在していない。** 正確なインデックス数はSearch Console導入後に確認する。
+
+### なぜ今SEOをやるのか — 数字で見る期待効果（2026-06-11追記: 本番アクセスログ実測）
+
+GA4が未設置のため、サーバーのアクセスログから実測した現状:
+
+```
+月間アクセス: 約700ユニークIP / 約2,300PV
+予約CVR:     約4%（サイトに来た人の約4%が予約まで完了）→ 健全な水準
+```
+
+CVR約4%というのは「サイトに来てもらえさえすれば、ちゃんと予約につながっている」という意味。つまり**今のボトルネックは流入**で、検索からの流入を増やせば予約はほぼ比例して増える見込みが立つ。
+
+お金に換算すると:
+- 平均予約単価 ¥10,200 × 手数料15% = **予約1件 ≒ ¥1,530 の売上**
+- 例えば検索流入が月100人増えれば、予約 +4件/月 ≒ +¥6,100/月。広告費ゼロで、設定すれば効き続ける
+
+ちなみに2026年2月に **3,402PV / 1,603IP** へのスパイクがあったが、**要因は特定できていない**（アクセスログでは参照元まで分からない）。GA4を導入すれば（Step 4）、こうした急増がどこから来たのか（SNSで紹介された？メディアに載った？）が分かるようになる。
 
 ---
 
@@ -84,7 +101,7 @@ Googleの検索結果で見ると:
 
   スポーツバイクをレンタル・試乗するならRINCLE｜全国のプロショップで安心体験  ← これがtitleタグ
   https://rincle.co.jp/                                                        ← これがURL
-  全国24店舗のプロショップでロードバイク・E-Bikeをレンタル。                     ← これがdescription
+  全国54店舗のプロショップでロードバイク・E-Bikeをレンタル。                     ← これがdescription
 ```
 
 **RINCLEの現状（2026-06-11実測で更新）:** 設定済みだが品質が低い。トップは `Rincle` の6文字だけでキーワードが無く、店舗詳細は `Rincle｜RINCLE 箕面稲店 / スペシャライズド箕面` と動的生成はできているが「レンタル」等の検索キーワードが入っていない。
@@ -123,14 +140,14 @@ Googleの検索結果で、タイトルの下に表示されるグレーの説�
 
 | ページ | meta descriptionの例 |
 |--------|---------------------|
-| トップページ | 全国24店舗のプロショップでロードバイク・E-Bikeをレンタル。プロの整備で安心、ネットで簡単予約。初めてのスポーツバイク体験にも最適です。 |
-| 店舗一覧 | RINCLEのパートナーショップを検索。東京・神戸・福岡など全国12都府県24店舗から、最寄りの店舗を見つけてスポーツバイクをレンタルできます。 |
+| トップページ | 全国54店舗のプロショップでロードバイク・E-Bikeをレンタル。プロの整備で安心、ネットで簡単予約。初めてのスポーツバイク体験にも最適です。 |
+| 店舗一覧 | RINCLEのパートナーショップを検索。全国54店舗から、最寄りの店舗を見つけてスポーツバイクをレンタルできます。 |
 | 店舗詳細（例: 神戸） | スペシャライズド神戸でロードバイク・E-Bikeをレンタル。JR神戸駅から徒歩3分。プロスタッフが初心者にも丁寧にサポートします。 |
 
 **ルール:**
 - 70〜120文字が目安
 - そのページに何が書いてあるかを具体的に書く
-- 「全国24店舗」「プロショップ」等の差別化ポイントを入れる
+- 「全国54店舗」「プロショップ」等の差別化ポイントを入れる（店舗数は2026-06-11時点の実数。増えたら更新する）
 - 行動を促す言葉を入れる（「簡単予約」「今すぐ検索」等）
 
 **Bubble.ioでの設定方法:**
@@ -148,7 +165,7 @@ LINEでリンクを送ったとき:
   ┌─────────────────────┐
   │ [RINCLEのロゴ画像]            │
   │ スポーツバイクをレンタル...     │
-  │ 全国24店舗のプロショップで...   │
+  │ 全国54店舗のプロショップで...   │
   └─────────────────────┘
 ```
 
@@ -172,7 +189,7 @@ LINEでリンクを送ったとき:
 
 ```html
 <meta property="og:title" content="スポーツバイクをレンタル・試乗するならRINCLE">
-<meta property="og:description" content="全国24店舗のプロショップでロードバイク・E-Bikeをレンタル。">
+<meta property="og:description" content="全国54店舗のプロショップでロードバイク・E-Bikeをレンタル。">
 <meta property="og:image" content="https://rincle.co.jp/og-image.png">
 <meta property="og:url" content="https://rincle.co.jp/">
 <meta property="og:type" content="website">
@@ -238,7 +255,7 @@ Googleは「これは別々のページ？同じページ？」と迷う。canon
 **Bubble.ioでの設定方法（2026-06-11更新: ネイティブ機能で対応可能）:**
 Bubbleには標準で canonical 出力機能がある。手書きHTMLは不要。
 1. Settings > SEO/metatags を開く
-2. 「**Bubble-defined canonical url tag**」のチェックボックスをONにする
+2. 「**Enable canonical url**」のチェックボックスをONにする（説明文に "Check this box to enable a Bubble-defined canonical url tag." とある。2026-06-11にBubble公式マニュアルで名称を確認済み）
 
 （参考: Bubble公式マニュアル https://manual.bubble.io/core-resources/application-settings/seo-metatags ）
 
@@ -269,8 +286,10 @@ Bubbleには標準で canonical 出力機能がある。手書きHTMLは不要�
 **⚠️ 絶対にやってはいけないこと:**
 Settings > SEO/metatags > Script/meta tags in header（GA4スニペットを貼った場所）には貼らないこと。あそこは**全ページ共通**のヘッダーなので、noindexを書くとサイト全体がGoogleから消える。noindexは必ず**ページごと**のPage HTML Headerに設定する。
 
-**あわせて確認:**
-Settings > SEO/metatags の「Allow search engines to index this app」がONになっているか確認する。Bubbleはここ（アプリ全体の設定）がOFFだと全ページがnoindexになる。「検索に全然出ない」原因がこれだった、というのはBubbleでよくあるパターン。
+**あわせて確認（2026-06-11更新）:**
+以前のBubbleには Settings > SEO/metatags に「Allow search engines to index this app」というアプリ全体のインデックス許可チェックがあったが、**現在の公式マニュアルにはこの項目の記載がなく、画面に表示されないという報告もある**。見当たらなくても探し回らなくてよい（本番アプリは標準でインデックス許可される）。代わりに次の2点で確認する:
+- 公開ページのソースに意図しない `noindex` が入っていないか
+- robots.txt でサイト全体をブロックしていないか（現状の robots.txt は `/version-test/` のみDisallowなので問題なし）
 
 **設定後の確認方法:**
 - 公開ページで右クリック →「ページのソースを表示」→ `<head>`内に`noindex`が入っているか確認（noindex対象ページに**だけ**入っていればOK）
@@ -325,7 +344,7 @@ Googleロボット: 「rincle.co.jpに来たけど、トップページから
 
 sitemapがあると:
 ```
-Googleロボット: 「sitemapを見たら24店舗分のページと車種ページがあるんだな。
+Googleロボット: 「sitemapを見たら54店舗分のページと369台分の車種ページがあるんだな。
                 全部見に行こう」
 ```
 
@@ -376,21 +395,21 @@ sitemapには**サイト内の全ページ**のURLを登録する。ただし**n
   /shop_detail/specialized-kobe    店舗詳細 × 店舗数分
   /shop_detail/specialized-kyoto
   /shop_detail/winds-bikes
-  ... 全24店舗分（今後100店舗になったら100URL）
+  ... 全54店舗分（店舗が増えればその分URLも増える）
 
   /bike_detail/specialized-allez   車種詳細 × 車種数分
   /bike_detail/trek-domane-al2
   /bike_detail/giant-escape-r3
-  ... 全車種分
+  ... 全369台分
 ```
 
-例えば店舗100 + 車種200の場合:
+実数で計算すると（2026-06-11 本番DB実測: 店舗54・自転車369）:
 ```
 静的ページ:    10 URL
-店舗詳細:     100 URL
-車種詳細:     200 URL
+店舗詳細:      54 URL
+車種詳細:     369 URL
 ──────────────
-合計:         310 URL → 全部sitemapに登録する
+合計:        約433 URL → 全部sitemapに登録する
 ```
 
 ### 各タグの意味
@@ -414,7 +433,7 @@ https://rincle.co.jp/sitemap.xml → 404エラー（存在しない。2026-06-11
 プラグインは不要。Bubbleには標準でsitemap自動生成機能があり、**店舗詳細・車種詳細などの動的ページ（DBレコード分）も自動で含まれる**（最大50,000 URL。Privacy Rolesで非公開データは自動的に除外される）。店舗や車種が増えても手動更新は不要。
 
 1. Settings > SEO/metatags を開く
-2. sitemapの生成を有効にし、含めるページを選択（noindex対象の予約/会員登録/ログイン/マイページは含めない）
+2. 「**Expose a sitemap file**」のチェックボックスをONにし、含めるページを選択（noindex対象の予約/会員登録/ログイン/マイページは含めない）（2026-06-11にBubble公式マニュアルでチェックボックス名を確認済み）
 3. `https://rincle.co.jp/sitemap.xml` でアクセスできることを確認
 
 （参考: Bubble公式マニュアル https://manual.bubble.io/core-resources/application-settings/seo-metatags ）
@@ -443,8 +462,9 @@ Disallow: /version-test/
 Sitemap: https://rincle.co.jp/sitemap.xml
 ```
 
-**Bubble.ioでの設定方法:**
-1. Settings > SEO/metatags > robots.txt に上記を入力
+**Bubble.ioでの設定方法（2026-06-11更新）:**
+1. Settings > SEO/metatags の「**Customize robots.txt (advanced)**」のチェックボックスをONにする
+2. 表示された編集欄に上記を入力
 
 ---
 
@@ -526,6 +546,8 @@ GA4ありでサイト改善:
   → 料金を明示したら離脱率が30%に下がった
   → 予約数が2倍になった
 ```
+
+実例（2026-06-11追記）: 2026年2月にアクセスが普段の約1.5倍（3,402PV/1,603IP）に急増したが、アクセスログでは参照元が分からず**要因を特定できなかった**。GA4が入っていれば「集客 > トラフィック獲得」レポートで、どこから来た急増なのか一目で分かる。
 
 ### 導入手順
 
@@ -785,7 +807,7 @@ Step 1〜3を完遂してもインデックスが伸びない場合の次の一�
 
 - **方式:** Cloudflare Workerをドメインのフロントに置き、ボットのリクエストだけPrerenderへルーティングする公式手順がある（人間のアクセスは従来どおりBubbleへ）
 - **所要時間:** 30〜45分。Cloudflare無料プランで可。**Bubble側のプラン変更は不要**（「Bubbleの上位プランが必要」という古いフォーラム情報は過去のもの）
-- **料金（2025年10月改定）:** **無料プランは2025年10月15日に廃止**。現在はStarter $49/月（25,000レンダー）〜。30日間の無料トライアルあり
+- **料金（2025年10月改定 / 2026-06-11に公式料金ページで再確認済み）:** **無料プランは2025年10月15日に廃止**。現在はStarter $49/月（25,000レンダー）〜、Growth $149/月（100,000レンダー）。30日間の無料トライアルあり
 - **注意:** 改善するのはクローラーから見えるHTMLだけで、**人間のユーザーの表示速度は1ミリ秒も変わらない**
 
 （参考: Prerender.io公式 Bubble統合手順 https://docs.prerender.io/docs/bubble / 料金改定 https://docs.prerender.io/docs/changes-to-prerender-pricing ）
@@ -862,14 +884,14 @@ Phase 3（中期）: Astro製SEOコンテンツをサブディレクトリ配信
 - [ ] og:imageを1200×630の専用画像に差し替えた（現状: アイコン流用）
 - [ ] 各ページにh1タグを設定した
 - [ ] 画像にalt属性を設定した
-- [ ] 「Bubble-defined canonical url tag」のチェックボックスをONにした
+- [ ] 「Enable canonical url」のチェックボックスをONにした（Bubble-defined canonical url tagが出力される）
 - [ ] 主要ページに構造化データ（BikeStore / Product+Offer / BreadcrumbList / FAQPage）を設定し、リッチリザルトテストで検証した
 - [ ] noindex対象ページ（マイページ/予約/会員登録/ログイン）のPage HTML Headerにnoindexを設定した
 - [ ] index対象ページにnoindexが入っていないことを確認した
-- [ ] Settings > SEO/metatags の「Allow search engines to index this app」がONであることを確認した
+- [ ] アプリ全体がインデックス可能なことを確認した（公開ページのソースに意図しないnoindexが無い・robots.txtで全体をブロックしていない。2026-06-11更新）
 
 ### sitemap / robots.txt
-- [ ] Bubble標準のsitemap自動生成をONにした（動的ページが含まれることを確認）
+- [ ] Bubble標準のsitemap自動生成「Expose a sitemap file」をONにした（動的ページが含まれることを確認）
 - [ ] https://rincle.co.jp/sitemap.xml でアクセスできることを確認した
 - [ ] robots.txtに `Sitemap: https://rincle.co.jp/sitemap.xml` を追記した
 
