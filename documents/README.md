@@ -76,15 +76,25 @@ documents/
 │   ├── e2e_test_report.md          #   E2Eテスト実行レポート（84/85 passed）
 │   └── payjp-test-mode-e2e.md     #   Pay.JPテストモード・E2Eテスト調査
 │
-├── 4_proposal/                     # 提案資料
-│   ├── 01_competitive-analysis.md  #   競合調査（市場概況・5社詳細・SWOT・ペルソナ）
-│   ├── 02_current-issues-and-solutions.md  # 現状課題と解決策（ファネル分析・UIモック）
-│   ├── 03_action-plan.md           #   アクションプラン（Phase1〜4・KPI・費用）
-│   ├── 04_seo-setup-guide.md       #   SEO設定ガイド（GA4・Clarity導入手順含む）
-│   └── 05_ui-ux-reference-catalog.md  # UI/UXリファレンスカタログ
-│
-├── 5_marketing/                    # マーケティング
-│   └── 01_marketing-channels.md   #   toCマーケ手法一覧・ROI比較
+├── 4_growth/                       # グロース（分析・提案 + マーケ実行）
+│   ├── 01_strategy/                # 分析・提案（クライアント合意用）
+│   │   ├── competitive-analysis.md #   競合調査（市場概況・競合詳細・SWOT・ペルソナ）
+│   │   ├── current-issues-and-solutions.md  # 現状課題と解決策（ファネル分析・UIモック）
+│   │   ├── action-plan.md          #   アクションプラン（Phase1〜4・KPI・費用）
+│   │   └── ui-ux-reference-catalog.md  # UI/UXリファレンスカタログ
+│   │
+│   ├── 02_marketing/               # マーケティング戦略
+│   │   ├── marketing-knowledge-map.md  # toCマーケ手法 全体マップ（汎用知識）
+│   │   ├── marketing-channels.md   #   toCマーケ手法一覧・ROI比較
+│   │   └── marketing-personas.md   #   ペルソナ5種（A〜E）
+│   │
+│   ├── 03_seo/                     # SEO実務
+│   │   ├── seo-setup-guide.md      #   SEO設定ガイド（GA4・Clarity導入手順含む）
+│   │   ├── seo_page_settings.csv   #   15画面分のtitle/description/OGP/h1/canonical
+│   │   └── sitemap_example.xml     #   sitemapサンプル
+│   │
+│   └── 04_analytics/               # 計測
+│       └── ga4_tracking_items.csv  #   GA4計測項目一覧（自動22+カスタム11+CV2）
 │
 ├── 98_presentations/               # 説明資料（HTML SPA）
 │   ├── index.html                  #   SPA エントリポイント（サイドバーナビ）
@@ -143,6 +153,6 @@ documents/
 
 ## 番号体系
 
-- フォルダの先頭番号（`0_`〜`5_`, `98_`, `99_`）は大分類の並び順
+- フォルダの先頭番号（`0_`〜`4_`, `98_`, `99_`）は大分類の並び順
 - サブフォルダの番号（`00_`, `01_`, ...）はセクションの並び順
 - CSV ファイルの番号（`01_`, `02_`, ...）はエクスポート順

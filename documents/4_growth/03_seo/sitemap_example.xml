@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
+  <!-- ※noindexにするページ（/reserve /register /login /mypage）はsitemapに登録しない -->
+  <!-- ※各ページのindex方針は seo_page_settings.csv（同フォルダ） の「index方針」列を参照 -->
+
   <!-- ========== 静的ページ ========== -->
 
   <!-- トップページ -->
@@ -50,13 +53,6 @@
     <loc>https://rincle.co.jp/faq</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
-
-  <!-- 会員登録 -->
-  <url>
-    <loc>https://rincle.co.jp/register</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
 
   <!-- お問い合わせ -->

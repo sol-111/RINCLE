@@ -1,6 +1,6 @@
 # RINCLE SEO設定ガイド
 
-> 作成日: 2026-05-20
+> 作成日: 2026-05-20 / 最終更新: 2026-06-11（実測値・Bubbleネイティブ機能・Prerender最新情報を反映）
 > 対象: SEO初心者向け。専門用語をできるだけ噛み砕いて説明
 
 ---
@@ -13,34 +13,45 @@ Googleで「ロードバイク レンタル 神戸」と検索したとき、RIN
 
 上に出れば出るほど、広告費をかけずにお客さんが来る。逆に、検索結果に出なければ「存在しないのと同じ」。
 
-### RINCLEの現状
+### RINCLEの現状（2026-06-11実測で更新）
 
 ```
-Googleに認識されているページ: たった2ページ
+Googleに認識されているページ: 実質2〜3ページのみ
+  1. トップページ
+  2. 店舗詳細1件（しかも日付・検索条件のクエリパラメータ付きのままインデックス）
+  3. 規約ページ
 「スポーツバイク レンタル」で検索: 圏外（表示されない）
 「ロードバイク レンタル 神戸」で検索: 圏外（表示されない）
 ```
 
-**つまり、今のRINCLEはGoogleから見てほぼ存在していない。**
+**つまり、今のRINCLEはGoogleから見てほぼ存在していない。** 正確なインデックス数はSearch Console導入後に確認する。
 
 ---
 
-## なぜこうなっているのか
+## なぜこうなっているのか（2026-06-11実測で更新）
 
-RINCLEはBubble.io（ノーコードツール）で作られている。Bubble.ioで作ったサイトは、普通のサイトと違って「中身がJavaScriptで後から読み込まれる」構造になっている。
+RINCLEはBubble.io（ノーコードツール）で作られている。Bubble.ioで作ったサイトは「中身（本文）がJavaScriptで後から読み込まれる」構造になっている。
 
-Googleのロボット（クローラー）がRINCLEのサイトを見に来ると:
+2026-06-11に実際のHTMLを取得して確認した結果:
 
 ```
-普通のサイト:
-  → HTMLにタイトル、説明文、料金、車種情報が全部書いてある
-  → Googleが「このサイトはスポーツバイクのレンタルだな」と理解できる
+意外と設定されていたもの（サーバー側でHTMLに出力済み）:
+  → titleタグ（店舗詳細では店舗名入りの動的タイトルまで生成されている）
+  → meta description / OGP一式
 
-RINCLEの現状:
-  → HTMLがほぼ空っぽ（タイトルすらない）
-  → 料金や車種はJavaScriptが動いた後に表示される
-  → Googleが「このサイト、何のサイトか分からない」となる
+問題が残っているもの:
+  → 本文がHTMLにほぼ無い: トップの可視テキストは「Rincle」の6文字だけ。
+    店舗詳細でも31文字（タイトルの重複のみ）。料金・車種・住所・営業時間はゼロ
+  → 初期HTMLにh1/h2が一切ない
+  → ページ間の<a>リンクが初期HTMLに無い（リンクはJS生成のみ）
+  → sitemap.xmlが404 / robots.txtにSitemap行なし
+  → canonicalなし → 検索条件付きのゴミURLが「正式なページ」としてインデックスされる実害が発生中
+  → meta descriptionは全ページ同一文面、og:imageはアイコン画像の流用（品質課題）
 ```
+
+**重要な補足: 「Bubble（JSレンダリング）だからインデックスされない」は正確ではない。** Vercel×MERJの大規模調査（Googlebotのフェッチ10万件以上を分析）では、GoogleはCSRページを含むHTML 200ページの100%をフルレンダリングしており、レンダリング待ちも中央値10秒程度だった（出典: https://vercel.com/blog/how-google-handles-javascript-throughout-the-indexing-process / Google公式のJavaScript SEO解説: https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics ）。
+
+RINCLEのインデックスが2〜3ページに留まっている主因は、**sitemapが無い+内部リンクがJS生成のみ→Googleがページを発見できない「ディスカバリーの問題」**である可能性が高い。つまり、このガイドのStep 1〜3（メタ情報・sitemap・Search Console）という基本の整備だけでも大きく改善する余地がある。
 
 ---
 
@@ -51,6 +62,7 @@ Step 1: Googleに「このサイトは何か」を教える（メタ情報の設
 Step 2: Googleに「このサイトにはこんなページがあるよ」と教える（sitemap）
 Step 3: Googleに「うちのサイトを見に来て」とお願いする（Search Console）
 Step 4: サイトに来た人の行動を記録する（GA4）
+Step 4.5: ユーザーの動きを録画して「なぜ離脱するか」を見る（クラリティ）
 Step 5: 検索結果に表示されるようになったか確認・改善する
 ```
 
@@ -75,7 +87,7 @@ Googleの検索結果で見ると:
   全国24店舗のプロショップでロードバイク・E-Bikeをレンタル。                     ← これがdescription
 ```
 
-**RINCLEの現状:** titleタグが設定されていない（空欄）
+**RINCLEの現状（2026-06-11実測で更新）:** 設定済みだが品質が低い。トップは `Rincle` の6文字だけでキーワードが無く、店舗詳細は `Rincle｜RINCLE 箕面稲店 / スペシャライズド箕面` と動的生成はできているが「レンタル」等の検索キーワードが入っていない。
 
 **設定すべき内容:**
 
@@ -105,7 +117,7 @@ Googleの検索結果で見ると:
 **これは何？**
 Googleの検索結果で、タイトルの下に表示されるグレーの説明文。
 
-**RINCLEの現状:** 設定されていない
+**RINCLEの現状（2026-06-11実測で更新）:** 設定済み。ただし**全ページ同一文面**（店舗詳細ページもトップと同じ説明文）。ページごとに固有の文面へ差し替えるのが課題。
 
 **設定すべき内容:**
 
@@ -140,7 +152,7 @@ LINEでリンクを送ったとき:
   └─────────────────────┘
 ```
 
-**RINCLEの現状:** 設定されていない（リンクを貼ってもカードが表示されない）
+**RINCLEの現状（2026-06-11実測で更新）:** og:title / og:description / og:image / og:url / og:type / og:site_name すべて設定済み。ただし**og:imageがアプリアイコン（apple-touch-icon.png）の流用**で、推奨の1200×630pxサイズでない。SNSカードの見栄えのため専用画像への差し替えが課題。
 
 **設定すべき内容:**
 
@@ -172,7 +184,7 @@ LINEでリンクを送ったとき:
 **これは何？**
 そのページで一番大きな見出し。Googleは「h1タグに書いてある内容 = このページのメインテーマ」と判断する。
 
-**RINCLEの現状:** h1タグがない（Googleがページのテーマを判断できない）
+**RINCLEの現状（2026-06-11実測）:** 初期HTMLにh1/h2が一切ない（Googleがページのテーマを判断できない）
 
 **設定すべき内容:**
 
@@ -221,12 +233,76 @@ https://rincle.co.jp/shop_detail/12345#section1
 ```
 Googleは「これは別々のページ？同じページ？」と迷う。canonicalを設定すると「全部同じページです。正式URLはこれです」と伝えられる。
 
+**RINCLEの現状（2026-06-11実測）:** canonicalが無いため、**日付・検索条件のクエリパラメータが付いたままのURLが「店舗ページの正式な姿」としてインデックスされている**実害が確認済み。早急に設定すべき。
+
+**Bubble.ioでの設定方法（2026-06-11更新: ネイティブ機能で対応可能）:**
+Bubbleには標準で canonical 出力機能がある。手書きHTMLは不要。
+1. Settings > SEO/metatags を開く
+2. 「**Bubble-defined canonical url tag**」のチェックボックスをONにする
+
+（参考: Bubble公式マニュアル https://manual.bubble.io/core-resources/application-settings/seo-metatags ）
+
+### 1-7. noindex（検索結果に出さないページの設定）
+
+**これは何？**
+「このページはGoogleの検索結果に載せないで」と伝えるタグ。ページによって「検索結果に出てほしいページ」と「出ても意味がない・出てはいけないページ」があるため、後者に設定する。
+
+**対象ページ:**（詳細は `seo_page_settings.csv`（同フォルダ） の「index方針」列を参照）
+
+| 方針 | ページ | 理由 |
+|------|--------|------|
+| **noindex必須** | マイページ | ログイン後の個人情報ページ。検索結果に出ること自体が望ましくない |
+| **noindex推奨** | 予約ページ / 会員登録 / ログイン | 検索からいきなり来ても意味がない機能ページ |
+| index（何もしない） | 上記以外の全ページ | 検索流入の入口。特に店舗詳細・車種詳細はSEOの主力 |
+
 **Bubble.ioでの設定方法:**
-1. Settings > SEO/metatags > Script/meta tags in header に以下を追加:
+1. エディタで対象ページ（mypage / login / register / reserve）を開く
+2. ページの何もない部分をダブルクリックしてページのプロパティを開く
+3. 「**Page HTML Header**」欄に以下を貼り付け:
 
 ```html
-<link rel="canonical" href="https://rincle.co.jp/（ページのパス）">
+<meta name="robots" content="noindex">
 ```
+
+4. 対象4ページぶん繰り返してデプロイ
+
+**⚠️ 絶対にやってはいけないこと:**
+Settings > SEO/metatags > Script/meta tags in header（GA4スニペットを貼った場所）には貼らないこと。あそこは**全ページ共通**のヘッダーなので、noindexを書くとサイト全体がGoogleから消える。noindexは必ず**ページごと**のPage HTML Headerに設定する。
+
+**あわせて確認:**
+Settings > SEO/metatags の「Allow search engines to index this app」がONになっているか確認する。Bubbleはここ（アプリ全体の設定）がOFFだと全ページがnoindexになる。「検索に全然出ない」原因がこれだった、というのはBubbleでよくあるパターン。
+
+**設定後の確認方法:**
+- 公開ページで右クリック →「ページのソースを表示」→ `<head>`内に`noindex`が入っているか確認（noindex対象ページに**だけ**入っていればOK）
+- Search Console導入済みなら「URL検査」で「インデックス登録: 許可されていません（noindex）」と表示される
+
+**sitemapとの関係:**
+noindexにするページはsitemap.xmlに載せない（「登録して」と「登録しないで」が矛盾するため）。現在のsitemap登録URL一覧には予約・ログイン・マイページ系は含まれていないので、そのままでOK。
+
+### 1-8. 構造化データ（JSON-LD）
+
+**これは何？**
+「このページは自転車店の情報です」「これは商品で価格は6,000円です」と、Googleが機械的に理解できる形式（JSON-LD）でページに埋め込むデータ。検索結果に星評価・パンくず・FAQ等の「リッチリザルト」が表示される条件になる。
+
+**RINCLEの現状（2026-06-11実測）:** 構造化データなし
+
+**設定すべきスキーマ:**
+
+| スキーマ | 適用ページ | 備考 |
+|---------|----------|------|
+| `BikeStore`（LocalBusinessのサブタイプ） | 各店舗詳細 | schema.orgに自転車店専用タイプがある。name / address / geo / openingHours / priceRange を設定。Googleのローカルビジネス・リッチリザルト対象 |
+| `Product` + `Offer` | 各車種詳細 | レンタル価格を offers.price に。レビュー獲得後は `AggregateRating` を追加すると★表示が狙える（現状レビューゼロのため当面は価格のみ） |
+| `BreadcrumbList` | 全ページ | 検索結果のパンくず表示 |
+| `FAQPage` | よくある質問 | リッチリザルト対象 |
+| `Organization` | トップ | ロゴ・SNSプロフィールの紐付け |
+
+※「レンタル専用」のリッチリザルトはGoogleに存在しないため、上記の組み合わせで対応する。
+
+**Bubble.ioでの設定方法:**
+1. 各ページの「Page HTML Header」に `<script type="application/ld+json">...</script>` を記述（動的データの差し込み可）
+2. 設定後は [リッチリザルトテスト](https://search.google.com/test/rich-results) で検証
+
+（参考: Google LocalBusiness構造化データ https://developers.google.com/search/docs/appearance/structured-data/local-business ）
 
 ---
 
@@ -279,7 +355,7 @@ Googleロボット: 「sitemapを見たら24店舗分のページと車種ペー
 
 ### sitemapに登録するURL一覧
 
-sitemapには**サイト内の全ページ**のURLを登録する。
+sitemapには**サイト内の全ページ**のURLを登録する。ただし**noindexにするページ（予約/会員登録/ログイン/マイページ）は載せない**（「登録して」と「登録しないで」が矛盾するため。1-7参照）。
 
 ```
 静的ページ（固定）:
@@ -290,11 +366,11 @@ sitemapには**サイト内の全ページ**のURLを登録する。
   /beginner          はじめての方へ
   /pricing           料金
   /faq               よくある質問
-  /register          会員登録
   /contact           お問い合わせ
   /terms             利用規約
   /privacy           プライバシーポリシー
-  → 計11ページ（固定で書く）
+  → 計10ページ（固定で書く）
+  ※ /reserve /register /login /mypage はnoindexのため登録しない
 
 動的ページ（データに応じて増える）:
   /shop_detail/specialized-kobe    店舗詳細 × 店舗数分
@@ -310,11 +386,11 @@ sitemapには**サイト内の全ページ**のURLを登録する。
 
 例えば店舗100 + 車種200の場合:
 ```
-静的ページ:    11 URL
+静的ページ:    10 URL
 店舗詳細:     100 URL
 車種詳細:     200 URL
 ──────────────
-合計:         311 URL → 全部sitemapに登録する
+合計:         310 URL → 全部sitemapに登録する
 ```
 
 ### 各タグの意味
@@ -328,24 +404,25 @@ sitemapには**サイト内の全ページ**のURLを登録する。
 ### RINCLEの現状
 
 ```
-https://rincle.co.jp/sitemap.xml → 404エラー（存在しない）
+https://rincle.co.jp/sitemap.xml → 404エラー（存在しない。2026-06-11実測で再確認）
 ```
 
-### 作成方法
+### 作成方法（2026-06-11更新: Bubble標準機能を推奨）
 
-**方法A: Bubble.ioプラグインを使う（推奨）**
+**方法A: Bubble標準のsitemap自動生成機能を使う（推奨）**
 
-店舗や車種が増えるたびに手動でURLを追加するのは現実的ではない。Bubble.ioのプラグインを使えば、DBのデータから自動生成される。
+プラグインは不要。Bubbleには標準でsitemap自動生成機能があり、**店舗詳細・車種詳細などの動的ページ（DBレコード分）も自動で含まれる**（最大50,000 URL。Privacy Rolesで非公開データは自動的に除外される）。店舗や車種が増えても手動更新は不要。
 
-1. Bubble.ioのプラグインストアで「SEO」「sitemap」で検索
-2. 「Simple Sitemap」等のプラグインをインストール
-3. プラグインの設定でページ一覧を登録
-4. 自動的に `/sitemap.xml` が生成される
+1. Settings > SEO/metatags を開く
+2. sitemapの生成を有効にし、含めるページを選択（noindex対象の予約/会員登録/ログイン/マイページは含めない）
+3. `https://rincle.co.jp/sitemap.xml` でアクセスできることを確認
 
-**方法B: 手動で作成してホスティング**
+（参考: Bubble公式マニュアル https://manual.bubble.io/core-resources/application-settings/seo-metatags ）
+
+**方法B: 手動で作成してホスティング（標準機能で要件を満たせない場合のみ）**
 1. 上のXMLの例を参考に、全ページのURLを列挙したファイルを作成
 2. `sitemap.xml` という名前で保存
-3. Bubble.ioのファイルマネージャーにアップロード、またはCloudflare等の外部サービス経由で配信
+3. Cloudflare等の外部サービス経由で配信
 
 ### robots.txtへの追記
 
@@ -486,7 +563,7 @@ GA4ありでサイト改善:
 </script>
 ```
 
-※ `G-XXXXXXXXXX` の部分を、Step 3で取得した自分の測定IDに置き換える
+※ `G-XXXXXXXXXX` の部分を、手順3で取得した自分の測定IDに置き換える
 
 方法B: Bubble.ioのGA4プラグインを使う
 1. プラグインストアで「Google Analytics」を検索
@@ -540,7 +617,7 @@ GA4管理画面
 | ユーザー数 | レポート > ユーザー属性 | 何人来ているか |
 | 流入元 | レポート > 集客 > トラフィック獲得 | Google検索/SNS/直接/広告のどこから来ているか |
 | ページ別閲覧数 | レポート > エンゲージメント > ページとスクリーン | どのページが人気か、どこで離脱しているか |
-| 直帰率 | 同上 | サイトに来てすぐ帰った人の割合 |
+| 直帰率 | 同上（標準では非表示。レポートのカスタマイズで列を追加） | エンゲージメントしなかったセッションの割合（旧アナリティクスと定義が異なる） |
 | イベント | レポート > エンゲージメント > イベント | ボタンクリック等の行動 |
 
 ### カスタムイベント（余裕があれば）
@@ -675,17 +752,74 @@ GA4 + クラリティの場合:
 
 | 確認項目 | 確認方法 | 期待値 |
 |---------|---------|--------|
-| インデックス数が増えたか | Search Console > ページ（カバレッジ） | 2ページ → 主要ページ分に増加 |
+| インデックス数が増えたか | Search Console > ページ（カバレッジ） | 2〜3ページ → 主要ページ分に増加 |
 | 検索キーワードが出てきたか | Search Console > 検索パフォーマンス | 何かしらのキーワードが表示される |
 | サイトの表示速度 | PageSpeed Insights (https://pagespeed.web.dev/) | LCP 2.5秒以下が理想 |
+
+### 表示速度の現状（2026-06-11 Lighthouse実測）
+
+Lighthouse 12（モバイルエミュレーション・simulated slow 4G）での実測値:
+
+| 指標 | 実測値 | Google推奨 |
+|------|--------|-----------|
+| Performanceスコア | **25/100** | 90以上 |
+| FCP（最初の表示） | 20.3秒 | 1.8秒以下 |
+| **LCP** | **49.3秒** | **2.5秒以下** |
+| 総ページ重量 | 9.2MB | - |
+
+※ これは低速回線を模したラボ値で、実際のWiFi/4Gでの体感はもっと短い。とはいえ総重量9.2MB（JSバンドルだけで圧縮前8.5MB）という構造上、どんな回線でもLCP 2.5秒合格はほぼ不可能な水準。
+
+**ただし優先度に注意:** 表示速度の根本改善はBubbleの設定だけでは難しい。まずはこのガイドのStep 1〜3（メタ情報・sitemap・Search Console）= 無料で即日できる対策を完遂し、インデックス数の改善を実測するのが先（下記ロードマップ参照）。
 
 ### うまくいかないときは
 
 | 症状 | 原因の可能性 | 対処法 |
 |------|------------|--------|
-| インデックスが増えない | Bubble.ioのJSレンダリング問題 | プリレンダリング（prerender.io等）の導入を検討 |
+| インデックスが増えない | sitemap・内部リンク等のディスカバリー問題（Step 1〜3の設定漏れ） | チェックリストを再確認。それでも増えなければプリレンダリング導入を検討（下記） |
 | 検索に全く出ない | メタ情報が正しく設定されていない | [Google リッチリザルトテスト](https://search.google.com/test/rich-results)で確認 |
 | GA4にデータが来ない | スニペットが正しく貼れていない | ブラウザの開発者ツール > Console でエラーを確認 |
+
+### プリレンダリング（Prerender.io）の導入（2026-06-11更新）
+
+Step 1〜3を完遂してもインデックスが伸びない場合の次の一手。クローラーにだけ、JSレンダリング済みの完全なHTML（本文・リンク入り）を返す仕組み。
+
+- **方式:** Cloudflare Workerをドメインのフロントに置き、ボットのリクエストだけPrerenderへルーティングする公式手順がある（人間のアクセスは従来どおりBubbleへ）
+- **所要時間:** 30〜45分。Cloudflare無料プランで可。**Bubble側のプラン変更は不要**（「Bubbleの上位プランが必要」という古いフォーラム情報は過去のもの）
+- **料金（2025年10月改定）:** **無料プランは2025年10月15日に廃止**。現在はStarter $49/月（25,000レンダー）〜。30日間の無料トライアルあり
+- **注意:** 改善するのはクローラーから見えるHTMLだけで、**人間のユーザーの表示速度は1ミリ秒も変わらない**
+
+（参考: Prerender.io公式 Bubble統合手順 https://docs.prerender.io/docs/bubble / 料金改定 https://docs.prerender.io/docs/changes-to-prerender-pricing ）
+
+---
+
+## 導入ロードマップ（段階導入の推奨）
+
+いきなり外部サービスや別サイト構築に投資せず、無料の設定から始めて効果を実測してから次に進む。
+
+```
+Phase 1（今週・無料）: Bubbleネイティブ設定の完遂 = このガイドのStep 1〜4.5
+  ├─ sitemap自動生成ON（動的ページ含む）+ robots.txtにSitemap行
+  ├─ canonical有効化 ← クエリパラメータ付きURLのインデックス汚染を止める（実害確認済み）
+  ├─ ページ別title/meta description（店舗詳細はDB差し込みで店舗固有の文面に）
+  ├─ og:imageを1200×630の専用画像に差し替え
+  ├─ h1設定、noindex設定、構造化データ
+  └─ Search Console登録 → インデックス数を実測
+
+  ↓ 2〜4週間、Search Consoleでインデックス数・表示回数を計測してから投資判断
+    （主因がディスカバリー問題なら、Phase 1だけで大きく改善する可能性が十分ある）
+
+Phase 2（必要なら・$49/月〜）: Cloudflareをフロントに導入 + Prerender.io
+  ├─ ボットに完全レンダリング済みHTMLを配信 → 本文・内部リンクの可視化
+  └─ 副産物: Cloudflareがフロントに入ることでPhase 3の土台が完成
+
+Phase 3（中期）: Astro製SEOコンテンツをサブディレクトリ配信
+  ├─ Cloudflare Workerのパスルーティングで rincle.co.jp/shops/* /areas/* /guide/* を
+  │  静的サイト（Astro on Cloudflare Pages）へ振り分け
+  ├─ 店舗×エリア×車種カテゴリページ + 初心者ガイド記事（LCP 1秒以下を狙える）
+  └─ 予約導線はBubbleアプリへリンク
+```
+
+※ Phase 3でサブドメイン（lp.rincle.co.jp）でなく**サブディレクトリ**を推奨する理由: ドメイン評価を1つに集約できるため。Google公式は「同等に扱える」としているが、業界の移転事例ではサブディレクトリ優位の報告が多い。
 
 ---
 
@@ -704,10 +838,11 @@ GA4 + クラリティの場合:
 | **Search Console** | Googleが無料で提供する「あなたのサイトがGoogleにどう見えているか」確認ツール |
 | **GA4** | Google Analytics 4。サイトに来た人の行動を記録・分析する無料ツール |
 | **canonical URL** | 「このページの正式URLはこれです」とGoogleに教えるタグ |
+| **noindex** | 「このページは検索結果に載せないで」とGoogleに伝えるタグ。マイページ等の検索に出すべきでないページに設定する |
 | **h1タグ** | ページの大見出し。Googleはこれを見て「このページの主題」を判断する |
 | **alt属性** | 画像の代替テキスト。Googleが画像の内容を理解するために使う |
 | **LCP** | Largest Contentful Paint。ページの一番大きな要素が表示されるまでの時間 |
-| **直帰率** | サイトに来て、1ページだけ見てすぐ帰った人の割合 |
+| **直帰率** | エンゲージメントしなかったセッションの割合。GA4では旧アナリティクス（1ページだけ見て帰った割合）と定義が異なる |
 | **CVR** | Conversion Rate。サイトに来た人のうち、予約まで完了した人の割合 |
 | **プリレンダリング** | JSで動的に表示されるページを、事前にHTMLとして生成しておく技術。SEO対策に有効 |
 | **Microsoft Clarity** | Microsoftが無料提供するユーザー行動可視化ツール。セッション録画・ヒートマップ・デッドクリック検出ができる |
@@ -722,17 +857,19 @@ GA4 + クラリティの場合:
 設定が完了したら、以下を確認:
 
 ### メタ情報
-- [ ] トップページにtitleタグを設定した
-- [ ] トップページにmeta descriptionを設定した
-- [ ] 全ページにtitleタグを設定した
-- [ ] 全ページにmeta descriptionを設定した
-- [ ] OGP（og:title / og:description / og:image）を設定した
+- [ ] 全ページのtitleタグをキーワード入りの固有の文面に修正した（現状: 設定済みだがトップは「Rincle」のみ）
+- [ ] 全ページのmeta descriptionをページ固有の文面に修正した（現状: 全ページ同一文面）
+- [ ] og:imageを1200×630の専用画像に差し替えた（現状: アイコン流用）
 - [ ] 各ページにh1タグを設定した
 - [ ] 画像にalt属性を設定した
-- [ ] canonical URLを設定した
+- [ ] 「Bubble-defined canonical url tag」のチェックボックスをONにした
+- [ ] 主要ページに構造化データ（BikeStore / Product+Offer / BreadcrumbList / FAQPage）を設定し、リッチリザルトテストで検証した
+- [ ] noindex対象ページ（マイページ/予約/会員登録/ログイン）のPage HTML Headerにnoindexを設定した
+- [ ] index対象ページにnoindexが入っていないことを確認した
+- [ ] Settings > SEO/metatags の「Allow search engines to index this app」がONであることを確認した
 
 ### sitemap / robots.txt
-- [ ] sitemap.xmlを生成した
+- [ ] Bubble標準のsitemap自動生成をONにした（動的ページが含まれることを確認）
 - [ ] https://rincle.co.jp/sitemap.xml でアクセスできることを確認した
 - [ ] robots.txtに `Sitemap: https://rincle.co.jp/sitemap.xml` を追記した
 
