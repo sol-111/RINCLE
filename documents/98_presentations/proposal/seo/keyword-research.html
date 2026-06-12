@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>検索キーワード調査 — 「ロードバイク軸」の定量裏付け | RINCLE</title>
+<style>
+  :root{
+    --navy:#0f3460; --navy-light:#1a4a8a; --red:#e94560;
+    --green:#27ae60; --bg:#f5f6fa; --text:#2c2c3a; --sub:#6b7280;
+    --border:#e5e7eb; --radius:12px;
+    --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .hero{background:linear-gradient(135deg,#0f3460 0%,#1a4a8a 100%);color:#fff;padding:52px 40px 44px}
+  .hero h1{font-size:1.9rem;font-weight:800;margin-bottom:8px}
+  .hero p{font-size:1.02rem;opacity:.88;max-width:760px}
+  .hero-meta{margin-top:14px;font-size:13px;opacity:.7;display:flex;gap:20px;flex-wrap:wrap}
+  .container{max-width:960px;margin:0 auto;padding:40px 28px 80px}
+
+  .section{margin-bottom:48px}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+  .section-num{display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--navy);color:#fff;border-radius:10px;font-size:17px;font-weight:800;flex-shrink:0}
+  .section-header h2{font-size:21px;font-weight:700}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin:16px 0}
+  .alert{border-radius:0 10px 10px 0;padding:16px 20px;margin:16px 0;font-size:14px}
+  .alert-green{background:#eefbf3;border-left:4px solid var(--green);color:#1a7a42}
+  .alert-blue{background:#eef4ff;border-left:4px solid var(--navy);color:var(--navy)}
+
+  .verdict-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+  @media(max-width:680px){.verdict-grid{grid-template-columns:1fr}}
+  .verdict{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;text-align:center}
+  .verdict .kw{font-size:15px;font-weight:700;color:var(--navy)}
+  .verdict .num{font-size:42px;font-weight:800;line-height:1.3}
+  .verdict.win .num{color:var(--green)}
+  .verdict.lose .num{color:var(--red)}
+  .verdict .sub{font-size:13px;color:var(--sub)}
+
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+  thead th{background:var(--navy);color:#fff;padding:11px 14px;text-align:left;font-size:13px;font-weight:600;white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid #f0f1f4;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#f8f9fb}
+  td.label{font-weight:700;color:var(--navy);white-space:nowrap}
+  .tag{display:inline-block;background:#eef4ff;color:var(--navy);border-radius:6px;padding:1px 8px;font-size:12px;margin:2px 2px}
+  .tag.geo{background:#eefbf3;color:#1a7a42}
+  .tag.info{background:#fff7e6;color:#92400e}
+
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>検索キーワード調査 <span style="opacity:.8">— 「ロードバイク軸」の定量裏付け</span></h1>
+  <p>「検索語の実態を調べる」（6/12定例の宿題）への回答。Googleサジェスト（検索補完の実データ）から、人々が本当にどう検索しているかを確認しました。</p>
+  <div class="hero-meta"><span>2026-06-12調査</span><span>手法: Googleサジェスト（一次データ）</span></div>
+</div>
+
+<div class="container">
+
+  <!-- 結論 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">!</div><h2>結論</h2></div>
+    <div class="verdict-grid">
+      <div class="verdict win">
+        <div class="kw">「ロードバイク レンタル」</div>
+        <div class="num">10件</div>
+        <div class="sub">サジェストがフルに出る・うち8件が地域名<br>= 地域×レンタルの検索需要が実在</div>
+      </div>
+      <div class="verdict lose">
+        <div class="kw">「スポーツバイク レンタル」</div>
+        <div class="num">4件</div>
+        <div class="sub">サジェストが4件しか出ない<br>= 「スポーツバイクでは誰も調べない」の定量的な証拠</div>
+      </div>
+    </div>
+    <div class="alert alert-green">
+      <strong>6/12の現場感覚（「調べ方はほとんど、ロードバイクレンタル+地域名」）はデータで裏付けられました。</strong> 加えて「eバイク レンタル」も地域名でフルに埋まり（「しまなみ」まで出現）、E-Bike需要の顕在化も確認。
+    </div>
+  </div>
+
+  <!-- データ -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><h2>取得データ（Googleサジェスト・2026-06-12）</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>入力KW</th><th>サジェスト（上位）</th><th>読み取り</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="label">ロードバイク レンタル</td>
+            <td><span class="tag geo">東京</span><span class="tag geo">東京 安い</span><span class="tag geo">八王子</span><span class="tag geo">都内</span><span class="tag geo">多摩川</span><span class="tag geo">荒川</span><span class="tag">1ヶ月</span><span class="tag geo">千葉</span><span class="tag geo">神奈川</span></td>
+            <td><strong>10件フル・8件が地域名</strong>。「安い」「1ヶ月」の修飾も需要あり</td>
+          </tr>
+          <tr>
+            <td class="label">スポーツバイク レンタル</td>
+            <td><span class="tag geo">東京</span><span class="tag geo">大阪</span><span class="tag">レンタルサイクル スポーツバイク</span></td>
+            <td><strong>4件のみ</strong>。需要が薄い証拠</td>
+          </tr>
+          <tr>
+            <td class="label">レンタサイクル</td>
+            <td><span class="tag">日本橋</span><span class="tag">新宿</span><span class="tag">料金</span><span class="tag">ドコモ</span><span class="tag">中央区</span><span class="tag">近く</span><span class="tag">公園</span></td>
+            <td>街乗り・シェアサイクル文脈（ハローサイクリング等の世界）。RINCLEの主戦場ではない</td>
+          </tr>
+          <tr>
+            <td class="label">eバイク レンタル</td>
+            <td><span class="tag geo">東京</span><span class="tag geo">大阪</span><span class="tag geo">関西</span><span class="tag geo">埼玉</span><span class="tag geo">名古屋</span><span class="tag geo">しまなみ</span><span class="tag geo">長野県</span><span class="tag geo">京都</span></td>
+            <td>10件フル。<strong>E-Bike×観光地の需要が既に顕在化</strong></td>
+          </tr>
+          <tr>
+            <td class="label">クロスバイク レンタル</td>
+            <td><span class="tag geo">東京</span><span class="tag">1ヶ月</span><span class="tag geo">埼玉</span><span class="tag geo">大阪</span><span class="tag geo">京都</span><span class="tag geo">琵琶湖</span><span class="tag geo">神奈川</span></td>
+            <td>10件フル。長期（1ヶ月）需要も見える</td>
+          </tr>
+          <tr>
+            <td class="label">しまなみ海道 自転車</td>
+            <td><span class="tag info">レンタル</span><span class="tag info">時間</span><span class="tag info">所要時間</span><span class="tag info">料金</span><span class="tag info">ルート</span><span class="tag info">乗り捨て</span><span class="tag info">距離</span><span class="tag info">通行料</span><span class="tag info">荷物</span></td>
+            <td><strong>情報型クエリの宝庫 = ブログ記事の見出しがそのまま見える</strong></td>
+          </tr>
+          <tr>
+            <td class="label">ビワイチ</td>
+            <td><span class="tag info">距離</span><span class="tag info">レンタサイクル</span><span class="tag info">時間</span><span class="tag info">ルート</span><span class="tag info">コース</span><span class="tag info">スタート地点</span></td>
+            <td>同上。「ビワイチ レンタサイクル」が直接出る</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px;color:var(--sub)">※サジェストは取得環境（地域・時期）の影響を受けるため、厳密な順位ではなく傾向として扱う。緑=地域名 / 黄=情報型（記事ネタ）</p>
+  </div>
+
+  <!-- 含意 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><h2>含意</h2></div>
+    <div class="card">
+      <ul style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:8px"><strong>メタ情報・記事・広告の文言は「ロードバイク」「eバイク」軸で統一</strong>（「スポーツバイク」は社名・ブランド説明以外で使わない）— 6/12確定方針の再確認</li>
+        <li style="margin-bottom:8px"><strong>ブログ記事の構成はサジェストに従う</strong>: 「しまなみ海道」記事なら所要時間・料金・ルート・乗り捨て可否・荷物の扱いを網羅すれば検索意図をカバーできる</li>
+        <li>「ロードバイク/クロスバイク レンタル <strong>1ヶ月</strong>」= 長期レンタル需要の存在。将来の商品設計の材料（月貸し・サブスクは競合CycleTripの領域）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 次のアクション -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><h2>次のアクション</h2></div>
+    <div class="alert alert-blue">
+      <strong>正確な月間検索数はキーワードプランナーで取得します</strong>（Google広告アカウントの開設だけで無料・出稿は不要）。GA4設置（#22）と同じタイミングで広告アカウントも開設すれば、広告出稿フェーズを待たずに実数が取れ、記事の優先順位づけに使えます。取得対象: 「ロードバイク レンタル×主要都市」「観光ルート名×レンタサイクル」「eバイク レンタル×地域」。
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/keyword-research.md
+</footer>
+
+</body>
+</html>

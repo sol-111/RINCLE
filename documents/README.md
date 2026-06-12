@@ -97,6 +97,7 @@ documents/
 │   ├── 03_seo/                     # SEO実務
 │   │   ├── seo-setup-guide.md      #   SEO設定ガイド（GA4・Clarity導入手順含む）
 │   │   ├── note-vs-owned-blog.md   #   note vs 自社ブログ比較調査（#24・2026-06-12）
+│   │   ├── keyword-research.md     #   検索KW調査メモ（ロードバイク軸の定量裏付け・2026-06-12）
 │   │   ├── seo_page_settings.csv   #   15画面分のtitle/description/OGP/h1/canonical
 │   │   └── sitemap_example.xml     #   sitemapサンプル
 │   │
@@ -126,7 +127,9 @@ documents/
 │   │   │   ├── marketing-personas.html   # ペルソナ
 │   │   │   └── marketing-knowledge-map.html # toCマーケ手法マップ
 │   │   └── seo/                    #     SEO（03_seo対応）
-│   │       └── seo-guide.html            # SEO設定ガイド
+│   │       ├── seo-guide.html            # SEO設定ガイド
+│   │       ├── note-vs-owned-blog.html   # note vs 自社ブログ比較調査
+│   │       └── keyword-research.html     # 検索キーワード調査
 │   └── stripe/                     #   Stripe 関連
 │       ├── api-reference.html      #     Stripe APIリファレンス
 │       └── payjp-vs-stripe.html    #     決済基盤の方針（比較+移行計画）

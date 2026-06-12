@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>note vs 自社ドメインブログ SEO比較調査 | RINCLE</title>
+<style>
+  :root{
+    --navy:#0f3460; --navy-light:#1a4a8a; --red:#e94560;
+    --green:#27ae60; --bg:#f5f6fa; --text:#2c2c3a; --sub:#6b7280;
+    --border:#e5e7eb; --radius:12px;
+    --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .hero{background:linear-gradient(135deg,#0f3460 0%,#1a4a8a 100%);color:#fff;padding:52px 40px 44px}
+  .hero h1{font-size:2rem;font-weight:800;margin-bottom:8px}
+  .hero p{font-size:1.02rem;opacity:.88;max-width:720px}
+  .hero-meta{margin-top:14px;font-size:13px;opacity:.7;display:flex;gap:20px;flex-wrap:wrap}
+  .container{max-width:960px;margin:0 auto;padding:40px 28px 80px}
+
+  .section{margin-bottom:48px}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+  .section-num{display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--navy);color:#fff;border-radius:10px;font-size:17px;font-weight:800;flex-shrink:0}
+  .section-header h2{font-size:21px;font-weight:700}
+  h3{font-size:16px;font-weight:700;color:var(--navy);margin:26px 0 12px;padding-left:11px;border-left:3px solid var(--red)}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin:16px 0}
+  .alert{border-radius:0 10px 10px 0;padding:16px 20px;margin:16px 0;font-size:14px}
+  .alert-red{background:#ffeef0;border-left:4px solid var(--red);color:#a0132e}
+  .alert-green{background:#eefbf3;border-left:4px solid var(--green);color:#1a7a42}
+  .alert-blue{background:#eef4ff;border-left:4px solid var(--navy);color:var(--navy)}
+
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+  thead th{background:var(--navy);color:#fff;padding:11px 14px;text-align:left;font-size:13px;font-weight:600;white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid #f0f1f4;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#f8f9fb}
+  td.label{font-weight:700;color:var(--navy);white-space:nowrap}
+
+  .badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700}
+  .badge.good{background:#eefbf3;color:#1a7a42}
+  .badge.bad{background:#ffeef0;color:#a0132e}
+  .badge.warn{background:#fff7e6;color:#92400e}
+
+  .src{font-size:12px;color:var(--sub);margin-top:6px}
+  .src a{color:var(--sub)}
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>note vs 自社ドメインブログ <span style="opacity:.8">SEO比較調査</span></h1>
+  <p>「地域サイクリングコースのLP/ブログで集客したい」構想（6/12定例）の実現方式を、一次情報で調査した報告です。</p>
+  <div class="hero-meta"><span>タスク#24</span><span>2026-06-12調査</span><span>次回定例の報告用</span></div>
+</div>
+
+<div class="container">
+
+  <!-- 結論 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">!</div><h2>結論サマリー</h2></div>
+    <div class="alert alert-red">
+      <strong>noteで貯めたSEO評価は、後から自社ドメインに移せません</strong>（無料版noteにはリダイレクト機能がなく、検索評価はnote.comに帰属したまま。詳細は§4）。「まずnoteで始めて、育ったら自社サイトへ引っ越す」という進め方は、引っ越しの瞬間に検索評価がゼロリセットされます。
+    </div>
+    <div class="alert alert-green">
+      <strong>推奨は「最初から分業併用」。</strong> 同じことを両方でやるのではなく、<strong>役割を分けて両方使います</strong>。
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>役割</th><th>置き場所</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="label">SEO資産<br><span style="font-weight:400;font-size:12px;color:var(--sub)">「ロードバイク レンタル 名古屋」「しまなみ海道 レンタサイクル」等を狙う地域×コース記事</span></td>
+            <td><strong>初日から自社サブディレクトリ</strong><br>（rincle.co.jp/blog/）</td>
+            <td>検索評価をrincleドメインに蓄積する。後から移せない以上、最初からここに書くしかない</td>
+          </tr>
+          <tr>
+            <td class="label">拡散・ブランド用<br><span style="font-weight:400;font-size:12px;color:var(--sub)">運営の想い・店舗ストーリー・イベントレポ</span></td>
+            <td><strong>note（無料版）</strong></td>
+            <td>note.comの集客力とSNS拡散に乗る。検索資産にする必要がないコンテンツ</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 1 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><h2>noteのSEO実態</h2></div>
+    <div class="card">
+      <h3 style="margin-top:0">強さの実態</h3>
+      <ul style="padding-left:20px;font-size:14px">
+        <li>ドメイン評価が高く、公開直後でも検索流入が得られやすい。自社サイトより早く順位がつくケースもある</li>
+        <li>会員数777万人（2024年時点）・膨大な記事数で「専門性・情報量のあるドメイン」と評価されている</li>
+      </ul>
+      <h3>限界</h3>
+      <ul style="padding-left:20px;font-size:14px">
+        <li>HTMLタグ・構造化データ・デザイン・カテゴリ設計のカスタマイズ不可。note内でできるSEO対策はタイトル・ハッシュタグ・本文品質程度</li>
+        <li><strong>検索評価はすべてnote社のドメインに帰属</strong>（無料版・プレミアムでは独自ドメイン不可）。コンテンツはnote社のサービス上にあり、サービス終了時の削除リスクもある</li>
+        <li><strong>noteに置いたリンクは全てnofollow自動付与</strong> — rincle.co.jpへのSEO評価の受け渡しは限定的（人間のクリック流入は普通にある）</li>
+      </ul>
+      <h3>note proの現行プラン（2026年6月時点）</h3>
+      <ul style="padding-left:20px;font-size:14px">
+        <li>基本料金 <strong>月80,000円（税抜）</strong>・初月無料（2023年3月に5万円→8万円へ改定済み。古い記事の「月5万」は旧料金）</li>
+        <li>独自ドメイン適用はnote proの標準機能。ただし<strong>月8万円はRINCLEの収益規模では予約52件/月分に相当</strong>し、現段階では割に合わない</li>
+      </ul>
+      <p class="src">出典: noteヘルプ（独自ドメイン・note pro料金）/ LeadGrid / 東京SEOメーカー / mesut（nofollow検証 2026-04更新）— 詳細URLは正本mdの各節参照</p>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><h2>自社ドメイン側の実現方式</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>方式</th><th>SEO</th><th>技術難度</th><th>評価</th></tr></thead>
+        <tbody>
+          <tr><td class="label">① サブドメイン<br>（blog.rincle.co.jp）</td><td>別サイト扱いの傾向。本体に評価が貯まりにくい</td><td>低（DNS設定のみ）</td><td><span class="badge warn">△ 次善策</span></td></tr>
+          <tr><td class="label">② サブディレクトリ<br>（rincle.co.jp/blog/）</td><td><strong>本体ドメインに評価集約。実務報告で優位</strong></td><td>中（リバースプロキシが必要）</td><td><span class="badge good">◎ 推奨</span></td></tr>
+          <tr><td class="label">③ 別ドメイン</td><td>ゼロから育成。最も不利</td><td>低</td><td><span class="badge bad">× 選ぶ理由なし</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-blue">
+      Google公式は「サブドメインとサブディレクトリは本質的に同等」という立場ですが、実務ではサブディレクトリ優位の報告が根強く、国内SEO各社も「同じ事業のブログはサブディレクトリ」を推奨。RINCLEは現状インデックス2〜3ページの弱小ドメインなので、<strong>評価を分散させるサブドメインを選ぶ理由がありません</strong>。
+    </div>
+    <h3>Bubble本体との同居は技術的に可能</h3>
+    <div class="card">
+      <p style="font-size:14px"><strong>Cloudflare Workerのリバースプロキシ（パスルーティング）で実現可能</strong>。Bubble本体はそのまま、<code style="background:#f0f1f4;padding:2px 6px;border-radius:4px">rincle.co.jp/blog/*</code> へのアクセスだけ外部ブログに振り分ける構成で、Ghost CMS+Bubbleの完全手順ガイドやBubble公式フォーラムの成功事例が複数あります。seo-setup-guideのPhase 2（Cloudflareフロント導入）と同じ土台なので、既存ロードマップと整合します。</p>
+      <p style="font-size:14px;margin-top:10px"><strong>注意:</strong> BubbleのCloudflare移行により、DNSがAレコードだとWorkerがバイパスされる報告あり → <strong>rincle.co.jpのDNS構成の技術検証が必要</strong>（未確認事項#1）。</p>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><h2>CMS・運用コスト</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>選択肢</th><th>月額</th><th>保守の手間</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr><td class="label">レンタルサーバー+WordPress</td><td>600〜1,100円程度</td><td><span class="badge warn">中</span> 更新・バックアップ・セキュリティ対応が継続発生</td><td>管理画面が最も馴染みやすい・情報量最多</td></tr>
+          <tr><td class="label">ヘッドレスCMS+静的サイト<br>（microCMS+Astro+Cloudflare Pages）</td><td><strong>ほぼゼロ</strong>（microCMS Hobby無料・商用可）</td><td><span class="badge good">小</span> サーバー保守不要</td><td><strong>第一候補</strong>。表示最速（LCP1秒以下狙い）= LCP49秒のBubble本体を補う。執筆は非エンジニアでも可</td></tr>
+          <tr><td class="label">STUDIO</td><td>1,480円〜</td><td><span class="badge good">小</span></td><td><span class="badge bad">不向き</span> サブディレクトリ同居が不可</td></tr>
+          <tr><td class="label">note（無料）</td><td>ゼロ</td><td>最小</td><td>ドメイン資産は貯まらない（§1）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px;color:var(--sub)">金額はどれも誤差レベル（月0〜1,100円）。差が出るのは<strong>保守の手間と表示速度</strong>。</p>
+  </div>
+
+  <!-- 4 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><h2>「note→後で自社に移す」が効かない理由</h2></div>
+    <div class="alert alert-red">
+      <strong>noteで貯めた検索評価は、自社ドメインへ移転できません（無料版）。</strong>
+    </div>
+    <div class="card">
+      <ol style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:8px"><strong>note無料版にはリダイレクト機能がない</strong>。SEO評価の引き継ぎには301リダイレクトが必須だが、その手段がユーザーに提供されていない → 移転先の記事は検索エンジンから「新規記事」扱い</li>
+        <li style="margin-bottom:8px">HTML編集も不可のため、擬似リダイレクトすら設置できない</li>
+        <li style="margin-bottom:8px">記事を手動コピーで移すと<strong>重複コンテンツ問題</strong>: noteはcanonical設定も不可のため、ドメインの強いnote側が「オリジナル」、自社側が「コピー」と判定されるリスク。回避にはnote記事の削除が必要で、その瞬間にnoteの検索流入は消える</li>
+        <li><strong>唯一の例外はnote pro（月8万円税抜）の独自ドメイン適用</strong>（既存URLが自動リダイレクトされる）。ただし解約後もリダイレクトが維持されるかは公開情報がなく、維持されないリスクが高いと思われる</li>
+      </ol>
+    </div>
+    <p style="font-size:14px">つまり「noteを育ててから自社へ」は月8万円を払い続ける場合にのみ部分的に成立する特殊ルートで、RINCLEの規模では非現実的。<strong>SEO資産にしたい記事は最初から自社ドメインに書くしかない</strong>。</p>
+  </div>
+
+  <!-- 5 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><h2>LPとブログ記事はどちらがSEOに強いか</h2></div>
+    <div class="alert alert-blue">
+      元の構想は「地域ごとのLP」。形式の論点を整理すると — <strong>SEOで集客するなら「ブログ記事+本体サイトのエリアページ」。狭義のLP（縦長1ページ・CV特化）はSEO目的では作りません</strong>。LPは①被リンクがつきにくい ②1ページではKWを網羅できない ③情報収集の検索意図に合わない、と構造的にSEOに弱いためです。
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>狙うKW</th><th>検索意図</th><th>受け皿</th></tr></thead>
+        <tbody>
+          <tr><td class="label">「しまなみ海道 レンタサイクル」<br>「○○ サイクリングコース」</td><td>情報収集型<br>（どこを走ろう）</td><td><strong>ブログ記事</strong>（コース紹介+レンタル導線）</td></tr>
+          <tr><td class="label">「ロードバイク レンタル 名古屋」</td><td>取引型<br>（借りる場所を探している）</td><td><strong>本体サイトのエリア検索ページ</strong>（#21のsitemap約500URL=サイト一体型LP相当）。ブログ記事から内部リンクで流す</td></tr>
+          <tr><td class="label">広告の受け皿</td><td>—</td><td>狭義の縦長LPが活きるのはここ（Google広告開始時）。SEO目的では不要</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px">→ 「地域LP」構想は、実体としては<strong>「地域ハブのブログ記事+本体エリアページ」の組み合わせ</strong>で実現するのがSEO・コスト両面で最も効率的（LP制作の外注費も不要）。</p>
+  </div>
+
+  <!-- 6 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">6</div><h2>RINCLEへの推奨・始め方</h2></div>
+    <div class="card">
+      <ol style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:8px"><strong>地域×コース記事（SEO資産）= 自社サブディレクトリ一択</strong>: rincle.co.jp/blog/ に静的サイト（Astro+microCMS）を同居。月額ほぼゼロ・保守最小・表示最速</li>
+        <li style="margin-bottom:8px"><strong>note = 無料版で拡散・ブランド用に限定</strong>: 運営の想い・アクティブ店舗のストーリー・イベントレポ。記事末尾からrincle.co.jpへ誘導。本体トピックス欄にnoteサムネイルを置く案はこの用途で有効</li>
+        <li style="margin-bottom:8px"><strong>同じ記事を両方に置かない</strong>（重複コンテンツ回避）。KWを狙う記事は自社側だけ</li>
+        <li style="margin-bottom:8px"><strong>順序</strong>: DB再構築完了 → SEO基盤一式（#21-22）→ Cloudflareフロント → サブディレクトリブログ構築。<strong>記事の書き溜めは今日から可能</strong>（原稿化しておきCMS完成後に一括投入）。noteは即日開始できる</li>
+        <li>優先KW: 最優先「観光ルート名×レンタサイクル」（しまなみ海道・ビワイチ等）、次点「都市名×ロードバイク レンタル」。1本目は加盟店が実在する地域（例: 神戸）から。記事テンプレ1種（コース概要・マップ・立ち寄りスポット・レンタル導線）を設計して量産</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 確認点 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">?</div><h2>未確認事項・確認点</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="label">rincle.co.jpのDNS構成</td><td>Workerルーティングの可否がDNSレコード形式に依存 → DB再構築後に弊社で技術検証</td></tr>
+          <tr><td>2</td><td class="label">記事の書き手は誰か</td><td>運営 / 加盟店 / 外注。月数本の継続体制をどう組むか → 次回定例で要相談</td></tr>
+          <tr><td>3</td><td class="label">地域の優先順位</td><td>構想は名古屋・東京だが、SEO的には「加盟店が実在し観光ルートKWの実需がある」地域（しまなみ・神戸等）が先では → 要すり合わせ</td></tr>
+          <tr><td>4</td><td class="label">noteアカウントの開設名義・運用者</td><td>無料なので先行開設可。誰が投稿を続けるか</td></tr>
+          <tr><td>5</td><td class="label">店舗数の対外表記</td><td>記事内で店舗数に言及する場合は確認リスト#7の決着待ち</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/note-vs-owned-blog.md（出典URL一覧は正本を参照）
+</footer>
+
+</body>
+</html>
