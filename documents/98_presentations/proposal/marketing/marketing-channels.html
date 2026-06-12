@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RINCLE toCマーケティングチャネル & ROI比較</title>
+<style>
+  :root {
+    --red: #e94560;
+    --navy: #0f3460;
+    --dark: #1a1a2e;
+    --tierA: #dc2626;
+    --tierB: #2563eb;
+    --tierC: #7c3aed;
+    --tierD: #6b7280;
+    --green: #059669;
+    --bg: #f8f9fb;
+    --card-bg: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #5a5a72;
+    --border: #e8e8ef;
+    --shadow: 0 4px 24px rgba(0,0,0,.07);
+    --shadow-hover: 0 8px 32px rgba(0,0,0,.12);
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 40px 20px;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* ─── Hero ─── */
+  .hero { text-align: center; margin-bottom: 56px; }
+  .hero h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--dark);
+    letter-spacing: .02em;
+  }
+  .hero h1 span { color: var(--red); }
+  .hero p { margin-top: 10px; font-size: 1.05rem; color: var(--text-sub); }
+
+  /* ─── Section ─── */
+  .section { margin-bottom: 56px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .section-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 1rem;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 1.45rem; font-weight: 700; color: var(--dark); }
+
+  /* ─── Card ─── */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 32px;
+    transition: box-shadow .2s;
+  }
+  .card:hover { box-shadow: var(--shadow-hover); }
+
+  /* ─── Stat Grid（前提） ─── */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 20px;
+    border-top: 4px solid var(--navy);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .stat-card .st-label {
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--text-sub);
+  }
+  .stat-card .st-value {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+  .stat-card .st-value small { font-size: .95rem; font-weight: 700; }
+  .stat-card .st-note { font-size: .76rem; color: var(--text-sub); margin-top: 4px; }
+  .stat-card.accent { border-top-color: var(--red); }
+  .stat-card.accent .st-value { color: var(--red); }
+
+  .bottleneck-banner {
+    margin-top: 8px;
+    background: var(--red);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(233,69,96,.3);
+  }
+
+  /* ─── Note boxes ─── */
+  .note {
+    background: #fff8f0;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: .9rem;
+    color: #92400e;
+  }
+  .note strong { color: #b45309; }
+  .note.blue { background: #eff6ff; border-left-color: var(--tierB); color: #1e3a8a; }
+  .note.blue strong { color: #1d4ed8; }
+  .note.red { background: #fff0f3; border-left-color: var(--red); color: #9f1239; }
+  .note.red strong { color: var(--red); }
+  .note.green { background: #ecfdf5; border-left-color: var(--green); color: #065f46; }
+  .note.green strong { color: var(--green); }
+
+  /* ─── Tier table ─── */
+  .tier-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 26px 0 12px;
+    flex-wrap: wrap;
+  }
+  .tier-head:first-child { margin-top: 0; }
+  .tier-badge {
+    font-size: .82rem;
+    font-weight: 800;
+    border-radius: 6px;
+    padding: 4px 14px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .tier-desc { font-size: .92rem; font-weight: 700; color: var(--dark); }
+
+  .ch-table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    background: #fff;
+  }
+  table.ch-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .86rem;
+    background: #fff;
+  }
+  table.ch-table th {
+    background: var(--dark);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: .8rem;
+    white-space: nowrap;
+  }
+  table.ch-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  table.ch-table tr:last-child td { border-bottom: none; }
+  .ch-id {
+    font-weight: 800;
+    color: #fff;
+    border-radius: 6px;
+    padding: 2px 9px;
+    font-size: .76rem;
+    display: inline-block;
+  }
+  .roi-badge {
+    font-weight: 800;
+    font-size: .76rem;
+    border-radius: 20px;
+    padding: 3px 12px;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .roi-max { background: var(--red); color: #fff; }
+  .roi-high { background: #fff0f3; color: var(--red); border: 1px solid #ffd6d6; }
+  .roi-mid { background: #eef2ff; color: var(--navy); border: 1px solid #c7d2fe; }
+  .roi-long { background: #f5f3ff; color: var(--tierC); border: 1px solid #ddd6fe; }
+
+  /* ─── Tier A 施策カード ─── */
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(440px, 1fr));
+    gap: 18px;
+  }
+  .action-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 26px;
+    border-top: 4px solid var(--tierA);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .action-card .ac-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .action-card .ac-icon { font-size: 1.5rem; line-height: 1; }
+  .action-card .ac-title { font-size: 1.02rem; font-weight: 800; color: var(--dark); }
+  .action-card .ac-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .meta-chip {
+    font-size: .74rem;
+    font-weight: 700;
+    background: #f5f5fa;
+    color: var(--text-sub);
+    border-radius: 6px;
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+  .action-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    font-size: .87rem;
+  }
+  .action-card ul li {
+    padding-left: 20px;
+    position: relative;
+  }
+  .action-card ul li::before {
+    content: '\25B8';
+    position: absolute;
+    left: 4px;
+    color: var(--red);
+    font-weight: 800;
+  }
+  .ac-why {
+    font-size: .82rem;
+    background: #ecfdf5;
+    color: #065f46;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .ac-why strong { color: var(--green); }
+  .ac-caution {
+    font-size: .82rem;
+    background: #fff8f0;
+    color: #92400e;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .ac-caution strong { color: #b45309; }
+
+  /* ─── OTA fee chips ─── */
+  .fee-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .fee-chip {
+    background: #eef2ff;
+    color: var(--navy);
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: .8rem;
+    font-weight: 700;
+  }
+  .fee-chip small { font-weight: 600; color: var(--text-sub); }
+
+  /* ─── Step flow（GBP手順） ─── */
+  .step-flow {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .step {
+    flex: 1;
+    min-width: 130px;
+    background: #eef2ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--navy);
+    text-align: center;
+    position: relative;
+  }
+  .step .step-num {
+    display: block;
+    font-size: .68rem;
+    font-weight: 800;
+    color: #fff;
+    background: var(--navy);
+    border-radius: 10px;
+    width: fit-content;
+    margin: 0 auto 4px;
+    padding: 0 10px;
+  }
+  .step-arrow {
+    align-self: center;
+    color: var(--navy);
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* ─── E-Bike 横断テーマ ─── */
+  .ebike-card {
+    background: linear-gradient(135deg, var(--navy), var(--dark));
+    color: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 32px;
+  }
+  .ebike-card h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .ebike-card h3 span { color: #ffb3c1; }
+  .ebike-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .ebike-stat {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 10px;
+    padding: 12px 20px;
+    flex: 1;
+    min-width: 180px;
+  }
+  .ebike-stat .ev { font-size: 1.5rem; font-weight: 800; line-height: 1.2; }
+  .ebike-stat .el { font-size: .78rem; opacity: .85; }
+  .ebike-apply {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ebike-apply span {
+    background: rgba(233,69,96,.25);
+    border: 1px solid rgba(233,69,96,.6);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: .8rem;
+    font-weight: 600;
+  }
+  .ebike-note { font-size: .78rem; opacity: .75; margin-top: 14px; }
+
+  /* ─── 結論テーブル ─── */
+  .stars { color: var(--red); letter-spacing: 1px; white-space: nowrap; font-size: .82rem; }
+  .stars .off { color: #d9d9e3; }
+  .verdict {
+    font-weight: 700;
+    font-size: .82rem;
+    white-space: nowrap;
+  }
+  .verdict.now { color: var(--red); }
+  .verdict.later { color: var(--text-sub); }
+
+  .phase1-box {
+    margin-top: 18px;
+    background: var(--card-bg);
+    border: 2px solid var(--navy);
+    border-radius: var(--radius);
+    padding: 20px 26px;
+  }
+  .phase1-box .p1-title {
+    font-weight: 800;
+    color: var(--navy);
+    font-size: .95rem;
+    margin-bottom: 10px;
+  }
+  .phase1-box .p1-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .phase1-box .p1-items span {
+    background: #eef2ff;
+    color: var(--navy);
+    border: 1px solid #c7d2fe;
+    border-radius: 8px;
+    padding: 5px 14px;
+    font-size: .82rem;
+    font-weight: 600;
+  }
+
+  .summary-compare {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .summary-compare .sc {
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: .92rem;
+    font-weight: 700;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .summary-compare .sc .mark { font-size: 1.2rem; font-weight: 800; line-height: 1.4; }
+  .sc.ng { background: #f5f5fa; color: var(--text-sub); }
+  .sc.ng .mark { color: #9ca3af; }
+  .sc.ok { background: #fff0f3; color: var(--dark); border: 1px solid #ffd6d6; }
+  .sc.ok .mark { color: var(--red); }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.6rem; }
+    .action-grid { grid-template-columns: 1fr; }
+    .step-flow { flex-direction: column; }
+    .step-arrow { transform: rotate(90deg); align-self: center; }
+  }
+  @media (max-width: 960px) {
+    .action-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1><span>RINCLE</span> toCマーケティングチャネル &amp; ROI比較</h1>
+    <p>SEOだけでなく全チャネルを俯瞰し、本当にROIが高い施策を見極める</p>
+    <p style="margin-top:8px; font-size:.9rem; color:var(--text-sub);">2026-06-11 本番DB実測値でファクトチェック済み</p>
+  </div>
+
+  <!-- ===== 1. 前提: RINCLEの現状 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--dark);">1</div>
+      <div class="section-title">前提: RINCLEの現状（2026-06-11実測）</div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="st-label">パートナーショップ</span>
+        <span class="st-value">54<small>店</small></span>
+        <span class="st-note">実質52店 / 予約実績20店 / 2026-05稼働12店</span>
+      </div>
+      <div class="stat-card">
+        <span class="st-label">利用者 / 累計実予約</span>
+        <span class="st-value">91<small>人</small> / 70<small>件</small></span>
+        <span class="st-note">完了49件。2026-05は完了21件・手数料収入&yen;32,175</span>
+      </div>
+      <div class="stat-card accent">
+        <span class="st-label">月間アクセス</span>
+        <span class="st-value">約700<small>IP</small></span>
+        <span class="st-note">約2,300PV / Google検索からの流入ほぼゼロ</span>
+      </div>
+      <div class="stat-card accent">
+        <span class="st-label">CVR（予約転換率）</span>
+        <span class="st-value">約4<small>%</small></span>
+        <span class="st-note">健全な水準 — 問題は「来た人」ではなく「来ていない」こと</span>
+      </div>
+      <div class="stat-card">
+        <span class="st-label">平均予約単価 / 手数料</span>
+        <span class="st-value">約&yen;10,200</span>
+        <span class="st-note">手数料15%（カード手数料3.5%は店舗負担で計18.5%）</span>
+      </div>
+      <div class="stat-card">
+        <span class="st-label">E-Bike在庫</span>
+        <span class="st-value">79<small>台</small></span>
+        <span class="st-note">成長領域の軸として活用可能（横断テーマ参照）</span>
+      </div>
+      <div class="stat-card">
+        <span class="st-label">レビュー・口コミ</span>
+        <span class="st-value">0<small>件</small></span>
+        <span class="st-note">GA4未設置 / 認知ほぼゼロ（公式ローンチ2026-02-05）</span>
+      </div>
+      <div class="stat-card">
+        <span class="st-label">予算</span>
+        <span class="st-value" style="font-size:1.15rem; padding-top:6px;">限られている</span>
+        <span class="st-note">スタートアップ — 無料・低コスト施策を優先</span>
+      </div>
+    </div>
+
+    <div class="bottleneck-banner">最大ボトルネックは「流入量」と「手数料回収」 — CVRは健全、まず人を連れてくる</div>
+
+    <div class="note" style="margin-top:14px;">
+      <strong>2026-02に謎のアクセススパイク（3,402PV / 1,603IP）— 要因未特定。</strong>
+      過去のメディア掲載・SNS言及等の形跡を要確認。再現できれば最安の集客チャネルになり得る（GA4未設置で流入元が追えないことが特定を妨げている）。
+    </div>
+    <div class="note blue" style="margin-top:10px;">
+      <strong>SEO不振の真因はBubble.ioの構造的弱点ではなくディスカバリー問題。</strong>
+      sitemap.xmlが404 + 内部リンクなし（title等は設定済み）。Bubble標準機能で対策可能。
+    </div>
+  </div>
+
+  <!-- ===== 2. Tier別チャネル一覧 & ROI評価 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--dark);">2</div>
+      <div class="section-title">全チャネル一覧 &amp; ROI評価</div>
+    </div>
+
+    <div class="card">
+
+      <div class="tier-head">
+        <span class="tier-badge" style="background:var(--tierA);">Tier A</span>
+        <span class="tier-desc">今すぐやるべき（高ROI &times; 低コスト）</span>
+      </div>
+      <div class="ch-table-wrap">
+        <table class="ch-table">
+          <thead>
+            <tr><th>#</th><th>チャネル</th><th>コスト</th><th>効果が出るまで</th><th>期待ボリューム</th><th>ROI</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierA);">A1</span></td>
+              <td><strong>パートナーショップの既存チャネル活用</strong></td>
+              <td>無料</td><td>即日〜1週間</td><td>中</td>
+              <td><span class="roi-badge roi-max">最高</span></td>
+            </tr>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierA);">A2</span></td>
+              <td><strong>Google ビジネスプロフィール</strong></td>
+              <td>無料</td><td>2〜4週間（同意取得込み）</td><td>中</td>
+              <td><span class="roi-badge roi-max">最高</span></td>
+            </tr>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierA);">A3</span></td>
+              <td><strong>アソビュー / じゃらん等への掲載</strong></td>
+              <td>成果手数料（10〜20%）</td><td>1〜2週間+審査</td><td>中〜高</td>
+              <td><span class="roi-badge roi-high">高</span></td>
+            </tr>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierA);">A4</span></td>
+              <td><strong>まとめメディア・自治体観光ページ掲載</strong></td>
+              <td>無料</td><td>即日着手可</td><td>低〜中</td>
+              <td><span class="roi-badge roi-high">高</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tier-head">
+        <span class="tier-badge" style="background:var(--tierB);">Tier B</span>
+        <span class="tier-desc">短期で効果あり（即効性あるが有料）</span>
+      </div>
+      <div class="ch-table-wrap">
+        <table class="ch-table">
+          <thead>
+            <tr><th>#</th><th>チャネル</th><th>コスト</th><th>効果が出るまで</th><th>期待ボリューム</th><th>ROI</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierB);">B1</span></td>
+              <td>Google広告（リスティング）</td>
+              <td>月5〜30万円</td><td>即日</td><td>低〜中</td>
+              <td><span class="roi-badge roi-high">高</span></td>
+            </tr>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierB);">B2</span></td>
+              <td>Instagram / Meta広告</td>
+              <td>月5〜20万円</td><td>1〜2週間</td><td>中</td>
+              <td><span class="roi-badge roi-mid">中〜高</span></td>
+            </tr>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierB);">B3</span></td>
+              <td>インフルエンサーマーケ</td>
+              <td>1件5〜30万円（相場目安・要検証）</td><td>1〜2週間</td><td>中</td>
+              <td><span class="roi-badge roi-mid">中</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:8px; font-size:.78rem; color:var(--text-sub);">※ B1はCVR実測約4%と健全なため、流入さえ作れば予約につながる土台はある。ただしUI未整備のまま広告を打つと離脱で無駄になる — <strong>Phase 1（SEO+GA4）&rarr; UI改善 &rarr; 広告</strong>の順番が正しい。</div>
+
+      <div class="tier-head">
+        <span class="tier-badge" style="background:var(--tierC);">Tier C</span>
+        <span class="tier-desc">中長期で効く（時間がかかるが資産になる）</span>
+      </div>
+      <div class="ch-table-wrap">
+        <table class="ch-table">
+          <thead>
+            <tr><th>#</th><th>チャネル</th><th>コスト</th><th>効果が出るまで</th><th>期待ボリューム</th><th>ROI</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierC);">C1</span></td>
+              <td>SEO（オーガニック検索）</td>
+              <td>無料〜低</td><td>2〜6ヶ月</td><td>高</td>
+              <td><span class="roi-badge roi-long">高（長期）</span></td>
+            </tr>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierC);">C2</span></td>
+              <td>SNSオーガニック運用</td>
+              <td>低（人件費のみ）</td><td>1〜3ヶ月</td><td>低〜中</td>
+              <td><span class="roi-badge roi-mid">中</span></td>
+            </tr>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierC);">C3</span></td>
+              <td>コンテンツマーケ（ブログ/動画）</td>
+              <td>低〜中</td><td>3〜6ヶ月</td><td>中</td>
+              <td><span class="roi-badge roi-long">中（長期）</span></td>
+            </tr>
+            <tr>
+              <td><span class="ch-id" style="background:var(--tierC);">C4</span></td>
+              <td>PR / メディア掲載</td>
+              <td>無料〜低</td><td>配信後1〜3日（効果は一過性）</td><td>中</td>
+              <td><span class="roi-badge roi-mid">中</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:8px; font-size:.78rem; color:var(--text-sub);">※ Tier D（将来検討）: LINE公式アカウント / メールマーケ / アフィリエイト / イベント出展 — リピート促進系は「まず顧客がいないと意味がない」ため後回し。</div>
+
+    </div>
+  </div>
+
+  <!-- ===== 3. Tier A: 今すぐやる4施策 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--tierA);">3</div>
+      <div class="section-title">Tier A: 今すぐやる4施策の中身</div>
+    </div>
+
+    <div class="action-grid">
+
+      <!-- A1 -->
+      <div class="action-card">
+        <div class="ac-head">
+          <span class="ac-icon">&#x1F3EA;</span>
+          <span class="ac-title">A1. パートナーショップの既存チャネル活用</span>
+        </div>
+        <div class="ac-meta">
+          <span class="meta-chip">コスト: 無料</span>
+          <span class="meta-chip">即日〜1週間</span>
+          <span class="meta-chip" style="background:var(--red); color:#fff;">ROI 最高</span>
+        </div>
+        <ul>
+          <li>各ショップのWebサイトにRINCLEへのリンクを設置</li>
+          <li>各ショップのSNS（Instagram等）で紹介投稿</li>
+          <li>店頭POP / チラシ（「レンタルはRINCLEから予約できます」）</li>
+          <li>既存顧客へのメール / LINE配信</li>
+          <li>店舗GBPにRINCLEのリンク追加（店舗の同意・操作のもとで。A2参照）</li>
+          <li>実利用者へのレビュー依頼（ステマ規制に注意 — セクション5参照）</li>
+        </ul>
+        <div class="ac-why">
+          <strong>なぜ最高ROIか:</strong> コストゼロ &times; ショップの既存顧客 = すでにスポーツバイクに興味がある温かいリード。54店分（実質52店）のチャネルが一気に使えるのに、今まで活用していない。まず予約実績のある20店・5月稼働12店から着手し、テンプレを横展開。
+        </div>
+        <div class="ac-caution">
+          <strong>課題:</strong> ショップに動いてもらう必要がある。素材やテンプレートを用意して負担を最小化する。
+        </div>
+      </div>
+
+      <!-- A2 -->
+      <div class="action-card">
+        <div class="ac-head">
+          <span class="ac-icon">&#x1F4CD;</span>
+          <span class="ac-title">A2. Google ビジネスプロフィール（規約準拠の手順）</span>
+        </div>
+        <div class="ac-meta">
+          <span class="meta-chip">コスト: 無料</span>
+          <span class="meta-chip">2〜4週間の継続オペレーション</span>
+          <span class="meta-chip" style="background:var(--red); color:#fff;">ROI 最高</span>
+        </div>
+        <div class="ac-caution">
+          <strong>&#x26A0;&#xFE0F; 第三者（プラットフォーム事業者）による無断登録は規約違反</strong>（プロフィール / アカウント停止の対象）。RINCLE自体のGBPもオンライン専業のため作成不可。
+        </div>
+        <div class="step-flow">
+          <div class="step"><span class="step-num">STEP 1</span>各店の同意取得<br><small style="font-weight:600;">（同意書テンプレを先に作成）</small></div>
+          <div class="step-arrow">&#x2192;</div>
+          <div class="step"><span class="step-num">STEP 2</span>既存プロフィールにRINCLEを「管理者」として招待</div>
+          <div class="step-arrow">&#x2192;</div>
+          <div class="step"><span class="step-num">STEP 3</span>レンタル情報・予約リンクを追記</div>
+        </div>
+        <ul>
+          <li>写真、営業時間、レンタル料金、WebサイトURLを設定</li>
+          <li>「スポーツバイクレンタル」のカテゴリを設定</li>
+        </ul>
+        <div class="ac-why">
+          <strong>なぜ高ROIか:</strong> 無料。「近くの〇〇」検索はGoogleマップから直接流入（SEOとは別の導線）。ローカル検索は「今すぐ借りたい」人が検索するため購買意欲が高い。
+        </div>
+      </div>
+
+      <!-- A3 -->
+      <div class="action-card">
+        <div class="ac-head">
+          <span class="ac-icon">&#x1F39F;&#xFE0F;</span>
+          <span class="ac-title">A3. アソビュー / じゃらん等への「体験プラン」掲載</span>
+        </div>
+        <div class="ac-meta">
+          <span class="meta-chip">初期費用ゼロ・成果手数料のみ</span>
+          <span class="meta-chip">1〜2週間+審査</span>
+          <span class="meta-chip" style="background:var(--red); color:#fff;">ROI 高</span>
+        </div>
+        <div class="note blue" style="font-size:.84rem;">
+          時間貸しではなく<strong>「ルート付き体験プラン」</strong>として設計して掲載（例: ◯◯絶景ルート半日サイクリング、バイク・ヘルメット込み）。
+        </div>
+        <div>
+          <div style="font-size:.8rem; font-weight:700; color:var(--text-sub); margin-bottom:6px;">対象プラットフォームと手数料（2026-06調査の実数）:</div>
+          <div class="fee-list">
+            <span class="fee-chip">アソビュー <small>会員1,240万人超</small> 10〜20%</span>
+            <span class="fee-chip">じゃらん（遊び・体験） 16.4%</span>
+            <span class="fee-chip">ACTIVITY JAPAN <small>手数料は要確認</small></span>
+            <span class="fee-chip">Klook <small>インバウンド向け</small> 15〜20%</span>
+          </div>
+        </div>
+        <div class="ac-why">
+          <strong>なぜ高ROIか:</strong> プラットフォームに既にユーザーがいるため自分で集客不要。「体験」を探すユーザー = レンタル関心層。レビューもプラットフォーム上で溜まる。
+        </div>
+        <div class="ac-caution">
+          <strong>課題:</strong> OTA手数料（10〜20%）とRINCLE手数料15%（+カード3.5%）が重なると店舗の手取りを大きく圧迫。<strong>OTA手数料は「広告費」と割り切り、OTA経由ユーザーのLINE登録 &rarr; 自社リピート引き上げを必ずセット</strong>にする。プラットフォーム依存のリスクにも留意。
+        </div>
+      </div>
+
+      <!-- A4 -->
+      <div class="action-card">
+        <div class="ac-head">
+          <span class="ac-icon">&#x1F4F0;</span>
+          <span class="ac-title">A4. まとめメディア・自治体観光ページへの掲載依頼</span>
+        </div>
+        <div class="ac-meta">
+          <span class="meta-chip">コスト: 無料</span>
+          <span class="meta-chip">即日着手可</span>
+          <span class="meta-chip" style="background:var(--red); color:#fff;">ROI 高</span>
+        </div>
+        <ul>
+          <li><strong>シクロライダー</strong>（全国ロードバイク/E-Bikeレンタル一覧のまとめメディア）・<strong>TABIRIN</strong>に全店舗の掲載打診</li>
+          <li>各店舗所在の自治体・観光協会・DMOの観光ページに掲載依頼。特にナショナルサイクルルート（しまなみ・ビワイチ等）圏の加盟店から優先</li>
+          <li>中期では自治体・DMOへのパッケージ営業</li>
+        </ul>
+        <div class="ac-why">
+          <strong>なぜ高ROIか:</strong> 無料・即日着手可。指名流入に加え、信頼性の高い被リンクになる（= C1のSEOにも効く）。
+        </div>
+        <div class="note blue" style="font-size:.82rem;">
+          <strong>営業の非対称性:</strong> 調査自治体の54.5%がサイクルツーリズム施策を実施、最多施策は「レンタ/シェアサイクルの整備」だがノウハウ・人材不足が課題 — RINCLEの「予約システム+プロショップ網」をパッケージ提案できる。
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== 4. 横断テーマ: E-Bike軸 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--navy);">4</div>
+      <div class="section-title">横断テーマ: E-Bike軸</div>
+    </div>
+
+    <div class="ebike-card">
+      <h3>&#x26A1; 単独チャネルではなく、<span>複数チャネルを横断する切り口</span></h3>
+      <div class="ebike-stats">
+        <div class="ebike-stat">
+          <div class="ev">前年比 +40%</div>
+          <div class="el">E-Bikeレンタルの成長率。販売台数はママチャリ超え — 供給側の対応が薄い成長領域</div>
+        </div>
+        <div class="ebike-stat">
+          <div class="ev">79台</div>
+          <div class="el">RINCLEのE-Bike在庫（2026-06-11実測）— 十分に軸として立てられる</div>
+        </div>
+      </div>
+      <div style="font-size:.85rem; font-weight:700; margin-bottom:8px; opacity:.9;">適用先:</div>
+      <div class="ebike-apply">
+        <span>C1: SEO LP「E-Bike レンタル &times; 地域」KW群</span>
+        <span>A3: OTAのE-Bike限定体験プラン</span>
+        <span>A4: シクロライダーのE-Bikeレンタル一覧</span>
+        <span>B1: Google広告KW</span>
+      </div>
+      <div class="ebike-note">出典: action-plan.md / atpress 2026-06調査</div>
+    </div>
+  </div>
+
+  <!-- ===== 5. ステマ規制の注意 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--red);">5</div>
+      <div class="section-title">レビュー依頼はステマ規制に注意</div>
+    </div>
+
+    <div class="card" style="border-top:4px solid var(--red);">
+      <div class="note red" style="margin-bottom:14px;">
+        <strong>&#x26A0;&#xFE0F; 対価提供と引き換えのレビュー依頼は、景表法ステマ規制（2023年10月施行）の違反リスク。</strong>
+      </div>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:8px; font-size:.9rem;">
+        <li style="padding-left:24px; position:relative;"><span style="position:absolute; left:0; color:var(--green); font-weight:800;">&#x2713;</span> 投稿は<strong>任意</strong>とし、評価内容に条件をつけない</li>
+        <li style="padding-left:24px; position:relative;"><span style="position:absolute; left:0; color:var(--green); font-weight:800;">&#x2713;</span> モニターの場合は<strong>その旨の表示を徹底</strong>する</li>
+        <li style="padding-left:24px; position:relative;"><span style="position:absolute; left:0; color:var(--red); font-weight:800;">&#x2715;</span> 「高評価を条件に割引」等、対価と引き換えの依頼はしない</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== 6. 結論: SEOは短期ROI 1位ではない ===== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--dark);">6</div>
+      <div class="section-title">結論: 「SEOは本当にROIが1番高いのか？」&rarr; 短期ではNo</div>
+    </div>
+
+    <div class="ch-table-wrap">
+      <table class="ch-table">
+        <thead>
+          <tr><th>施策</th><th>短期ROI</th><th>長期ROI</th><th>総合</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>A1 ショップ既存チャネル</strong></td>
+            <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td>
+            <td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td>
+            <td><span class="verdict now">今すぐやるべき</span></td>
+          </tr>
+          <tr>
+            <td><strong>A2 Googleビジネスプロフィール</strong></td>
+            <td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td>
+            <td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td>
+            <td><span class="verdict now">今すぐやるべき</span></td>
+          </tr>
+          <tr>
+            <td><strong>A3 アソビュー等への掲載</strong></td>
+            <td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td>
+            <td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td>
+            <td><span class="verdict now">今すぐやるべき</span></td>
+          </tr>
+          <tr>
+            <td><strong>A4 メディア / 自治体掲載</strong></td>
+            <td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td>
+            <td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td>
+            <td><span class="verdict now">今すぐやるべき（被リンクでSEOにも効く）</span></td>
+          </tr>
+          <tr>
+            <td>B1 Google広告</td>
+            <td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td>
+            <td><span class="stars">&#9733;&#9733;<span class="off">&#9733;&#9733;&#9733;</span></span></td>
+            <td><span class="verdict later">UI改善後にやる</span></td>
+          </tr>
+          <tr>
+            <td>C1 SEO</td>
+            <td><span class="stars">&#9733;<span class="off">&#9733;&#9733;&#9733;&#9733;</span></span></td>
+            <td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td>
+            <td><span class="verdict later">やるべきだが即効性はない</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="summary-compare">
+      <div class="sc ng"><span class="mark">&#x2715;</span><span>SEOだけやって2〜6ヶ月待つ<br><small style="font-weight:500;">— その間、流入は月700ユニークIPのまま</small></span></div>
+      <div class="sc ok"><span class="mark">&#x25CB;</span><span>SEOは仕込みつつ、即効性のあるチャネル（A1 / A2 / A3 / A4）を同時にやる</span></div>
+    </div>
+
+    <div class="phase1-box">
+      <div class="p1-title">修正後の Phase 1（今週〜2週間）: 計測 + 基盤整備 + 即効施策</div>
+      <div class="p1-items">
+        <span>&#x1F4CA; GA4 + クラリティ導入（2月スパイクの要因特定にも必須）</span>
+        <span>&#x1F5FA;&#xFE0F; SEO基本設定（sitemap自動生成ON / canonical / Search Console）</span>
+        <span>&#x1F3EA; ショップチャネル活用</span>
+        <span>&#x1F4CD; GBP: 同意取得 &rarr; 管理者招待 &rarr; 情報追記</span>
+        <span>&#x1F39F;&#xFE0F; アソビュー / じゃらん体験プラン掲載</span>
+        <span>&#x1F4F0; シクロライダー / TABIRIN・自治体観光ページ掲載依頼</span>
+        <span>&#x1F6E1;&#xFE0F; 保険棚卸し</span>
+      </div>
+      <div style="margin-top:10px; font-size:.78rem; color:var(--text-sub);">※ Phase 2以降（UI改善 &rarr; Google広告 &rarr; コンテンツマーケ &rarr; SNS &rarr; LINE）の順は変更なし。</div>
+    </div>
+
+    <div class="note green" style="margin-top:18px;">
+      <strong>まとめ:</strong> SEOは「やめるべき」ではなく「それだけに頼るべきではない」。CVRは約4%と健全 — 問題は「来た人が予約しない」ことではなく「そもそも来ていない」こと。集客チャネルへの投資が手数料回収の問題と並ぶ最優先事項。特に<strong>A1（54店・実質52店の既存顧客にリーチできるのに未活用）が最もROIが高い</strong>。あわせて2026-02のアクセススパイク（3,402PV）の要因特定を行うこと — 再現できれば最安のチャネルになる。
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

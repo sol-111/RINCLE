@@ -108,12 +108,18 @@ documents/
 │   │   ├── dev-reference.html      #     開発者リファレンス
 │   │   ├── authorization-guide.html #    オーソリガイド
 │   │   └── issues.html             #     修正一覧
-│   ├── proposal/                   #   提案資料
-│   │   ├── 01_competitive-analysis.html  # 競合調査
-│   │   ├── 02_current-issues.html        # 現状課題
-│   │   ├── 03_action-plan.html           # アクションプラン
-│   │   ├── 04_seo-guide.html             # SEOガイド
-│   │   └── 05_ui-references.html         # UI/UXリファレンス
+│   ├── proposal/                   #   提案資料（4_growthのmd構成とミラー）
+│   │   ├── strategy/               #     戦略（01_strategy対応）
+│   │   │   ├── competitive-analysis.html # 競合調査
+│   │   │   ├── current-issues.html       # 現状課題
+│   │   │   ├── action-plan.html          # アクションプラン
+│   │   │   └── ui-references.html        # UI/UXリファレンス
+│   │   ├── marketing/              #     マーケ（02_marketing対応）
+│   │   │   ├── marketing-channels.html   # チャネル&ROI比較
+│   │   │   ├── marketing-personas.html   # ペルソナ
+│   │   │   └── marketing-knowledge-map.html # toCマーケ手法マップ
+│   │   └── seo/                    #     SEO（03_seo対応）
+│   │       └── seo-guide.html            # SEO設定ガイド
 │   └── stripe/                     #   Stripe 関連
 │       ├── migration-plan.html     #     Stripe移行計画
 │       └── payjp-vs-stripe.html    #     PayJP vs Stripe 比較

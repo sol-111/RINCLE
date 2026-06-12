@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>toCマーケティング手法 全体マップ — 集客の教科書</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    line-height: 1.7;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ===== Header ===== */
+  .page-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .page-header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #0f3460;
+    margin-bottom: 8px;
+  }
+  .page-header .subtitle {
+    font-size: 1.05rem;
+    color: #666;
+  }
+
+  /* ===== Section Title ===== */
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f3460;
+    margin: 56px 0 24px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #e94560;
+    display: inline-block;
+  }
+  .section-number {
+    display: inline-block;
+    background: #e94560;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .section-lead {
+    font-size: 0.95rem;
+    color: #555;
+    margin: -12px 0 24px;
+  }
+
+  /* ===== カテゴリ俯瞰グリッド ===== */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  @media (max-width: 980px) { .cat-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 640px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+  .cat-card {
+    display: block;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .cat-card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .cat-card .cat-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    background: #0f3460;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .cat-card h3 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #0f3460;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .cat-card p {
+    font-size: 0.74rem;
+    color: #777;
+    line-height: 1.55;
+  }
+
+  /* ===== サマリー表（地図） ===== */
+  .table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-top: 24px;
+  }
+  .map-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 0.85rem;
+  }
+  .map-table thead th {
+    background: #0f3460;
+    color: #fff;
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+  .map-table tbody tr { border-bottom: 1px solid #eee; transition: background 0.15s; }
+  .map-table tbody tr:hover { background: #f9f9fb; }
+  .map-table tbody td {
+    padding: 9px 14px;
+    vertical-align: middle;
+  }
+  .map-table .cat-row td {
+    background: #eef2f8;
+    color: #0f3460;
+    font-weight: 700;
+    font-size: 0.82rem;
+    padding: 8px 14px;
+  }
+  .map-table .cat-row td a { color: #0f3460; text-decoration: none; }
+  .map-table .cat-row td a:hover { text-decoration: underline; }
+  .map-table td.m-id {
+    color: #999;
+    font-size: 0.76rem;
+    white-space: nowrap;
+    width: 1%;
+  }
+  .map-table td.m-name {
+    font-weight: 600;
+    color: #0f3460;
+    white-space: nowrap;
+  }
+  .map-table td.m-name a { color: #0f3460; text-decoration: none; }
+  .map-table td.m-name a:hover { color: #e94560; }
+  .stars { color: #f5a623; letter-spacing: 1px; white-space: nowrap; }
+  .stars .off { color: #ddd; }
+
+  /* レベルバッジ（即効性/持続性） */
+  .lv {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 1px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .lv-high { background: #e94560; color: #fff; }
+  .lv-mid  { background: #e8f1fb; color: #1d5ca8; border: 1px solid #c4dcf5; }
+  .lv-low  { background: #f0f0f2; color: #888; border: 1px solid #e0e0e4; }
+
+  /* ===== 手法カード ===== */
+  .m-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 768px) { .m-grid { grid-template-columns: 1fr; } }
+
+  .m-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: box-shadow 0.2s, transform 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+  .m-card:hover {
+    box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+  .m-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .m-head .m-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    height: 26px;
+    padding: 0 8px;
+    background: #0f3460;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 0.74rem;
+    font-weight: 700;
+  }
+  .m-head h3 {
+    font-size: 1.04rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    line-height: 1.4;
+  }
+  .m-desc {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 14px;
+  }
+  .m-specs {
+    margin-top: auto;
+    border-top: 1px solid #f0f0f2;
+  }
+  .spec {
+    display: flex;
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f2;
+    font-size: 0.8rem;
+  }
+  .spec .spec-label {
+    min-width: 92px;
+    color: #888;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding-top: 1px;
+    white-space: nowrap;
+  }
+  .spec .spec-val { color: #333; }
+  .spec .spec-val b { color: #e94560; }
+
+  /* ステマ注意バッジ・ボックス */
+  .b-pr {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: #fdecef;
+    color: #c2244a;
+    border: 1px solid #f7c4cf;
+    white-space: nowrap;
+  }
+  .m-note {
+    background: #fdecef;
+    border: 1px solid #f7c4cf;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    color: #c2244a;
+    padding: 8px 12px;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+  .m-note b { color: #a01536; }
+
+  .alert-box {
+    background: #fdecef;
+    border: 1px solid #f7c4cf;
+    border-left: 5px solid #e94560;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    color: #c2244a;
+    padding: 14px 18px;
+    margin: 0 0 24px;
+    line-height: 1.75;
+  }
+  .alert-box b { color: #a01536; }
+  .alert-box a { color: #a01536; }
+
+  /* ===== Footer ===== */
+  .page-footer {
+    text-align: center;
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid #ddd;
+    color: #999;
+    font-size: 0.82rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ==================== Header ==================== -->
+  <header class="page-header">
+    <h1>toC マーケティング手法 全体マップ</h1>
+    <p class="subtitle">toC集客の手法を俯瞰する教科書 — 10カテゴリ・約30手法を1枚に整理<br><span style="font-size:0.82rem; color:#999;">最終更新: 2026-06-11（ファクトチェック済み）／RINCLEに限らず使える汎用知識資料</span></p>
+  </header>
+
+  <!-- ==================== カテゴリ俯瞰 ==================== -->
+  <h2 class="section-title"><span class="section-number">&#9635;</span>10カテゴリの俯瞰</h2>
+  <p class="section-lead">toCの集客手法は「誰の力で・どうやってユーザーに届くか」で10カテゴリに分けられます。カードをクリックすると各カテゴリの詳細へ。</p>
+
+  <div class="cat-grid">
+    <a class="cat-card" href="#cat1"><span class="cat-num">1</span><h3>検索系</h3><p>ユーザーが能動的に探しに来る</p></a>
+    <a class="cat-card" href="#cat2"><span class="cat-num">2</span><h3>SNS系</h3><p>認知・興味を作る</p></a>
+    <a class="cat-card" href="#cat3"><span class="cat-num">3</span><h3>広告系</h3><p>お金を払ってリーチする</p></a>
+    <a class="cat-card" href="#cat4"><span class="cat-num">4</span><h3>コンテンツ系</h3><p>情報で引き寄せる</p></a>
+    <a class="cat-card" href="#cat5"><span class="cat-num">5</span><h3>CRM/リテンション系</h3><p>既存顧客を育てる</p></a>
+    <a class="cat-card" href="#cat6"><span class="cat-num">6</span><h3>口コミ/紹介系</h3><p>ユーザーが広めてくれる</p></a>
+    <a class="cat-card" href="#cat7"><span class="cat-num">7</span><h3>プラットフォーム系</h3><p>他人の集客力を借りる</p></a>
+    <a class="cat-card" href="#cat8"><span class="cat-num">8</span><h3>オフライン系</h3><p>リアルで接点を作る</p></a>
+    <a class="cat-card" href="#cat9"><span class="cat-num">9</span><h3>PR/ブランディング系</h3><p>メディアに取り上げてもらう</p></a>
+    <a class="cat-card" href="#cat10"><span class="cat-num">10</span><h3>パートナーシップ系</h3><p>他社と組む</p></a>
+  </div>
+
+  <!-- ==================== 全手法サマリー（地図） ==================== -->
+  <h2 class="section-title"><span class="section-number">&#9737;</span>全手法サマリー — この資料の「地図」</h2>
+  <p class="section-lead">全37手法をコスト・即効性・持続性・toCとの相性で一覧化。手法名から各カテゴリの詳細に飛べます。</p>
+
+  <div class="table-wrapper">
+    <table class="map-table">
+      <thead>
+        <tr>
+          <th>#</th><th>手法</th><th>コスト</th><th>即効性</th><th>持続性</th><th>toCとの相性</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="cat-row"><td colspan="6"><a href="#cat1">1. 検索系 — ユーザーが能動的に探しに来る</a></td></tr>
+        <tr><td class="m-id">1-1</td><td class="m-name"><a href="#cat1">SEO</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">1-2</td><td class="m-name"><a href="#cat1">MEO</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">1-3</td><td class="m-name"><a href="#cat1">ASO</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+
+        <tr class="cat-row"><td colspan="6"><a href="#cat2">2. SNS系 — 認知・興味を作る</a></td></tr>
+        <tr><td class="m-id">2-1</td><td class="m-name"><a href="#cat2">Instagram</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">2-2</td><td class="m-name"><a href="#cat2">X（Twitter）</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+        <tr><td class="m-id">2-3</td><td class="m-name"><a href="#cat2">ショート動画（TikTok等）</a></td><td>無料〜低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+        <tr><td class="m-id">2-4</td><td class="m-name"><a href="#cat2">YouTube</a></td><td>中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+        <tr><td class="m-id">2-5</td><td class="m-name"><a href="#cat2">LINE公式</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+
+        <tr class="cat-row"><td colspan="6"><a href="#cat3">3. 広告系 — お金を払ってリーチする</a></td></tr>
+        <tr><td class="m-id">3-1</td><td class="m-name"><a href="#cat3">リスティング広告</a></td><td>中〜高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">3-2</td><td class="m-name"><a href="#cat3">ディスプレイ広告</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">3-3</td><td class="m-name"><a href="#cat3">SNS広告</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">3-4</td><td class="m-name"><a href="#cat3">YouTube広告</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">3-5</td><td class="m-name"><a href="#cat3">アフィリエイト</a> <span class="b-pr">景表法注意</span></td><td>成果報酬</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">3-6</td><td class="m-name"><a href="#cat3">インフルエンサー</a> <span class="b-pr">ステマ規制</span></td><td>高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+
+        <tr class="cat-row"><td colspan="6"><a href="#cat4">4. コンテンツ系 — 情報で引き寄せる</a></td></tr>
+        <tr><td class="m-id">4-1</td><td class="m-name"><a href="#cat4">ブログ</a></td><td>低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+        <tr><td class="m-id">4-2</td><td class="m-name"><a href="#cat4">メルマガ</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">4-3</td><td class="m-name"><a href="#cat4">ホワイトペーパー</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;<span class="off">&#9733;&#9733;&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">4-4</td><td class="m-name"><a href="#cat4">ウェビナー</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;<span class="off">&#9733;&#9733;&#9733;</span></span></td></tr>
+
+        <tr class="cat-row"><td colspan="6"><a href="#cat5">5. CRM/リテンション系 — 既存顧客を育てる</a></td></tr>
+        <tr><td class="m-id">5-1</td><td class="m-name"><a href="#cat5">CRM</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+        <tr><td class="m-id">5-2</td><td class="m-name"><a href="#cat5">リターゲティング</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">5-3</td><td class="m-name"><a href="#cat5">プッシュ通知</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">5-4</td><td class="m-name"><a href="#cat5">ロイヤルティPG</a></td><td>低〜中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+
+        <tr class="cat-row"><td colspan="6"><a href="#cat6">6. 口コミ/紹介系 — ユーザーが広めてくれる（要ステマ規制注意）</a></td></tr>
+        <tr><td class="m-id">6-1</td><td class="m-name"><a href="#cat6">紹介プログラム</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">6-2</td><td class="m-name"><a href="#cat6">UGC促進</a> <span class="b-pr">ステマ規制</span></td><td>無料〜低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">6-3</td><td class="m-name"><a href="#cat6">口コミ管理</a> <span class="b-pr">ステマ規制</span></td><td>無料</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+
+        <tr class="cat-row"><td colspan="6"><a href="#cat7">7. プラットフォーム/マーケットプレイス系 — 他人の集客力を借りる</a></td></tr>
+        <tr><td class="m-id">7-1</td><td class="m-name"><a href="#cat7">体験PF掲載</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">7-2</td><td class="m-name"><a href="#cat7">ECモール</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+
+        <tr class="cat-row"><td colspan="6"><a href="#cat8">8. オフライン系 — リアルで接点を作る</a></td></tr>
+        <tr><td class="m-id">8-1</td><td class="m-name"><a href="#cat8">イベント出展</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">8-2</td><td class="m-name"><a href="#cat8">チラシ/ポスティング</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;<span class="off">&#9733;&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">8-3</td><td class="m-name"><a href="#cat8">店頭POP</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+        <tr><td class="m-id">8-4</td><td class="m-name"><a href="#cat8">無料体験</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+
+        <tr class="cat-row"><td colspan="6"><a href="#cat9">9. PR/ブランディング系 — メディアに取り上げてもらう</a></td></tr>
+        <tr><td class="m-id">9-1</td><td class="m-name"><a href="#cat9">プレスリリース</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">9-2</td><td class="m-name"><a href="#cat9">メディアリレーション</a></td><td>無料〜高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+        <tr><td class="m-id">9-3</td><td class="m-name"><a href="#cat9">スポンサーシップ</a></td><td>高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;<span class="off">&#9733;&#9733;&#9733;</span></span></td></tr>
+
+        <tr class="cat-row"><td colspan="6"><a href="#cat10">10. パートナーシップ系 — 他社と組む</a></td></tr>
+        <tr><td class="m-id">10-1</td><td class="m-name"><a href="#cat10">コラボ/共同キャンペーン</a></td><td>案件次第</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+        <tr><td class="m-id">10-2</td><td class="m-name"><a href="#cat10">パートナーチャネル</a></td><td>無料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+        <tr><td class="m-id">10-3</td><td class="m-name"><a href="#cat10">API連携/ウィジェット</a></td><td>中（開発費）</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ==================== 1. 検索系 ==================== -->
+  <h2 class="section-title" id="cat1"><span class="section-number">1</span>検索系</h2>
+  <p class="section-lead">ユーザーが「探しに来る」。購買意欲が高いのが特徴。</p>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">1-1</span><h3>SEO（検索エンジン最適化）</h3></div>
+      <p class="m-desc">Googleの検索結果で上位に表示されるようにサイトを最適化する。広告費ゼロで継続的な流入が得られる一方、アルゴリズム変更リスクと専門知識が必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（内製）〜 月10〜50万円（外注）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>3〜6ヶ月</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">検索ニーズがあるサービス全般。特にロングテールKWが多い業種</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">1-2</span><h3>MEO（マップエンジン最適化）</h3></div>
+      <p class="m-desc">Googleマップの検索結果で上位に表示されるように店舗情報を最適化する。ローカル検索（「近くの〇〇」）は購買意欲が非常に高く来店に直結。口コミ管理が必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>1〜4週間</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">実店舗があるビジネス全般（飲食/小売/サービス業）</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">1-3</span><h3>ASO（アプリストア最適化）</h3></div>
+      <p class="m-desc">App Store/Google Playでアプリが上位に表示されるように最適化する。ダウンロードに直結するオーガニック流入。レビューの影響が大きい。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（内製）〜 月5〜30万円（外注）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>1〜3ヶ月</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">アプリを持つサービス</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. SNS系 ==================== -->
+  <h2 class="section-title" id="cat2"><span class="section-number">2</span>SNS系</h2>
+  <p class="section-lead">認知を広げ、興味を作り、ファンを育てる。</p>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">2-1</span><h3>Instagram運用</h3></div>
+      <p class="m-desc">写真/動画/リールで視覚的にブランドを発信。UGCが生まれやすくショッピング機能もあるが、継続的な工数がかかり、リンク導線が弱い（プロフィールのみ）。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（内製）〜 月10〜30万円（外注/運用代行）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>3〜6ヶ月</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ビジュアル映えするサービス（飲食/旅行/ファッション/美容/アウトドア）</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">2-2</span><h3>X（Twitter）運用</h3></div>
+      <p class="m-desc">テキスト中心の短文投稿でリアルタイム性が強い。リポストによる拡散力が高い反面、炎上リスクがあり投稿の寿命が短い（数時間で流れる）。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>1〜3ヶ月</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ニュース性があるサービス。コミュニティを作りたいサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">2-3</span><h3>ショート動画運用（TikTok/リール/Shorts）</h3></div>
+      <p class="m-desc">縦型ショート動画。TikTokは最大10分まで投稿可能だが主流は短尺（〜1分）。アルゴリズムのレコメンドが強力で、フォロワーゼロでもバズる可能性。1本をTikTok/リール/Shortsに横展開できる。購買導線は弱い。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（内製）〜 月10〜50万円（外注）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>1投稿目からバズる可能性あり</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">若年層向け。動画映えするサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">2-4</span><h3>YouTube運用</h3></div>
+      <p class="m-desc">長尺動画。教育・レビュー・Vlog等のコンテンツ。YouTube検索+Google検索のSEO効果があり信頼構築に強いストック型。制作コストは高め。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月5〜50万円（企画・撮影・編集）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>6ヶ月〜1年</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">説明が必要なサービス。体験を見せたいサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">2-5</span><h3>LINE公式アカウント</h3></div>
+      <p class="m-desc">企業のLINEアカウントからメッセージ配信。クーポン・リッチメニュー・チャットボット。開封率はメールの3〜5倍。LINEミニアプリ（アプリ不要の会員証/予約/注文）との組み合わせも定番化。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料〜月5,000円〜（配信数による）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>友だちが集まり次第</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">リピート型サービス全般。日本市場に特に有効</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3. 広告系 ==================== -->
+  <h2 class="section-title" id="cat3"><span class="section-number">3</span>広告系</h2>
+  <p class="section-lead">お金を払って即座にリーチする。</p>
+
+  <div class="alert-box">
+    <b>&#9888; ステマ規制（景品表示法・2023年10月施行）に注意</b><br>
+    インフルエンサーへの依頼投稿（商品提供のみの<b>ギフティングを含む</b>）には「#PR」等の広告表示が<b>必須</b>。アフィリエイトでも広告主に景表法上の表示管理責任があり、アフィリエイターの誇大表現も広告主の責任になる。化粧品/健康食品等は薬機法の表現規制にも注意。
+  </div>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">3-1</span><h3>リスティング広告（Google/Yahoo!）</h3></div>
+      <p class="m-desc">検索キーワードに連動して検索結果の上部に広告を表示。即日で購買意欲の高いユーザーにリーチでき予算コントロールも柔軟だが、止めたら流入ゼロ。競合の多いKWは単価が高い。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月5〜100万円+</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>即日</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">検索ニーズが明確なサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">3-2</span><h3>ディスプレイ広告（GDN/YDA）</h3></div>
+      <p class="m-desc">Webサイトやアプリにバナー画像/動画広告を表示。認知拡大とリターゲティングに強いが、クリック率は低い（0.1〜0.5%程度）。バナー制作が必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月5〜50万円+</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>1〜2週間</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">認知拡大フェーズのサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">3-3</span><h3>SNS広告（Instagram/Facebook/X/TikTok/LINE）</h3></div>
+      <p class="m-desc">SNSのフィードやストーリーズに広告を表示。年齢/性別/興味関心/行動の詳細ターゲティングで潜在層にもリーチ。クリエイティブの疲弊が早い（同じ広告は見飽きられる）。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月5〜100万円+</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>1〜2週間</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ターゲットが明確なサービス。ビジュアル映えするサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">3-4</span><h3>YouTube広告</h3></div>
+      <p class="m-desc">YouTube動画の前後/途中に動画広告を挿入。動画で深い訴求ができターゲティング精度が高いが、動画制作コストがかかりスキップされやすい。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月10〜100万円+</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>1〜2週間</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">体験を映像で伝えたいサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">3-5</span><h3>アフィリエイト広告</h3><span class="b-pr">&#9888; 景表法注意</span></div>
+      <p class="m-desc">ブロガーやメディアに紹介してもらい、成果（申込/購入）に応じて報酬を支払う。成果報酬型なので無駄な広告費がなく、第三者の推薦は信頼されやすい。アフィリエイターのリクルートと品質管理が課題。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">初期5〜10万円（ASP）+ 成果報酬（1件500〜5,000円程度）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>1〜3ヶ月</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">明確なコンバージョンがあるサービス（申込/購入）</span></div>
+      </div>
+      <div class="m-note"><b>広告主には景表法上の表示管理責任</b>があり、アフィリエイターの誇大表現も広告主の責任になる。</div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">3-6</span><h3>インフルエンサーマーケティング</h3><span class="b-pr">&#9888; ステマ規制</span></div>
+      <p class="m-desc">SNS/YouTubeのインフルエンサーに商品/サービスを体験・紹介してもらう。商品提供のみで依頼する「ギフティング」も低コスト手法として定番。フォロワーからの信頼度が高くUGCも生まれるが、効果測定が難しい。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1件5〜100万円+（フォロワー数による）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>投稿後すぐ</b>（ただし一過性）</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">体験型サービス。ビジュアル映えするサービス</span></div>
+      </div>
+      <div class="m-note"><b>依頼投稿（ギフティング含む）には「#PR」等の広告表示が必須</b>（景表法ステマ規制・2023年10月施行）。化粧品/健康食品等は薬機法の表現規制にも注意。</div>
+    </div>
+  </div>
+
+  <!-- ==================== 4. コンテンツ系 ==================== -->
+  <h2 class="section-title" id="cat4"><span class="section-number">4</span>コンテンツ系</h2>
+  <p class="section-lead">有益な情報を提供して、ユーザーを引き寄せる。</p>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">4-1</span><h3>ブログ/オウンドメディア</h3></div>
+      <p class="m-desc">自社サイト内でブログ記事を定期的に公開。SEO効果と専門性のアピールがあり、記事は資産として残るストック型。質の高い記事の継続的な制作が必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（内製）〜 1記事3〜10万円（外注）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>3〜6ヶ月</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">専門知識があるサービス。ロングテールSEOを狙うサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">4-2</span><h3>メールマガジン/ニュースレター</h3></div>
+      <p class="m-desc">登録者にメールで定期的に情報を配信。コストが安くパーソナライズ可能で既存顧客との関係維持に強いが、開封率は低め（平均15〜25%）。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（〜1,000件）〜 月5,000〜30,000円</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>リスト次第</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">リピート型サービス。BtoBにも強い</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">4-3</span><h3>ホワイトペーパー/ebook</h3></div>
+      <p class="m-desc">PDF等の資料を無料ダウンロードさせ、リード（見込み客）を獲得。リード獲得に直結し専門性をアピールできるが、toC向けには向きにくい（主にBtoB）。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1本10〜50万円</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>公開後すぐ</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">主にBtoB。toCは限定的</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">4-4</span><h3>ウェビナー/オンラインイベント</h3></div>
+      <p class="m-desc">オンラインセミナーやイベントを開催してリードを獲得。深い関係構築・質疑応答での信頼獲得・参加者リストが得られる。企画・運営の工数と集客が必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">低（自社開催）〜 中（外部プラットフォーム利用）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>イベント当日</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">説明が必要なサービス。コミュニティ型サービス</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 5. CRM/リテンション系 ==================== -->
+  <h2 class="section-title" id="cat5"><span class="section-number">5</span>CRM/リテンション系</h2>
+  <p class="section-lead">一度来た顧客を逃さず、リピートさせる。</p>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">5-1</span><h3>CRM（顧客関係管理）</h3></div>
+      <p class="m-desc">顧客データを一元管理し、セグメント別にアプローチする。配信の自動化はMA（マーケティングオートメーション）ツールで実現（ステップ配信/シナリオ配信等）。LTVの最大化とパーソナライズが狙い。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月0〜数万円（HubSpot無料〜、Salesforce等は高額）</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">顧客数が一定以上あるサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">5-2</span><h3>リターゲティング/リマーケティング</h3></div>
+      <p class="m-desc">一度サイトに来たが離脱したユーザーに、他のサイトやSNSで広告を再表示。すでに興味を持っている人への再アプローチでCVRが高い。しつこいと逆効果。Cookie制限の影響あり。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月3〜30万円</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">検討期間が長いサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">5-3</span><h3>プッシュ通知（アプリ/Web）</h3></div>
+      <p class="m-desc">スマホやブラウザにプッシュ通知を送信。開封率が高くリアルタイムに届くが、ウザがられてオフにされるリスクがある。アプリ or PWAが必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">低</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">アプリを持つサービス。リピート型サービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">5-4</span><h3>ロイヤルティプログラム（ポイント/会員ランク）</h3></div>
+      <p class="m-desc">利用回数や金額に応じてポイント付与や会員ランクUP。リピート率の向上と競合への流出防止に効く。ポイント原資のコストと複雑な制度設計が課題。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">売上の1〜5%程度</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">リピート型サービス全般</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 6. 口コミ/紹介系 ==================== -->
+  <h2 class="section-title" id="cat6"><span class="section-number">6</span>口コミ/紹介系</h2>
+  <p class="section-lead">ユーザーが自発的に広めてくれる。最もCAC（顧客獲得コスト）が低い。</p>
+
+  <div class="alert-box">
+    <b>&#9888; ステマ規制の注意（景品表示法・2023年10月施行）</b><br>
+    事業者が対価（金銭・商品提供・特典等）を渡して投稿やレビューを依頼する場合、<b>広告であることの明示（#PR等）が必要</b>。明示なしの依頼投稿・やらせレビューは景表法違反となる。
+    出典: <a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing" target="_blank" rel="noopener">消費者庁 ステルスマーケティング規制</a>
+  </div>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">6-1</span><h3>紹介プログラム（リファラル）</h3></div>
+      <p class="m-desc">既存ユーザーが友人を紹介すると、双方に特典を付与。獲得コストが非常に低く、紹介された人は信頼度が高くCVRも高い。既存ユーザーがいないと機能せず、特典の設計が重要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">特典コスト（1件500〜2,000円程度）</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">既存顧客の満足度が高いサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">6-2</span><h3>UGC（ユーザー生成コンテンツ）の促進</h3><span class="b-pr">&#9888; ステマ規制</span></div>
+      <p class="m-desc">ユーザーにSNS投稿やレビューを促し、それをマーケティングに活用。広告費ゼロで、第三者の声は広告より信頼される。コントロールが難しくネガティブなUGCも出る。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料〜低（投稿キャンペーンの特典費用）</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">体験型サービス。写真映えするサービス</span></div>
+      </div>
+      <div class="m-note"><b>特典と引き換えの投稿依頼はステマ規制の対象</b>（#PR等の明示が必要）。</div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">6-3</span><h3>口コミサイト/レビュー管理</h3><span class="b-pr">&#9888; ステマ規制</span></div>
+      <p class="m-desc">Google口コミ、食べログ、じゃらん等のレビューサイトでの評価を管理。購買決定に大きな影響を持ち、SEO効果もある。ネガティブレビューへの対応が必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">全てのサービス</span></div>
+      </div>
+      <div class="m-note"><b>自作自演・対価と引き換えの高評価依頼</b>はプラットフォーム規約違反に加え、ステマ規制（景表法）違反。</div>
+    </div>
+  </div>
+
+  <!-- ==================== 7. プラットフォーム系 ==================== -->
+  <h2 class="section-title" id="cat7"><span class="section-number">7</span>プラットフォーム/マーケットプレイス系</h2>
+  <p class="section-lead">他人の集客力を借りる。</p>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">7-1</span><h3>体験予約プラットフォーム（アソビュー/じゃらん/Klook等）</h3></div>
+      <p class="m-desc">既にユーザーが集まっているプラットフォームにサービスを掲載。自力集客が不要でプラットフォームのブランドで信頼され、レビューも溜まる。手数料（10〜20%）と依存リスク、価格競争に注意。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">手数料のみ（初期費用なしが多い）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>掲載後1〜2週間</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">体験型/レジャー/アクティビティ系</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">7-2</span><h3>ECモール（Amazon/楽天/Yahoo!ショッピング）</h3></div>
+      <p class="m-desc">大手ECモールに出店して商品を販売。圧倒的な集客力と整った決済・配送インフラが魅力。手数料が高く価格競争になりやすい。顧客データが取れない。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月額費用 + 手数料（5〜15%）</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">物販系</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 8. オフライン系 ==================== -->
+  <h2 class="section-title" id="cat8"><span class="section-number">8</span>オフライン系</h2>
+  <p class="section-lead">リアルでの接点を作る。</p>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">8-1</span><h3>イベント出展</h3></div>
+      <p class="m-desc">業界イベントや展示会にブースを出して認知拡大・リード獲得。対面で信頼構築でき体験してもらえる。メディア露出も狙えるが、出展費用と準備工数が大きい。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1回10〜100万円+</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">体験型サービス。BtoBの商談目的</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">8-2</span><h3>チラシ/ポスティング</h3></div>
+      <p class="m-desc">紙のチラシを配布。地域密着の訴求ができ、デジタルを使わない層にもリーチできる。ただし反応率は非常に低い（0.01〜0.3%）。環境負荷も。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1枚5〜20円 &times; 配布数</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">地域密着型ビジネス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">8-3</span><h3>店頭POP/サイネージ</h3></div>
+      <p class="m-desc">店舗内にPOP広告やデジタルサイネージを設置。来店している人に直接訴求でき、クロスセル/アップセルに有効。来店客にしかリーチできない。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">低（POP印刷代程度）</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">店舗があるビジネス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">8-4</span><h3>サンプリング/無料体験</h3></div>
+      <p class="m-desc">商品サンプルや無料体験を提供して試してもらう。「体験は最強のマーケティング」で口コミも生まれやすい。コストがかかりターゲティングが難しい。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">商品/サービス原価 &times; 配布数</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">体験型サービス。食品/コスメ等</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 9. PR/ブランディング系 ==================== -->
+  <h2 class="section-title" id="cat9"><span class="section-number">9</span>PR/ブランディング系</h2>
+  <p class="section-lead">メディアに取り上げてもらい、信頼と認知を獲得する。</p>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">9-1</span><h3>プレスリリース</h3></div>
+      <p class="m-desc">PR TIMES等でニュースを配信し、メディアに取り上げてもらう。1回の配信で多数のメディアにリーチでき、SEO被リンク効果もある。取り上げられるかはメディア次第でニュースバリューが必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1回3万円（PR TIMES）</span></div>
+        <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>配信後1〜3日</b></span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ニュースバリューがあるサービス（新規ローンチ/資金調達/大型提携等）</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">9-2</span><h3>メディアリレーション/取材誘致</h3></div>
+      <p class="m-desc">新聞/雑誌/TV/Webメディアに取材してもらう。第三者メディアの信頼性で、広告では得られない深い訴求ができる。内容はコントロールできず、記者との関係構築が必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（自力）〜 月20〜100万円（PR会社）</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ストーリーがあるサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">9-3</span><h3>スポンサーシップ</h3></div>
+      <p class="m-desc">イベントやコンテンツのスポンサーになり、ブランド露出を得る。ブランドイメージの向上と特定コミュニティへのリーチが狙い。費用が高く効果測定が難しい。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1件10〜500万円+</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ブランド認知フェーズのサービス</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 10. パートナーシップ系 ==================== -->
+  <h2 class="section-title" id="cat10"><span class="section-number">10</span>パートナーシップ系</h2>
+  <p class="section-lead">他社と組んで、互いの顧客にリーチする。</p>
+
+  <div class="m-grid">
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">10-1</span><h3>コラボレーション/共同キャンペーン</h3></div>
+      <p class="m-desc">他社と共同でキャンペーンや商品を展開。互いの顧客基盤にリーチでき新鮮さがある。相手企業との調整が必要で、ブランドイメージの一致が重要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">案件次第</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ターゲットが重なる異業種とのコラボ</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">10-2</span><h3>パートナーチャネル活用</h3></div>
+      <p class="m-desc">販売パートナーやフランチャイズの既存チャネル（店舗/SNS/顧客リスト）を活用。コストゼロで既存のリーチを借りられ、温かいリードが得られる。パートナーに動いてもらう必要がある。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料〜低</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">パートナーネットワークを持つサービス</span></div>
+      </div>
+    </div>
+
+    <div class="m-card">
+      <div class="m-head"><span class="m-num">10-3</span><h3>API連携/ウィジェット埋め込み</h3></div>
+      <p class="m-desc">他社サイトやアプリに自社サービスの検索/予約ウィジェットを埋め込む。他社のトラフィックを自社の予約に変換できる。開発コストと連携先の開拓が必要。</p>
+      <div class="m-specs">
+        <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">開発コスト + レベニューシェア</span></div>
+        <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">プラットフォーム型サービス。予約系サービス</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Footer ==================== -->
+  <footer class="page-footer">
+    <p>toC Marketing Knowledge Map &mdash; Internal Use Only<br>ソース: documents/4_growth/02_marketing/marketing-knowledge-map.md（2026-06-11 ファクトチェック済み）</p>
+  </footer>
+
+</div><!-- /container -->
+
+</body>
+</html>

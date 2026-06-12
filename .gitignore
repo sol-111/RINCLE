@@ -19,5 +19,8 @@ documents/4_growth/01_strategy/source/
 .DS_Store
 Thumbs.db
 
+# Excelのロックファイル（開いている間だけ生成される）
+~$*
+
 # Claude Code
 .claude/
