@@ -112,8 +112,6 @@ documents/
 │   │   ├── tobe.html               #     To-Be フロー
 │   │   ├── api-v1-reference.html   #     APIリファレンス（v1）
 │   │   ├── api-v2-reference.html   #     APIリファレンス（v2）
-│   │   ├── dev-reference.html      #     開発者リファレンス
-│   │   ├── authorization-guide.html #    オーソリガイド
 │   │   └── issues.html             #     修正一覧
 │   ├── proposal/                   #   提案資料（4_growthのmd構成とミラー）
 │   │   ├── strategy/               #     戦略（01_strategy対応）
