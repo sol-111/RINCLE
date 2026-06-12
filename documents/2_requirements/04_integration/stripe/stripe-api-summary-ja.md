@@ -133,7 +133,7 @@ requires_payment_method → requires_confirmation → (requires_action: 3DS等)
 3. **店舗月額課金は今日から作れる**: Billing（Price+Subscription+Invoice）が揃っている。Pay.jp v2は2026年中提供予定でまだ無い
 4. **3DS・CVC・領収書が標準**: 義務化対応（3DS）はPaymentIntentに任せられる。CVCは登録時検証。レシートメールは `receipt_email` だけ
 5. **移行コスト**: カード再登録88人（Elementsで再入力・SetupIntent経由）。既存Pay.jp API定義15本の置き換え。Bubble公式プラグインで主要フローは素直
-6. **手数料は3.6%でPay.jp（3.3%〜2.78%）より高い** — これが唯一の構造的デメリット（詳細は[比較資料](../payjp-vs-stripe-comparison.md)§2）
+6. **手数料は3.6%でPay.jp（3.3%〜2.78%）より高い** — これが唯一の構造的デメリット（詳細は[比較資料](./payjp-vs-stripe-comparison.md)§2）
 
 ---
 
@@ -144,4 +144,4 @@ requires_payment_method → requires_confirmation → (requires_action: 3DS等)
 - [Billing（サブスクリプション）](https://docs.stripe.com/billing) / [Webhook](https://docs.stripe.com/webhooks)
 - [API v2名前空間の概要](https://docs.stripe.com/api-v2-overview)（決済は引き続きv1）
 - [料金（日本）](https://stripe.com/jp/pricing)
-- 関連: [payjp-vs-stripe-comparison.md](../payjp-vs-stripe-comparison.md)（#20比較・移行計画は同mdの§9に統合済み）
+- 関連: [payjp-vs-stripe-comparison.md](./payjp-vs-stripe-comparison.md)（#20比較・移行計画は同mdの§9に統合済み）

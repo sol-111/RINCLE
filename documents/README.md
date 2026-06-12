@@ -53,9 +53,9 @@ documents/
 │   │   │   ├── payjp-dev-reference.md      # 開発者向け: Bubble実装詳細・ワークフロー
 │   │   │   ├── payjp-authorization-guide.md # オーソリ実装ガイド
 │   │   │   └── payjp-issues.md             # 修正一覧（課題・改善点）
-│   │   ├── stripe/                 #   Stripe 移行
-│   │   │   └── stripe-api-summary-ja.md    # Stripe APIリファレンス日本語まとめ（RINCLE向け）
-│   │   └── payjp-vs-stripe-comparison.md   # 決済基盤の方針（PayJP vs Stripe比較+移行計画を統合）
+│   │   └── stripe/                 #   Stripe 移行
+│   │       ├── stripe-api-summary-ja.md    # Stripe APIリファレンス日本語まとめ（RINCLE向け）
+│   │       └── payjp-vs-stripe-comparison.md   # 決済基盤の方針（PayJP vs Stripe比較+移行計画を統合）
 │   │
 │   ├── 05_db/                      # DB設計（_index.csv → ErViewer で表示）
 │   │   ├── _index.csv              #   テーブル/オプションセット一覧

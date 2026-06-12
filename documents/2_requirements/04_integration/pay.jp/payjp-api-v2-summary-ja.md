@@ -157,4 +157,4 @@ mode: `payment`（決済）/ `setup`（カード登録）。
 - [v1からの移行ガイド](https://docs.pay.jp/v2/guide/v2-migration)
 - [v2提供開始のお知らせ（2026-02-12・PayPay対応）](https://pay.jp/info/2026-02-12-123000)
 - [仮売上（オーソリ）と支払い確定（v2）](https://docs.pay.jp/v2/guide/status-management/auth-capture)
-- 関連: [payjp-api-v1-summary-ja.md](./payjp-api-v1-summary-ja.md)（v1） / [payjp-vs-stripe-comparison.md](../payjp-vs-stripe-comparison.md)（#20比較）
+- 関連: [payjp-api-v1-summary-ja.md](./payjp-api-v1-summary-ja.md)（v1） / [payjp-vs-stripe-comparison.md](../stripe/payjp-vs-stripe-comparison.md)（#20比較）
