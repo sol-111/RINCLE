@@ -81,6 +81,7 @@ documents/
 ├── 4_growth/                       # グロース（分析・提案 + マーケ実行）
 │   ├── 01_strategy/                # 分析・提案（クライアント合意用）
 │   │   ├── competitive-analysis.md #   競合調査（市場概況・競合詳細・SWOT・ペルソナ）
+│   │   ├── differentiation-strategy.md  # 差別化戦略（vs 2027年競合参入・ポイント/店舗ロックイン案）
 │   │   ├── current-issues-and-solutions.md  # 現状課題と解決策（ファネル分析・UIモック）
 │   │   ├── action-plan.md          #   アクションプラン（Phase1〜4・KPI・費用）
 │   │   ├── ui-ux-reference-catalog.md  # UI/UXリファレンスカタログ
@@ -118,6 +119,7 @@ documents/
 │   │   │   ├── competitive-analysis.html # 競合調査
 │   │   │   ├── current-issues.html       # 現状課題
 │   │   │   ├── action-plan.html          # アクションプラン
+│   │   │   ├── differentiation-strategy.html # 差別化戦略
 │   │   │   └── ui-references.html        # UI/UXリファレンス
 │   │   ├── marketing/              #     マーケ（02_marketing対応）
 │   │   │   ├── marketing-channels.html   # チャネル&ROI比較
