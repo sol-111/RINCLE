@@ -54,6 +54,7 @@ documents/
 │   │   │   ├── payjp-authorization-guide.md # オーソリ実装ガイド
 │   │   │   └── payjp-issues.md             # 修正一覧（課題・改善点）
 │   │   ├── stripe/                 #   Stripe 移行
+│   │   │   ├── stripe-api-summary-ja.md    # Stripe APIリファレンス日本語まとめ（RINCLE向け）
 │   │   │   └── stripe-migration-plan.md    # Stripe移行計画
 │   │   └── payjp-vs-stripe-comparison.md   # PayJP vs Stripe 比較
 │   │
@@ -127,6 +128,7 @@ documents/
 │   │   └── seo/                    #     SEO（03_seo対応）
 │   │       └── seo-guide.html            # SEO設定ガイド
 │   └── stripe/                     #   Stripe 関連
+│       ├── api-reference.html      #     Stripe APIリファレンス
 │       ├── migration-plan.html     #     Stripe移行計画
 │       └── payjp-vs-stripe.html    #     PayJP vs Stripe 比較
 │

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stripe API リファレンス - 日本語まとめ（RINCLE向け）</title>
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --accent: #635bff;
+    --accent-light: #ede9fe;
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+    --gray-900: #0f172a;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 40%, #7c3aed 100%);
+    color: #fff;
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; top: -50%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 30px; font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 15px; opacity: 0.85; max-width: 640px; }
+  .hero-meta { margin-top: 16px; display: flex; gap: 24px; font-size: 13px; opacity: 0.7; flex-wrap: wrap; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 32px 80px; }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: -40px auto 40px;
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    padding: 0 32px;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-lg);
+    border-top: 3px solid var(--accent);
+  }
+  .summary-card h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .summary-card p { font-size: 14px; color: var(--gray-700); line-height: 1.6; }
+
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .section-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; height: 40px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 22px; font-weight: 700; }
+  .section-desc { color: var(--gray-500); font-size: 14px; margin-bottom: 20px; }
+
+  .card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin: 20px 0;
+  }
+  .callout {
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+  .callout.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+  .callout.tip { background: #f5f3ff; border: 1px solid #c4b5fd; color: #5b21b6; }
+
+  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
+  table { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
+  th {
+    background: var(--gray-900);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+  tr:hover td { background: var(--gray-50); }
+
+  code {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    background: #f1f5f9;
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+  }
+  td code { font-size: 12px; white-space: nowrap; }
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+
+  .sub-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 28px 0 12px;
+    padding-left: 12px;
+    border-left: 3px solid var(--accent);
+  }
+  .method {
+    display: inline-block; padding: 1px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 800; color: #fff; letter-spacing: 0.04em;
+  }
+  .method.get { background: var(--success); }
+  .method.post { background: #2563eb; }
+  .method.delete { background: var(--danger); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">API Reference / Stripe</div>
+  <h1>Stripe API リファレンス（日本語まとめ）</h1>
+  <p>Stripe移行（ルートC）の設計たたき台。RINCLEの集約モデルで使う範囲に絞って整理。Pay.jp v1/v2リファレンスの姉妹編。</p>
+  <div class="hero-meta">
+    <span>出典: docs.stripe.com</span>
+    <span>作成: 2026-06-12（#20再調査の派生）</span>
+  </div>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <h3>中心概念</h3>
+    <p><strong>PaymentIntent</strong>（Pay.jp v2のPaymentFlowとほぼ同型）</p>
+  </div>
+  <div class="summary-card">
+    <h3>カード検証</h3>
+    <p><strong>SetupIntent</strong>が50円オーソリの代替（0円・3DS込み）</p>
+  </div>
+  <div class="summary-card">
+    <h3>月額課金</h3>
+    <p>Billing（Price + Subscription + Invoice）が<strong>提供済み</strong></p>
+  </div>
+  <div class="summary-card">
+    <h3>集約モデル</h3>
+    <p>素のアカウント1つで完結。<strong>Connect不要</strong></p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 1 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>全体像</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>内容</th></tr>
+        <tr><td>ベースURL</td><td><code>https://api.stripe.com/v1/...</code></td></tr>
+        <tr><td>認証</td><td>シークレットキー（<code>sk_live_</code> / <code>sk_test_</code>）。Basic認証またはBearer</td></tr>
+        <tr><td>公開キー</td><td><code>pk_...</code> — Stripe.js / Elementsでカード情報を直接Stripeへ送る</td></tr>
+        <tr><td>バージョニング</td><td>日付ベース。アカウントに固定・<code>Stripe-Version</code>ヘッダで上書き可。後方互換が強い</td></tr>
+        <tr><td>冪等性</td><td><code>Idempotency-Key</code>ヘッダ対応（二重課金防止。決済系POSTでは必須運用に）</td></tr>
+        <tr><td>Stripeの /v2 名前空間</td><td>イベント配信等の一部APIのみ。<strong>カード決済は引き続き /v1 が現行</strong>（2026-06時点）</td></tr>
+        <tr><td>Bubble連携</td><td>公式プラグインあり（Elements・PaymentIntent対応）。3DSは自動ハンドリング</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>Pay.jpとの対応表（載せ替え時の読み替え）</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Pay.jp v1</th><th>Pay.jp v2</th><th>Stripe</th><th>備考</th></tr>
+        <tr><td>Charge</td><td>PaymentFlow</td><td><strong>PaymentIntent</strong></td><td>状態機械もほぼ同じ</td></tr>
+        <tr><td>Token / Card</td><td>PaymentMethod</td><td><strong>PaymentMethod</strong></td><td>登録時にCVC検証あり</td></tr>
+        <tr><td>—（50円オーソリで代用）</td><td>SetupFlow</td><td><strong>SetupIntent</strong></td><td><strong>¥50オーソリ自体が不要に</strong>（0円で同等の検証）</td></tr>
+        <tr><td>Checkout</td><td>Checkout Session</td><td><strong>Checkout Session</strong></td><td>ホスト型決済ページ</td></tr>
+        <tr><td>Plan / Subscription</td><td>未提供（2026年中）</td><td><strong>Price + Subscription（Billing）</strong></td><td>店舗月額課金に使える</td></tr>
+        <tr><td>Transfer（入金）</td><td>payment_transactions等</td><td><strong>Payout / BalanceTransaction</strong></td><td>自社口座への入金管理</td></tr>
+        <tr><td>Platform API（テナント）</td><td>未対応（2027年）</td><td><strong>Connect</strong></td><td><strong>集約モデルでは不要</strong></td></tr>
+        <tr><td>3DS（自前実装）</td><td>全カード必須</td><td><strong>自動</strong></td><td>リスクベースでPaymentIntentが要求</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>決済の中心概念: PaymentIntent</h2>
+    </div>
+    <pre>requires_payment_method → requires_confirmation → (requires_action: 3DS等)
+  → processing → succeeded
+                ↘ requires_capture（capture_method=manual のとき）→ capture → succeeded
+いつでも → canceled</pre>
+    <div class="table-wrap">
+      <table>
+        <tr><th>項目</th><th>値</th></tr>
+        <tr><td>capture_method</td><td><code>automatic</code>（即時確定・デフォルト）/ <code>manual</code>（オーソリ→確定）</td></tr>
+        <tr><td>オーソリ期間</td><td>標準7日（Visa非対面5日）。<strong>日本アカウントの円建ては最長30日</strong></td></tr>
+        <tr><td>部分キャプチャ</td><td>○（<code>amount_to_capture</code>指定・残額は自動解放）</td></tr>
+        <tr><td>レシート</td><td><code>receipt_email</code>指定で決済完了メールを自動送信（集約モデルの領収書要件に対応）</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>リソース別エンドポイント（RINCLEで使う範囲）</h2>
+    </div>
+
+    <h3 class="sub-heading">PaymentIntent（支払い）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:90px;">メソッド</th><th>パス</th><th>意味</th></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/v1/payment_intents</code></td><td>作成（amount, currency=jpy, customer, capture_method 等）</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/v1/payment_intents</code> / <code>:id</code></td><td>一覧 / 取得</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/v1/payment_intents/:id</code></td><td>更新</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/v1/payment_intents/:id/confirm</code></td><td>確定実行（3DSが必要なら requires_action へ）</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/v1/payment_intents/:id/capture</code></td><td>売上確定（<code>amount_to_capture</code>で部分キャプチャ可）</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/v1/payment_intents/:id/cancel</code></td><td>キャンセル（オーソリ解放）</td></tr>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">SetupIntent（カード検証・保存 — 50円オーソリの代替）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:130px;">メソッド</th><th>パス</th><th>意味</th></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/v1/setup_intents</code></td><td>作成（将来課金用にカードを検証して保存）</td></tr>
+        <tr><td><span class="method get">GET</span> <span class="method post">POST</span></td><td><code>/v1/setup_intents/:id</code></td><td>取得 / 更新</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/v1/setup_intents/:id/confirm</code> / <code>:id/cancel</code></td><td>確定 / キャンセル</td></tr>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">Customer / PaymentMethod（顧客・カード）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:130px;">メソッド</th><th>パス</th><th>意味</th></tr>
+        <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v1/customers</code></td><td>作成 / 一覧（<code>:id</code>でGET/POST/DELETE）</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/v1/customers/:id/payment_methods</code></td><td>顧客の支払い手段一覧</td></tr>
+        <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v1/payment_methods</code> / <code>:id</code></td><td>作成（通常はElements経由）/ 取得</td></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/v1/payment_methods/:id/attach</code> / <code>:id/detach</code></td><td>顧客への紐付け / 解除</td></tr>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">Refund（返金 — キャンセルポリシーの実装箇所）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:130px;">メソッド</th><th>パス</th><th>意味</th></tr>
+        <tr><td><span class="method post">POST</span></td><td><code>/v1/refunds</code></td><td>返金作成（<code>payment_intent</code> + <code>amount</code>で部分返金可）</td></tr>
+        <tr><td><span class="method get">GET</span> <span class="method post">POST</span></td><td><code>/v1/refunds/:id</code></td><td>取得 / 更新</td></tr>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">Billing（店舗月額課金に使う系）</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:130px;">メソッド</th><th>パス</th><th>意味</th></tr>
+        <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v1/products</code>・<code>/v1/prices</code></td><td>商品・価格（月額プランの定義）</td></tr>
+        <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v1/subscriptions</code> / <code>:id</code></td><td>定期課金の作成・取得（解約はDELETE）</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/v1/invoices</code> / <code>:id</code></td><td>請求書（自動生成・支払い状況の追跡）</td></tr>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">入金・会計系 / Webhook</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th style="width:130px;">メソッド</th><th>パス</th><th>意味</th></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/v1/balance</code> / <code>/v1/balance_transactions</code></td><td>残高 / 増減明細（<strong>月次の実入金照合はここ</strong>）</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/v1/payouts</code> / <code>:id</code></td><td>自社銀行口座への入金（自動・手数料無料）</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/v1/disputes</code> / <code>:id</code></td><td>チャージバック</td></tr>
+        <tr><td><span class="method get">GET</span></td><td><code>/v1/events</code> / <code>:id</code></td><td>イベント取得</td></tr>
+        <tr><td><span class="method post">POST</span> <span class="method get">GET</span> <span class="method delete">DEL</span></td><td><code>/v1/webhook_endpoints</code> 系</td><td>Webhook送信先の管理（<code>Stripe-Signature</code>の署名検証必須）</td></tr>
+      </table>
+    </div>
+    <div class="callout info">
+      <strong>主要Webhookイベント:</strong> <code>payment_intent.succeeded</code> / <code>payment_intent.payment_failed</code> / <code>charge.refunded</code> / <code>charge.dispute.created</code> / <code>setup_intent.succeeded</code> / <code>invoice.paid</code> / <code>invoice.payment_failed</code> / <code>customer.subscription.*</code> / <code>payout.paid</code>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>RINCLEにとっての意味（2026-06時点）</h2>
+    </div>
+    <div class="card">
+      <ol style="padding-left: 20px; font-size: 14px; color: var(--gray-700);">
+        <li style="margin-bottom: 8px;"><strong>集約モデルは素のアカウント1つで完結。</strong>Connect不要。店舗の決済アカウント・審査が消える</li>
+        <li style="margin-bottom: 8px;"><strong>50円オーソリが要らなくなる。</strong>カード有効性チェックはSetupIntentが標準機能（0円・3DS込み）</li>
+        <li style="margin-bottom: 8px;"><strong>店舗月額課金は今日から作れる</strong>（Billing提供済み。Pay.jp v2は2026年中予定でまだ無い）</li>
+        <li style="margin-bottom: 8px;"><strong>3DS・CVC・領収書が標準。</strong>義務化対応はPaymentIntentに任せられる</li>
+        <li style="margin-bottom: 8px;"><strong>移行コスト:</strong> カード再登録88人（Elements+SetupIntent経由）・既存Pay.jp API定義15本の置き換え</li>
+        <li><strong>手数料は3.6%でPay.jp（3.3%〜2.78%）より高い</strong> — 唯一の構造的デメリット（比較資料§3参照）</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
