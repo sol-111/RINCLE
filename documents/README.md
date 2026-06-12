@@ -48,7 +48,8 @@ documents/
 │   │   ├── pay.jp/                 #   Pay.JP 決済連携
 │   │   │   ├── payjp-flow-asis.md          # クライアント向け: 現行の決済フロー（As-Is）
 │   │   │   ├── payjp-flow-tobe.md          # クライアント向け: To-Be 支払い・予約フロー
-│   │   │   ├── payjp-api-summary-ja.md     # 公式APIリファレンス日本語まとめ
+│   │   │   ├── payjp-api-v1-summary-ja.md     # 公式APIリファレンス日本語まとめ（v1）
+│   │   │   ├── payjp-api-v2-summary-ja.md  # 公式APIリファレンス日本語まとめ（v2・2026-02提供開始）
 │   │   │   ├── payjp-dev-reference.md      # 開発者向け: Bubble実装詳細・ワークフロー
 │   │   │   ├── payjp-authorization-guide.md # オーソリ実装ガイド
 │   │   │   └── payjp-issues.md             # 修正一覧（課題・改善点）
@@ -108,7 +109,8 @@ documents/
 │   ├── pay.jp/                     #   Pay.JP 決済連携
 │   │   ├── asis.html               #     As-Is フロー
 │   │   ├── tobe.html               #     To-Be フロー
-│   │   ├── api-reference.html      #     APIリファレンス
+│   │   ├── api-v1-reference.html   #     APIリファレンス（v1）
+│   │   ├── api-v2-reference.html   #     APIリファレンス（v2）
 │   │   ├── dev-reference.html      #     開発者リファレンス
 │   │   ├── authorization-guide.html #    オーソリガイド
 │   │   └── issues.html             #     修正一覧

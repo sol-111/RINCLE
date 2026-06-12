@@ -308,5 +308,5 @@ RINCLE は Marketplace型の Platform API を使っているため、`tenant` �
 | To-Beフロー | `payjp-flow-tobe.md` |
 | As-Isフロー | `payjp-flow-asis.md` |
 | 課題一覧 | `payjp-issues.md` |
-| APIサマリー | `payjp-api-summary-ja.md` |
+| APIサマリー | `payjp-api-v1-summary-ja.md` |
 | 開発者リファレンス | `payjp-dev-reference.md` |
