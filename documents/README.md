@@ -21,6 +21,7 @@ documents/
 │   ├── 5.1.txt
 │   ├── 5.12.txt
 │   ├── 5.15.txt
+│   ├── 5.29.txt
 │   └── task_list.md                #   タスクリスト
 │
 ├── 2_requirements/                 # 要件定義
@@ -81,12 +82,15 @@ documents/
 │   │   ├── competitive-analysis.md #   競合調査（市場概況・競合詳細・SWOT・ペルソナ）
 │   │   ├── current-issues-and-solutions.md  # 現状課題と解決策（ファネル分析・UIモック）
 │   │   ├── action-plan.md          #   アクションプラン（Phase1〜4・KPI・費用）
-│   │   └── ui-ux-reference-catalog.md  # UI/UXリファレンスカタログ
+│   │   ├── ui-ux-reference-catalog.md  # UI/UXリファレンスカタログ
+│   │   ├── revenue-model.xlsx      #   収益モデルの正本（実態/論点/試算/KPIツリー・計画・進捗/出典の11+シート）
+│   │   ├── shop-hearing-design.md  #   ショップヒアリング設計（仮説14×質問32・対象店舗実名）
+│   │   └── source/                 #   本番DBエクスポート置き場（個人情報を含むためgitignore対象）
 │   │
 │   ├── 02_marketing/               # マーケティング戦略
-│   │   ├── marketing-knowledge-map.md  # toCマーケ手法 全体マップ（汎用知識）
+│   │   ├── marketing-knowledge-map.md  # toCマーケ手法 全体マップ（汎用知識・約37手法）
 │   │   ├── marketing-channels.md   #   toCマーケ手法一覧・ROI比較
-│   │   └── marketing-personas.md   #   ペルソナ5種（A〜E）
+│   │   └── marketing-personas.md   #   ペルソナ6種（A〜F、実データ検証状況つき）
 │   │
 │   ├── 03_seo/                     # SEO実務
 │   │   ├── seo-setup-guide.md      #   SEO設定ガイド（GA4・Clarity導入手順含む）
@@ -94,7 +98,7 @@ documents/
 │   │   └── sitemap_example.xml     #   sitemapサンプル
 │   │
 │   └── 04_analytics/               # 計測
-│       └── ga4_tracking_items.csv  #   GA4計測項目一覧（自動22+カスタム11+CV2）
+│       └── ga4_tracking_items.csv  #   GA4計測項目一覧（41項目・KPI対応・Phase1〜3）
 │
 ├── 98_presentations/               # 説明資料（HTML SPA）
 │   ├── index.html                  #   SPA エントリポイント（サイドバーナビ）
