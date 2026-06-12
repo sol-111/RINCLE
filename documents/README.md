@@ -95,6 +95,7 @@ documents/
 │   │
 │   ├── 03_seo/                     # SEO実務
 │   │   ├── seo-setup-guide.md      #   SEO設定ガイド（GA4・Clarity導入手順含む）
+│   │   ├── note-vs-owned-blog.md   #   note vs 自社ブログ比較調査（#24・2026-06-12）
 │   │   ├── seo_page_settings.csv   #   15画面分のtitle/description/OGP/h1/canonical
 │   │   └── sitemap_example.xml     #   sitemapサンプル
 │   │
