@@ -117,6 +117,25 @@
     color: var(--accent-navy);
   }
 
+  /* summary table (6 columns) — keep readable */
+  .summary-table table { font-size: 12px; }
+  .summary-table thead th { padding: 12px 10px; font-size: 11px; }
+  .summary-table tbody td { padding: 10px; line-height: 1.6; }
+  .summary-table .col-now { background: #f0fdf4; }
+  .summary-table tr.highlight .col-now { background: #e8f0fe; }
+  .badge-draft {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    background: #fef3c7;
+    color: #92400e;
+    margin-left: 4px;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
   /* KPI cards */
   .kpi-grid {
     display: grid;
@@ -383,78 +402,94 @@
 
   <!-- Title -->
   <h1>RINCLE マーケティングペルソナ</h1>
-  <p class="report-date">作成日: 2026-06-02 ／ 最終更新: 2026-06-11（本番DB実測データによるファクトチェック・ペルソナF追加）</p>
+  <p class="report-date">作成日: 2026-06-02 ／ 最終更新: 2026-06-12（6/12定例の答え合わせ反映。イベント参加者ペルソナを追加、シニア層を削除し採番をA〜Fに整理）</p>
 
-  <!-- ペルソナ一覧サマリー -->
+  <!-- ペルソナ総括（一覧 × 優先アクション） -->
   <div class="section">
-    <h2>ペルソナ一覧サマリー</h2>
-    <div class="table-wrapper">
+    <h2>ペルソナ総括（一覧 × 優先アクション）</h2>
+    <div class="table-wrapper summary-table">
       <table>
         <thead>
           <tr>
             <th>#</th>
-            <th>ペルソナ名</th>
-            <th>属性</th>
-            <th>主要チャネル</th>
-            <th>獲得難易度</th>
-            <th>LTV</th>
+            <th>ペルソナ（属性）</th>
+            <th>実在の確度</th>
+            <th>難易度 / LTV</th>
+            <th>今すぐやる（コストゼロ）</th>
+            <th>Phase 3以降（有料・要準備）</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>A</td>
-            <td>スポーツバイクデビューの会社員</td>
-            <td>30代男性・都市部</td>
-            <td>Google広告 / Instagram広告</td>
-            <td>中</td>
-            <td>中〜高</td>
+            <td>デビューの会社員（30代男性・都市部）</td>
+            <td><strong>実在確認済み（6/12）</strong></td>
+            <td>中 / 中〜高</td>
+            <td class="col-now">—（店頭接点なし。GBP共通施策でカバー）</td>
+            <td>Google広告・Instagram広告</td>
           </tr>
           <tr>
             <td>B</td>
-            <td>旅先サイクリングを楽しみたい旅行者</td>
-            <td>40代夫婦</td>
-            <td>アソビュー・じゃらん / SEO</td>
-            <td>中</td>
-            <td>低〜中</td>
+            <td>旅先の旅行者（40代夫婦）</td>
+            <td>少数派（6/12）</td>
+            <td>中 / 低〜中</td>
+            <td class="col-now">アソビュー/じゃらんに体験プラン掲載（成果手数料のみ）</td>
+            <td>地域別SEO LP（しまなみ等）</td>
           </tr>
           <tr>
             <td>C</td>
-            <td>購入前にいろいろ試したい経験者</td>
-            <td>20〜30代男性</td>
-            <td>ショップ店頭 / SEO</td>
-            <td>低</td>
-            <td>高</td>
-          </tr>
-          <tr>
-            <td>D</td>
-            <td>健康目的のシニア層</td>
-            <td>50〜60代</td>
-            <td>ショップ店頭 / Googleビジネスプロフィール</td>
-            <td>高</td>
-            <td>中</td>
+            <td>購入前に試したい経験者（20〜30代男性）</td>
+            <td><strong>実在確認済み（6/12）</strong></td>
+            <td>低 / 高</td>
+            <td class="col-now">店頭POP「気になるバイク、RINCLEで試乗できます」</td>
+            <td>自転車メディアタイアップ</td>
           </tr>
           <tr class="highlight">
+            <td>D</td>
+            <td><strong>プロショップの既存顧客 ★最重要</strong></td>
+            <td>示唆あり</td>
+            <td><strong>最低 / 高</strong></td>
+            <td class="col-now">店頭声かけスクリプト+SNS投稿テンプレをショップに提供</td>
+            <td>—（継続運用）</td>
+          </tr>
+          <tr>
             <td>E</td>
-            <td>プロショップの既存顧客 ★最重要</td>
-            <td>全年代・バイク所有者</td>
-            <td>ショップ店頭・SNS・既存顧客リスト</td>
-            <td><strong>最低</strong></td>
-            <td><strong>高</strong></td>
+            <td>訪日旅行者<span class="badge-draft">素案</span></td>
+            <td><strong>未対応でも来店あり（6/12）</strong></td>
+            <td>中〜高 / 中</td>
+            <td class="col-now">—（多言語対応が前提条件）</td>
+            <td>英語予約ページ+Klookで最小コスト検証</td>
           </tr>
           <tr>
             <td>F</td>
-            <td>訪日旅行者（インバウンド・素案）</td>
-            <td>30〜40代・台湾/欧米豪</td>
-            <td>海外OTA（Klook等）/ 英語SEO（仮説）</td>
-            <td>中〜高</td>
-            <td>中</td>
+            <td>イベント参加者<span class="badge-draft">素案・6/12追加</span></td>
+            <td><strong>約2割を占める（6/12）</strong></td>
+            <td>中 / 中</td>
+            <td class="col-now">大会名SEOの受け皿ページ</td>
+            <td>イベント連動広告・大会主催者提携</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="note-box">
-      <strong>※ ペルソナFは2026-06-11追加の素案。</strong>属性・チャネル・メッセージのすべてが実データ・ヒアリング検証前の仮説です。<br>
-      <strong>※ ペルソナE（ショップ既存顧客）が最重要。</strong>すでにショップとの接点があるため獲得コストが最も低く、LTVも高い。コストゼロ施策（店頭POP・声かけ・SNS告知）から着手できます。
+      ・全ペルソナ共通の今すぐ施策: <strong>Googleビジネスプロフィール 54店舗分（実質52店）</strong> — 営業チームが既に実施中（6/12確認）<br>
+      ・ペルソナE・Fは素案（E=多言語対応、F=利用目的入力での定量化、の方針確定後に本採用）<br>
+      ・<strong>「健康目的のシニア層」ペルソナは2026-06-12に削除し、採番を詰めた（旧E→D・旧F→E・旧G→F）</strong> — 6/12の運営ヒアリングで唯一言及がなく、実在根拠ゼロ×獲得難易度「高」のため。「E-Bikeお試し」店頭POPはシニア専用でなくE-Bike横断施策（B/E向け）として継続。利用目的入力+GA4の年齢データでシニア需要が見えたら再定義する<br>
+      ・※ チャネル施策の前提: 予約は関西に偏在し、関東・九州・しまなみ圏は在庫があるのに予約ゼロ。広告投下前にエリア方針の決定が必要。効果測定はGA4設置が前提
+    </div>
+  </div>
+
+  <!-- 6/12定例での答え合わせ -->
+  <div class="section">
+    <h2>6/12定例での答え合わせ（増永さんヒアリング）</h2>
+    <div class="card">
+      <ul class="fact-list">
+        <li><span class="label-fact">事実</span><strong>来店者の約半分は「初めてロードバイクを体験したい・購入を考えている」層</strong> ＝ ペルソナA/Cが想定通り実在。「僕ら考えてたペルソナが来てくれてはいる」（増永さん）</li>
+        <li><span class="label-fact">事実</span><strong>約2割は「イベントに出たいが自転車を持っていない」層</strong> → ペルソナFとして新設。大阪城トライアスロンで他社レンタルが満車→「むちゃくちゃ探してやっとRINCLEにたどり着いた」利用者が複数（＝需要は実在、SEOが弱くて届いていない）</li>
+        <li><span class="label-fact">事実</span>旅行者（B）は現状少数派。インバウンド（E）は<strong>多言語未対応なのに来店があり「対応したらめっちゃ来るイメージ」</strong>（増永さん）。ただし販売店は購入につながる層を重視しており、スポット利用のインバウンドは現場のモチベーションが上がりにくい点に注意</li>
+        <li><span class="label-fact">事実</span><strong>検索語の実態: 「ロードバイク レンタル 地域名」が主流。「スポーツバイク」では誰も調べない</strong>（「小径車」も一般用語ではない）→ 全ペルソナの想定検索KWとサイト文言はロードバイク表記を前面に</li>
+        <li><span class="label-unverified">予定</span>検証手段の強化: <strong>予約時に「利用目的」（購入検討/イベント/観光等）を聞く入力を実装予定</strong>（task_list #23）→ 実装後はペルソナ比率が定量で取れるようになる</li>
+      </ul>
     </div>
   </div>
 
@@ -497,7 +532,7 @@
     <div class="card">
       <ul class="fact-list">
         <li><span class="label-fact">事実</span>平均単価¥10,200は想定の¥6,000より高い。複数日レンタルが多く、6月は複数日・大口予約が増加傾向 → 「1日¥6,000の手軽さ」訴求と実態（複数日利用が主力）にズレ</li>
-        <li><span class="label-fact">事実</span>2台予約18% → グループ・同伴利用（A／B／E）の実在を示唆</li>
+        <li><span class="label-fact">事実</span>2台予約18% → グループ・同伴利用（A／B／D）の実在を示唆</li>
         <li><span class="label-fact">事実</span>予約は関西に偏在（上位5店すべて関西: 神戸17／尼崎12／京都7／箕面5／奈良5）。関東・九州・しまなみ圏は在庫があるのに予約ゼロ → <strong>ペルソナ以前に地域の問題が支配的</strong></li>
         <li><span class="label-unverified">未検証</span>レビューゼロ・GA4未設置のため、ペルソナ別の流入・CVRの定量検証はまだ不可能。GA4設置＋リピート率計測（乗車人情報）待ち</li>
       </ul>
@@ -556,10 +591,11 @@
           </div>
         </div>
         <div class="p-verify">
-          <div class="p-label">実測データでの検証状況（2026-06-11）</div>
+          <div class="p-label">検証状況（2026-06-11実測＋2026-06-12ヒアリング）</div>
           <span class="label-fact">事実</span>2台予約18% → 「一人で行くの不安」に対し同伴利用が現実の解になっている可能性（推測）<br>
           <span class="label-fact">事実</span>想定居住地のうち東京・名古屋は在庫があるのに予約ゼロ。Aの検証は現状、関西でしかできない<br>
-          <span class="label-unverified">未検証</span>レビューゼロのため「利用者レビュー」対策は実行不可。Google/Instagram経由の流入はGA4設置待ち
+          <span class="label-unverified">未検証</span>レビューゼロのため「利用者レビュー」対策は実行不可。Google/Instagram経由の流入はGA4設置待ち<br>
+          <span class="label-fact">事実・6/12</span><strong>運営ヒアリングで実在確認</strong>: 来店の約半分が「初めてロードバイク体験・購入検討」層（A/C合算）。「近くで乗る機会がなかった」が来店動機 → Aのコア仮説と一致
         </div>
       </div>
     </div>
@@ -608,10 +644,11 @@
           </div>
         </div>
         <div class="p-verify">
-          <div class="p-label">実測データでの検証状況（2026-06-11）</div>
+          <div class="p-label">検証状況（2026-06-11実測＋2026-06-12ヒアリング）</div>
           <span class="label-fact">事実</span>2台予約18%は夫婦・グループでの利用の実在を示唆。E-Bike在庫79台で供給側の受け皿は十分<br>
           <span class="label-fact">事実</span>複数日レンタルが多く平均単価約¥10,200/件 → 宿泊を伴う旅行利用と整合的<span class="label-guess" style="margin-left:6px;">推測</span>利用目的のデータはない<br>
-          <span class="label-fact">事実</span>しまなみ圏は在庫があるのに予約ゼロ。中核シナリオ「しまなみ海道」は実績ゼロのまま未検証
+          <span class="label-fact">事実</span>しまなみ圏は在庫があるのに予約ゼロ。中核シナリオ「しまなみ海道」は実績ゼロのまま未検証<br>
+          <span class="label-fact">事実・6/12</span>運営ヒアリングでは「旅行者よりロードバイク体験したい人が多い」→ <strong>Bは現状少数派</strong>。中長期の地域SEO LP（増永さんも地域サイクリングコースLP構想あり）で育てる枠と位置づけ直し
         </div>
       </div>
     </div>
@@ -660,68 +697,18 @@
           </div>
         </div>
         <div class="p-verify">
-          <div class="p-label">実測データでの検証状況（2026-06-11）</div>
+          <div class="p-label">検証状況（2026-06-11実測＋2026-06-12ヒアリング）</div>
           <span class="label-guess">推測</span>複数日レンタル主力（平均単価約¥10,200/件）は「週末ごとにじっくり試乗」とも整合し得るが、利用目的データがなく判別不能<br>
-          <span class="label-unverified">未検証</span>試乗→購入の転換率は計測手段がない。ブランド違いのリピート予約はリピート率計測（乗車人情報）の整備待ち
+          <span class="label-unverified">未検証</span>試乗→購入の転換率は計測手段がない。ブランド違いのリピート予約はリピート率計測（乗車人情報）の整備待ち<br>
+          <span class="label-fact">事実・6/12</span><strong>販売店が最も求めているのがこの層</strong>: 「体験してもらって購入につながる、ものすごい狭いところ。実際そこが来てる感じはする」（増永さん）→ Cはペルソナとして実在し、かつ供給側（店舗）のモチベーションとも一致する最重要級
         </div>
       </div>
     </div>
 
     <!-- ペルソナD -->
-    <div class="persona-card">
-      <div class="persona-header">
-        <span class="persona-letter">D</span>
-        <div>
-          <div class="persona-title">健康目的のシニア層</div>
-          <div class="persona-sub">50〜60代・男女問わず・郊外〜地方都市・自転車経験ほぼなし（E-Bikeの存在を最近知った）</div>
-        </div>
-      </div>
-      <div class="persona-body">
-        <div class="p-block" style="grid-column:1/3;">
-          <div class="p-label">動機の一言</div>
-          <div class="motive">「健康のために運動したいけど、ランニングは膝が心配。E-Bikeなら坂道もラクらしい。でも30万円以上するんでしょ？」</div>
-        </div>
-        <div class="p-block">
-          <div class="p-label">獲得チャネル（優先順）</div>
-          <div class="p-content">
-            <ul class="channel-list">
-              <li><span class="ch-rank">1</span><span><strong>パートナーショップ既存チャネル</strong> — 店頭でE-Bike試乗を提案。対面の安心感</span></li>
-              <li><span class="ch-rank">2</span><span><strong>Googleビジネスプロフィール</strong> — 「近くの自転車レンタル」で地図検索</span></li>
-              <li><span class="ch-rank">3</span><span><strong>地方メディア/PR</strong>（地元新聞・フリーペーパー）</span></li>
-              <li><span class="ch-rank">4</span><span><strong>LINE広告</strong> — シニア層のLINE利用率は高い</span></li>
-            </ul>
-          </div>
-        </div>
-        <div class="p-block">
-          <div class="p-label">刺さるメッセージ</div>
-          <div class="p-content">
-            <ul class="msg-list">
-              <li>「膝に優しい。電動アシストで坂道もスイスイ」</li>
-              <li>「スタッフが乗り方を丁寧に教えます。初めてでも安心」</li>
-              <li>「まずは1日お試し。気に入ったら購入も相談できます」</li>
-              <li class="ng">「マルチブランド対応プラットフォーム」（意味が分からない）</li>
-            </ul>
-          </div>
-        </div>
-        <div class="p-block" style="grid-column:1/3;">
-          <div class="p-label">獲得難易度・LTV</div>
-          <div class="ltv-row">
-            <span class="pill pill-hard">獲得難易度: 高</span>
-            <span class="pill pill-ltv">LTV: 中</span>
-          </div>
-        </div>
-        <div class="p-verify">
-          <div class="p-label">実測データでの検証状況（2026-06-11）</div>
-          <span class="label-fact">事実</span>E-Bike在庫79台で供給は十分。ボトルネックは供給ではなく認知・獲得側<br>
-          <span class="label-unverified">未検証</span>利用者の年齢構成データがなく、シニア層の利用実態は不明（乗車人情報の整備待ち）
-        </div>
-      </div>
-    </div>
-
-    <!-- ペルソナE -->
     <div class="persona-card star">
       <div class="persona-header">
-        <span class="persona-letter">E</span>
+        <span class="persona-letter">D</span>
         <div>
           <div class="persona-title">プロショップの既存顧客</div>
           <div class="persona-sub">全年代（男性多め）・ショップ近隣在住・スポーツバイク所有（購入 or 整備で来店）</div>
@@ -772,10 +759,10 @@
       </div>
     </div>
 
-    <!-- ペルソナF -->
+    <!-- ペルソナE -->
     <div class="persona-card hypo">
       <div class="persona-header">
-        <span class="persona-letter">F</span>
+        <span class="persona-letter">E</span>
         <div>
           <div class="persona-title">訪日旅行者（インバウンド）</div>
           <div class="persona-sub">30〜40代・男女問わず・台湾/香港/欧米豪・個人手配（FIT）・サイクリング中級以上</div>
@@ -814,111 +801,63 @@
           </div>
         </div>
         <div class="p-verify">
-          <div class="p-label">検証状況・前提条件（2026-06-11）</div>
-          <span class="label-fact">事実</span>現状は多言語未対応のため、このペルソナの獲得実績はゼロ（取りこぼし中）。背景: しまなみ海道の訪日レンタサイクル利用は前年比+70%、Livelo等のインバウンド特化プレイヤーが既に存在<br>
-          <span class="label-unverified">未検証</span>上記の属性・チャネル・メッセージは<strong>すべて仮説</strong>。英語予約ページ＋OTA掲載での最小コスト検証が先決<br>
-          <span class="label-guess">注意</span>予約が関西偏在の現状では、訪日客に人気のしまなみ圏で在庫があるのに予約ゼロという課題がF獲得の前提課題として先にある
+          <div class="p-label">検証状況・前提条件（2026-06-12更新）</div>
+          <span class="label-fact">事実・6/12</span><strong>多言語未対応なのに訪日客の来店が既にある</strong>。「旅行者なんでさらっと入ってくる。対応したらめっちゃ来るイメージ」（増永さん）→ 需要の実在は運営ヒアリングで確認済み<br>
+          <span class="label-guess">注意・6/12</span><strong>販売店側の期待値とのギャップ</strong>: 販売店が求めるのは購入につながる層で、スポットで終わるインバウンドは「現場のテンションが下がる」（増永さん）。E強化は店舗への送客価値の説明（稼働率・現金収入）とセットで進めないと供給側の不満になる<br>
+          <span class="label-unverified">未検証</span>属性・チャネル・メッセージは仮説のまま。英語予約ページ＋OTA掲載での最小コスト検証が先決<br>
+          <span class="label-guess">注意</span>訪日客に人気のしまなみ圏で在庫があるのに予約ゼロという課題がE獲得の前提課題として先にある
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- 優先度まとめ -->
-  <div class="section">
-    <h2>優先度まとめ</h2>
-
-    <p style="font-size:15px; font-weight:700; color:#1a1a2e; margin:20px 0 10px;">今すぐやるべき（コストゼロ × 効果高い）</p>
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>ペルソナ</th>
-            <th>チャネル</th>
-            <th>やること</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="highlight">
-            <td>E（既存客）</td>
-            <td>ショップ店頭</td>
-            <td>店頭POP設置、スタッフの声かけスクリプト作成</td>
-          </tr>
-          <tr class="highlight">
-            <td>E（既存客）</td>
-            <td>ショップSNS</td>
-            <td>RINCLE告知の投稿テンプレートをショップに提供</td>
-          </tr>
-          <tr>
-            <td>C（経験者）</td>
-            <td>ショップ店頭</td>
-            <td>「気になるバイク、RINCLEで試乗できます」POP</td>
-          </tr>
-          <tr>
-            <td>D（シニア）</td>
-            <td>ショップ店頭</td>
-            <td>「E-Bikeお試し」POP</td>
-          </tr>
-          <tr>
-            <td>B（旅行者）</td>
-            <td>アソビュー/じゃらん</td>
-            <td>体験プランを掲載（手数料のみ）</td>
-          </tr>
-          <tr>
-            <td>全ペルソナ</td>
-            <td>Googleビジネスプロフィール</td>
-            <td>54店舗分（実質52店）を登録</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p style="font-size:15px; font-weight:700; color:#1a1a2e; margin:28px 0 10px;">Phase 3以降にやるべき（有料 or 準備が必要）</p>
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>ペルソナ</th>
-            <th>チャネル</th>
-            <th>やること</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>A（デビュー）</td>
-            <td>Google広告</td>
-            <td>「ロードバイク レンタル ○○」で出稿</td>
-          </tr>
-          <tr>
-            <td>A（デビュー）</td>
-            <td>Instagram広告</td>
-            <td>30代男性×自転車興味でターゲティング</td>
-          </tr>
-          <tr>
-            <td>B（旅行者）</td>
-            <td>SEO</td>
-            <td>「しまなみ海道 レンタサイクル」等の地域別LP</td>
-          </tr>
-          <tr>
-            <td>C（経験者）</td>
-            <td>自転車メディア</td>
-            <td>CycleSports等にタイアップ記事</td>
-          </tr>
-          <tr>
-            <td>D（シニア）</td>
-            <td>LINE広告</td>
-            <td>50代以上×健康興味でターゲティング</td>
-          </tr>
-          <tr>
-            <td>F（訪日・素案）</td>
-            <td>英語予約ページ＋Klook</td>
-            <td>多言語対応の前倒しとセットで最小コスト検証</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="insight-box">
-      <strong>チャネル施策の前提:</strong> 予約は関西に偏在し、関東・九州・しまなみ圏は在庫があるのに予約ゼロ。広告投下前に<strong>エリア別の需給ギャップ解消（または関西集中投下）の方針決定</strong>が必要。効果測定はGA4設置が前提（2026-06-11追記）。
+    <!-- ペルソナF -->
+    <div class="persona-card hypo">
+      <div class="persona-header">
+        <span class="persona-letter">F</span>
+        <div>
+          <div class="persona-title">イベント参加者</div>
+          <div class="persona-sub">20〜40代・男女問わず・トライアスロン/ロングライド/レース出走者・自転車経験あり（機材を持っていない/遠征に持って行けない）</div>
+        </div>
+        <span class="persona-flag flag-hypo">素案（2026-06-12追加）: 6/12運営ヒアリングで判明した実在層</span>
+      </div>
+      <div class="persona-body">
+        <div class="p-block" style="grid-column:1/3;">
+          <div class="p-label">動機の一言</div>
+          <div class="motive">「イベントに出たいが自転車を持っていない（or 持って行けない）」。日付・場所がイベントで確定しており、検索意図が極めて明確で締切がある</div>
+        </div>
+        <div class="p-block">
+          <div class="p-label">獲得チャネル（優先順・仮説）</div>
+          <div class="p-content">
+            <ul class="channel-list">
+              <li><span class="ch-rank">1</span><span><strong>イベント連動の獲得</strong>（大会の数週間前にエリア×日付で訴求）— 需要の時期と場所が事前に分かる稀有な層。大会公式・参加者コミュニティへの露出</span></li>
+              <li><span class="ch-rank">2</span><span><strong>SEO/広告</strong>（「大会名 レンタルバイク」「トライアスロン バイク レンタル」）— 実例の利用者は検索で必死に探して到達。受け皿ページがあれば確実に拾える</span></li>
+              <li><span class="ch-rank">3</span><span><strong>大会主催者との公式提携</strong> — 他社が大会連携で満車になった実例 ＝ 公式枠の価値の証明</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-block">
+          <div class="p-label">刺さるメッセージ（仮説）</div>
+          <div class="p-content">
+            <ul class="msg-list">
+              <li>「〇〇大会に出るなら、バイクはRINCLEで。会場近くの△△店で受取」</li>
+              <li>「カーボンロード、1日から。プロショップ整備で大会当日も安心」</li>
+            </ul>
+          </div>
+        </div>
+        <div class="p-block" style="grid-column:1/3;">
+          <div class="p-label">獲得難易度・LTV</div>
+          <div class="ltv-row">
+            <span class="pill pill-mid">獲得難易度: 中</span>
+            <span class="pill pill-ltv">LTV: 中</span>
+          </div>
+        </div>
+        <div class="p-verify">
+          <div class="p-label">検証状況（2026-06-12時点）</div>
+          <span class="label-fact">事実</span>来店者の<strong>約2割</strong>を占める（運営ヒアリング）＋ 大阪城トライアスロンで他社のイベント連携レンタルが満車になり、「むちゃくちゃ探してやっとたどり着いた」利用者がRINCLEに複数流入した実例あり。増永さん「ここは結構、今後ニーズあるかなと思ってる」<br>
+          <span class="label-unverified">未検証</span>何で検索して到達したかは不明（「ロードバイク レンタル」と推測）。利用目的入力の実装（task_list #23）後に定量化できる<br>
+          <span class="label-guess">注意</span>高額機材の貸出になりやすい → 破損・盗難リスクはデポジットオーソリの検討（task_list #25）とセット
+        </div>
+      </div>
     </div>
   </div>
 
