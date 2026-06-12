@@ -141,6 +141,23 @@
       background: var(--accent-light); border-left-color: var(--accent);
     }
     .note.accent strong { color: var(--accent); }
+    .note.danger {
+      background: #fef2f2; border-left-color: var(--danger);
+    }
+    .note.danger strong { color: #991b1b; }
+    .badge.now { background: #dbeafe; color: #1e40af; }
+    tr.now td { background: #eff6ff; }
+    tbody tr.now:hover td { background: #dbeafe; }
+    tr.hl td { background: #fef9c3; }
+    tbody tr.hl:hover td { background: #fef08a; }
+    th.dim { color: var(--gray-300); font-weight: 600; }
+    td.dim { color: var(--gray-300); }
+    th.merit { background: #d1fae5; color: #065f46; }
+    th.demerit { background: #fee2e2; color: #991b1b; }
+    td.merit { background: #f0fdf4; }
+    td.demerit { background: #fef2f2; }
+    tbody tr:hover td.merit { background: #dcfce7; }
+    tbody tr:hover td.demerit { background: #fee2e2; }
 
     .verdict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
     @media (max-width: 640px) { .verdict-grid { grid-template-columns: 1fr; } }
@@ -175,6 +192,24 @@
     .route-card p, .route-card li { font-size: 14px; color: var(--gray-700); }
     .route-card ul { padding-left: 20px; margin-top: 6px; }
 
+    .routes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0 8px; }
+    @media (max-width: 760px) { .routes-grid { grid-template-columns: 1fr; } }
+    .route-box {
+      background: #fff; border: 1px solid var(--gray-200); border-radius: 12px;
+      padding: 20px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .route-box h4 { font-size: 15px; font-weight: 700; margin: 6px 0 2px; }
+    .route-box p { font-size: 13px; color: var(--gray-500); flex: 1; margin: 0; }
+    .route-box.dimmed { opacity: .6; }
+    .route-box.selected { border: 2px solid var(--accent); box-shadow: 0 0 0 4px var(--accent-light); }
+    .route-verdict {
+      font-size: 12px; font-weight: 800; padding: 4px 12px;
+      border-radius: 999px; align-self: flex-start;
+    }
+    .route-verdict.no { background: var(--gray-100); color: var(--gray-500); }
+    .route-verdict.neutral { background: var(--payjp-light); color: #075985; }
+    .route-verdict.yes { background: var(--accent); color: #fff; }
+
     footer { text-align: center; padding: 40px 0; color: var(--gray-500); font-size: 13px; }
   </style>
 </head>
@@ -183,7 +218,7 @@
 <div class="hero">
   <div class="hero-label">Re-investigation / 2026-06</div>
   <h1>決済基盤の方針（比較・移行計画）</h1>
-  <p>6/12定例の依頼に基づく再調査（Pay.jpオーソリ実装前提で短期/中長期の2軸評価）に、旧「Stripe移行方針」（4/21合意）を§9として統合した決済基盤の正本資料です。</p>
+  <p>6/12定例の依頼に基づく再調査（Pay.jpオーソリ実装前提で短期/中長期の2軸評価）に、旧「Stripe移行方針」（4/21合意）を§6として統合した決済基盤の正本資料です。</p>
 </div>
 
 <div class="summary-grid">
@@ -196,8 +231,8 @@
     <p><strong>Stripe優位は維持</strong>。ただし手数料はPay.jpが安くなり、前回より差は縮小</p>
   </div>
   <div class="summary-card">
-    <h3>推奨ルート</h3>
-    <p>全体設計を固めてから、集約モデル実装のタイミングでStripeへ（オーソリ先行は見送りに合理性）</p>
+    <h3>結論</h3>
+    <p><strong>Stripeに載せ替える</strong>。時期は全体設計後・集約モデル実装と同時（オーソリ先行はやらない）</p>
   </div>
   <div class="summary-card">
     <h3>新事実</h3>
@@ -210,47 +245,75 @@
   <!-- 0 -->
   <section>
     <h2><span class="num">0</span> 結論サマリー</h2>
-    <div class="verdict-grid">
-      <div class="verdict-card short">
-        <div class="verdict-label">短期（最小工数で決済失敗対策）</div>
-        <h4>Pay.jp続行が速い</h4>
-        <p>オーソリ実装（50円検証→全額オーソリ→当日キャプチャ）は見積済みの80h（2週間）。載せ替え不要。ただし最終形が「予約時即時決済」なら、バッチオーソリ部分は将来捨てる実装になる。</p>
+    <div class="note accent" style="margin-top:8px;">
+      <strong>結論: Stripeに載せ替える。</strong> タイミングは今ではなく、DB再構築完了後に決済全体設計（キャンセルポリシー・振込オペ・月額課金）を固めてから、<strong>集約モデルの実装と同時に</strong>。オーソリの先行実装（80h）はやらない（6/12合意「急がない・二度手間回避」のとおり）。例外は「夏シーズン中の保険」として50円オーソリだけ先に買う場合のみ（経営判断）。以下が判断根拠。
+    </div>
+
+    <p style="font-size:14px; color:var(--gray-500); margin-top:16px;">比較した3ルート:</p>
+    <div class="routes-grid">
+      <div class="route-box dimmed">
+        <span class="route-chip" style="background:var(--gray-500);">A</span>
+        <h4>オーソリだけ先行実装</h4>
+        <p>現行テナント型のまま、50円検証→当日キャプチャを追加する短期の保険</p>
+        <div class="route-verdict no">結論: やらない</div>
       </div>
-      <div class="verdict-card long">
-        <div class="verdict-label">中長期（集約モデル・全体実装）</div>
-        <h4>Stripe優位は維持、ただし差は縮小</h4>
-        <p>CVC検証・Bubble公式プラグイン・領収書・将来機能でStripe優位。一方、Pay.jpの3DS対応を確認、手数料も新体系でPay.jpが安い（3.3% vs 3.6%）。コスト最重視ならPay.jp集約化も成立。</p>
+      <div class="route-box">
+        <span class="route-chip" style="background:var(--payjp);">B</span>
+        <h4>Pay.jpのまま集約モデル化</h4>
+        <p>Platform API撤去・単一アカウント型へ作り替え（契約変更の可否は要確認）</p>
+        <div class="route-verdict neutral">対抗案（コスト最重視なら）</div>
+      </div>
+      <div class="route-box selected">
+        <span class="route-chip" style="background:var(--accent);">C</span>
+        <h4>Stripeへ載せ替え+集約モデル化</h4>
+        <p>公式プラグイン+PaymentIntentで最終形を直接つくる</p>
+        <div class="route-verdict yes">結論: これ</div>
       </div>
     </div>
-    <div class="note accent">
-      <strong>推奨:</strong> 6/12合意（急がない・二度手間回避）に沿い、オーソリ先行は見送り。DB再構築完了 → 決済全体設計（キャンセルポリシー・振込オペ・月額課金）を固めてから、<strong>集約モデル実装のタイミングでStripeへ載せ替えるのが引き続き合理的</strong>。50円オーソリの先行実装（80h）は「夏シーズン中の保険」として買うかどうかの経営判断。
+
+    <h3>短期（いま最小工数で決済失敗・キャンセルポリシーに対応するなら）</h3>
+    <div class="card">
+      <table>
+        <thead><tr><th style="width:200px;"></th><th class="merit">メリット</th><th class="demerit">デメリット</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="label" style="white-space:normal;"><span class="route-chip" style="background:var(--gray-500); margin-right:6px;">A</span>Pay.jp続行<br>（オーソリ80h）</td>
+            <td class="merit">載せ替えなしで最速（見積済み80h・2週間）。決済失敗の事前検知がすぐ手に入る</td>
+            <td class="demerit"><strong>80hはほぼ全額が掛け捨て</strong>（50円オーソリ相当のカード有効性チェックは、Stripeでは標準機能=SetupIntentで0円でできるため作り直しになる）。3DS・CVC・紙請求は未解決のまま</td>
+          </tr>
+          <tr>
+            <td class="label" style="white-space:normal;"><span class="route-chip" style="background:var(--accent); margin-right:6px;">C</span>Stripeへ今すぐ載せ替え</td>
+            <td class="merit">作るものがそのまま最終形になる（捨てる実装ゼロ）</td>
+            <td class="demerit">全体設計が先に必要で「今すぐ」に間に合わない。DB再構築と並走になり非現実的</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:14px; color:var(--gray-700);">→ 短期だけ見れば<strong>Pay.jp続行が速い</strong>。ただし6/12に「今の件数なら急がない」で合意済みのため、<strong>どちらも着手せずオーソリ先行は見送り</strong>が現実解。</p>
+    </div>
+
+    <h3>中長期（集約モデル・月額課金・全体実装後の世界）</h3>
+    <div class="card">
+      <table>
+        <thead><tr><th style="width:200px;"></th><th class="merit">メリット</th><th class="demerit">デメリット</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="label" style="white-space:normal;"><span class="route-chip" style="background:var(--payjp); margin-right:6px;">B</span>Pay.jp<br>（集約化・v1/v2）</td>
+            <td class="merit"><strong>手数料が安い</strong>（3.3% vs 3.6%。月商1,000万なら月3万円差・ビジネスプラン移行なら月6万円差）。カード再登録不要の可能性（v2は自動マッピング）。3DSも対応済み</td>
+            <td class="demerit"><strong>CVC検証が仕様上不可</strong>（決済失敗の温床が残る）。<strong>デポジットを安全に実装できない</strong>（デビット判別不可・v1/v2とも）。Bubbleプラグインなし。v2は未成熟（サブスク未提供）</td>
+          </tr>
+          <tr>
+            <td class="label" style="white-space:normal;"><span class="route-chip" style="background:var(--accent); margin-right:6px;">C</span>Stripe</td>
+            <td class="merit">3DS/CVC/領収書が標準・Bubble公式プラグイン・<strong>月額課金（Billing）提供済み</strong>・デポジット制御可・弊社が慣れている</td>
+            <td class="demerit"><strong>手数料3.6%で高い</strong>（唯一の構造的デメリット）。カード再登録88人が必要</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <!-- 1 -->
   <section>
-    <h2><span class="num">1</span> 前提：新しい決済モデルと3つのルート</h2>
-    <p class="section-lead">4/21・5/1合意の一括回収モデル（店頭決済廃止・PEDALSTANDARD一括回収→手数料差引後に店舗へ振込）は変更なし。6/12に「振り込まれる方が店舗のやってる感になる」+店舗月額課金構想で再確認済み。</p>
-    <div class="note">
-      <strong>重要な整理:</strong> 「Pay.jp続行」もゼロ工数ではない。現行はPlatform API（テナント型・店舗へ自動分配）のため、集約モデルにするにはPay.jpでも単一アカウント型への作り替え+契約変更確認が必要。
-    </div>
-    <div class="route-card">
-      <h4><span class="route-chip" style="background:var(--gray-500);">A</span> 現行テナント型のまま、オーソリだけ先行実装</h4>
-      <p>短期の保険（決済失敗・キャンセルポリシー対応）。80h / 約2週間。集約モデルには未到達で、紙請求・テナント分配が残る。</p>
-    </div>
-    <div class="route-card">
-      <h4><span class="route-chip" style="background:var(--payjp);">B</span> Pay.jpのまま集約モデル化</h4>
-      <p>Platform API撤去・単一アカウント型へ作り替え（契約変更の可否は要確認）+ 3DS実装。顧客データ流用でカード再登録不要の可能性。手数料3.3%。</p>
-    </div>
-    <div class="route-card">
-      <h4><span class="route-chip" style="background:var(--accent);">C</span> Stripeへ載せ替え+集約モデル化</h4>
-      <p>公式プラグイン+PaymentIntent（3DS込み）で実装が素直。カード再登録（88人）が必要。5/8時点の推奨ルート。</p>
-    </div>
-  </section>
-
-  <!-- 2 -->
-  <section>
-    <h2><span class="num">2</span> オーソリ仕様の比較（再調査の核心）</h2>
+    <h2><span class="num">1</span> オーソリ仕様の比較（再調査の核心）</h2>
     <p class="section-lead">2026-06に公式ドキュメントで裏取り。</p>
     <div class="card">
       <table>
@@ -259,15 +322,16 @@
         </thead>
         <tbody>
           <tr>
-            <td class="label">オーソリ有効期間</td>
+            <td class="label">オーソリ有効期間<br>（日本発行カード）</td>
             <td><strong>最大60日</strong>（expiry_days 1〜60）</td>
             <td><strong>最大30日</strong></td>
-            <td>標準7日（Visa非対面5日）だが<strong>日本アカウントの円建ては最長30日</strong></td>
+            <td><strong>最長30日</strong>（日本アカウントの円建て特例。世界標準は7日）</td>
           </tr>
           <tr>
-            <td class="label">海外発行カード</td>
-            <td colspan="2"><strong>2026年8月から最大7日に制限</strong>（公式告知）</td>
-            <td>ブランド標準5〜7日。日本特例30日の適用範囲は要確認</td>
+            <td class="label">オーソリ有効期間<br>（海外発行カード）</td>
+            <td>現在は60日まで指定可 → <strong>2026年8月から最大7日</strong>（公式告知）</td>
+            <td>現在は30日 → <strong>2026年8月から最大7日</strong></td>
+            <td>ブランド標準<strong>5〜7日</strong>（日本特例30日の適用範囲は要確認）</td>
           </tr>
           <tr>
             <td class="label">部分キャプチャ</td>
@@ -291,24 +355,47 @@
       </table>
     </div>
     <div class="note">
-      <strong>含意:</strong> RINCLEのユースケース（予約時50円検証→3日前全額オーソリ→当日キャプチャ / デポジットオーソリ数日間）は<strong>どちらでも実現可能</strong>。「Stripeはオーソリが7日しか持たないからPay.jp一択」という前回認識は、日本特例30日の確認で実質解消。海外カード7日制限はPay.jpでも2026年8月から始まるため、インバウンド対応はどちらを選んでも短期オーソリ前提の設計が必要。
+      <strong>含意:</strong> RINCLEのユースケース（予約時50円検証→3日前全額オーソリ→当日キャプチャ / デポジットオーソリ数日間）は<strong>どちらでも実現可能</strong>。「Stripeはオーソリが7日しか持たないからPay.jp一択」という前回認識は、日本特例30日の確認で実質解消。海外発行カードは2026年8月以降どちらも実質5〜7日が上限になるため、インバウンド対応はどちらを選んでも短期オーソリ前提の設計が必要。
+    </div>
+
+    <h3>1.5 補足調査（#25）: 高額デポジットオーソリの与信通過率とリスク</h3>
+    <div class="card">
+      <p style="font-size:14px; color:var(--gray-700); margin-bottom:12px;"><strong>通過率:</strong> 「30万円のオーソリが何%通るか」の公開統計は存在しない（各カードの利用可能枠の残りで決まる）。限度額の相場から推計すると — 一般カードのショッピング枠は<strong>10〜30万円スタートが相場</strong>（ゴールド50〜100万円）。つまり<strong>30万円のオーソリは一般カードの枠の大半〜全部を要求</strong>し、通らない・通っても他の決済が死ぬケースが相当数出る。<strong>3〜5万円ならほとんどのカードで通る見込み</strong>（枠の圧迫は発生）。</p>
+      <table style="margin-bottom:16px;">
+        <thead><tr><th>デポジット額</th><th>必要な空き枠の目安</th><th>通る人のイメージ（限度額相場: 一般10〜30万 / ゴールド50〜100万）</th></tr></thead>
+        <tbody>
+          <tr><td class="label">5万円</td><td>約6〜8万円</td><td><strong>一般カードで概ね通る</strong>。限度額10万円のカードだけ利用残高次第</td></tr>
+          <tr><td class="label">10万円</td><td>約11〜13万円</td><td>限度額10万円は不可。<strong>一般カードでも利用残高次第で脱落が出る</strong></td></tr>
+          <tr><td class="label">15万円</td><td>約16〜18万円</td><td>限度額20万円でも空き次第。実質「枠に余裕がある人・ゴールド」向け</td></tr>
+          <tr><td class="label">20万円</td><td>約21〜23万円</td><td>限度額30万円でも残高次第でギリギリ。<strong>ほぼゴールド前提</strong></td></tr>
+          <tr><td class="label">30万円（参考）</td><td>約31〜33万円</td><td>一般カードでは構造的に不可能。ゴールドでも利用残高次第</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px; color:var(--gray-500); margin-bottom:12px;">推計の仮定: レンタル料の即時決済1〜2.5万円（実測平均¥10,200・ロード上位/E-Bikeで2〜3万）が同時に枠に乗る。判定されるのは「限度額」ではなく「空き枠（限度額−利用残高）」。高級車を借りる層はゴールド保有率が相対的に高い可能性はある（未検証）。</p>
+    </div>
+    <div class="note danger">
+      <strong>リスク: デビット/プリペイドの即時引き落とし</strong> — オーソリでも<strong>即時に口座から実額が引き落とされ</strong>、返金まで数日〜2週間（案内上は最大20日程度）。30万円なら「30万円引かれた！」という重大クレームに直結。クレジットカードでも解放後の枠復活に数日かかる場合があり、「枠が戻らない」問い合わせ運用は必須。
+    </div>
+    <div class="note">
+      <strong>Pay.jpとStripeの差（上記リスクを防ぐ制御手段）:</strong> <strong>Stripeなら「デポジットはクレジットのみ」と制御できる</strong>（PaymentMethodの<code>funding</code>で種別判定・Radarでブロック可）。<strong>Pay.jpはv1・v2ともカード情報に種別フィールドがなく安全に実装できない</strong>（v2のOpenAPI定義にもfunding/debit/prepaidの概念が存在しない・2026-06確認）— デポジット導入の可否自体が決済サービス選定の材料になる。
     </div>
   </section>
 
-  <!-- 3 -->
+  <!-- 2 -->
   <section>
-    <h2><span class="num">3</span> 手数料比較（2026-06の公式料金で更新）</h2>
+    <h2><span class="num">2</span> 手数料比較（2026-06の公式料金で更新）</h2>
     <p class="section-lead">前回資料の「Pay.jp 3.0%/3.6%」は旧体系。現行は以下。</p>
     <div class="card">
       <table>
         <thead>
-          <tr><th>項目</th><th class="payjp">Pay.jp スタンダード</th><th class="payjp">Pay.jp ビジネス</th><th class="stripe">Stripe</th></tr>
+          <tr><th>項目</th><th class="payjp">Pay.jp スタンダード</th><th class="dim">Pay.jp ビジネス（参考・当面使わない）</th><th class="stripe">Stripe</th></tr>
         </thead>
         <tbody>
-          <tr><td class="label">月額</td><td>0円</td><td>20,000円（月商400万〜向け）</td><td>0円</td></tr>
-          <tr><td class="label">決済手数料</td><td><strong>3.3%</strong>（ブランド共通）</td><td><strong>2.78%</strong></td><td><strong>3.6%</strong>（国内カード）</td></tr>
-          <tr><td class="label">返金手数料</td><td>無料</td><td>無料</td><td>無料（元の決済手数料は戻らない）</td></tr>
-          <tr><td class="label">振込手数料</td><td>250円/回</td><td>250円/回</td><td>無料</td></tr>
+          <tr><td class="label">月額</td><td>0円</td><td class="dim">20,000円（月商400万〜向け）</td><td>0円</td></tr>
+          <tr><td class="label">決済手数料<br>（国内発行カード）</td><td><strong>3.3%</strong>（ブランド共通）</td><td class="dim">2.78%</td><td><strong>3.6%</strong></td></tr>
+          <tr><td class="label">決済手数料<br>（海外発行カード）</td><td>3.3%（公表料金に国内外の区別なし）</td><td class="dim">2.78%（同左）</td><td>3.6%（円建て請求なら同率）+ <strong>通貨換算時2%</strong></td></tr>
+          <tr><td class="label">返金手数料</td><td>無料</td><td class="dim">無料</td><td>無料（元の決済手数料は戻らない）</td></tr>
+          <tr><td class="label">振込手数料</td><td>250円/回</td><td class="dim">250円/回</td><td>無料</td></tr>
         </tbody>
       </table>
     </div>
@@ -316,56 +403,51 @@
     <div class="card">
       <table>
         <thead>
-          <tr><th>月間GMV</th><th class="payjp">Pay.jp 3.3%</th><th class="payjp">Pay.jp ビジネス（2.78%+2万円）</th><th class="stripe">Stripe 3.6%</th></tr>
+          <tr><th>月間GMV</th><th class="payjp">Pay.jp 3.3%</th><th class="dim">Pay.jp ビジネス（2.78%+2万円・参考）</th><th class="stripe">Stripe 3.6%</th></tr>
         </thead>
         <tbody>
-          <tr><td>21.5万円（現在）</td><td>7,095円</td><td>—</td><td>7,740円</td></tr>
-          <tr><td>100万円</td><td>33,000円</td><td>—</td><td>36,000円</td></tr>
-          <tr><td>400万円</td><td>132,000円</td><td>131,200円</td><td>144,000円</td></tr>
-          <tr><td>1,000万円</td><td>330,000円</td><td><strong>298,000円</strong></td><td>360,000円</td></tr>
+          <tr><td>21.5万円（現在）</td><td>7,095円</td><td class="dim">—</td><td>7,740円</td></tr>
+          <tr><td>100万円</td><td>33,000円</td><td class="dim">—</td><td>36,000円</td></tr>
+          <tr><td>400万円</td><td>132,000円</td><td class="dim">131,200円</td><td>144,000円</td></tr>
+          <tr><td>1,000万円</td><td>330,000円</td><td class="dim">298,000円</td><td>360,000円</td></tr>
         </tbody>
       </table>
     </div>
     <div class="note">
-      <strong>含意:</strong> 現在の規模では月数百円の差。ただし<strong>GMVがスケールするほどPay.jpのコスト優位が効く</strong>（月商1,000万で月6万円差）。「手数料はほぼ同等」という前回の判断は新料金体系では成り立たない。現行契約から新料率への移行可否はPay.jpに要確認。
+      <strong>含意:</strong> 現在の規模では月数百円の差。ただし<strong>GMVがスケールするほどPay.jpのコスト優位が効く</strong>（月商1,000万でスタンダード比月3万円差・ビジネスプラン移行なら月6万円差）。「手数料はほぼ同等」という前回の判断は新料金体系では成り立たない。現行契約から新料率への移行可否はPay.jpに要確認。
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <h2><span class="num">3</span> 3Dセキュア・CVC（事実関係を更新）</h2>
+    <div class="note danger">
+      <strong>前提:</strong> 3Dセキュア（3DS）はカード決済時の本人認証（不正利用対策）。<strong>2025年3月末までにEC加盟店への導入が義務化済みで、RINCLEは未導入</strong>（このまま運用を続けること自体がコンプライアンス・チャージバックリスク）。
+    </div>
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th></th><th class="payjp">Pay.jpを選んだ場合</th><th class="stripe">Stripeを選んだ場合</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="label">3DS対応の手間</td>
+            <td><span class="badge warn">自前で組み込み（中規模）</span><br>API Connector+リダイレクト/iframeを自分で組む。機能自体はPay.jpが提供している</td>
+            <td><span class="badge good">ほぼ自動</span><br>公式プラグイン+PaymentIntentに標準で組み込まれている</td>
+          </tr>
+          <tr>
+            <td class="label">カード登録時のCVCチェック</td>
+            <td><span class="badge bad">できない</span><br>仕様上、誤ったCVCでも登録できてしまう。5/15に確認した決済失敗の温床が<strong>残り続ける</strong></td>
+            <td><span class="badge good">できる</span><br>登録時に検証し、間違いはその場で弾ける</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
   <!-- 4 -->
   <section>
-    <h2><span class="num">4</span> 3Dセキュア・CVC（事実関係を更新）</h2>
-    <div class="card">
-      <table>
-        <thead>
-          <tr><th>項目</th><th class="payjp">Pay.jp</th><th class="stripe">Stripe</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="label">EMV 3DS対応</td>
-            <td><span class="badge good">対応済み</span> トークン作成時/支払い時のどちらでも実施可（iframe型あり）</td>
-            <td><span class="badge good">標準対応</span> PaymentIntentで自動判定</td>
-          </tr>
-          <tr>
-            <td class="label">実装の手間（Bubble）</td>
-            <td><span class="badge warn">中</span> API Connector+リダイレクト/iframe組み込みを自前で</td>
-            <td><span class="badge good">小</span> プラグイン+PaymentIntentでほぼ自動</td>
-          </tr>
-          <tr>
-            <td class="label">カード登録時のCVC検証</td>
-            <td><span class="badge bad">×</span> 誤ったCVCでも登録できる（5/15確認・決済失敗の温床）</td>
-            <td><span class="badge good">○</span> 登録時に検証</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="note">
-      <strong>重要:</strong> EMV 3DSは<strong>2025年3月末までにEC加盟店への導入が義務化済み</strong>。RINCLEは未導入のため、どちらを選んでも3DS対応は必須タスク。「Stripeだから不要 / Pay.jpだから不可」ではなく、差は実装の手間とCVC検証（Pay.jpは解決不可のまま）。未導入での運用継続自体がコンプライアンス・チャージバックリスクである点は要共有。
-    </div>
-  </section>
-
-  <!-- 5 -->
-  <section>
-    <h2><span class="num">5</span> その他の機能比較</h2>
+    <h2><span class="num">4</span> その他の機能比較</h2>
     <div class="card">
       <table>
         <thead>
@@ -375,7 +457,7 @@
           <tr><td class="label">カード保存・再利用</td><td>○</td><td>○</td><td></td></tr>
           <tr><td class="label">部分返金</td><td>○</td><td>○</td><td>キャンセルポリシーで必要</td></tr>
           <tr><td class="label">サブスク（店舗月額課金）</td><td>○（plan/subscription）</td><td>○（Billing・高機能）</td><td>6/12の月額課金構想に関わる</td></tr>
-          <tr><td class="label">領収書の自動送信</td><td>×</td><td>○</td><td>集約モデルではPEDALSTANDARDが発行元見込み</td></tr>
+          <tr class="hl"><td class="label">★ 領収書の自動送信（重要）</td><td><span class="badge bad">×</span> 自前で作るか手動運用</td><td><span class="badge good">○</span> receipt_email指定で自動送信</td><td><strong>集約モデルでは発行元がPEDALSTANDARDになる見込み = 全決済分の発行オペが発生</strong>。自動化の可否が運用コストに直結</td></tr>
           <tr><td class="label">Apple Pay / PayPay等</td><td>×（v1）/ ○（<strong>v2</strong>はApple Pay・PayPay等を一元管理）</td><td>○（Apple Pay / Google Pay）</td><td>Pay.jpで将来機能を取るならv1→v2移行が前提</td></tr>
           <tr><td class="label">Bubble連携</td><td>△（API Connector手動）</td><td>○（公式プラグイン）</td><td></td></tr>
           <tr><td class="label">開発チームの慣れ</td><td>△</td><td>○</td><td>弊社はStripe経験あり</td></tr>
@@ -387,61 +469,9 @@
     </div>
   </section>
 
-  <!-- 6 -->
+  <!-- 5 -->
   <section>
-    <h2><span class="num">6</span> 短期工数の比較（3ルート）</h2>
-    <p class="section-lead">共通タスク（どのルートでも必要）: 決済全体設計・キャンセルポリシー確定・3DS対応（義務化済み）・延長/オプション/当日決済フロー・管理画面・振込オペ設計</p>
-    <div class="route-card">
-      <h4><span class="route-chip" style="background:var(--gray-500);">A</span> オーソリだけ先行（現行テナント型のまま）</h4>
-      <ul>
-        <li>工数: <strong>80h / 約2週間</strong>（オーソリ実装リファレンスの見積・テスト込み）</li>
-        <li>得られるもの: 決済失敗の事前検知・キャンセルポリシーの裏付け（50円オーソリ）</li>
-        <li>注意: 集約モデル未到達。最終形が予約時即時決済なら<strong>バッチオーソリ部分は捨てる</strong>。3DSは含まれない</li>
-      </ul>
-    </div>
-    <div class="route-card">
-      <h4><span class="route-chip" style="background:var(--payjp);">B</span> Pay.jpのまま集約モデル化</h4>
-      <ul>
-        <li>Platform API撤去・単一アカウント化（<strong>契約変更可否をPay.jpに要確認</strong>）・3DS実装（中〜大）</li>
-        <li>利点: カード再登録不要の可能性・手数料3.3%・ルートAの実装を一部流用</li>
-        <li>弱点: CVC未検証が残る・プラグインなし・領収書/ApplePayは自前</li>
-      </ul>
-    </div>
-    <div class="route-card">
-      <h4><span class="route-chip" style="background:var(--accent);">C</span> Stripeへ載せ替え+集約モデル化</h4>
-      <ul>
-        <li>プラグイン+PaymentIntent実装（3DS込み）・既存API撤去・<strong>カード再登録（88人）</strong></li>
-        <li>利点: 3DS/CVC/領収書が一括解決・実装が素直・将来機能</li>
-        <li>弱点: ルートAを先行した場合、その80hの大半が二重作業（5/15に増永さんも認識済み）</li>
-      </ul>
-    </div>
-    <div class="note">
-      <strong>短期の結論:</strong> 「今すぐ決済失敗対策」ならルートA一択（80h）。ただし6/12に「今の件数なら急がない」で合意済みのため、<strong>ルートAをスキップして全体設計→B or Cに直行するのが二度手間最小</strong>。BとC単体の工数は「ほぼ同等」（Cはカード再登録が増え、Bは3DS実装と契約変更リスクが増える）。
-    </div>
-  </section>
-
-  <!-- 7 -->
-  <section>
-    <h2><span class="num">7</span> 「Pay.jpオーソリ80h」は将来資産になるか</h2>
-    <div class="card">
-      <table>
-        <thead>
-          <tr><th>実装要素</th><th>最終形（予約時即時決済・集約）での扱い</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="label">予約時50円オーソリ（カード有効性チェック）</td><td><span class="badge good">生き残る</span> キャンセルポリシー・当日予約の与信に最終形でも使う</td></tr>
-          <tr><td class="label">3日前バッチオーソリ→当日キャプチャ</td><td><span class="badge bad">捨てる可能性大</span> 予約時即時決済なら不要</td></tr>
-          <tr><td class="label">デポジットオーソリ</td><td><span class="badge neutral">保留</span> 増永さんは導入に消極的寄り・与信調査（#25）待ち</td></tr>
-          <tr><td class="label">実装ノウハウ（charge_id管理・テストケース）</td><td><span class="badge warn">設計は流用可</span> コードはサービス固有のためStripe移行時は書き直し</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="font-size:14px; color:var(--gray-700);">→ ルートA（80h）のうち純粋な掛け捨ては概ね半分。「夏の繁忙期を決済失敗ゼロで走りたい」なら保険料として成立するが、急がないなら払う必要のないコスト。</p>
-  </section>
-
-  <!-- 8 -->
-  <section>
-    <h2><span class="num">8</span> リスク・未解決事項</h2>
+    <h2><span class="num">5</span> リスク・未解決事項</h2>
     <div class="card">
       <table>
         <thead><tr><th>項目</th><th>状態</th></tr></thead>
@@ -462,12 +492,12 @@
     </div>
   </section>
 
-  <!-- 9 -->
+  <!-- 6 -->
   <section>
-    <h2><span class="num">9</span> 決定後の移行計画（旧「Stripe移行方針」を統合・2026-06更新）</h2>
+    <h2><span class="num">6</span> 決定後の移行計画（旧「Stripe移行方針」を統合・2026-06更新）</h2>
     <p class="section-lead">4/21・5/1合意の実行計画。Stripeを選んだ場合のフロー設計と移行ステップ。Pay.jp集約化（ルートB）でも決済フローの構造は同じ。</p>
 
-    <h3>9.1 決済フロー設計</h3>
+    <h3>6.1 決済フロー設計</h3>
     <div class="card">
       <table>
         <thead><tr><th>シーン</th><th>フロー</th><th>要点</th></tr></thead>
@@ -476,12 +506,12 @@
           <tr><td class="label">キャンセル</td><td>キャンセル操作 → Refund（全額 or 一部） → 在庫開放</td><td>即時決済のため<strong>返金</strong>で処理。キャンセルポリシー（#28）が前提</td></tr>
           <tr><td class="label">延長</td><td>店舗が延長操作 → 登録済みカードで追加PaymentIntent</td><td>元の予約とは別決済。延長手数料の取りこぼし（#19）も解消</td></tr>
           <tr><td class="label">店頭オプション</td><td>店舗が選択 → 登録済みカードで追加決済</td><td>現在システム外の売上を捕捉できるようになる</td></tr>
-          <tr><td class="label">高級車デポジット</td><td>通常料金は即時決済 + 貸出日にデポジット分をオーソリ（manual・数日間）</td><td>返却時に解放 or 損傷等あればキャプチャ。導入自体は#25の与信調査待ち</td></tr>
+          <tr><td class="label">高級車デポジット</td><td>通常料金は即時決済 + 貸出日にデポジット分をオーソリ（manual・数日間）</td><td>返却時に解放 or 損傷等あればキャプチャ。#25調査済み（3〜5万+クレジット限定が現実解・§1.5）→ 導入可否は経営判断待ち</td></tr>
         </tbody>
       </table>
     </div>
 
-    <h3>9.2 店舗への振込・登録</h3>
+    <h3>6.2 店舗への振込・登録</h3>
     <div class="card">
       <ul style="padding-left: 20px; font-size: 14px; color: var(--gray-700);">
         <li style="margin-bottom: 8px;"><strong>振込:</strong> 月次で店舗別売上を集計 → カード手数料+利用料15%を差引 → 振込。紙請求は廃止、未払いリスクゼロ</li>
@@ -490,35 +520,24 @@
       </ul>
     </div>
 
-    <h3>9.3 移行ステップ（2026-06時点のステータス）</h3>
+    <h3>6.3 移行ステップ（2026-06時点のステータス）</h3>
     <div class="card">
       <table>
         <thead><tr><th>Phase</th><th>内容</th><th>状態</th></tr></thead>
         <tbody>
-          <tr><td class="label">0: 現行の緊急修正</td><td>手数料10%→15% / 延長決済不備・カード選択不具合・DBセキュリティ</td><td><strong>15%は完了</strong>。残りは<strong>DB再構築（#4・〜6月末）に統合済み</strong></td></tr>
-          <tr><td class="label">1: 方針確定・設計</td><td>決済サービス最終決定（#20）/ 弁護士回答 / キャンセルポリシー確定（#28）/ 詳細設計</td><td><strong>いまここ</strong>。#20・#25の調査結果と合わせて次回以降の定例で決定</td></tr>
-          <tr><td class="label">2: 実装</td><td>予約時決済・返金・延長/オプション決済・管理画面・（デポジット）</td><td>DB再構築完了後。全体設計を固めてからまとめて実装（6/12合意・二度手間回避）</td></tr>
-          <tr><td class="label">3: 切替</td><td>E2E検証 / カード再登録案内（88人） / 本番切替 / Pay.jpテナント廃止 / 振込運用開始</td><td>Phase 2の後</td></tr>
+          <tr><td class="label">0: 現行の緊急修正</td><td>手数料10%→15% / 延長決済不備・カード選択不具合・DBセキュリティ</td><td><span class="badge now">進行中</span> 手数料15%は<span class="badge good">完了</span>。残りはDB再構築（#4・〜6月末）に統合済み</td></tr>
+          <tr class="now"><td class="label">1: 方針確定・設計</td><td>決済サービス最終決定（#20）/ 弁護士回答 / キャンセルポリシー確定（#28）/ 詳細設計</td><td><span class="badge now">進行中（いまここ）</span> 調査（#20・#25）は<span class="badge good">完了</span>。次回定例で最終決定</td></tr>
+          <tr><td class="label">2: 実装</td><td>予約時決済・返金・延長/オプション決済・管理画面・（デポジット）</td><td><span class="badge neutral">未着手</span> DB再構築完了後、全体設計を固めてからまとめて実装（6/12合意・二度手間回避）</td></tr>
+          <tr><td class="label">3: 切替</td><td>E2E検証 / カード再登録案内（88人） / 本番切替 / Pay.jpテナント廃止 / 振込運用開始</td><td><span class="badge neutral">未着手</span> Phase 2の後</td></tr>
         </tbody>
       </table>
     </div>
     <div class="note">
       旧計画の日付（5/8決定・5/11実装開始）は、DB再構築優先への方針変更（5月）により失効。<strong>スケジュールはPhase 1の決定後に引き直す</strong>。
     </div>
-  </section>
-
-  <!-- 10 -->
-  <section>
-    <h2><span class="num">10</span> 推奨・定例での確認事項</h2>
-    <div class="card">
-      <ol style="padding-left: 20px; font-size: 14px; color: var(--gray-700);">
-        <li style="margin-bottom: 10px;"><strong>方向性:</strong> 「Stripe推奨」は維持。ただし根拠が更新 — 3DSではなく（Pay.jpも対応済み）、CVC検証・プラグイン・領収書・実装の素直さ・将来機能のため。手数料は新体系でPay.jp優位（スケール時に月数万円差）のため、コスト最重視ならPay.jp集約化（ルートB）も成立</li>
-        <li style="margin-bottom: 10px;"><strong>タイミング:</strong> オーソリ先行（ルートA）は見送り。DB再構築完了 → 決済全体設計を固めてから一気に実装</li>
-        <li><strong>定例で確認:</strong> ①ルートAの保険（80h）を夏前に買うか ②手数料 vs 実装の素直さ、どちらを重く見るか ③弁護士回答の状況</li>
-      </ol>
-    </div>
     <p style="font-size:12px; color:var(--gray-500);">出典: Pay.jp料金プラン / Pay.jpオーソリ仕様（authcapture）/ 海外カード制限告知（2026-03-03）/ Pay.jp 3DSガイドライン / Stripe料金 / Stripe Place a hold — 詳細URLは正本md（payjp-vs-stripe-comparison.md）の参考資料欄を参照</p>
   </section>
+
 
 </main>
 
