@@ -144,4 +144,4 @@ requires_payment_method → requires_confirmation → (requires_action: 3DS等)
 - [Billing（サブスクリプション）](https://docs.stripe.com/billing) / [Webhook](https://docs.stripe.com/webhooks)
 - [API v2名前空間の概要](https://docs.stripe.com/api-v2-overview)（決済は引き続きv1）
 - [料金（日本）](https://stripe.com/jp/pricing)
-- 関連: [payjp-vs-stripe-comparison.md](../payjp-vs-stripe-comparison.md)（#20比較）/ [stripe-migration-plan.md](./stripe-migration-plan.md)（移行方針）
+- 関連: [payjp-vs-stripe-comparison.md](../payjp-vs-stripe-comparison.md)（#20比較・移行計画は同mdの§9に統合済み）

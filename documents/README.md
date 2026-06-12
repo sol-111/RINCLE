@@ -54,9 +54,8 @@ documents/
 │   │   │   ├── payjp-authorization-guide.md # オーソリ実装ガイド
 │   │   │   └── payjp-issues.md             # 修正一覧（課題・改善点）
 │   │   ├── stripe/                 #   Stripe 移行
-│   │   │   ├── stripe-api-summary-ja.md    # Stripe APIリファレンス日本語まとめ（RINCLE向け）
-│   │   │   └── stripe-migration-plan.md    # Stripe移行計画
-│   │   └── payjp-vs-stripe-comparison.md   # PayJP vs Stripe 比較
+│   │   │   └── stripe-api-summary-ja.md    # Stripe APIリファレンス日本語まとめ（RINCLE向け）
+│   │   └── payjp-vs-stripe-comparison.md   # 決済基盤の方針（PayJP vs Stripe比較+移行計画を統合）
 │   │
 │   ├── 05_db/                      # DB設計（_index.csv → ErViewer で表示）
 │   │   ├── _index.csv              #   テーブル/オプションセット一覧
@@ -127,8 +126,7 @@ documents/
 │   │       └── seo-guide.html            # SEO設定ガイド
 │   └── stripe/                     #   Stripe 関連
 │       ├── api-reference.html      #     Stripe APIリファレンス
-│       ├── migration-plan.html     #     Stripe移行計画
-│       └── payjp-vs-stripe.html    #     PayJP vs Stripe 比較
+│       └── payjp-vs-stripe.html    #     決済基盤の方針（比較+移行計画）
 │
 └── 99_ receives/                   # クライアント提供資料（原本）
     ├── 仕様管理表.xlsx             #   検索・決済・料金・キャンセル等のケースロジック
