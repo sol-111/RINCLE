@@ -87,6 +87,7 @@ documents/
 │   │   ├── ui-ux-reference-catalog.md  # UI/UXリファレンスカタログ
 │   │   ├── revenue-model.xlsx      #   収益モデルの正本（実態/論点/試算/KPIツリー・計画・進捗/出典の11+シート）
 │   │   ├── shop-hearing-design.md  #   ショップヒアリング設計（仮説14×質問32・対象店舗実名）
+│   │   ├── idea-log.md             #   施策・提携アイデア検討ログ（採否と理由・ボツ案も記録）
 │   │   └── source/                 #   本番DBエクスポート置き場（個人情報を含むためgitignore対象）
 │   │
 │   ├── 02_marketing/               # マーケティング戦略
