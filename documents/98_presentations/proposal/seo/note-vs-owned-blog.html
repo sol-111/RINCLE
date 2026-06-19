@@ -63,7 +63,7 @@
   <div class="section">
     <div class="section-header"><div class="section-num">!</div><h2>結論サマリー</h2></div>
     <div class="alert alert-red">
-      <strong>noteで貯めたSEO評価は、後から自社ドメインに移せません</strong>（無料版noteにはリダイレクト機能がなく、検索評価はnote.comに帰属したまま。詳細は§4）。「まずnoteで始めて、育ったら自社サイトへ引っ越す」という進め方は、引っ越しの瞬間に検索評価がゼロリセットされます。
+      <strong>noteで貯めたSEO評価は、後から自社ドメインに移せません</strong>（無料版noteにはリダイレクト機能がなく、検索評価はnote.comに帰属したまま）。「まずnoteで始めて、育ったら自社サイトへ引っ越す」という進め方は、引っ越しの瞬間に検索評価がゼロリセットされます。
     </div>
     <div class="alert alert-green">
       <strong>推奨は「最初から分業併用」。</strong> 同じことを両方でやるのではなく、<strong>役割を分けて両方使います</strong>。
@@ -141,80 +141,37 @@
       <table>
         <thead><tr><th>選択肢</th><th>月額</th><th>保守の手間</th><th>備考</th></tr></thead>
         <tbody>
-          <tr><td class="label">レンタルサーバー+WordPress</td><td>600〜1,100円程度</td><td><span class="badge warn">中</span> 更新・バックアップ・セキュリティ対応が継続発生</td><td>管理画面が最も馴染みやすい・情報量最多</td></tr>
-          <tr><td class="label">ヘッドレスCMS+静的サイト<br>（microCMS+Astro+Cloudflare Pages）</td><td><strong>ほぼゼロ</strong>（microCMS Hobby無料・商用可）</td><td><span class="badge good">小</span> サーバー保守不要</td><td><strong>第一候補</strong>。表示最速（LCP1秒以下狙い）= LCP49秒のBubble本体を補う。執筆は非エンジニアでも可</td></tr>
-          <tr><td class="label">STUDIO</td><td>1,480円〜</td><td><span class="badge good">小</span></td><td><span class="badge bad">不向き</span> サブディレクトリ同居が不可</td></tr>
-          <tr><td class="label">note（無料）</td><td>ゼロ</td><td>最小</td><td>ドメイン資産は貯まらない（§1）</td></tr>
+          <tr><td class="label">レンタルサーバー+WordPress<br><span style="font-weight:400;font-size:12px;color:var(--sub)">動的</span></td><td>600〜1,100円程度<br><span style="font-weight:400;font-size:12px;color:var(--sub)">Bubbleには載せられず別途新規契約=純増</span></td><td><span class="badge warn">中</span> アクセスのたびにサーバーでページ生成 → 更新・バックアップ・セキュリティ対応が継続発生</td><td>管理画面が最も馴染みやすい・情報量最多</td></tr>
+          <tr><td class="label">ヘッドレスCMS+静的サイト<br>（microCMS+Astro+Cloudflare Pages）<br><span style="font-weight:400;font-size:12px;color:var(--sub)">静的</span></td><td><strong>ほぼゼロ</strong>（microCMS Hobby無料・商用可）</td><td><span class="badge good">小</span> 先に作ったHTMLを返すだけでサーバー保守不要</td><td><strong>第一候補</strong>。表示最速（LCP1秒以下狙い）= LCP49秒のBubble本体を補う。初期構築だけ弊社対応すれば、あとは管理画面から記事を足すだけ（非エンジニアでも可）</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:14px;color:var(--sub)">金額はどれも誤差レベル（月0〜1,100円）。差が出るのは<strong>保守の手間と表示速度</strong>。</p>
+
+    <h3>「ヘッドレスCMS+静的サイト」とは</h3>
+    <p style="font-size:14px">聞き慣れない構成なので、3つの部品の役割で説明します。要は「<strong>記事を書く場所</strong>」と「<strong>それをWebページとして配信する仕組み</strong>」を、軽くて速くて無料の部品で組む構成です。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>部品</th><th>役割</th></tr></thead>
+        <tbody>
+          <tr><td class="label">microCMS<br><span style="font-weight:400;font-size:12px;color:var(--sub)">ヘッドレスCMS</span></td><td>記事を書く・管理する<strong>管理画面</strong>。書いた内容はAPI経由で取り出せる。<strong>非エンジニアでも投稿できる</strong></td></tr>
+          <tr><td class="label">Astro<br><span style="font-weight:400;font-size:12px;color:var(--sub)">静的サイトジェネレーター</span></td><td>microCMSの記事を引っ張って、<strong>HTMLページを"前もって"組み立てる</strong>ツール</td></tr>
+          <tr><td class="label">Cloudflare Pages</td><td>出来上がったHTMLを<strong>無料で配信する置き場</strong>（ホスティング）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <ul style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:6px"><strong>ヘッドレス</strong> = CMSに表示画面(head)を持たせず、管理画面とデータだけ提供する形。表示は別の道具に任せるので見た目を自由に作れる</li>
+        <li><strong>静的(static)</strong> = アクセスのたびにページを生成せず、<strong>先に作っておいたHTMLをそのまま返す</strong>方式。だから速く、サーバー側で動くプログラムが無い＝保守・セキュリティ対応がほぼ不要</li>
+      </ul>
+    </div>
+
+    <p style="font-size:14px;color:var(--sub)">金額はどちらも誤差レベル（月0〜1,100円）。差が出るのは<strong>保守の手間と表示速度</strong>。</p>
   </div>
 
   <!-- 4 -->
   <div class="section">
-    <div class="section-header"><div class="section-num">4</div><h2>「note→後で自社に移す」が効かない理由</h2></div>
-    <div class="alert alert-red">
-      <strong>noteで貯めた検索評価は、自社ドメインへ移転できません（無料版）。</strong>
-    </div>
-    <div class="card">
-      <ol style="padding-left:20px;font-size:14px">
-        <li style="margin-bottom:8px"><strong>note無料版にはリダイレクト機能がない</strong>。SEO評価の引き継ぎには301リダイレクトが必須だが、その手段がユーザーに提供されていない → 移転先の記事は検索エンジンから「新規記事」扱い</li>
-        <li style="margin-bottom:8px">HTML編集も不可のため、擬似リダイレクトすら設置できない</li>
-        <li style="margin-bottom:8px">記事を手動コピーで移すと<strong>重複コンテンツ問題</strong>: noteはcanonical設定も不可のため、ドメインの強いnote側が「オリジナル」、自社側が「コピー」と判定されるリスク。回避にはnote記事の削除が必要で、その瞬間にnoteの検索流入は消える</li>
-        <li><strong>唯一の例外はnote pro（月8万円税抜）の独自ドメイン適用</strong>（既存URLが自動リダイレクトされる）。ただし解約後もリダイレクトが維持されるかは公開情報がなく、維持されないリスクが高いと思われる</li>
-      </ol>
-    </div>
-    <p style="font-size:14px">つまり「noteを育ててから自社へ」は月8万円を払い続ける場合にのみ部分的に成立する特殊ルートで、RINCLEの規模では非現実的。<strong>SEO資産にしたい記事は最初から自社ドメインに書くしかない</strong>。</p>
-  </div>
-
-  <!-- 5 -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">5</div><h2>LPとブログ記事はどちらがSEOに強いか</h2></div>
-    <div class="alert alert-blue">
-      元の構想は「地域ごとのLP」。形式の論点を整理すると — <strong>SEOで集客するなら「ブログ記事+本体サイトのエリアページ」。狭義のLP（縦長1ページ・CV特化）はSEO目的では作りません</strong>。LPは①被リンクがつきにくい ②1ページではKWを網羅できない ③情報収集の検索意図に合わない、と構造的にSEOに弱いためです。
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>狙うKW</th><th>検索意図</th><th>受け皿</th></tr></thead>
-        <tbody>
-          <tr><td class="label">「しまなみ海道 レンタサイクル」<br>「○○ サイクリングコース」</td><td>情報収集型<br>（どこを走ろう）</td><td><strong>ブログ記事</strong>（コース紹介+レンタル導線）</td></tr>
-          <tr><td class="label">「ロードバイク レンタル 名古屋」</td><td>取引型<br>（借りる場所を探している）</td><td><strong>本体サイトのエリア検索ページ</strong>（#21のsitemap約500URL=サイト一体型LP相当）。ブログ記事から内部リンクで流す</td></tr>
-          <tr><td class="label">広告の受け皿</td><td>—</td><td>狭義の縦長LPが活きるのはここ（Google広告開始時）。SEO目的では不要</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="font-size:14px">→ 「地域LP」構想は、実体としては<strong>「地域ハブのブログ記事+本体エリアページ」の組み合わせ</strong>で実現するのがSEO・コスト両面で最も効率的（LP制作の外注費も不要）。</p>
-
-    <h3>「ブログ記事+本体エリアページ」とは具体的に何か</h3>
-    <p style="font-size:14px">2種類のページは<strong>ユーザーの段階が違う</strong>と考えると分かりやすい。<strong>「本体エリアページ」は新規に作る別物ではなく、rincle.co.jpの予約サイト側にある既存のエリア検索/店舗一覧ページ</strong>（#21でsitemap化する約500URLがこれ）を指す。</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th></th><th>① ブログ記事</th><th>② 本体エリアページ</th></tr></thead>
-        <tbody>
-          <tr><td class="label">置き場所</td><td><code style="background:#f0f1f4;padding:2px 6px;border-radius:4px">rincle.co.jp/blog/</code>（新設）</td><td><code style="background:#f0f1f4;padding:2px 6px;border-radius:4px">rincle.co.jp</code> 予約サイト側（既存）</td></tr>
-          <tr><td class="label">例</td><td>「神戸の海沿いサイクリングコース完全ガイド」</td><td>「神戸 ロードバイクレンタル（店舗一覧・空き・予約）」</td></tr>
-          <tr><td class="label">見ている人</td><td>「神戸でどこ走ろう？」=<strong>情報収集段階</strong>（まだ借りると決めてない）</td><td>「神戸で借りられる店どこ？」=<strong>もう借りる気で探している</strong>（取引型）</td></tr>
-          <tr><td class="label">役割</td><td><strong>集客</strong>（検索で広く拾う）→ 記事内リンクで②へ送る</td><td><strong>予約の刈り取り</strong>（ここでCV）</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card">
-      <p style="font-size:13px;color:var(--sub);margin-bottom:8px">導線のイメージ</p>
-      <pre style="font-size:13px;line-height:1.7;white-space:pre-wrap;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:var(--text);margin:0">検索「神戸 サイクリングコース」（どこ走ろう）
-  → ① ブログ記事「神戸の海沿いコースガイド」      ← 集客（網を広げる）
-    → 記事内リンク「このコースを走るなら →」
-      → ② 本体エリアページ「神戸 ロードバイクレンタル」 ← 予約（刈り取り）
-
-検索「ロードバイク レンタル 神戸」（もう借りたい）
-  → ② 本体エリアページに直接着地 → 予約</pre>
-    </div>
-    <p style="font-size:14px"><strong>なぜ2つに分けるか:</strong> 「借りたい」人だけ狙うと母数が小さい。ブログで「まだ迷っている・情報を集めている人」まで入口を広げて本体エリアページに流し込むと予約母数が増える。しかも「コースガイド」型の記事は他サイトからリンクされやすく、狭義LPが弱かった点（被リンク・情報量・検索意図）をそのまま解消する。<strong>ブログ＝集客の網を広げる係／本体エリアページ＝予約させる係</strong>の役割分担。</p>
-  </div>
-
-  <!-- 6 -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">6</div><h2>RINCLEへの推奨・始め方</h2></div>
+    <div class="section-header"><div class="section-num">4</div><h2>RINCLEへの推奨・始め方</h2></div>
     <div class="card">
       <ol style="padding-left:20px;font-size:14px">
         <li style="margin-bottom:8px"><strong>地域×コース記事（SEO資産）= 自社サブディレクトリ一択</strong>: rincle.co.jp/blog/ に静的サイト（Astro+microCMS）を同居。月額ほぼゼロ・保守最小・表示最速</li>
@@ -223,23 +180,6 @@
         <li style="margin-bottom:8px"><strong>順序</strong>: DB再構築完了 → SEO基盤一式（#21-22）→ Cloudflareフロント → サブディレクトリブログ構築。<strong>記事の書き溜めは今日から可能</strong>（原稿化しておきCMS完成後に一括投入）。noteは即日開始できる</li>
         <li>優先KW: 最優先「観光ルート名×レンタサイクル」（しまなみ海道・ビワイチ等）、次点「都市名×ロードバイク レンタル」。1本目は加盟店が実在する地域（例: 神戸）から。記事テンプレ1種（コース概要・マップ・立ち寄りスポット・レンタル導線）を設計して量産</li>
       </ol>
-    </div>
-  </div>
-
-  <!-- 確認点 -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">?</div><h2>未確認事項・確認点</h2></div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>#</th><th>項目</th><th>内容</th></tr></thead>
-        <tbody>
-          <tr><td>1</td><td class="label">rincle.co.jpのDNS構成</td><td>Workerルーティングの可否がDNSレコード形式に依存 → DB再構築後に弊社で技術検証</td></tr>
-          <tr><td>2</td><td class="label">記事の書き手は誰か</td><td>運営 / 加盟店 / 外注。月数本の継続体制をどう組むか → 次回定例で要相談</td></tr>
-          <tr><td>3</td><td class="label">地域の優先順位</td><td>構想は名古屋・東京だが、SEO的には「加盟店が実在し観光ルートKWの実需がある」地域（しまなみ・神戸等）が先では → 要すり合わせ</td></tr>
-          <tr><td>4</td><td class="label">noteアカウントの開設名義・運用者</td><td>無料なので先行開設可。誰が投稿を続けるか</td></tr>
-          <tr><td>5</td><td class="label">店舗数の対外表記</td><td>記事内で店舗数に言及する場合は確認リスト#7の決着待ち</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
