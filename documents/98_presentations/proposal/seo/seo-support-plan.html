@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO支援プラン（記事作成代行） | RINCLE</title>
+<style>
+  :root{
+    --navy:#0f3460; --navy-light:#1a4a8a; --red:#e94560;
+    --green:#27ae60; --bg:#f5f6fa; --text:#2c2c3a; --sub:#6b7280;
+    --border:#e5e7eb; --radius:12px;
+    --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .hero{background:linear-gradient(135deg,#0f3460 0%,#1a4a8a 100%);color:#fff;padding:52px 40px 44px}
+  .hero h1{font-size:2rem;font-weight:800;margin-bottom:8px}
+  .hero p{font-size:1.02rem;opacity:.88;max-width:760px}
+  .hero-meta{margin-top:14px;font-size:13px;opacity:.7;display:flex;gap:20px;flex-wrap:wrap}
+  .container{max-width:960px;margin:0 auto;padding:40px 28px 80px}
+
+  .section{margin-bottom:48px}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+  .section-num{display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--navy);color:#fff;border-radius:10px;font-size:17px;font-weight:800;flex-shrink:0}
+  .section-header h2{font-size:21px;font-weight:700}
+  h3{font-size:16px;font-weight:700;color:var(--navy);margin:26px 0 12px;padding-left:11px;border-left:3px solid var(--red)}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin:16px 0}
+  .alert{border-radius:0 10px 10px 0;padding:16px 20px;margin:16px 0;font-size:14px}
+  .alert-red{background:#ffeef0;border-left:4px solid var(--red);color:#a0132e}
+  .alert-green{background:#eefbf3;border-left:4px solid var(--green);color:#1a7a42}
+  .alert-blue{background:#eef4ff;border-left:4px solid var(--navy);color:var(--navy)}
+
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+  thead th{background:var(--navy);color:#fff;padding:11px 14px;text-align:left;font-size:13px;font-weight:600;white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid #f0f1f4;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#f8f9fb}
+  td.label{font-weight:700;color:var(--navy);white-space:nowrap}
+  td.center{text-align:center}
+
+  .badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+  .badge.good{background:#eefbf3;color:#1a7a42}
+  .badge.bad{background:#ffeef0;color:#a0132e}
+  .badge.warn{background:#fff7e6;color:#92400e}
+  .badge.navy{background:#eef4ff;color:var(--navy)}
+
+  .src{font-size:12px;color:var(--sub);margin-top:6px}
+  .src a{color:var(--sub)}
+
+  .flow-wrap{overflow-x:auto;padding:6px 2px}
+  .flow{min-width:740px}
+  .flow-row{display:grid;grid-template-columns:56px repeat(5,1fr);align-items:stretch;gap:10px;margin-bottom:12px}
+  .flow-row .who{display:flex;align-items:center;font-weight:800;color:var(--navy);font-size:15px}
+  .step{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:#fff;text-align:center;padding:15px 12px;font-weight:700;font-size:13.5px;
+        box-shadow:0 5px 14px rgba(15,52,96,.22);transition:transform .15s ease,box-shadow .15s ease;
+        clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%,16px 50%)}
+  .step:hover{transform:translateY(-3px);box-shadow:0 9px 20px rgba(15,52,96,.3)}
+  .step.first{clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%)}
+  .step .ic{font-size:19px;line-height:1.1}
+  .step .st{font-size:10px;font-weight:700;opacity:.72;letter-spacing:.06em}
+  .s1{background:linear-gradient(135deg,#2a86ac,#1f7196)}
+  .s2{background:linear-gradient(135deg,#2769a2,#1c578a)}
+  .s3{background:linear-gradient(135deg,#21508c,#1a4276)}
+  .s4{background:linear-gradient(135deg,#1a3d72,#15315c)}
+  .s5{background:linear-gradient(135deg,#13325e,#0f2747)}
+  .step.client{background:linear-gradient(135deg,#ef6e84,#e0495f);box-shadow:0 5px 14px rgba(224,73,95,.28)}
+  .step.client:hover{box-shadow:0 9px 20px rgba(224,73,95,.36)}
+  .flow-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--sub)}
+  .flow-legend .dot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:middle}
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>SEO支援プラン <span style="opacity:.8">記事作成代行</span></h1>
+  <p>検索集客の入口になる「地域×サイクリングコース記事」を、弊社が代行で継続的に作成・運用するプランです。</p>
+  <div class="hero-meta"><span>2026-06-19</span><span>PEDALSTANDARD社向け</span><span>弊社（瀬野・山本）</span></div>
+</div>
+
+<div class="container">
+
+  <!-- なぜやるのか -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><h2>なぜやるのか</h2></div>
+
+    <h3 style="margin-top:0">① 運営側に記事を書くリソースが足りない</h3>
+    <div class="card">
+      <p style="font-size:14px">検索集客には記事が要る、というのは分かっている。ただ記事は単発では効かず<strong>毎月積み上げて初めて効く</strong>。一方で運営（増永さん）は店舗ヒアリング・営業で手一杯で、KW設計・継続投稿に割ける人手が無い。書き手が決まらないまま「いつかやる」で止まれば、集客の入口がいつまでも空かない。</p>
+      <div class="alert alert-green" style="margin-bottom:0;margin-top:14px"><strong>→ ここを弊社が代行すれば、施策が実際に回り始める。</strong></div>
+    </div>
+
+    <h3>② 競合がまだ記事で先行していない ── 今のうちに取りに行く</h3>
+    <div class="card">
+      <ul style="padding-left:20px;font-size:14px">
+        <li>CycleTripは7年で3店舗とペースが遅い／GIANTは都市部に店舗が無い／メーカー系は自社ブランドしか並べられない</li>
+        <li>SEOは時間が効くストック型。<strong>先に書いて評価を積んだ者が逃げ切る</strong></li>
+        <li>競合が記事に本腰を入れる前の<strong>今が仕掛けどき</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- やりたいこと -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><h2>やりたいこと</h2></div>
+
+    <h3 style="margin-top:0">何を書くか</h3>
+    <p style="font-size:14px">地域×サイクリングコースの記事（名古屋・東京・神戸…）。コース概要・マップ・所要時間・料金・立ち寄りスポット＋レンタル導線をテンプレ化して量産。</p>
+    <p style="font-size:14px"><strong>着手の優先順位（提案）</strong>：予約ゼロ×需要のある地域の店から着手（店舗の離脱防止と兼ねる）。</p>
+
+    <h3>どの検索語を取るか</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>優先</th><th>検索語の型</th><th>例</th><th>根拠</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge navy">◎ 主軸</span></td><td class="label">ロードバイク レンタル × 地域名</td><td>ロードバイク レンタル 東京 / 八王子 / 多摩川 / 神奈川</td><td>サジェスト10件フル・うち8件が地域名。「人の調べ方の実態」（増永さん）と一致</td></tr>
+          <tr><td><span class="badge navy">◎ 主軸</span></td><td class="label">観光ルート名 × レンタサイクル/自転車</td><td>しまなみ海道 レンタサイクル / ビワイチ レンタサイクル</td><td>所要時間・料金・乗り捨て・荷物…と<strong>情報型クエリの宝庫</strong>。しまなみだけで年17.3万台の実需</td></tr>
+          <tr><td><span class="badge good">○ 次段</span></td><td class="label">eバイク レンタル × 地域名</td><td>eバイク レンタル しまなみ / 京都 / 長野県</td><td>サジェスト10件フル。ロードバイクで取り切った後に拡張</td></tr>
+          <tr><td><span class="badge warn">△ 補助</span></td><td class="label">クロスバイク レンタル × 地域名/長期</td><td>クロスバイク レンタル 1ヶ月</td><td>サジェストは出るが貸出実績はロードバイク中心。長期需要の入口として様子見</td></tr>
+          <tr><td><span class="badge bad">✕ 不使用</span></td><td class="label">スポーツバイク レンタル</td><td>—</td><td>サジェスト4件のみ＝<strong>誰も検索しない</strong>。社名・ブランド説明以外で使わない</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>どこに置くか</h3>
+    <p style="font-size:14px"><strong>役割を分けて両方やる</strong>のが定石。同じ記事を両方に置かない（重複コンテンツ回避）。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>役割</th><th>置き場所</th><th>何を置く</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td class="label">SEO資産</td><td><strong>自社サブディレクトリ</strong><br>（rincle.co.jp/blog/ 等）</td><td>「ロードバイク レンタル 地域名」「しまなみ海道 レンタサイクル」を狙う地域×コース記事</td><td>検索評価を自社ドメインに蓄積。<strong>後から移せない以上、最初からここに書く</strong></td></tr>
+          <tr><td class="label">拡散・ブランド</td><td><strong>note（無料版）</strong></td><td>運営の想い・店舗ストーリー・イベントレポ</td><td>note.comの集客力とSNS拡散に乗る。検索資産にする必要がないもの</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px;color:var(--sub)">記事（集客）→ 本体のエリア・店舗ページ（予約の刈り取り）へ内部リンクでつなぐ。</p>
+  </div>
+
+  <!-- プラン一覧 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><h2>プラン一覧</h2></div>
+    <p style="font-size:14px">毎月の継続プラン。プラン差は<strong>新規記事の本数</strong>と<strong>被リンク対策数</strong>のみ。SEOコンサルティング一式（◯印）は両プラン共通。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>内容</th><th style="text-align:center">ライトプラン</th><th style="text-align:center">スタンダードプラン</th></tr></thead>
+        <tbody>
+          <tr><td class="label">新規記事</td><td class="center"><strong>3本/月</strong></td><td class="center"><strong>5本/月</strong></td></tr>
+          <tr><td class="label">過去記事のリライト</td><td class="center">1本/月</td><td class="center">1本/月</td></tr>
+          <tr><td class="label">被リンク対策（<a href="https://docs.google.com/spreadsheets/d/1Qwzj39RZdOxEK5z6LgUcVc0DR54cmd5RrY9-eqO5hqg/edit?gid=0#gid=0" target="_blank" rel="noopener">登録型被リンク</a>）</td><td class="center">1本/月</td><td class="center">2本/月</td></tr>
+          <tr><td class="label"><a href="https://docs.google.com/spreadsheets/d/1p_VfLLqOCqHGE5tgGKqzakvGbt2JlLl7-kj6SkDyTrs/edit?gid=1914320853#gid=1914320853" target="_blank" rel="noopener">キーワード選定</a>（新規 / リライト）</td><td class="center">◯</td><td class="center">◯</td></tr>
+          <tr><td class="label">SEO施策立案</td><td class="center">◯</td><td class="center">◯</td></tr>
+          <tr><td class="label">月次レポート</td><td class="center">◯</td><td class="center">◯</td></tr>
+          <tr><td class="label">固定費（税抜）</td><td class="center">¥20,000</td><td class="center">¥20,000</td></tr>
+          <tr><td class="label">月額費用（税抜・合計）</td><td class="center"><strong style="font-size:15px;color:var(--navy)">¥80,000</strong></td><td class="center"><strong style="font-size:15px;color:var(--navy)">¥120,000</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px;color:var(--sub)">※ 月額費用＝記事制作費（¥20,000×新規本数）＋固定費¥20,000。固定費にKW選定・被リンク対策・SEO施策立案・月次レポート等の運用一式を含む。</p>
+    <div class="alert alert-blue">
+      <strong>📌 本プランに含まないもの — ブログ基盤の構築</strong><br>
+      記事の公開先となる自社サブディレクトリ（rincle.co.jp/blog/）の構築は、<strong>準委任契約の範囲でSEO基盤整備とあわせて対応</strong>します。本プラン（月額）は基盤が整っている前提の「記事運用」のサービスです。
+    </div>
+
+    <h3>各項目の中身</h3>
+    <div class="card">
+      <ul style="padding-left:20px;font-size:14px;margin:0">
+        <li style="margin-bottom:8px"><strong>新規記事</strong> — 地域×サイクリングコースの記事を自社サブディレクトリ（rincle.co.jp/blog/）に公開。KW選定・執筆・SEO設定・公開まで弊社が代行。テンプレ（コース概要・マップ・所要時間・料金・立ち寄りスポット＋レンタル導線）で品質を揃えて量産</li>
+        <li style="margin-bottom:8px"><strong>月次レポート</strong> — GA4／Search Consoleをもとに、検索流入・表示順位・記事ごとの成果・予約への寄与を月1回報告。次月にどのKW/地域を狙うかの提案までセット</li>
+        <li><strong>過去記事のリライト</strong> — 公開済み記事から伸び悩んでいる1本を毎月見直して改善（タイトル・見出し・内容の追記）。SEOは「書いて終わり」ではなくリライトで順位が伸びるため、積み上げた記事を育て続ける</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 記事作成フロー -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><h2>記事作成フロー</h2></div>
+    <p style="font-size:14px">記事執筆の全工程を弊社が担当させていただきます。</p>
+    <div class="card">
+      <div class="flow-wrap">
+        <div class="flow">
+          <div class="flow-row">
+            <div class="who">弊社</div>
+            <div class="step first s1"><span class="ic">🔍</span><span class="st">STEP 1</span>KW選定</div>
+            <div class="step s2"><span class="ic">🗂️</span><span class="st">STEP 2</span>記事構成作成</div>
+            <div class="step s3"><span class="ic">✍️</span><span class="st">STEP 3</span>記事執筆</div>
+            <div class="step s4"><span class="ic">✅</span><span class="st">STEP 4</span>レビュー</div>
+            <div class="step s5"><span class="ic">🚀</span><span class="st">STEP 5</span>編集公開</div>
+          </div>
+          <div class="flow-row">
+            <div class="who">貴社</div>
+            <div class="step client" style="grid-column:5"><span class="ic">👀</span><span class="st">STEP 4 と並走</span>レビュー</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-legend">
+        <span><span class="dot" style="background:#1a4a8a"></span>弊社が全工程を担当</span>
+        <span><span class="dot" style="background:#e0495f"></span>貴社は「レビュー」工程のみ並走</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 施策推進イメージ -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><h2>施策推進イメージ</h2></div>
+    <p style="font-size:14px">ライトプラン（最小構成）の場合の6ヶ月イメージ。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>実施内容</th><th>1ヶ月目</th><th>2ヶ月目</th><th>3ヶ月目</th><th>4ヶ月目</th><th>5ヶ月目</th><th>6ヶ月目</th></tr></thead>
+        <tbody>
+          <tr><td class="label">弊社（毎月）</td><td>次月の施策立案（狙うKW/地域の提案）</td><td>月次レポート＋施策立案</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td></tr>
+          <tr><td class="label">弊社（記事制作）</td><td>立ち上げ：KW選定・競合分析・記事テンプレ設計 ＋ <span style="color:var(--red)">新規記事 1本※</span></td><td>新規3本</td><td>新規3本＋リライト1本</td><td>新規3本＋リライト1本</td><td>新規3本＋リライト1本</td><td>新規3本＋リライト1本</td></tr>
+          <tr><td class="label">貴社（増永さん側）</td><td>記事レビュー・店舗のコース情報提供</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">※ 1ヶ月目は立ち上げ作業（KW設計・テンプレ作り）があるため新規記事は少なめ。2ヶ月目から通常ペース。月次レポートは記事公開後にデータが出る2ヶ月目から、過去記事のリライトは記事が貯まる3ヶ月目から。</p>
+    <div class="alert alert-blue">
+      <strong>前提</strong>：ブログ基盤（記事の公開先）が整うまでの間も、記事原稿の書き溜めは先行できる（基盤の構築範囲は「プラン一覧」を参照）。<br>
+      <strong>スタンダードプランの場合</strong>：新規記事が3本/月→<strong>5本/月</strong>になる（月次レポート・リライトは共通）。
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/seo-support-plan.md
+</footer>
+
+</body>
+</html>
