@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ブログSEOの方針 | RINCLE</title>
+<style>
+  :root{
+    --navy:#0f3460; --navy-light:#1a4a8a; --red:#e94560;
+    --green:#27ae60; --bg:#f5f6fa; --text:#2c2c3a; --sub:#6b7280;
+    --border:#e5e7eb; --radius:12px;
+    --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .hero{background:linear-gradient(135deg,#0f3460 0%,#1a4a8a 100%);color:#fff;padding:52px 40px 44px}
+  .hero h1{font-size:2rem;font-weight:800;margin-bottom:8px}
+  .hero p{font-size:1.02rem;opacity:.88;max-width:760px}
+  .hero-meta{margin-top:14px;font-size:13px;opacity:.7;display:flex;gap:20px;flex-wrap:wrap}
+  .container{max-width:960px;margin:0 auto;padding:40px 28px 80px}
+
+  .section{margin-bottom:48px}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+  .section-num{display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--navy);color:#fff;border-radius:10px;font-size:17px;font-weight:800;flex-shrink:0}
+  .section-header h2{font-size:21px;font-weight:700}
+  h3{font-size:16px;font-weight:700;color:var(--navy);margin:26px 0 12px;padding-left:11px;border-left:3px solid var(--red)}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin:16px 0}
+  .alert{border-radius:0 10px 10px 0;padding:16px 20px;margin:16px 0;font-size:14px}
+  .alert-red{background:#ffeef0;border-left:4px solid var(--red);color:#a0132e}
+  .alert-green{background:#eefbf3;border-left:4px solid var(--green);color:#1a7a42}
+  .alert-blue{background:#eef4ff;border-left:4px solid var(--navy);color:var(--navy)}
+
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+  thead th{background:var(--navy);color:#fff;padding:11px 14px;text-align:left;font-size:13px;font-weight:600;white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid #f0f1f4;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#f8f9fb}
+  td.label{font-weight:700;color:var(--navy);white-space:nowrap}
+  td.center{text-align:center;white-space:nowrap}
+  .o{color:var(--green);font-weight:800}
+  .x{color:var(--red);font-weight:800}
+  .t{color:#92400e;font-weight:800}
+
+  .badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+  .badge.good{background:#eefbf3;color:#1a7a42}
+  .badge.bad{background:#ffeef0;color:#a0132e}
+  .badge.warn{background:#fff7e6;color:#92400e}
+
+  pre{font-size:13px;line-height:1.7;white-space:pre-wrap;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:var(--text);margin:0}
+  .src{font-size:12px;color:var(--sub);margin-top:6px}
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>ブログSEOの方針 <span style="opacity:.8">どこに・どの形式・何のツールで書くか</span></h1>
+  <p>「地域ごとのサイクリングコースで集客したい」構想（6/12定例）の実現方式を、置き場所・形式・ツールの3軸で整理した報告です。</p>
+  <div class="hero-meta"><span>タスク#24</span><span>2026-06-12調査・06-24統合</span><span>次回定例の報告用</span></div>
+</div>
+
+<div class="container">
+
+  <!-- 1 結論 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><h2>結論</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>観点</th><th>結論</th><th>ひとこと</th></tr></thead>
+        <tbody>
+          <tr><td class="label">どこに書くか</td><td>SEO資産＝<strong>自社サブディレクトリ</strong>（rincle.co.jp/blog/）／拡散＝<strong>note（無料）</strong></td><td>noteの検索評価は後から自社に移せない → 最初から自社に書く</td></tr>
+          <tr><td class="label">どの形式で</td><td><strong>ブログ記事 ＋ 本体エリアページ</strong>（狭義の1枚LPは作らない）</td><td>情報収集層はLPで拾えない。記事で集客→エリアページで予約</td></tr>
+          <tr><td class="label">何のツールで</td><td><strong>WordPress</strong></td><td>先方が自分で書く＝WYSIWYGで自走できる。保守は弊社が準委任で対応</td></tr>
+          <tr><td class="label">用途で振り分け</td><td>SEO上位狙い＝WordPress記事／お知らせ＝Bubble／拡散＝note</td><td>「全部WordPress」でも「全部Bubble」でもない</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2 どこに -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><h2>どこに書くか — 自社ドメイン vs note</h2></div>
+    <div class="alert alert-red">
+      <strong>noteで貯めたSEO評価は後から自社ドメインに移せません</strong>（無料版noteにリダイレクト機能がなく、評価はnote.comに帰属したまま）。「まずnoteで始めて育ったら自社へ引っ越す」は、引っ越しの瞬間に検索評価がゼロリセットされます。
+    </div>
+    <div class="alert alert-green"><strong>推奨は「移行」ではなく「最初から分業併用」。</strong></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>役割</th><th>置き場所</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td class="label">SEO資産<br><span style="font-weight:400;font-size:12px;color:var(--sub)">地域×コース記事</span></td><td><strong>初日から自社サブディレクトリ</strong><br>（rincle.co.jp/blog/）</td><td>検索評価を自社ドメインに蓄積。後から移せない以上、最初からここに書く</td></tr>
+          <tr><td class="label">拡散・ブランド用<br><span style="font-weight:400;font-size:12px;color:var(--sub)">運営の想い・店舗ストーリー・イベントレポ</span></td><td><strong>note（無料版）</strong></td><td>note.comの集客力・SNS拡散に乗る。検索資産にする必要がないもの</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>noteの実態（なぜ自社が必要か）</h3>
+    <div class="card">
+      <ul style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:6px"><strong>強み</strong>：ドメイン評価が高く公開直後でも検索流入が得やすい（会員777万人）</li>
+        <li style="margin-bottom:6px"><strong>限界</strong>：HTMLタグ・構造化データのカスタマイズ不可。<strong>検索評価はすべてnote社に帰属</strong>（無料版は独自ドメイン不可）。<strong>noteのリンクは全てnofollow</strong>＝rincle.co.jpへの評価受け渡しは限定的</li>
+        <li style="margin-bottom:6px"><strong>note pro の独自ドメインは月8万円（税抜）</strong>＝予約52件/月分に相当し、現段階では割に合わない</li>
+        <li><strong>併用の定石</strong>：内容とターゲットを分ければカニバリしない。自社ブログ＝検索KW狙い／note＝初動露出・ファン形成</li>
+      </ul>
+      <p class="src">出典: noteヘルプ / LeadGrid / 東京SEOメーカー / mesut（nofollow検証）/ 301リダイレクト解説 — 詳細URLは正本md</p>
+    </div>
+  </div>
+
+  <!-- 3 形式 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><h2>どの形式で — LP vs ブログ記事</h2></div>
+    <div class="alert alert-green">
+      <strong>SEOで集客するなら「ブログ記事 ＋ 本体サイトのエリアページ」。</strong> 狭義のLP（縦長1ページ・CV特化）はSEO目的では作りません。
+    </div>
+    <div class="card">
+      <p style="font-size:14px"><strong>狭義LPがSEOに弱い理由</strong>：①CV特化ページは被リンクがつきにくい ②1ページではKWを網羅できず薄い ③情報収集の検索意図に記事形式が優位</p>
+      <p style="font-size:14px;margin-top:10px"><strong>※ ただし作り込んだ複数ページのLPなら別。</strong>中身が情報性を持ち複数ページに分かれていれば、それは実質ブログ/オウンドメディアと同じ（呼び名の差）。弱いのは「ペラ1枚の売り込み」。</p>
+    </div>
+    <h3>「ブログ記事 ＋ 本体エリアページ」とは</h3>
+    <p style="font-size:14px">2種類のページは<strong>ユーザーの段階が違う</strong>。「本体エリアページ」は新規に作る別物ではなく、<strong>rincle.co.jpの予約サイト側にある既存のエリア検索/店舗一覧ページ</strong>（sitemap化する約500URL）を指す。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>① ブログ記事</th><th>② 本体エリアページ</th></tr></thead>
+        <tbody>
+          <tr><td class="label">置き場所</td><td><code style="background:#f0f1f4;padding:2px 6px;border-radius:4px">rincle.co.jp/blog/</code>（新設・WordPress）</td><td><code style="background:#f0f1f4;padding:2px 6px;border-radius:4px">rincle.co.jp</code> 予約サイト側（既存・Bubble）</td></tr>
+          <tr><td class="label">例</td><td>「神戸の海沿いサイクリングコース完全ガイド」</td><td>「神戸 ロードバイクレンタル（店舗一覧・予約）」</td></tr>
+          <tr><td class="label">見ている人</td><td>情報収集段階（まだ借りると決めてない）</td><td>もう借りる気で探している（取引型）</td></tr>
+          <tr><td class="label">役割</td><td><strong>集客</strong>（検索で広く拾う）→ 記事内リンクで②へ</td><td><strong>予約の刈り取り</strong>（ここでCV）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <p style="font-size:13px;color:var(--sub);margin-bottom:8px">導線のイメージ</p>
+      <pre>検索「神戸 サイクリングコース」（どこ走ろう）
+  → ① ブログ記事「神戸の海沿いコースガイド」      ← 集客（網を広げる）
+    → 記事内リンク「このコースを走るなら →」
+      → ② 本体エリアページ「神戸 ロードバイクレンタル」 ← 予約（刈り取り）
+
+検索「ロードバイク レンタル 神戸」（もう借りたい）
+  → ② 本体エリアページに直接着地 → 予約</pre>
+    </div>
+  </div>
+
+  <!-- 4 ツール -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><h2>何のツールで — WordPress vs Bubble vs note</h2></div>
+    <h3 style="margin-top:0">CMSはWordPress</h3>
+    <p style="font-size:14px">先方（増永さん側）が自分で記事を書く方針のため、<strong>最も馴染みやすい管理画面（WYSIWYG・見たまま編集）と自走しやすさ</strong>を優先（IT知識が浅い・非エンジニアでも書ける／詰まっても日本語の解説・情報量が最多）。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>項目</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td class="label">月額</td><td>レンタルサーバー <strong>600〜1,100円程度</strong>（エックスサーバー693円〜・ConoHa WING 660円〜）</td></tr>
+          <tr><td class="label">初期費用</td><td>ほぼゼロ（有料テーマを買う場合のみ1〜2.5万円）</td></tr>
+          <tr><td class="label">保守</td><td><span class="badge warn">中</span> 更新・バックアップ・セキュリティ対応が継続発生 → <strong>弊社が準委任で対応</strong>（先方の負担なし）</td></tr>
+          <tr><td class="label">表示速度</td><td>動的生成のため素のままだと重め → キャッシュ等で実用域に上げる</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-blue">
+      ※ rincle.co.jpはBubbleホスティングのため、WordPress用サーバーは<strong>別途新規契約（純増コスト）</strong>。Bubble上にWordPressは載せられないので、§6のCloudflare Workerでサブディレクトリに同居させます。
+    </div>
+
+    <h3>WordPress vs BubbleのCMS記事（Bubbleで十分か？）</h3>
+    <p style="font-size:14px"><strong>SEOの強さは WordPress ＞ BubbleのCMS。ただしBubbleでも出せる（インデックスはされる）＝程度問題。</strong> タイトル/descを可変にしても、<strong>「重さ（表示速度）」と「本文がJSでしか出ない」の2つは記事ページでも残る</strong>。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>SEO要素</th><th>WordPress</th><th>BubbleのCMS記事</th></tr></thead>
+        <tbody>
+          <tr><td class="label">title / description（可変）</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="o">○</span> 手動だが可能</td></tr>
+          <tr><td class="label">表示速度（Core Web Vitals）</td><td class="center"><span class="o">○〜◎</span></td><td><span class="x">✕</span> <strong>Bubble本体はLCP49秒の実測</strong>・記事も遅い</td></tr>
+          <tr><td class="label">本文・見出し(h1/h2)の構造</td><td class="center"><span class="o">◎</span></td><td><span class="t">△</span> JSレンダリングで初期HTMLに乗りにくい</td></tr>
+          <tr><td class="label">JS依存のインデックス</td><td class="center"><span class="o">◎</span> HTML即提供</td><td><span class="t">△</span> 描画はされるが遅延・取りこぼし</td></tr>
+          <tr><td class="label">構造化データ / canonical / sitemap</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="t">△</span> 弱い・手動</td></tr>
+          <tr><td class="label">内部リンク（クロール）</td><td class="center"><span class="o">◎</span> HTML出力</td><td><span class="t">△</span> JS生成でクロールされにくい</td></tr>
+          <tr><td class="label">立ち上げ工数・コスト</td><td class="center">サーバー＋構築</td><td><span class="o">◎</span> 既存Bubble内で完結・追加ほぼゼロ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px">→ <strong>本気でSEO上位を取りに行く記事はWordPress。お知らせ・低競合ならBubbleで十分</strong>（次節）。</p>
+  </div>
+
+  <!-- 5 用途で振り分け -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><h2>用途で振り分け</h2></div>
+    <p style="font-size:14px">「全部WordPress」でも「全部Bubble」でもない。<strong>狙いとKWの性質で置き場所を変える</strong>。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>コンテンツ</th><th>置き場所</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td class="label">本命のSEO資産<br>（主要都市・観光ルートのコース記事）</td><td><strong>WordPress</strong>（自社サブディレクトリ）</td><td>上位を取りに行く＝速度・構造が要る</td></tr>
+          <tr><td class="label">店舗の地点 × レンタル（取引型KW）</td><td><strong>Bubble本体の店舗/エリアページをSEO最適化</strong></td><td>§3の通り受け皿は本体ページ。記事を作るまでもない</td></tr>
+          <tr><td class="label">加盟店の「お知らせレベル」発信<br>（6/19要望）</td><td><strong>BubbleのCMS</strong></td><td>SEOは二の次・手軽さ優先。構築ゼロで店舗が発信できる</td></tr>
+          <tr><td class="label">運営の想い・ストーリー・拡散</td><td><strong>note（無料）</strong></td><td>検索資産にする必要がないもの</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>「低競合」とは（具体例）</h3>
+    <div class="card">
+      <ul style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:6px"><strong>指名・ブランド系</strong>：「RINCLE ◯◯店」「リンクル レンタル ◯◯」</li>
+        <li style="margin-bottom:6px"><strong>超ローカル×ニッチ</strong>：「△△駅 ロードバイク レンタル」「◯◯川サイクリングロード レンタル 初心者」</li>
+        <li><strong>絞り込みロングテール</strong>：「ロードバイク レンタル 1日 手ぶら ◯◯」</li>
+      </ul>
+      <p style="font-size:14px;margin-top:10px">逆に<strong>高競合（＝WordPressで本気を出す主戦場）</strong>：「ロードバイク レンタル 東京 / 大阪 / 名古屋」「しまなみ海道 レンタサイクル」。</p>
+    </div>
+
+    <h3>イベント発信は低競合？ → 2種類に分かれる</h3>
+    <p style="font-size:14px">競合だけでなく<strong>"検索需要"も見る</strong>のがポイント。</p>
+    <div class="card">
+      <p style="font-size:14px;margin-bottom:10px"><strong>① 自店の小さいイベント告知</strong>（「◯◯店 ナイトライド 6/30」）→ 低競合だが<strong>低需要・時限的</strong>。SEO資産にならない＝<strong>Bubbleのお知らせで十分</strong></p>
+      <p style="font-size:14px"><strong>② 大型イベント便乗</strong>（「大阪城トライアスロン レンタル」＝6/19で実際に流入）→ <strong>中需要</strong>。イベント名に検索需要があるので拾える＝<strong>記事 or 広告＋LPで取りに行く</strong></p>
+    </div>
+
+    <h3>地名の粒度で取り方が変わる</h3>
+    <p style="font-size:14px">細かい地名（店舗のある地点）＝低競合＝Bubbleでも最悪上位は取れる。ただし注意3つ：①競合と一緒に<strong>検索需要も下がる</strong>（取れても流入わずか）②<strong>速度ハンデは常にある</strong>（"勝てるだけ"で理想ではない）③<strong>分散すると内部リンク・クラスタの相乗効果が切れる</strong>（増えるならWordPressに集約）。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>KWの粒度</th><th>競合</th><th>取り方</th></tr></thead>
+        <tbody>
+          <tr><td class="label">主要都市・観光大型KW（情報型）</td><td class="center">高</td><td><strong>WordPress記事</strong>（本命）</td></tr>
+          <tr><td class="label">店舗の地点 × レンタル（取引型）</td><td class="center">低</td><td><strong>Bubble本体ページをSEO最適化</strong>。記事を作るまでもない</td></tr>
+          <tr><td class="label">細かい地点 × コース情報（需要あれば）</td><td class="center">低</td><td>数が少なければBubble可。増えるならWordPressに集約</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 6 実現方式 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">6</div><h2>実現方式・始め方</h2></div>
+    <h3 style="margin-top:0">サブディレクトリの実現（Bubble本体との同居）</h3>
+    <div class="card">
+      <ul style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:6px"><strong>Cloudflare Workerのリバースプロキシで実現可能</strong>。Bubble本体はそのまま、<code style="background:#f0f1f4;padding:2px 6px;border-radius:4px">rincle.co.jp/blog/*</code> へのリクエストだけWordPress（別サーバー）に振り分ける（同様の実装例が複数あり）</li>
+        <li style="margin-bottom:6px">サブドメインでなく<strong>サブディレクトリを推奨</strong>＝ドメイン評価を1つに集約。RINCLEは弱小ドメインなので分散させる理由がない</li>
+        <li><strong>注意</strong>：BubbleのCloudflare移行により、DNSがAレコードだとWorkerがバイパスされる報告あり → <strong>rincle.co.jpのDNS構成の技術検証が必要</strong>（DB再構築後に弊社で実施）</li>
+      </ul>
+    </div>
+    <h3>始め方と順序</h3>
+    <div class="card">
+      <ol style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:6px"><strong>前提</strong>：DB再構築完了 → SEO基盤一式（メタ情報・sitemap・Search Console・GA4）→ Cloudflareフロント → サブディレクトリにWordPress構築。基盤構築は<strong>準委任で対応</strong></li>
+        <li style="margin-bottom:6px"><strong>記事の書き溜めは今日から可能</strong>（原稿化しておきCMS完成後に一括投入）。noteは即日開始できる</li>
+        <li style="margin-bottom:6px"><strong>優先KW</strong>：最優先「観光ルート名×レンタサイクル」（しまなみ海道・ビワイチ等）、次点「都市名×ロードバイク レンタル」。「スポーツバイク」軸は使わない</li>
+        <li>1本目は加盟店が実在し実走できる地域（例: 神戸）から。記事テンプレ1種（コース概要・マップ・立ち寄りスポット・レンタル導線）を設計して量産</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/blog-seo-strategy.md（出典URL一覧は正本を参照）
+</footer>
+
+</body>
+</html>
