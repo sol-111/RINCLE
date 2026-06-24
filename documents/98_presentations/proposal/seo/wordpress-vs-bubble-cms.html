@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WordPress vs BubbleのCMS SEO比較 | RINCLE</title>
+<style>
+  :root{
+    --navy:#0f3460; --navy-light:#1a4a8a; --red:#e94560;
+    --green:#27ae60; --bg:#f5f6fa; --text:#2c2c3a; --sub:#6b7280;
+    --border:#e5e7eb; --radius:12px;
+    --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .hero{background:linear-gradient(135deg,#0f3460 0%,#1a4a8a 100%);color:#fff;padding:52px 40px 44px}
+  .hero h1{font-size:2rem;font-weight:800;margin-bottom:8px}
+  .hero p{font-size:1.02rem;opacity:.88;max-width:760px}
+  .hero-meta{margin-top:14px;font-size:13px;opacity:.7;display:flex;gap:20px;flex-wrap:wrap}
+  .container{max-width:960px;margin:0 auto;padding:40px 28px 80px}
+
+  .section{margin-bottom:48px}
+  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+  .section-num{display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--navy);color:#fff;border-radius:10px;font-size:17px;font-weight:800;flex-shrink:0}
+  .section-header h2{font-size:21px;font-weight:700}
+  h3{font-size:16px;font-weight:700;color:var(--navy);margin:26px 0 12px;padding-left:11px;border-left:3px solid var(--red)}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin:16px 0}
+  .alert{border-radius:0 10px 10px 0;padding:16px 20px;margin:16px 0;font-size:14px}
+  .alert-red{background:#ffeef0;border-left:4px solid var(--red);color:#a0132e}
+  .alert-green{background:#eefbf3;border-left:4px solid var(--green);color:#1a7a42}
+  .alert-blue{background:#eef4ff;border-left:4px solid var(--navy);color:var(--navy)}
+
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+  thead th{background:var(--navy);color:#fff;padding:11px 14px;text-align:left;font-size:13px;font-weight:600;white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid #f0f1f4;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#f8f9fb}
+  td.label{font-weight:700;color:var(--navy);white-space:nowrap}
+  td.center{text-align:center;white-space:nowrap}
+  .o{color:var(--green);font-weight:800}
+  .x{color:var(--red);font-weight:800}
+  .t{color:#92400e;font-weight:800}
+
+  .badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+  .badge.good{background:#eefbf3;color:#1a7a42}
+  .badge.bad{background:#ffeef0;color:#a0132e}
+  .badge.warn{background:#fff7e6;color:#92400e}
+
+  .src{font-size:12px;color:var(--sub);margin-top:6px}
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>WordPress vs BubbleのCMS <span style="opacity:.8">記事のSEO比較</span></h1>
+  <p>「ぶっちゃけBubbleのCMSで記事を書くんじゃダメなの？」への回答。Bubble側でできるSEO対策（title・descriptionの記事ごと可変など）はすべて尽くす前提で比較しています。</p>
+  <div class="hero-meta"><span>2026-06-24</span><span>次回定例の報告用</span></div>
+</div>
+
+<div class="container">
+
+  <!-- 結論 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">!</div><h2>結論</h2></div>
+    <div class="alert alert-green">
+      <strong>SEOの強さは WordPress ＞ BubbleのCMS。ただし「Bubbleでも出せる（インデックスはされる）」。</strong>
+    </div>
+    <div class="card">
+      <p style="font-size:14px">差は「ゼロかイチか」ではなく<strong>程度問題</strong>。Bubbleの記事も検索には載る（GoogleはJSもレンダリングする）。が、<strong>上位を取りに行く力</strong>でWordPressに負ける。</p>
+      <p style="font-size:14px;margin-top:10px">Bubble側でタイトル・descriptionを可変にしても、<strong>「重さ（表示速度）」と「本文がJSでしか出ない」という2つの弱点は記事ページでも残る</strong> — ここが核心。</p>
+    </div>
+  </div>
+
+  <!-- 1 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">1</div><h2>比較（Bubble記事のSEO対策は最大限やる前提）</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>SEO要素</th><th>WordPress</th><th>BubbleのCMS記事</th></tr></thead>
+        <tbody>
+          <tr><td class="label">title / description（記事ごと可変）</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="o">○</span> 手動だが可能（前提どおりOK）</td></tr>
+          <tr><td class="label">表示速度（Core Web Vitals）</td><td class="center"><span class="o">○〜◎</span></td><td><span class="x">✕</span> <strong>Bubble本体はLCP49秒の実測</strong>。フレームワークが重く記事ページも遅い</td></tr>
+          <tr><td class="label">本文・見出し(h1/h2)の構造</td><td class="center"><span class="o">◎</span></td><td><span class="t">△</span> 本文がJSレンダリング＝初期HTMLに本文・見出しが乗りにくい</td></tr>
+          <tr><td class="label">JS依存のインデックス</td><td class="center"><span class="o">◎</span> HTML即提供</td><td><span class="t">△</span> 描画はされるが遅延・取りこぼしリスク</td></tr>
+          <tr><td class="label">構造化データ（Article）</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="t">△</span> 手動・限定的</td></tr>
+          <tr><td class="label">canonical / sitemap</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="t">△</span> 弱い・手動（現状canonical無しの実害）</td></tr>
+          <tr><td class="label">内部リンク（クロール）</td><td class="center"><span class="o">◎</span> HTML出力</td><td><span class="t">△</span> JS生成でクロールされにくい</td></tr>
+          <tr><td class="label">URL</td><td class="center"><span class="o">◎</span> /blog/slug</td><td><span class="t">△</span> パラメータ付きになりがち</td></tr>
+          <tr><td class="label">立ち上げ工数・コスト</td><td class="center">サーバー＋構築</td><td><span class="o">◎</span> 既存Bubble内で完結・追加ほぼゼロ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-red">
+      <strong>要点：</strong>Bubbleの一番の弱点は「<strong>重さ（速度）</strong>」と「<strong>本文がJSでしか出ない</strong>」。タイトル/descだけ可変にしても、この2つは残る。
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><h2>ぶっちゃけBubbleでいいか？ → 用途で割れる</h2></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>用途</th><th>判定</th></tr></thead>
+        <tbody>
+          <tr><td class="label">お知らせ・低競合・とりあえず出す</td><td><span class="badge good">Bubbleで十分</span> 構築ゼロで今すぐ書ける。検索順位が主目的でないならこれで良い</td></tr>
+          <tr><td class="label">競合KWで本気で上位を狙う<br>（地域×コース記事の主戦場）</td><td><span class="badge bad">弱い</span> 速度と構造のハンデが、まさに競りたい所で効く。CycleTripに先行したい本命用途だと物足りない</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">3</div><h2>「低競合」とは（具体例）</h2></div>
+    <p style="font-size:14px">低競合 ＝ 他がほとんど書いていない・すぐ上位に行ける検索語。</p>
+    <div class="card">
+      <ul style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:6px"><strong>指名・ブランド系</strong>：「RINCLE ◯◯店」「リンクル レンタル ◯◯」（競合ほぼゼロ）</li>
+        <li style="margin-bottom:6px"><strong>超ローカル×ニッチ</strong>：「△△駅 ロードバイク レンタル」「◯◯川サイクリングロード レンタル 初心者」</li>
+        <li><strong>絞り込みロングテール</strong>：「ロードバイク レンタル 1日 手ぶら ◯◯」「eバイク レンタル 子連れ ◯◯」</li>
+      </ul>
+      <p style="font-size:14px;margin-top:10px">逆に<strong>高競合（＝WordPressで本気を出す主戦場）</strong>：「ロードバイク レンタル 東京 / 大阪 / 名古屋」「しまなみ海道 レンタサイクル」（大手・公式がいる）。</p>
+    </div>
+
+    <h3>イベント発信は低競合に含まれる？ → 2種類に分かれる</h3>
+    <p style="font-size:14px">イベント発信は一括りにできない。<strong>競合だけでなく"検索需要"も見る</strong>のがポイント。</p>
+    <div class="card">
+      <p style="font-size:14px;margin-bottom:8px"><strong>① 自店の小さいイベント告知</strong>（例：「◯◯店 ナイトライド 6/30」）</p>
+      <p style="font-size:14px;margin-bottom:14px">→ 低競合だが<strong>低需要・時限的</strong>。そのイベント名で検索するのは既に知っている一部だけ。<strong>SEO資産にならない＝Bubbleのお知らせで十分</strong>（取りに行く順位がそもそも無い）</p>
+      <p style="font-size:14px;margin-bottom:8px"><strong>② 大型イベント便乗</strong>（例：「大阪城トライアスロン レンタル」＝6/19で実際に流入があった例）</p>
+      <p style="font-size:14px">→ 低競合ではなく<strong>"中需要"</strong>。イベント自体に検索需要があるので紐づければ拾える。<strong>取りに行く価値あり＝記事 or 広告＋LPで仕込む</strong>（差別化戦略⑤「直近イベント紐づけを今から仕込む」がこれ）</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>種類</th><th>競合</th><th>検索需要</th><th>置き場所</th></tr></thead>
+        <tbody>
+          <tr><td class="label">自店の小イベント告知</td><td class="center">低</td><td class="center">低（時限的）</td><td><strong>Bubbleお知らせで十分</strong></td></tr>
+          <tr><td class="label">大型イベント便乗</td><td class="center">中</td><td class="center">中</td><td><strong>記事/広告LPで取りに行く</strong></td></tr>
+          <tr><td class="label">指名・超ローカル</td><td class="center">低</td><td class="center">低〜中</td><td>Bubble可（数が増えるなら自社ブログ）</td></tr>
+          <tr><td class="label">主要都市・観光大型KW</td><td class="center">高</td><td class="center">高</td><td><strong>WordPress（本命）</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><h2>WordPressを使う判断基準</h2></div>
+    <div class="card">
+      <p style="font-size:14px;margin-bottom:8px">下のどれかに当てはまるなら WordPress（別ブログ＋サブディレクトリ）:</p>
+      <ol style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:5px"><strong>競合KWで上位を本気で取りに行く</strong>（「ロードバイク レンタル ◯◯」等）</li>
+        <li style="margin-bottom:5px"><strong>表示速度を武器にしたい</strong>（Bubble本体が遅いぶん、速い別ブログが効く）</li>
+        <li style="margin-bottom:5px"><strong>記事を量産して資産化する</strong>（構造化データ・自動sitemap・クリーンURLが要る）</li>
+        <li><strong>クライアントがリッチに自分で書く</strong>（WYSIWYGの自走しやすさ）</li>
+      </ol>
+      <p style="font-size:14px;margin-top:10px;color:var(--sub)">逆に ①記事数が少ない ②お知らせレベル ③構築工数/DNSリスクを今は避けたい なら Bubbleで十分。</p>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><h2>RINCLEへの当てはめ（6/19の議論と接続）</h2></div>
+    <p style="font-size:14px">用途で振り分けるのが正解。「全部WordPress」でも「全部Bubble」でもない。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>コンテンツ</th><th>置き場所</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td class="label">本命のSEO資産<br>（地域×コース記事）</td><td><strong>WordPress</strong>（自社サブディレクトリ）</td><td>上位を取りに行く＝速度・構造が要る</td></tr>
+          <tr><td class="label">加盟店の「お知らせレベル」発信<br>（6/19で出た要望）</td><td><strong>BubbleのCMS</strong></td><td>SEOは二の次・手軽さ優先。構築ゼロで店舗が発信できる</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="section">
+    <div class="section-header"><div class="section-num">6</div><h2>地名の粒度で取り方が変わる（取引型は本体ページで取る）</h2></div>
+    <p style="font-size:14px">地名は「粒度」で競合も取り方も変わる。<strong>細かい地名（店舗のある地点）＝低競合＝Bubbleでも最悪上位は取れる</strong>。ただし注意が3つ：</p>
+    <div class="card">
+      <ol style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:6px"><strong>競合と一緒に検索需要も下がる</strong> — 1位を取れても流入はわずかなことがある（「取れる」と「来る」は別）。事前に需要確認を</li>
+        <li style="margin-bottom:6px"><strong>速度のハンデは競合関係なく常にある</strong> — 競合がいないから"勝てるだけ"で理想ではない</li>
+        <li><strong>記事を分散させると弱くなる</strong> — 内部リンク・トピッククラスタの相乗効果が切れる（増えるならWordPressに集約）</li>
+      </ol>
+    </div>
+    <div class="alert alert-blue">
+      さらに重要 — <strong>店舗がある地点の「地名×レンタル」は取引型KW</strong>（もう借りたい人が探す語）。これは<a href="lp-vs-blog-article.html">「LP vs ブログ記事」</a>の通り<strong>ブログ記事ではなく「本体のエリア・店舗ページ」が受け皿</strong>。→ わざわざ記事を作らなくても、<strong>Bubble本体の店舗ページをSEO最適化（メタ情報設定）すれば拾える</strong>。"記事を書く"判断ですらないケースが多い。
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>KWの粒度</th><th>競合</th><th>取り方</th></tr></thead>
+        <tbody>
+          <tr><td class="label">名古屋・主要都市<br>（情報型コース記事）</td><td class="center">高</td><td><strong>WordPress記事</strong>（本命）</td></tr>
+          <tr><td class="label">店舗の地点 × レンタル<br>（取引型）</td><td class="center">低</td><td><strong>Bubble本体の店舗/エリアページをSEO最適化</strong>。記事を作るまでもない</td></tr>
+          <tr><td class="label">細かい地点 × コース情報<br>（情報型・需要あれば）</td><td class="center">低</td><td>数が少なければBubble記事でも可。増えるならWordPressに集約</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/wordpress-vs-bubble-cms.md
+</footer>
+
+</body>
+</html>

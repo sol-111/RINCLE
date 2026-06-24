@@ -141,8 +141,8 @@
       <table>
         <thead><tr><th>選択肢</th><th>月額</th><th>保守の手間</th><th>備考</th></tr></thead>
         <tbody>
-          <tr><td class="label">レンタルサーバー+WordPress<br><span style="font-weight:400;font-size:12px;color:var(--sub)">動的</span></td><td>600〜1,100円程度<br><span style="font-weight:400;font-size:12px;color:var(--sub)">Bubbleには載せられず別途新規契約=純増</span></td><td><span class="badge warn">中</span> アクセスのたびにサーバーでページ生成 → 更新・バックアップ・セキュリティ対応が継続発生</td><td>管理画面が最も馴染みやすい・情報量最多</td></tr>
-          <tr><td class="label">ヘッドレスCMS+静的サイト<br>（microCMS+Astro+Cloudflare Pages）<br><span style="font-weight:400;font-size:12px;color:var(--sub)">静的</span></td><td><strong>ほぼゼロ</strong>（microCMS Hobby無料・商用可）</td><td><span class="badge good">小</span> 先に作ったHTMLを返すだけでサーバー保守不要</td><td><strong>第一候補</strong>。表示最速（LCP1秒以下狙い）= LCP49秒のBubble本体を補う。初期構築だけ弊社対応すれば、あとは管理画面から記事を足すだけ（非エンジニアでも可）</td></tr>
+          <tr><td class="label">レンタルサーバー+WordPress<br><span style="font-weight:400;font-size:12px;color:var(--sub)">動的</span></td><td>600〜1,100円程度<br><span style="font-weight:400;font-size:12px;color:var(--sub)">Bubbleには載せられず別途新規契約=純増</span></td><td><span class="badge warn">中</span> アクセスのたびにサーバーでページ生成 → 更新・バックアップ・セキュリティ対応が継続発生（保守は弊社が準委任で対応）</td><td><span class="badge good">第一候補</span> 最も馴染みやすい管理画面（WYSIWYG）・情報量最多。<strong>クライアントが自分で書く方針のため自走しやすさで採用</strong></td></tr>
+          <tr><td class="label">ヘッドレスCMS+静的サイト<br>（microCMS+Astro+Cloudflare Pages）<br><span style="font-weight:400;font-size:12px;color:var(--sub)">静的</span></td><td><strong>ほぼゼロ</strong>（microCMS Hobby無料・商用可）</td><td><span class="badge good">小</span> 先に作ったHTMLを返すだけでサーバー保守不要</td><td>弊社運用・表示速度最優先なら有力。ただし<strong>表示/レイアウト変更が開発依存</strong>になり、クライアント主体の執筆には不向き</td></tr>
         </tbody>
       </table>
     </div>
@@ -166,7 +166,7 @@
       </ul>
     </div>
 
-    <p style="font-size:14px;color:var(--sub)">金額はどちらも誤差レベル（月0〜1,100円）。差が出るのは<strong>保守の手間と表示速度</strong>。</p>
+    <p style="font-size:14px;color:var(--sub)">金額はどちらも誤差レベル（月0〜1,100円）。差が出るのは<strong>保守の手間と表示速度</strong>。ただし<strong>「クライアント自身が記事を書く」方針のため、書きやすさ・自走のしやすさを優先してWordPressを採用</strong>（2026-06-19更新）。保守は弊社が準委任で持つため弱点は吸収でき、表示速度はキャッシュ等で実用域に上げる。</p>
   </div>
 
   <!-- 4 -->
@@ -174,7 +174,7 @@
     <div class="section-header"><div class="section-num">4</div><h2>RINCLEへの推奨・始め方</h2></div>
     <div class="card">
       <ol style="padding-left:20px;font-size:14px">
-        <li style="margin-bottom:8px"><strong>地域×コース記事（SEO資産）= 自社サブディレクトリ一択</strong>: rincle.co.jp/blog/ に静的サイト（Astro+microCMS）を同居。月額ほぼゼロ・保守最小・表示最速</li>
+        <li style="margin-bottom:8px"><strong>地域×コース記事（SEO資産）= 自社サブディレクトリ一択</strong>: rincle.co.jp/blog/ にブログを同居。<strong>CMSはWordPressを第一候補</strong>（クライアントが自分で書く方針のため／保守は弊社が準委任で対応）。microCMS+静的は弊社運用・速度最優先なら次点</li>
         <li style="margin-bottom:8px"><strong>note = 無料版で拡散・ブランド用に限定</strong>: 運営の想い・アクティブ店舗のストーリー・イベントレポ。記事末尾からrincle.co.jpへ誘導。本体トピックス欄にnoteサムネイルを置く案はこの用途で有効</li>
         <li style="margin-bottom:8px"><strong>同じ記事を両方に置かない</strong>（重複コンテンツ回避）。KWを狙う記事は自社側だけ</li>
         <li style="margin-bottom:8px"><strong>順序</strong>: DB再構築完了 → SEO基盤一式（#21-22）→ Cloudflareフロント → サブディレクトリブログ構築。<strong>記事の書き溜めは今日から可能</strong>（原稿化しておきCMS完成後に一括投入）。noteは即日開始できる</li>
