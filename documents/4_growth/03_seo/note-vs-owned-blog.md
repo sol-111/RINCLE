@@ -81,40 +81,27 @@ RINCLEは現状インデックス2〜3ページの弱小ドメイン（seo-setup
 
 **結論: Cloudflare Workerのリバースプロキシ（パスルーティング）で実現可能。実例・手順ガイドが複数存在する（事実）。**
 
-- Bubble本体はそのまま、`rincle.co.jp/blog/*` へのリクエストだけ外部のブログ（Ghost/WordPress/静的サイト）にWorkerで振り分ける構成。Ghost CMS+Bubbleの完全手順ガイドあり（出典: [Ghost CMS x Bubble: /blog subfolder using Cloudflare Workers](https://blog.hackerhouse.world/ghost-cms-bubble-blog-subfolder-cloudflare-workers/)）
+- Bubble本体はそのまま、`rincle.co.jp/blog/*` へのリクエストだけ外部のブログ（WordPress）にWorkerで振り分ける構成。Ghost CMS+Bubbleの完全手順ガイド等、同様の実装例が複数あり（出典: [Ghost CMS x Bubble: /blog subfolder using Cloudflare Workers](https://blog.hackerhouse.world/ghost-cms-bubble-blog-subfolder-cloudflare-workers/)）
 - Bubble公式フォーラムにも「SEOのためサブドメインでなくサブフォルダでCMSを同居させた」事例スレッドが複数（出典: [Bubble Forum 1](https://forum.bubble.io/t/blog-seo-ghost-wordpress-or-any-cms-on-subfolder-blog-with-bubble/121411) / [Bubble Forum 2](https://forum.bubble.io/t/solved-new-more-eyes-on-website-improve-seo-with-cloudflare-subfolder-instead-of-subdomain/180078)）
 - **注意点（事実）**: Bubble自体がCloudflareインフラに移行しているため、DNSをA/AAAAレコードで向けているとWorkerがバイパスされる場合があり、BubbleにCNAMEレコードを依頼する回避策が報告されている（出典: 上記Bubble Forumスレッド）。→ rincle.co.jpの現DNS構成の確認が必要（未確認事項へ）
 - この構成は、seo-setup-guideのPhase 2（Prerender.io用にCloudflareをフロントに置く）と**同じ土台**。Phase 2を先にやればPhase 3（サブディレクトリ配信）の基盤がそのまま使える、という既存ロードマップと整合する
 
 ---
 
-## 3. CMS・運用コストの比較
+## 3. CMS — WordPressで構築
 
-ブログ本体を「何で作るか」の比較。実質の候補は **WordPress** か **ヘッドレスCMS+静的サイト** の2つ。
+ブログ本体は **WordPress** で作る。クライアント（増永さん側）が自分で記事を書く方針のため、**最も馴染みやすい管理画面（WYSIWYG・見たまま編集）と自走しやすさ**を優先（IT知識が浅い・非エンジニアでも書ける／詰まっても日本語の解説・情報量が最多）。
 
-| 選択肢 | 初期費用 | 月額 | 保守の手間 | 備考 |
-|--------|---------|------|-----------|------|
-| **レンタルサーバー+WordPress**（動的） | ほぼゼロ（有料テーマ買うなら1〜2.5万円） | **600〜1,100円程度**（エックスサーバー693円〜・ConoHa WING 660円〜、2026年6月時点のキャンペーン価格） | **中**: アクセスのたびにサーバーでページ生成するため、コア/プラグイン更新・バックアップ・セキュリティ対応が継続的に必要（保守は弊社が準委任で対応） | **第一候補**。記事執筆者にとって最も馴染みやすい管理画面（WYSIWYG）・情報量最多。**クライアントが自分で書く方針のため自走しやすさで採用** |
-| **ヘッドレスCMS+静的サイト**（microCMS+Astro+Cloudflare Pages）（静的） | 構築に開発工数（弊社対応可） | **ほぼゼロ**: microCMS Hobbyプランは無料・商用利用可（有料はTeam 4,900円/月〜）。Cloudflare Pagesホスティング無料 | **小**: 先に作ったHTMLを返すだけでサーバー保守不要。表示が最速でLCP1秒以下を狙える | 弊社運用・表示速度最優先なら有力。ただし**表示/レイアウト変更が開発依存**になり、クライアント主体の執筆には不向き |
-
-※ rincle.co.jpはBubbleホスティングのため、WordPressを使う場合のレンタルサーバーは**別途新規契約（純増コスト）**。Bubble上にWordPressは載せられない。
-
-### 「ヘッドレスCMS+静的サイト」とは（用語の補足）
-
-聞き慣れない構成なので、3つの部品の役割で説明する。要は「**記事を書く場所**」と「**それをWebページとして配信する仕組み**」を、軽くて速くて無料の部品で組む構成。
-
-| 部品 | 役割 |
+| 項目 | 内容 |
 |------|------|
-| **microCMS**（ヘッドレスCMS） | 記事を書く・管理する**管理画面**。書いた内容はAPI経由で取り出せる。非エンジニアでも投稿できる |
-| **Astro**（静的サイトジェネレーター） | microCMSの記事を引っ張って、**HTMLページを"前もって"組み立てる**ツール |
-| **Cloudflare Pages** | 出来上がったHTMLを**無料で配信する置き場**（ホスティング） |
+| 月額 | レンタルサーバー **600〜1,100円程度**（エックスサーバー693円〜・ConoHa WING 660円〜、2026年6月時点） |
+| 初期費用 | ほぼゼロ（有料テーマを買う場合のみ1〜2.5万円） |
+| 保守 | コア/プラグイン更新・バックアップ・セキュリティ対応が継続発生 → **弊社が準委任で対応**（先方の負担なし） |
+| 表示速度 | 動的生成のため素のままだと重め → キャッシュ等で実用域に上げる |
 
-- **ヘッドレス** = CMSに表示画面(head)を持たせず、管理画面とデータだけ提供する形。表示は別の道具に任せるので見た目を自由に作れる
-- **静的(static)** = アクセスのたびにページを生成せず、**先に作っておいたHTMLをそのまま返す**方式。だから速く、サーバー側で動くプログラムが無い＝保守・セキュリティ対応がほぼ不要
+※ rincle.co.jpはBubbleホスティングのため、WordPress用のレンタルサーバーは**別途新規契約（純増コスト）**。Bubble上にWordPressは載せられないので、§2のCloudflare Workerでサブディレクトリ（rincle.co.jp/blog/）に同居させる。
 
-出典: [エックスサーバー料金解説](https://www.xserver.ne.jp/blog/server-total-cost/) / [ConoHa WING料金](https://www.conoha.jp/pricing/) / [microCMS料金](https://microcms.io/pricing/)（2025年6月10日にプラン改定済み・Hobby/Team/Business/Enterpriseの4階層）
-
-→ 金額はどちらも誤差レベル（月0〜1,100円）。差が出るのは保守の手間と表示速度。**ただし「クライアント自身が記事を書く」方針のため、書きやすさ・自走のしやすさを優先してWordPressを採用**（2026-06-19更新）。保守は弊社が準委任で持つため弱点は吸収でき、表示速度はキャッシュ等で実用域に上げる。
+出典: [エックスサーバー料金解説](https://www.xserver.ne.jp/blog/server-total-cost/) / [ConoHa WING料金](https://www.conoha.jp/pricing/)
 
 ---
 
@@ -131,8 +118,7 @@ RINCLEは現状インデックス2〜3ページの弱小ドメイン（seo-setup
 ### 実現方式
 
 1. **地域×コース記事（SEO資産）= 自社サブディレクトリ一択**: `rincle.co.jp/blog/`（または `/areas/`）に、Cloudflare Workerのパスルーティングでブログを同居させる。seo-setup-guide Phase 2/3のCloudflare導入と土台を共有できる
-   - **CMSはWordPressを第一候補**（2026-06-19更新：クライアントが自分で記事を書く方針になったため）。馴染みやすい管理画面・WYSIWYG・自走しやすさを優先。サーバー保守（更新・バックアップ・セキュリティ）は弊社が準委任で持つため弱点は吸収できる
-   - microCMS＋静的サイトは「弊社が運用・表示速度最優先」なら有力だが、表示・レイアウト変更が開発依存になりクライアント主体の執筆には不向きなため次点
+   - **CMSはWordPress**（クライアントが自分で記事を書く方針のため）。馴染みやすい管理画面・WYSIWYG・自走しやすさを優先。サーバー保守（更新・バックアップ・セキュリティ）は弊社が準委任で対応するので先方の負担はない
 2. **note = 無料版で開設し、拡散・ブランド用に限定**: 運営の想い、神戸店のようなアクティブ店舗のストーリー、イベントレポなど。記事末尾からrincle.co.jpへ誘導（nofollowだが人間のトラフィックは流れる）。本体サイトのトピックス欄にnoteサムネイルを置く案（6/12定例での瀬野提案）はこの用途で有効
 3. **同じ記事を両方に置かない**（重複コンテンツ回避）。KWを狙う記事は自社側だけに書く
 

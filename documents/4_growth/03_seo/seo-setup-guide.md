@@ -834,11 +834,11 @@ Phase 2（必要なら・$49/月〜）: Cloudflareをフロントに導入 + Pre
   ├─ ボットに完全レンダリング済みHTMLを配信 → 本文・内部リンクの可視化
   └─ 副産物: Cloudflareがフロントに入ることでPhase 3の土台が完成
 
-Phase 3（中期）: Astro製SEOコンテンツをサブディレクトリ配信
-  ├─ Cloudflare Workerのパスルーティングで rincle.co.jp/shops/* /areas/* /guide/* を
-  │  静的サイト（Astro on Cloudflare Pages）へ振り分け
-  ├─ 店舗×エリア×車種カテゴリページ + 初心者ガイド記事（LCP 1秒以下を狙える）
-  └─ 予約導線はBubbleアプリへリンク
+Phase 3（中期）: WordPressでSEOコンテンツをサブディレクトリ配信
+  ├─ Cloudflare Workerのパスルーティングで rincle.co.jp/blog/* /guide/* を
+  │  WordPress（別サーバー）へ振り分け
+  ├─ 地域×コース記事 + 初心者ガイド記事（表示はキャッシュで高速化）
+  └─ 予約導線・店舗/エリアページはBubble本体（メタ情報設定でSEO最適化）へリンク
 ```
 
 ※ Phase 3でサブドメイン（lp.rincle.co.jp）でなく**サブディレクトリ**を推奨する理由: ドメイン評価を1つに集約できるため。Google公式は「同等に扱える」としているが、業界の移転事例ではサブディレクトリ優位の報告が多い。

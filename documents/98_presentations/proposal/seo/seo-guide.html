@@ -875,11 +875,11 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
   </div>
 
   <div class="sub-item" style="border-left-color:#e94560">
-    <h4>Phase 3（中期）: Astro製SEOコンテンツをサブディレクトリ配信</h4>
+    <h4>Phase 3（中期）: WordPressでSEOコンテンツをサブディレクトリ配信</h4>
     <ul>
-      <li>Cloudflare Workerのパスルーティングで rincle.co.jp/shops/* /areas/* /guide/* を静的サイト（Astro on Cloudflare Pages）へ振り分け</li>
-      <li>店舗×エリア×車種カテゴリページ + 初心者ガイド記事（LCP 1秒以下を狙える）</li>
-      <li>予約導線はBubbleアプリへリンク</li>
+      <li>Cloudflare Workerのパスルーティングで rincle.co.jp/blog/* /guide/* を WordPress（別サーバー）へ振り分け</li>
+      <li>地域×コース記事 + 初心者ガイド記事（表示はキャッシュで高速化）</li>
+      <li>予約導線・店舗/エリアページはBubble本体（メタ情報設定でSEO最適化）へリンク</li>
     </ul>
   </div>
 
