@@ -1,8 +1,10 @@
 # RINCLEブログ（WordPress）構築 実装手順書
 
+> **⚠️ ステータス: 保留（2026-06-30定例）** — WordPress＋サブディレクトリ（リバースプロキシ）方式は当面見送りになった。当面は増永さん側がClaude Codeで作る静的LPをサブドメインで配信して様子見。本手順書は、記事運用が本格化してWordPress/サブディレクトリを採用する場合に備えて保管する。経緯: [blog-seo-strategy.md](blog-seo-strategy.md) §0
+>
 > 2026-06-24 / 社内（弊社エンジニア）向けの実装手順書
 > 読者想定: **IT基礎はあるが、DNS・リバースプロキシ・Cloudflare・WordPressの実務は不慣れな人**。用語は都度かみ砕いて説明する（まとめは末尾の「[付録：用語集](#付録用語集)」）。
-> 方針の正本: [blog-seo-strategy.md](blog-seo-strategy.md)（なぜWordPress・なぜサブディレクトリか）
+> 方針の正本: [blog-seo-strategy.md](blog-seo-strategy.md)（なぜWordPress・なぜサブディレクトリか → 6/30に方針更新あり）
 
 ---
 
