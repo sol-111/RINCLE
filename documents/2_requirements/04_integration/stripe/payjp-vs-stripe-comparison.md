@@ -195,7 +195,7 @@
 
 ## 参考資料
 
-- `04_integration/pay.jp/payjp-authorization-guide.md` — Pay.jpオーソリ実装リファレンス（80h見積の内訳）
+- `04_integration/pay.jp/payjp-authorization-guide.md` — Pay.jpオーソリ実装リファレンス（80h見積の内訳）※オーソリ先行見送り＋Stripe移行決定により2026-07-02削除・git履歴に残存
 - `04_integration/pay.jp/payjp-flow-asis.md` — 現行の決済フロー（テナント型）
 - `04_integration/stripe/stripe-api-summary-ja.md` — Stripe APIリファレンス（移行実装の設計用）/ `04_integration/pay.jp/payjp-api-v1-summary-ja.md`・`payjp-api-v2-summary-ja.md` — Pay.jp API v1/v2リファレンス
 - （旧 `stripe-migration-plan.md` は本資料§6に統合済み・2026-06-12。経緯はgit履歴参照）
