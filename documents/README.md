@@ -22,7 +22,12 @@ documents/
 │   ├── 5.12.txt
 │   ├── 5.15.txt
 │   ├── 5.29.txt
-│   └── task_list.md                #   タスクリスト
+│   ├── 6.12.txt
+│   ├── 6.19.txt
+│   ├── 6.30.txt
+│   ├── task_list.md                #   タスクリスト
+│   ├── 増永さん構想.md             #   決済フロー構想（増永さん作成・6/30受領）
+│   └── 増永さん気になりリスト.md   #   定例での質問・宿題の追跡台帳（内部メモ）
 │
 ├── 2_requirements/                 # 要件定義
 │   ├── 00_overview/                # プロジェクト概要
@@ -86,7 +91,7 @@ documents/
 │   │   ├── revenue-model.xlsx      #   収益モデルの正本（実態/論点/試算/KPIツリー・計画・進捗/出典の11+シート）
 │   │   ├── shop-hearing-design.md  #   ショップヒアリング設計（仮説14×質問32・対象店舗実名）
 │   │   ├── idea-log.md             #   施策・提携アイデア検討ログ（採否と理由・ボツ案も記録）
-│   │   └── source/                 #   本番DBエクスポート置き場（個人情報を含むためgitignore対象）
+│   │   └── context/                #   本番DBエクスポート置き場（個人情報を含むためgitignore対象）
 │   │
 │   ├── 02_marketing/               # マーケティング戦略
 │   │   ├── marketing-knowledge-map.md  # toCマーケ手法 全体マップ（汎用知識・約37手法）
@@ -96,6 +101,8 @@ documents/
 │   ├── 03_seo/                     # SEO実務
 │   │   ├── seo-setup-guide.md      #   SEO設定ガイド（GA4・Clarity導入手順含む）
 │   │   ├── blog-seo-strategy.md    #   ブログSEOの方針（どこに/形式/ツール・#24統合・2026-06-24）
+│   │   ├── blog-implementation-guide.md    # WordPress構築の実装手順書（社内向け・保留中）
+│   │   ├── blog-implementation-guide.html  # 同HTML版（保留中）
 │   │   ├── seo-support-plan.md      #   SEO記事作成代行プラン（提案・2026-06-19）
 │   │   ├── keyword-research.md     #   検索KW調査メモ（ロードバイク軸の定量裏付け・2026-06-12）
 │   │   ├── seo_page_settings.csv   #   15画面分のtitle/description/OGP/h1/canonical
