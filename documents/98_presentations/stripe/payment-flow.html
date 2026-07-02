@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>予約・決済・貸出・返却フロー（推奨設計） | RINCLE</title>
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --accent: #635bff;
+    --accent-light: #ede9fe;
+    --user: #0ea5e9;
+    --user-light: #e0f2fe;
+    --shop: #10b981;
+    --shop-light: #d1fae5;
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --warning: #f59e0b;
+    --warning-light: #fef3c7;
+    --danger: #ef4444;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-500: #6b7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  .hero {
+    background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 40%, #7c3aed 100%);
+    color: #fff;
+    padding: 56px 40px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; top: -50%; right: -20%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-label {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 30px; font-weight: 800; margin-bottom: 12px; }
+  .hero p { font-size: 15px; opacity: 0.85; max-width: 680px; }
+  .hero-meta { margin-top: 16px; display: flex; gap: 24px; font-size: 13px; opacity: 0.7; flex-wrap: wrap; }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: -40px auto 40px;
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    padding: 0 32px;
+  }
+  .summary-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    border-top: 3px solid var(--accent);
+  }
+  .summary-card h3 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .summary-card p { font-size: 13px; color: var(--gray-700); line-height: 1.6; }
+
+  section { padding: 48px 0; border-bottom: 1px solid var(--gray-200); }
+  section:last-of-type { border-bottom: none; }
+  h2 {
+    font-size: 22px; font-weight: 700; color: var(--primary);
+    margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+  }
+  h2 .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; background: var(--accent); color: #fff;
+    border-radius: 8px; font-size: 15px; font-weight: 700; flex-shrink: 0;
+  }
+  .section-lead { color: var(--gray-500); font-size: 15px; margin-bottom: 28px; }
+  h3 { font-size: 17px; font-weight: 700; color: var(--gray-700); margin: 32px 0 14px; }
+
+  .card {
+    background: #fff; border: 1px solid var(--gray-200);
+    border-radius: 12px; padding: 28px; margin-bottom: 20px;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 16px; }
+  thead th {
+    background: var(--gray-100); font-weight: 700; font-size: 13px;
+    letter-spacing: 0.04em; color: var(--gray-500); padding: 10px 14px;
+    text-align: left; border-bottom: 2px solid var(--gray-200);
+  }
+  tbody td { padding: 12px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--gray-50); }
+  td.label { font-weight: 600; color: var(--gray-700); }
+
+  .badge {
+    display: inline-block; padding: 2px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap;
+  }
+  .badge.good { background: var(--success-light); color: #065f46; }
+  .badge.warn { background: var(--warning-light); color: #92400e; }
+  .badge.bad { background: #fee2e2; color: #991b1b; }
+  .badge.plan { background: var(--gray-100); color: var(--gray-500); }
+  .badge.ours { background: var(--accent-light); color: var(--accent); }
+
+  .note {
+    background: #fffbeb; border-left: 4px solid var(--warning);
+    border-radius: 0 8px 8px 0; padding: 16px 20px;
+    font-size: 14px; color: var(--gray-700); margin: 20px 0;
+  }
+  .note strong { color: #92400e; }
+  .note.accent { background: var(--accent-light); border-left-color: var(--accent); }
+  .note.accent strong { color: var(--accent); }
+  .note.danger { background: #fef2f2; border-left-color: var(--danger); }
+  .note.danger strong { color: #991b1b; }
+  .note.green { background: #f0fdf4; border-left-color: var(--success); }
+  .note.green strong { color: #065f46; }
+
+  code {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    background: var(--gray-100);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+
+  /* ===== スイムレーン図（行=登場人物 / 横=時系列） ===== */
+  .actor-legend { display: flex; gap: 14px; flex-wrap: wrap; margin: 0 0 16px; font-size: 13px; }
+  .actor-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 12px; border-radius: 999px; font-weight: 700; font-size: 12px;
+  }
+  .actor-chip::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
+  .actor-chip.user { background: var(--user-light); color: #075985; }
+  .actor-chip.user::before { background: var(--user); }
+  .actor-chip.shop { background: var(--shop-light); color: #065f46; }
+  .actor-chip.shop::before { background: var(--shop); }
+  .actor-chip.sys { background: var(--accent-light); color: var(--accent); }
+  .actor-chip.sys::before { background: var(--accent); }
+
+  .lane-wrap { overflow-x: auto; margin: 8px 0 8px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .lanes {
+    display: grid;
+    grid-template-columns: 92px repeat(5, minmax(158px, 1fr));
+    min-width: 920px;
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 12px;
+  }
+  .lane-head {
+    background: var(--gray-900); color: #fff;
+    font-weight: 800; font-size: 12px; text-align: center;
+    padding: 10px 8px; line-height: 1.4;
+    border-left: 1px solid rgba(255,255,255,0.12);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  }
+  .lane-head .sub { font-weight: 600; font-size: 10.5px; opacity: 0.65; }
+  .lane-head.branchcol { background: #7f1d1d; }
+  .lane-corner {
+    background: var(--gray-900); color: rgba(255,255,255,0.7);
+    font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center;
+  }
+  .lane-label {
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    font-size: 11.5px; font-weight: 800; text-align: center;
+    padding: 10px 6px; border-top: 1px solid var(--gray-200);
+    background: var(--gray-50); line-height: 1.3;
+  }
+  .lane-label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .lane-label.user { color: #075985; } .lane-label.user::before { background: var(--user); }
+  .lane-label.shop { color: #065f46; } .lane-label.shop::before { background: var(--shop); }
+  .lane-label.sys  { color: var(--accent); } .lane-label.sys::before { background: var(--accent); }
+  .lane-label.money { color: #92400e; } .lane-label.money::before { content: '💰'; width: auto; height: auto; border-radius: 0; background: none; }
+  .lane-cell {
+    padding: 8px; border-top: 1px solid var(--gray-200); border-left: 1px solid var(--gray-100);
+    display: flex; flex-direction: column; gap: 6px; justify-content: flex-start;
+  }
+  .lane-cell.branchcol { background: #fff7f7; border-left: 2px dashed #fca5a5; }
+  .lane-cell.empty::before { content: '—'; color: var(--gray-300); text-align: center; margin: auto; }
+  .lane-cell.money {
+    background: #fffbeb; font-weight: 800; color: #92400e; text-align: center;
+    justify-content: center; font-size: 12.5px;
+  }
+  .lane-cell.money .free { color: var(--gray-400, #9ca3af); font-weight: 700; }
+  .lane-cell.money small { display: block; font-weight: 600; font-size: 10.5px; color: #b45309; }
+  .mini {
+    border-radius: 8px; padding: 7px 9px; line-height: 1.5; color: var(--gray-700);
+  }
+  .mini.user { background: var(--user-light); }
+  .mini.shop { background: var(--shop-light); }
+  .mini.sys  { background: var(--accent-light); }
+  .mini b { display: block; font-size: 12px; color: var(--gray-900); margin-bottom: 1px; }
+  .mini .n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 17px; height: 17px; border-radius: 50%;
+    background: #fff; border: 1px solid rgba(0,0,0,0.15);
+    font-size: 10.5px; font-weight: 800; color: var(--gray-700);
+    margin-right: 4px; vertical-align: -3px;
+  }
+  .mini .star { font-weight: 800; color: var(--danger); }
+  .scroll-hint { font-size: 11.5px; color: var(--gray-500); text-align: right; margin-bottom: 16px; }
+
+  .branch {
+    border: 2px dashed var(--gray-300); border-radius: 12px;
+    padding: 16px 20px; margin: 12px 0; background: var(--gray-50);
+  }
+  .branch.red { border-color: #fca5a5; background: #fff7f7; }
+  .branch h5 { font-size: 13px; font-weight: 800; color: var(--danger); margin-bottom: 6px; }
+  .branch p, .branch li { font-size: 13px; color: var(--gray-700); }
+  .branch ol { padding-left: 18px; margin-top: 4px; }
+  .branch li { margin-bottom: 4px; }
+
+  footer { text-align: center; padding: 40px 0; color: var(--gray-500); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Payment Flow / 2026-07-04 定例</div>
+  <h1>予約・決済・貸出・返却フロー（推奨設計）</h1>
+  <p>増永さんの構想（6/30受領・増永さん構想.md）を弊社がStripeの実装観点で検証し、フロー図に整理した資料です。<strong>構想の骨格はそのまま実装可能</strong>と判断し、変更・補強を提案する箇所には<span class="badge ours" style="margin:0 4px;">弊社提案</span>を付けています。</p>
+  <div class="hero-meta">
+    <span>ベース: 増永さん構想.md（6/30）</span>
+    <span>前提: Stripeへの載せ替え（6/19決定）</span>
+    <span>デポジットは今回スコープ外（6/30確定）</span>
+  </div>
+</div>
+
+<div class="summary-grid">
+  <div class="summary-card">
+    <h3>結論</h3>
+    <p><strong>構想は全ステップ実装可能</strong>。Stripeの標準機能で組めて、特殊な開発は不要</p>
+  </div>
+  <div class="summary-card">
+    <h3>お金が動く回数</h3>
+    <p>通常利用で<strong>最大2回</strong>（貸出開始時に全額＋返却時に追加分）。<strong>予約時は0円</strong></p>
+  </div>
+  <div class="summary-card">
+    <h3>オーソリは不要に</h3>
+    <p>当日店頭で本決済するため、6/30に議論した<strong>チェックイン時オーソリは要らない</strong>（詳細は提案3-1）</p>
+  </div>
+  <div class="summary-card">
+    <h3>注意点</h3>
+    <p><strong>無断キャンセル料の回収は100%にはならない</strong>前提の設計が必要（詳細は提案3-2）</p>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- 1 フロー図 -->
+  <section>
+    <h2><span class="num">1</span> 全体フロー図（時系列 →）</h2>
+    <p class="section-lead">横が時間の流れ、行が「誰がやるか」です。①→⑫の順に進み、一番下の行でお金が動くタイミングが分かります。★は例外時の分岐（詳細は図の下）。</p>
+    <div class="actor-legend">
+      <span class="actor-chip user">ユーザー（借りる人）</span>
+      <span class="actor-chip shop">販売店</span>
+      <span class="actor-chip sys">RINCLEシステム（Stripe）</span>
+    </div>
+
+    <div class="lane-wrap">
+      <div class="lanes">
+        <!-- ヘッダー行 -->
+        <div class="lane-corner">時系列 →</div>
+        <div class="lane-head">📅 予約時<span class="sub">数日〜数週間前</span></div>
+        <div class="lane-head branchcol">⚠ キャンセル時<span class="sub">発生した場合のみ</span></div>
+        <div class="lane-head">🚲 当日: チェックイン<span class="sub">店頭</span></div>
+        <div class="lane-head">💳 当日: 決済・貸出<span class="sub">店頭</span></div>
+        <div class="lane-head">🔁 返却時<span class="sub">店頭</span></div>
+
+        <!-- ユーザー行 -->
+        <div class="lane-label user">ユーザー</div>
+        <div class="lane-cell">
+          <div class="mini user"><b><span class="n">1</span>予約＋カード登録</b>店舗・自転車・日時を選択。キャンセル料の規約に同意</div>
+        </div>
+        <div class="lane-cell branchcol">
+          <div class="mini user"><b>キャンセル操作</b>（無断キャンセルは操作なし）</div>
+        </div>
+        <div class="lane-cell">
+          <div class="mini user"><b><span class="n">4</span>QRでチェックイン</b>店頭でQRコードを読み取り</div>
+        </div>
+        <div class="lane-cell">
+          <div class="mini user"><b>失敗時のみ <span class="star">★2</span></b>自分のスマホで別カードを登録→再決済</div>
+        </div>
+        <div class="lane-cell">
+          <div class="mini user"><b><span class="n">9</span>自転車を返却</b></div>
+        </div>
+
+        <!-- 販売店行 -->
+        <div class="lane-label shop">販売店</div>
+        <div class="lane-cell">
+          <div class="mini shop"><b><span class="n">3</span>予約確認・準備</b>管理画面と通知で内容を確認</div>
+        </div>
+        <div class="lane-cell branchcol empty"></div>
+        <div class="lane-cell">
+          <div class="mini shop"><b><span class="n">5</span>本人確認→内容確定</b>オプション追加・車両変更などを反映して最終金額を確定</div>
+        </div>
+        <div class="lane-cell">
+          <div class="mini shop"><b><span class="n">6</span>「決済して貸出開始」</b>ボタン1つ（1アクション）</div>
+          <div class="mini shop"><b><span class="n">8</span>説明・状態記録→引き渡し</b>傷・付属品を写真で記録</div>
+        </div>
+        <div class="lane-cell">
+          <div class="mini shop"><b><span class="n">10</span>返却確認</b>時間超過・傷・付属品を貸出時の記録と突き合わせ</div>
+          <div class="mini shop"><b><span class="n">12</span>返却完了</b>ステータスを「返却済み」へ</div>
+        </div>
+
+        <!-- システム行 -->
+        <div class="lane-label sys">RINCLE<br>システム<br>(Stripe)</div>
+        <div class="lane-cell">
+          <div class="mini sys"><b><span class="n">2</span>カード有効性を自動チェック</b>¥0で検証・保存（本人認証込み）。無効カードはこの場で弾く</div>
+        </div>
+        <div class="lane-cell branchcol">
+          <div class="mini sys"><b>キャンセル料を登録カードへ請求 <span class="star">★1</span></b>ポリシーに沿って自動計算</div>
+        </div>
+        <div class="lane-cell empty"></div>
+        <div class="lane-cell">
+          <div class="mini sys"><b><span class="n">7</span>登録カードへ本決済</b><strong>成功時のみ</strong>「貸出中」へ変更。領収書メール自動送信</div>
+        </div>
+        <div class="lane-cell">
+          <div class="mini sys"><b><span class="n">11</span>追加分があれば追加決済</b>延長・紛失分のみ。破損は後日請求 <span class="star">★3</span></div>
+        </div>
+
+        <!-- お金行 -->
+        <div class="lane-label money">お金の動き</div>
+        <div class="lane-cell money"><span class="free">¥0</span></div>
+        <div class="lane-cell money branchcol">💰 キャンセル料</div>
+        <div class="lane-cell money"><span class="free">¥0</span></div>
+        <div class="lane-cell money">💰 全額<small>基本＋オプション＋当日変更分</small></div>
+        <div class="lane-cell money">💰 追加分のみ<small>なければ¥0</small></div>
+      </div>
+    </div>
+    <p class="scroll-hint">※ 画面が狭い場合は図を横にスクロールできます</p>
+
+    <div class="note green">
+      <strong>予約時・チェックイン時は0円。</strong>ユーザーから見ると「予約はタダで気軽に、支払いは自転車を受け取るとき」という分かりやすいお金の流れになります（ホテルのチェックイン精算に近い形）。
+    </div>
+
+    <h3>★ 例外時の分岐（詳細）</h3>
+    <div class="branch red">
+      <h5>★1 キャンセル料の請求が失敗したら</h5>
+      <ol>
+        <li>ユーザーに別カードでの支払いを案内</li>
+        <li>それも不可なら請求書払い → 管理者対応（回収しきれない分は貸倒れとして許容 — 提案3-2）</li>
+      </ol>
+    </div>
+    <div class="branch red">
+      <h5>★2 貸出当日の本決済が失敗したら</h5>
+      <p>本人が目の前にいるので、その場でリカバリーできる（これがこのフローの強み・提案3-1）。</p>
+      <ol>
+        <li>ユーザーが<strong>自分のスマホで</strong>別カードを登録して再決済（店員はカード番号に触れない — Stripeの標準的な使い方と一致）</li>
+        <li>再決済成功 → 貸出開始／失敗 → 貸出不可 or 管理者対応</li>
+      </ol>
+    </div>
+    <div class="branch">
+      <h5 style="color:var(--accent);">★3 破損・高額請求が発生したら <span class="badge ours">弊社提案</span></h5>
+      <p>車体破損など<strong>金額が大きい・揉めやすい請求は、その場で決済せず「管理者確認 → 後日請求」を標準ルートに</strong>する（詳細は提案3-3）。店頭での言い合いを避け、金額の妥当性を運営が確認してから請求できる。</p>
+    </div>
+  </section>
+
+  <!-- 2 旧設計からの変更 -->
+  <section>
+    <h2><span class="num">2</span> これまでの設計から何が変わるか</h2>
+    <p class="section-lead">決済比較資料（payjp-vs-stripe）「6.1 決済フロー設計」の旧設計は、本資料のフローに置き換えます。</p>
+    <div class="card">
+      <table>
+        <thead><tr><th>シーン</th><th>旧設計（4/21合意）</th><th>今回の構想（6/30〜）</th><th>変わることの意味</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="label">予約時</td>
+            <td>全額を即時決済</td>
+            <td><strong>カード登録＋有効性確認のみ（0円）</strong></td>
+            <td>予約のハードルが下がる。当日変更にも柔軟</td>
+          </tr>
+          <tr>
+            <td class="label">キャンセル</td>
+            <td>決済済み額から<strong>返金</strong></td>
+            <td>キャンセル料を<strong>請求</strong></td>
+            <td>返金オペが消える一方、<strong>回収リスクが発生</strong>（詳細は提案3-2）</td>
+          </tr>
+          <tr>
+            <td class="label">当日の変更・オプション</td>
+            <td>元の決済とは別に追加決済</td>
+            <td><strong>本決済に含めて1回で決済</strong></td>
+            <td>決済回数が減り、ユーザーに分かりやすい</td>
+          </tr>
+          <tr>
+            <td class="label">延長・返却時追加</td>
+            <td>登録カードへ追加決済</td>
+            <td>同じ（変更なし）</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td class="label">デポジット</td>
+            <td>高級車のみオーソリで検討</td>
+            <td><strong>今回は対象外</strong>（将来実装の可能性）</td>
+            <td>代わりに本人確認＋状態記録を運用の保険に</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <strong>トレードオフを正直に:</strong> 旧設計（予約時全額決済）は「取りっぱぐれゼロ・キャンセル時に返金」、新設計は「予約が気軽・返金オペ不要、ただしキャンセル料と無断キャンセル料に回収リスク」。レンタル業態はホテルと同じく<strong>当日精算型（新設計）が業界標準</strong>で、予約率への好影響も期待できるため、弊社も新設計に賛成です。回収リスクは提案3-2の運用でカバーします。
+    </div>
+  </section>
+
+  <!-- 3 弊社からの提案・論点 -->
+  <section>
+    <h2><span class="num">3</span> 弊社からの提案・論点</h2>
+    <p class="section-lead">構想を検証して見えた、変更・補強したい点です。</p>
+
+    <h3>3-1. チェックイン時のオーソリは「不要」で確定させたい <span class="badge ours">弊社提案</span></h3>
+    <div class="card">
+      <p style="font-size:14px; color:var(--gray-700); margin-bottom:12px;">6/30定例で「チェックイン時にオーソリ（利用枠の確保）を挟むか」を議論しましたが、<strong>構想の最終形では不要</strong>と考えます。理由:</p>
+      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700);">
+        <li style="margin-bottom:8px;"><strong>オーソリの目的は「後で決済が失敗しないよう枠を押さえる」こと。</strong>このフローではチェックインの直後（内容確定後）に本決済するので、押さえておく「後」がほぼ存在しない</li>
+        <li style="margin-bottom:8px;">オーソリ→キャプチャの2段階にすると、決済の状態管理が複雑になり開発・障害対応コストが上がる</li>
+        <li style="margin-bottom:8px;">増永さんが心配されていた「<strong>前日にカードが使えないと発覚しても誰も気づかず来店してしまう</strong>」問題は、そもそも当日店頭で決済する設計なので発生しない — 失敗しても<strong>本人が目の前にいるのでその場で別カード対応できる</strong></li>
+        <li>将来、無断キャンセルが多発したり高額帯が増えたら、「前日に全額オーソリ」を後から足すことは可能（Stripeは日本円なら最長30日保持できる）。今は入れない</li>
+      </ul>
+    </div>
+
+    <h3>3-2. 無断キャンセル料は「回収率100%ではない」前提で設計する <span class="badge warn">重要</span></h3>
+    <div class="card">
+      <p style="font-size:14px; color:var(--gray-700); margin-bottom:12px;">本人がその場にいない請求（キャンセル料・無断キャンセル料）は、カードの限度額不足や本人認証の壁で<strong>一定割合failします</strong>。しかも無断キャンセルするユーザーは、失敗後に別カードを出してくれる可能性が低い。ここは仕組み＋運用の合わせ技にします:</p>
+      <table>
+        <thead><tr><th>対策</th><th>内容</th><th>種別</th></tr></thead>
+        <tbody>
+          <tr><td class="label">同意の取り方が生命線</td><td>予約時に「登録カードへ請求されることがある」への<strong>明示的な同意</strong>を取る（構想STEP 1に既にあり）。Stripe上も「本人不在で請求してよいカード」として保存する設定にする — これで請求の成功率と正当性が大きく変わる</td><td><span class="badge good">実装</span></td></tr>
+          <tr><td class="label">前日リマインド通知 <span class="badge ours">弊社提案</span></td><td>前日にメール等で予約リマインドを自動送信。<strong>無断キャンセル自体を減らす</strong>のが一番の対策（キャンセル操作への導線も入れる）</td><td><span class="badge good">実装</span></td></tr>
+          <tr><td class="label">請求失敗時の逃げ道</td><td>①別カード案内 → ②請求書払い（Stripeの請求書リンクをメール送付）→ ③アカウント利用停止。それでも回収できない分は<strong>貸倒れとして許容する</strong>（回収に固執すると運用コストの方が高くつく）</td><td><span class="badge warn">運用</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>3-3. 破損・高額請求は「その場で決済しない」 <span class="badge ours">弊社提案</span></h3>
+    <div class="card">
+      <p style="font-size:14px; color:var(--gray-700);">構想では返却時の追加決済に「車体・パーツの破損」も含まれていますが、破損は<strong>金額が大きく・査定が必要で・揉めやすい</strong>ため、延長料金と同じ流れに乗せないことを提案します。返却時にその場で決済するのは<strong>金額が機械的に決まるもの（延長・付属品紛失）だけ</strong>に絞り、破損は「状態記録を残す → 運営が金額を確認 → 後日登録カードへ請求（金額と内訳をメールで通知してから）」のルートに。店頭のトラブルを防ぎ、加盟店スタッフの心理的負担も減らせます。</p>
+    </div>
+
+    <h3>3-4. その他の細かい補強</h3>
+    <div class="card">
+      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700);">
+        <li style="margin-bottom:8px;"><strong>領収書は全決済で自動送信</strong>（Stripeの標準機能）。集約モデルでは発行元がPEDALSTANDARDになる見込みのため、手動発行オペを最初からゼロにする</li>
+        <li style="margin-bottom:8px;"><strong>二重決済の防止</strong>: 「決済して貸出開始」ボタンの連打・通信断で二重課金されない仕組み（Stripeの標準機能で対応可）を実装要件に含める</li>
+        <li><strong>決済失敗の通知</strong>: キャンセル料などの請求が失敗したら、運営（増永さん側）に自動通知して対応漏れを防ぐ</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 実装可否まとめ -->
+  <section>
+    <h2><span class="num">4</span> 実装可否まとめ（構想STEP別）</h2>
+    <p class="section-lead">結論: 全STEP実装可能。Stripeの標準機能とBubbleの画面開発で組めます。</p>
+    <div class="card">
+      <table>
+        <thead><tr><th>構想のSTEP</th><th>実現方法</th><th>可否</th></tr></thead>
+        <tbody>
+          <tr><td class="label">1. 予約時のカード登録・有効性確認</td><td>Stripe標準機能（<code>SetupIntent</code>）。<strong>0円で検証・保存・本人認証まで完結</strong>。現行Pay.jpでは不完全だった有効性チェック（実質8割）がここで解消する</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">2. 販売店の予約確認</td><td>Bubble管理画面（既存の改修）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">3. キャンセル料・無断キャンセル料の請求</td><td>登録カードへの請求（Stripe標準）。ただし回収率100%ではない前提の運用が必要（詳細は提案3-2）。<strong>キャンセルポリシーの中身（何日前から何%）の確定が前提</strong></td><td><span class="badge warn">○ 条件付き</span></td></tr>
+          <tr><td class="label">4. QRチェックイン・本人確認</td><td>Bubbleで実装（QR発行・読み取り画面の新規開発）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">5. 当日の内容確定（オプション・車両変更）</td><td>Bubbleの予約編集機能（新規開発・<strong>開発ボリュームはここが一番大きい</strong>）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">6. 「決済して貸出開始」1アクション</td><td>Stripe決済＋成功時のみステータス変更。順序制御・二重決済防止を含めて実装可能。<strong>設計思想として正しく、弊社も推奨</strong></td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">7. 決済失敗時の別カード対応</td><td>ユーザー自身のスマホでカード再登録→再決済。店員がカード番号を扱わない方針はStripeの標準的な使い方と完全に一致</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">8. 貸出中（説明・状態記録）</td><td>Bubbleで実装（写真アップロード・チェックリスト）。決済とは独立した画面開発</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">9-10. 返却確認・延長/追加決済</td><td>登録カードへの追加決済（Stripe標準）。破損だけは後日請求ルートを提案（詳細は提案3-3）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">11. 返却完了</td><td>Bubbleステータス管理</td><td><span class="badge good">○</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note accent">
+      <strong>スケジュール感:</strong> 実装はDB再構築のリリース（7/6-7予定）後。詳細見積は、本フローの合意とキャンセルポリシーの確定を受けてから提示します。開発の山は「当日の内容確定（STEP 5）」と「チェックイン〜決済の店頭オペ画面（STEP 4・6）」の2つです。
+    </div>
+  </section>
+
+  <!-- 5 決めてもらうこと -->
+  <section>
+    <h2><span class="num">5</span> 増永さん側で決めてもらいたいこと</h2>
+    <div class="card">
+      <table>
+        <thead><tr><th>#</th><th>決めること</th><th>補足</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="label">このフロー（1章の図）と3つの提案（3章）でOKか</td><td>OKなら次回から詳細設計・見積に進む</td></tr>
+          <tr><td>2</td><td class="label">キャンセルポリシーの中身</td><td>何日前から・何%・無断キャンセルはいくら。雨天無料の方向（6/12合意）との整合も。<strong>STEP 3の実装はこれが決まらないと着手できない</strong></td></tr>
+          <tr><td>3</td><td class="label">破損請求の運用ルール</td><td>提案3-3を採用する場合: 誰が金額を査定するか（加盟店 or 運営）・上限額の目安</td></tr>
+          <tr><td>4</td><td class="label">本人確認の基準</td><td>全予約で確認するか、高額車両・E-Bikeのみか。確認書類の種類</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    &copy; 2026 Rincle Inc. &nbsp;|&nbsp; 本資料は社外秘です &nbsp;|&nbsp; ベース: documents/1_meeting_minutes/増永さん構想.md（6/30受領）＋弊社の実装検証 &nbsp;|&nbsp; 関連: payjp-vs-stripe.html（「6.1 決済フロー設計」の旧設計は本資料で置き換え）
+  </div>
+</footer>
+
+</body>
+</html>
