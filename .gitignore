@@ -13,7 +13,7 @@ test-results/
 playwright-report/
 
 # 本番DBエクスポート（個人情報を含むためコミット禁止）
-documents/4_growth/01_strategy/source/
+documents/4_growth/01_strategy/context/
 
 # OS
 .DS_Store
