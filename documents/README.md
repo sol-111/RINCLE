@@ -47,7 +47,6 @@ documents/
 │   ├── 04_integration/             # 外部連携
 │   │   ├── pay.jp/                 #   Pay.JP 決済連携
 │   │   │   ├── payjp-flow-asis.md          # クライアント向け: 現行の決済フロー（As-Is）
-│   │   │   ├── payjp-flow-tobe.md          # クライアント向け: To-Be 支払い・予約フロー
 │   │   │   ├── payjp-api-v1-summary-ja.md     # 公式APIリファレンス日本語まとめ（v1）
 │   │   │   ├── payjp-api-v2-summary-ja.md  # 公式APIリファレンス日本語まとめ（v2・2026-02提供開始）
 │   │   │   ├── payjp-dev-reference.md      # 開発者向け: Bubble実装詳細・ワークフロー
@@ -113,7 +112,6 @@ documents/
 │   │   └── tobe.html               #     To-Be フロー
 │   ├── pay.jp/                     #   Pay.JP 決済連携
 │   │   ├── asis.html               #     As-Is フロー
-│   │   ├── tobe.html               #     To-Be フロー
 │   │   ├── api-v1-reference.html   #     APIリファレンス（v1）
 │   │   ├── api-v2-reference.html   #     APIリファレンス（v2）
 │   │   └── issues.html             #     修正一覧
@@ -135,7 +133,8 @@ documents/
 │   │       └── keyword-research.html     # 検索キーワード調査
 │   └── stripe/                     #   Stripe 関連
 │       ├── api-reference.html      #     Stripe APIリファレンス
-│       └── payjp-vs-stripe.html    #     決済基盤の方針（比較+移行計画）
+│       ├── payjp-vs-stripe.html    #     決済基盤の方針（比較+移行計画）
+│       └── payment-flow.html       #     予約・決済・貸出・返却フロー（推奨設計・7/4定例）
 │
 └── 99_ receives/                   # クライアント提供資料（原本）
     ├── 仕様管理表.xlsx             #   検索・決済・料金・キャンセル等のケースロジック

@@ -1,7 +1,7 @@
 # Pay.JP オーソリ実装リファレンス
 
 > **対象読者**: Bubble開発者
-> **関連ドキュメント**: `payjp-payment-validation-flow.md`（決済失敗防止フロー）/ `payjp-flow-tobe.md`（To-Beフロー）
+> **関連ドキュメント**: `payjp-payment-validation-flow.md`（決済失敗防止フロー）※ `payjp-flow-tobe.md`（To-Beフロー）はStripe移行決定（6/19）に伴い2026-07-02に削除（git履歴には残存）
 
 ---
 
@@ -305,7 +305,7 @@ RINCLE は Marketplace型の Platform API を使っているため、`tenant` �
 | リソース | パス |
 |---------|------|
 | 決済失敗防止フロー | `payjp-payment-validation-flow.md` |
-| To-Beフロー | `payjp-flow-tobe.md` |
+| To-Beフロー | `payjp-flow-tobe.md`（2026-07-02削除・git履歴に残存） |
 | As-Isフロー | `payjp-flow-asis.md` |
 | 課題一覧 | `payjp-issues.md` |
 | APIサマリー | `payjp-api-v1-summary-ja.md` |
