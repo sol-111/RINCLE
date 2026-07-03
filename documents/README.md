@@ -140,7 +140,8 @@ documents/
 │   └── stripe/                     #   Stripe 関連
 │       ├── api-reference.html      #     Stripe APIリファレンス
 │       ├── payjp-vs-stripe.html    #     決済基盤の方針（比較+移行計画）
-│       └── payment-flow.html       #     予約・決済・貸出・返却フロー（推奨設計・7/4定例）
+│       ├── payment-flow.html       #     予約・決済・貸出・返却フロー（7/3定例で決定）
+│       └── receipt-invoice.html    #     領収書・インボイスの扱い（集約モデル・7/10報告）
 │
 └── 99_ receives/                   # クライアント提供資料（原本）
     ├── 仕様管理表.xlsx             #   検索・決済・料金・キャンセル等のケースロジック
