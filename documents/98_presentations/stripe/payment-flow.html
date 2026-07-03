@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>予約・決済・貸出・返却フロー（推奨設計） | RINCLE</title>
+<title>予約・決済・貸出・返却フロー（決定版） | RINCLE</title>
 <style>
   :root {
     --primary: #1a1a2e;
@@ -216,6 +216,9 @@
   }
   .lane-cell.money .free { color: var(--gray-400, #9ca3af); font-weight: 700; }
   .lane-cell.money small { display: block; font-weight: 600; font-size: 10.5px; color: #b45309; }
+  .lanes.cols6 { grid-template-columns: 92px repeat(6, minmax(140px, 1fr)); min-width: 1030px; }
+  .mini .ok { color: #047857; font-weight: 800; }
+  .mini .ng { color: #b91c1c; font-weight: 800; }
   .mini {
     border-radius: 8px; padding: 7px 9px; line-height: 1.5; color: var(--gray-700);
   }
@@ -249,32 +252,32 @@
 <body>
 
 <div class="hero">
-  <div class="hero-label">Payment Flow / 2026-07-04 定例</div>
-  <h1>予約・決済・貸出・返却フロー（推奨設計）</h1>
-  <p>増永さんの構想（6/30受領・増永さん構想.md）を弊社がStripeの実装観点で検証し、フロー図に整理した資料です。<strong>構想の骨格はそのまま実装可能</strong>と判断し、変更・補強を提案する箇所には<span class="badge ours" style="margin:0 4px;">弊社提案</span>を付けています。</p>
+  <div class="hero-label">Payment Flow / 2026-07-03 定例で決定</div>
+  <h1>予約・決済・貸出・返却フロー（決定版）</h1>
+  <p>増永さんの構想（6/30受領）を弊社がStripeの実装観点で検証・図解し、<strong>7/3定例で「当日決済のみ（オーソリなし・QRチェックインなし）」のフローに決定</strong>しました。弊社の変更・補強箇所には<span class="badge ours" style="margin:0 4px;">弊社提案</span>を付けています。</p>
   <div class="hero-meta">
     <span>ベース: 増永さん構想.md（6/30）</span>
     <span>前提: Stripeへの載せ替え（6/19決定）</span>
-    <span>デポジットは今回スコープ外（6/30確定）</span>
+    <span>デポジットは今回スコープ外・将来対応できる設計にする（7/3）</span>
   </div>
 </div>
 
 <div class="summary-grid">
   <div class="summary-card">
-    <h3>結論</h3>
-    <p><strong>構想は全ステップ実装可能</strong>。Stripeの標準機能で組めて、特殊な開発は不要</p>
+    <h3>決定（7/3定例）</h3>
+    <p><strong>当日決済のみ</strong>で確定。オーソリなし・QRチェックインなし。トラブルが多ければオーソリは後から検討</p>
   </div>
   <div class="summary-card">
     <h3>お金が動く回数</h3>
     <p>通常利用で<strong>最大2回</strong>（貸出開始時に全額＋返却時に追加分）。<strong>予約時は0円</strong></p>
   </div>
   <div class="summary-card">
-    <h3>オーソリは不要に</h3>
-    <p>当日店頭で本決済するため、6/30に議論した<strong>チェックイン時オーソリは要らない</strong>（詳細は提案3-1）</p>
+    <h3>オーソリを見送った理由</h3>
+    <p><strong>明細が最大3つに分かれる</strong>＋当日のオプション変更が頻発する現場と相性が悪い</p>
   </div>
   <div class="summary-card">
-    <h3>注意点</h3>
-    <p><strong>無断キャンセル料の回収は100%にはならない</strong>前提の設計が必要（詳細は提案3-2）</p>
+    <h3>残る論点</h3>
+    <p>キャンセルポリシー・破損請求・本人確認（5章）。<strong>領収書/インボイスは弊社が調査して7/10報告</strong></p>
   </div>
 </div>
 
@@ -282,8 +285,8 @@
 
   <!-- 1 フロー図 -->
   <section>
-    <h2><span class="num">1</span> 全体フロー図（時系列 →）</h2>
-    <p class="section-lead">横が時間の流れ、行が「誰がやるか」です。①→⑫の順に進み、一番下の行でお金が動くタイミングが分かります。★は例外時の分岐（詳細は図の下）。</p>
+    <h2><span class="num">1</span> 全体フロー図（7/3決定）</h2>
+    <p class="section-lead">横が時間の流れ、行が「誰がやるか」、一番下の行がお金の動きです。<strong>赤い点線の列（キャンセル時・決済失敗時）は、発生した場合だけ通る分岐</strong>です。⑦の決済が成功すればそのまま⑧へ、失敗したら隣の「決済失敗時」列に入ってリカバリーします。</p>
     <div class="actor-legend">
       <span class="actor-chip user">ユーザー（借りる人）</span>
       <span class="actor-chip shop">販売店</span>
@@ -291,13 +294,14 @@
     </div>
 
     <div class="lane-wrap">
-      <div class="lanes">
+      <div class="lanes cols6">
         <!-- ヘッダー行 -->
         <div class="lane-corner">時系列 →</div>
         <div class="lane-head">📅 予約時<span class="sub">数日〜数週間前</span></div>
         <div class="lane-head branchcol">⚠ キャンセル時<span class="sub">発生した場合のみ</span></div>
-        <div class="lane-head">🚲 当日: チェックイン<span class="sub">店頭</span></div>
+        <div class="lane-head">🚲 当日: 来店・受付<span class="sub">店頭</span></div>
         <div class="lane-head">💳 当日: 決済・貸出<span class="sub">店頭</span></div>
+        <div class="lane-head branchcol">⚠ 決済失敗時<span class="sub">⑦が失敗した場合のみ</span></div>
         <div class="lane-head">🔁 返却時<span class="sub">店頭</span></div>
 
         <!-- ユーザー行 -->
@@ -309,10 +313,11 @@
           <div class="mini user"><b>キャンセル操作</b>（無断キャンセルは操作なし）</div>
         </div>
         <div class="lane-cell">
-          <div class="mini user"><b><span class="n">4</span>QRでチェックイン</b>店頭でQRコードを読み取り</div>
+          <div class="mini user"><b><span class="n">4</span>来店（アプリ操作なし）</b>名前か予約番号を伝えるだけ。QRチェックインは作らない（7/3合意）</div>
         </div>
-        <div class="lane-cell">
-          <div class="mini user"><b>失敗時のみ <span class="star">★2</span></b>自分のスマホで別カードを登録→再決済</div>
+        <div class="lane-cell empty"></div>
+        <div class="lane-cell branchcol">
+          <div class="mini user"><b>支払いQRをスマホで読み取り</b>Stripeの決済画面で<strong>別カード・Apple Pay・Google Pay</strong>のどれかで支払い直す</div>
         </div>
         <div class="lane-cell">
           <div class="mini user"><b><span class="n">9</span>自転車を返却</b></div>
@@ -325,11 +330,14 @@
         </div>
         <div class="lane-cell branchcol empty"></div>
         <div class="lane-cell">
-          <div class="mini shop"><b><span class="n">5</span>本人確認→内容確定</b>オプション追加・車両変更などを反映して最終金額を確定</div>
+          <div class="mini shop"><b><span class="n">5</span>予約を開いて本人確認→内容確定</b>管理画面で予約を検索。オプション追加・車両変更などを反映して最終金額を確定</div>
         </div>
         <div class="lane-cell">
-          <div class="mini shop"><b><span class="n">6</span>「決済して貸出開始」</b>ボタン1つ（1アクション）</div>
-          <div class="mini shop"><b><span class="n">8</span>説明・状態記録→引き渡し</b>傷・付属品を写真で記録</div>
+          <div class="mini shop"><b><span class="n">6</span>「決済して貸出開始」ボタン</b>1アクションで⑦の決済が走る</div>
+          <div class="mini shop"><b><span class="n">8</span>説明・状態記録→引き渡し</b><span class="ok">決済成功後</span>、傷・付属品を写真で記録して引き渡し</div>
+        </div>
+        <div class="lane-cell branchcol">
+          <div class="mini shop"><b>支払いQRを画面に表示して案内</b>店員はカード番号に触れない。再決済が済んだら⑧へ</div>
         </div>
         <div class="lane-cell">
           <div class="mini shop"><b><span class="n">10</span>返却確認</b>時間超過・傷・付属品を貸出時の記録と突き合わせ</div>
@@ -346,10 +354,13 @@
         </div>
         <div class="lane-cell empty"></div>
         <div class="lane-cell">
-          <div class="mini sys"><b><span class="n">7</span>登録カードへ本決済</b><strong>成功時のみ</strong>「貸出中」へ変更。領収書メール自動送信</div>
+          <div class="mini sys"><b><span class="n">7</span>登録カードへ本決済 — ここで分岐</b><span class="ok">✔ 成功</span> → 「貸出中」へ変更・領収書メール自動送信 → ⑧へ<br><span class="ng">✖ 失敗</span> → 一回限りの支払いQRを発行して右の列へ</div>
+        </div>
+        <div class="lane-cell branchcol">
+          <div class="mini sys"><b>再決済の結果で分岐</b><span class="ok">✔ 成功</span> → 「貸出中」へ変更（⑧に合流）<br><span class="ng">✖ 失敗</span> → 貸出不可 or 管理者対応</div>
         </div>
         <div class="lane-cell">
-          <div class="mini sys"><b><span class="n">11</span>追加分があれば追加決済</b>延長・紛失分のみ。破損は後日請求 <span class="star">★3</span></div>
+          <div class="mini sys"><b><span class="n">11</span>追加分があれば追加決済</b>延長・紛失分のみ。破損は後日請求 <span class="star">★2</span></div>
         </div>
 
         <!-- お金行 -->
@@ -358,13 +369,14 @@
         <div class="lane-cell money branchcol">💰 キャンセル料</div>
         <div class="lane-cell money"><span class="free">¥0</span></div>
         <div class="lane-cell money">💰 全額<small>基本＋オプション＋当日変更分</small></div>
+        <div class="lane-cell money branchcol">💰 全額<small>別カード等で支払い直し</small></div>
         <div class="lane-cell money">💰 追加分のみ<small>なければ¥0</small></div>
       </div>
     </div>
     <p class="scroll-hint">※ 画面が狭い場合は図を横にスクロールできます</p>
 
     <div class="note green">
-      <strong>予約時・チェックイン時は0円。</strong>ユーザーから見ると「予約はタダで気軽に、支払いは自転車を受け取るとき」という分かりやすいお金の流れになります（ホテルのチェックイン精算に近い形）。
+      <strong>予約時・来店時に請求は発生しません。</strong>「予約はタダで気軽に、支払いは自転車を受け取るとき」という分かりやすいお金の流れです（ホテルのチェックイン精算に近い形）。決済が失敗しても<strong>本人が目の前にいるのでその場で支払い直せる</strong>のがこのフローの強みです。
     </div>
 
     <h3>★ 例外時の分岐（詳細）</h3>
@@ -372,20 +384,12 @@
       <h5>★1 キャンセル料の請求が失敗したら</h5>
       <ol>
         <li>ユーザーに別カードでの支払いを案内</li>
-        <li>それも不可なら請求書払い → 管理者対応（回収しきれない分は貸倒れとして許容 — 提案3-2）</li>
-      </ol>
-    </div>
-    <div class="branch red">
-      <h5>★2 貸出当日の本決済が失敗したら</h5>
-      <p>本人が目の前にいるので、その場でリカバリーできる（これがこのフローの強み・提案3-1）。</p>
-      <ol>
-        <li>ユーザーが<strong>自分のスマホで</strong>別カードを登録して再決済（店員はカード番号に触れない — Stripeの標準的な使い方と一致）</li>
-        <li>再決済成功 → 貸出開始／失敗 → 貸出不可 or 管理者対応</li>
+        <li>それも不可なら請求書払い → 管理者対応（回収しきれない分は貸倒れとして許容 — 提案3-1）</li>
       </ol>
     </div>
     <div class="branch">
-      <h5 style="color:var(--accent);">★3 破損・高額請求が発生したら <span class="badge ours">弊社提案</span></h5>
-      <p>車体破損など<strong>金額が大きい・揉めやすい請求は、その場で決済せず「管理者確認 → 後日請求」を標準ルートに</strong>する（詳細は提案3-3）。店頭での言い合いを避け、金額の妥当性を運営が確認してから請求できる。</p>
+      <h5 style="color:var(--accent);">★2 破損・高額請求が発生したら <span class="badge ours">弊社提案</span></h5>
+      <p>車体破損など<strong>金額が大きい・揉めやすい請求は、その場で決済せず「管理者確認 → 後日請求」を標準ルートに</strong>する（詳細は提案3-2）。店頭での言い合いを避け、金額の妥当性を運営が確認してから請求できる。</p>
     </div>
   </section>
 
@@ -407,31 +411,22 @@
             <td class="label">キャンセル</td>
             <td>決済済み額から<strong>返金</strong></td>
             <td>キャンセル料を<strong>請求</strong></td>
-            <td>返金オペが消える一方、<strong>回収リスクが発生</strong>（詳細は提案3-2）</td>
+            <td>返金オペが消える一方、<strong>回収リスクが発生</strong>（詳細は提案3-1）</td>
           </tr>
           <tr>
             <td class="label">当日の変更・オプション</td>
-            <td>元の決済とは別に追加決済</td>
-            <td><strong>本決済に含めて1回で決済</strong></td>
-            <td>決済回数が減り、ユーザーに分かりやすい</td>
-          </tr>
-          <tr>
-            <td class="label">延長・返却時追加</td>
-            <td>登録カードへ追加決済</td>
-            <td>同じ（変更なし）</td>
-            <td>—</td>
+            <td>別途追加決済<br><strong>※現行システムはそもそも当日変更ができず、システム外で処理</strong></td>
+            <td><strong>当日変更の機能を新規開発</strong>し、本決済に含めて1回で決済</td>
+            <td>システム外で処理されていた売上を捕捉できるようになる＋決済回数が減ってユーザーに分かりやすい</td>
           </tr>
           <tr>
             <td class="label">デポジット</td>
             <td>高級車のみオーソリで検討</td>
-            <td><strong>今回は対象外</strong>（将来実装の可能性）</td>
-            <td>代わりに本人確認＋状態記録を運用の保険に</td>
+            <td><strong>今回は対象外。ただし後から追加できる設計で実装する</strong>（7/3・増永さん要望）</td>
+            <td>当面は本人確認＋状態記録を運用の保険に。将来は保存済みカードへのデポジットオーソリ（クレジット限定・貸出時確保→返却時解放）を本決済と独立に足せる — フローの作り直しは不要（詳細は3-4）</td>
           </tr>
         </tbody>
       </table>
-    </div>
-    <div class="note">
-      <strong>トレードオフを正直に:</strong> 旧設計（予約時全額決済）は「取りっぱぐれゼロ・キャンセル時に返金」、新設計は「予約が気軽・返金オペ不要、ただしキャンセル料と無断キャンセル料に回収リスク」。レンタル業態はホテルと同じく<strong>当日精算型（新設計）が業界標準</strong>で、予約率への好影響も期待できるため、弊社も新設計に賛成です。回収リスクは提案3-2の運用でカバーします。
     </div>
   </section>
 
@@ -440,20 +435,9 @@
     <h2><span class="num">3</span> 弊社からの提案・論点</h2>
     <p class="section-lead">構想を検証して見えた、変更・補強したい点です。</p>
 
-    <h3>3-1. チェックイン時のオーソリは「不要」で確定させたい <span class="badge ours">弊社提案</span></h3>
+    <h3>3-1. 無断キャンセル料は「回収率100%ではない」前提で設計する <span class="badge warn">重要</span></h3>
     <div class="card">
-      <p style="font-size:14px; color:var(--gray-700); margin-bottom:12px;">6/30定例で「チェックイン時にオーソリ（利用枠の確保）を挟むか」を議論しましたが、<strong>構想の最終形では不要</strong>と考えます。理由:</p>
-      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700);">
-        <li style="margin-bottom:8px;"><strong>オーソリの目的は「後で決済が失敗しないよう枠を押さえる」こと。</strong>このフローではチェックインの直後（内容確定後）に本決済するので、押さえておく「後」がほぼ存在しない</li>
-        <li style="margin-bottom:8px;">オーソリ→キャプチャの2段階にすると、決済の状態管理が複雑になり開発・障害対応コストが上がる</li>
-        <li style="margin-bottom:8px;">増永さんが心配されていた「<strong>前日にカードが使えないと発覚しても誰も気づかず来店してしまう</strong>」問題は、そもそも当日店頭で決済する設計なので発生しない — 失敗しても<strong>本人が目の前にいるのでその場で別カード対応できる</strong></li>
-        <li>将来、無断キャンセルが多発したり高額帯が増えたら、「前日に全額オーソリ」を後から足すことは可能（Stripeは日本円なら最長30日保持できる）。今は入れない</li>
-      </ul>
-    </div>
-
-    <h3>3-2. 無断キャンセル料は「回収率100%ではない」前提で設計する <span class="badge warn">重要</span></h3>
-    <div class="card">
-      <p style="font-size:14px; color:var(--gray-700); margin-bottom:12px;">本人がその場にいない請求（キャンセル料・無断キャンセル料）は、カードの限度額不足や本人認証の壁で<strong>一定割合failします</strong>。しかも無断キャンセルするユーザーは、失敗後に別カードを出してくれる可能性が低い。ここは仕組み＋運用の合わせ技にします:</p>
+      <p style="font-size:14px; color:var(--gray-700); margin-bottom:12px;">本人がその場にいない請求（キャンセル料・無断キャンセル料）は、カードの限度額不足や本人認証の壁で<strong>一定回収できない</strong>。かつ、無断キャンセルするユーザーは、失敗後に別カードを出してくれる可能性が低い。ここは仕組み＋運用の合わせ技にします:</p>
       <table>
         <thead><tr><th>対策</th><th>内容</th><th>種別</th></tr></thead>
         <tbody>
@@ -464,18 +448,45 @@
       </table>
     </div>
 
-    <h3>3-3. 破損・高額請求は「その場で決済しない」 <span class="badge ours">弊社提案</span></h3>
+    <h3>3-2. 破損・高額請求は「その場で決済しない」 <span class="badge ours">弊社提案</span></h3>
     <div class="card">
       <p style="font-size:14px; color:var(--gray-700);">構想では返却時の追加決済に「車体・パーツの破損」も含まれていますが、破損は<strong>金額が大きく・査定が必要で・揉めやすい</strong>ため、延長料金と同じ流れに乗せないことを提案します。返却時にその場で決済するのは<strong>金額が機械的に決まるもの（延長・付属品紛失）だけ</strong>に絞り、破損は「状態記録を残す → 運営が金額を確認 → 後日登録カードへ請求（金額と内訳をメールで通知してから）」のルートに。店頭のトラブルを防ぎ、加盟店スタッフの心理的負担も減らせます。</p>
     </div>
 
-    <h3>3-4. その他の細かい補強</h3>
+    <h3>3-3. その他の細かい補強</h3>
     <div class="card">
       <ul style="padding-left:20px; font-size:14px; color:var(--gray-700);">
         <li style="margin-bottom:8px;"><strong>領収書は全決済で自動送信</strong>（Stripeの標準機能）。集約モデルでは発行元がPEDALSTANDARDになる見込みのため、手動発行オペを最初からゼロにする</li>
         <li style="margin-bottom:8px;"><strong>二重決済の防止</strong>: 「決済して貸出開始」ボタンの連打・通信断で二重課金されない仕組み（Stripeの標準機能で対応可）を実装要件に含める</li>
-        <li><strong>決済失敗の通知</strong>: キャンセル料などの請求が失敗したら、運営（増永さん側）に自動通知して対応漏れを防ぐ</li>
+        <li style="margin-bottom:8px;"><strong>決済失敗の通知</strong>: キャンセル料などの請求が失敗したら、運営（増永さん側）に自動通知して対応漏れを防ぐ</li>
       </ul>
+    </div>
+
+    <h3>3-4. （将来拡張）デポジットオーソリの設計メモ</h3>
+    <div class="card">
+      <p style="font-size:14px; margin-bottom:8px;"><strong>動き方（導入した場合）</strong></p>
+      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700); margin-bottom:16px;">
+        <li style="margin-bottom:6px;">貸出時（本決済の後）に、デポジット額の<strong>利用枠だけを確保</strong>（オーソリ・請求はしない）</li>
+        <li style="margin-bottom:6px;">返却確認で問題なし → <strong>解放</strong>（数日で枠が戻る・お金は動かない）</li>
+        <li>破損・紛失あり → <strong>損害分だけ確定（キャプチャ）して残りは解放</strong>。3-2の「後日請求」より確実に回収できる</li>
+      </ul>
+
+      <p style="font-size:14px; margin-bottom:8px;"><strong>導入時の前提条件（調査済み・#25）</strong></p>
+      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700); margin-bottom:16px;">
+        <li style="margin-bottom:6px;"><strong>クレジットカード限定にする。</strong>デビット/プリペイドはオーソリでも実際にお金が引き落とされ、返金に最大2週間かかる（「30万円引かれた！」クレームに直結）。Stripeはカード種別を判定して弾ける — <strong>Pay.jpにはできなかったことで、Stripeを選んだ利点がそのまま効く</strong></li>
+        <li style="margin-bottom:6px;"><strong>金額は3〜5万円が現実解。</strong>一般カードのショッピング枠（10〜30万円スタートが相場）で通る上限の目安。高額にするほど「枠が足りず借りられない人」が増える（詳細: 決済基盤の方針資料 §1.5）</li>
+        <li><strong>オーソリの有効期間は日本円で最長30日</strong> — 通常のレンタル期間なら余裕で収まる</li>
+      </ul>
+
+      <p style="font-size:14px; margin-bottom:8px;"><strong>デポジットならOKな理由</strong></p>
+      <p style="font-size:14px; color:var(--gray-700); margin-bottom:16px;">オーソリ見送りの決め手だった「明細が分かれる・当日の金額変更と相性が悪い」は、<strong>レンタル料金のオーソリ</strong>の問題です。デポジットは<strong>金額が固定・単発</strong>（確保して、解放するか損害分だけ確定するか）なので、明細分割も増額の審査問題も起きません。</p>
+
+      <p style="font-size:14px; margin-bottom:8px;"><strong>今回の実装に仕込んでおくこと（弊社対応）</strong></p>
+      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700);">
+        <li style="margin-bottom:6px;">カードを「本人不在でも請求してよい」設定で保存（3-1の同意設計と共通 — デポジットオーソリにもそのまま使える）</li>
+        <li>本決済と独立した決済レコードを持てるDB設計にしておく（デポジットを1決済として後から追加できる形）</li>
+      </ul>
+      <p style="font-size:13px; color:var(--gray-500); margin-top:12px;">導入判断の材料: 高額車両・E-Bikeでの破損・盗難トラブルの発生状況を運用開始後にモニタリングして決める。</p>
     </div>
   </section>
 
@@ -489,35 +500,49 @@
         <tbody>
           <tr><td class="label">1. 予約時のカード登録・有効性確認</td><td>Stripe標準機能（<code>SetupIntent</code>）。<strong>0円で検証・保存・本人認証まで完結</strong>。現行Pay.jpでは不完全だった有効性チェック（実質8割）がここで解消する</td><td><span class="badge good">○</span></td></tr>
           <tr><td class="label">2. 販売店の予約確認</td><td>Bubble管理画面（既存の改修）</td><td><span class="badge good">○</span></td></tr>
-          <tr><td class="label">3. キャンセル料・無断キャンセル料の請求</td><td>登録カードへの請求（Stripe標準）。ただし回収率100%ではない前提の運用が必要（詳細は提案3-2）。<strong>キャンセルポリシーの中身（何日前から何%）の確定が前提</strong></td><td><span class="badge warn">○ 条件付き</span></td></tr>
-          <tr><td class="label">4. QRチェックイン・本人確認</td><td>Bubbleで実装（QR発行・読み取り画面の新規開発）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">3. キャンセル料・無断キャンセル料の請求</td><td>登録カードへの請求（Stripe標準）。回収率100%ではない前提の運用が必要（詳細は提案3-1）。<strong>キャンセルポリシーの中身（何日前から何%）の確定が前提</strong></td><td><span class="badge warn">○ 条件付き</span></td></tr>
+          <tr><td class="label">4. 来店受付・本人確認</td><td>店舗管理画面の予約検索（既存の改修）で対応。<strong>QRチェックイン機能は作らない</strong>（7/3合意）。決済失敗時のみ店舗画面に支払いQRを表示（Stripe標準機能）</td><td><span class="badge good">○</span></td></tr>
           <tr><td class="label">5. 当日の内容確定（オプション・車両変更）</td><td>Bubbleの予約編集機能（新規開発・<strong>開発ボリュームはここが一番大きい</strong>）</td><td><span class="badge good">○</span></td></tr>
           <tr><td class="label">6. 「決済して貸出開始」1アクション</td><td>Stripe決済＋成功時のみステータス変更。順序制御・二重決済防止を含めて実装可能。<strong>設計思想として正しく、弊社も推奨</strong></td><td><span class="badge good">○</span></td></tr>
           <tr><td class="label">7. 決済失敗時の別カード対応</td><td>ユーザー自身のスマホでカード再登録→再決済。店員がカード番号を扱わない方針はStripeの標準的な使い方と完全に一致</td><td><span class="badge good">○</span></td></tr>
           <tr><td class="label">8. 貸出中（説明・状態記録）</td><td>Bubbleで実装（写真アップロード・チェックリスト）。決済とは独立した画面開発</td><td><span class="badge good">○</span></td></tr>
-          <tr><td class="label">9-10. 返却確認・延長/追加決済</td><td>登録カードへの追加決済（Stripe標準）。破損だけは後日請求ルートを提案（詳細は提案3-3）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label">9-10. 返却確認・延長/追加決済</td><td>登録カードへの追加決済（Stripe標準）。破損だけは後日請求ルートを提案（詳細は提案3-2）</td><td><span class="badge good">○</span></td></tr>
           <tr><td class="label">11. 返却完了</td><td>Bubbleステータス管理</td><td><span class="badge good">○</span></td></tr>
         </tbody>
       </table>
     </div>
     <div class="note accent">
-      <strong>スケジュール感:</strong> 実装はDB再構築のリリース（7/6-7予定）後。詳細見積は、本フローの合意とキャンセルポリシーの確定を受けてから提示します。開発の山は「当日の内容確定（STEP 5）」と「チェックイン〜決済の店頭オペ画面（STEP 4・6）」の2つです。
+      <strong>スケジュール感:</strong> 実装はDB再構築のリリース（7/6-7予定）後。フロー自体は7/3に合意済みのため、詳細見積は<strong>キャンセルポリシーの確定</strong>を受けてから提示します。開発の山は「当日の内容確定（STEP 5）」と「受付〜決済の店頭オペ画面（STEP 4〜6）」の2つです（QRチェックインを作らない分、当初想定より軽くなります）。
     </div>
   </section>
 
   <!-- 5 決めてもらうこと -->
   <section>
-    <h2><span class="num">5</span> 増永さん側で決めてもらいたいこと</h2>
+    <h2><span class="num">5</span> 決定事項と残る論点（7/3更新）</h2>
+
+    <h3>増永さん側で決めてもらうこと（残り）</h3>
     <div class="card">
       <table>
         <thead><tr><th>#</th><th>決めること</th><th>補足</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td class="label">このフロー（1章の図）と3つの提案（3章）でOKか</td><td>OKなら次回から詳細設計・見積に進む</td></tr>
-          <tr><td>2</td><td class="label">キャンセルポリシーの中身</td><td>何日前から・何%・無断キャンセルはいくら。雨天無料の方向（6/12合意）との整合も。<strong>STEP 3の実装はこれが決まらないと着手できない</strong></td></tr>
-          <tr><td>3</td><td class="label">破損請求の運用ルール</td><td>提案3-3を採用する場合: 誰が金額を査定するか（加盟店 or 運営）・上限額の目安</td></tr>
-          <tr><td>4</td><td class="label">本人確認の基準</td><td>全予約で確認するか、高額車両・E-Bikeのみか。確認書類の種類</td></tr>
+          <tr><td>1</td><td class="label">キャンセルポリシーの中身<br><span style="font-weight:400;font-size:12px;color:var(--gray-500)">周辺ルールもセットで</span></td><td>基本の「何日前から・何%・無断キャンセルはいくら」に加えて、<strong>運用で必ず出てくる次の6点もセットで決めたい</strong>（バラバラに決めると二度手間になるため）。<strong>キャンセル料請求の実装と詳細見積はここが決まらないと着手できない</strong>
+            <ul style="padding-left:18px;margin-top:8px;font-size:13px;">
+              <li style="margin-bottom:4px;"><strong>日程変更のルール</strong> — キャンセルではなく「変更」の場合、キャンセル料はかかるか・何日前まで無料か</li>
+              <li style="margin-bottom:4px;"><strong>雨天キャンセルの判定方法</strong> — 雨天無料の方向（6/12合意）を、誰がどう判定するか（ユーザー申告／店舗判断／降水量などの基準）</li>
+              <li style="margin-bottom:4px;"><strong>無断キャンセルの確定タイミング</strong> — 予約時刻から何時間で無断キャンセル扱いにするか・自動か店舗操作か</li>
+              <li style="margin-bottom:4px;"><strong>延長料金の計算ルール</strong> — 何分単位・上限（丸1日を超えたら？）。返却時の追加決済の金額根拠</li>
+              <li style="margin-bottom:4px;"><strong>複数台・グループ予約の決済</strong> — 代表者のカードで合算1回か、1台ずつか</li>
+              <li><strong>盗難・事故時の金銭フロー</strong> — 補償オプションとの関係。破損と同じ「後日請求」ルートに乗せるか</li>
+            </ul>
+          </td></tr>
+          <tr><td>2</td><td class="label">破損請求の運用ルール</td><td>提案3-2を採用する場合: 誰が金額を査定するか（加盟店 or 運営）・上限額の目安</td></tr>
+          <tr><td>3</td><td class="label">本人確認の基準</td><td>全予約で確認するか、高額車両・E-Bikeのみか。確認書類の種類</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="note accent">
+      <strong>弊社の宿題だった「領収書・インボイスの扱い」は調査完了。</strong>別資料「領収書・インボイスの扱い」（receipt-invoice.html・サイドバーから閲覧可）にまとめています。実装前に詰める細部は、キャンセルポリシー確定後の詳細設計・見積のタイミングで整理します。
     </div>
   </section>
 
@@ -525,7 +550,7 @@
 
 <footer>
   <div class="container">
-    &copy; 2026 Rincle Inc. &nbsp;|&nbsp; 本資料は社外秘です &nbsp;|&nbsp; ベース: documents/1_meeting_minutes/増永さん構想.md（6/30受領）＋弊社の実装検証 &nbsp;|&nbsp; 関連: payjp-vs-stripe.html（「6.1 決済フロー設計」の旧設計は本資料で置き換え）
+    &copy; 2026 Rincle Inc. &nbsp;|&nbsp; 本資料は社外秘です &nbsp;|&nbsp; ベース: documents/1_meeting_minutes/増永さん構想.md（6/30受領）＋弊社の実装検証 ｜ 7/3定例で決定（1_meeting_minutes/7.3.txt） &nbsp;|&nbsp; 関連: payjp-vs-stripe.html（「6.1 決済フロー設計」の旧設計は本資料で置き換え）
   </div>
 </footer>
 
