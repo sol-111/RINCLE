@@ -144,6 +144,9 @@
     }
     .note strong { color: #92400e; }
     .note p + p { margin-top: 10px; }
+    .note ol { padding-left: 22px; margin-top: 10px; }
+    .note ol li { margin-bottom: 8px; }
+    .note ol li:last-child { margin-bottom: 0; }
     .note.accent {
       background: var(--accent-light); border-left-color: var(--accent);
     }
@@ -152,6 +155,13 @@
       background: #fef2f2; border-left-color: var(--danger);
     }
     .note.danger strong { color: #991b1b; }
+    .inset {
+      border-radius: 8px; padding: 16px 20px; margin-top: 18px;
+      font-size: 14px; color: var(--gray-700);
+    }
+    .inset.accent { background: var(--accent-light); }
+    .inset.accent strong { color: #4c1d95; }
+    .inset ol { margin-top: 8px; }
 
     code {
       background: var(--gray-100); padding: 1px 6px; border-radius: 4px;
@@ -363,12 +373,14 @@
 
     <h3>4-2. 特例：媒介者交付特例で、PEDALSTANDARDが自社の登録番号で発行できる</h3>
     <div class="card">
-      <p style="margin-bottom:14px;"><strong>媒介者交付特例</strong>（用語: 販売や集金を「代わりに行う人＝受託者」が、売り手＝委託者に代わってインボイスを発行できる特例）を使えば、<strong>PEDALSTANDARD（受託者）が、自社の氏名・登録番号を記載した適格請求書を、販売店に代わってユーザーに発行できます</strong>。（根拠: 消費税法施行令70条の12①。出典: 国税庁インボイスQ&A 問48・問49・確認済み）これは、集約モデルのRINCLEにとって理想的な仕組みです。PEDALSTANDARDが一括して自社名義でインボイスを出せるため、店舗ごとにバラバラに発行させる必要がありません。</p>
-      <p style="font-weight:700; color:var(--gray-700); margin-bottom:8px;">媒介者交付特例の適用要件は次の2つ（両方必要）:</p>
-      <ol>
-        <li><strong>委託者（販売店）と受託者（PEDALSTANDARD）の双方が「適格請求書発行事業者」であること。</strong></li>
-        <li><strong>委託者（販売店）が、取引の前までに「自分は適格請求書発行事業者として登録している」旨を受託者（PEDALSTANDARD）に通知していること。</strong>（通知は取引の都度でなくてもよく、加盟店との基本契約書に販売店の登録番号を記載する方法でも可）</li>
-      </ol>
+      <p><strong>媒介者交付特例</strong>（用語: 販売や集金を「代わりに行う人＝受託者」が、売り手＝委託者に代わってインボイスを発行できる特例）を使えば、<strong>PEDALSTANDARD（受託者）が、自社の氏名・登録番号を記載した適格請求書を、販売店に代わってユーザーに発行できます</strong>。（根拠: 消費税法施行令70条の12①。出典: 国税庁インボイスQ&A 問48・問49・確認済み）これは、集約モデルのRINCLEにとって理想的な仕組みです。PEDALSTANDARDが一括して自社名義でインボイスを出せるため、店舗ごとにバラバラに発行させる必要がありません。</p>
+      <div class="inset accent">
+        <strong>媒介者交付特例の適用要件は次の2つ（両方必要）:</strong>
+        <ol>
+          <li><strong>委託者（販売店）と受託者（PEDALSTANDARD）の双方が「適格請求書発行事業者」であること。</strong></li>
+          <li><strong>委託者（販売店）が、取引の前までに「自分は適格請求書発行事業者として登録している」旨を受託者（PEDALSTANDARD）に通知していること。</strong>（通知は取引の都度でなくてもよく、加盟店との基本契約書に販売店の登録番号を記載する方法でも可）</li>
+        </ol>
+      </div>
     </div>
 
     <div class="note">
