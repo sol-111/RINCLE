@@ -1,0 +1,3 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+prefecture,都道府県,false,false,option,false,,Prefecture
+record_count,該当件数,false,false,number,false,,

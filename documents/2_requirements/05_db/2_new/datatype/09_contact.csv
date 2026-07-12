@@ -1,0 +1,8 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+__対象店舗,対象店舗（旧・User参照）,false,false,ref,false,User,
+contact,対象店舗,false,false,ref,false,shop,
+content,本文,false,false,text,false,,
+email,メールアドレス,false,false,text,false,,
+is_archive?,対応済みフラグ,false,false,boolean,false,,
+name,氏名,false,false,text,false,,
+type,種別,false,false,ref,false,contact_type,

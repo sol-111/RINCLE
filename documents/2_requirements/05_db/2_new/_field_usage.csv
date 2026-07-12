@@ -1,0 +1,321 @@
+table,field_name,field_key,reads,writes,searches,unused,contexts,ambiguity
+12_holidays,date,date_date,4,0,16,,elem:  r_shop_option; elem:r_admin_reservation; page:admin_update_calendar; page:bicycle_detail,"キー共有: sales_record, 自転車例外日, オプション例外日, 26_holiday_master, __access_log, m_holiday"
+20_business_hour, __加盟店,____user,10,0,28,,page:legal; page:mypage,キー共有: shop_holiday
+20_business_hour,__endTime,endtime_option_time,8,0,0,,page:legal; page:mypage,キー共有: shop_holiday
+20_business_hour,__startTime,starttime_option_time,12,0,0,,page:legal; page:mypage,キー共有: shop_holiday
+20_business_hour,__営業状態,_____option_____op,32,1,16,,elem:r_shop_calendar; elem:shop; page:legal; page:mypage; page:search,キー共有: shop_holiday
+20_business_hour,__曜日,___option___,0,0,0,未使用,,
+26_holiday_master,__date,date_date,4,0,16,,elem:  r_shop_option; elem:r_admin_reservation; page:admin_update_calendar; page:bicycle_detail,"キー共有: sales_record, 自転車例外日, 12_holidays, オプション例外日, __access_log, m_holiday"
+26_holiday_master,__holiday,hliday_boolean,0,0,0,未使用,,
+__access_log,__date,date_date,4,8,32,,elem:  r_shop_option; elem:r_admin_reservation; page:admin_update_calendar; page:bicycle_detail; page:legal; page:mypage,"キー共有: sales_record, 自転車例外日, 12_holidays, オプション例外日, 26_holiday_master, m_holiday"
+__access_log,__ip,ip_text,0,8,8,,page:legal; page:mypage,
+__Prefecture,__index,index_number,9,4,4,,api:bulk_create_shop; elem:r_admin_faq; page:legal; page:mypage,"キー共有: FAQ, q&a_category"
+__Prefecture,__name,name_text,269,11,3,,api:bulk_update_bicyle; api:cancel_reservation; api:change_shop_info; api:create_user_info; api:edit_bicycle; api:payjp_webhook_update_talent; elem:  r_shop_option; elem:bicycle_item; elem:cart; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; elem:r_shop_info; elem:search_area; elem:shop; elem:user_reservation_detail; elem:userinfo; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,"キー共有: shop, User, rider_info, Bicycle, Price_menu, Sub_Option"
+__Prefecture,__Shop,shop_user,117,0,10,,page:legal; page:mypage; privacy:notification,"キー共有: sales_record, Bicycle, Price_menu, Sub_Option, notification"
+__Prefecture,__Shoplist,shoplist_list_user,0,0,0,未使用,,
+Banner,__page,page_boolean,8,4,0,,elem:r_admin_news; page:legal; page:mypage,"キー共有: FV, News"
+Banner,content,content_text,1,2,0,,elem:r_admin_topic,キー共有: News
+Banner,external_url,external_url_text,31,4,0,,elem:news; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; page:index; page:legal; page:mypage,"キー共有: FV, News"
+Banner,image,image_image,21,4,0,,api:bulk_create_shop; api:change_shop_info; elem:r_admin_fv; elem:r_admin_topic; elem:r_shop_info; elem:shop; elem:topic; page:index; page:legal; page:mypage; page:shop_detail,"キー共有: FV, shop, User"
+Banner,page_content,page_content_text,24,4,0,,elem:news; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; elem:topic; page:index; page:legal; page:mypage,"キー共有: FV, News"
+Banner,title,title_text,22,4,0,,elem:faq; elem:news; elem:r_admin_faq; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; elem:topic; page:index; page:legal; page:mypage,"キー共有: FV, FAQ, News, q&a_category"
+Bicycle,__four weeks price,four_weeks_price_number,0,1,0,,elem:  r_shop_option,"キー共有: Price_menu, Sub_Option"
+Bicycle,__is_archive,is_archive_boolean,0,0,0,未使用,,
+Bicycle,__Shop,shop_user,117,0,2,,page:legal; page:mypage; privacy:notification,"キー共有: sales_record, __Prefecture, Price_menu, Sub_Option, notification"
+Bicycle,__three weeks price,three_weeks_price_number,0,0,0,未使用,,
+Bicycle,__two weeks price,two_weeks_price_number,0,0,0,未使用,,
+Bicycle,__（税抜き）14日間プラン料金,_____7__13__number,0,0,0,未使用,,
+Bicycle,__（税抜き）1日プラン料金,_____1_______number,0,0,0,未使用,,
+Bicycle,__（税抜き）2日間プラン料金,_____1____1_number,0,0,0,未使用,,
+Bicycle,__（税抜き）30日間プラン料金,_____14__29__number,0,0,0,未使用,,
+Bicycle,__（税抜き）3日間プラン料金,_____1____number,0,0,0,未使用,,
+Bicycle,__（税抜き）4時間プラン料金,_____1_____number,0,0,0,未使用,,
+Bicycle,__（税抜き）7日間プラン料金,_____1____2_number,0,0,0,未使用,,
+Bicycle,__（税抜き）延長1日料金,_______1____number,0,0,0,未使用,,
+Bicycle,__（税抜き）延長1時間料金,_______1_____number,0,0,0,未使用,,
+Bicycle,Brand name,brand_name_text,35,2,8,,api:bulk_update_bicyle; api:create_bicycle; api:edit_bicycle; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage; page:search; page:shop_detail,
+Bicycle,category,bicycle_category_option_bicycle_category,22,2,9,,api:create_bicycle; api:edit_bicycle; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_sales; elem:r_shop_bicycle; page:admin; page:bicycle_detail; page:legal; page:mypage; page:search; page:shop_detail,
+Bicycle,category_order,category_order_number,0,2,0,,api:create_bicycle; api:edit_bicycle,
+Bicycle,color,color_text,14,2,0,,api:create_bicycle; api:edit_bicycle; elem:cart; elem:r_admin_reservation; elem:r_shop_bicycle; elem:user_reservation_detail; page:legal; page:mypage; page:user_reservation_list,
+Bicycle,comment,comment_text,7,3,0,,api:change_shop_info; api:create_bicycle; api:edit_bicycle; elem:bicycle_item; elem:r_shop_bicycle; elem:r_shop_info; page:bicycle_detail; page:legal; page:mypage; page:shop_detail,キー共有: shop
+Bicycle,deleted_at,daleted_at_date,14,5,12,,api:bulk_create_shop; api:delete_shop; api:send_reset_pass_mail; elem:  r_shop_option; elem:bicycle; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; page:bicycle_detail; page:search; page:shop_detail; privacy:Sub_Option; privacy:User,"キー共有: User, Sub_Option"
+Bicycle,ex_1day_intax,more_a_day_price_number,13,6,0,,api:create_bicycle; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle,"キー共有: Price_menu, Sub_Option"
+Bicycle,ex_1hour_intax,more_a_hour_price_number,7,3,0,,api:create_bicycle; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:r_admin_reservation; elem:r_shop_bicycle,キー共有: Sub_Option
+Bicycle,images,images_list_image,25,2,0,,api:create_bicycle; api:edit_bicycle; elem:bicycle_item; elem:cart; elem:r_admin_reservation; elem:r_shop_bicycle; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:user_reservation_list,
+Bicycle,is_bulk,is_bulk_boolean,0,0,0,未使用,,
+Bicycle,is_ebike?,ebike_boolean,13,2,13,,api:create_bicycle; api:edit_bicycle; elem:bicycle; elem:bicycle_item; elem:r_admin_sales; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage; page:search; page:shop_detail,
+Bicycle,name,name_text,269,12,11,,api:bulk_update_bicyle; api:cancel_reservation; api:change_shop_info; api:create_bicycle; api:create_user_info; api:edit_bicycle; api:payjp_webhook_update_talent; elem:  r_shop_option; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; elem:r_shop_info; elem:search_area; elem:shop; elem:user_reservation_detail; elem:userinfo; page:bicycle_detail; page:legal; page:mypage; page:search; page:shop_detail; page:user_reservation_list,"キー共有: shop, User, rider_info, __Prefecture, Price_menu, Sub_Option"
+Bicycle,No,no_number,1,2,0,,api:create_bicycle; elem:  r_shop_option,
+Bicycle,price_14day_intax,7__13__number,25,2,0,,api:bUoQL0; api:create_bicycle; api:edit_bicycle; api:自転車詳細情報の変更; elem:bicycle_item; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage,
+Bicycle,price_1day_intax,1_______number,25,2,0,,api:bUoQT0; api:create_bicycle; api:edit_bicycle; api:自転車詳細情報の変更; elem:bicycle_item; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage,
+Bicycle,price_2day_intax,a_day_price_number,518,6,0,,api:bUoQe0; api:create_bicycle; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Price_menu, Sub_Option"
+Bicycle,price_30day_intax,14__29__number,25,2,0,,api:bUoQp0; api:create_bicycle; api:edit_bicycle; api:自転車詳細情報の変更; elem:bicycle_item; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage,
+Bicycle,price_3day_intax,a_week_price_number,216,6,0,,api:bUoQx0; api:create_bicycle; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Price_menu, Sub_Option"
+Bicycle,price_4hour_intax,a_hour_price_number,83,6,0,,api:bUoRI0; api:create_bicycle; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Price_menu, Sub_Option"
+Bicycle,price_7day_intax,a_month_price_number,395,5,0,,api:bUoRT0; api:create_bicycle; api:create_reservation_option; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Price_menu, Sub_Option"
+Bicycle,Price_Menu,price_menu_custom_price_menu,12,4,0,,api:create_bicycle; api:create_reserve_and_detail; api:edit_bicycle; api:自転車詳細情報の変更; elem:r_admin_reservation; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage,"キー共有: reservation_detail, reservation_option"
+Bicycle,rental_max_days,max_date_number,214,2,1,,api:create_bicycle; api:edit_bicycle; elem:bicycle_item; elem:r_admin_reservation; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage,
+Bicycle,rental_status,________option____________,9,1,5,,api:create_bicycle; elem:bicycle; elem:r_admin_reservation; elem:r_shop_bicycle; elem:shop; page:legal; page:mypage,キー共有: Sub_Option
+Bicycle,search_free_word,search_free_word_text,0,3,1,,api:bulk_update_bicyle; api:create_bicycle; api:edit_bicycle; elem:bicycle,
+Bicycle,serial_no,serial_number_text,5,2,0,,api:create_bicycle; api:edit_bicycle; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_bicycle,
+Bicycle,shop,shop_custom_shop,199,4,48,,api:bulk_update_bicyle; api:cancel_reservation; api:create_bicycle; api:create_reservation_option; api:create_reserve_and_detail; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_bicycle; elem:shop; elem:user_reservation_detail; page:bicycle_detail; page:index; page:search; page:shop_detail; page:user_reservation_list; privacy:Sub_Option; privacy:reservation; privacy:reservation_detail; privacy:sales_record,"キー共有: reservation, User, sales_record, shop_holiday, reservation_detail, Price_menu, Sub_Option, notification"
+Bicycle,shop_order,shop_order_number,0,0,0,未使用,,
+Bicycle,size,size_text,38,2,0,,api:cancel_reservation; api:create_bicycle; api:edit_bicycle; elem:bicycle_item; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_bicycle; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:user_reservation_list,
+Bicycle,sub_option,sub_option_list_custom_sub_option,3,0,0,,elem:cart; page:bicycle_detail,
+Bicycle,tax_ratio,tax_percent_number,7,6,0,,api:create_bicycle; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle,"キー共有: Price_menu, Sub_Option"
+contact,__対象店舗,_____user,1,0,0,,privacy:contact,
+contact,contact,contact_custom_shop,2,1,1,,elem:r_admin_contact; page:shop_detail,
+contact,content,___text,32,10,3,,api:cancel_reservation; elem:cart; elem:contact; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; page:legal; page:mypage; page:shop_detail,"キー共有: rider_info, contact_type"
+contact,email,________text,1,2,0,,elem:contact; elem:r_admin_contact; page:shop_detail,
+contact,is_archive?,______boolean,0,3,2,,elem:contact; elem:r_admin_contact; page:shop_detail,
+contact,name,__1_text,1,2,0,,elem:contact; elem:r_admin_contact; page:shop_detail,
+contact,type,___custom_________,2,2,0,,elem:contact; elem:r_admin_contact; page:shop_detail,
+contact_type,content,___text,32,9,3,,api:cancel_reservation; elem:cart; elem:contact; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; page:legal; page:mypage; page:shop_detail,"キー共有: rider_info, contact"
+contact_type,role,____option_rights,1,1,2,,elem:contact; elem:r_admin_contact; page:shop_detail,
+FAQ,__title,title_text,22,3,0,,elem:faq; elem:news; elem:r_admin_faq; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; elem:topic; page:index; page:legal; page:mypage,"キー共有: FV, News, Banner, q&a_category"
+FAQ,answer,a_text,3,2,0,,elem:faq; elem:r_admin_faq,
+FAQ,category,category_custom_q_a_category,1,2,1,,elem:faq; elem:r_admin_faq,
+FAQ,is_show?,show_boolean,2,2,1,,elem:faq; elem:r_admin_faq,
+FAQ,order,index1_number,8,5,4,,elem:faq; elem:r_admin_faq,
+FAQ,question,q_text,5,2,0,,elem:faq; elem:r_admin_faq,
+FV,__page,page_boolean,8,4,0,,elem:r_admin_news; page:legal; page:mypage,"キー共有: News, Banner"
+FV,external_url,external_url_text,31,4,0,,elem:news; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; page:index; page:legal; page:mypage,"キー共有: News, Banner"
+FV,image,image_image,21,4,0,,api:bulk_create_shop; api:change_shop_info; elem:r_admin_fv; elem:r_admin_topic; elem:r_shop_info; elem:shop; elem:topic; page:index; page:legal; page:mypage; page:shop_detail,"キー共有: shop, User, Banner"
+FV,page_content,page_content_text,24,4,0,,elem:news; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; elem:topic; page:index; page:legal; page:mypage,"キー共有: News, Banner"
+FV,title,title_text,22,4,0,,elem:faq; elem:news; elem:r_admin_faq; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; elem:topic; page:index; page:legal; page:mypage,"キー共有: FAQ, News, Banner, q&a_category"
+log,is_error?,is_error__option_yes_no,0,0,0,未使用,,
+log,row_text,text_text,0,1,0,,api:payjp_webhook_update_talent,
+log,status,status_number,0,0,0,未使用,,
+log,type,type_text,0,2,0,,api:payjp_webhook_charge_captured; api:payjp_webhook_update_talent,
+log,wf,wf_text,0,0,0,未使用,,
+m_holiday,__date,date_date,4,1,18,,elem:  r_shop_option; elem:r_admin_reservation; page:admin_update_calendar; page:bicycle_detail,"キー共有: sales_record, 自転車例外日, 12_holidays, オプション例外日, 26_holiday_master, __access_log"
+m_holiday,__holiday,holiday_boolean,0,0,0,未使用,,
+maintenance,__number,number_number,0,0,0,未使用,,
+News,__content,content_text,1,1,0,,elem:r_admin_topic,キー共有: Banner
+News,__page,page_boolean,8,4,0,,elem:r_admin_news; page:legal; page:mypage,"キー共有: FV, Banner"
+News,external url,external_url_text,31,4,0,,elem:news; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; page:index; page:legal; page:mypage,"キー共有: FV, Banner"
+News,page content,page_content_text,24,4,0,,elem:news; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; elem:topic; page:index; page:legal; page:mypage,"キー共有: FV, Banner"
+News,title,title_text,22,4,0,,elem:faq; elem:news; elem:r_admin_faq; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; elem:topic; page:index; page:legal; page:mypage,"キー共有: FV, FAQ, Banner, q&a_category"
+notification,__shop,shop_user,117,0,2,,page:legal; page:mypage; privacy:notification,"キー共有: sales_record, Bicycle, __Prefecture, Price_menu, Sub_Option"
+notification,claim,___custom_______,0,0,0,未使用,,
+notification,contact,_______custom_________1,0,0,0,未使用,,
+notification,is_read?,viewed_boolean,1,1,2,,elem:r_admin_header; elem:r_admin_notice_list,
+notification,role,right_option_rights,95,3,2,,api:bulk_create_shop; api:send_reset_pass_mail; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_header; elem:r_admin_notice_list; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_sidebar; elem:r_admin_signin; elem:r_shop_info; page:admin; page:admin_price_simulation; page:legal; page:mypage; page:shop_form; privacy:Bicycle; privacy:Price_menu; privacy:Sub_Option; privacy:User; privacy:__access_log; privacy:__銀行口座; privacy:contact; privacy:log; privacy:maintenance; privacy:notification; privacy:reservation; privacy:reservation_detail; privacy:rider_info; privacy:sales_record,キー共有: User
+notification,shop,shop_custom_shop,199,3,36,,api:bulk_update_bicyle; api:cancel_reservation; api:create_reservation_option; api:create_reserve_and_detail; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_header; elem:r_admin_notice_list; elem:r_admin_reservation; elem:r_admin_sales; elem:shop; elem:user_reservation_detail; page:bicycle_detail; page:index; page:search; page:shop_detail; page:user_reservation_list; privacy:Sub_Option; privacy:reservation; privacy:reservation_detail; privacy:sales_record,"キー共有: reservation, User, sales_record, shop_holiday, Bicycle, reservation_detail, Price_menu, Sub_Option"
+notification,type,news_type_option________news_type,3,0,0,,elem:r_admin_notice_list,
+Price_menu,__four weeks price,four_weeks_price_number,0,1,0,,elem:  r_shop_option,"キー共有: Bicycle, Sub_Option"
+Price_menu,__Shop,shop_user,117,0,2,,page:legal; page:mypage; privacy:notification,"キー共有: sales_record, Bicycle, __Prefecture, Sub_Option, notification"
+Price_menu,__three weeks price,three_weeks_price_number,0,0,0,未使用,,
+Price_menu,__two weeks price,two_weeks_price_number,0,0,0,未使用,,
+Price_menu,ex_1day,more_a_day_price_number,13,9,0,,api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle,"キー共有: Bicycle, Sub_Option"
+Price_menu,ex_1hour,more_a_hour_number,5,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle,
+Price_menu,is_default?,default_boolean,0,2,2,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:r_admin_price; elem:r_shop_bicycle,
+Price_menu,is_simulation?,for_simulation_boolean,0,3,7,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:r_admin_price; elem:r_shop_bicycle,
+Price_menu,name,name_text,269,13,3,,api:bulk_update_bicyle; api:cancel_reservation; api:change_shop_info; api:create_user_info; api:edit_bicycle; api:payjp_webhook_update_talent; elem:  r_shop_option; elem:bicycle_item; elem:cart; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; elem:r_shop_info; elem:search_area; elem:shop; elem:user_reservation_detail; elem:userinfo; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,"キー共有: shop, User, rider_info, Bicycle, __Prefecture, Sub_Option"
+Price_menu,price_14day_intax,14____________number,196,4,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation,
+Price_menu,price_1day_intax,a_hour_price_number,83,9,0,,api:bUoRI0; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, Sub_Option"
+Price_menu,price_2day_intax,a_week_price_number,216,9,0,,api:bUoQx0; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, Sub_Option"
+Price_menu,price_30day_intax,30____________number,168,4,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation,
+Price_menu,price_3day_intax,a_month_price_number,395,8,0,,api:bUoRT0; api:create_reservation_option; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, Sub_Option"
+Price_menu,price_4hour_intax,a_day_price_number,518,9,0,,api:bUoQe0; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, Sub_Option"
+Price_menu,price_7day_intax,_7____________number,200,4,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation,
+Price_menu,shop,shop_custom_shop,199,6,39,,api:bulk_update_bicyle; api:cancel_reservation; api:create_reservation_option; api:create_reserve_and_detail; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_price; elem:r_admin_reservation; elem:r_admin_sales; elem:shop; elem:user_reservation_detail; page:bicycle_detail; page:index; page:search; page:shop_detail; page:user_reservation_list; privacy:Sub_Option; privacy:reservation; privacy:reservation_detail; privacy:sales_record,"キー共有: reservation, User, sales_record, shop_holiday, Bicycle, reservation_detail, Sub_Option, notification"
+Price_menu,tax_ratio,tax_percent_number,7,9,0,,api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle,"キー共有: Bicycle, Sub_Option"
+q&a_category,category_title,title_text,22,4,0,,elem:faq; elem:news; elem:r_admin_faq; elem:r_admin_fv; elem:r_admin_news; elem:r_admin_topic; elem:topic; page:index; page:legal; page:mypage,"キー共有: FV, FAQ, News, Banner"
+q&a_category,order,index_number,9,5,4,,api:bulk_create_shop; elem:faq; elem:r_admin_faq,"キー共有: FAQ, __Prefecture"
+reservation,__前日貸し出し,_______boolean,6,4,0,,page:legal; page:mypage,
+reservation,__店舗,___user,80,6,0,,page:legal; page:mypage,キー共有: reservation_detail
+reservation,__手数料,____custom_______1,4,4,0,,page:legal; page:mypage,
+reservation,__支払い方法,______text,10,6,0,,page:legal; page:mypage,
+reservation,cancel_charge_id,__charge_id1_text,0,4,0,,page:legal; page:mypage,
+reservation,cancel_id,___id_text,4,4,0,,page:legal; page:mypage,
+reservation,charge_id,charge_id_text,4,1,0,,elem:r_admin_reservation; page:legal; page:mypage,
+reservation,day_before_rental,day_before_rental_number,8,1,0,,api:create_reserve_and_detail; elem:  r_shop_option; elem:cart; elem:r_shop_info; page:bicycle_detail,キー共有: shop
+reservation,default_fee,_________number,4,8,0,,elem:r_admin_reservation; page:legal; page:mypage,
+reservation,end_date,___1_date,92,11,20,,api:cancel_reservation; api:create_reserve_and_detail; elem:  r_shop_option; elem:bicycle; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,キー共有: reservation_detail
+reservation,ex_charge_id,__charge_id_text,4,4,0,,page:legal; page:mypage,
+reservation,ex_date,______date,8,5,7,,elem:bicycle; elem:r_admin_reservation; elem:r_admin_sales; page:bicycle_detail; page:legal; page:mypage; page:shop_detail,
+reservation,ex_price,____2_number,41,35,0,,api:create_reserve_and_detail; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation_detail; page:admin; page:legal; page:mypage; page:user_reservation_list,キー共有: reservation_detail
+reservation,is_claim?,_____boolean,5,10,0,,api:create_reserve_and_detail; elem:r_admin_reservation; page:legal; page:mypage,
+reservation,is_ex_charged?,________option___yesno,6,6,0,,elem:r_admin_reservation; elem:r_admin_sales; page:legal; page:mypage,
+reservation,is_refund?,____1_boolean,7,7,0,,api:cancel_reservation; elem:r_admin_reservation; elem:r_admin_sales; page:legal; page:mypage,
+reservation,number,____1_number,74,49,4,,api:bUoQL0; api:bUoQT0; api:bUoQe0; api:bUoQp0; api:bUoQx0; api:bUoRI0; api:bUoRT0; api:cancel_reservation; api:create_reserve_and_detail; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:user_reservation_list,"キー共有: rider_info, reservation_detail"
+reservation,payment_method,payment_method_option______,18,3,0,,api:cancel_reservation; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation_detail; page:user_reservation_list,キー共有: shop
+reservation,reservation_detail,________list_custom________1,335,10,2,,api:bTfex; api:cancel_reservation; api:create_reserve_and_detail; elem:  r_shop_option; elem:bicycle; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:search_area; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,
+reservation,sales_record,sales_record_number,0,0,0,未使用,,
+reservation,shop,shop_custom_shop,199,3,39,,api:bulk_update_bicyle; api:cancel_reservation; api:create_reservation_option; api:create_reserve_and_detail; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:shop; elem:user_reservation_detail; page:bicycle_detail; page:index; page:search; page:shop_detail; page:user_reservation_list; privacy:Sub_Option; privacy:reservation; privacy:reservation_detail; privacy:sales_record,"キー共有: User, sales_record, shop_holiday, Bicycle, reservation_detail, Price_menu, Sub_Option, notification"
+reservation,start_date,____date,111,11,49,,api:cancel_reservation; api:create_reserve_and_detail; elem:  r_shop_option; elem:bicycle; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,キー共有: reservation_detail
+reservation,status,______option________,41,18,43,,api:bTfex; api:cancel_reservation; api:create_reserve_and_detail; elem:  r_shop_option; elem:bicycle; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:user_reservation_list; privacy:reservation,
+reservation,token,token_text,0,0,0,未使用,,
+reservation,total_price,_____number,49,16,0,,api:cancel_reservation; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; page:legal; page:mypage,"キー共有: rider_info, reservation_detail"
+reservation_detail,basic_price,____1_number,74,43,3,,api:bUoQL0; api:bUoQT0; api:bUoQe0; api:bUoQp0; api:bUoQx0; api:bUoRI0; api:bUoRT0; api:cancel_reservation; api:create_reserve_and_detail; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:user_reservation_list,"キー共有: reservation, rider_info"
+reservation_detail,bicycle,____custom_bicycle,135,3,11,,api:cancel_reservation; api:create_reserve_and_detail; api:自転車詳細情報の変更; elem:bicycle; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_bicycle; elem:user_reservation_detail; page:admin; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,
+reservation_detail,day_before_rental,_______number,35,1,0,,api:bulk_create_shop; api:create_reserve_and_detail; elem:cart; elem:r_admin_reservation; elem:user_reservation_detail; page:legal; page:mypage; page:user_reservation_list,"キー共有: reservation, User"
+reservation_detail,price_menu,price_menu_custom_price_menu,12,3,0,,api:create_reserve_and_detail; api:edit_bicycle; api:自転車詳細情報の変更; elem:r_admin_reservation; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, reservation_option"
+reservation_detail,reservation,_____custom_____,38,9,2,,api:create_reserve_and_detail; api:自転車詳細情報の変更; elem:  r_shop_option; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage; privacy:reservation_detail,
+reservation_detail,reservation_option,__________list_custom__________1,119,5,0,,api:bTfex; api:cancel_reservation; api:create_reservation_option; api:create_reserve_and_detail; elem:  r_shop_option; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:user_reservation_list,キー共有: reservation
+reservation_detail,rider_info,______custom______,148,4,0,,api:cancel_reservation; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; page:bicycle_detail; page:legal; page:mypage,
+reservation_detail,shop,shop_custom_shop,199,3,34,,api:bulk_update_bicyle; api:cancel_reservation; api:create_reservation_option; api:create_reserve_and_detail; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:shop; elem:user_reservation_detail; page:bicycle_detail; page:index; page:search; page:shop_detail; page:user_reservation_list; privacy:Sub_Option; privacy:reservation; privacy:reservation_detail; privacy:sales_record,"キー共有: reservation, User, sales_record, shop_holiday, Bicycle, Price_menu, Sub_Option, notification"
+reservation_detail,total_price,____2_number,41,31,0,,api:create_reserve_and_detail; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation_detail; page:admin; page:legal; page:mypage; page:user_reservation_list,キー共有: reservation
+reservation_option,__price_menu,price_menu_custom_price_menu,12,3,0,,api:create_reserve_and_detail; api:edit_bicycle; api:自転車詳細情報の変更; elem:r_admin_reservation; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, reservation_detail"
+reservation_option,ex_1day_intax,ex_1day_intax_number,3,1,0,,api:create_reservation_option; elem:r_admin_reservation,
+reservation_option,ex_1hour_intax,ex_1hour_intax_number,3,1,0,,api:create_reservation_option; elem:r_admin_reservation,
+reservation_option,price,___number,35,40,3,,api:bUoKq0; api:bUoKx0; api:bUoLV0; api:bUoLf0; api:bUoLm0; api:bUoMD0; api:bUoMK0; api:cancel_reservation; api:create_reserve_and_detail; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation_detail; page:legal; page:mypage; page:user_reservation_list,キー共有: rider_info
+reservation_option,price_14day_intax,price_14day_intax_number,1,1,0,,api:bUoMD0; api:create_reservation_option,
+reservation_option,price_1day_intax,price_1day_intax_number,1,1,0,,api:bUoKx0; api:create_reservation_option,
+reservation_option,price_2day_intax,price_2day_intax_number,1,1,0,,api:bUoLV0; api:create_reservation_option,
+reservation_option,price_30day_intax,price_30day_intax_number,1,1,0,,api:bUoMK0; api:create_reservation_option,
+reservation_option,price_3day_intax,price_3day_intax_number,1,1,0,,api:bUoLf0; api:create_reservation_option,
+reservation_option,price_4hour_intax,price_4hour_intax_number,1,1,0,,api:bUoKq0; api:create_reservation_option,
+reservation_option,price_7day_intax,price_7day_intax_number,1,1,0,,api:bUoLm0; api:create_reservation_option,
+reservation_option,reservation_detail,reservation_detail_custom________1,1,1,1,,api:create_reservation_option; elem:  r_shop_option; page:bicycle_detail,
+reservation_option,sub_option,______custom_sub_option,84,3,20,,api:cancel_reservation; api:create_reservation_option; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:user_reservation_list,
+reservation_option,tax_ratio,tax_ratio_number,0,1,0,,api:create_reservation_option,
+rider_info,__SignUp User,signup_user_boolean,0,0,24,,page:legal; page:mypage,
+rider_info,__{delete}電話番号,_____number,49,12,0,,api:cancel_reservation; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; page:legal; page:mypage,"キー共有: reservation, reservation_detail"
+rider_info,address,___text,32,8,3,,api:cancel_reservation; elem:cart; elem:contact; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; page:legal; page:mypage; page:shop_detail,"キー共有: contact_type, contact"
+rider_info,birth,_____date,20,5,3,,api:cancel_reservation; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; page:legal; page:mypage,
+rider_info,email,email_text,3,5,0,,elem:cart; elem:r_admin_reservation; elem:r_admin_sales; page:legal; page:mypage,
+rider_info,member,member_user,0,0,0,未使用,,
+rider_info,name,name_text,269,11,3,,api:bulk_update_bicyle; api:cancel_reservation; api:change_shop_info; api:create_user_info; api:edit_bicycle; api:payjp_webhook_update_talent; elem:  r_shop_option; elem:bicycle_item; elem:cart; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; elem:r_shop_info; elem:search_area; elem:shop; elem:user_reservation_detail; elem:userinfo; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,"キー共有: shop, User, Bicycle, __Prefecture, Price_menu, Sub_Option"
+rider_info,name_kana,name_kana_text,23,6,3,,api:create_user_info; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:userinfo; page:legal; page:mypage,キー共有: User
+rider_info,phone,phone_text_text,50,7,3,,api:cancel_reservation; api:change_shop_info; api:create_user_info; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_info; elem:user_reservation_detail; elem:userinfo; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,キー共有: User
+rider_info,postal_code,____1_number,74,43,3,,api:bUoQL0; api:bUoQT0; api:bUoQe0; api:bUoQp0; api:bUoQx0; api:bUoRI0; api:bUoRT0; api:cancel_reservation; api:create_reserve_and_detail; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation; elem:user_reservation_detail; page:bicycle_detail; page:legal; page:mypage; page:user_reservation_list,"キー共有: reservation, reservation_detail"
+rider_info,tall,___number,35,12,3,,api:bUoKq0; api:bUoKx0; api:bUoLV0; api:bUoLf0; api:bUoLm0; api:bUoMD0; api:bUoMK0; api:cancel_reservation; api:create_reserve_and_detail; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:user_reservation_detail; page:legal; page:mypage; page:user_reservation_list,キー共有: reservation_option
+rider_info,user,user1_user,18,2,10,,elem:cart,
+sales_record,__date,date_date,4,0,16,,elem:  r_shop_option; elem:r_admin_reservation; page:admin_update_calendar; page:bicycle_detail,"キー共有: 自転車例外日, 12_holidays, オプション例外日, 26_holiday_master, __access_log, m_holiday"
+sales_record,__shop,shop_user,117,0,2,,page:legal; page:mypage; privacy:notification,"キー共有: Bicycle, __Prefecture, Price_menu, Sub_Option, notification"
+sales_record,__年,__number,0,0,0,未使用,,
+sales_record,__月,_1_number,0,0,0,未使用,,
+sales_record,commission,____number,0,0,0,未使用,,
+sales_record,is_claim?,___boolean,0,0,0,未使用,,
+sales_record,month,month_date,0,0,0,未使用,,
+sales_record,shop,shop_custom_shop,199,3,34,,api:bulk_update_bicyle; api:cancel_reservation; api:create_reservation_option; api:create_reserve_and_detail; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:shop; elem:user_reservation_detail; page:bicycle_detail; page:index; page:search; page:shop_detail; page:user_reservation_list; privacy:Sub_Option; privacy:reservation; privacy:reservation_detail; privacy:sales_record,"キー共有: reservation, User, shop_holiday, Bicycle, reservation_detail, Price_menu, Sub_Option, notification"
+sales_record,status,__________option__________,0,0,0,未使用,,
+select_prefcture,prefecture,prefecture_option_prefecture,18,3,8,,api:bulk_select_pref; api:change_shop_info; api:delete_shop; elem:bicycle_item; elem:cart; elem:r_admin_shop_list; elem:r_shop_info; elem:search_area; elem:shop; page:bicycle_detail; page:index; page:user_reservation_list,キー共有: shop
+select_prefcture,record_count,record_count_number,6,6,0,,api:bulk_select_pref; api:change_shop_info; api:delete_shop; elem:r_admin_shop_list,
+shop,access,access_text,2,2,0,,api:bulk_create_shop; api:change_shop_info; elem:r_shop_info; page:shop_detail,
+shop,address,address_text,42,3,0,,api:bulk_create_shop; api:bulk_update_bicyle; api:cancel_reservation; api:change_shop_info; api:create_user_info; elem:bicycle_item; elem:cart; elem:r_admin_customer_info; elem:r_shop_bicycle; elem:r_shop_info; elem:shop; elem:userinfo; page:bicycle_detail; page:legal; page:mypage; page:shop_detail,キー共有: User
+shop,brand_status,brand_status_option_brand_status,9,4,4,,api:bulk_create_shop; api:create_shop; api:payjp_webhook_update_talent; elem:bicycle; elem:r_admin_reservation; elem:r_admin_shop_list; elem:search_area; elem:shop; page:admin; page:shop_form,
+shop,business_address,business_address_text,2,2,0,,api:bulk_create_shop; api:change_shop_info; elem:r_shop_info,キー共有: User
+shop,business_hour,business_hour_text,11,2,0,,api:bulk_create_shop; api:cancel_reservation; api:change_shop_info; elem:cart; elem:r_shop_info; elem:shop; page:legal; page:mypage; page:shop_detail,キー共有: User
+shop,business_hour_fri,business_hour_fri_date_range,25,2,0,,api:bulk_create_shop; api:make_change_business_hour; elem:cart; elem:r_admin_reservation; elem:r_shop_business_hour; elem:r_shop_calendar; page:bicycle_detail,
+shop,business_hour_hol,business_hour_hol_date_range,0,1,0,,api:bulk_create_shop,
+shop,business_hour_mon,business_hour_mon_date_range,25,2,0,,api:bulk_create_shop; api:make_change_business_hour; elem:cart; elem:r_admin_reservation; elem:r_shop_business_hour; elem:r_shop_calendar; page:bicycle_detail,
+shop,business_hour_sat,business_hour_sat_date_range,25,2,0,,api:bulk_create_shop; api:make_change_business_hour; elem:cart; elem:r_admin_reservation; elem:r_shop_business_hour; elem:r_shop_calendar; page:bicycle_detail,
+shop,business_hour_sun,business_hour_sun_date_range,25,2,0,,api:bulk_create_shop; api:make_change_business_hour; elem:cart; elem:r_admin_reservation; elem:r_shop_business_hour; elem:r_shop_calendar; page:bicycle_detail,
+shop,business_hour_thu,business_hour_thu_date_range,25,2,0,,api:bulk_create_shop; api:make_change_business_hour; elem:cart; elem:r_admin_reservation; elem:r_shop_business_hour; elem:r_shop_calendar; page:bicycle_detail,
+shop,business_hour_tue,business_hour_tue_date_range,25,2,0,,api:bulk_create_shop; api:make_change_business_hour; elem:cart; elem:r_admin_reservation; elem:r_shop_business_hour; elem:r_shop_calendar; page:bicycle_detail,
+shop,business_hour_wed,business_hour_wed_date_range,25,2,0,,api:bulk_create_shop; api:make_change_business_hour; elem:cart; elem:r_admin_reservation; elem:r_shop_business_hour; elem:r_shop_calendar; page:bicycle_detail,
+shop,business_name,business_name_text,3,2,0,,api:bulk_create_shop; api:cancel_reservation; api:change_shop_info; elem:r_shop_info; page:legal,
+shop,business_user,business_user_text,2,2,0,,api:bulk_create_shop; api:change_shop_info; elem:r_shop_info; page:legal,
+shop,comment,comment_text,7,3,0,,api:bulk_create_shop; api:change_shop_info; api:edit_bicycle; elem:bicycle_item; elem:r_shop_bicycle; elem:r_shop_info; page:bicycle_detail; page:legal; page:mypage; page:shop_detail,キー共有: Bicycle
+shop,contact_mail,contact_mail_text,6,2,0,,api:bulk_create_shop; api:cancel_reservation; api:change_shop_info; elem:r_shop_info; elem:user_reservation_detail; page:legal; page:user_reservation_list,キー共有: User
+shop,day_before_rental,day_before_rental_number,8,2,0,,api:bulk_create_shop; api:create_reserve_and_detail; elem:  r_shop_option; elem:cart; elem:r_shop_info; page:bicycle_detail,キー共有: reservation
+shop,deleted_at,deleted_at_date,0,2,4,,api:bulk_create_shop; api:delete_shop; elem:bicycle; elem:r_admin_shop_list; elem:search_area; elem:shop,キー共有: Bicycle
+shop,image,image_image,21,4,0,,api:bulk_create_shop; api:change_shop_info; elem:r_admin_fv; elem:r_admin_topic; elem:r_shop_info; elem:shop; elem:topic; page:index; page:legal; page:mypage; page:shop_detail,"キー共有: FV, User, Banner"
+shop,name,name_text,269,13,3,,api:bulk_create_shop; api:bulk_update_bicyle; api:cancel_reservation; api:change_shop_info; api:create_shop; api:create_user_info; api:edit_bicycle; api:payjp_webhook_update_talent; elem:  r_shop_option; elem:bicycle_item; elem:cart; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; elem:r_shop_info; elem:search_area; elem:shop; elem:user_reservation_detail; elem:userinfo; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,"キー共有: User, rider_info, Bicycle, __Prefecture, Price_menu, Sub_Option"
+shop,onboading_date,onboading_date_date,2,2,0,,api:bulk_create_shop; api:change_shop_info; page:admin,
+shop,pay_jp_apply_form_url,pay_jp_apply_form_url_text,2,2,0,,api:bulk_create_shop; api:create_shop; page:shop_form,キー共有: User
+shop,pay_on_site,pay_on_site_text,2,2,0,,api:bulk_create_shop; api:change_shop_info; elem:r_shop_info; page:shop_detail,
+shop,payment_method,payment_method_list_option______,5,2,0,,api:bulk_create_shop; api:change_shop_info; elem:cart; elem:r_shop_info,
+shop,prefecture,prefecture_option_prefecture,18,2,4,,api:bulk_create_shop; api:bulk_select_pref; api:change_shop_info; api:delete_shop; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_shop_list; elem:r_shop_info; elem:search_area; elem:shop; page:bicycle_detail; page:index; page:user_reservation_list,キー共有: select_prefcture
+shop,regular_holiday,regular_holiday_list_option___,10,2,2,,api:create_shop; api:make_change_business_hour; elem:r_admin_reservation; elem:r_shop_business_hour; elem:shop; page:bicycle_detail,
+shop,regular_holiday_text,regular_holiday_text_list_text,12,2,2,,api:create_shop; api:make_change_business_hour; elem:bicycle; elem:r_admin_reservation; elem:r_shop_bicycle; elem:r_shop_calendar,
+shop,shop_holiday,shop_holiday_list_custom________,1,0,0,,elem:cart,
+shop,tenant_id,tenant_id_text,5,2,0,,api:bulk_create_shop; api:create_shop; api:delete_shop; elem:r_admin_reservation; elem:r_admin_shop_list,キー共有: User
+shop,url,url_text,3,2,0,,api:bulk_create_shop; api:change_shop_info; elem:r_shop_info; page:shop_detail,
+shop,user,user_user,19,3,0,,api:bulk_create_shop; api:cancel_reservation; api:change_shop_info; api:create_shop; api:delete_shop; elem:cart; elem:r_admin_shop_list; elem:r_shop_info; elem:user_reservation_detail; page:legal; page:shop_detail; page:user_reservation_list,"キー共有: User, rider_info"
+shop_holiday,__end_date,endtime_option_time,8,0,0,,page:legal; page:mypage,キー共有: 20_business_hour
+shop_holiday,__start_date,starttime_option_time,12,0,0,,page:legal; page:mypage,キー共有: 20_business_hour
+shop_holiday,__レンタル可能な自転車s,__________s_list_custom_bicycle,6,2,34,,page:legal; page:mypage,
+shop_holiday,__加盟店,____user,10,0,86,,page:legal; page:mypage,キー共有: 20_business_hour
+shop_holiday,__日付,___date,24,0,176,,page:legal; page:mypage,
+shop_holiday,end_date,end_date_date,10,2,31,,elem:  r_shop_option; elem:cart; elem:r_admin_reservation; elem:r_shop_calendar; elem:user_reservation_detail; page:bicycle_detail; page:shop_detail; page:user_reservation_list,キー共有: reservation_option
+shop_holiday,is_open?,_____option_____op,32,2,21,,elem:r_shop_calendar; elem:shop; page:bicycle_detail; page:legal; page:mypage; page:search; page:shop_detail,キー共有: 20_business_hour
+shop_holiday,shop,shop_custom_shop,199,4,53,,api:bulk_update_bicyle; api:cancel_reservation; api:create_reservation_option; api:create_reserve_and_detail; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_calendar; elem:shop; elem:user_reservation_detail; page:bicycle_detail; page:index; page:search; page:shop_detail; page:user_reservation_list; privacy:Sub_Option; privacy:reservation; privacy:reservation_detail; privacy:sales_record,"キー共有: reservation, User, sales_record, Bicycle, reservation_detail, Price_menu, Sub_Option, notification"
+shop_holiday,start_date,start_date_date,17,2,83,,elem:  r_shop_option; elem:cart; elem:r_admin_reservation; elem:r_shop_calendar; elem:shop; elem:user_reservation_detail; page:bicycle_detail; page:search; page:shop_detail; page:user_reservation_list,キー共有: reservation_option
+Sub_Option,__is_archive,is_archive_boolean,0,0,2,,page:legal; page:mypage,キー共有: Bicycle
+Sub_Option,__number0,number0_list_custom________,6,0,0,,page:legal; page:mypage,
+Sub_Option,__number1,number1_list_custom________,2,0,0,,page:legal; page:mypage,
+Sub_Option,__number2,number2_list_custom________,2,0,0,,page:legal; page:mypage,
+Sub_Option,__number3,number3_list_custom________,2,0,0,,page:legal; page:mypage,
+Sub_Option,__number4,number4_list_custom________,2,0,0,,page:legal; page:mypage,
+Sub_Option,__number5,number5_list_custom________,2,0,0,,page:legal; page:mypage,
+Sub_Option,__Parent Option,parent_option_custom_option,0,0,0,未使用,,
+Sub_Option,__Shop,shop_user,117,0,2,,page:legal; page:mypage; privacy:notification,"キー共有: sales_record, Bicycle, __Prefecture, Price_menu, notification"
+Sub_Option,__three weeks price,three_weeks_price_number,0,0,0,未使用,,
+Sub_Option,__two weeks price,two_weeks_price_number,0,0,0,未使用,,
+Sub_Option,__貸出ステータス,________option____________,9,0,5,,elem:bicycle; elem:r_admin_reservation; elem:r_shop_bicycle; elem:shop; page:legal; page:mypage,キー共有: Bicycle
+Sub_Option,__（税抜き）14日間プラン料金,_____14________number,0,0,0,未使用,,
+Sub_Option,__（税抜き）1日プラン料金,_____1____number,0,0,0,未使用,,
+Sub_Option,__（税抜き）2日間プラン料金,_____1____2_number,0,0,0,未使用,,
+Sub_Option,__（税抜き）30日間プラン料金,_____30________number,0,0,0,未使用,,
+Sub_Option,__（税抜き）3日間プラン料金,_____1_____number,0,0,0,未使用,,
+Sub_Option,__（税抜き）4時間プラン料金,_____1____1_number,0,0,0,未使用,,
+Sub_Option,__（税抜き）7日間プラン料金,_____7________number,0,0,0,未使用,,
+Sub_Option,__（税抜き）延長1日料金,_______1____number,0,0,0,未使用,,
+Sub_Option,__（税抜き）延長1時間料金,_______1_____number,0,0,0,未使用,,
+Sub_Option,Bicycles,bicycles_list_custom_bicycle,1,6,4,,api:create_bicycle; api:edit_bicycle; elem:  r_shop_option; elem:r_shop_bicycle; page:bicycle_detail; page:legal; page:mypage,
+Sub_Option,deleted_at,daleted_at_date,14,5,5,,api:bulk_create_shop; api:delete_shop; api:send_reset_pass_mail; elem:  r_shop_option; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; page:bicycle_detail; page:shop_detail; privacy:Sub_Option; privacy:User,"キー共有: User, Bicycle"
+Sub_Option,description,description_text,1,2,0,,elem:  r_shop_option,
+Sub_Option,ex_1day_intax,more_a_day_price_number,13,6,0,,api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle,"キー共有: Bicycle, Price_menu"
+Sub_Option,ex_1hour_intax,more_a_hour_price_number,7,3,0,,api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:r_admin_reservation; elem:r_shop_bicycle,キー共有: Bicycle
+Sub_Option,four weeks price,four_weeks_price_number,0,2,0,,elem:  r_shop_option,"キー共有: Bicycle, Price_menu"
+Sub_Option,name,name_text,269,12,5,,api:bulk_update_bicyle; api:cancel_reservation; api:change_shop_info; api:create_user_info; api:edit_bicycle; api:payjp_webhook_update_talent; elem:  r_shop_option; elem:bicycle_item; elem:cart; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; elem:r_shop_info; elem:search_area; elem:shop; elem:user_reservation_detail; elem:userinfo; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,"キー共有: shop, User, rider_info, Bicycle, __Prefecture, Price_menu"
+Sub_Option,price_14day_intax,14________number,20,2,0,,api:create_reservation_option; api:自転車詳細情報の変更_copy; elem:  r_shop_option; page:bicycle_detail; page:legal; page:mypage,
+Sub_Option,price_1day_intax,a_day_price_number,518,6,0,,api:bUoQe0; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, Price_menu"
+Sub_Option,price_2day_intax,a_week_price_number,216,6,0,,api:bUoQx0; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, Price_menu"
+Sub_Option,price_30day_intax,30________number,20,2,0,,api:create_reservation_option; api:自転車詳細情報の変更_copy; elem:  r_shop_option; page:bicycle_detail; page:legal; page:mypage,
+Sub_Option,price_3day_intax,a_month_price_number,395,5,0,,api:bUoRT0; api:create_reservation_option; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, Price_menu"
+Sub_Option,price_4hour_intax,a_hour_price_number,83,6,0,,api:bUoRI0; api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle_item; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle; page:admin_price_simulation; page:bicycle_detail; page:legal; page:mypage,"キー共有: Bicycle, Price_menu"
+Sub_Option,price_7day_intax,7________number,18,2,0,,api:create_reservation_option; api:自転車詳細情報の変更_copy; elem:  r_shop_option; page:bicycle_detail; page:legal; page:mypage,
+Sub_Option,quantity,max_number_number,6,2,0,,elem:  r_shop_option; elem:cart; page:bicycle_detail,
+Sub_Option,shop,shop_custom_shop,199,4,40,,api:bulk_update_bicyle; api:cancel_reservation; api:create_bicycle; api:create_reservation_option; api:create_reserve_and_detail; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:bicycle; elem:bicycle_item; elem:cart; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_bicycle; elem:r_shop_info; elem:shop; elem:user_reservation_detail; page:bicycle_detail; page:index; page:search; page:shop_detail; page:user_reservation_list; privacy:Sub_Option; privacy:reservation; privacy:reservation_detail; privacy:sales_record,"キー共有: reservation, User, sales_record, shop_holiday, Bicycle, reservation_detail, Price_menu, notification"
+Sub_Option,tax_ratio,tax_percent_number,7,6,0,,api:create_reservation_option; api:edit_bicycle; api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; elem:  r_shop_option; elem:r_admin_price; elem:r_admin_reservation; elem:r_shop_bicycle,"キー共有: Bicycle, Price_menu"
+User,__archive,archive_boolean,9,2,10,,page:legal; page:mypage; privacy:User,
+User,__business_address,business_address_text,2,1,0,,api:bulk_create_shop; api:change_shop_info; elem:r_shop_info,キー共有: shop
+User,__business_hour,business_hour_text,11,1,0,,api:bulk_create_shop; api:cancel_reservation; api:change_shop_info; elem:cart; elem:r_shop_info; elem:shop; page:legal; page:mypage; page:shop_detail,キー共有: shop
+User,__car_id,car_id_text,0,4,0,,page:legal; page:mypage,
+User,__contact_mail,contact_mail_text,6,1,0,,api:bulk_create_shop; api:cancel_reservation; api:change_shop_info; elem:r_shop_info; elem:user_reservation_detail; page:legal; page:user_reservation_list,キー共有: shop
+User,__HP,hp_text,1,0,0,,api:bulk_create_shop,
+User,__image,image_image,21,3,0,,api:bulk_create_shop; api:change_shop_info; elem:r_admin_fv; elem:r_admin_topic; elem:r_shop_info; elem:shop; elem:topic; page:index; page:legal; page:mypage; page:shop_detail,"キー共有: FV, shop, Banner"
+User,__pay.jp apply form url,pay_jp_apply_form_url_text,2,0,0,,api:bulk_create_shop; page:shop_form,キー共有: shop
+User,__prefecture,prefecture_custom_prefecture,31,0,36,,api:bulk_create_shop; page:legal; page:mypage,
+User,__reviewed_brand,reviewed_brand_option_brand_status,1,0,10,,api:bulk_create_shop; page:legal; page:mypage,
+User,__shop_access,shop_access_text,1,0,0,,api:bulk_create_shop,
+User,__shop_address,shop_address_text,29,0,0,,api:bulk_create_shop; page:legal; page:mypage,
+User,__shop_comment,shop_comment_text,1,0,0,,api:bulk_create_shop,
+User,__shop_name,shop_name_text,41,0,0,,api:bulk_create_shop; page:legal; page:mypage,
+User,__shop_onboading,shop_onboading_boolean,0,0,0,未使用,,
+User,__shop_pay_real,shop_pay_real_text,1,0,0,,api:bulk_create_shop,
+User,__tenant_id,tenant_id_text,5,0,0,,api:bulk_create_shop; api:delete_shop; elem:r_admin_reservation; elem:r_admin_shop_list,キー共有: shop
+User,__user_id_payjp,user_id_payjp_text,0,0,0,未使用,,
+User,__{delete}phone,phone1_number,0,0,0,未使用,,
+User,__事業者名,____1_text,1,0,0,,api:bulk_create_shop,
+User,__前日貸し出し,_______number,35,1,0,,api:bulk_create_shop; api:create_reserve_and_detail; elem:cart; elem:r_admin_reservation; elem:user_reservation_detail; page:legal; page:mypage; page:user_reservation_list,"キー共有: reservation, reservation_detail"
+User,__担当者,____text,1,0,0,,api:bulk_create_shop,
+User,__認証,is____boolean,0,2,0,,page:legal; page:mypage,
+User,__認証番号,_____text,8,2,0,,page:legal; page:mypage,
+User,address,address_text,42,12,0,,api:bulk_update_bicyle; api:cancel_reservation; api:change_shop_info; api:create_user_info; elem:bicycle_item; elem:cart; elem:r_admin_customer_info; elem:r_shop_bicycle; elem:r_shop_info; elem:shop; elem:userinfo; page:bicycle_detail; page:legal; page:mypage; page:shop_detail,キー共有: shop
+User,birth,birth_date,20,11,0,,api:create_user_info; elem:cart; elem:r_admin_customer_info; elem:userinfo; page:legal; page:mypage,
+User,cart,cart_custom_____,339,15,0,,elem:cart; elem:r_signin/signup; elem:userinfo; page:bicycle_detail; page:index; page:legal; page:mypage; page:user_reservation_list,
+User,customer_id,cus_id_text,32,5,0,,api:create_client; api:create_user_info; elem:cart; elem:r_admin_reservation; page:legal; page:mypage,
+User,deleted_at,daleted_at_date,14,6,1,,api:bulk_create_shop; api:delete_shop; api:send_reset_pass_mail; elem:  r_shop_option; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; elem:userinfo; page:bicycle_detail; page:shop_detail; privacy:Sub_Option; privacy:User,"キー共有: Bicycle, Sub_Option"
+User,last_visit_date,last_visit_date,0,2,0,,page:legal; page:mypage,
+User,name,name_text,269,21,3,,api:bulk_update_bicyle; api:cancel_reservation; api:change_shop_info; api:create_user_info; api:edit_bicycle; api:payjp_webhook_update_talent; elem:  r_shop_option; elem:bicycle_item; elem:cart; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_price; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_shop_list; elem:r_shop_bicycle; elem:r_shop_info; elem:search_area; elem:shop; elem:user_reservation_detail; elem:userinfo; page:bicycle_detail; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,"キー共有: shop, rider_info, Bicycle, __Prefecture, Price_menu, Sub_Option"
+User,name_kana,name_kana_text,23,16,3,,api:create_user_info; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:userinfo; page:legal; page:mypage,キー共有: rider_info
+User,not_bulk,not_bulk_boolean,1,0,0,,api:bulk_create_shop,
+User,notification,is__________boolean,4,11,0,,api:create_user_info; elem:r_admin_customer_info; elem:userinfo; page:legal; page:mypage,
+User,payment_method,______list_option______,5,0,0,,api:bulk_create_shop; page:legal; page:mypage,
+User,phone_number,phone_text_text,50,17,3,,api:cancel_reservation; api:change_shop_info; api:create_user_info; elem:cart; elem:r_admin_customer_info; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_info; elem:user_reservation_detail; elem:userinfo; page:legal; page:mypage; page:shop_detail; page:user_reservation_list,キー共有: rider_info
+User,postal_code,post_number_number,25,12,0,,api:cancel_reservation; api:change_shop_info; api:create_user_info; elem:cart; elem:r_shop_info; elem:userinfo; page:legal; page:mypage,
+User,role,right_option_rights,95,3,28,,api:bulk_create_shop; api:send_reset_pass_mail; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_header; elem:r_admin_notice_list; elem:r_admin_reservation; elem:r_admin_sales; elem:r_admin_sidebar; elem:r_admin_signin; elem:r_shop_info; page:admin; page:admin_price_simulation; page:legal; page:mypage; page:shop_form; privacy:Bicycle; privacy:Price_menu; privacy:Sub_Option; privacy:User; privacy:__access_log; privacy:__銀行口座; privacy:contact; privacy:log; privacy:maintenance; privacy:notification; privacy:reservation; privacy:reservation_detail; privacy:rider_info; privacy:sales_record,キー共有: notification
+User,shop,shop1_custom_shop,186,1,0,,api:create_bicycle; api:create_shop; api:edit_bicycle; api:make_change_business_hour; api:payjp_webhook_update_talent; elem:  r_shop_option; elem:r_admin_contact; elem:r_admin_customer_info; elem:r_admin_header; elem:r_admin_notice_list; elem:r_admin_price; elem:r_admin_reservation; elem:r_admin_sales; elem:r_shop_bicycle; elem:r_shop_business_hour; elem:r_shop_calendar; elem:r_shop_info; page:admin; page:shop_form; privacy:Sub_Option; privacy:reservation; privacy:reservation_detail; privacy:sales_record,
+User,stripe_customer_id,stripe_customer_id_text,0,0,0,未使用,,
+User,tall,tall_number,19,11,0,,api:create_user_info; elem:cart; elem:userinfo; page:legal; page:mypage,
+オプション例外日,date,date_date,4,1,21,,elem:  r_shop_option; elem:cart; elem:r_admin_reservation; page:admin_update_calendar; page:bicycle_detail,"キー共有: sales_record, 自転車例外日, 12_holidays, 26_holiday_master, __access_log, m_holiday"
+オプション例外日,option,date_custom_sub_option,0,1,7,,elem:  r_shop_option; elem:cart; page:bicycle_detail,
+工事中,__yes/no,yes_no_boolean,0,0,0,未使用,,
+自転車例外日,bicycle,bicycle_custom_bicycle,7,1,10,,elem:bicycle; elem:r_admin_reservation; elem:r_shop_bicycle; elem:shop; page:bicycle_detail; page:shop_detail,キー共有: オプション例外日
+自転車例外日,date,date_date,4,1,38,,elem:  r_shop_option; elem:bicycle; elem:r_admin_reservation; elem:r_shop_bicycle; elem:shop; page:admin_update_calendar; page:bicycle_detail; page:shop_detail,"キー共有: sales_record, 12_holidays, オプション例外日, 26_holiday_master, __access_log, m_holiday"

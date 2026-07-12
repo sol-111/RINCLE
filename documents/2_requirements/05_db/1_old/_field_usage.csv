@@ -1,0 +1,241 @@
+table,field_name,field_key,reads,writes,searches,unused,contexts,ambiguity
+access_log,date,date_date,18,4,8,,api:bTaDz; api:営業カレンダーデフォルト作成_list; api:営業カレ作成2_リカーリング; api:営業日付_初期登録_list; page:admin; page:admin_update_calendar; page:index; page:shop_admin,"キー共有: 手数料月ごと, Holidays, 日付データ 追加用, 日付データ defaults"
+access_log,ip,ip_text,0,4,4,,page:index,
+Banner,content,content_text,4,3,0,,page:admin; page:index,キー共有: News
+Banner,external url,external_url_text,16,4,0,,page:admin; page:index,"キー共有: FV, News"
+Banner,image,image_image,14,7,0,,page:admin; page:index; page:search; page:shop_admin; page:shop_detail,"キー共有: FV, User"
+Banner,page,page_boolean,9,12,0,,page:admin; page:index,"キー共有: FV, News"
+Banner,page content,page_content_text,13,4,0,,page:admin; page:index; page:shop_admin,"キー共有: FV, News"
+Banner,title,title_text,22,5,0,,page:admin; page:index; page:search; page:shop_admin,"キー共有: FV, Q&A, News, Q&A Category"
+Bicycle,14日間プラン料金,7__13__number,12,2,0,,api:自転車詳細情報の変更; page:index; page:shop_admin; page:shop_detail,
+Bicycle,1日プラン料金,1_______number,12,2,0,,api:自転車詳細情報の変更; page:index; page:shop_admin; page:shop_detail,
+Bicycle,2日間プラン料金,a_day_price_number,1096,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Price_Menu, Sub_Option"
+Bicycle,30日間プラン料金,14__29__number,12,2,0,,api:自転車詳細情報の変更; page:index; page:shop_admin; page:shop_detail,
+Bicycle,3日間プラン料金,a_week_price_number,410,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Price_Menu, Sub_Option"
+Bicycle,4時間プラン料金,a_hour_price_number,103,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Price_Menu, Sub_Option"
+Bicycle,7日間プラン料金,a_month_price_number,808,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Price_Menu, Sub_Option"
+Bicycle,Bicycle Category,bicycle_category_option_bicycle_category,24,2,0,,page:admin; page:index; page:shop_admin; page:shop_detail,
+Bicycle,Brand name,brand_name_text,26,2,0,,page:admin; page:index; page:shop_admin; page:shop_detail,
+Bicycle,color,color_text,17,2,0,,page:admin; page:index; page:shop_admin; page:user_reservation_list,
+Bicycle,comment,comment_text,4,2,0,,page:admin; page:index; page:shop_admin,
+Bicycle,ebike,ebike_boolean,9,2,2,,page:admin; page:index; page:shop_admin; page:shop_detail,
+Bicycle,four weeks price,four_weeks_price_number,384,6,0,,page:admin; page:admin_price_simulation; page:shop_admin,"キー共有: Price_Menu, Sub_Option"
+Bicycle,images,images_list_image,16,2,0,,page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,
+Bicycle,is_archive,is_archive_boolean,2,1,1,,page:admin; page:shop_admin,キー共有: Sub_Option
+Bicycle,max date,max_date_number,133,2,1,,page:index; page:shop_admin; page:shop_detail,
+Bicycle,more a day price,more_a_day_price_number,13,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,"キー共有: Price_Menu, Sub_Option"
+Bicycle,more a hour price,more_a_hour_price_number,4,3,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:shop_admin,キー共有: Sub_Option
+Bicycle,name,name_text,198,7,1,,page:admin; page:index; page:search; page:shop_admin; page:shop_detail; page:user_reservation_list,"キー共有: User, 乗車人情報, Prefecture, Price_Menu, Sub_Option"
+Bicycle,No,no_number,2,1,2,,page:shop_admin,
+Bicycle,Price_Menu,price_menu_custom_price_menu,15,4,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:index; page:shop_admin,"キー共有: 自転車予約詳細, オプション予約詳細"
+Bicycle,serial number,serial_number_text,7,2,0,,page:admin; page:shop_admin,
+Bicycle,Shop,shop_user,78,2,11,,api:営業カレンダーデフォルト作成_item; api:自転車詳細情報の変更_copy; page:admin; page:index; page:shop_admin; page:shop_detail; privacy:Bicycle; privacy:Sub_Option; privacy:手数料月ごと,"キー共有: 手数料月ごと, Prefecture, Price_Menu, Sub_Option, 管理者/運営_news"
+Bicycle,size,size_text,29,2,0,,page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,
+Bicycle,tax percent,tax_percent_number,7,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,"キー共有: Price_Menu, Sub_Option"
+Bicycle,three weeks price,three_weeks_price_number,448,6,0,,page:admin; page:admin_price_simulation; page:shop_admin,"キー共有: Price_Menu, Sub_Option"
+Bicycle,two weeks price,two_weeks_price_number,448,6,0,,page:admin; page:admin_price_simulation; page:shop_admin,"キー共有: Price_Menu, Sub_Option"
+Bicycle,貸出ステータス,________option____________,7,1,5,,api:営業カレンダーデフォルト作成_item; page:index; page:shop_admin; page:shop_detail,キー共有: Sub_Option
+Bicycle,（税抜き）14日間プラン料金,_____7__13__number,1,2,0,,page:shop_admin,
+Bicycle,（税抜き）1日プラン料金,_____1_______number,1,2,0,,page:shop_admin,
+Bicycle,（税抜き）2日間プラン料金,_____1____1_number,2,3,0,,page:shop_admin,キー共有: Sub_Option
+Bicycle,（税抜き）30日間プラン料金,_____14__29__number,1,2,0,,page:shop_admin,
+Bicycle,（税抜き）3日間プラン料金,_____1____number,2,3,0,,page:shop_admin,キー共有: Sub_Option
+Bicycle,（税抜き）4時間プラン料金,_____1_____number,2,3,0,,page:shop_admin,キー共有: Sub_Option
+Bicycle,（税抜き）7日間プラン料金,_____1____2_number,2,3,0,,page:shop_admin,キー共有: Sub_Option
+Bicycle,（税抜き）延長1日料金,_______1____number,2,3,0,,page:shop_admin,キー共有: Sub_Option
+Bicycle,（税抜き）延長1時間料金,_______1_____number,2,3,0,,page:shop_admin,キー共有: Sub_Option
+FV,external URL,external_url_text,16,4,0,,page:admin; page:index,"キー共有: News, Banner"
+FV,image,image_image,14,7,0,,page:admin; page:index; page:search; page:shop_admin; page:shop_detail,"キー共有: User, Banner"
+FV,page,page_boolean,9,12,0,,page:admin; page:index,"キー共有: News, Banner"
+FV,page content,page_content_text,13,4,0,,page:admin; page:index; page:shop_admin,"キー共有: News, Banner"
+FV,title,title_text,22,5,0,,page:admin; page:index; page:search; page:shop_admin,"キー共有: Q&A, News, Banner, Q&A Category"
+Holidays,date,date_date,18,0,0,,api:bTaDz; api:営業カレンダーデフォルト作成_list; api:営業カレ作成2_リカーリング; api:営業日付_初期登録_list; page:admin; page:admin_update_calendar; page:shop_admin,"キー共有: 手数料月ごと, 日付データ 追加用, access_log, 日付データ defaults"
+News,content,content_text,4,3,0,,page:admin; page:index,キー共有: Banner
+News,external url,external_url_text,16,4,0,,page:admin; page:index,"キー共有: FV, Banner"
+News,page,page_boolean,9,12,0,,page:admin; page:index,"キー共有: FV, Banner"
+News,page content,page_content_text,13,4,0,,page:admin; page:index; page:shop_admin,"キー共有: FV, Banner"
+News,title,title_text,22,5,0,,page:admin; page:index; page:search; page:shop_admin,"キー共有: FV, Q&A, Banner, Q&A Category"
+Prefecture,index,index_number,8,4,3,,page:admin; page:index; page:shop_admin,"キー共有: Q&A, Q&A Category"
+Prefecture,name,name_text,198,6,2,,page:admin; page:index; page:search; page:shop_admin; page:shop_detail; page:user_reservation_list,"キー共有: User, 乗車人情報, Bicycle, Price_Menu, Sub_Option"
+Prefecture,Shop,shop_user,78,1,5,,api:自転車詳細情報の変更_copy; page:admin; page:index; page:shop_admin; page:shop_detail; privacy:Bicycle; privacy:Sub_Option; privacy:手数料月ごと,"キー共有: 手数料月ごと, Bicycle, Price_Menu, Sub_Option, 管理者/運営_news"
+Prefecture,Shoplist,shoplist_list_user,0,0,0,未使用,,
+Price_Menu,14日間プラン料金,14____________number,2,4,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,
+Price_Menu,1日プラン料金,a_hour_price_number,103,11,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Bicycle, Sub_Option"
+Price_Menu,1日延長,more_a_day_price_number,13,11,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,"キー共有: Bicycle, Sub_Option"
+Price_Menu,1時間延長,more_a_hour_number,8,9,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,
+Price_Menu,2日間プラン料金,a_week_price_number,410,11,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Bicycle, Sub_Option"
+Price_Menu,30日間プラン料金,30____________number,2,4,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,
+Price_Menu,3日間プラン料金,a_month_price_number,808,11,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Bicycle, Sub_Option"
+Price_Menu,4時間プラン料金,a_day_price_number,1096,11,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Bicycle, Sub_Option"
+Price_Menu,7日間プラン料金,_7____________number,2,4,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,
+Price_Menu,default,default_boolean,0,2,2,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,
+Price_Menu,for simulation,for_simulation_boolean,0,4,12,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,
+Price_Menu,four weeks price,four_weeks_price_number,384,7,0,,page:admin; page:admin_price_simulation; page:shop_admin,"キー共有: Bicycle, Sub_Option"
+Price_Menu,name,name_text,198,8,1,,page:admin; page:index; page:search; page:shop_admin; page:shop_detail; page:user_reservation_list,"キー共有: User, 乗車人情報, Bicycle, Prefecture, Sub_Option"
+Price_Menu,Shop,shop_user,78,5,11,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:index; page:shop_admin; page:shop_detail; privacy:Bicycle; privacy:Sub_Option; privacy:手数料月ごと,"キー共有: 手数料月ごと, Bicycle, Prefecture, Sub_Option, 管理者/運営_news"
+Price_Menu,tax percent,tax_percent_number,7,11,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,"キー共有: Bicycle, Sub_Option"
+Price_Menu,three weeks price,three_weeks_price_number,448,7,0,,page:admin; page:admin_price_simulation; page:shop_admin,"キー共有: Bicycle, Sub_Option"
+Price_Menu,two weeks price,two_weeks_price_number,448,7,0,,page:admin; page:admin_price_simulation; page:shop_admin,"キー共有: Bicycle, Sub_Option"
+Q&A,a,a_text,4,2,0,,page:admin; page:index; page:search,
+Q&A,category,category_custom_q_a_category,1,2,1,,page:admin; page:index,
+Q&A,index,index1_number,8,5,6,,page:admin; page:index; page:search,
+Q&A,q,q_text,4,2,0,,page:admin; page:index; page:search,
+Q&A,show,show_boolean,2,2,2,,page:admin; page:index; page:search,
+Q&A,title,title_text,22,5,0,,page:admin; page:index; page:search; page:shop_admin,"キー共有: FV, News, Banner, Q&A Category"
+Q&A Category,index,index_number,8,5,4,,page:admin; page:index,"キー共有: Q&A, Prefecture"
+Q&A Category,title,title_text,22,5,0,,page:admin; page:index; page:search; page:shop_admin,"キー共有: FV, Q&A, News, Banner"
+Sub_Option,14日間プラン料金,14________number,8,2,0,,api:自転車詳細情報の変更_copy; page:index; page:shop_admin,
+Sub_Option,1日プラン料金,a_day_price_number,1096,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Bicycle, Price_Menu"
+Sub_Option,2日間プラン料金,a_week_price_number,410,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Bicycle, Price_Menu"
+Sub_Option,30日間プラン料金,30________number,8,2,0,,api:自転車詳細情報の変更_copy; page:index; page:shop_admin,
+Sub_Option,3日間プラン料金,a_month_price_number,808,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Bicycle, Price_Menu"
+Sub_Option,4時間プラン料金,a_hour_price_number,103,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:admin_price_simulation; page:index; page:shop_admin; page:shop_detail,"キー共有: Bicycle, Price_Menu"
+Sub_Option,7日間プラン料金,7________number,7,2,0,,api:自転車詳細情報の変更_copy; page:index; page:shop_admin,
+Sub_Option,Bicycles,bicycles_list_custom_bicycle,1,6,2,,page:index; page:shop_admin,
+Sub_Option,description,description_text,1,2,0,,page:shop_admin,
+Sub_Option,four weeks price,four_weeks_price_number,384,6,0,,page:admin; page:admin_price_simulation; page:shop_admin,"キー共有: Bicycle, Price_Menu"
+Sub_Option,is_archive,is_archive_boolean,2,1,6,,page:admin; page:index; page:shop_admin,キー共有: Bicycle
+Sub_Option,max_number,max_number_number,6,2,0,,api:add_options_business_hour; page:shop_admin,
+Sub_Option,more a day price,more_a_day_price_number,13,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,"キー共有: Bicycle, Price_Menu"
+Sub_Option,more a hour price,more_a_hour_price_number,4,3,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:shop_admin,キー共有: Bicycle
+Sub_Option,name,name_text,198,7,3,,page:admin; page:index; page:search; page:shop_admin; page:shop_detail; page:user_reservation_list,"キー共有: User, 乗車人情報, Bicycle, Prefecture, Price_Menu"
+Sub_Option,number0,number0_list_custom________,10,4,0,,api:予約キャンセル_option_item; api:予約確定_Option_item; page:index; page:shop_admin,
+Sub_Option,number1,number1_list_custom________,9,11,0,,api:add_options_business_hour; api:予約キャンセル_option_item; api:予約確定_Option_item; page:index; page:shop_admin,
+Sub_Option,number2,number2_list_custom________,10,11,0,,api:add_options_business_hour; api:予約キャンセル_option_item; api:予約確定_Option_item; page:index; page:shop_admin,
+Sub_Option,number3,number3_list_custom________,10,11,0,,api:add_options_business_hour; api:予約キャンセル_option_item; api:予約確定_Option_item; page:index; page:shop_admin,
+Sub_Option,number4,number4_list_custom________,10,11,0,,api:add_options_business_hour; api:予約キャンセル_option_item; api:予約確定_Option_item; page:index; page:shop_admin,
+Sub_Option,number5,number5_list_custom________,7,7,0,,api:add_options_business_hour; api:予約キャンセル_option_item; api:予約確定_Option_item; page:index; page:shop_admin,
+Sub_Option,Parent Option,parent_option_custom_option,0,0,0,未使用,,
+Sub_Option,Shop,shop_user,78,2,11,,api:自転車詳細情報の変更_copy; page:admin; page:index; page:shop_admin; page:shop_detail; privacy:Bicycle; privacy:Sub_Option; privacy:手数料月ごと,"キー共有: 手数料月ごと, Bicycle, Prefecture, Price_Menu, 管理者/運営_news"
+Sub_Option,tax percent,tax_percent_number,7,7,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:admin; page:shop_admin,"キー共有: Bicycle, Price_Menu"
+Sub_Option,three weeks price,three_weeks_price_number,448,6,0,,page:admin; page:admin_price_simulation; page:shop_admin,"キー共有: Bicycle, Price_Menu"
+Sub_Option,two weeks price,two_weeks_price_number,448,6,0,,page:admin; page:admin_price_simulation; page:shop_admin,"キー共有: Bicycle, Price_Menu"
+Sub_Option,貸出ステータス,________option____________,7,1,1,,page:index; page:shop_admin; page:shop_detail,キー共有: Bicycle
+Sub_Option,（税抜き）14日間プラン料金,_____14________number,1,2,0,,page:shop_admin,
+Sub_Option,（税抜き）1日プラン料金,_____1____number,2,3,0,,page:shop_admin,キー共有: Bicycle
+Sub_Option,（税抜き）2日間プラン料金,_____1____2_number,2,3,0,,page:shop_admin,キー共有: Bicycle
+Sub_Option,（税抜き）30日間プラン料金,_____30________number,1,2,0,,page:shop_admin,
+Sub_Option,（税抜き）3日間プラン料金,_____1_____number,2,3,0,,page:shop_admin,キー共有: Bicycle
+Sub_Option,（税抜き）4時間プラン料金,_____1____1_number,2,3,0,,page:shop_admin,キー共有: Bicycle
+Sub_Option,（税抜き）7日間プラン料金,_____7________number,1,2,0,,page:shop_admin,
+Sub_Option,（税抜き）延長1日料金,_______1____number,2,3,0,,page:shop_admin,キー共有: Bicycle
+Sub_Option,（税抜き）延長1時間料金,_______1_____number,2,3,0,,page:shop_admin,キー共有: Bicycle
+User,address,address_text,11,4,0,,page:admin; page:index; page:shop_admin,
+User,archive,archive_boolean,11,3,6,,api:bTaDz; api:営業カレンダーデフォルト作成_list; api:手数料計算リカーリング; page:admin; page:admin_login; page:index; page:shop_admin; page:shop_admin_login,
+User,birth,birth_date,8,4,0,,page:index; page:shop_admin,
+User,business_address,business_address_text,2,4,0,,page:shop_admin; page:shop_term,
+User,business_hour,business_hour_text,8,4,0,,page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,
+User,car_id,car_id_text,0,2,0,,page:index,
+User,cart,cart_custom_____,155,5,0,,page:index; page:user_reservation_list,
+User,contact_mail,contact_mail_text,6,4,0,,page:admin; page:shop_admin; page:shop_detail; page:user_reservation_list,
+User,cus_id,cus_id_text,15,3,0,,page:admin; page:index; page:shop_admin,
+User,HP,hp_text,10,4,0,,page:shop_admin; page:shop_detail,
+User,image,image_image,14,6,0,,page:admin; page:index; page:search; page:shop_admin; page:shop_detail,"キー共有: FV, Banner"
+User,is_キャンペーン通知,is__________boolean,2,4,0,,page:admin; page:index,
+User,last-visit,last_visit_date,0,1,0,,page:index,
+User,name,name_text,198,10,1,,page:admin; page:index; page:search; page:shop_admin; page:shop_detail; page:user_reservation_list,"キー共有: 乗車人情報, Bicycle, Prefecture, Price_Menu, Sub_Option"
+User,name_kana,name_kana_text,15,6,1,,page:admin; page:index; page:shop_admin,キー共有: 乗車人情報
+User,pay.jp apply form url,pay_jp_apply_form_url_text,0,1,0,,page:shop_form,
+User,phone_text,phone_text_text,27,10,1,,page:admin; page:index; page:shop_admin; page:shop_detail; page:shop_term; page:user_reservation_list,キー共有: 乗車人情報
+User,post_number,post_number_number,12,8,0,,page:admin; page:index; page:shop_admin; page:user_reservation_list,
+User,prefecture,prefecture_custom_prefecture,27,4,18,,page:index; page:shop_admin; page:shop_detail,
+User,reviewed_brand,reviewed_brand_option_brand_status,9,3,0,,api:payjp_webhook_update_talent; page:shop_admin; page:shop_form,
+User,Right,right_option_rights,18,2,23,,api:bTaDz; api:営業カレンダーデフォルト作成_list; api:手数料計算リカーリング; page:admin; page:admin_login; page:admin_price_simulation; page:index; page:shop_admin; page:shop_admin_login; page:shop_form; privacy:User; privacy:乗車人情報; privacy:予約情報; privacy:手数料月ごと,キー共有: 管理者/運営_news
+User,shop_access,shop_access_text,4,4,0,,page:admin; page:shop_admin; page:shop_detail,
+User,shop_address,shop_address_text,26,4,0,,page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,
+User,shop_comment,shop_comment_text,4,4,0,,page:admin; page:shop_admin; page:shop_detail,
+User,shop_name,shop_name_text,58,5,0,,api:payjp_webhook_update_talent; page:admin; page:index; page:shop_admin; page:shop_detail; page:shop_form; page:shop_term; page:user_reservation_list,
+User,shop_onboading,shop_onboading_boolean,1,4,0,,page:shop_admin,
+User,shop_pay_real,shop_pay_real_text,4,4,0,,page:admin; page:shop_admin; page:shop_detail,
+User,tall,tall_number,7,4,0,,page:index,
+User,tenant_id,tenant_id_text,3,1,0,,page:admin; page:shop_admin; page:shop_form,
+User,user_id_payjp,user_id_payjp_text,0,0,0,未使用,,
+User,{delete}phone,phone1_number,0,0,0,未使用,,
+User,事業者名,____1_text,2,4,0,,page:shop_admin; page:shop_term,
+User,前日貸し出し,_______number,18,4,0,,page:index; page:shop_admin; page:user_reservation_list,"キー共有: 予約情報, 自転車予約詳細"
+User,担当者,____text,2,4,0,,page:shop_admin; page:shop_term,
+User,支払い方法,______list_option______,4,6,0,,page:index; page:shop_admin,
+User,認証,is____boolean,0,1,0,,page:index,
+User,認証番号,_____text,4,1,0,,page:index,
+Webhook_Event,text,text_text,0,1,0,,api:payjp_webhook_update_talent,
+Webhook_Event,type,type_text,0,2,0,,api:payjp_webhook_charge_captured; api:payjp_webhook_update_talent,
+お問い合わせ履歴,アーカイブ,______boolean,0,4,3,,page:admin; page:index; page:shop_admin; page:shop_detail,
+お問い合わせ履歴,メールアドレス,________text,2,2,0,,page:admin; page:index; page:shop_admin; page:shop_detail,
+お問い合わせ履歴,内容,___text,35,5,1,,page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,"キー共有: 乗車人情報, お問い合わせ種別"
+お問い合わせ履歴,名前,__1_text,2,2,0,,page:admin; page:index; page:shop_admin; page:shop_detail,
+お問い合わせ履歴,対象店舗,_____user,3,1,2,,api:bTXBf0; page:admin; page:shop_admin; page:shop_detail,
+お問い合わせ履歴,種別,___custom_________,9,2,0,,api:bTXBf0; page:admin; page:index; page:shop_admin; page:shop_detail,
+お問い合わせ種別,内容,___text,35,4,1,,page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,"キー共有: 乗車人情報, お問い合わせ履歴"
+お問い合わせ種別,対象者,____option_rights,3,1,2,,api:bTXBf0; page:admin; page:index; page:shop_detail,
+オプション予約詳細,price_menu,price_menu_custom_price_menu,15,3,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:index; page:shop_admin,"キー共有: Bicycle, 自転車予約詳細"
+オプション予約詳細,オプション,______custom_sub_option,64,1,8,,api:予約キャンセル_option_item; api:予約確定_Option_item; api:自転車詳細情報の変更_copy; page:admin; page:index; page:shop_admin; page:user_reservation_list,
+オプション予約詳細,料金,___number,28,16,1,,page:admin; page:index; page:shop_admin; page:user_reservation_list,キー共有: 乗車人情報
+乗車人情報,email,email_text,6,2,0,,page:admin; page:index; page:shop_admin,
+乗車人情報,name,name_text,198,6,1,,page:admin; page:index; page:search; page:shop_admin; page:shop_detail; page:user_reservation_list,"キー共有: User, Bicycle, Prefecture, Price_Menu, Sub_Option"
+乗車人情報,name kana,name_kana_text,15,2,1,,page:admin; page:index; page:shop_admin,キー共有: User
+乗車人情報,phone_text,phone_text_text,27,6,1,,page:admin; page:index; page:shop_admin; page:shop_detail; page:shop_term; page:user_reservation_list,キー共有: User
+乗車人情報,SignUp User,signup_user_boolean,0,0,12,,page:index,
+乗車人情報,{delete}電話番号,_____number,47,7,0,,api:手数料計算; page:admin; page:index; page:shop_admin; page:user_reservation_list,"キー共有: 予約情報, 自転車予約詳細"
+乗車人情報,住所,___text,35,3,1,,page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,"キー共有: お問い合わせ種別, お問い合わせ履歴"
+乗車人情報,生年月日,_____date,17,2,1,,page:admin; page:index; page:shop_admin; page:user_reservation_list,
+乗車人情報,身長,___number,28,2,1,,page:admin; page:index; page:shop_admin; page:user_reservation_list,キー共有: オプション予約詳細
+乗車人情報,郵便番号,____1_number,83,17,1,,page:admin; page:index; page:shop_admin; page:user_reservation_list,"キー共有: 予約情報, 自転車予約詳細"
+予約情報,charge_id,charge_id_text,3,2,0,,page:admin; page:index; page:shop_admin,
+予約情報,token,token_text,0,0,0,未使用,,
+予約情報,ステータス,______option________,56,18,162,,api:bTfex; api:bTgFg; api:bTgGJ; api:手数料計算; page:admin; page:index; page:shop_admin; page:user_reservation_list; privacy:予約情報,
+予約情報,予約番号,____1_number,83,19,1,,page:admin; page:index; page:shop_admin; page:user_reservation_list,"キー共有: 乗車人情報, 自転車予約詳細"
+予約情報,前日貸し出し,_______boolean,3,2,0,,page:index,
+予約情報,合計金額,_____number,47,9,0,,api:手数料計算; page:admin; page:index; page:shop_admin; page:user_reservation_list,"キー共有: 乗車人情報, 自転車予約詳細"
+予約情報,店舗,___user,91,3,53,,api:bTgFg; api:bTgGJ; api:手数料計算; api:自転車詳細情報の変更; page:admin; page:index; page:shop_admin; page:user_reservation_list; privacy:予約情報,キー共有: 自転車予約詳細
+予約情報,延長charge_id,__charge_id_text,4,2,0,,page:admin; page:index,
+予約情報,延長料金,____2_number,33,18,0,,api:手数料計算; page:admin; page:index; page:shop_admin; page:user_reservation_list,キー共有: 自転車予約詳細
+予約情報,延長料金支払い,________option___yesno,5,4,2,,api:手数料計算; page:admin; page:index; page:shop_admin,
+予約情報,延長返却日,______date,8,3,0,,page:admin; page:index; page:shop_admin,
+予約情報,手数料,____custom_______1,2,2,0,,page:index,
+予約情報,手数料デフォルト,_________number,2,9,0,,page:admin; page:index; page:shop_admin,
+予約情報,支払い方法,______text,27,6,6,,api:手数料計算; page:admin; page:index; page:shop_admin; page:user_reservation_list,
+予約情報,自転車予約詳細,________list_custom________1,186,4,0,,api:bTfex; api:bTgFg; api:bTgGJ; page:admin; page:index; page:shop_admin; page:user_reservation_list,
+予約情報,請求済み,_____boolean,9,14,6,,api:手数料計算; page:admin; page:index; page:shop_admin,
+予約情報,貸出日,____date,72,5,56,,api:bTgFg; api:bTgGJ; page:admin; page:index; page:shop_admin; page:user_reservation_list,キー共有: 自転車予約詳細
+予約情報,返却日,___1_date,87,5,5,,api:bTgFg; api:bTgGJ; page:admin; page:index; page:shop_admin; page:user_reservation_list,キー共有: 自転車予約詳細
+予約情報,返金_id,___id_text,3,3,0,,page:admin; page:index,
+予約情報,返金charge_id,__charge_id1_text,0,3,0,,page:admin; page:index,
+予約情報,返金済み,____1_boolean,6,7,2,,api:手数料計算; page:admin; page:index; page:shop_admin; page:user_reservation_list,
+営業カレンダー（日付）,endTime,endtime_option_time,46,26,0,,api:営業カレンダーデフォルト作成_item; api:営業カレ作成4_リカーリング; api:営業日付_初期登録_item; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,キー共有: 営業カレンダー（曜日）
+営業カレンダー（日付）,startTime,starttime_option_time,47,26,0,,api:営業カレンダーデフォルト作成_item; api:営業カレ作成4_リカーリング; api:営業日付_初期登録_item; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,キー共有: 営業カレンダー（曜日）
+営業カレンダー（日付）,レンタル可能な自転車s,__________s_list_custom_bicycle,11,17,27,,api:営業カレンダーデフォルト作成_item; page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,
+営業カレンダー（日付）,加盟店,____user,10,3,130,,api:bTaDz; api:bTgFg; api:bTgGJ; api:営業カレンダーデフォルト作成_item; api:営業カレ作成2_リカーリング; api:営業カレ作成4_リカーリング; api:営業日付_初期登録_item; page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,キー共有: 営業カレンダー（曜日）
+営業カレンダー（日付）,営業状態,_____option_____op,50,26,10,,api:営業カレンダーデフォルト作成_item; api:営業カレ作成4_リカーリング; api:営業日付_初期登録_item; page:index; page:shop_admin; page:shop_detail,キー共有: 営業カレンダー（曜日）
+営業カレンダー（日付）,日付,___date,67,3,239,,api:bTgFg; api:bTgGJ; api:営業カレンダーデフォルト作成_item; api:営業カレ作成4_リカーリング; api:営業日付_初期登録_item; page:admin; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,
+営業カレンダー（曜日）,endTime,endtime_option_time,46,17,0,,api:営業カレンダーデフォルト作成_item; api:営業カレ作成4_リカーリング; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,キー共有: 営業カレンダー（日付）
+営業カレンダー（曜日）,startTime,starttime_option_time,47,17,0,,api:営業カレンダーデフォルト作成_item; api:営業カレ作成4_リカーリング; page:index; page:shop_admin; page:shop_detail; page:user_reservation_list,キー共有: 営業カレンダー（日付）
+営業カレンダー（曜日）,加盟店,____user,10,8,63,,api:bTaDz; api:営業カレンダーデフォルト作成_list; api:営業カレ作成2_リカーリング; page:index; page:shop_admin,キー共有: 営業カレンダー（日付）
+営業カレンダー（曜日）,営業状態,_____option_____op,50,17,8,,api:営業カレンダーデフォルト作成_item; api:営業カレ作成4_リカーリング; page:index; page:shop_admin; page:shop_detail,キー共有: 営業カレンダー（日付）
+営業カレンダー（曜日）,曜日,___option___,4,8,60,,api:bTaDz; api:営業カレンダーデフォルト作成_item; api:営業カレ作成2_リカーリング; api:営業カレ作成3_リカーリング; page:shop_admin,
+工事中,yes/no,yes_no_boolean,4,0,0,,page:index,
+手数料月ごと,date,date_date,18,1,6,,api:bTaDz; api:営業カレンダーデフォルト作成_list; api:営業カレ作成2_リカーリング; api:営業日付_初期登録_list; api:手数料計算; page:admin; page:admin_update_calendar; page:shop_admin,"キー共有: Holidays, 日付データ 追加用, access_log, 日付データ defaults"
+手数料月ごと,shop,shop_user,78,2,4,,api:手数料計算; api:自転車詳細情報の変更_copy; page:admin; page:index; page:shop_admin; page:shop_detail; privacy:Bicycle; privacy:Sub_Option; privacy:手数料月ごと,"キー共有: Bicycle, Prefecture, Price_Menu, Sub_Option, 管理者/運営_news"
+手数料月ごと,年,__number,0,1,2,,api:手数料計算,
+手数料月ごと,手数料,____number,4,1,0,,api:手数料計算; page:admin; page:shop_admin,
+手数料月ごと,振り込みステータス,__________option__________,3,1,2,,api:手数料計算; page:admin; page:shop_admin,
+手数料月ごと,月,_1_number,0,1,2,,api:手数料計算,
+手数料月ごと,請求,___boolean,1,1,0,,page:admin,キー共有: 営業カレンダー（曜日）
+日付データ defaults,date,date_date,18,3,4,,api:bTaDz; api:営業カレンダーデフォルト作成_list; api:営業カレ作成2_リカーリング; api:営業日付_初期作成_item; api:営業日付_初期登録_list; page:admin; page:admin_update_calendar; page:shop_admin,"キー共有: 手数料月ごと, Holidays, 日付データ 追加用, access_log"
+日付データ defaults,holiday,holiday_boolean,0,0,0,未使用,,
+日付データ 追加用,date,date_date,18,0,0,,api:bTaDz; api:営業カレンダーデフォルト作成_list; api:営業カレ作成2_リカーリング; api:営業日付_初期登録_list; page:admin; page:admin_update_calendar; page:shop_admin,"キー共有: 手数料月ごと, Holidays, access_log, 日付データ defaults"
+日付データ 追加用,holiday,hliday_boolean,0,0,0,未使用,,
+管理者/運営_news,news_type,news_type_option________news_type,6,2,0,,api:bTXBf0; page:admin; page:shop_admin,
+管理者/運営_news,right,right_option_rights,18,4,3,,api:bTXBf0; elem:admin_header; page:admin; page:admin_login; page:admin_price_simulation; page:index; page:shop_admin; page:shop_admin_login; page:shop_form; privacy:User; privacy:乗車人情報; privacy:予約情報; privacy:手数料月ごと,キー共有: User
+管理者/運営_news,shop,shop_user,78,3,4,,api:bTXBf0; api:自転車詳細情報の変更_copy; elem:shop_admin_header; page:admin; page:index; page:shop_admin; page:shop_detail; privacy:Bicycle; privacy:Sub_Option; privacy:手数料月ごと,"キー共有: 手数料月ごと, Bicycle, Prefecture, Price_Menu, Sub_Option"
+管理者/運営_news,viewed,viewed_boolean,2,4,2,,api:bTXBf0; elem:admin_header; elem:shop_admin_header; page:admin; page:shop_admin,
+管理者/運営_news,お問い合わせ,_______custom_________1,0,2,0,,api:bTXBf0,
+管理者/運営_news,請求,___custom_______,0,0,0,未使用,,
+管理者手数料,number,number_number,0,0,0,未使用,,
+自転車予約詳細,price_menu,price_menu_custom_price_menu,15,3,0,,api:自転車詳細情報の変更; api:自転車詳細情報の変更_copy; page:index; page:shop_admin,"キー共有: Bicycle, オプション予約詳細"
+自転車予約詳細,オプション予約詳細,__________list_custom__________1,73,2,0,,api:bTfex; api:bTgFg; api:bTgGJ; page:admin; page:index; page:shop_admin; page:user_reservation_list,キー共有: 予約情報
+自転車予約詳細,乗車人情報,______custom______,145,1,0,,page:admin; page:index; page:shop_admin; page:user_reservation_list,
+自転車予約詳細,予約情報,_____custom_____,37,3,0,,api:自転車詳細情報の変更; page:admin; page:index; page:shop_admin,
+自転車予約詳細,前日貸し出し,_______number,18,4,0,,page:index; page:shop_admin; page:user_reservation_list,"キー共有: 予約情報, User"
+自転車予約詳細,合計金額,____2_number,33,16,0,,api:手数料計算; page:admin; page:index; page:shop_admin; page:user_reservation_list,キー共有: 予約情報
+自転車予約詳細,基本料金,____1_number,83,17,1,,page:admin; page:index; page:shop_admin; page:user_reservation_list,"キー共有: 予約情報, 乗車人情報"
+自転車予約詳細,自転車,____custom_bicycle,128,1,3,,api:自転車詳細情報の変更; page:admin; page:index; page:shop_admin; page:user_reservation_list,

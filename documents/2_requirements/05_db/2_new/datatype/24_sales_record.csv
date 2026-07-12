@@ -1,0 +1,10 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+__date,記録日,true,false,date,false,,
+__shop,所属ショップ,true,false,ref,false,User,
+__年,年（旧）,false,false,number,false,,
+__月,月（旧）,false,false,number,false,,
+commission,手数料,false,false,number,false,,
+is_claim?,請求済みかどうか,false,false,boolean,false,,
+month,対象月,false,false,date,false,,
+shop,所属ショップ,true,false,ref,false,shop,
+status,振り込みステータス,false,false,option,false,,振り込みステータス

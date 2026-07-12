@@ -1,0 +1,18 @@
+display,role,last_path,shop_sort,admin_sort
+顧客一覧,加盟店; 管理者,customer,3,1
+加盟店一覧,管理者,shop_list,,2
+料金表管理,管理者,price,,3
+予約一覧,加盟店; 管理者,reservation,1,4
+売上レポート,加盟店; 管理者,sales,2,5
+FV管理,管理者,fv,,6
+ニュース(新着情報)管理,管理者,news,,7
+お知らせ管理,管理者,topic,,8
+Q&A管理,管理者,faq,,9
+お問い合わせ一覧,加盟店; 管理者,contact,9,10
+設定,加盟店; 管理者,setting,10,11
+ログアウト,加盟店; 管理者,,11,12
+自転車一覧,加盟店,bicycle,4,
+オプション管理,加盟店,option,5,
+営業時間設定,加盟店,business_hour,6,
+営業カレンダー,加盟店,calendar,7,
+店舗情報,加盟店,shop_info,8,

@@ -1,0 +1,26 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+__前日貸し出し,前日貸し出し,false,false,boolean,false,,
+__店舗,店舗（旧・User参照）,false,false,ref,false,User,
+__手数料,手数料（旧参照）,false,false,ref,false,maintenance,旧・管理者手数料テーブル（現maintenanceに改名）参照
+__支払い方法,支払い方法,false,false,text,false,,
+cancel_charge_id,返金charge_id,false,false,text,false,,
+cancel_id,返金ID,false,false,text,false,,
+charge_id,Pay.JP チャージID,false,false,text,false,,
+day_before_rental,前日貸し出し,false,false,number,false,,
+default_fee,手数料デフォルト,false,false,number,false,,
+end_date,返却日,true,false,date,false,,
+ex_charge_id,Pay.JP チャージID②,false,false,text,false,,
+ex_date,延長返却日,false,false,date,false,,
+ex_price,延長料金,false,false,number,false,,
+is_claim?,管理者が請求したかどうか,false,false,boolean,false,,
+is_ex_charged?,延長料金支払い,false,false,option,false,,決済ステータス
+is_refund?,返金済み,false,false,boolean,false,,
+number,予約番号,false,true,number,false,,
+payment_method,支払い方法,false,false,option,false,,payment_method
+reservation_detail,予約明細リスト,false,false,ref,true,reservation_detail,
+sales_record,手数料,false,false,number,false,,
+shop,所属店舗,true,false,ref,false,shop,
+start_date,貸出日,true,false,date,false,,
+status,ステータス,false,false,option,false,,予約ステータス
+token,決済トークン,false,false,text,false,,
+total_price,合計金額,false,false,number,false,,

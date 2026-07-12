@@ -1,0 +1,79 @@
+no,type,name,description
+01,datatype,12_holidays,祝日マスタ。貸出不可日の管理に使用（旧: Holidays）
+02,datatype,20_business_hour,【旧残骸】曜日別営業時間（shopのbusiness_hour_*へ統合・削除予定）
+03,datatype,26_holiday_master,【旧残骸】祝日マスタ追加用（削除予定）
+04,datatype,__access_log,【旧残骸】アクセスログ（GA移行につき削除予定）
+05,datatype,__Prefecture,【旧残骸】都道府県マスタ（option set Prefectureへ移行・削除予定）
+06,datatype,__銀行口座,【旧残骸】銀行口座（フィールドなし・削除予定）
+07,datatype,Banner,バナー広告。トップページ等に表示する画像+リンク
+08,datatype,Bicycle,自転車情報。加盟店が登録する貸出可能な自転車。バルク処理・表示順・対応オプションを追加
+09,datatype,contact,お問い合わせ。ユーザーからの問い合わせフォームデータ（旧: お問い合わせ履歴）
+10,datatype,contact_type,お問い合わせ種別マスタ。種別の内容と対象者（権限）を定義（旧: お問い合わせ種別）
+11,datatype,FAQ,よくある質問と回答。カテゴリに紐づく（旧: Q&A。title廃止）
+12,datatype,FV,ファーストビュー。トップページのヒーロー画像・リンク
+13,datatype,log,API・Webhookログ。イベント種別/WF名/ステータス/エラー有無を記録（旧: Webhook_Event を拡張）
+14,datatype,m_holiday,【旧残骸】祝日デフォルト設定（旧: 日付データ Defaults・削除予定）
+15,datatype,maintenance,メンテナンス表示用フラグ（旧: 工事中の後継）
+16,datatype,News,お知らせ。管理者・運営からユーザーへの通知
+17,datatype,notification,ショップ通知。お問い合わせ・請求・キャンセル等の通知（旧: 管理者/運営_news）
+18,datatype,Price_menu,料金プラン（シミュレーション用サンプル価格）。旧Price_Menu。※単価ラベルの割当は検討資料（Allシート）準拠・旧資料と割当が異なるため要確認
+19,datatype,q&a_category,FAQカテゴリ。FAQの分類に使用（旧: Q&A Category）
+20,datatype,reservation,予約情報。貸出・返却・決済の中心テーブル（旧: 予約情報）
+21,datatype,reservation_detail,予約明細。予約ごとの自転車・料金・金額詳細（旧: 自転車予約詳細）
+22,datatype,reservation_option,オプション価格。予約時にsub_optionの価格をスナップショット保存（旧: オプション予約詳細）
+23,datatype,rider_info,予約顧客情報。予約した顧客の氏名・連絡先。会員はUser紐付け（旧: 乗車人情報）
+24,datatype,sales_record,売上記録。月次集計・振込処理用（旧: 手数料月ごと）
+25,datatype,select_prefcture,都道府県検索の補助テーブル（新規。該当件数キャッシュ）
+26,datatype,shop,店舗情報。旧Userから店舗系フィールドを分離した新テーブル。曜日別営業時間を内包
+27,datatype,shop_holiday,例外営業日。週次予定と異なる日だけ登録（旧: 営業カレンダー（日付））
+28,datatype,Sub_Option,サブオプション。数量管理のオプション商品。在庫リスト(number0-5)は例外日方式に変更
+29,datatype,User,ユーザー。認証・プロフィール・決済情報。店舗系フィールドはshopへ分離
+30,datatype,オプション例外日,オプションの貸出例外日（新規）。日付単位で在庫例外を管理
+31,datatype,工事中,【旧残骸】メンテナンスフラグ（maintenanceへ移行・削除予定）
+32,datatype,自転車例外日,自転車の貸出例外日（新規）。日付単位で貸出不可を管理
+01,optionset,app_info,管理者メール・サービス名・メール署名などグローバル設定（旧: Admin_info。email_signature追加）
+02,optionset,Bicycle Category,自転車カテゴリ（ロード・クロス・MTB等）。order属性追加
+03,optionset,brand_status,ブランドレビューの審査状態
+04,optionset,confom/pw_mode,認証/パスワード画面のモード切替（新規）
+05,optionset,hour,時マスタ 0〜23（新規）
+06,optionset,menu_プライバシーポリシー,プライバシーポリシー本文（長文テキスト）
+07,optionset,menu_利用規約,利用規約本文（長文テキスト）
+08,optionset,menu_特定商取引法に基づく表記,特定商取引法表記（セクション分割・8値に拡張）
+09,optionset,minute,分マスタ 10分刻み（新規）
+10,optionset,noplan_list,プランなし状態の定義
+11,optionset,page,ページ遷移パラメータ定義（旧: index_page。29値に拡張）
+12,optionset,Pay.jp apply redirect url,Pay.JPテナント申請後のリダイレクトURL
+13,optionset,pay.jp pk,Pay.JP公開鍵
+14,optionset,pay_jp_key,Pay.JPの公開鍵・秘密鍵
+15,optionset,payment_method,店頭決済 / クレジットカード決済（旧: 支払い方法）
+16,optionset,Platform_Fee,プラットフォーム手数料率
+17,optionset,Prefecture,都道府県マスタ47件（新規option set化。旧Prefectureテーブルの置き換え）
+18,optionset,reservation_tag,予約タグ（新規）
+19,optionset,reserve_mode,予約モード（新規）
+20,optionset,Rights,ユーザー / 加盟店 / 管理者のアクセス権限。parameter属性追加
+21,optionset,search_veiw_mode,検索画面の表示モード（新規）
+22,optionset,setting_tag,設定画面タグ（新規）
+23,optionset,Shop_Sidebar,ショップ管理画面のサイドバー大項目（旧構成の残り）
+24,optionset,Shop_Sidebar_sub,ショップ管理画面のサイドバー項目（旧構成の残り）
+25,optionset,Sidebar_category,統合管理画面サイドバー大項目（新規。roleで管理者/店舗を出し分け）
+26,optionset,Sidebar_item,統合管理画面サイドバー項目（新規。role・並び順属性付き）
+27,optionset,sign_in/up_mode,サインイン/アップ画面のモード（新規）
+28,optionset,tax,消費税率のグローバル設定（新規）
+29,optionset,Time,0:00〜23:50の時刻マスタ（10分刻み・144件）
+30,optionset,user_info_screen,ユーザー情報画面のモード（新規）
+31,optionset,yes/no,True/Falseの汎用フラグ
+32,optionset,予約ステータス,貸出中・来客待ち・返却済み等、予約の進行状態（仮情報は5値に）
+33,optionset,予約種別,過去の予約 / 現在の予約の表示切替
+34,optionset,予約管理並び替え,予約一覧の並び順オプション
+35,optionset,会員登録表示,会員登録フローのステップ表示
+36,optionset,営業状態op,営業 / 休業
+37,optionset,振り込みステータス,振込済 / 未振込
+38,optionset,新着/古い,新着順 / 古い順のソートオプション
+39,optionset,曜日,月〜日・祝日のスラグ定義。date_nubmer属性追加
+40,optionset,月,1月〜12月
+41,optionset,検索カテゴリ,貸出日・返却日・エリア・自転車タイプ等の検索フィルター
+42,optionset,決済ステータス,決済済み・未決済の支払い状態（5値→2値に整理）
+43,optionset,管理者/運営_news_type,お知らせ種別（3値→2値に整理）
+44,optionset,表示レポート_加盟店,加盟店向け売上レポートの表示項目（5値→3値に整理）
+45,optionset,表示項目,管理者向けダッシュボードの表示項目
+46,optionset,貸し出し可能ステータス,自転車のユーザー表示フラグ

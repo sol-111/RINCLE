@@ -1,0 +1,3 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+bicycle,対象自転車,false,false,ref,false,Bicycle,
+date,対象日,false,false,date,false,,

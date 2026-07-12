@@ -1,0 +1,10 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+basic_price,基本料金,false,false,number,false,,
+bicycle,自転車,true,false,ref,false,Bicycle,
+day_before_rental,前日貸出金額,false,false,number,false,,
+price_menu,料金プラン,false,false,ref,false,Price_menu,
+reservation,予約情報参照,false,false,ref,false,reservation,
+reservation_option,オプション価格リスト,false,false,ref,true,reservation_option,
+rider_info,乗車人情報参照,false,false,ref,false,rider_info,
+shop,所属店舗,false,false,ref,false,shop,
+total_price,合計金額,false,false,number,false,,

@@ -1,0 +1,13 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+__SignUp User,会員登録フラグ,false,false,boolean,false,,
+__{delete}電話番号,数値②,false,false,number,false,,
+address,住所,false,false,text,false,,
+birth,生年月日,false,false,date,false,,
+email,メールアドレス,false,false,text,false,,
+member,会員User,false,false,ref,false,User,
+name,氏名,false,false,text,false,,
+name_kana,氏名（カナ）,false,false,text,false,,
+phone,電話番号,false,false,text,false,,
+postal_code,郵便番号,false,false,number,false,,
+tall,身長,false,false,number,false,,
+user,ユーザー参照,false,false,ref,false,User,

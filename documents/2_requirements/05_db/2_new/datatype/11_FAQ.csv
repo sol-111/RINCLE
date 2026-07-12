@@ -1,0 +1,7 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+__title,タイトル,true,false,text,false,,
+answer,回答,true,false,text,false,,
+category,カテゴリ（参照）,false,false,ref,false,q&a_category,
+is_show?,表示フラグ,false,false,boolean,false,,
+order,表示順①,false,false,number,false,,
+question,質問,true,false,text,false,,

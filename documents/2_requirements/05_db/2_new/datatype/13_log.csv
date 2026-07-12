@@ -1,0 +1,6 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+is_error?,エラー有無,false,false,option,false,,yes/no
+row_text,イベント本文（レスポンス）,false,false,text,false,,
+status,ステータスコード,false,false,number,false,,
+type,イベント種別,false,false,text,false,,
+wf,ワークフロー名,false,false,text,false,,

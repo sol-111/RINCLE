@@ -1,0 +1,3 @@
+field_name,display_name,required,ix,dtype,list,ref_target,notes
+date,対象日,false,false,date,false,,
+option,対象オプション,false,false,ref,false,Sub_Option,
