@@ -16,17 +16,27 @@
 
 | 呼び名 | 実装場所 | 実体 |
 |---|---|---|
-| cart版 | reusable element `cart`（bUplD0） | **`reservation` ページ（予約ページ）に設置されている**（7/12調査で設置箇所を特定。本線はこれの可能性が高い） |
-| mypage版 | `mypage` ページ（bUEiH0）内のワークフロー | ページに直書き。**内容は旧実装（旧indexページ）のほぼそのままコピー** |
-| legal版 | `legal` ページ（bUPpl0）内のワークフロー | ページに直書き（mypage版の丸コピー） |
+| cart版 | reusable element `cart`（bUplD0） | **`reservation` ページ（予約ページ）に設置。予約フローの本線（唯一の生きた予約メール経路）** |
+| mypage版 | `mypage` という名前のページ（bUEiH0）内のワークフロー | **配信されない死にページと確定（7/12実地検証）**。旧indexページの丸コピー |
+| legal版 | `legal` という名前のページ（bUPpl0）内のワークフロー | 同上（mypage版の丸コピー） |
 
-`cart` 部品の設置箇所はエクスポートJSON全体を検索して `reservation` ページの1か所のみだった。**予約フローの本線で動くのはcart版で、mypage版・legal版は旧実装からの移植途中のコピーの残骸である可能性が高い**（cart版だけが新DB構造・新ページ名を参照しており、mypage版・legal版は旧DB構造のフィールド参照と旧ページ名 `shop_admin` を引きずっている）。ただしカスタムイベント経由の呼び出しまでは追い切れていないため、削除判断はBubbleエディタ上で要確認。
+**7/12実地検証で決着**: 新アプリのエクスポートには `mypage`・`legal` という同名ページが2つずつ存在する（旧indexのクローンである巨大な方 bUEiH0/bUPpl0 と、リユーザブル部品を並べただけの小さい方 bUHFl0/bUSNP0）。開発ブランチ（version-13fge）の `/mypage` が実際に配信するJSバンドルを取得して確認したところ、**含まれるのは小さい方（bUHFl0）の要素のみ**だった。つまり旧indexクローン（bUEiH0/bUPpl0）は配信されない死にページであり、**その中のメール送信ワークフロー（6桁コード認証・登録完了・mypage/legal版の予約確定3通）はすべて発火しない**。
+
+生きているメール送信経路は以下で確定（Schedule API Eventの呼び出し元を全走査）:
+
+- 予約確定3通 → **cart版のみ**（reservationページ）
+- 予約キャンセル3通 → api: cancel_reservation ← user_reservation_list / user_reservation_detail
+- アカウント登録完了 → api: create_user_info ← userinfo部品
+- メール認証（URL方式） → api: send_conform_email ← r_signin/signup部品
+- パスワード再設定 → api: send_reset_pass_mail（API経由・7/12実機テスト済み）
+- 審査通過/否決 → api: payjp_webhook_update_talent（Pay.JP webhook）
+- お問い合わせ系 → contact部品・shop_detailページ
 
 ## 結論サマリ
 
-1. **仕様一覧19通のうち16通は新構築に実装あり。未実装3通（決済失敗通知×2、退会完了）は旧実装にも存在しない**（仕様上「協議中」のまま新旧とも未実装）。**旧→新のメール機能のデグレはなし**
-2. **タスク#12の「アウト事項」（URLベタ書き）は複数あるが、大半は旧実装からの持ち越し**。リリースで新たに壊れるもの（真のリグレッション）は限定的で、**最重要は「cart版の管理者向け予約通知の宛先誤り」と「`shop_admin` リンクのリリース後404化」の2点**
-3. `https://rincle.jp`（フッター署名）は**DNS未設定で現時点でも名前解決不可**、`https://rincle.co.jp/reservations` は**現行本番でも404**を実測確認。つまりこの2つは今も壊れており、リリース可否には影響しないが、この機会に直すべき
+1. **仕様一覧19通のうち、生きた経路で実装ありは15通。未実装3通（決済失敗通知×2、退会完了）は旧実装にも存在しない**（仕様上「協議中」のまま新旧とも未実装）。**メール変更の確認メール（旧No.4）は死にページ内にしか無く、生きたフローでは確認なしで即時変更になっている可能性 → 要確認**
+2. **リリース前必須はD-1「cart版の管理者向け予約通知の宛先誤り」が突出**。死にページの確定により、当初「必須」としたA-2（shop_adminリンク）・C-3は発火しない指摘に格下げ（ページ削除で消える）
+3. `https://rincle.jp`（フッター署名）は**DNS未設定で現時点でも名前解決不可**、`https://rincle.co.jp/reservations` は**現行本番でも404**を実測確認。つまりこの2つは今も壊れており、リリース可否には影響しないが、この機会に直すべき（cart版・API系の生きたメールに含まれる）
 
 ---
 
@@ -34,11 +44,11 @@
 
 | 旧No | メール | 宛先 | 新構築 | 実装場所 / 備考 |
 |---|---|---|---|---|
-| 1 | メールアドレス確認（6桁コード） | ユーザー | ✅ | mypage / legal ページ。旧実装と同内容。別途URL認証方式（api: send_conform_email + SendConfirmationEmail〈トークン生成のみ〉）が新規追加 |
-| 2 | アカウント登録完了 | ユーザー | ✅ | mypage / legal（旧のコピー）+ api: create_user_info（新規・`signin` ページへ正しくリンク）。※旧コピー側のログインURL `index/signup` は旧から持ち越し（C-3） |
+| 1 | メールアドレス確認 | ユーザー | ✅ | **生きた経路はURL認証方式のみ**（api: send_conform_email ← r_signin/signup。SendConfirmationEmailはトークン生成のみ）。旧の6桁コード方式は死にページ内のみで発火しない |
+| 2 | アカウント登録完了 | ユーザー | ✅ | **生きた経路は api: create_user_info のみ**（← userinfo部品。`signin` ページへ正しくリンク）。`index/signup` リンクを持つ mypage / legal版は死にページ内で発火しない |
 | 3 | パスワード再設定 | ユーザー | ✅ | api: send_reset_pass_mail に統合。組み込みアクションはURL生成のみ（`delivery_mode: generate_url`）→カスタムメール1通に `&role=` 付きURLを載せる構成。7/12実機テストで1通受信・リンク正常を確認。旧は index / admin_login / shop_admin_login の3ページで組み込みメールを直接送信していた（機能は維持） |
-| 4 | 新メールアドレス確認（協議中） | ユーザー | ✅ | 旧実装と同じ6桁コード方式を踏襲（仕様の24h有効URL方式ではない）。※コード生成の弱さは旧から持ち越し（D-4） |
-| 5 | 予約確定 | ユーザー | ✅ | cart版（新DB対応）+ mypage / legal版（旧コピー）。本文は旧実装と同文。※`/reservations` ベタ書きは旧から持ち越し（A-1） |
+| 4 | 新メールアドレス確認（協議中） | ユーザー | ❓ **要確認** | 6桁コード方式のメールは死にページ内にしか無い。**生きたメール変更フロー（userinfo部品のChangeEmailForAnotherUser）に確認メール送信が見当たらず、確認なしで即時変更になっている可能性**（E-2） |
+| 5 | 予約確定 | ユーザー | ✅ | **生きた経路はcart版のみ**（mypage / legal版は死にページ）。本文は旧実装と同文。※`/reservations` ベタ書きは旧から持ち越し（A-1） |
 | 6 | 予約キャンセル | ユーザー | ✅ | api: cancel_reservation（旧は user_reservation_list ページ内）。本文は旧と同文（誤字「キャンセルされましました」も持ち越し） |
 | 7 | 決済失敗通知（協議中） | ユーザー | ❌ 未実装 | **旧実装にも無し**（「決済失敗」の文言は新旧とも0件）。差異なし |
 | 8 | お問い合わせ受付 | ユーザー | ✅ | contact（共通）+ shop_detail（店舗宛フォーム）。旧と同文 |
@@ -46,10 +56,10 @@
 | 10 | 加盟店申請案内 | 店舗 | ✅ | r_admin_shop_list（旧は admin ページ直書き）。URLは動的（Website Home + `shop_form`）でセーフ |
 | 11 | 審査通過通知 | 店舗 | ⚠️ | api: payjp_webhook_update_talent。**ログインURLに新規の組み立て不備**（C-1）。旧は `{home}/shop_admin_login` で実在ページだった |
 | 12 | 審査否決通知 | 店舗 | ✅ | 同上APIワークフロー。旧と同文 |
-| 13 | 予約確定通知 | 店舗 | ⚠️ | cart版はOK（`admin_signin?role=shop&mode=sign_in` へ動的リンク）。**mypage / legal版は旧ページ名 `shop_admin` のまま → リリース後404**（A-2） |
+| 13 | 予約確定通知 | 店舗 | ✅ | **生きた経路のcart版はOK**（`admin_signin?role=shop&mode=sign_in` へ動的リンク）。`shop_admin` リンクを持つ mypage / legal版は死にページ内で発火しない（A-2は格下げ） |
 | 14 | 予約キャンセル通知 | 店舗 | ⚠️ | api: cancel_reservation。**ログインURLのパスが旧より劣化**（旧: `{home}shop_admin_login`〈実在〉→ 新: `{home}` のみ）。specialized_kyoto ベタ書きは旧から持ち越し（D-3）。宛先は旧 `user.email` → 新 `shop.contact_mail_text` に変更（新DB対応） |
 | 15 | お問い合わせ転送 | 店舗 | ✅ | shop_detail。旧と同文（データ参照が CurrentPageItem → URLパラメータに変更） |
-| 16 | 予約確定通知 | 管理者 | ⚠️ | mypage / legal版は rincle@pedalstandard.com 宛で旧と同じ。**cart版のみ宛先がユーザー本人・件名も誤りに変わっている = 新規リグレッション**（D-1）。旧実装は正しかった |
+| 16 | 予約確定通知 | 管理者 | ❌ **要修正** | **唯一生きているcart版が宛先ユーザー本人・件名も誤り = 現状、管理者向け予約確定通知は運営に一切届かない**（D-1・新規リグレッション）。正しい宛先を持つ mypage / legal版は死にページ |
 | 17 | 予約キャンセル通知 | 管理者 | ⚠️ | api: cancel_reservation。宛名は旧の変な「{店舗名} ご担当者様」→「RINCLE運営チーム 各位」に改善。ただし**件名・本文冒頭に真偽値のデバッグ出力が新規混入**（D-5） |
 | 18 | お問い合わせ通知 | 管理者 | ✅ | contact。旧と同文 |
 | 19 | 決済失敗アラート（協議中） | 管理者 | ❌ 未実装 | **旧実装にも無し**。差異なし |
@@ -68,7 +78,7 @@
 | # | 記載URL | 出現箇所 | 分類 | 問題 |
 |---|---|---|---|---|
 | A-1 | `https://rincle.co.jp/reservations` | 予約確定（ユーザー）cart版含む3箇所、キャンセル（ユーザー・店舗） | **持ち越し**（旧にも同記載。**現行本番で404を実測済み〈7/12〉**。正しくは `user_reservation_list`） | 「予約の確認・キャンセルはこちら」導線が旧から一貫して404。リリースブロッカーではないがこの機会に修正すべき。なお旧実装の店舗向けキャンセルは `https://rincle.jp/reservations`（ドメインごと死んでいる）で、新はドメインだけ直っている |
-| A-2 | `Website Home` + `shop_admin` | 予約確定通知（店舗）mypage版・legal版 | **新規リグレッション**（`shop_admin` は旧アプリの実在ページ。**現行本番で200を実測済み**。新URL設計で廃止） | mypage / legal版が本線でなければ実害なし。cart版は `admin_signin?role=shop&mode=sign_in` へ正しく更新済みなので、残すならこれに揃える |
+| A-2 | `Website Home` + `shop_admin` | 予約確定通知（店舗）mypage版・legal版 | **発火しない（死にページ内のみ・7/12確定）** | 当初「新規リグレッション」としたが、mypage / legal版は配信されない死にページと実地確認できたため実害なしに格下げ。生きているcart版は `admin_signin?role=shop&mode=sign_in` へ正しくリンク済み。死にページの削除で消える |
 
 ### B. ドメインのベタ書き・不一致
 
@@ -83,7 +93,7 @@
 |---|---|---|---|
 | C-1 | `Website Home` + `/admin_signin? role=...` — `?` の直後に半角スペースがありクエリが壊れる（先頭 `/` 由来の二重スラッシュは旧からあったが、スペース混入は新規） | 審査通過通知（api: payjp_webhook_update_talent） | **新規** |
 | C-2 | ログインURLが `Website Home` のみでパス無し。直後に改行無しで「■ログインID」が続く。旧は `{home}shop_admin_login`（実在ページ）へリンクしていたので劣化 | 予約キャンセル通知（店舗） | **新規（劣化）** |
-| C-3 | `Website Home` + `index/signup` — signupというページは新旧とも無い（indexページが開くだけ）。API版登録完了は `signin?mode=sign_in` で正しく組めているので揃えるべき | アカウント登録完了 mypage / legal版×4箇所 | 持ち越し |
+| C-3 | `Website Home` + `index/signup` — signupというページは新旧とも無い | アカウント登録完了 mypage / legal版×4箇所 | **発火しない（死にページ内のみ）**。生きたAPI版登録完了は `signin?mode=sign_in` で正しい |
 
 ### 送信経路の網羅性確認（7/12追補）
 
@@ -106,28 +116,20 @@
 
 | # | 内容 | 分類 | 深刻度 |
 |---|---|---|---|
-| D-1 | **cart版（=本線）の管理者向け新規予約通知が、宛先 `Current User's email`（=予約したユーザー本人）・件名「ご予約の確認」になっている**。ユーザーに「RINCLE運営チーム 各位」で始まる内部通知が届き、運営には届かない。旧実装・mypage / legal版は `rincle@pedalstandard.com` 宛で正しい | **新規リグレッション** | 高 |
+| D-1 | **cart版（=唯一生きている予約フロー）の管理者向け新規予約通知が、宛先 `Current User's email`（=予約したユーザー本人）・件名「ご予約の確認」になっている**。ユーザーに「RINCLE運営チーム 各位」で始まる内部通知が届き、**現状の新構築では管理者向け予約確定通知が運営に一切届かない**。旧実装は正しかった | **新規リグレッション** | 高（最優先） |
 | D-2 | ~~パスワードリセットが2通届く疑い~~ **→ 誤検知・訂正済み（7/12実機テストで1通のみ受信を確認）**。組み込みSendPasswordResetEmailは `delivery_mode: "generate_url"`（URL生成のみ・送信しない）設定で、カスタムSendEmailがそのURLに `&role=` を付けて1通だけ送る正しい構成だった。初回調査では旧形式のキー名（just_make_token）だけ確認して見落とした | －（問題なし） | － |
 | D-3 | 予約キャンセル通知（店舗）の本文に**テスト用店舗ID「specialized_kyoto」がベタ書き**。全加盟店にこのIDが送られる | 持ち越し（旧にも同記載） | 高（旧から実害継続中） |
-| D-4 | メール変更の6桁確認コードが「現在日時を数値変換」した値 = 受信時刻からほぼ推測可能 | 持ち越し | 中 |
+| D-4 | メール変更の6桁確認コードが「現在日時を数値変換」した値 = 受信時刻からほぼ推測可能 | **発火しない（死にページ内のみ・7/12格下げ）**。ただし生きたフローの確認メール不在という別問題が浮上（E-2） | － |
 | D-5 | 管理者向けキャンセル通知の件名・本文の冒頭に真偽値の `format_boolean` 出力（デバッグ痕）が混入 | **新規** | 低 |
 | D-6 | option set `admin_info.mail` に開発者個人のGmail（manmosutarou@gmail.com）が残存（旧から）。使用箇所の確認要 | 持ち越し | 低 |
 | D-7 | 誤字: 「キャンセルされましました」（ユーザー向けキャンセル）、「お問い合わせください。。」（キャンセル系2通） | 持ち越し | 低 |
+| E-2 | **生きたメール変更フロー（userinfo部品）に確認メールが見当たらない**。ChangeEmailForAnotherUserで確認なしの即時変更になっている可能性（6桁コード方式のメールは死にページ内のみ）。誤入力・乗っ取りリスクの観点で挙動確認要 | **要確認（7/12検出）** | 中 |
 
 ---
 
-## 4. 旧→新のページ構成差分（タスク#10 リダイレクト対応表へのインプット）
+## 4. 旧→新のページ構成差分（タスク#10へ移管済み）
 
-メール調査の副産物として、新旧エクスポートのページ一覧差分を記録しておく（#10の対応表作成にそのまま使える）。
-
-| 旧ページ | 新での扱い |
-|---|---|
-| `shop_admin` | **廃止**（→ `admin` に統合か。店舗ログインは `admin_signin?role=shop`）。**現行本番で200 = リリース後は301必須** |
-| `shop_admin_login` | **廃止**（→ `admin_signin?role=shop`） |
-| `admin_login` | **廃止**（→ `admin_signin?role=admin`） |
-| `shop_term` | **廃止**（→ `legal` ページか。要確認） |
-| index / search / shop_detail / user_reservation_list / shop_form / admin / admin_price_simulation / admin_update_calendar / reset_pw / 404 | 継続（同名） |
-| （新規） | `signin`, `mypage`, `reservation`, `bicycle_detail`, `legal`, `admin_signin` |
+メール調査の副産物として当初ここに記録していたページ差分・リダイレクト対応表は、**タスク#10の正式成果物 `url-redirect-map_20260712.md`（同ディレクトリ）（+同名xlsx）に移管・拡充した**（301設定リスト4件・shop_detailのURL形式変更論点・実地検証結果を含む）。以降はそちらが正本。
 
 ---
 
@@ -135,19 +137,19 @@
 
 リリース前必須（新規リグレッションのみ）:
 
-1. **D-1**: cart版の管理者向け予約通知の宛先を `rincle@pedalstandard.com`、件名を「新規予約確定のお知らせ…」に修正（旧実装 or mypage版が正）
-2. **A-2 / 上記4章**: `shop_admin` ほか廃止ページの301リダイレクト設定（タスク#11）に `shop_admin_login` / `admin_login` / `shop_term` も含める。メール本文側は mypage / legal版の生死確認のうえ、残すなら `admin_signin?role=shop&mode=sign_in` へ
-3. **C-1 / C-2**: 審査通過メールの `? role=` スペース除去、店舗向けキャンセルのログインURLに `admin_signin?role=shop&mode=sign_in` を補完
-4. **D-5**: キャンセル管理者通知の `format_boolean` デバッグ痕を除去
+1. **D-1**: cart版の管理者向け予約通知の宛先を `rincle@pedalstandard.com`、件名を「新規予約確定のお知らせ…」に修正（旧実装が正。**現状は管理者通知が運営に届かない**）
+2. **C-1 / C-2**: 審査通過メールの `? role=` スペース除去、店舗向けキャンセルのログインURLに `admin_signin?role=shop&mode=sign_in` を補完
+3. **D-5**: キャンセル管理者通知の `format_boolean` デバッグ痕を除去
+4. **E-2**: メール変更フローの確認メール不在をエディタ上で確認（仕様No.4は「協議中」なので、無しで良ければ仕様確定として記録）
+5. 301リダイレクト設定（タスク#11）に `shop_admin` / `shop_admin_login` / `admin_login` / `shop_term` を含める（詳細は `url-redirect-map_20260712.md`（同ディレクトリ））
 
 この機会に直すべき（持ち越しバグ・リリースブロッカーではない）:
 
-5. **A-1**: `/reservations` ベタ書き5箇所（cart版含む）→ `Website home URL` + `user_reservation_list`（動的参照）へ
-6. **B-1**: 署名の `rincle.jp` → `rincle.co.jp`（option set `admin_info.email_signature` の修正が最優先。ベタ書き11箇所も一括置換）
-7. **D-3**: specialized_kyoto 除去（実IDの動的参照 or 記載自体を削除）
-8. **C-3**: 登録完了メールのリンクを `signin?mode=sign_in` に統一
-9. mypage / legal の重複ワークフロー（旧実装コピー）はどちらが本番導線か確認のうえ削除
-10. 修正後、タスク#14のE2Eで「予約確定→キャンセル」「登録→パスワードリセット」のメール実受信とリンク先を実機確認
+6. **A-1**: `/reservations` ベタ書き（生きているのはcart版1箇所+キャンセル2箇所）→ `Website home URL` + `user_reservation_list`（動的参照）へ
+7. **B-1**: 署名の `rincle.jp` → `rincle.co.jp`（option set `admin_info.email_signature` の修正が最優先。生きたメールのベタ書きも一括置換）
+8. **D-3**: specialized_kyoto 除去（実IDの動的参照 or 記載自体を削除）
+9. **死にページの削除**: 旧indexクローンの `mypage`（bUEiH0）・`legal`（bUPpl0）を削除（A-2 / C-3 / D-4 / 旧6桁コードメールがまとめて消える。念のためエディタ上でも参照なしを確認してから）
+10. 修正後、タスク#14のE2Eで「予約確定→キャンセル」「登録→パスワードリセット」「メール変更」のメール実受信とリンク先を実機確認
 
 ---
 
@@ -157,3 +159,4 @@
 - 2026-07-12 訂正: 実機テストでリセットメールは1通のみと確認 → D-2は誤検知（`delivery_mode: generate_url` の見落とし）として訂正
 - 2026-07-12 追補: 旧エクスポート（3/23本番）との三者突合＋本番URL実測を実施。全指摘を「持ち越し / 新規リグレッション」に分類。`rincle.jp` のDNS未設定、`/reservations` の本番404、`shop_admin` の本番200（リリース後404化）を実測確認
 - 2026-07-12 追補2: 送信経路の網羅性を確認（プラグイン・API Connector経由のメール送信なし）。新アプリのみ独自SendGridキー設定を発見 → E-1として#14へ引き継ぎ
+- 2026-07-12 追補3（全体見直し）: 同名重複ページの正体を実地検証で解明 — 開発ブランチ（version-13fge）の配信JSを取得し、mypage / legal は小さい方のページ（bUHFl0 / bUSNP0）が配信され、旧indexクローン（bUEiH0 / bUPpl0）は死にページと確定。これに伴い A-2・C-3・D-4 を「発火しない」に格下げ、旧No.4（メール変更確認）を E-2「確認メール不在の疑い」として新規追加。Schedule API Eventの呼び出し元全走査で生きたメール経路を確定。page properties / mobile_views / user_types の追加走査は新規ヒット0件
