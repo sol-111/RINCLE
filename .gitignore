@@ -4,6 +4,8 @@
 # 認証情報
 .env
 .env.*
+!.env.example
+!rincle-test/.env.example
 
 # 依存パッケージ
 node_modules/
@@ -24,3 +26,7 @@ Thumbs.db
 
 # Claude Code
 .claude/
+
+# Bubbleエクスポート（SendGrid/Pay.JPのAPIキー等を含むためコミット禁止・別マシンへは手動転送）
+documents/rincle.bubble
+*.bubble

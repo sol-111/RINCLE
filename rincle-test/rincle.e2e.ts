@@ -2,7 +2,7 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const BASE_URL = "https://rincle.co.jp/version-5398j";
+const BASE_URL = "https://rincle.co.jp/version-13fge";
 const EMAIL    = process.env.RINCLE_EMAIL!;
 const PASSWORD = process.env.RINCLE_PASSWORD!;
 const AREA     = process.env.RINCLE_AREA!;
@@ -19,14 +19,51 @@ function parseDatetime(raw: string) {
   return { month: m, day: d, year: y, time: timePart };
 }
 
+// "2026/07/20" → "2026年07月20日"（予約一覧カードの日時表記・ゼロ埋めあり）
+function toJpDate(d: { year: number; month: number; day: number }) {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.year}年${pad(d.month)}月${pad(d.day)}日`;
+}
+
+// 【Bubble開発ブランチ特有の罠・実測】version-13fge は編集中ブランチのため、テスト実行中に
+// アプリが更新されると「アプリが更新されました。〜ページを再読み込みしてください」バナーが表示され、
+// 以後の全ワークフローが凍結される（ボタンをクリックしても何も起きない。コンソールには
+// "PLEASE REFRESH: workflow" が出る）。ログイン不成立・「予約画面へ進む」無反応 flake の正体。
+// 検出したらリロードして解除する。
+async function freshenIfStale(page: Page): Promise<boolean> {
+  const stale = await page.getByText("アプリが更新されました").first().isVisible().catch(() => false);
+  if (!stale) return false;
+  console.log("⚠️ アプリ更新バナーを検出 → リロードしてワークフロー凍結を解除");
+  await page.reload({ waitUntil: "domcontentloaded", timeout: 40000 }).catch(() => {});
+  await page.waitForTimeout(3000);
+  return true;
+}
+
+// 新アプリ（version-13fge）のログイン。
+// 旧アプリはトップのポップアップでログインしたが、新アプリは専用ページ /signin 方式。
+// 【既知バグ】トップヘッダーの「ログイン」ボタンは ?mode=signin へ遷移するが、
+//   サインインフォームの表示条件は mode=sign_in（アンダースコア）のため mode=signin では
+//   本文が空になる。/signin へ直接遷移すると mode=sign_in にリダイレクトされフォームが出る。
+// ログイン成否はトップページのヘッダーに「ログアウト」が出るかで判定（サインイン送信では
+//   ページ遷移しないため、トップへ移動して確認する）。稀にセッション確立が遅れるため最大2回試行。
 async function login(page: Page) {
-  await page.goto(BASE_URL, { waitUntil: "networkidle" });
-  await page.getByRole("button", { name: "ログイン" }).first().click();
-  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 5000 });
-  await page.locator('input[type="email"]').fill(EMAIL);
-  await page.locator('input[type="password"]').fill(PASSWORD);
-  await page.getByRole("button", { name: "ログイン" }).last().click();
-  await page.getByText("ログアウト").first().waitFor({ state: "visible", timeout: 10000 });
+  for (let attempt = 0; attempt < 2; attempt++) {
+    // networkidle はBubbleの常駐接続で確定しないことがある（間欠タイムアウトを実測）ため、
+    // domcontentloaded + 直後の要素待ちで代替する
+    await page.goto(`${BASE_URL}/signin`, { waitUntil: "domcontentloaded" });
+    await freshenIfStale(page); // アプリ更新バナーが出ているとログインWFが凍結されるため
+    await page.locator('input[type="email"]').first().waitFor({ state: "visible", timeout: 20000 });
+    await page.locator('input[type="email"]').first().fill(EMAIL);
+    await page.locator('input[type="password"]').first().fill(PASSWORD);
+    await page.getByRole("button", { name: "ログイン" }).first().click();
+    await page.waitForTimeout(5000);
+
+    await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+    const loggedIn = await page.getByText("ログアウト").first()
+      .waitFor({ state: "visible", timeout: 8000 }).then(() => true).catch(() => false);
+    if (loggedIn) return;
+  }
+  throw new Error("ログインに失敗しました（/signin 経由でセッションが確立できませんでした）");
 }
 
 // Pikadayカレンダーで日付を選択する
@@ -90,6 +127,32 @@ async function clickBubbleButton(page: Page, buttonText: RegExp): Promise<boolea
   }, buttonText.source);
 }
 
+// 汎用クリックヘルパー: テキスト完全一致の .clickable-element を jQuery ハンドラ経由でクリックする。
+// フッターナビ（アンカースクロールリンク等、button_disabledのようなdisabled制御を持たない
+// 単純なワークフロー）向け。clickBubbleButton とは別に追加（既存ヘルパーは変更しない）。
+async function clickClickableElementByText(page: Page, text: string): Promise<boolean> {
+  return page.evaluate((t) => {
+    const els = Array.from(document.querySelectorAll(".clickable-element"));
+    const el = els.find(e => {
+      const r = e.getBoundingClientRect();
+      return r.width > 0 && r.height > 0 && (e.textContent || "").trim() === t;
+    }) as HTMLElement | null;
+    if (!el) return false;
+    el.scrollIntoView({ behavior: "instant", block: "center" });
+    const events = (window as any).jQuery?._data?.(el, "events");
+    const handler = events?.click?.[0]?.handler;
+    if (handler) {
+      const e = (window as any).jQuery.Event("click");
+      e.target = el;
+      e.currentTarget = el;
+      handler.call(el, e);
+      return true;
+    }
+    el.click();
+    return true;
+  }, text);
+}
+
 // -------------------------------------------------------------------
 
 test.describe("RINCLE E2E", () => {
@@ -99,15 +162,19 @@ test.describe("RINCLE E2E", () => {
   // 1. ログイン
   // ----------------------------------------------------------------
   test("ログイン", async ({ page }) => {
-    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+    // 新アプリは /signin ページ方式（トップの「ログイン」ボタンは mode=signin へ飛ぶが
+    // フォームは mode=sign_in でしか描画されない既知バグのため /signin へ直接遷移）
+    await page.goto(`${BASE_URL}/signin`, { waitUntil: "networkidle" });
+    await page.locator('input[type="email"]').first().waitFor({ state: "visible", timeout: 15000 });
+    await page.locator('input[type="email"]').first().fill(EMAIL);
+    await page.locator('input[type="password"]').first().fill(PASSWORD);
     await page.getByRole("button", { name: "ログイン" }).first().click();
-    await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 5000 });
-    await page.locator('input[type="email"]').fill(EMAIL);
-    await page.locator('input[type="password"]').fill(PASSWORD);
-    await page.getByRole("button", { name: "ログイン" }).last().click();
+    await page.waitForTimeout(5000);
 
+    // ログイン後、トップページのヘッダーに「ログアウト」が表示されることを確認
+    await page.goto(BASE_URL, { waitUntil: "networkidle" });
     const logoutBtn = page.getByText("ログアウト").first();
-    await logoutBtn.waitFor({ state: "visible", timeout: 10000 });
+    await logoutBtn.waitFor({ state: "visible", timeout: 15000 });
     await expect(logoutBtn).toBeVisible();
     console.log("✅ ログイン完了");
   });
@@ -118,44 +185,77 @@ test.describe("RINCLE E2E", () => {
   test("マイページ", async ({ page }) => {
     await login(page);
 
-    await page.goto(`${BASE_URL}/index/mypage`, { waitUntil: "networkidle" });
-    await page.waitForTimeout(1500);
+    // 新アプリでは専用ページ /mypage（ロード時に /mypage/userinfo にリダイレクト）
+    await page.goto(`${BASE_URL}/mypage`, { waitUntil: "networkidle" });
+    await page.waitForTimeout(2000);
+    await expect(page).toHaveURL(/\/mypage/);
 
     // マイページが表示されていることを確認
-    await expect(page.getByRole("button", { name: "アカウント編集" })).toBeVisible({ timeout: 8000 });
+    await expect(page.getByRole("button", { name: "アカウント編集" })).toBeVisible({ timeout: 10000 });
     await expect(page.getByRole("button", { name: "予約一覧" })).toBeVisible({ timeout: 5000 });
     await expect(page.getByRole("button", { name: "退会する" })).toBeVisible({ timeout: 5000 });
 
-    // ユーザー情報が表示されていること（メールアドレス）
-    await expect(page.getByText(EMAIL)).toBeVisible({ timeout: 5000 });
+    // ユーザー情報が表示されていること（メールアドレス）。userinfo部品は非同期ロードのため長めに待つ
+    await expect(page.getByText(EMAIL).first()).toBeVisible({ timeout: 15000 });
     console.log("✅ マイページ確認完了");
   });
 
   // ----------------------------------------------------------------
   // 3. ガイドページ閲覧
   // ----------------------------------------------------------------
+  // 【新アプリでの構造変化・実地プローブで確認済み】
+  // 旧 /index/guide は独立ページとして直接遷移すると実は "FAQ" コンテンツ（保険・補償/予約・受付等の
+  // Q&A）を表示する（フッターの「よくある質問」リンクの遷移先でもある＝テスト13と同じ実体）。
+  // 一方、旧アプリで「ガイド」的な内容（Rincleの特徴・ご利用の流れ）は、新アプリではトップページ内の
+  // アンカーセクション（FEATURE/FLOW）に統合されており、フッターの「Rincleの特徴」「ご利用の流れ」
+  // リンクはページ内スクロールとして機能する（別ページには遷移しない）。
+  // 意図の重複を避けるため、本テストは「ガイド」に相当するこの2セクションへのアンカー遷移を検証し、
+  // テスト13は実体としての /index/guide（FAQ）を検証する。
   test("ガイドページ", async ({ page }) => {
     await login(page);
 
-    await page.goto(`${BASE_URL}/index/guide`, { waitUntil: "networkidle" });
+    await page.goto(BASE_URL, { waitUntil: "networkidle" });
     await page.waitForTimeout(1500);
 
-    // ページが正常に読み込まれることを確認（エラーなし）
-    await expect(page).toHaveURL(/\/index\/guide/);
-    // ナビゲーションボタンは引き続き表示されている
-    await expect(page.getByText("ログアウト").first()).toBeVisible({ timeout: 5000 });
-    console.log("✅ ガイドページ閲覧完了");
+    // 「Rincleの特徴」（FEATURE）セクションへアンカー遷移し、本文が表示されること
+    const scrollY0 = await page.evaluate(() => window.scrollY);
+    const clickedFeature = await clickClickableElementByText(page, "Rincleの特徴");
+    expect(clickedFeature).toBe(true);
+    await page.waitForTimeout(1200);
+    const scrollY1 = await page.evaluate(() => window.scrollY);
+    expect(scrollY1).toBeGreaterThan(scrollY0);
+    await expect(page.getByText("スポーツバイクレンタルで感じる究極のライド体験")).toBeVisible({ timeout: 5000 });
+    console.log(`✅ Rincleの特徴セクションへ遷移 (scrollY ${scrollY0} → ${scrollY1})`);
+
+    // 「ご利用の流れ」（FLOW）セクションへもアンカー遷移できること
+    const clickedFlow = await clickClickableElementByText(page, "ご利用の流れ");
+    expect(clickedFlow).toBe(true);
+    await page.waitForTimeout(1200);
+    const scrollY2 = await page.evaluate(() => window.scrollY);
+    expect(scrollY2).toBeGreaterThan(scrollY1);
+    console.log(`✅ ご利用の流れセクションへ遷移 (scrollY ${scrollY1} → ${scrollY2})`);
+    console.log("✅ ガイド相当コンテンツ（トップページ内アンカー）確認完了");
   });
 
   // ----------------------------------------------------------------
   // 4. 料金ページ閲覧
   // ----------------------------------------------------------------
-  test("料金ページ", async ({ page }) => {
+  // 【新アプリで機能自体が削除済み・実地プローブ＋rincle.bubble解析で確認】
+  // - /index/howtopay に直接遷移してもヘッダー/フッターのナビのみでコンテンツ本文が空
+  //   （body innerText = 126文字、guide/contact等では実コンテンツが入り数百〜数千文字ある）
+  // - documents/rincle.bubble を python3 で解析: option_sets.index_page には
+  //   db_value="howtopay" の値自体は残っているが、index ページ(bTGbC)の elements 定義内に
+  //   "howtopay" という文字列は0件 → 表示条件・コンテンツグループ自体が実装から削除済み
+  // - /howtopay （素のパス）は 404
+  // - トップページのフッターリンク（Rincleの特徴/ご利用の流れ/よくある質問/会社概要/
+  //   お問い合わせ/利用規約/プライバシーポリシー）に「料金」相当のリンクなし
+  // - /legal?mode=docs（特定商取引法の表示）にも価格・支払い方法の具体的説明はなく
+  //   「各商品・サービスのご購入ページに記載」という参照のみで、旧ページの代替にはならない
+  // → 新アプリには対応する「料金ページ」が存在しないため test.skip とする（テスト自体は削除しない）
+  test.skip("料金ページ", async ({ page }) => {
     await login(page);
-
     await page.goto(`${BASE_URL}/index/howtopay`, { waitUntil: "networkidle" });
     await page.waitForTimeout(1500);
-
     await expect(page).toHaveURL(/\/index\/howtopay/);
     await expect(page.getByText("ログアウト").first()).toBeVisible({ timeout: 5000 });
     console.log("✅ 料金ページ閲覧完了");
@@ -211,13 +311,16 @@ test.describe("RINCLE E2E", () => {
     await page.evaluate(() => window.scrollBy(0, 500));
     await page.waitForTimeout(1500);
 
-    // 予約フォームのpicker__inputが表示されること（貸出日入力）
-    const rentalDateInput = page.locator("input.picker__input").nth(2);
+    // 新アプリは専用ページ /bicycle_detail に遷移する
+    await expect(page).toHaveURL(/\/bicycle_detail/);
+
+    // 予約フォームの貸出日ピッカー（index 0）が表示されること
+    const rentalDateInput = page.locator("input.picker__input").nth(0);
     await expect(rentalDateInput).toBeVisible({ timeout: 8000 });
 
-    // カレンダーピッカーが2つ存在すること（予約フォーム全体の表示確認）
+    // 予約フォームのピッカー群が揃っていること（日付4[貸出/返却×表示/隠し] + 時刻2 = 6）
     const pickerCount = await page.locator("input.picker__input").count();
-    expect(pickerCount).toBeGreaterThanOrEqual(3); // 検索用2 + 予約フォーム用1以上
+    expect(pickerCount).toBeGreaterThanOrEqual(4);
     console.log("✅ 自転車詳細ページ確認完了");
   });
 
@@ -225,6 +328,7 @@ test.describe("RINCLE E2E", () => {
   // 7. 予約フロー（完全）
   // ----------------------------------------------------------------
   test("予約フロー", async ({ page }) => {
+    test.setTimeout(180000);
     const start = parseDatetime(START_DATETIME);
     const end   = parseDatetime(END_DATETIME);
 
@@ -235,7 +339,7 @@ test.describe("RINCLE E2E", () => {
 
     await login(page);
 
-    // 検索 → 一覧 → 詳細
+    // 検索 → 一覧 → 詳細（新アプリ: /search → /bicycle_detail）
     await page.locator("select.bubble-element.Dropdown").first().selectOption({ label: AREA });
     await page.waitForTimeout(500);
     await page.locator('input[type="checkbox"]').nth(0).check();
@@ -246,83 +350,139 @@ test.describe("RINCLE E2E", () => {
     await page.waitForLoadState("networkidle");
     await page.getByRole("button", { name: "詳細を見る" }).first().click();
     await page.waitForLoadState("networkidle");
+    await expect(page).toHaveURL(/\/bicycle_detail/);
     await page.evaluate(() => window.scrollBy(0, 500));
     await page.waitForTimeout(1500);
-    console.log("✅ 自転車詳細ページへ遷移");
+    console.log("✅ 自転車詳細ページへ遷移:", page.url());
 
-    // 日時入力
-    await selectPikadayDate(page, 2, start.month, start.day, start.year);
-    console.log(`✅ 貸出日選択: ${start.year}/${start.month}/${start.day}`);
+    // 新アプリ /bicycle_detail の予約フォーム構造:
+    //   picker__input: index0=貸出日(表示), 1=貸出日(隠しミラー), 2=貸出時刻ピッカー,
+    //                  3=返却日(表示), 4=返却日(隠しミラー), 5=返却時刻ピッカー
+    //   時刻は select.bubble-element.Dropdown: nth(0)=貸出時刻, nth(1)=返却時刻 で選ぶ
+    await selectPikadayDate(page, 0, start.month, start.day, start.year);
 
-    await selectPikadayDate(page, 5, end.month, end.day, end.year);
-    console.log(`✅ 返却日選択: ${end.year}/${end.month}/${end.day}`);
+    // 貸出日が実際に入ったか確認。
+    // 【重要】当日/過去日はカレンダー上 disabled（予約は前日23:59まで）。制約により日時は
+    //   一切変更しないため、選択できなければ具体的な理由付きで fail させる（緩いpass禁止）。
+    const startVal = await page.locator("input.picker__input").nth(0).inputValue().catch(() => "");
+    expect(startVal,
+      `貸出日 ${start.year}/${start.month}/${start.day} が選択できません（当日/過去はカレンダーでdisabled）。.env の RINCLE_DATE を未来日に更新してください（テスト側で日時は変更しない）`
+    ).toBeTruthy();
+    console.log(`✅ 貸出日選択: ${startVal}`);
 
-    await page.locator("select").nth(3).selectOption({ label: start.time });
-    await page.waitForTimeout(500);
+    await selectPikadayDate(page, 3, end.month, end.day, end.year);
+    const endVal = await page.locator("input.picker__input").nth(3).inputValue().catch(() => "");
+    expect(endVal,
+      `返却日 ${end.year}/${end.month}/${end.day} が選択できません（カレンダーでdisabled）`
+    ).toBeTruthy();
+    console.log(`✅ 返却日選択: ${endVal}`);
+
+    // 貸出/返却時刻（選択肢に無い時刻＝店舗の受付時間外なら理由付き fail）
+    const startTimeOk = await page.locator("select.bubble-element.Dropdown").nth(0)
+      .selectOption({ label: start.time }).then(() => true).catch(() => false);
+    expect(startTimeOk,
+      `貸出時刻 ${start.time} は選択肢にありません（店舗の受付時間外。実測の選択肢は10:00〜20:00）`
+    ).toBe(true);
     console.log(`✅ 貸出時間選択: ${start.time}`);
 
-    await page.locator("select").nth(4).selectOption({ label: end.time });
-    await page.waitForTimeout(500);
+    const endTimeOk = await page.locator("select.bubble-element.Dropdown").nth(1)
+      .selectOption({ label: end.time }).then(() => true).catch(() => false);
+    expect(endTimeOk,
+      `返却時刻 ${end.time} は選択肢にありません（店舗の受付時間外。実測の選択肢は11:00〜21:00）`
+    ).toBe(true);
     console.log(`✅ 返却時間選択: ${end.time}`);
 
-    // 予約画面へ進む（Bubble button_disabled パッチ）
-    await page.evaluate(() => {
-      const btn = Array.from(document.querySelectorAll("button")).find(
-        b => b.textContent?.trim() === "予約画面へ進む"
-      ) as HTMLElement | null;
-      if (!btn) return;
-      btn.scrollIntoView({ behavior: "instant", block: "center" });
-      const clickable = btn.closest(".clickable-element") as HTMLElement | null;
-      const inst = (clickable as any)?.bubble_data?.bubble_instance;
-      if (inst?.element?.get_precomputed) {
-        const origFn = inst.element.get_precomputed.bind(inst.element);
-        inst.element.get_precomputed = () => {
-          const p = origFn();
-          if (p) p.button_disabled = false;
-          return p;
-        };
-      }
-      const events = (window as any).jQuery?._data?.(clickable, "events");
-      const clickHandler = events?.click?.[0]?.handler;
-      if (clickHandler) {
-        const e = (window as any).jQuery.Event("click");
-        e.target = btn;
-        e.currentTarget = clickable;
-        clickHandler.call(clickable, e);
-      }
-    });
-    await page.waitForURL(/\/index\/cart/, { timeout: 20000 }).catch(() => {});
-    console.log("✅ カートページへ遷移:", page.url());
+    // 「予約画面へ進む」は日時が全て正しく入ると display:none → 表示 に切り替わる
+    // （＝この可視化がフォームバリデーション通過の証跡）。可視化を待って通常クリックする。
+    // 【実測】非表示のままjQueryハンドラを直接発火（clickBubbleButton）してもワークフローは
+    //   走らない（前回failの一因）。もう一因はアプリ更新バナーによるWF凍結 → freshenで解除。
+    //   ただしバナーが出た場合はリロードで入力が消えるため、その回は fail させ再実行に委ねる。
+    const wasStale = await freshenIfStale(page);
+    expect(wasStale, "アプリ更新バナーによりフォーム入力が失われました（再実行してください）").toBe(false);
+    const proceedBtn = page.getByRole("button", { name: "予約画面へ進む" });
+    await expect(proceedBtn, "日時入力後も「予約画面へ進む」が表示されない（バリデーション未通過）").toBeVisible({ timeout: 15000 });
+    await proceedBtn.click();
 
-    // カートページ: お客様情報の入力へ
-    await page.waitForLoadState("networkidle", { timeout: 20000 });
-    await page.waitForTimeout(2000);
+    // 新アプリは /reservation?reservation=<id> に遷移（cart部品。この時点でstatus=仮情報の予約が作られる）
+    await page.waitForURL(/\/reservation\?reservation=/, { timeout: 20000 });
+    console.log("✅ 予約(reservation/cart)ページへ遷移:", page.url());
+    await page.waitForTimeout(3000);
+
+    // ---- ステップ1: カート内容確認 → お客様情報の入力へ ----
+    await freshenIfStale(page);
     const toCustomerBtn = page.getByRole("button", { name: "お客様情報の入力へ" });
-    if (await toCustomerBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
-      await toCustomerBtn.click();
-      await page.waitForLoadState("networkidle", { timeout: 15000 });
-      console.log("✅ お客様情報の入力へ:", page.url());
-    }
+    await expect(toCustomerBtn).toBeVisible({ timeout: 15000 });
+    await toCustomerBtn.click();
+    await page.waitForTimeout(4000);
 
-    // 予約内容の確認に進む
+    // ---- ステップ2: お客様情報入力（ステッパー: 空車検索→お客様情報入力→予約内容確認→支払い方法→予約完了）----
+    // 「アプリの登録者と同じ」をチェック → アカウント情報から全項目オートフィルされる
+    await page.getByText("アプリの登録者と同じ").first().click();
     await page.waitForTimeout(2000);
-    const toReviewClicked = await clickBubbleButton(page, /予約内容の確認に進む/);
-    if (toReviewClicked) {
-      await page.waitForTimeout(2000);
-      console.log("✅ 予約内容の確認に進む クリック");
-    }
 
-    // 予約する
-    const reserveClicked = await clickBubbleButton(page, /^予約する$|^予約を確定|^注文確定/);
-    if (reserveClicked) {
-      await page.waitForTimeout(5000);
-      console.log("✅ 予約確定後 URL:", page.url());
-    }
+    // 同意チェック3つ（利用規約・身分証持参・18歳未満同伴）
+    await page.getByText("上記の利用規約に同意する").first().click();
+    await page.waitForTimeout(400);
+    await page.getByText("身分証明書を持参することに同意する", { exact: false }).first().click();
+    await page.waitForTimeout(400);
+    await page.getByText("親権者または18歳以上の方が同伴すること", { exact: false }).first().click();
+    await page.waitForTimeout(600);
 
-    // 予約完了後は top_search に戻る
-    expect(page.url()).toContain("rincle.co.jp");
-    console.log("🎉 予約完了！ URL:", page.url());
-  }, { timeout: 180000 });
+    const toReviewBtn = page.getByRole("button", { name: "予約内容の確認に進む" });
+    await expect(toReviewBtn).toBeVisible({ timeout: 10000 });
+    await toReviewBtn.click();
+    await page.waitForTimeout(4000);
+
+    // ---- ステップ3: 予約内容確認 → 支払い方法へ ----
+    const toPaymentBtn = page.getByRole("button", { name: "支払い方法を選択する" });
+    await expect(toPaymentBtn, "予約内容確認ステップに到達できません（お客様情報の必須項目が未充足の可能性）").toBeVisible({ timeout: 15000 });
+    await toPaymentBtn.click();
+    await page.waitForTimeout(4000);
+
+    // ---- ステップ4: 支払い方法選択 ----
+    // デフォルトは「オンライン決済」がチェック済み（pay.jpカード入力UI付き）。
+    // 実カード決済は禁止のため、必ず「店頭決済」に切り替える（クリックで相互排他）。
+    await expect(page.getByText("店頭決済").first()).toBeVisible({ timeout: 10000 });
+    await page.getByText("店頭決済", { exact: true }).first().click();
+    await page.waitForTimeout(2000);
+
+    // 店頭決済へ切り替わった証跡: オンライン決済側の「カード情報を入力する」ボタンが消えること
+    await expect(page.getByRole("button", { name: "カード情報を入力する" }),
+      "「店頭決済」への切替に失敗（カード入力ボタンが表示されたまま）。カード決済のまま確定はしない"
+    ).toBeHidden({ timeout: 8000 });
+
+    // 【安全策】可視のカード番号入力欄が無いことを確認（カード入力・送信は絶対にしない）
+    const visibleCardFields = await page.locator('input[autocomplete="cc-number"], input[name*="card" i]')
+      .locator("visible=true").count().catch(() => 0);
+    expect(visibleCardFields, "カード番号入力欄が表示されています。店頭決済で進められないため停止").toBe(0);
+
+    // ---- 予約を確定する ----
+    await page.getByRole("button", { name: "予約を確定する" }).click();
+
+    // 【厳格な完了判定】「予約が確定しました。」ポップアップの表示（緩いURL containsは廃止）
+    await expect(page.getByText("予約が確定しました")).toBeVisible({ timeout: 25000 });
+    console.log("🎉 予約が確定しました（店頭決済・実カード決済なし）");
+
+    // 予約一覧へ遷移し、今回の貸出日の予約カードが実在することまで確認 + 予約番号を取得
+    await page.getByRole("button", { name: "予約履歴を確認" }).click();
+    await page.waitForURL(/\/user_reservation_list/, { timeout: 20000 });
+    await page.waitForTimeout(3000);
+    const startJp = toJpDate(start); // 例: "2026年07月20日"
+    await expect(page.getByText(startJp).first(), `予約一覧に貸出日 ${startJp} のカードが見つかりません`).toBeVisible({ timeout: 15000 });
+    const reservationNo = await page.evaluate((dateStr) => {
+      const btns = Array.from(document.querySelectorAll("button"))
+        .filter(b => (b.textContent || "").trim() === "予約をキャンセルする");
+      for (const b of btns) {
+        let card: HTMLElement | null = b.parentElement;
+        while (card && !(card.textContent || "").includes("予約番号")) card = card.parentElement;
+        const t = card?.textContent || "";
+        if (t.includes(dateStr)) return t.match(/予約番号[^0-9]*([0-9]{6,})/)?.[1] ?? null;
+      }
+      return null;
+    }, startJp);
+    expect(reservationNo, "予約一覧から予約番号を取得できませんでした").toBeTruthy();
+    console.log(`✅ 予約一覧に反映を確認 — 予約番号: ${reservationNo} / 貸出日: ${startJp}（テスト9でキャンセルして後始末する）`);
+  });
 
   // ----------------------------------------------------------------
   // 8. 予約一覧確認
@@ -330,16 +490,21 @@ test.describe("RINCLE E2E", () => {
   test("予約一覧確認", async ({ page }) => {
     await login(page);
 
-    await page.goto(`${BASE_URL}/user_reservation_list`, { waitUntil: "networkidle" });
+    // 新アプリでは /user_reservation_list へ直接遷移するとトップにバウンスするため、
+    // トップの「予約の確認・キャンセル」ボタン経由で開く（Bubbleの状態が必要）
+    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: "予約の確認・キャンセル" }).first().click();
+    await page.waitForLoadState("networkidle");
     await page.waitForTimeout(2000);
+    await expect(page).toHaveURL(/\/user_reservation_list/);
 
     // 予約一覧ページが表示されること
-    await expect(page.getByText("予約状況一覧")).toBeVisible({ timeout: 8000 });
+    await expect(page.getByText("予約状況一覧")).toBeVisible({ timeout: 10000 });
 
     // 予約がある場合はキャンセルボタンが表示される
     const cancelBtns = page.getByRole("button", { name: "予約をキャンセルする" });
     const count = await cancelBtns.count();
-    console.log(`✅ 予約一覧確認完了 (件数: ${count})`);
+    console.log(`✅ 予約一覧確認完了 (キャンセルボタン件数: ${count})`);
   });
 
   // ----------------------------------------------------------------
@@ -347,36 +512,70 @@ test.describe("RINCLE E2E", () => {
   //    直近の予約（今回テストで作成した予約）をキャンセルする
   // ----------------------------------------------------------------
   test("予約キャンセル", async ({ page }) => {
+    test.setTimeout(150000);
+    const start = parseDatetime(START_DATETIME);
+    if (!start) {
+      console.log("⚠️ RINCLE_DATE が未設定のためスキップ（テスト7も予約を作っていない）");
+      return;
+    }
+    const startJp = toJpDate(start); // テスト7が作成した予約の貸出日表記（例: 2026年07月20日）
+
     await login(page);
 
-    await page.goto(`${BASE_URL}/user_reservation_list`, { waitUntil: "networkidle" });
-    await page.waitForTimeout(2000);
+    // 新アプリ: トップの「予約の確認・キャンセル」ボタン経由で予約一覧を開く
+    // （/user_reservation_list への直接遷移はトップへバウンスするため不可）
+    await page.goto(BASE_URL, { waitUntil: "networkidle" });
+    await freshenIfStale(page);
+    await page.getByRole("button", { name: "予約の確認・キャンセル" }).first().click();
+    await page.waitForURL(/\/user_reservation_list/, { timeout: 20000 });
+    await page.waitForTimeout(3000);
+    await expect(page.getByText("予約状況一覧")).toBeVisible({ timeout: 10000 });
 
-    const cancelBtns = page.getByRole("button", { name: "予約をキャンセルする" });
-    const count = await cancelBtns.count();
-    if (count === 0) {
-      console.log("⚠️ キャンセルする予約がないためスキップ");
+    // テスト7が作成した予約（貸出日 = RINCLE_DATE の日付）のキャンセルボタンを日付で特定する。
+    // 【重要・実測】一覧には過去出発の古い予約も並び、それらのキャンセルボタンは
+    //   淡色（キャンセル期限切れ＝出発日前日23:59超過）で押しても何も起きない。
+    //   そのため「先頭をクリック」ではなく、対象カードの日付でボタンindexを特定する。
+    const findTargetIndex = () => page.evaluate((dateStr) => {
+      const btns = Array.from(document.querySelectorAll("button"))
+        .filter(b => (b.textContent || "").trim() === "予約をキャンセルする");
+      for (let i = 0; i < btns.length; i++) {
+        let card: HTMLElement | null = btns[i].parentElement;
+        while (card && !(card.textContent || "").includes("予約番号")) card = card.parentElement;
+        if ((card?.textContent || "").includes(dateStr)) {
+          return { index: i, no: (card!.textContent || "").match(/予約番号[^0-9]*([0-9]{6,})/)?.[1] ?? "?" };
+        }
+      }
+      return null;
+    }, startJp);
+
+    let target = await findTargetIndex();
+    if (!target) {
+      // テスト7が予約を作れていない場合のみ正当なスキップ（後始末対象も存在しない）
+      console.log(`⚠️ 貸出日 ${startJp} の予約が一覧にありません（テスト7で予約が作成されていない）— スキップ`);
       return;
     }
 
-    // 最初の予約をキャンセル
-    await cancelBtns.first().click();
-    await page.waitForTimeout(3000);
+    // 同日付の残骸（過去の失敗runの取り残し）も含め、全てキャンセルして後始末する（最大5件）
+    let cancelled = 0;
+    for (let i = 0; i < 5 && target; i++) {
+      console.log(`✅ キャンセル対象: 予約番号 ${target.no}（貸出日 ${startJp}）`);
+      await page.getByRole("button", { name: "予約をキャンセルする" }).nth(target.index).click();
 
-    // キャンセル確認ダイアログ or 再読み込み後の確認
-    // 「はい」「OK」「キャンセルを確定」系のボタンがあればクリック
-    const confirmBtn = page.getByRole("button", { name: /はい|OK|キャンセルを確定|確定/ });
-    if (await confirmBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
+      // 確認ポップアップ（「本当にキャンセルしますか」系）の「キャンセルする」を押す
+      const confirmBtn = page.locator('[class*="Popup"] button', { hasText: "キャンセルする" }).first();
+      await expect(confirmBtn, "キャンセル確認ポップアップが表示されません").toBeVisible({ timeout: 10000 });
       await confirmBtn.click();
-      await page.waitForTimeout(3000);
-      console.log("✅ キャンセル確定クリック");
+      await page.waitForTimeout(4000);
+      cancelled++;
+
+      await page.waitForLoadState("networkidle", { timeout: 10000 }).catch(() => {});
+      await page.waitForTimeout(1500);
+      target = await findTargetIndex();
     }
 
-    // キャンセル後は件数が減っているか、メッセージが出るはず
-    await page.waitForLoadState("networkidle", { timeout: 10000 }).catch(() => {});
-    await page.waitForTimeout(1500);
-    const newCount = await page.getByRole("button", { name: "予約をキャンセルする" }).count();
-    console.log(`✅ キャンセル後の予約件数: ${newCount} (元: ${count})`);
+    // 【厳格な後始末確認】テストが作成した貸出日の予約カードが一覧から消えていること
+    expect(target, `キャンセル後も貸出日 ${startJp} の予約が一覧に残っています（後始末未完了）`).toBeNull();
+    console.log(`✅ 予約キャンセル完了（${cancelled}件）。貸出日 ${startJp} の予約は一覧に残っていません（後始末OK）`);
   });
 
   // ----------------------------------------------------------------
@@ -385,10 +584,12 @@ test.describe("RINCLE E2E", () => {
   test("ログアウト", async ({ page }) => {
     await login(page);
 
+    // 新アプリではトップヘッダーの「ログアウト」をクリック → /signin に遷移
+    await page.goto(BASE_URL, { waitUntil: "networkidle" });
     await page.getByText("ログアウト").first().click();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
 
-    // ログアウト後はログインボタンが表示される
+    // ログアウト後は /signin へ遷移し、ログイン用の「ログイン」ボタンが表示される
     await expect(page.getByRole("button", { name: "ログイン" }).first()).toBeVisible({ timeout: 10000 });
     console.log("✅ ログアウト完了");
   });
@@ -432,21 +633,24 @@ test.describe("RINCLE E2E", () => {
       return;
     }
 
-    // news_detail ページに遷移したことを確認
+    // 【新アプリでの構造変化・実地プローブで確認済み】新着情報の記事クリックは
+    // 独立ページ /index/news_detail ではなく、/index/news_list?news=<id> に遷移する
+    // （news_list ページが news パラメータの有無で一覧/詳細を出し分ける構造に変更されている）。
+    // また「一覧へ戻る」ボタンの文言も新アプリでは単に「戻る」になっている。
     await page.waitForTimeout(3000);
-    await page.waitForURL(/\/index\/news_detail/, { timeout: 15000 });
-    await expect(page).toHaveURL(/\/index\/news_detail/);
+    await page.waitForURL(/\/index\/news_list\?news=/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/index\/news_list\?news=/);
 
-    // 「一覧へ戻る」ボタンが表示されること
+    // 「戻る」ボタンが表示されること
     const backBtn = page.evaluate(() => {
       const el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
         const r = el.getBoundingClientRect();
-        return r.width > 0 && r.height > 0 && el.textContent?.trim() === "一覧へ戻る";
+        return r.width > 0 && r.height > 0 && el.textContent?.trim() === "戻る";
       });
       return !!el;
     });
     expect(await backBtn).toBe(true);
-    console.log("✅ 新着情報詳細ページ確認完了:", page.url().split("version-5398j")[1]);
+    console.log("✅ 新着情報詳細ページ確認完了:", page.url().split("version-13fge")[1]);
   });
 
   // ----------------------------------------------------------------
@@ -477,48 +681,64 @@ test.describe("RINCLE E2E", () => {
       }
     });
 
-    // topics_detail ページに遷移したことを確認
+    // topics_detail ページに遷移したことを確認（新アプリでも /index/topics_detail?banner=<id> のまま）
     await page.waitForURL(/\/index\/topics_detail/, { timeout: 10000 });
     await expect(page).toHaveURL(/\/index\/topics_detail/);
 
+    // 【新アプリでの文言変化・実地プローブで確認済み】戻るボタンの文言は
+    // 「一覧へ戻る」ではなく「戻る」になっている
     const backBtn = page.evaluate(() => {
       const el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
         const r = el.getBoundingClientRect();
-        return r.width > 0 && r.height > 0 && el.textContent?.trim() === "一覧へ戻る";
+        return r.width > 0 && r.height > 0 && el.textContent?.trim() === "戻る";
       });
       return !!el;
     });
     expect(await backBtn).toBe(true);
-    console.log("✅ TOPICS詳細ページ確認完了:", page.url().split("version-5398j")[1]);
+    console.log("✅ TOPICS詳細ページ確認完了:", page.url().split("version-13fge")[1]);
   });
 
   // ----------------------------------------------------------------
   // 13. よくある質問（FAQ）
   // ----------------------------------------------------------------
+  // 【新アプリでの構造変化・実地プローブで確認済み】旧 /index/faq は option set
+  // (index_page) に対応する値自体が存在せず、実際に遷移してもヘッダー/フッターのみで本文なし。
+  // 実際のFAQ本文（保険・補償/装備・付属品/予約・受付/利用・返却のQ&A）はフッターの
+  // 「よくある質問」リンクの遷移先である /index/guide にある（テスト3参照＝内部的な
+  // ページ名は"guide"のままFAQコンテンツに転用されている）。
   test("よくある質問ページ", async ({ page }) => {
     await login(page);
 
-    await page.goto(`${BASE_URL}/index/faq`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/index/guide`, { waitUntil: "networkidle" });
     await page.waitForTimeout(1500);
 
-    await expect(page).toHaveURL(/\/index\/faq/);
+    await expect(page).toHaveURL(/\/index\/guide/);
+    // FAQ本文（guideページ固有の見出し）が表示されていること
+    await expect(page.getByText("保険・補償")).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText("予約・受付")).toBeVisible({ timeout: 5000 });
     // ナビゲーションが表示されていること
     await expect(page.getByText("ログアウト").first()).toBeVisible({ timeout: 5000 });
-    console.log("✅ よくある質問ページ確認完了");
+    console.log("✅ よくある質問ページ確認完了（実体は /index/guide）");
   });
 
   // ----------------------------------------------------------------
   // 14. プライバシーポリシー
   // ----------------------------------------------------------------
+  // 【新アプリでの構造変化・実地プローブで確認済み】旧 /index/privacypolicy は
+  // ヘッダー/フッターのみで本文が空。実際のプライバシーポリシー本文は新設された
+  // /legal?mode=privacypolicy ページにある（フッターの「プライバシーポリシー」リンクの
+  // 遷移先。ただし新しいタブで開く仕様のため、テストでは直接遷移で内容を検証する）。
   test("プライバシーポリシーページ", async ({ page }) => {
     await login(page);
 
-    await page.goto(`${BASE_URL}/index/privacypolicy`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/legal?mode=privacypolicy`, { waitUntil: "networkidle" });
     await page.waitForTimeout(1500);
 
-    await expect(page).toHaveURL(/\/index\/privacypolicy/);
+    await expect(page).toHaveURL(/\/legal\?mode=privacypolicy/);
+    // プライバシーポリシー本文が表示されていること
+    await expect(page.getByText("個人情報の取得方法")).toBeVisible({ timeout: 5000 });
     await expect(page.getByText("ログアウト").first()).toBeVisible({ timeout: 5000 });
-    console.log("✅ プライバシーポリシーページ確認完了");
+    console.log("✅ プライバシーポリシーページ確認完了（実体は /legal?mode=privacypolicy）");
   });
 
   // ----------------------------------------------------------------
@@ -532,8 +752,10 @@ test.describe("RINCLE E2E", () => {
 
     await expect(page).toHaveURL(/\/index\/contact/);
 
-    // 「RINCLEへの問い合わせ」テキストと「送信」ボタンが表示されること
-    await expect(page.getByText("RINCLEへの問い合わせ")).toBeVisible({ timeout: 5000 });
+    // 「RINCLEへのお問い合わせ」テキストと「送信」ボタンが表示されること
+    // 【新アプリでの文言変化・実地プローブで確認済み】見出しは「RINCLEへの問い合わせ」ではなく
+    // 「RINCLEへのお問い合わせ」（「お」が追加）になっている
+    await expect(page.getByText("RINCLEへのお問い合わせ")).toBeVisible({ timeout: 5000 });
     const sendBtn = page.evaluate(() => {
       const el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
         const r = el.getBoundingClientRect();
@@ -548,13 +770,24 @@ test.describe("RINCLE E2E", () => {
   // ----------------------------------------------------------------
   // 16. アカウント情報編集
   // ----------------------------------------------------------------
+  // 【新アプリでの構造変化・実地プローブで確認済み】旧 /index/edit はヘッダー/フッターのみで
+  // 本文が空（独立ページとしては機能していない）。新アプリではマイページ(/mypage → 内部的に
+  // /mypage/userinfo にリダイレクト)の「アカウント編集」ボタンを押すと、同一URL(/mypage/userinfo)
+  // 上でコンテンツが編集フォーム（お客様情報編集）に差し替わる構造になっている。
   test("アカウント情報編集ページ", async ({ page }) => {
     await login(page);
 
-    await page.goto(`${BASE_URL}/index/edit`, { waitUntil: "networkidle" });
-    await page.waitForTimeout(1500);
+    await page.goto(`${BASE_URL}/mypage`, { waitUntil: "networkidle" });
+    await page.waitForTimeout(2000);
+    await expect(page).toHaveURL(/\/mypage/);
 
-    await expect(page).toHaveURL(/\/index\/edit/);
+    const editBtn = page.getByRole("button", { name: "アカウント編集" });
+    await expect(editBtn).toBeVisible({ timeout: 10000 });
+    await editBtn.click();
+    await page.waitForTimeout(2000);
+
+    // 編集フォーム（「お客様情報編集」見出し）に切り替わっていること
+    await expect(page.getByText("お客様情報編集")).toBeVisible({ timeout: 8000 });
 
     // 「変更を完了する」ボタンが表示されること
     const saveBtn = page.evaluate(() => {
@@ -565,7 +798,7 @@ test.describe("RINCLE E2E", () => {
       return !!el;
     });
     expect(await saveBtn).toBe(true);
-    console.log("✅ アカウント情報編集ページ確認完了");
+    console.log("✅ アカウント情報編集ページ確認完了（実体は /mypage/userinfo 上のフォーム切替）");
   });
 
   // ----------------------------------------------------------------
@@ -583,28 +816,46 @@ test.describe("RINCLE E2E", () => {
     await page.locator('input[type="checkbox"]').nth(1).check();
 
     // 自転車種類フィルタ: ロードバイクのみ選択
-    await page.evaluate(() => {
-      const el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
-        const r = el.getBoundingClientRect();
-        return r.width > 0 && r.height > 0 && el.textContent?.trim() === "ロードバイク";
-      });
-      if (el) (el as HTMLElement).click();
-    });
-    await page.waitForTimeout(500);
+    // 【重要・実地プローブで確認したアプリの挙動】自転車のタイプのタグは初期状態で
+    // 全種類（ロードバイク/クロスバイク/マウンテンバイク/ミニベロ・折りたたみ/キッズ）が
+    // 選択済み（背景が濃色）になっており、タグをクリックすると「選択される」のではなく
+    // 「選択解除される」トグル式。旧テストはロードバイクをクリックしていたが、これは
+    // ロードバイクを除外し他の4種類だけで検索してしまうバグだった（実際に確認: URLの
+    // type パラメータが "クロスバイク,マウンテンバイク,..." になりロードバイクが除外されていた）。
+    // ロードバイクのみで絞り込むには、ロードバイク以外の4種類を選択解除する必要がある。
+    for (const otherType of ["クロスバイク", "マウンテンバイク", "ミニベロ/折りたたみ", "キッズ"]) {
+      const deselected = await clickClickableElementByText(page, otherType);
+      expect(deselected).toBe(true);
+      await page.waitForTimeout(300);
+    }
 
     // 検索実行
     await page.getByRole("button", { name: "検索する" }).click();
     await page.waitForLoadState("networkidle");
+    // 【タイミング注意・実地プローブで確認済み】networkidle 到達後も /search への
+    // クライアントサイド遷移が少し遅れて発生することがあるため、URL遷移を明示的に待つ
+    await page.waitForURL(/\/search/, { timeout: 10000 }).catch(() => {});
 
-    // 検索結果が表示されること（貸出可能ボタン or 結果表示）
-    await page.waitForTimeout(1000);
-    const hasResults = await page.evaluate(() => {
-      const els = Array.from(document.querySelectorAll(".clickable-element")).filter(el => {
-        const r = el.getBoundingClientRect();
-        return r.width > 0 && r.height > 0;
+    // 検索条件にロードバイクのみが反映されていること（URLの type パラメータで確認）
+    const url = decodeURIComponent(page.url());
+    expect(url).toContain("type=ロードバイク");
+    expect(url).not.toMatch(/type=[^&]*(クロスバイク|マウンテンバイク|ミニベロ|キッズ)/);
+
+    // 検索条件表示にも「ロードバイク」のみが表示されていること
+    await expect(page.getByText("自転車のタイプ")).toBeVisible({ timeout: 8000 });
+
+    // 検索結果（貸出可能な自転車をすべて見る／詳細を見る）が表示されること。
+    // 「検索中...」の非同期ロードが終わるまで待つ必要があるためポーリングする
+    await expect(async () => {
+      const hasResults = await page.evaluate(() => {
+        const els = Array.from(document.querySelectorAll(".clickable-element")).filter(el => {
+          const r = el.getBoundingClientRect();
+          return r.width > 0 && r.height > 0;
+        });
+        return els.some(el => el.textContent?.includes("貸出可能") || el.textContent?.includes("詳細"));
       });
-      return els.some(el => el.textContent?.includes("貸出可能") || el.textContent?.includes("詳細"));
-    });
-    console.log(`✅ ロードバイクフィルタ検索完了 (結果あり: ${hasResults})`);
+      expect(hasResults).toBe(true);
+    }).toPass({ timeout: 15000 });
+    console.log(`✅ ロードバイクフィルタ検索完了 (url: ${url})`);
   });
 });
