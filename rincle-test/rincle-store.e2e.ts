@@ -2,347 +2,235 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const BASE_URL = "https://rincle.co.jp/version-5398j/shop_admin_login";
+// ============================================================================
+// 店舗管理E2E（新アプリ・version-43erq 対応版 2026-07-13）
+// 旧アプリ版（version-5398j/shop_admin_login）から全面書き換え。
+//
+// 新アプリの店舗管理の構造（実地調査 2026-07-13）:
+//   - ログイン: /admin_signin?role=shop&mode=sign_in → 成功で /admin/reservation?role=shop
+//   - サイドナビ: 予約一覧 / 売上レポート / 顧客一覧 / 自転車一覧 / オプション管理 /
+//                 営業時間設定 / 営業カレンダー / 店舗情報 / お問い合わせ一覧 / 設定
+//   - 各セクションURL: /admin/{reservation|bicycle|option|business_hour|calendar|shop_info}?role=shop
+//   - 自転車一覧の各行: 「ユーザー表示/非表示」ドロップダウン（bicycle.rental_status に
+//     auto-binding・即時保存）+「在庫設定」ボタン
+//
+// テストアカウントの店舗: SEINO自転車（栃木県足利市・.env の STORE_EMAIL）
+// 共有開発環境のため、データを変更するテストは必ず finally で復元する。
+// ============================================================================
+
+const BASE_URL = "https://rincle.co.jp/version-43erq";
 const STORE_EMAIL    = process.env.STORE_EMAIL!;
 const STORE_PASSWORD = process.env.STORE_PASSWORD!;
+// 統合テスト（非表示⇄ユーザー検索）用: 店舗所在地の都道府県コード（栃木=9）
+const SHOP_PREF_CODE = process.env.STORE_PREF_CODE || "9";
 
-// Bubble要素をテキストで検索してクリック
-async function clickBubbleElement(page: Page, text: string): Promise<boolean> {
-  return page.evaluate((searchText) => {
-    const el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
-      const r = el.getBoundingClientRect();
-      return r.width > 0 && r.height > 0 && el.textContent?.trim().includes(searchText);
-    }) as HTMLElement | null;
-    if (!el) return false;
-    const events = (window as any).jQuery?._data?.(el, "events");
-    const handler = events?.click?.[0]?.handler;
-    if (handler) {
-      const e = (window as any).jQuery.Event("click");
-      e.target = el;
-      e.currentTarget = el;
-      handler.call(el, e);
-      return true;
-    }
-    el.click();
-    return true;
-  }, text);
-}
-
-// サイドバーメニューをクリック
-async function clickSidebarMenu(page: Page, text: string): Promise<void> {
-  const clicked = await page.evaluate((searchText) => {
-    let el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
-      const r = el.getBoundingClientRect();
-      return r.width > 0 && r.height > 0 && el.textContent?.trim() === searchText;
-    }) as HTMLElement | null;
-    if (!el) {
-      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-      let node;
-      while ((node = walker.nextNode())) {
-        if (node.textContent?.trim() === searchText) {
-          el = node.parentElement?.closest(".clickable-element") as HTMLElement | null;
-          if (!el) el = node.parentElement as HTMLElement | null;
-          break;
-        }
-      }
-    }
-    if (!el) return false;
-    const events = (window as any).jQuery?._data?.(el, "events");
-    const handler = events?.click?.[0]?.handler;
-    if (handler) {
-      const e = (window as any).jQuery.Event("click");
-      e.target = el; e.currentTarget = el;
-      handler.call(el, e);
-      return true;
-    }
-    el.click();
-    return true;
-  }, text);
-
-  if (!clicked) {
-    await page.getByText(text, { exact: true }).first().click();
-  }
-  await page.waitForLoadState("networkidle", { timeout: 15000 });
-  await page.waitForTimeout(2000);
-}
-
-async function storeLogin(page: Page) {
-  await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+async function freshenIfStale(page: Page): Promise<boolean> {
+  const stale = await page.getByText("アプリが更新されました").first().isVisible().catch(() => false);
+  if (!stale) return false;
+  console.log("⚠️ アプリ更新バナーを検出 → リロード");
+  await page.reload({ waitUntil: "domcontentloaded", timeout: 40000 }).catch(() => {});
   await page.waitForTimeout(3000);
-
-  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 8000 });
-  await page.locator('input[type="email"]').fill(STORE_EMAIL);
-  await page.locator('input[type="password"]').fill(STORE_PASSWORD);
-  await page.getByRole("button", { name: "ログイン" }).click();
-
-  await page.waitForLoadState("networkidle", { timeout: 20000 });
-  await page.waitForTimeout(2000);
-
-  // サイドバーが表示されるまで待機
-  await Promise.race([
-    page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 20000 }),
-    page.getByText("予約一覧").first().waitFor({ state: "visible", timeout: 20000 }),
-    page.getByText("加盟店一覧").first().waitFor({ state: "visible", timeout: 20000 }),
-    page.getByText("売上レポート").first().waitFor({ state: "visible", timeout: 20000 }),
-  ]).catch(() => {});
-  await page.waitForTimeout(1000);
+  return true;
 }
 
-// -------------------------------------------------------------------
+// 店舗ログイン。成功判定はサイドナビ「自転車一覧」の表示。
+async function storeLogin(page: Page) {
+  // 一時的なネットワーク断（ERR_NETWORK_CHANGED等）にも耐えるよう試行全体をtryで包む
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      await page.goto(`${BASE_URL}/admin_signin?role=shop&mode=sign_in`, { waitUntil: "domcontentloaded" });
+      await freshenIfStale(page);
+      await page.locator('input[type="email"]').first().waitFor({ state: "visible", timeout: 20000 });
+      await page.locator('input[type="email"]').first().fill(STORE_EMAIL);
+      await page.locator('input[type="password"]').first().fill(STORE_PASSWORD);
+      await page.getByRole("button", { name: /ログイン/ }).first().click();
+      await page.waitForURL(/\/admin\//, { timeout: 15000 });
+      await page.getByText("自転車一覧").first().waitFor({ state: "visible", timeout: 15000 });
+      return;
+    } catch (e) {
+      console.log(`⚠️ ログイン試行${attempt + 1}回目失敗: ${String(e).split("\n")[0]}`);
+      await page.waitForTimeout(3000);
+    }
+  }
+  throw new Error("店舗ログインに失敗しました（/admin_signin?role=shop 経由・3回試行）");
+}
 
-test.describe("RINCLE 店舗管理 E2E", () => {
-  test.describe.configure({ mode: "serial" });
+async function gotoSection(page: Page, path: string) {
+  await page.goto(`${BASE_URL}/admin/${path}?role=shop`, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(5000);
+  await freshenIfStale(page);
+}
 
-  // ----------------------------------------------------------------
-  // 1. 店舗管理者ログイン
-  // ----------------------------------------------------------------
-  test("店舗管理者ログイン", async ({ page }) => {
-    await page.goto(BASE_URL, { waitUntil: "networkidle" });
-    await page.waitForTimeout(1500);
+// 自転車一覧の先頭行を読む（select=ユーザー表示/非表示 の祖先を「在庫設定」を含むまで遡る）
+async function firstBikeRow(page: Page): Promise<{ name: string; status: string }> {
+  return page.evaluate(() => {
+    const sel = document.querySelector("select") as HTMLSelectElement | null;
+    if (!sel) return { name: "", status: "" };
+    // selectの直近親はセル（ユーザー表示/非表示+在庫設定のみ）なので、
+    // 行全体（No/種別/ブランド名/名称/…を含む8行以上のブロック）まで遡る
+    let node: HTMLElement | null = sel;
+    let lines: string[] = [];
+    for (let i = 0; i < 10 && node; i++) {
+      node = node.parentElement;
+      if (!node) break;
+      lines = (node.innerText || "").split("\n").map(s => s.trim()).filter(Boolean);
+      if (lines.length >= 8 && (node.innerText || "").includes("在庫設定")
+          && !(node.innerText || "").includes("バイクの名称")) break; // ヘッダ行まで上がりすぎない
+    }
+    // 行の構造: [No, 種別, ブランド名, 名称, サイズ, カラー, シリアル, （select群）, 在庫設定]
+    return { name: lines[3] || "", status: (sel.selectedOptions[0]?.textContent || "").trim() };
+  });
+}
 
-    // 「加盟店様用 管理画面ログイン」テキストが表示されること
-    const hasLoginText = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("加盟店") && text.includes("ログイン");
-    });
-    expect(hasLoginText).toBe(true);
+// ユーザー側の検索一覧で自転車名が見えるかを判定
+async function bikeVisibleInUserSearch(page: Page, bikeName: string): Promise<boolean> {
+  await page.goto(`${BASE_URL}/search?pref=${SHOP_PREF_CODE}&start=&end=&type=&e-bike=&free=&shop=`,
+    { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(8000);
+  let text = await page.evaluate(() => document.body.innerText);
+  if (!text.includes(bikeName)) {
+    // 店舗カードが折りたたまれている場合は「すべて見る」を展開して再判定
+    const buttons = page.getByRole("button", { name: "貸出可能な自転車をすべて見る" });
+    const n = await buttons.count();
+    for (let i = 0; i < n; i++) {
+      await buttons.nth(0).click().catch(() => {});
+      await page.waitForTimeout(3000);
+    }
+    text = await page.evaluate(() => document.body.innerText);
+  }
+  return text.includes(bikeName);
+}
 
-    // メール・パスワード入力
-    await page.locator('input[type="email"]').fill(STORE_EMAIL);
-    await page.locator('input[type="password"]').fill(STORE_PASSWORD);
-    await page.getByRole("button", { name: "ログイン" }).click();
+test.describe("RINCLE 店舗管理E2E", () => {
 
-    await page.waitForLoadState("networkidle", { timeout: 20000 });
-    await page.waitForTimeout(2000);
-
-    // サイドバーメニューが表示されること
-    await expect(page.getByText("予約・売上管理").first()).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText("顧客管理").first()).toBeVisible({ timeout: 5000 });
-    await expect(page.getByText("在庫管理").first()).toBeVisible({ timeout: 5000 });
-    await expect(page.getByText("アカウント情報").first()).toBeVisible({ timeout: 5000 });
-    console.log("✅ 店舗管理者ログイン完了:", page.url());
+  test("店舗ログイン", async ({ page }) => {
+    await storeLogin(page);
+    for (const nav of ["予約一覧", "自転車一覧", "オプション管理", "営業時間設定", "営業カレンダー", "店舗情報"]) {
+      await expect(page.getByText(nav, { exact: true }).first(), `サイドナビ「${nav}」がありません`).toBeVisible();
+    }
+    console.log("✅ 店舗ログイン完了（サイドナビ6項目確認）");
   });
 
-  // ----------------------------------------------------------------
-  // 2. 予約一覧（デフォルトページ）
-  // ----------------------------------------------------------------
   test("予約一覧", async ({ page }) => {
     await storeLogin(page);
-
-    // ログイン直後のデフォルトページが予約一覧であること
-    await expect(page.getByText("予約一覧（").first()).toBeVisible({ timeout: 8000 });
-
-    // CSVダウンロードボタンが表示されること
-    await expect(page.getByRole("button", { name: "CSVダウンロード" })).toBeVisible({ timeout: 5000 });
-
-    console.log("✅ 予約一覧（デフォルトページ）確認完了");
+    await gotoSection(page, "reservation");
+    await expect(page.getByText(/予約一覧（\d+）/).first()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("CSVダウンロード").first()).toBeVisible();
+    await expect(page.getByText("過去の予約").first()).toBeVisible();
+    console.log("✅ 店舗の予約一覧表示確認完了");
   });
 
-  // ----------------------------------------------------------------
-  // 3. 過去の予約
-  // ----------------------------------------------------------------
-  test("過去の予約", async ({ page }) => {
-    await storeLogin(page);
-
-    await clickSidebarMenu(page, "過去の予約");
-
-    const hasContent = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("過去") || text.includes("予約");
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 過去の予約確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 4. 売上レポート
-  // ----------------------------------------------------------------
-  test("売上レポート", async ({ page }) => {
-    await storeLogin(page);
-
-    await clickSidebarMenu(page, "売上レポート");
-
-    const hasContent = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("売上") || text.includes("レポート");
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 売上レポート確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 5. 顧客一覧
-  // ----------------------------------------------------------------
-  test("顧客一覧", async ({ page }) => {
-    await storeLogin(page);
-
-    await clickSidebarMenu(page, "顧客一覧");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("顧客一覧") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 顧客一覧確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 6. 自転車一覧
-  // ----------------------------------------------------------------
   test("自転車一覧", async ({ page }) => {
     await storeLogin(page);
-
-    await clickSidebarMenu(page, "自転車一覧");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("自転車") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 自転車一覧確認完了");
+    await gotoSection(page, "bicycle");
+    for (const h of ["種別", "ブランド名", "バイクの名称", "ステータス"]) {
+      await expect(page.getByText(h, { exact: true }).first(), `一覧ヘッダ「${h}」がありません`).toBeVisible({ timeout: 15000 });
+    }
+    const row = await firstBikeRow(page);
+    expect(row.name, "自転車一覧に1台も表示されていません（テスト店舗には最低1台必要）").toBeTruthy();
+    expect(["ユーザー表示", "ユーザー非表示"], "ステータスの現在値が不正").toContain(row.status);
+    await expect(page.getByRole("button", { name: "在庫設定" }).first()).toBeVisible();
+    console.log(`✅ 自転車一覧確認完了（1台目: ${row.name} / ${row.status}）`);
   });
 
-  // ----------------------------------------------------------------
-  // 7. オプション管理
-  // ----------------------------------------------------------------
+  // --------------------------------------------------------------------------
+  // 【統合・回帰②】非表示切替がユーザー検索に反映されるか
+  // 増永さん報告（7/13）: 非表示にしても表示される。
+  // 原因特定済み: search/shop_detailページの自転車Searchに rental_status 制約がない
+  //  （E2E_STATUS_20260713.md「増永さん報告バグの切り分け」参照）。
+  // 修正されるまでこのテストは fail する（正検出）。データは finally で必ず復元。
+  // --------------------------------------------------------------------------
+  test("非表示切替のユーザー反映（統合・回帰）", async ({ page }) => {
+    test.setTimeout(180000);
+    await storeLogin(page);
+    await gotoSection(page, "bicycle");
+    const row = await firstBikeRow(page);
+    expect(row.name, "対象自転車が見つかりません").toBeTruthy();
+    expect(row.status, "前提: テスト開始時はユーザー表示であること").toBe("ユーザー表示");
+
+    // 事前確認: 表示状態ではユーザー検索に出ている
+    const visibleBefore = await bikeVisibleInUserSearch(page, row.name);
+    expect(visibleBefore, `前提: ユーザー表示状態の「${row.name}」が検索に出ていません`).toBe(true);
+
+    try {
+      // 非表示へ切替（auto-binding・即時保存）→ リロードで保存を確認
+      await gotoSection(page, "bicycle");
+      await page.locator("select").first().selectOption({ label: "ユーザー非表示" });
+      await page.waitForTimeout(3000);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await page.waitForTimeout(5000);
+      const after = await firstBikeRow(page);
+      expect(after.status, "非表示への切替が保存されていません（店舗管理側の問題）").toBe("ユーザー非表示");
+      console.log("✅ 店舗管理側: ユーザー非表示への切替・保存を確認");
+
+      // ユーザー側検索から消えること（現状バグ②で fail する想定＝正検出）
+      const visibleAfter = await bikeVisibleInUserSearch(page, row.name);
+      expect(visibleAfter,
+        `「${row.name}」を非表示にしたのにユーザー検索に表示されています（バグ②: searchページのSearchにrental_status制約がない）`
+      ).toBe(false);
+      console.log("✅ ユーザー検索から非表示を確認（バグ②修正済み）");
+    } finally {
+      // 必ずユーザー表示へ復元
+      await gotoSection(page, "bicycle");
+      await page.locator("select").first().selectOption({ label: "ユーザー表示" }).catch(() => {});
+      await page.waitForTimeout(3000);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await page.waitForTimeout(5000);
+      const restored = await firstBikeRow(page);
+      console.log(restored.status === "ユーザー表示"
+        ? "🧹 復元OK: ユーザー表示に戻しました"
+        : `⚠️ 復元失敗: 現在値=${restored.status}。手動で戻してください`);
+    }
+  });
+
   test("オプション管理", async ({ page }) => {
     await storeLogin(page);
-
-    await clickSidebarMenu(page, "オプション管理");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("オプション") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ オプション管理確認完了");
+    await gotoSection(page, "option");
+    await expect(page.getByText("オプション設定").first()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("新規登録").first()).toBeVisible();
+    await expect(page.getByText("在庫管理").first()).toBeVisible();
+    console.log("✅ オプション管理表示確認完了");
   });
 
-  // ----------------------------------------------------------------
-  // 8. 営業時間設定
-  // ----------------------------------------------------------------
   test("営業時間設定", async ({ page }) => {
     await storeLogin(page);
-
-    await clickSidebarMenu(page, "営業時間設定");
-
-    const hasContent = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("営業時間") || text.includes("曜日") || text.includes("時");
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 営業時間設定確認完了");
+    await gotoSection(page, "business_hour");
+    await expect(page.getByText("営業時間設定").first()).toBeVisible({ timeout: 15000 });
+    for (const d of ["月曜", "火曜", "水曜", "木曜", "金曜", "土曜", "日曜"]) {
+      await expect(page.getByText(d, { exact: true }).first(), `曜日「${d}」の行がありません`).toBeVisible();
+    }
+    console.log("✅ 営業時間設定（曜日別）表示確認完了");
   });
 
-  // ----------------------------------------------------------------
-  // 9. 営業カレンダー
-  // ----------------------------------------------------------------
   test("営業カレンダー", async ({ page }) => {
     await storeLogin(page);
-
-    await clickSidebarMenu(page, "営業カレンダー");
-
-    const hasContent = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("カレンダー") || text.includes("営業");
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 営業カレンダー確認完了");
+    await gotoSection(page, "calendar");
+    await expect(page.getByText("営業カレンダー").first()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(/\d{4}年\d{1,2}月/).first(), "カレンダーの年月表示がありません").toBeVisible();
+    // 日別セルに「休業」または時間帯（HH:MM 〜 HH:MM）が出ていること
+    const text = await page.evaluate(() => document.body.innerText);
+    expect(/休業|\d{2}:\d{2}\s*〜\s*\d{2}:\d{2}/.test(text), "日別の営業時間/休業表示がありません").toBe(true);
+    console.log("✅ 営業カレンダー（日別）表示確認完了");
   });
 
-  // ----------------------------------------------------------------
-  // 10. 店舗情報
-  // ----------------------------------------------------------------
   test("店舗情報", async ({ page }) => {
     await storeLogin(page);
-
-    await clickSidebarMenu(page, "店舗情報");
-
-    const hasContent = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("店舗") || text.includes("住所");
+    await gotoSection(page, "shop_info");
+    await expect(page.getByText("施設情報").first()).toBeVisible({ timeout: 15000 });
+    const shopName = await page.evaluate(() => {
+      const inputs = Array.from(document.querySelectorAll("input"));
+      return inputs.map(i => i.value).find(v => v && v.length > 1 && v.length < 40) || "";
     });
-    expect(hasContent).toBe(true);
-    console.log("✅ 店舗情報確認完了");
+    expect(shopName, "店舗情報のフォームに値が入っていません").toBeTruthy();
+    console.log(`✅ 店舗情報表示確認完了（先頭入力値: ${shopName}）`);
   });
 
-  // ----------------------------------------------------------------
-  // 11. お問い合わせ一覧
-  // ----------------------------------------------------------------
-  test("お問い合わせ一覧", async ({ page }) => {
+  test("店舗ログアウト", async ({ page }) => {
     await storeLogin(page);
-
-    await clickSidebarMenu(page, "お問い合わせ一覧");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("お問い合わせ") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ お問い合わせ一覧確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 12. メールアドレスの変更
-  // ----------------------------------------------------------------
-  test("メールアドレスの変更", async ({ page }) => {
-    await storeLogin(page);
-
-    await clickSidebarMenu(page, "メールアドレスの変更");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("メールアドレス") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ メールアドレスの変更ページ確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 13. パスワードの変更
-  // ----------------------------------------------------------------
-  test("パスワードの変更", async ({ page }) => {
-    await storeLogin(page);
-
-    await clickSidebarMenu(page, "パスワードの変更");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("パスワード") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ パスワードの変更ページ確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 14. パスワードリセットフォーム表示（ログイン画面）
-  // ----------------------------------------------------------------
-  test("パスワードリセットフォーム表示", async ({ page }) => {
-    await page.goto(BASE_URL, { waitUntil: "networkidle" });
-    await page.waitForTimeout(1500);
-
-    const clicked = await clickBubbleElement(page, "パスワードを忘れた方はこちら");
-    if (!clicked) {
-      await page.getByText("パスワードを忘れた方はこちら").first().click();
-    }
-    await page.waitForTimeout(1500);
-
-    const hasResetForm = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("パスワードを再設定") || text.includes("再設定メール");
-    });
-    expect(hasResetForm).toBe(true);
-    console.log("✅ パスワードリセットフォーム表示確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 15. 店舗管理者ログアウト
-  // ----------------------------------------------------------------
-  test("店舗管理者ログアウト", async ({ page }) => {
-    await storeLogin(page);
-
-    await clickSidebarMenu(page, "ログアウト");
-    await page.waitForTimeout(3000);
-
-    const hasLoginForm = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("ログイン") || text.includes("加盟店");
-    });
-    expect(hasLoginForm).toBe(true);
-    console.log("✅ 店舗管理者ログアウト完了");
+    await page.getByText("ログアウト", { exact: true }).first().click();
+    await page.waitForTimeout(5000);
+    const stillIn = await page.getByText("自転車一覧", { exact: true }).first().isVisible().catch(() => false);
+    expect(stillIn, "ログアウト後も管理画面が表示されています").toBe(false);
+    console.log("✅ 店舗ログアウト完了");
   });
 });

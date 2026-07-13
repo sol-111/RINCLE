@@ -2,395 +2,136 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const BASE_URL = "https://rincle.co.jp/version-5398j/admin_login";
-const ADMIN_URL = "https://rincle.co.jp/version-5398j/admin";
+// ============================================================================
+// システム管理者E2E（新アプリ・version-43erq 対応版 2026-07-13）
+// 旧アプリ版（version-5398j/admin_login）から全面書き換え。
+//
+// 新アプリの管理者画面の構造（実地調査 2026-07-13）:
+//   - ログイン: /admin_signin?role=admin&mode=sign_in → 成功で /admin/customer?role=admin
+//   - サイドナビ: 顧客一覧 / 加盟店一覧 / 料金表管理 / 予約一覧 / 売上レポート /
+//                 FV管理 / ニュース(新着情報)管理 / お知らせ管理 / Q&A管理 /
+//                 お問い合わせ一覧 / 設定
+//   - セクションURL: /admin/{customer|...}?role=admin（ナビクリックで遷移）
+//
+// 読み取り専用（表示確認のみ）。データは一切変更しない。
+// ============================================================================
+
+const BASE_URL = "https://rincle.co.jp/version-43erq";
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 
-// Bubble要素をテキストで検索してクリック
-async function clickBubbleElement(page: Page, text: string): Promise<boolean> {
-  return page.evaluate((searchText) => {
-    const el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
-      const r = el.getBoundingClientRect();
-      return r.width > 0 && r.height > 0 && el.textContent?.trim().includes(searchText);
-    }) as HTMLElement | null;
-    if (!el) return false;
-    const events = (window as any).jQuery?._data?.(el, "events");
-    const handler = events?.click?.[0]?.handler;
-    if (handler) {
-      const e = (window as any).jQuery.Event("click");
-      e.target = el;
-      e.currentTarget = el;
-      handler.call(el, e);
-      return true;
-    }
-    el.click();
-    return true;
-  }, text);
-}
-
-// サイドバーメニューをクリック（テキスト完全一致）
-async function clickSidebarMenu(page: Page, text: string): Promise<void> {
-  // cursor=pointer の要素からテキスト一致でクリック
-  const clicked = await page.evaluate((searchText) => {
-    const els = Array.from(document.querySelectorAll("[style*='cursor'][class*='clickable'], .clickable-element, [style*='cursor: pointer'], [style*='cursor:pointer']"));
-    // まずclickable-elementから探す
-    let el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
-      const r = el.getBoundingClientRect();
-      return r.width > 0 && r.height > 0 && el.textContent?.trim() === searchText;
-    }) as HTMLElement | null;
-    if (!el) {
-      // テキストノードで探す
-      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-      let node;
-      while ((node = walker.nextNode())) {
-        if (node.textContent?.trim() === searchText) {
-          el = node.parentElement?.closest(".clickable-element") as HTMLElement | null;
-          if (!el) el = node.parentElement as HTMLElement | null;
-          break;
-        }
-      }
-    }
-    if (!el) return false;
-    const events = (window as any).jQuery?._data?.(el, "events");
-    const handler = events?.click?.[0]?.handler;
-    if (handler) {
-      const e = (window as any).jQuery.Event("click");
-      e.target = el; e.currentTarget = el;
-      handler.call(el, e);
-      return true;
-    }
-    el.click();
-    return true;
-  }, text);
-
-  if (!clicked) {
-    // Playwright getByText フォールバック
-    await page.getByText(text, { exact: true }).first().click();
+async function freshenIfStale(page: Page) {
+  const stale = await page.getByText("アプリが更新されました").first().isVisible().catch(() => false);
+  if (stale) {
+    console.log("⚠️ アプリ更新バナーを検出 → リロード");
+    await page.reload({ waitUntil: "domcontentloaded", timeout: 40000 }).catch(() => {});
+    await page.waitForTimeout(3000);
   }
-  await page.waitForLoadState("networkidle", { timeout: 15000 });
-  await page.waitForTimeout(2000);
 }
 
+// 管理者ログイン。成功判定はサイドナビ「加盟店一覧」の表示。
 async function adminLogin(page: Page) {
-  await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
-  await page.waitForTimeout(3000);
-
-  // 管理画面ログインフォーム
-  await page.locator('input[type="email"]').waitFor({ state: "visible", timeout: 8000 });
-  await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
-  await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
-  await page.getByRole("button", { name: "ログイン" }).click();
-
-  // ログイン後、管理画面のサイドバーが表示されるまで待機
-  await page.waitForLoadState("networkidle", { timeout: 20000 });
-  await page.waitForTimeout(2000);
-
-  // サイドバーの「顧客管理」見出しが表示されることで確認
-  await Promise.race([
-    page.getByText("顧客管理").first().waitFor({ state: "visible", timeout: 20000 }),
-    page.getByText("予約一覧").first().waitFor({ state: "visible", timeout: 20000 }),
-    page.getByText("加盟店一覧").first().waitFor({ state: "visible", timeout: 20000 }),
-    page.getByText("売上レポート").first().waitFor({ state: "visible", timeout: 20000 }),
-  ]).catch(() => {});
-  await page.waitForTimeout(1000);
+  // 一時的なネットワーク断（ERR_NETWORK_CHANGED等）にも耐えるよう試行全体をtryで包む
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      await page.goto(`${BASE_URL}/admin_signin?role=admin&mode=sign_in`, { waitUntil: "domcontentloaded" });
+      await freshenIfStale(page);
+      await page.locator('input[type="email"]').first().waitFor({ state: "visible", timeout: 20000 });
+      await page.locator('input[type="email"]').first().fill(ADMIN_EMAIL);
+      await page.locator('input[type="password"]').first().fill(ADMIN_PASSWORD);
+      await page.getByRole("button", { name: /ログイン/ }).first().click();
+      await page.waitForURL(/\/admin\//, { timeout: 15000 });
+      await page.getByText("加盟店一覧").first().waitFor({ state: "visible", timeout: 15000 });
+      return;
+    } catch (e) {
+      console.log(`⚠️ ログイン試行${attempt + 1}回目失敗: ${String(e).split("\n")[0]}`);
+      await page.waitForTimeout(3000);
+    }
+  }
+  throw new Error("管理者ログインに失敗しました（/admin_signin?role=admin 経由・3回試行）");
 }
 
-// -------------------------------------------------------------------
+// サイドナビのラベルをクリックして該当セクションへ
+async function gotoNav(page: Page, label: string) {
+  await page.getByText(label, { exact: true }).first().click();
+  await page.waitForTimeout(5000);
+  await freshenIfStale(page);
+}
 
-test.describe("RINCLE 管理者 E2E", () => {
-  test.describe.configure({ mode: "serial" });
+test.describe("RINCLE 管理者E2E", () => {
 
-  // ----------------------------------------------------------------
-  // 1. 管理者ログイン
-  // ----------------------------------------------------------------
   test("管理者ログイン", async ({ page }) => {
-    await page.goto(BASE_URL, { waitUntil: "networkidle" });
-    await page.waitForTimeout(1500);
-
-    // 「管理画面ログイン」テキストが表示されること
-    await expect(page.getByText("管理画面ログイン")).toBeVisible({ timeout: 8000 });
-
-    // メール・パスワード入力
-    await page.locator('input[type="email"]').fill(ADMIN_EMAIL);
-    await page.locator('input[type="password"]').fill(ADMIN_PASSWORD);
-    await page.getByRole("button", { name: "ログイン" }).click();
-
-    // ログイン後、管理画面に遷移すること
-    await page.waitForLoadState("networkidle", { timeout: 20000 });
-    await page.waitForTimeout(2000);
-
-    // サイドバーメニューが表示されること
-    await expect(page.getByText("顧客管理").first()).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText("加盟店管理").first()).toBeVisible({ timeout: 5000 });
-    await expect(page.getByText("予約・売上管理").first()).toBeVisible({ timeout: 5000 });
-    console.log("✅ 管理者ログイン完了:", page.url());
+    await adminLogin(page);
+    for (const nav of ["顧客一覧", "加盟店一覧", "料金表管理", "予約一覧", "売上レポート", "お問い合わせ一覧"]) {
+      await expect(page.getByText(nav, { exact: true }).first(), `サイドナビ「${nav}」がありません`).toBeVisible();
+    }
+    console.log("✅ 管理者ログイン完了（サイドナビ6項目確認）");
   });
 
-  // ----------------------------------------------------------------
-  // 2. 顧客一覧（デフォルトページ）
-  // ----------------------------------------------------------------
   test("顧客一覧", async ({ page }) => {
     await adminLogin(page);
-
-    // ログイン直後のデフォルトページが顧客一覧であること
-    await expect(page.getByText("顧客一覧（").first()).toBeVisible({ timeout: 8000 });
-
-    // CSVダウンロードボタンが表示されること
-    await expect(page.getByRole("button", { name: "CSVダウンロード" })).toBeVisible({ timeout: 5000 });
-
-    // キーワード検索入力が表示されること
-    await expect(page.getByPlaceholder("キーワードで絞り込み")).toBeVisible({ timeout: 5000 });
-
-    // ソート選択が表示されること
-    const sortSelect = page.getByRole("combobox").first();
-    await expect(sortSelect).toBeVisible({ timeout: 5000 });
-
-    console.log("✅ 顧客一覧（デフォルトページ）確認完了");
+    // ログイン直後の着地ページが顧客一覧
+    await expect(page.getByText(/顧客一覧（\d+）/).first()).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText("CSVダウンロード").first()).toBeVisible();
+    const countText = await page.getByText(/顧客一覧（\d+）/).first().textContent();
+    const count = Number(countText?.match(/（(\d+)）/)?.[1] ?? 0);
+    expect(count, "顧客が0件です（テスト環境に顧客データがあるはず）").toBeGreaterThan(0);
+    await expect(page.getByText("詳細", { exact: true }).first(), "顧客行の「詳細」ボタンがありません").toBeVisible();
+    console.log(`✅ 顧客一覧表示確認完了（${count}件）`);
   });
 
-  // ----------------------------------------------------------------
-  // 3. 加盟店一覧
-  // ----------------------------------------------------------------
   test("加盟店一覧", async ({ page }) => {
     await adminLogin(page);
-
-    await clickSidebarMenu(page, "加盟店一覧");
-
-    // 加盟店一覧ページが表示されること
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("加盟店一覧") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 加盟店一覧確認完了");
+    await gotoNav(page, "加盟店一覧");
+    const text = await page.evaluate(() => document.body.innerText);
+    expect(/加盟店一覧/.test(text), "加盟店一覧の見出しがありません").toBe(true);
+    // テスト店舗（SEINO自転車 or 株式会社SEINO）が載っていること
+    expect(/SEINO/.test(text), "加盟店一覧にテスト店舗（SEINO）が見つかりません").toBe(true);
+    console.log("✅ 加盟店一覧表示確認完了（テスト店舗の掲載確認）");
   });
 
-  // ----------------------------------------------------------------
-  // 4. 料金表管理
-  // ----------------------------------------------------------------
-  test("料金表管理", async ({ page }) => {
+  test("予約一覧（管理者）", async ({ page }) => {
     await adminLogin(page);
-
-    await clickSidebarMenu(page, "料金表管理");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("料金") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 料金表管理確認完了");
+    await gotoNav(page, "予約一覧");
+    // 管理者の予約一覧にはCSVダウンロードは無い（店舗側のみ・2026-07-13実測）
+    const heading = page.getByText(/予約一覧（\d+）/).first();
+    await expect(heading).toBeVisible({ timeout: 15000 });
+    const count = Number((await heading.textContent())?.match(/（(\d+)）/)?.[1] ?? 0);
+    expect(count, "予約が0件です（全店舗分が集計されるはず）").toBeGreaterThan(0);
+    console.log(`✅ 管理者の予約一覧表示確認完了（${count}件）`);
+    console.log("✅ 管理者の予約一覧表示確認完了");
   });
 
-  // ----------------------------------------------------------------
-  // 5. 予約一覧
-  // ----------------------------------------------------------------
-  test("予約一覧", async ({ page }) => {
-    await adminLogin(page);
-
-    await clickSidebarMenu(page, "予約一覧");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("予約") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 予約一覧確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 6. 売上レポート
-  // ----------------------------------------------------------------
   test("売上レポート", async ({ page }) => {
     await adminLogin(page);
-
-    await clickSidebarMenu(page, "売上レポート");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("売上") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 売上レポート確認完了");
+    await gotoNav(page, "売上レポート");
+    const text = await page.evaluate(() => document.body.innerText);
+    expect(/売上/.test(text), "売上レポートの内容が表示されていません").toBe(true);
+    console.log("✅ 売上レポート表示確認完了");
   });
 
-  // ----------------------------------------------------------------
-  // 7. FV管理
-  // ----------------------------------------------------------------
-  test("FV管理", async ({ page }) => {
+  test("料金表管理", async ({ page }) => {
     await adminLogin(page);
-
-    await clickSidebarMenu(page, "FV管理");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("FV") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ FV管理確認完了");
+    await gotoNav(page, "料金表管理");
+    const text = await page.evaluate(() => document.body.innerText);
+    expect(/料金/.test(text), "料金表管理の内容が表示されていません").toBe(true);
+    console.log("✅ 料金表管理表示確認完了");
   });
 
-  // ----------------------------------------------------------------
-  // 8. お知らせ管理
-  // ----------------------------------------------------------------
-  test("お知らせ管理", async ({ page }) => {
-    await adminLogin(page);
-
-    await clickSidebarMenu(page, "お知らせ管理");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("お知らせ") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ お知らせ管理確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 9. バナー管理
-  // ----------------------------------------------------------------
-  test("バナー管理", async ({ page }) => {
-    await adminLogin(page);
-
-    await clickSidebarMenu(page, "バナー管理");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("バナー") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ バナー管理確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 10. Q&A管理
-  // ----------------------------------------------------------------
-  test("Q&A管理", async ({ page }) => {
-    await adminLogin(page);
-
-    await clickSidebarMenu(page, "Q&A管理");
-
-    const hasContent = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("Q&A") || text.includes("質問");
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ Q&A管理確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 11. お問い合わせ一覧
-  // ----------------------------------------------------------------
   test("お問い合わせ一覧", async ({ page }) => {
     await adminLogin(page);
-
-    await clickSidebarMenu(page, "お問い合わせ一覧");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("お問い合わせ") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ お問い合わせ一覧確認完了");
+    await gotoNav(page, "お問い合わせ一覧");
+    const text = await page.evaluate(() => document.body.innerText);
+    expect(/お問い合わせ/.test(text), "お問い合わせ一覧が表示されていません").toBe(true);
+    console.log("✅ お問い合わせ一覧表示確認完了");
   });
 
-  // ----------------------------------------------------------------
-  // 12. メールアドレスの変更ページ
-  // ----------------------------------------------------------------
-  test("メールアドレスの変更", async ({ page }) => {
-    await adminLogin(page);
-
-    await clickSidebarMenu(page, "メールアドレスの変更");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("メールアドレス") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ メールアドレスの変更ページ確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 13. パスワードの変更ページ
-  // ----------------------------------------------------------------
-  test("パスワードの変更", async ({ page }) => {
-    await adminLogin(page);
-
-    await clickSidebarMenu(page, "パスワードの変更");
-
-    const hasContent = await page.evaluate(() => {
-      return document.body.textContent?.includes("パスワード") ?? false;
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ パスワードの変更ページ確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 14. 営業カレンダー
-  // ----------------------------------------------------------------
-  test("営業カレンダー", async ({ page }) => {
-    await adminLogin(page);
-
-    await page.goto("https://rincle.co.jp/version-5398j/admin_update_calendar", { waitUntil: "networkidle" });
-    await page.waitForTimeout(2000);
-
-    // カレンダー関連の要素が表示されること
-    const hasContent = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("カレンダー") || text.includes("祝日") || text.includes("営業");
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 営業カレンダー確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 15. 料金シミュレーション
-  // ----------------------------------------------------------------
-  test("料金シミュレーション", async ({ page }) => {
-    await adminLogin(page);
-
-    await page.goto("https://rincle.co.jp/version-5398j/admin_price_simulation", { waitUntil: "networkidle" });
-    await page.waitForTimeout(2000);
-
-    // シミュレーション関連の要素が表示されること
-    const hasContent = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("貸出") || text.includes("返却") || text.includes("シミュレーション") || text.includes("シュミレーション");
-    });
-    expect(hasContent).toBe(true);
-    console.log("✅ 料金シミュレーション確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 16. パスワードリセットフォーム表示（ログイン画面）
-  // ----------------------------------------------------------------
-  test("パスワードリセットフォーム表示", async ({ page }) => {
-    await page.goto(BASE_URL, { waitUntil: "networkidle" });
-    await page.waitForTimeout(1500);
-
-    // 「パスワードを忘れた方はこちら」をクリック
-    const clicked = await clickBubbleElement(page, "パスワードを忘れた方はこちら");
-    if (!clicked) {
-      await page.getByText("パスワードを忘れた方はこちら").first().click();
-    }
-    await page.waitForTimeout(1500);
-
-    // パスワードリセットフォームが表示されること
-    const hasResetForm = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("パスワードを再設定") || text.includes("再設定メール");
-    });
-    expect(hasResetForm).toBe(true);
-    console.log("✅ パスワードリセットフォーム表示確認完了");
-  });
-
-  // ----------------------------------------------------------------
-  // 17. 管理者ログアウト
-  // ----------------------------------------------------------------
   test("管理者ログアウト", async ({ page }) => {
     await adminLogin(page);
-
-    // サイドバーの「ログアウト」をクリック
-    await clickSidebarMenu(page, "ログアウト");
-    await page.waitForTimeout(3000);
-
-    // ログアウト後はログインページに戻ること
-    const hasLoginForm = await page.evaluate(() => {
-      const text = document.body.textContent || "";
-      return text.includes("管理画面ログイン") || text.includes("ログイン");
-    });
-    expect(hasLoginForm).toBe(true);
+    await page.getByText("ログアウト", { exact: true }).first().click();
+    await page.waitForTimeout(5000);
+    const stillIn = await page.getByText("加盟店一覧", { exact: true }).first().isVisible().catch(() => false);
+    expect(stillIn, "ログアウト後も管理画面が表示されています").toBe(false);
     console.log("✅ 管理者ログアウト完了");
   });
 });
