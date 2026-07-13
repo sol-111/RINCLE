@@ -243,7 +243,10 @@ test.describe("RINCLE 統合・回帰E2E", () => {
       const cards = await collectReservationCards(page);
       const card = cards.find(c => c.no === reservationNo);
       expect(card, `予約番号 ${reservationNo} のカードをパースできません`).toBeTruthy();
-      const paymentLine = card!.text.match(/支払い方法\s*\n?\s*([^\n]+)/)?.[1]?.trim() ?? "(不明)";
+      // 「支払い方法」単独行の次行が値（「料金・支払い方法」セクション見出しと区別する）
+      const lines = card!.text.split("\n").map(s => s.trim());
+      const i = lines.findIndex(l => l === "支払い方法");
+      const paymentLine = (i >= 0 ? lines[i + 1] : "") || "(不明)";
       console.log(`支払い方法の表示: ${paymentLine}`);
       expect(paymentLine.includes("店頭決済") && !paymentLine.includes("クレジット"),
         `店頭決済で予約したのに支払い方法が「${paymentLine}」です（バグ①: 確定WFのaction4が無条件でクレジットに上書き）`
