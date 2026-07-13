@@ -23,6 +23,8 @@ const STORE_EMAIL    = process.env.STORE_EMAIL!;
 const STORE_PASSWORD = process.env.STORE_PASSWORD!;
 // 統合テスト（非表示⇄ユーザー検索）用: 店舗所在地の都道府県コード（栃木=9）
 const SHOP_PREF_CODE = process.env.STORE_PREF_CODE || "9";
+// テスト店舗の自転車（SEINO自転車のFALD - ERX2）。作り直した場合は .env の TEST_BIKE_ID で上書き
+const TEST_BIKE_URL = `${BASE_URL}/bicycle_detail?bicycle=${process.env.TEST_BIKE_ID || "1783597035177x490785382439820740"}`;
 
 async function freshenIfStale(page: Page): Promise<boolean> {
   const stale = await page.getByText("アプリが更新されました").first().isVisible().catch(() => false);
@@ -190,6 +192,76 @@ test.describe("RINCLE 店舗管理E2E", () => {
     await expect(page.getByText("新規登録").first()).toBeVisible();
     await expect(page.getByText("在庫管理").first()).toBeVisible();
     console.log("✅ オプション管理表示確認完了");
+  });
+
+  // --------------------------------------------------------------------------
+  // 【統合】オプションのライフサイクル: 作成 → ユーザー側表示 → アーカイブ → 両側から消える
+  // 増永さん報告③（オプション在庫・紐づき）の周辺を回帰カバー（7/13手動検証の自動化）。
+  // 在庫の減算/復元（予約が必要）は rincle-integration.e2e.ts 側の予約系と別掛かりのため、
+  // ここでは予約を作らない範囲（作成〜表示〜アーカイブ）を検証する。
+  // --------------------------------------------------------------------------
+  test("オプションライフサイクル（作成→ユーザー表示→アーカイブ）", async ({ page }) => {
+    test.setTimeout(240000);
+    const optName = `E2E自動テスト用オプション_${Date.now()}`;
+    let created = false;
+
+    await storeLogin(page);
+    try {
+      // --- 作成 ---
+      await gotoSection(page, "option");
+      await page.getByText("新規登録").first().click();
+      await page.waitForTimeout(4000);
+      const vis = page.locator("input:visible, textarea:visible");
+      // フォーム構造（2026-07-13実測）: [0]=名称 [1]=数量 [2]=説明 [3..11]=各プラン料金 [12]=税率
+      await vis.nth(0).fill(optName);
+      await vis.nth(1).fill("2");
+      await vis.nth(2).fill("E2E自動テスト用。テスト内で必ずアーカイブされます");
+      for (let i = 3; i <= 11; i++) await vis.nth(i).fill("100");
+      await vis.nth(12).fill("10");
+      // 適用する自転車 → 全ての自転車に適用（個別クリックは効かないことを実測済み）
+      await page.getByText("追加", { exact: true }).first().click();
+      await page.waitForTimeout(3000);
+      await page.getByText("全ての自転車に適用する").first().click();
+      await page.waitForTimeout(3000);
+      await page.getByRole("button", { name: "登録する" }).locator("visible=true").first().click();
+      await page.waitForTimeout(6000);
+      await expect(page.getByText(optName).first(), "登録したオプションが一覧に出ません").toBeVisible({ timeout: 15000 });
+      created = true;
+      console.log(`✅ オプション作成完了: ${optName}`);
+
+      // --- ユーザー側の自転車詳細に表示されること（未ログインで閲覧可） ---
+      await page.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
+      await page.waitForTimeout(10000);
+      const userSide = await page.evaluate(() => document.body.innerText);
+      expect(userSide.includes(optName),
+        "作成したオプションがユーザー側の自転車詳細（オプションを選択）に表示されません").toBe(true);
+      console.log("✅ ユーザー側の自転車詳細にオプション表示を確認");
+    } finally {
+      if (created) {
+        // --- アーカイブ（削除の実体）して後始末 ---
+        await storeLogin(page);
+        await gotoSection(page, "option");
+        await page.getByText(optName).first().click();
+        await page.waitForTimeout(4000);
+        await page.getByRole("button", { name: "削除する" }).locator("visible=true").first().click();
+        await page.waitForTimeout(3000);
+        await page.getByRole("button", { name: "アーカイブする" }).locator("visible=true").first().click();
+        await page.waitForTimeout(5000);
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await page.waitForTimeout(6000);
+        const gone = !(await page.evaluate(() => document.body.innerText)).includes(optName);
+        console.log(gone ? "🧹 アーカイブ完了（店舗一覧から消えました）"
+                         : `⚠️ アーカイブ失敗: 「${optName}」を手動で削除してください`);
+        if (gone) {
+          // ユーザー側からも消えていること
+          await page.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
+          await page.waitForTimeout(10000);
+          const stillShown = (await page.evaluate(() => document.body.innerText)).includes(optName);
+          expect(stillShown, "アーカイブしたオプションがユーザー側にまだ表示されています").toBe(false);
+          console.log("✅ アーカイブ後、ユーザー側からも消えたことを確認");
+        }
+      }
+    }
   });
 
   test("営業時間設定", async ({ page }) => {

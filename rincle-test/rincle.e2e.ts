@@ -8,6 +8,9 @@ const PASSWORD = process.env.RINCLE_PASSWORD!;
 const AREA     = process.env.RINCLE_AREA!;
 const START_DATETIME = process.env.RINCLE_DATE!;
 const END_DATETIME   = process.env.RINCLE_TIME!;
+// ネガティブ系テスト（18-20）用の固定対象: テスト店舗「SEINO自転車」（栃木・水金休業）の
+// FALD - ERX2。店舗・自転車を作り直した場合は TEST_BIKE_ID を .env で上書きする
+const TEST_BIKE_URL = `${BASE_URL}/bicycle_detail?bicycle=${process.env.TEST_BIKE_ID || "1783597035177x490785382439820740"}`;
 
 // "2026/04/05 11:00" → { month: 4, day: 5, year: 2026, time: "11:00" }
 function parseDatetime(raw: string) {
@@ -857,5 +860,127 @@ test.describe("RINCLE E2E", () => {
       expect(hasResults).toBe(true);
     }).toPass({ timeout: 15000 });
     console.log(`✅ ロードバイクフィルタ検索完了 (url: ${url})`);
+  });
+
+  // ----------------------------------------------------------------
+  // 18. ログイン失敗（誤パスワード）— ネガティブ系
+  // ----------------------------------------------------------------
+  test("ログイン失敗（誤パスワード）", async ({ page }) => {
+    await page.goto(`${BASE_URL}/signin`, { waitUntil: "domcontentloaded" });
+    await freshenIfStale(page);
+    await page.locator('input[type="email"]').first().waitFor({ state: "visible", timeout: 20000 });
+    await page.locator('input[type="email"]').first().fill(EMAIL);
+    await page.locator('input[type="password"]').first().fill("wrong-password-e2e");
+    await page.getByRole("button", { name: "ログイン" }).first().click();
+    await page.waitForTimeout(5000);
+    // セッションが確立されないこと（トップにログアウトが出ない）。
+    // 開発中はアプリ更新バナー等で表示が乱れることがあるため、検出時は一度リロードして再判定
+    await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
+    let loggedIn = await page.getByText("ログアウト").first()
+      .waitFor({ state: "visible", timeout: 5000 }).then(() => true).catch(() => false);
+    if (loggedIn) {
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await page.waitForTimeout(4000);
+      loggedIn = await page.getByText("ログアウト").first()
+        .waitFor({ state: "visible", timeout: 5000 }).then(() => true).catch(() => false);
+    }
+    expect(loggedIn, "誤ったパスワードでログインできてしまいました").toBe(false);
+    console.log("✅ 誤パスワードでログインできないことを確認");
+  });
+
+  // ----------------------------------------------------------------
+  // 19. 過去日・当日は貸出日として選択不可 — ネガティブ系
+  //     （予約は前日23:59まで。テスト店舗=SEINO自転車のFALD - ERX2 を使用）
+  // ----------------------------------------------------------------
+  test("過去日・当日の貸出日選択不可", async ({ page }) => {
+    await page.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(8000);
+    await freshenIfStale(page);
+    // 貸出日ピッカーを開き、当日セルが disabled であることを確認
+    const pickerInput = page.locator("input.picker__input").nth(0);
+    const ariaOwns = await pickerInput.getAttribute("aria-owns");
+    const pickerRoot = page.locator(`#${ariaOwns}`);
+    await pickerInput.click({ force: true });
+    await page.waitForTimeout(800);
+    const today = new Date();
+    const todayDisabled = await pickerRoot.locator(".picker__day--disabled")
+      .filter({ hasText: new RegExp(`^${today.getDate()}$`) }).count();
+    expect(todayDisabled, `当日(${today.getDate()}日)が貸出日ピッカーで選択可能になっています（前日23:59までの予約制約に反する）`).toBeGreaterThan(0);
+    // 過去日（月初〜昨日のどれか）も disabled であること（1日でなければ前日で確認）
+    if (today.getDate() > 1) {
+      const yesterdayDisabled = await pickerRoot.locator(".picker__day--disabled")
+        .filter({ hasText: new RegExp(`^${today.getDate() - 1}$`) }).count();
+      expect(yesterdayDisabled, "過去日が貸出日ピッカーで選択可能になっています").toBeGreaterThan(0);
+    }
+    console.log("✅ 当日・過去日が貸出日として選択不可（ピッカーdisabled）を確認");
+  });
+
+  // ----------------------------------------------------------------
+  // 20. 休業日を返却日に選ぶとエラー表示 — ネガティブ系
+  //     貸出可能日程カレンダーの「休業日」表示から対象日を動的に特定する
+  //     （SEINO自転車は水・金休業のため、直近数日以内に必ず存在する）
+  // ----------------------------------------------------------------
+  test("休業日を返却日に選ぶとエラー表示", async ({ page }) => {
+    test.setTimeout(120000);
+    await page.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(8000);
+    await freshenIfStale(page);
+
+    // 貸出可能日程カレンダー（当月）から「休業日」の日と「○（予約可）」の日を読む
+    const cal = await page.evaluate(() => {
+      const holidays: number[] = [];
+      for (const el of Array.from(document.querySelectorAll<HTMLElement>("*"))) {
+        const t = (el.innerText || "").trim();
+        const m = t.match(/^(\d{1,2})\n休業日/);
+        if (m && t.length < 20) holidays.push(Number(m[1]));
+      }
+      return { holidays: [...new Set(holidays)].sort((a, b) => a - b) };
+    });
+    console.log(`当月の休業日: ${cal.holidays.join(", ")}`);
+    const today = new Date();
+    // ピッカーで選択可能（翌日以降）の直近の休業日を対象にする
+    const targetHoliday = cal.holidays.find(d => d > today.getDate());
+    if (!targetHoliday) {
+      console.log("⚠️ 当月内に翌日以降の休業日が見つからないためスキップ（店舗の休業設定に依存）");
+      return;
+    }
+    // 貸出日: 休業日より前の営業日（ピッカーで有効なセルのうち休業日でない直近日）
+    const startDay = (() => {
+      for (let d = today.getDate() + 1; d < targetHoliday; d++) {
+        if (!cal.holidays.includes(d)) return d;
+      }
+      return null;
+    })();
+    if (!startDay) {
+      console.log("⚠️ 休業日より前に選択可能な営業日がないためスキップ");
+      return;
+    }
+    console.log(`貸出日=${startDay}日 / 返却日=${targetHoliday}日（休業日）で検証`);
+
+    await selectPikadayDate(page, 0, today.getMonth() + 1, startDay, today.getFullYear());
+    await selectPikadayDate(page, 3, today.getMonth() + 1, targetHoliday, today.getFullYear());
+    await page.waitForTimeout(2000);
+
+    const bodyText = await page.evaluate(() => document.body.innerText);
+    expect(/休業日のため返却できません/.test(bodyText),
+      "休業日を返却日に選んでもエラーメッセージ（〜は休業日のため返却できません）が表示されません"
+    ).toBe(true);
+    console.log("✅ 休業日を返却日に選ぶとエラーメッセージが表示されることを確認");
+  });
+
+  // ----------------------------------------------------------------
+  // 21. タイプフィルタの絞り込み精度（クロスバイク）
+  //     URLパラメータ直指定で、該当タイプのみ表示されることを確認
+  // ----------------------------------------------------------------
+  test("タイプフィルタ絞り込み精度（クロスバイク）", async ({ page }) => {
+    await page.goto(`${BASE_URL}/search?pref=9&start=&end=&type=クロスバイク&e-bike=&free=&shop=`,
+      { waitUntil: "domcontentloaded" });
+    await page.waitForTimeout(10000);
+    const text = await page.evaluate(() => document.body.innerText);
+    // テスト店舗（SEINO自転車）のクロスバイク FALD - ERX2 は表示される
+    expect(text.includes("FALD"), "クロスバイク指定でテスト店舗のクロスバイク（FALD - ERX2）が表示されません").toBe(true);
+    // ロードバイク（株式会社SEINOのTREK FX3 DISC）は表示されない
+    expect(text.includes("FX3"), "クロスバイク指定なのにロードバイク（FX3 DISC）が表示されています（絞り込み漏れ）").toBe(false);
+    console.log("✅ タイプフィルタの絞り込み精度確認完了（クロスバイクのみ表示）");
   });
 });
