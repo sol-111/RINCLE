@@ -2,7 +2,7 @@ import { test, expect, Page } from "@playwright/test";
 import * as dotenv from "dotenv";
 dotenv.config();
 
-const BASE_URL = "https://rincle.co.jp/version-13fge";
+const BASE_URL = "https://rincle.co.jp/version-43erq";
 const EMAIL    = process.env.RINCLE_EMAIL!;
 const PASSWORD = process.env.RINCLE_PASSWORD!;
 const AREA     = process.env.RINCLE_AREA!;
@@ -650,7 +650,7 @@ test.describe("RINCLE E2E", () => {
       return !!el;
     });
     expect(await backBtn).toBe(true);
-    console.log("✅ 新着情報詳細ページ確認完了:", page.url().split("version-13fge")[1]);
+    console.log("✅ 新着情報詳細ページ確認完了:", page.url().split("version-43erq")[1]);
   });
 
   // ----------------------------------------------------------------
@@ -695,7 +695,7 @@ test.describe("RINCLE E2E", () => {
       return !!el;
     });
     expect(await backBtn).toBe(true);
-    console.log("✅ TOPICS詳細ページ確認完了:", page.url().split("version-13fge")[1]);
+    console.log("✅ TOPICS詳細ページ確認完了:", page.url().split("version-43erq")[1]);
   });
 
   // ----------------------------------------------------------------
