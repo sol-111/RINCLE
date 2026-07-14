@@ -351,10 +351,15 @@ test.describe("RINCLE 統合・回帰E2E", () => {
   });
 
   // --------------------------------------------------------------------------
-  // 【回帰④】予約番号の一意性: 同じ予約番号のカードは店舗・日時も同一であること
-  // （7/13実測: 別店舗・別日程の2予約がどちらも1000183 → 採番/表示バグの疑い）
+  // 【回帰④改め・仕様確認済み】予約番号の一意性は「店舗ごと」
+  // 採番実装（bicycle_detail WF bUoGR0/bUoPE0）: number = Search for 予約
+  //   (shop=この自転車の店舗, number is not empty, Created Date降順):first の number + 1
+  //   （該当なしは1000000起点）→ 店舗をまたぐ同番号は設計どおり（7/14 清野さん確認）。
+  // よって「同一店舗内」で同じ番号が複数の予約（日時違い）に付いていたらバグ。
+  // 注意: 採番が「最新作成の予約のnumber+1」の非アトミック実装のため、同一店舗への
+  //   同時予約で競合し得る（本テストがその実害を検出する）。
   // --------------------------------------------------------------------------
-  test("予約番号の一意性（回帰④）", async ({ page }) => {
+  test("予約番号の店舗内一意性（回帰④）", async ({ page }) => {
     test.setTimeout(120000);
     await login(page);
     await openReservationList(page);
@@ -363,22 +368,23 @@ test.describe("RINCLE 統合・回帰E2E", () => {
     expect(cards.length, "予約カードを1件もパースできませんでした").toBeGreaterThan(0);
     console.log(`予約カード ${cards.length}件をパース: 番号=[${cards.map(c => c.no).join(", ")}]`);
 
-    // 番号→カード概要（店舗行と日時行）でグループ化
-    const byNo = new Map<string, Set<string>>();
+    // (店舗, 番号) → 日時 でグループ化。同一店舗×同一番号で日時が複数あれば重複
+    const byShopNo = new Map<string, Set<string>>();
     for (const c of cards) {
       const shop = c.text.match(/店舗\s*\n\s*([^\n]+)/)?.[1]?.trim() ?? "";
       const date = c.text.match(/日時\s*\n\s*([^\n]+)/)?.[1]?.trim() ?? "";
-      if (!shop && !date) continue; // 折りたたみカード（過去分）は判定不能なので除外
-      if (!byNo.has(c.no)) byNo.set(c.no, new Set());
-      byNo.get(c.no)!.add(`${shop} / ${date}`);
+      if (!shop || !date) continue; // 折りたたみカード（過去分）は判定不能なので除外
+      const key = `${shop}::${c.no}`;
+      if (!byShopNo.has(key)) byShopNo.set(key, new Set());
+      byShopNo.get(key)!.add(date);
     }
-    const dups = Array.from(byNo.entries()).filter(([, v]) => v.size > 1);
-    for (const [no, v] of dups) {
-      console.log(`🔴 予約番号 ${no} が複数の予約に付与: ${Array.from(v).join(" | ")}`);
+    const dups = Array.from(byShopNo.entries()).filter(([, dates]) => dates.size > 1);
+    for (const [key, dates] of dups) {
+      console.log(`🔴 同一店舗内で予約番号が重複: ${key.replace("::", " の番号 ")} → ${Array.from(dates).join(" | ")}`);
     }
     expect(dups.length,
-      `同一予約番号が異なる予約（店舗/日時違い）に使われています: ${dups.map(([no]) => no).join(", ")}（バグ④）`
+      `同一店舗内で同じ予約番号が別の予約に使われています: ${dups.map(([k]) => k).join(", ")}（採番の同時実行競合の疑い）`
     ).toBe(0);
-    console.log("✅ 予約番号の一意性OK");
+    console.log("✅ 予約番号の店舗内一意性OK（店舗をまたぐ同番号は設計どおり許容）");
   });
 });
