@@ -260,6 +260,13 @@ test.describe("RINCLE 統合・回帰E2E", () => {
     expect(reservationNo, "作成した予約が一覧に見つかりません").toBeTruthy();
     console.log(`✅ 店頭決済で予約作成: 予約番号 ${reservationNo}`);
 
+    // 【7/14形式変更】予約番号は年月日時分秒（yyyymmddHHMMSS・14桁）ベースの新形式であること
+    // （旧: 1000000起点のSearch採番連番 → 競合根絶のため廃止）
+    expect(/^20\d{12}$/.test(reservationNo!),
+      `予約番号 ${reservationNo} が新形式（yyyymmddHHMMSSの14桁）ではありません（旧連番ロジックが残っている疑い）`
+    ).toBe(true);
+    console.log("✅ 予約番号が新形式（年月日時分秒）であることを確認");
+
     try {
       // 【本題】カードの支払い方法表示が「店頭決済」であること
       // バグ①（WF action4が無条件でクレジットに上書き）が未修正なら fail する（正検出）
