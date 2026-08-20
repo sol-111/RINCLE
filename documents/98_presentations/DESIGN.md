@@ -35,13 +35,19 @@ RINCLEのファビコン（`assets/rincle-favicon.png`・オレンジ地に白�
 - フォールバックにシステムフォントを並べる（オフラインでも読める）。和文は`palt`、表は`tabular-nums`を有効化（テンプレに含む）
 - 「自己完結」原則の唯一の例外がこのGoogle Fonts
 
+## 配色方針の更新（2026-08-20・清野さん指摘）
+
+- **オレンジは差し色**。背景を塗りつぶす使い方はしない（全面オレンジのヒーローは廃止→ライトヒーロー）
+- **黒い塊（チャコール背景+白文字のチップ・帯・表ヘッダ）は使わない**。番号チップ・帯はオレンジ系2段階（濃=solid brand/淡=brand-soft+brand-deep文字）、表ヘッダは`#FBF8F5`+オレンジ下線
+- ダークを使ってよいのはコードブロック・URL構造図などの「画面・コードの表現」と、チャートのデータ色のみ
+
 ## ページの基本構造
 
-1. **hero** — オレンジのグラデーション背景 + eyebrowラベル + h1 + リード文。左に`assets/rincle-favicon.png`のロゴチップ（角丸14px・48px）を置く。**ヒーローに統計チップは置かない**（2026-08-20清野さん指示で廃止）
+1. **hero** — ごく薄いオレンジがかったライト背景（`#FFF3ED`→`#FFFDFC`） + eyebrowラベル + h1 + リード文。左に`assets/rincle-favicon.png`のロゴチップ（角丸14px・48px）を置く。**ヒーローに統計チップは置かない**（2026-08-20清野さん指示で廃止）
 2. **flow nav（任意）** — 手順・章が3〜5個あるページは、ヒーロー下に重ねるカード型ナビ（アンカーリンク）
 3. **section** — 番号チップ（section-num）+ h2 + サブ見出し。手順はオレンジ、前提・補足は`.plain`（チャコール）
 4. **card / term / alert / table / codeblock / ol.steps** — 下のテンプレート参照
-5. **recap（任意）** — ページ末尾のまとめバンド（チャコール→オレンジのグラデーション）
+5. **recap（任意）** — ページ末尾のまとめバンド（オレンジのグラデーション）
 6. **footer** — `正本: <mdパス>（md更新時はこのHTMLも同期すること）`
 
 ## 禁止・注意
@@ -68,14 +74,14 @@ body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe 
 table{font-variant-numeric:tabular-nums}
 
 /* hero */
-.hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 88px;overflow:hidden}
-.hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
-.hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(35,32,29,.10)}
+.hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
+.hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
+.hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
 .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
 .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-.hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+.hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
 .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-.hero p.lead{font-size:1rem;opacity:.92;max-width:700px}
+.hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
 
 .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
 
@@ -84,7 +90,7 @@ table{font-variant-numeric:tabular-nums}
 .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
 .flow a:first-child{border-left:none}
 .flow a:hover{background:var(--brand-soft)}
-.flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;font-size:14px;margin-bottom:8px}
+.flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
 .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
 .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
 .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
@@ -94,7 +100,7 @@ table{font-variant-numeric:tabular-nums}
 .section{margin-bottom:56px;scroll-margin-top:20px}
 .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
 .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
-.section-num.plain{background:linear-gradient(135deg,var(--ink),#4A4038);box-shadow:0 4px 12px rgba(35,32,29,.3)}
+.section-num.plain{background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5}
 .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
 .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
 h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
@@ -130,7 +136,7 @@ h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-le
 /* tables */
 .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
-thead th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
+thead th{background:#FBF8F5;color:var(--ink);border-bottom:2px solid var(--brand);padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
 td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#FBF8F5}
@@ -167,7 +173,7 @@ ul.notes li{position:relative;padding:6px 0 6px 28px}
 ul.notes li::before{content:"!";position:absolute;left:2px;top:8px;width:18px;height:18px;border-radius:50%;background:#FDE68A;color:#92400E;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center}
 
 /* まとめバンド */
-.recap{background:linear-gradient(135deg,var(--ink) 0%,#6B2F14 70%,var(--brand-deep) 100%);color:#fff;border-radius:var(--radius);padding:26px 30px;margin-top:8px;box-shadow:var(--shadow-lg)}
+.recap{background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 70%,#FF7A45 100%);color:#fff;border-radius:var(--radius);padding:26px 30px;margin-top:8px;box-shadow:var(--shadow-lg)}
 .recap h2{font-size:17px;font-weight:800;margin-bottom:14px}
 .recap .r-flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13.5px}
 .recap .r-chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 16px;font-weight:700}
@@ -200,7 +206,7 @@ footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
 
 /* ---------- フローナビの現在地ハイライト ---------- */
 .flow a.cur{background:var(--brand-soft)}
-.flow a.cur .fnum{background:var(--brand)}
+.flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
 
 /* ---------- ミニチャート（ドーナツ） ---------- */
 .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}

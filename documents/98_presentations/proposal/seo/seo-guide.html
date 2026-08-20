@@ -29,21 +29,22 @@
   /* ---------- hero ---------- */
   .hero{
     position:relative;
-    background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);
-    color:#fff;
+    background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);
+    color:var(--ink);
+    border:1px solid var(--border);
     border-radius:var(--radius);
     padding:48px 40px;
     margin-bottom:40px;
     box-shadow:var(--shadow-lg);
     overflow:hidden;
   }
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.07)}
-  .hero::after{content:"";position:absolute;right:60px;bottom:-140px;width:240px;height:240px;border-radius:50%;background:rgba(35,32,29,.10)}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:320px;height:320px;border-radius:50%;background:rgba(249,83,32,.05)}
+  .hero::after{content:"";position:absolute;right:60px;bottom:-140px;width:240px;height:240px;border-radius:50%;background:rgba(249,83,32,.07)}
   .hero-inner{position:relative;z-index:1;display:flex;gap:20px;align-items:flex-start;text-align:left}
   .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
   .hero h1{font-size:2rem;font-weight:800;margin-bottom:8px}
-  .hero p{font-size:1.05rem;opacity:.92}
+  .hero p{font-size:1.05rem;color:#5A5049}
 
   /* ---------- card ---------- */
   .card{
@@ -138,9 +139,10 @@
     width:100%;border-collapse:collapse;margin:14px 0 20px;
     font-size:.9rem;
   }
-  thead{background:var(--ink);color:#fff}
+  thead{background:#FBF8F5;color:var(--ink)}
   th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
   th{font-weight:600}
+  thead th{border-bottom:2px solid var(--brand)}
   tbody tr:nth-child(even){background:#FBF8F5}
   tbody tr:hover{background:var(--brand-soft)}
 
@@ -168,7 +170,7 @@
   }
   .mini-card .num{
     display:inline-flex;align-items:center;justify-content:center;
-    width:32px;height:32px;background:var(--ink);color:#fff;
+    width:32px;height:32px;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;
     border-radius:50%;font-weight:700;font-size:.9rem;margin-bottom:8px;
   }
   .mini-card .txt{font-size:.88rem;color:#4A443D}
@@ -235,7 +237,7 @@
 
   /* フローナビの現在地ハイライト */
   .flow a.cur{background:var(--brand-soft)}
-  .flow a.cur .fnum{background:var(--brand)}
+  .flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
 
   /* ミニチャート（ドーナツ） */
   .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
@@ -1119,20 +1121,19 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
     }, {rootMargin:'0px 0px -8% 0px'});
     targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
   }
-  // フローナビの現在地ハイライト（このページにflow navは無いが、追加時にそのまま有効になる）
+  // フローナビの現在地ハイライト（読み位置より上の最後の章を点灯。最上部では消灯）
   var links = document.querySelectorAll('.flow a[href^="#"]');
-  if (links.length && 'IntersectionObserver' in window) {
+  if (links.length) {
     var map = [];
     links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
-    var spy = new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if (e.isIntersecting) {
-          links.forEach(function(l){ l.classList.remove('cur'); });
-          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
-        }
-      });
-    }, {rootMargin:'-15% 0px -65% 0px'});
-    map.forEach(function(m){ spy.observe(m[1]); });
+    var updateCur = function(){
+      var line = window.innerHeight * 0.3;
+      var cur = null;
+      map.forEach(function(m){ if (m[1].getBoundingClientRect().top <= line) cur = m; });
+      links.forEach(function(l){ l.classList.remove('cur'); });
+      if (cur) cur[0].classList.add('cur');
+    };
+    addEventListener('scroll', updateCur, {passive:true}); updateCur();
   }
 })();
 </script>
