@@ -189,6 +189,33 @@
 
   .section-desc{color:var(--sub);font-size:14px;margin-bottom:16px}
 
+  /* SVGアイコン（スプライト参照） */
+  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
+  .section-num .icon{width:22px;height:22px}
+
+  /* 読み進みバー */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+  .rv-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* フローナビの現在地ハイライト */
+  .flow a.cur{background:var(--brand-soft)}
+  .flow a.cur .fnum{background:var(--brand)}
+
+  /* ミニチャート（ドーナツ） */
+  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .chart svg{width:130px;height:130px;flex-shrink:0}
+  .chart .cl{font-size:13.5px}
+  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+  .chart text.small{font-size:3.2px;fill:var(--sub)}
+
   @media (max-width:760px){
     .roles{grid-template-columns:1fr;margin-top:-40px}
     .compare{grid-template-columns:1fr}
@@ -202,6 +229,24 @@
 </style>
 </head>
 <body>
+
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
 
 <!-- ========== HERO ========== -->
 <div class="hero">
@@ -404,7 +449,7 @@
     </div>
 
     <div class="alert alert-blue">
-      <span class="a-icon">&#x1F4B3;</span>
+      <span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span>
       <div><strong>現行の特徴：</strong>カード登録は予約フローの「支払い方法」ステップで行います。Pay.JPのCheckout.jsによるカード入力フォームが表示されます。</div>
     </div>
   </div>
@@ -516,7 +561,7 @@
     </div>
 
     <div class="alert alert-blue">
-      <span class="a-icon">&#x2139;&#xFE0F;</span>
+      <span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span>
       <div><strong>Pay.JP審査も含まれます。</strong>店舗申請と並行して Pay.JP の決済審査（本人確認書類の提出）も行われ、審査通過後にクレジットカード決済が利用可能になります。</div>
     </div>
   </div>
@@ -682,7 +727,7 @@
     </div>
 
     <div class="alert alert-amber">
-      <span class="a-icon">&#x26A0;&#xFE0F;</span>
+      <span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span>
       <div><strong>現行の重要ポイント：</strong>予約確定時に決済は行われません。カード引き落としは Phase 5 の「貸出開始」時に店舗が実行します。これは To-Be では予約確定時に即時決済に変更される予定です。</div>
     </div>
   </div>
@@ -777,7 +822,7 @@
     </div>
 
     <div class="alert alert-red">
-      <span class="a-icon">&#x1F6A8;</span>
+      <span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span>
       <div><strong>現行の課題：</strong>決済が貸出開始時なので、「予約したがカード残高不足で決済できない」ケースが発生します。その場合、現地払いに切り替えるため、売上管理が複雑になります。</div>
     </div>
   </div>
@@ -927,7 +972,7 @@
     </div>
 
     <div class="alert alert-amber">
-      <span class="a-icon">&#x26A0;&#xFE0F;</span>
+      <span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span>
       <div><strong>現行の課題：</strong>キャンセル期限の自動判定がなく、返金処理はすべて管理者の手動対応です。To-Be では「キャンセル期限内なら自動全額返金、期限外なら返金なし」のロジックが導入される予定です。</div>
     </div>
   </div>
@@ -942,7 +987,7 @@
     </div>
 
     <div class="alert alert-blue">
-      <span class="a-icon">&#x2139;&#xFE0F;</span>
+      <span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span>
       <div><strong>決済基盤についての注記（2026-08-20時点）：</strong>決済はStripeへの載せ替えが決定しています（2026-06-19決定・実装タスク#35）。このページのPay.JPは「現行システムの説明」としては正しいですが、To-Be側の決済はStripeで実装されます。</div>
     </div>
 
@@ -995,5 +1040,42 @@
 
 <footer>Rincle 業務フロー図（As-Is / 現行） &mdash; PEDALSTANDARD<br>対応データ: documents/2_requirements/02_flow/bizflow-asis.json（フロー図データ・md正本なし）</footer>
 
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(l){ l.classList.remove('cur'); });
+          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
+        }
+      });
+    }, {rootMargin:'-15% 0px -65% 0px'});
+    map.forEach(function(m){ spy.observe(m[1]); });
+  }
+})();
+</script>
 </body>
 </html>

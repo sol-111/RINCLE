@@ -91,6 +91,33 @@
 
   footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
 
+  /* SVGアイコン（スプライト参照） */
+  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
+  .section-num .icon{width:22px;height:22px}
+
+  /* 読み進みバー */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+  .rv-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* フローナビの現在地ハイライト */
+  .flow a.cur{background:var(--brand-soft)}
+  .flow a.cur .fnum{background:var(--brand)}
+
+  /* ミニチャート（ドーナツ） */
+  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .chart svg{width:130px;height:130px;flex-shrink:0}
+  .chart .cl{font-size:13.5px}
+  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+  .chart text.small{font-size:3.2px;fill:var(--sub)}
+
   @media (max-width:760px){
     .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
     .flow a{border-top:1px solid var(--border)}
@@ -105,6 +132,24 @@
 </style>
 </head>
 <body>
+
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
 
 <div class="hero">
   <div class="hero-inner">
@@ -121,7 +166,7 @@
 <div class="container">
 
   <nav class="flow">
-    <a href="#conclusion"><span class="fnum">!</span><div class="ft">結論</div><div class="fd">ロードバイク10件 vs スポーツバイク4件</div></a>
+    <a href="#conclusion"><span class="fnum"><svg class="icon"><use href="#i-alert"/></svg></span><div class="ft">結論</div><div class="fd">ロードバイク10件 vs スポーツバイク4件</div></a>
     <a href="#data"><span class="fnum">1</span><div class="ft">取得データ</div><div class="fd">7キーワードのサジェスト実測</div></a>
     <a href="#implication"><span class="fnum">2</span><div class="ft">含意</div><div class="fd">文言統一・記事構成・長期需要</div></a>
     <a href="#next"><span class="fnum">3</span><div class="ft">次のアクション</div><div class="fd">キーワードプランナーで実数取得</div></a>
@@ -129,7 +174,7 @@
 
   <!-- 結論 -->
   <div class="section" id="conclusion">
-    <div class="section-header"><div class="section-num plain">!</div><div><h2>結論</h2><div class="sh-sub">サジェスト件数で見る検索需要の差</div></div></div>
+    <div class="section-header"><div class="section-num plain"><svg class="icon"><use href="#i-alert"/></svg></div><div><h2>結論</h2><div class="sh-sub">サジェスト件数で見る検索需要の差</div></div></div>
     <div class="verdict-grid">
       <div class="verdict win">
         <div class="kw">「ロードバイク レンタル」</div>
@@ -142,9 +187,27 @@
         <div class="sub">サジェストが4件しか出ない<br>= 「スポーツバイクでは誰も調べない」の定量的な証拠</div>
       </div>
     </div>
-    <div class="alert alert-green"><span class="a-icon">✓</span><div>
+    <div class="alert alert-green"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div>
       <strong>6/12の現場感覚（「調べ方はほとんど、ロードバイクレンタル+地域名」）はデータで裏付けられました。</strong> 加えて「eバイク レンタル」も地域名でフルに埋まり（「しまなみ」まで出現）、E-Bike需要の顕在化も確認。
     </div></div>
+    <div class="card">
+      <div class="chart">
+        <svg viewBox="0 0 42 42" role="img" aria-label="「ロードバイク レンタル」サジェスト10件の内訳">
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#F2EEE9" stroke-width="5"/>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ok)" stroke-width="5"
+                  stroke-dasharray="80 20" stroke-dashoffset="25"/>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="5"
+                  stroke-dasharray="20 80" stroke-dashoffset="-55"/>
+          <text x="21" y="20.5" text-anchor="middle" class="big" style="font-size:7px">10件</text>
+          <text x="21" y="25.5" text-anchor="middle" class="small">サジェスト（2026-06-12実測）</text>
+        </svg>
+        <div class="cl">
+          <div><i style="background:var(--ok)"></i>地域名（東京・八王子・多摩川 など） <strong>8件</strong>（80%）</div>
+          <div><i style="background:var(--ink)"></i>その他（安い・1ヶ月） <strong>2件</strong>（20%）</div>
+          <div style="margin-top:6px;color:var(--sub);font-size:12.5px">「ロードバイク レンタル」のサジェスト10件の内訳。検索の主戦場は「地域名×レンタル」</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- データ -->
@@ -210,7 +273,7 @@
   <!-- 次のアクション -->
   <div class="section" id="next">
     <div class="section-header"><div class="section-num">3</div><div><h2>次のアクション</h2><div class="sh-sub">正確な検索数を無料で取る</div></div></div>
-    <div class="alert alert-blue"><span class="a-icon">ℹ</span><div>
+    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>
       <strong>正確な月間検索数はキーワードプランナーで取得します</strong>（Google広告アカウントの開設だけで無料・出稿は不要）。GA4設置（#22）と同じタイミングで広告アカウントも開設すれば、広告出稿フェーズを待たずに実数が取れ、記事の優先順位づけに使えます。取得対象: 「ロードバイク レンタル×主要都市」「観光ルート名×レンタサイクル」「eバイク レンタル×地域」。
     </div></div>
   </div>
@@ -221,5 +284,42 @@
   &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/keyword-research.md（md更新時はこのHTMLも同期すること）
 </footer>
 
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(l){ l.classList.remove('cur'); });
+          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
+        }
+      });
+    }, {rootMargin:'-15% 0px -65% 0px'});
+    map.forEach(function(m){ spy.observe(m[1]); });
+  }
+})();
+</script>
 </body>
 </html>

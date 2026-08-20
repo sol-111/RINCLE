@@ -112,6 +112,33 @@
 
   footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px;line-height:1.9}
 
+  /* SVGアイコン（スプライト参照） */
+  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
+  .section-num .icon{width:22px;height:22px}
+
+  /* 読み進みバー */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+  .rv-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* フローナビの現在地ハイライト */
+  .flow a.cur{background:var(--brand-soft)}
+  .flow a.cur .fnum{background:var(--brand)}
+
+  /* ミニチャート（ドーナツ） */
+  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .chart svg{width:130px;height:130px;flex-shrink:0}
+  .chart .cl{font-size:13.5px}
+  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+  .chart text.small{font-size:3.2px;fill:var(--sub)}
+
   @media (max-width:760px){
     .summary-grid{margin-top:-40px}
     .phase-grid{grid-template-columns:1fr}
@@ -125,6 +152,24 @@
 </style>
 </head>
 <body>
+
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
 
 <div class="hero">
   <div class="hero-inner">
@@ -181,7 +226,7 @@
       </table>
     </div>
 
-    <div class="alert alert-brand"><span class="a-icon">✔</span><div><strong>段階対応を推奨:</strong> まずは全決済でStripeの領収書メールを自動送信して開始し、法人需要が出てきた段階でインボイス対応（媒介者交付特例＋Stripe Invoicing等）を追加する、という二段構えが現実的です（5章）。</div></div>
+    <div class="alert alert-brand"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>段階対応を推奨:</strong> まずは全決済でStripeの領収書メールを自動送信して開始し、法人需要が出てきた段階でインボイス対応（媒介者交付特例＋Stripe Invoicing等）を追加する、という二段構えが現実的です（5章）。</div></div>
   </div>
 
   <!-- 1 -->
@@ -199,7 +244,7 @@
       </ul>
     </div>
 
-    <div class="alert alert-amber"><span class="a-icon">📖</span><div><strong>用語ひとこと解説:</strong>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-help"/></svg></span><div><strong>用語ひとこと解説:</strong>
       <p><strong>集約モデル</strong> — 全店舗の売上をプラットフォーマー1社のアカウントで一括して受け取り、後から各店に配分する方式。今回のStripe構成（Connectを使わない単一アカウント）がこれにあたります。</p>
       <p><strong>収納代行 / 委託販売</strong> — 「お金の回収」や「販売」を他社に代わって行ってもらう関係。集約モデルは、税務・法務的にはこの委託販売や収納代行に近い構造として整理されます（この法的整理自体は弁護士回答待ち）。</p></div></div>
   </div>
@@ -224,7 +269,7 @@
       </div>
     </div>
 
-    <div class="alert alert-brand"><span class="a-icon">💡</span><div><strong>含意:</strong> 集約モデルでは領収書の発行元表示は必ずPEDALSTANDARDになり、販売店名は出ません。Connectを使わない＝アカウントが1つしかないためです。（出典: Stripe Docs「Receipts」「Public details」）</div></div>
+    <div class="alert alert-brand"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>含意:</strong> 集約モデルでは領収書の発行元表示は必ずPEDALSTANDARDになり、販売店名は出ません。Connectを使わない＝アカウントが1つしかないためです。（出典: Stripe Docs「Receipts」「Public details」）</div></div>
 
     <div class="card">
       <ul>
@@ -233,7 +278,7 @@
       </ul>
     </div>
 
-    <div class="alert alert-amber"><span class="a-icon">!</span><div><strong>補足:</strong> Stripeの領収書のうち、税の明細（品目ごとの金額・税率別の内訳）まで細かく載るのは、<strong>サブスクリプションやStripe Invoicing（請求書）経由の支払い</strong>に対する領収書です。通常の1回きりのカード決済（PaymentIntent）の領収書に、日本の登録番号や税率別の消費税額まで自動で載るとは、Stripe公式ドキュメントには書かれていません（＝この点は3章の「そのままでは適格請求書にならない」に直結）。</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>補足:</strong> Stripeの領収書のうち、税の明細（品目ごとの金額・税率別の内訳）まで細かく載るのは、<strong>サブスクリプションやStripe Invoicing（請求書）経由の支払い</strong>に対する領収書です。通常の1回きりのカード決済（PaymentIntent）の領収書に、日本の登録番号や税率別の消費税額まで自動で載るとは、Stripe公式ドキュメントには書かれていません（＝この点は3章の「そのままでは適格請求書にならない」に直結）。</div></div>
   </div>
 
   <!-- 3 -->
@@ -258,7 +303,7 @@
       </ul>
     </div>
 
-    <div class="alert alert-red"><span class="a-icon">⚠</span><div><strong>混同注意:</strong> Stripe自身が「適格請求書」を発行しているという情報があります（Stripe Japanは適格請求書発行事業者として登録済み）。ただしこれは<strong>Stripeが加盟店に請求する「Stripe利用手数料」に対する適格請求書</strong>です。RINCLEのレンタル利用者向けの取引には使えません（別物）。「Stripeがインボイスを出してくれるらしい」という話を、ユーザー向け領収書の話と混同しないよう注意が必要です。（出典: Stripe Support「Qualified tax invoice for Stripe fees」・確認済み）</div></div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>混同注意:</strong> Stripe自身が「適格請求書」を発行しているという情報があります（Stripe Japanは適格請求書発行事業者として登録済み）。ただしこれは<strong>Stripeが加盟店に請求する「Stripe利用手数料」に対する適格請求書</strong>です。RINCLEのレンタル利用者向けの取引には使えません（別物）。「Stripeがインボイスを出してくれるらしい」という話を、ユーザー向け領収書の話と混同しないよう注意が必要です。（出典: Stripe Support「Qualified tax invoice for Stripe fees」・確認済み）</div></div>
   </div>
 
   <!-- 4 -->
@@ -276,14 +321,14 @@
     <h3>4-2. 特例：媒介者交付特例で、PEDALSTANDARDが自社の登録番号で発行できる</h3>
     <div class="card">
       <p><strong>媒介者交付特例</strong>（用語: 販売や集金を「代わりに行う人＝受託者」が、売り手＝委託者に代わってインボイスを発行できる特例）を使えば、<strong>PEDALSTANDARD（受託者）が、自社の氏名・登録番号を記載した適格請求書を、販売店に代わってユーザーに発行できます</strong>。（根拠: 消費税法施行令70条の12①。出典: 国税庁インボイスQ&amp;A 問48・問49・確認済み）これは、集約モデルのRINCLEにとって理想的な仕組みです。PEDALSTANDARDが一括して自社名義でインボイスを出せるため、店舗ごとにバラバラに発行させる必要がありません。</p>
-      <div class="alert alert-brand" style="margin-bottom:0"><span class="a-icon">✔</span><div><strong>媒介者交付特例の適用要件は次の2つ（両方必要）:</strong>
+      <div class="alert alert-brand" style="margin-bottom:0"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>媒介者交付特例の適用要件は次の2つ（両方必要）:</strong>
         <ol>
           <li><strong>委託者（販売店）と受託者（PEDALSTANDARD）の双方が「適格請求書発行事業者」であること。</strong></li>
           <li><strong>委託者（販売店）が、取引の前までに「自分は適格請求書発行事業者として登録している」旨を受託者（PEDALSTANDARD）に通知していること。</strong>（通知は取引の都度でなくてもよく、加盟店との基本契約書に販売店の登録番号を記載する方法でも可）</li>
         </ol></div></div>
     </div>
 
-    <div class="alert alert-amber"><span class="a-icon">📖</span><div><strong>Q&amp;Aで確認した実務ポイント:</strong>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-help"/></svg></span><div><strong>Q&amp;Aで確認した実務ポイント:</strong>
       <p>・この特例は、商品販売の委託だけでなく、<strong>「請求書の発行事務や集金事務だけを委託している場合（＝収納代行・決済代行的な構造）」にも適用できます</strong>（問48）。集約モデルはまさにこれに該当し得ます。</p>
       <p>・受託者（PEDALSTANDARD）側には、<strong>交付した適格請求書の写しを保存し、販売店にも交付（または精算書等で代替）する義務</strong>があります（問48）。月次の売上明細・精算書の設計に組み込む必要があります。</p>
       <p>・複数の販売店の取引を<strong>1枚のインボイスにまとめて発行することも可能</strong>です（問49）。</p></div></div>
@@ -294,7 +339,7 @@
     </div>
 
     <h3>4-4. 最重要の注意点：販売店が免税事業者だと特例が使えない</h3>
-    <div class="alert alert-red"><span class="a-icon">⚠</span><div><strong>免税事業者の店舗には特例が使えない:</strong> 媒介者交付特例は、要件1のとおり「委託者・受託者の双方が適格請求書発行事業者」であることが必須です。したがって、<strong>販売店（小規模なプロショップ）が免税事業者（＝適格請求書発行事業者に登録していない）だと、その店舗については媒介者交付特例が使えません。</strong></div></div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>免税事業者の店舗には特例が使えない:</strong> 媒介者交付特例は、要件1のとおり「委託者・受託者の双方が適格請求書発行事業者」であることが必須です。したがって、<strong>販売店（小規模なプロショップ）が免税事業者（＝適格請求書発行事業者に登録していない）だと、その店舗については媒介者交付特例が使えません。</strong></div></div>
     <div class="card">
       <ul>
         <li>実務上は、加盟店に免税事業者と課税事業者が混在していても、<strong>適格請求書発行事業者の分とそれ以外の分を区分して、登録済みの店舗分だけをインボイスにする</strong>ことは認められています（問49・確認済み）。</li>
@@ -315,7 +360,7 @@
       </ul>
     </div>
 
-    <div class="alert alert-amber"><span class="a-icon">!</span><div><strong>補足（要確認）:</strong> レンタサイクルの店頭取引が「不特定多数を相手にする事業」として、宛名（相手方の氏名）を省略できる<strong>適格簡易請求書</strong>の対象業種にあたるかは、Stripeガイドの例示（小売・飲食・タクシー等）には明示されていません。国税庁Q&amp;Aにはレンタカー事業が対象例として挙がっているとの調査結果があり、レンタサイクルも同様に扱える可能性はありますが、<strong>税理士への確認が必要</strong>です（6章）。</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>補足（要確認）:</strong> レンタサイクルの店頭取引が「不特定多数を相手にする事業」として、宛名（相手方の氏名）を省略できる<strong>適格簡易請求書</strong>の対象業種にあたるかは、Stripeガイドの例示（小売・飲食・タクシー等）には明示されていません。国税庁Q&amp;Aにはレンタカー事業が対象例として挙がっているとの調査結果があり、レンタサイクルも同様に扱える可能性はありますが、<strong>税理士への確認が必要</strong>です（6章）。</div></div>
 
     <h3>5-2. 推奨：二段構えの段階対応</h3>
     <div class="phase-grid">
@@ -333,7 +378,7 @@
       </div>
     </div>
 
-    <div class="alert alert-brand"><span class="a-icon">✔</span><div>この二段構えは、7/3決定の決済フロー（「領収書は全決済で自動送信」）とも整合します。まず自動領収書で走り出し、需要を見てインボイス対応を足す、という順序です。</div></div>
+    <div class="alert alert-brand"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div>この二段構えは、7/3決定の決済フロー（「領収書は全決済で自動送信」）とも整合します。まず自動領収書で走り出し、需要を見てインボイス対応を足す、という順序です。</div></div>
   </div>
 
   <!-- 6 -->
@@ -458,7 +503,7 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon">!</span><div><strong>注:</strong> deep-research の反証（refuted）結果により、「1回限りの決済レシートには明細行を一切追加できない」「PaymentIntentでは請求書を生成できない」といった断定は本資料では採用していません（Stripe側の仕様は実装検証時に確認）。</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>注:</strong> deep-research の反証（refuted）結果により、「1回限りの決済レシートには明細行を一切追加できない」「PaymentIntentでは請求書を生成できない」といった断定は本資料では採用していません（Stripe側の仕様は実装検証時に確認）。</div></div>
   </div>
 
 </div>
@@ -468,5 +513,42 @@
   関連: payment-flow.html（7/3決定の決済フロー） ／ payjp-vs-stripe.html（決済基盤の方針）
 </footer>
 
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(l){ l.classList.remove('cur'); });
+          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
+        }
+      });
+    }, {rootMargin:'-15% 0px -65% 0px'});
+    map.forEach(function(m){ spy.observe(m[1]); });
+  }
+})();
+</script>
 </body>
 </html>

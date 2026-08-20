@@ -133,6 +133,34 @@
 
   footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
 
+
+  /* SVGアイコン（スプライト参照） */
+  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
+  .section-num .icon{width:22px;height:22px}
+
+  /* 読み進みバー */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+  .rv-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* フローナビの現在地ハイライト */
+  .flow a.cur{background:var(--brand-soft)}
+  .flow a.cur .fnum{background:var(--brand)}
+
+  /* ミニチャート（ドーナツ） */
+  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .chart svg{width:130px;height:130px;flex-shrink:0}
+  .chart .cl{font-size:13.5px}
+  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+  .chart text.small{font-size:3.2px;fill:var(--sub)}
+
   @media (max-width:760px){
     .funnel-step{grid-template-columns:1fr}
     .funnel-header{display:none}
@@ -147,6 +175,24 @@
 </head>
 <body>
 
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
+
 <div class="hero">
   <div class="hero-inner">
     <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
@@ -160,7 +206,7 @@
 
 <div class="container">
 
-<div class="alert alert-amber"><span class="a-icon">!</span><div><strong>2026-08-20注記:</strong> 本文中の「24店舗」は作成当時の値です（2026-08-20の本番サイト実測では店舗56・自転車374台）。DB再構築は完了し、新サイトは2026年7月上旬に本番リリース済み。2026-06-11のLighthouse・インデックス実測は旧サイトの値のため、新サイトでの再計測が必要です。</div></div>
+<div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>2026-08-20注記:</strong> 本文中の「24店舗」は作成当時の値です（2026-08-20の本番サイト実測では店舗56・自転車374台）。DB再構築は完了し、新サイトは2026年7月上旬に本番リリース済み。2026-06-11のLighthouse・インデックス実測は旧サイトの値のため、新サイトでの再計測が必要です。</div></div>
 
 <div class="tabs">
   <button class="tab-btn active" data-target="panel-seo">SEO問題</button>
@@ -191,6 +237,22 @@
       </div>
       <p class="body">旧記述「LCP 3〜5秒」は過小評価だった。Lighthouse実測（モバイル・2026-06-11・旧サイト）: <strong>スコア25/100、FCP 20.3秒、LCP 49.3秒、総重量9.2MB</strong>。<br>
       ラボ値のため実回線の体感はこれより短いが、この重量ではどの回線でもLCP 2.5秒合格（Core Web Vitals）はほぼ不可能。モバイルユーザーの<strong>53%は3秒以上で離脱</strong>する（Google/SOASTA調査）。※検索速度改善込みの新サイトが2026年7月にリリース済みのため要再計測。</p>
+    </div>
+
+    <div class="card">
+      <div class="chart">
+        <svg viewBox="0 0 42 42" role="img" aria-label="読み込み3秒以上で離脱するモバイルユーザーの割合">
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#F2EEE9" stroke-width="5"/>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--brand)" stroke-width="5"
+                  stroke-dasharray="53 47" stroke-dashoffset="25"/>
+          <text x="21" y="20.5" text-anchor="middle" class="big">53%</text>
+          <text x="21" y="25.5" text-anchor="middle" class="small">読み込み3秒以上で離脱</text>
+        </svg>
+        <div class="cl">
+          <div><i style="background:var(--brand)"></i>読み込みに3秒以上かかると離脱するモバイルユーザー <strong>53%</strong></div>
+          <div style="margin-top:6px;color:var(--sub);font-size:12.5px">出典: Google/SOASTA調査。旧サイト実測はFCP 20.3秒・LCP 49.3秒（Lighthouse・モバイル）</div>
+        </div>
+      </div>
     </div>
 
     <div class="card edge-red">
@@ -248,7 +310,7 @@
         </div>
       </div>
 
-      <div class="alert alert-blue" style="margin-top:12px;"><span class="a-icon">ℹ</span><div><strong>ただし:</strong> UIが最低限整っていなければ集客しても離脱するだけ。Tier 1（検索バー/料金明示/キャンセルポリシー）は「集客の前提条件」であり、集客と並行して実施する。</div></div>
+      <div class="alert alert-blue" style="margin-top:12px;"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>ただし:</strong> UIが最低限整っていなければ集客しても離脱するだけ。Tier 1（検索バー/料金明示/キャンセルポリシー）は「集客の前提条件」であり、集客と並行して実施する。</div></div>
 
       <hr class="funnel-divider">
 
@@ -266,7 +328,7 @@
         </div>
       </div>
 
-      <div class="alert alert-amber" style="margin:12px 0;"><span class="a-icon">⚠</span><div><strong>日付範囲をまたぐ空き検索のDB設計は地雷:</strong> Bubbleでは「予約済みレコードを除外する方式」が定石で、advancedフィルタ多用はクライアント処理のため件数増で破綻する。検索バー実装前にDB再構築後の新設計（2026年7月に本番リリース済み）と整合を取り、設計レビューを必須とする。</div></div>
+      <div class="alert alert-amber" style="margin:12px 0;"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>日付範囲をまたぐ空き検索のDB設計は地雷:</strong> Bubbleでは「予約済みレコードを除外する方式」が定石で、advancedフィルタ多用はクライアント処理のため件数増で破綻する。検索バー実装前にDB再構築後の新設計（2026年7月に本番リリース済み）と整合を取り、設計レビューを必須とする。</div></div>
 
       <div class="funnel-step">
         <div class="step-label yellow">Step 2.5<br>比較・検討</div>
@@ -765,7 +827,7 @@
   </div>
 
   <div class="section">
-    <div class="section-header"><div class="section-num plain">¥</div><div><h2>収益モデルが未定義 — 「誰からいくら取るか」を決める</h2><div class="sh-sub">2026-06追加</div></div></div>
+    <div class="section-header"><div class="section-num plain"><svg class="icon"><use href="#i-help"/></svg></div><div><h2>収益モデルが未定義 — 「誰からいくら取るか」を決める</h2><div class="sh-sub">2026-06追加</div></div></div>
 
     <div class="card edge-red">
       <h4 class="c-title">レンタル手数料だけでは事業が立たない</h4>
@@ -779,11 +841,11 @@
       <p class="body">購入成約への送客フィー（例: 車体価格の3〜5%）なら30万円の完成車で<strong>9,000〜15,000円/台</strong> — レンタル手数料の数倍。「レンタル料の購入充当」をRINCLE標準特典として全店共通化し、Step 7の「試乗履歴つき購入相談予約」と接続する。</p>
     </div>
 
-    <div class="alert alert-blue"><span class="a-icon">ℹ</span><div>KPIに<strong>「テイクレート」「GMV」「レンタル→購入相談率・購入転換率」</strong>を追加する。</div></div>
+    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>KPIに<strong>「テイクレート」「GMV」「レンタル→購入相談率・購入転換率」</strong>を追加する。</div></div>
   </div>
 
   <div class="section">
-    <div class="section-header"><div class="section-num plain">§</div><div><h2>保険・賠償の構造的な穴</h2><div class="sh-sub">2026-06追加</div></div></div>
+    <div class="section-header"><div class="section-num plain"><svg class="icon"><use href="#i-alert"/></svg></div><div><h2>保険・賠償の構造的な穴</h2><div class="sh-sub">2026-06追加</div></div></div>
 
     <div class="card edge-red">
       <h4 class="c-title">施設賠償責任保険は「利用者の運転ミス」を補償しない</h4>
@@ -811,7 +873,7 @@
         <li>自転車メディア・ブロガーに体験取材を依頼</li>
         <li>目標: 各店舗最低5件、合計120件</li>
       </ul>
-      <div class="alert alert-amber" style="margin-bottom:0;"><span class="a-icon">⚠</span><div><strong>ステマ規制（景表法、2023年10月施行）:</strong> 「レビュー投稿を条件」に対価を提供すると広告表示義務が発生し、措置命令・課徴金の対象になり得る。投稿してもらう場合は「モニター利用」である旨の表示を徹底。インセンティブは投稿行為のみに付与し、評価内容を条件にしない。</div></div>
+      <div class="alert alert-amber" style="margin-bottom:0;"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>ステマ規制（景表法、2023年10月施行）:</strong> 「レビュー投稿を条件」に対価を提供すると広告表示義務が発生し、措置命令・課徴金の対象になり得る。投稿してもらう場合は「モニター利用」である旨の表示を徹底。インセンティブは投稿行為のみに付与し、評価内容を条件にしない。</div></div>
     </div>
 
     <div class="card edge-green">
@@ -821,7 +883,7 @@
         <li>ショップの既存顧客にRINCLEを紹介するメールを配信</li>
         <li>ショップのGoogleビジネスプロフィールにRINCLEのリンクを追加</li>
       </ul>
-      <div class="alert alert-green" style="margin-bottom:0;"><span class="a-icon">✓</span><div><strong>ポイント:</strong> 自社でゼロから集客するより、24店舗（当時。2026-08-20実測では56店舗）の既存集客力を借りる方がはるかに効率的</div></div>
+      <div class="alert alert-green" style="margin-bottom:0;"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>ポイント:</strong> 自社でゼロから集客するより、24店舗（当時。2026-08-20実測では56店舗）の既存集客力を借りる方がはるかに効率的</div></div>
     </div>
   </div>
 
@@ -835,7 +897,7 @@
       <div class="metric-chip"><div class="mv">???</div><div class="ml">リピート率</div></div>
       <div class="metric-chip"><div class="mv">???</div><div class="ml">GMV・テイクレート・レンタル→購入相談率</div></div>
     </div>
-    <div class="alert alert-red"><span class="a-icon">!</span><div><strong>これらの数値が1つでも取れていないなら、まずアナリティクスの整備が最優先。</strong> どの施策をやるべきかは、ファネルのどこで一番漏れているかで決まる。（GA4の本番設置はまだ — タスク#21-22で対応予定・2026-08-20時点）</div></div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>これらの数値が1つでも取れていないなら、まずアナリティクスの整備が最優先。</strong> どの施策をやるべきかは、ファネルのどこで一番漏れているかで決まる。（GA4の本番設置はまだ — タスク#21-22で対応予定・2026-08-20時点）</div></div>
   </div>
 </div>
 
@@ -858,6 +920,44 @@
     });
   });
   if (location.hash && document.getElementById(location.hash.slice(1))) openTab(location.hash.slice(1));
+</script>
+
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(l){ l.classList.remove('cur'); });
+          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
+        }
+      });
+    }, {rootMargin:'-15% 0px -65% 0px'});
+    map.forEach(function(m){ spy.observe(m[1]); });
+  }
+})();
 </script>
 </body>
 </html>

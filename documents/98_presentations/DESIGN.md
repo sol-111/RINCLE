@@ -183,7 +183,43 @@ footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
   .hero{padding:44px 24px 84px}
   .container{padding:28px 18px 60px}
 }
+
+/* ---------- SVGアイコン（スプライト参照・snippets.html参照） ---------- */
+.icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+.t-icon .icon,.a-icon .icon{width:18px;height:18px}
+.section-num .icon{width:22px;height:22px}
+
+/* ---------- 読み進みバー ---------- */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+/* ---------- ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） ---------- */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.rv-in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ---------- フローナビの現在地ハイライト ---------- */
+.flow a.cur{background:var(--brand-soft)}
+.flow a.cur .fnum{background:var(--brand)}
+
+/* ---------- ミニチャート（ドーナツ） ---------- */
+.chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.chart svg{width:130px;height:130px;flex-shrink:0}
+.chart .cl{font-size:13.5px}
+.chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+.chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+.chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+.chart text.small{font-size:3.2px;fill:var(--sub)}
 ```
+
+## アイコン・演出・ミニチャート（2026-08-20追加）
+
+- **アイコンはSVGスプライト**: `<body>`先頭に`<symbol id="i-〇〇">`のスプライトを置き、`<svg class="icon"><use href="#i-check"/></svg>`で参照。絵文字・文字記号（⇄▦🔍等）は使わない。アイコンの実体は見本ページ（sitemap-creation-guide.html）のスプライトをコピー（check/info/alert/help/file/api/refresh/search/send/list/map/arrow の12種）
+- **読み進みバー**: `<body>`先頭に`<div class="progress"><i></i></div>`、末尾のスクリプトで幅を更新
+- **ふわっと表示**: セクション単位（.section/.recap/nav.flow）で画面に入った時にfade-up。JSが`.rv`を付与する方式なのでJS無効でも全部見える。`prefers-reduced-motion`では無効化
+- **フローナビの現在地**: flow navがあるページはスクロールに応じて現在の章がハイライトされる（スクリプトが自動で有効化）
+- **ミニチャート**: 構成比・比較など数字が主役の箇所にはSVGドーナツ（.chart）を使ってよい。**出典のある数字のみ・1ページ1〜2個まで**。飾りのためのチャートは作らない
+- 上記のスクリプトは見本ページ末尾の`<script>`をそのままコピー（タブ用スクリプトとは独立して共存可）
 
 ## ヒーローのHTML雛形
 

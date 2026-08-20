@@ -109,6 +109,33 @@
   .m-note{background:#FDECEF;border:1px solid #F6C6D0;border-radius:8px;font-size:.76rem;color:#8E1230;padding:8px 12px;margin-top:12px;line-height:1.6}
   .m-note b{color:#6E0C24}
 
+  /* SVGアイコン（スプライト参照） */
+  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
+  .section-num .icon{width:22px;height:22px}
+
+  /* 読み進みバー */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+  .rv-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* フローナビの現在地ハイライト */
+  .flow a.cur{background:var(--brand-soft)}
+  .flow a.cur .fnum{background:var(--brand)}
+
+  /* ミニチャート（ドーナツ） */
+  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .chart svg{width:130px;height:130px;flex-shrink:0}
+  .chart .cl{font-size:13.5px}
+  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+  .chart text.small{font-size:3.2px;fill:var(--sub)}
+
   @media (max-width:760px){
     .hero{padding:44px 24px 36px}
     .container{padding:28px 18px 60px}
@@ -121,6 +148,24 @@
 </style>
 </head>
 <body>
+
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
 
 <div class="hero">
   <div class="hero-inner">
@@ -139,7 +184,7 @@
   <!-- ==================== カテゴリ俯瞰 ==================== -->
   <div class="section" id="overview">
     <div class="section-header">
-      <div class="section-num plain">&#9635;</div>
+      <div class="section-num plain"><svg class="icon"><use href="#i-list"/></svg></div>
       <div><h2>10カテゴリの俯瞰</h2><div class="sh-sub">「誰の力で・どうやってユーザーに届くか」で分類</div></div>
     </div>
     <p class="section-lead">toCの集客手法は「誰の力で・どうやってユーザーに届くか」で10カテゴリに分けられます。カードをクリックすると各カテゴリの詳細へ。</p>
@@ -161,7 +206,7 @@
   <!-- ==================== 全手法サマリー（地図） ==================== -->
   <div class="section" id="map">
     <div class="section-header">
-      <div class="section-num plain">&#9737;</div>
+      <div class="section-num plain"><svg class="icon"><use href="#i-map"/></svg></div>
       <div><h2>全手法サマリー — この資料の「地図」</h2><div class="sh-sub">コスト・即効性・持続性・toCとの相性で一覧化</div></div>
     </div>
     <p class="section-lead">全37手法をコスト・即効性・持続性・toCとの相性で一覧化。手法名から各カテゴリの詳細に飛べます。</p>
@@ -345,7 +390,7 @@
     </div>
     <p class="section-lead">お金を払って即座にリーチする。</p>
 
-    <div class="alert alert-red"><span class="a-icon">&#9888;</span><div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>
       <b>ステマ規制（景品表示法・2023年10月施行）に注意</b><br>
       インフルエンサーへの依頼投稿（商品提供のみの<b>ギフティングを含む</b>）には「#PR」等の広告表示が<b>必須</b>。アフィリエイトでも広告主に景表法上の表示管理責任があり、アフィリエイターの誇大表現も広告主の責任になる。化粧品/健康食品等は薬機法の表現規制にも注意。
     </div></div>
@@ -521,7 +566,7 @@
     </div>
     <p class="section-lead">ユーザーが自発的に広めてくれる。最もCAC（顧客獲得コスト）が低い。</p>
 
-    <div class="alert alert-red"><span class="a-icon">&#9888;</span><div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>
       <b>ステマ規制の注意（景品表示法・2023年10月施行）</b><br>
       事業者が対価（金銭・商品提供・特典等）を渡して投稿やレビューを依頼する場合、<b>広告であることの明示（#PR等）が必要</b>。明示なしの依頼投稿・やらせレビューは景表法違反となる。
       出典: <a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing" target="_blank" rel="noopener">消費者庁 ステルスマーケティング規制</a>
@@ -717,5 +762,42 @@
 
 <footer>toC Marketing Knowledge Map &mdash; Internal Use Only（RINCLEに限らず使える汎用知識資料）<br>正本: documents/4_growth/02_marketing/marketing-knowledge-map.md（md更新時はこのHTMLも同期すること）</footer>
 
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(l){ l.classList.remove('cur'); });
+          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
+        }
+      });
+    }, {rootMargin:'-15% 0px -65% 0px'});
+    map.forEach(function(m){ spy.observe(m[1]); });
+  }
+})();
+</script>
 </body>
 </html>

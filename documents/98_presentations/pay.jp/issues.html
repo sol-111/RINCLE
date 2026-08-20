@@ -167,6 +167,33 @@
   footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
   .footer-note{text-align:center;color:var(--sub);font-size:13px;padding:32px 0 0;border-top:1px solid var(--border);margin-top:20px}
 
+  /* SVGアイコン（スプライト参照） */
+  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
+  .section-num .icon{width:22px;height:22px}
+
+  /* 読み進みバー */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+  .rv-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* フローナビの現在地ハイライト */
+  .flow a.cur{background:var(--brand-soft)}
+  .flow a.cur .fnum{background:var(--brand)}
+
+  /* ミニチャート（ドーナツ） */
+  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .chart svg{width:130px;height:130px;flex-shrink:0}
+  .chart .cl{font-size:13.5px}
+  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+  .chart text.small{font-size:3.2px;fill:var(--sub)}
+
   @media (max-width:760px){
     .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
     .flow a{border-top:1px solid var(--border)}
@@ -183,6 +210,24 @@
 </style>
 </head>
 <body>
+
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
 
 <div class="hero">
   <div class="hero-inner">
@@ -204,7 +249,7 @@
     <a href="#low"><span class="fnum">3</span><div class="ft">低優先</div><div class="fd">運用への影響なし</div></a>
   </nav>
 
-  <div class="alert alert-blue"><span class="a-icon">ℹ</span><div>
+  <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>
     <strong>今後の決済はStripeへの載せ替えが決定しています（2026-06-19定例・実装タスク#35）。</strong>このページは現行Pay.JP連携の調査時点（2026-04-16）の課題一覧です。<br>
     文中の画面名・ワークフロー名（shop_admin・index等）は調査時点＝DB再構築前の旧サイトのものです。#3（手数料15%）は2026-06に修正済み。その他の項目の現在の対応状況は個別に確認してください。
   </div></div>
@@ -228,7 +273,7 @@
 
   <!-- 一覧サマリー -->
   <div class="section" id="summary">
-    <div class="section-header"><div class="section-num plain">▤</div><div><h2>一覧サマリー</h2><div class="sh-sub">全12件のタイトルとカテゴリ</div></div></div>
+    <div class="section-header"><div class="section-num plain"><svg class="icon"><use href="#i-list"/></svg></div><div><h2>一覧サマリー</h2><div class="sh-sub">全12件のタイトルとカテゴリ</div></div></div>
 
     <div class="table-wrap">
       <table>
@@ -249,11 +294,32 @@
         </tbody>
       </table>
     </div>
+
+    <div class="card">
+      <div class="chart">
+        <svg viewBox="0 0 42 42" role="img" aria-label="課題12件のカテゴリ内訳">
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#F2EEE9" stroke-width="5"/>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--danger)" stroke-width="5"
+                  stroke-dasharray="50 50" stroke-dashoffset="25"/>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--tobe)" stroke-width="5"
+                  stroke-dasharray="25 75" stroke-dashoffset="-25"/>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--info)" stroke-width="5"
+                  stroke-dasharray="25 75" stroke-dashoffset="-50"/>
+          <text x="21" y="20.5" text-anchor="middle" class="big">12</text>
+          <text x="21" y="25.5" text-anchor="middle" class="small">件（2026-04-16調査）</text>
+        </svg>
+        <div class="cl">
+          <div><i style="background:var(--danger)"></i>即時対応 <strong>6</strong>件（50%）</div>
+          <div><i style="background:var(--tobe)"></i>改善時に対応 <strong>3</strong>件（25%）</div>
+          <div><i style="background:var(--info)"></i>低優先 <strong>3</strong>件（25%）</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ========== 即時対応 ========== -->
   <div class="section" id="immediate">
-    <div class="section-header"><div class="section-num imm">⚠</div><div><h2>即時対応</h2><div class="sh-sub">運用が壊れる、仕様未達、または事故リスクがある問題。着手順に沿って対処する</div></div></div>
+    <div class="section-header"><div class="section-num imm"><svg class="icon"><use href="#i-alert"/></svg></div><div><h2>即時対応</h2><div class="sh-sub">運用が壊れる、仕様未達、または事故リスクがある問題。着手順に沿って対処する</div></div></div>
 
     <!-- #1 -->
     <div class="issue-card imm">
@@ -296,7 +362,7 @@
         <div class="ifield"><div class="ifield-label ph">🔍 現象（調査時点）</div><div class="ifield-text">契約上のRINCLE取り分は売上の15%だが、調査時点のシステムでは10%に設定されていた。全ての決済で5%分の収益が失われていた</div></div>
         <div class="ifield"><div class="ifield-label im">💥 影響（調査時点）</div><div class="ifield-text">1万円の決済あたり500円の損失。取引が発生するたびに損失が拡大し続けていた</div></div>
         <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">Pay.JPのプラットフォーム手数料の設定値を10% → 15%に変更する（設定1箇所の変更のみ）</div></div>
-        <div class="alert alert-green" style="margin-bottom:0"><span class="a-icon">✓</span><div><strong>この項目は対応済みです（2026-06）。</strong>platform_feeは契約通りの15%に修正済み（現行フロー資料の分配例も15%に更新済み）。切り替え前に作成された既存テナントへの適用状況は要確認。</div></div>
+        <div class="alert alert-green" style="margin-bottom:0"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>この項目は対応済みです（2026-06）。</strong>platform_feeは契約通りの15%に修正済み（現行フロー資料の分配例も15%に更新済み）。切り替え前に作成された既存テナントへの適用状況は要確認。</div></div>
         <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">契約通りの収益が得られていない。修正は設定変更のみで工数最小、即日対応可能</div></div></div>
 
         <details class="dev-detail">
@@ -562,12 +628,12 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <div class="alert alert-red"><span class="a-icon">🚨</span><div><strong>即時対応の6件は着手順に沿って進めてください。</strong>まず #1（本番キー分離）→ #2（DB公開）で安全な環境を整え、#3（手数料15%修正）で収益損失を止めた上で、#4（charge_id保存）→ #5（カード選択）→ #6（オーソリ実装）の順に着手します。</div></div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>即時対応の6件は着手順に沿って進めてください。</strong>まず #1（本番キー分離）→ #2（DB公開）で安全な環境を整え、#3（手数料15%修正）で収益損失を止めた上で、#4（charge_id保存）→ #5（カード選択）→ #6（オーソリ実装）の順に着手します。</div></div>
   </div>
 
   <!-- ========== 改善時に対応 ========== -->
   <div class="section" id="tobe">
-    <div class="section-header"><div class="section-num tobe">▲</div><div><h2>改善時に対応</h2><div class="sh-sub">改善フェーズでまとめて対応する項目</div></div></div>
+    <div class="section-header"><div class="section-num tobe"><svg class="icon"><use href="#i-refresh"/></svg></div><div><h2>改善時に対応</h2><div class="sh-sub">改善フェーズでまとめて対応する項目</div></div></div>
 
     <!-- #7 -->
     <div class="issue-card tobe">
@@ -756,12 +822,12 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <div class="alert alert-red"><span class="a-icon">⚠</span><div><strong>改善時に対応の3件は改善フェーズでまとめて対応します。</strong>即時対応の6件が完了してから着手してください。</div></div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>改善時に対応の3件は改善フェーズでまとめて対応します。</strong>即時対応の6件が完了してから着手してください。</div></div>
   </div>
 
   <!-- ========== 低優先 ========== -->
   <div class="section" id="low">
-    <div class="section-header"><div class="section-num low">●</div><div><h2>低優先</h2><div class="sh-sub">運用に影響なし。余裕があれば対応する項目</div></div></div>
+    <div class="section-header"><div class="section-num low"><svg class="icon"><use href="#i-info"/></svg></div><div><h2>低優先</h2><div class="sh-sub">運用に影響なし。余裕があれば対応する項目</div></div></div>
 
     <!-- #10 -->
     <div class="issue-card low">
@@ -834,7 +900,7 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <div class="alert alert-blue"><span class="a-icon">ℹ</span><div><strong>低優先の3件は運用に直接影響しません。</strong>#10 はビジネス要件の確定待ち、#11 と #12 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div></div>
+    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>低優先の3件は運用に直接影響しません。</strong>#10 はビジネス要件の確定待ち、#11 と #12 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div></div>
   </div>
 
   <div class="footer-note">調査日: 2026-04-16 / 調査担当: Yano / ソース: rincle.bubble 解析結果</div>
@@ -843,5 +909,42 @@ tenant:        店舗の tenant_id
 
 <footer>正本: documents/2_requirements/04_integration/pay.jp/payjp-issues.md（md更新時はこのHTMLも同期すること）</footer>
 
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(l){ l.classList.remove('cur'); });
+          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
+        }
+      });
+    }, {rootMargin:'-15% 0px -65% 0px'});
+    map.forEach(function(m){ spy.observe(m[1]); });
+  }
+})();
+</script>
 </body>
 </html>

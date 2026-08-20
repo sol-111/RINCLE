@@ -220,6 +220,32 @@
   .badge-red{background:#FDECEF;color:var(--danger)}
   .badge-blue{background:#EEF3FE;color:#1D48A6}
 
+  /* SVGアイコン（スプライト参照・既存の.compare-box .icon〈O/X表示〉と衝突しないようsvg限定） */
+  svg.icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+  .alert-icon svg.icon{width:18px;height:18px}
+
+  /* 読み進みバー */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+  .rv-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* フローナビの現在地ハイライト */
+  .flow a.cur{background:var(--brand-soft)}
+  .flow a.cur .fnum{background:var(--brand)}
+
+  /* ミニチャート（ドーナツ） */
+  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .chart svg{width:130px;height:130px;flex-shrink:0}
+  .chart .cl{font-size:13.5px}
+  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+  .chart text.small{font-size:3.2px;fill:var(--sub)}
+
   /* ---------- responsive ---------- */
   @media(max-width:700px){
     .wrapper{padding:20px 14px}
@@ -236,6 +262,24 @@
 </style>
 </head>
 <body>
+
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
 
 <div class="wrapper">
 
@@ -279,7 +323,7 @@
   </p>
 
   <div class="alert alert-red" style="margin-top:20px">
-    <span class="alert-icon">!</span>
+    <span class="alert-icon"><svg class="icon"><use href="#i-alert"/></svg></span>
     <div>
       <strong>RINCLEの現状（2026-06-11実測で更新）</strong><br>
       Googleにインデックス（登録）されているページは<strong>実質2〜3ページのみ</strong>。<br>
@@ -316,12 +360,12 @@
   </div>
 
   <div class="alert alert-green">
-    <span class="alert-icon">+</span>
+    <span class="alert-icon"><svg class="icon"><use href="#i-check"/></svg></span>
     <div>CVR約4%は「サイトに来てもらえさえすれば、ちゃんと予約につながっている」という意味。つまり<strong>今のボトルネックは流入</strong>で、検索からの流入を増やせば予約はほぼ比例して増える見込みが立ちます。</div>
   </div>
 
   <div class="alert alert-blue">
-    <span class="alert-icon">i</span>
+    <span class="alert-icon"><svg class="icon"><use href="#i-info"/></svg></span>
     <div>ちなみに2026年2月に<strong>3,402PV / 1,603IP</strong>へのスパイクがありましたが、<strong>要因は特定できていません</strong>（アクセスログでは参照元まで分からない）。GA4を導入すれば（Step 4）、こうした急増がどこから来たのか（SNSで紹介された？メディアに載った？）が分かるようになります。</div>
   </div>
 </div>
@@ -359,12 +403,12 @@
   </div>
 
   <div class="alert alert-blue">
-    <span class="alert-icon">i</span>
+    <span class="alert-icon"><svg class="icon"><use href="#i-info"/></svg></span>
     <div><strong>重要な補足: 「Bubble（JSレンダリング）だからインデックスされない」は正確ではありません。</strong> Vercel×MERJの大規模調査（Googlebotのフェッチ10万件以上を分析）では、GoogleはCSRページを含むHTML 200ページの<strong>100%をフルレンダリング</strong>しており、レンダリング待ちも中央値10秒程度でした（出典: <a href="https://vercel.com/blog/how-google-handles-javascript-throughout-the-indexing-process" target="_blank">Vercel調査</a> / <a href="https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics" target="_blank">Google公式 JavaScript SEO解説</a>）。</div>
   </div>
 
   <div class="alert alert-green">
-    <span class="alert-icon">+</span>
+    <span class="alert-icon"><svg class="icon"><use href="#i-check"/></svg></span>
     <div>RINCLEのインデックスが2〜3ページに留まっている主因は、<strong>sitemapが無い + 内部リンクがJS生成のみ → Googleがページを発見できない「ディスカバリーの問題」</strong>である可能性が高い。つまり、このガイドのStep 1〜3（メタ情報・sitemap・Search Console）という<strong>基本の整備だけでも大きく改善する余地</strong>があります。</div>
   </div>
 </div>
@@ -627,7 +671,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
       </div>
 
       <div class="alert alert-green">
-        <span class="alert-icon">+</span>
+        <span class="alert-icon"><svg class="icon"><use href="#i-check"/></svg></span>
         <div>登録後、左メニューの「サイトマップ」からStep 2のsitemap（<code>sitemap.xml</code>）を送信しましょう。1〜2週間後に「カバレッジ」（インデックス数）・「検索パフォーマンス」（表示キーワード）・「エラー」を確認します。</div>
       </div>
     </div>
@@ -646,12 +690,12 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
       <p><strong>GA4</strong>は、サイトに何人来て、どのページを見て、どれくらい滞在したかを計測する無料ツールです。</p>
 
       <div class="alert alert-blue" style="margin-top:12px">
-        <span class="alert-icon">i</span>
+        <span class="alert-icon"><svg class="icon"><use href="#i-info"/></svg></span>
         <div><strong>実例（2026-06-11追記）:</strong> 2026年2月にアクセスが普段の約1.5倍（<strong>3,402PV / 1,603IP</strong>）に急増しましたが、アクセスログでは参照元が分からず<strong>要因を特定できませんでした</strong>。GA4が入っていれば「集客 &gt; トラフィック獲得」レポートで、どこから来た急増なのか一目で分かります。</div>
       </div>
 
       <div class="alert alert-green">
-        <span class="alert-icon">+</span>
+        <span class="alert-icon"><svg class="icon"><use href="#i-check"/></svg></span>
         <div><strong>進捗（2026-07-02追記）:</strong> GA4アカウントは増永さん側で作成済み（計測資産はクライアント所有・弊社も招待済み）。6/29の確認で<strong>開発版URL（/version-xxx/）が本番と別ページとして二重カウントされている</strong>ことが分かったため、GAタグの読み込みを本番（live）バージョンのみに限定する対応を行います（タスク#44）。</div>
       </div>
 
@@ -853,7 +897,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
       </table>
       <p style="font-size:.85rem;color:#8B8279">※ これは低速回線を模したラボ値で、実際のWiFi/4Gでの体感はもっと短い。とはいえ総重量9.2MB（JSバンドルだけで圧縮前8.5MB）という構造上、どんな回線でもLCP 2.5秒合格はほぼ不可能な水準。</p>
       <div class="alert alert-blue">
-        <span class="alert-icon">i</span>
+        <span class="alert-icon"><svg class="icon"><use href="#i-info"/></svg></span>
         <div><strong>ただし優先度に注意:</strong> 表示速度の根本改善はBubbleの設定だけでは難しい。まずはStep 1〜3（メタ情報・sitemap・Search Console）= <strong>無料で即日できる対策を完遂</strong>し、インデックス数の改善を実測するのが先（下記ロードマップ参照）。</div>
       </div>
 
@@ -903,7 +947,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
   </div>
 
   <div class="alert alert-blue">
-    <span class="alert-icon">i</span>
+    <span class="alert-icon"><svg class="icon"><use href="#i-info"/></svg></span>
     <div>↓ <strong>2〜4週間、Search Consoleでインデックス数・表示回数を計測してから投資判断</strong>（主因がディスカバリー問題なら、Phase 1だけで大きく改善する可能性が十分ある）</div>
   </div>
 
@@ -1053,6 +1097,44 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
     });
   });
   if (location.hash && document.getElementById(location.hash.slice(1))) openTab(location.hash.slice(1));
+</script>
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  // ※このページは.sectionが無いタブ構成のため、大ブロックの.cardを対象にする
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.card');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト（このページにflow navは無いが、追加時にそのまま有効になる）
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(l){ l.classList.remove('cur'); });
+          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
+        }
+      });
+    }, {rootMargin:'-15% 0px -65% 0px'});
+    map.forEach(function(m){ spy.observe(m[1]); });
+  }
+})();
 </script>
 </body>
 </html>

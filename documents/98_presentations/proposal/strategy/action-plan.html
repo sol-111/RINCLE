@@ -116,6 +116,34 @@
 
   footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
 
+
+  /* SVGアイコン（スプライト参照） */
+  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
+  .section-num .icon{width:22px;height:22px}
+
+  /* 読み進みバー */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+  .rv-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* フローナビの現在地ハイライト */
+  .flow a.cur{background:var(--brand-soft)}
+  .flow a.cur .fnum{background:var(--brand)}
+
+  /* ミニチャート（ドーナツ） */
+  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .chart svg{width:130px;height:130px;flex-shrink:0}
+  .chart .cl{font-size:13.5px}
+  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+  .chart text.small{font-size:3.2px;fill:var(--sub)}
+
   @media (max-width:760px){
     .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
     .flow a{border-top:1px solid var(--border)}
@@ -129,6 +157,24 @@
 </style>
 </head>
 <body>
+
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
 
 <div class="hero">
   <div class="hero-inner">
@@ -150,7 +196,7 @@
     <a href="#cost"><span class="fnum">4</span><div class="ft">概算費用</div><div class="fd">工数と外注時の目安</div></a>
   </nav>
 
-  <div class="alert alert-amber"><span class="a-icon">!</span><div><strong>2026-08-20注記:</strong> 本文中の「24店舗」は作成当時の値です（2026-08-20の本番サイト実測では店舗56）。DB再構築は完了し、新サイトは2026年7月上旬に本番リリース済み。GA4・Search Console・sitemap.xmlの本番設置はまだ（タスク#21-22）。sitemap.xmlは手動生成方式に決定（2026-08-20・手順: <code>documents/4_growth/03_seo/sitemap-creation-guide.md</code>）。</div></div>
+  <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>2026-08-20注記:</strong> 本文中の「24店舗」は作成当時の値です（2026-08-20の本番サイト実測では店舗56）。DB再構築は完了し、新サイトは2026年7月上旬に本番リリース済み。GA4・Search Console・sitemap.xmlの本番設置はまだ（タスク#21-22）。sitemap.xmlは手動生成方式に決定（2026-08-20・手順: <code>documents/4_growth/03_seo/sitemap-creation-guide.md</code>）。</div></div>
 
   <!-- ===== 1. 実行フェーズ ===== -->
   <div class="section" id="phases">
@@ -168,51 +214,51 @@
         <div class="phase-subtitle">計測 + SEO基盤整備 + 即効集客</div>
         <div class="task-grid">
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F4CA;</span> GA4導入
+            <span class="t-icon"><svg class="icon"><use href="#i-api"/></svg></span> GA4導入
             <span class="t-time">30分</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F3F7;&#xFE0F;</span> title / description 設定
+            <span class="t-icon"><svg class="icon"><use href="#i-file"/></svg></span> title / description 設定
             <span class="t-time">1〜2日</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F310;</span> OGP設定
+            <span class="t-icon"><svg class="icon"><use href="#i-send"/></svg></span> OGP設定
             <span class="t-time">1〜2日</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F5FA;&#xFE0F;</span> sitemap.xml + robots.txt（手動生成方式・2026-08-20決定）
+            <span class="t-icon"><svg class="icon"><use href="#i-map"/></svg></span> sitemap.xml + robots.txt（手動生成方式・2026-08-20決定）
             <span class="t-time">半日</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F50D;</span> Search Console登録
+            <span class="t-icon"><svg class="icon"><use href="#i-search"/></svg></span> Search Console登録
             <span class="t-time">1時間</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F9F1;</span> h1 / alt / canonical
+            <span class="t-icon"><svg class="icon"><use href="#i-list"/></svg></span> h1 / alt / canonical
             <span class="t-time">1〜2日</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F3A5;</span> クラリティ導入
+            <span class="t-icon"><svg class="icon"><use href="#i-api"/></svg></span> クラリティ導入
             <span class="t-time">30分</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F3EA;</span> ショップチャネル活用
+            <span class="t-icon"><svg class="icon"><use href="#i-send"/></svg></span> ショップチャネル活用
             <span class="t-time">1〜2日</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F4CD;</span> GBP対応（同意取得&#x2192;管理者招待&#x2192;情報追記）
+            <span class="t-icon"><svg class="icon"><use href="#i-map"/></svg></span> GBP対応（同意取得&#x2192;管理者招待&#x2192;情報追記）
             <span class="t-time">設計1日+運用2〜4週</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F39F;&#xFE0F;</span> アソビュー/じゃらん掲載（体験プラン化）
+            <span class="t-icon"><svg class="icon"><use href="#i-list"/></svg></span> アソビュー/じゃらん掲載（体験プラン化）
             <span class="t-time">1〜2日+審査</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F4F0;</span> まとめメディア・自治体観光ページ掲載依頼
+            <span class="t-icon"><svg class="icon"><use href="#i-send"/></svg></span> まとめメディア・自治体観光ページ掲載依頼
             <span class="t-time">1〜2日・無料</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F6E1;&#xFE0F;</span> 24店舗の保険・免責の棚卸し
+            <span class="t-icon"><svg class="icon"><use href="#i-alert"/></svg></span> 24店舗の保険・免責の棚卸し
             <span class="t-time">1〜2日</span>
           </div>
         </div>
@@ -324,15 +370,15 @@
         <div class="phase-subtitle">自治体・DMO営業（2026-06調査で新設）</div>
         <div class="task-grid">
           <div class="task-item" style="border-left-color:var(--gov);">
-            <span class="t-icon">&#x1F3DB;&#xFE0F;</span> G1: 観光協会・DMOサイト掲載
+            <span class="t-icon"><svg class="icon"><use href="#i-map"/></svg></span> G1: 観光協会・DMOサイト掲載
             <span class="t-time">無料が多い</span>
           </div>
           <div class="task-item" style="border-left-color:var(--gov);">
-            <span class="t-icon">&#x1F4E2;</span> G2: 共同プレスリリース
+            <span class="t-icon"><svg class="icon"><use href="#i-send"/></svg></span> G2: 共同プレスリリース
             <span class="t-time">PR TIMES</span>
           </div>
           <div class="task-item" style="border-left-color:var(--gov);">
-            <span class="t-icon">&#x1F91D;</span> G3: 実証事業への参画提案
+            <span class="t-icon"><svg class="icon"><use href="#i-arrow"/></svg></span> G3: 実証事業への参画提案
             <span class="t-time">参画事業者</span>
           </div>
         </div>
@@ -470,5 +516,43 @@
 
 <footer>正本: documents/4_growth/01_strategy/action-plan.md（md更新時はこのHTMLも同期すること）</footer>
 
+
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(l){ l.classList.remove('cur'); });
+          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
+        }
+      });
+    }, {rootMargin:'-15% 0px -65% 0px'});
+    map.forEach(function(m){ spy.observe(m[1]); });
+  }
+})();
+</script>
 </body>
 </html>

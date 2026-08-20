@@ -115,6 +115,33 @@
 
   footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px;line-height:1.9}
 
+  /* SVGアイコン（スプライト参照） */
+  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
+  .section-num .icon{width:22px;height:22px}
+
+  /* 読み進みバー */
+  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+
+  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+  .rv-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* フローナビの現在地ハイライト */
+  .flow a.cur{background:var(--brand-soft)}
+  .flow a.cur .fnum{background:var(--brand)}
+
+  /* ミニチャート（ドーナツ） */
+  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+  .chart svg{width:130px;height:130px;flex-shrink:0}
+  .chart .cl{font-size:13.5px}
+  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
+  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
+  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+  .chart text.small{font-size:3.2px;fill:var(--sub)}
+
   @media (max-width:760px){
     .summary-grid{margin-top:-40px}
     .routes-grid{grid-template-columns:1fr}
@@ -128,6 +155,24 @@
 </style>
 </head>
 <body>
+
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
 
 <div class="hero">
   <div class="hero-inner">
@@ -161,13 +206,13 @@
 
 <div class="container">
 
-  <div class="alert alert-blue"><span class="a-icon">ℹ</span><div><strong>その後の更新（2026-08-20時点）:</strong> 決済サービスは<strong>6/19定例でStripeに決定</strong>（実装はタスク#35）。決済フローは<strong>7/3定例で「当日決済のみ」に決定</strong>し、本資料§6.1の旧設計は別資料「予約・決済・貸出・返却フロー」（payment-flow.html）に置き換え済み。<strong>デポジットは今回スコープ外で確定（6/30）</strong>。DB再構築は完了し、新サイトは7月上旬に本番リリース済み。</div></div>
+  <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>その後の更新（2026-08-20時点）:</strong> 決済サービスは<strong>6/19定例でStripeに決定</strong>（実装はタスク#35）。決済フローは<strong>7/3定例で「当日決済のみ」に決定</strong>し、本資料§6.1の旧設計は別資料「予約・決済・貸出・返却フロー」（payment-flow.html）に置き換え済み。<strong>デポジットは今回スコープ外で確定（6/30）</strong>。DB再構築は完了し、新サイトは7月上旬に本番リリース済み。</div></div>
 
   <!-- 0 -->
   <div class="section" id="s0">
     <div class="section-header"><div class="section-num plain">0</div><div><h2>結論サマリー</h2><div class="sh-sub">再調査（2026-06）の結論と判断根拠</div></div></div>
 
-    <div class="alert alert-brand"><span class="a-icon">✔</span><div><strong>結論: Stripeに載せ替える。</strong> タイミングは今ではなく、DB再構築完了後に決済全体設計（キャンセルポリシー・振込オペ・月額課金）を固めてから、<strong>集約モデルの実装と同時に</strong>。オーソリの先行実装（80h）はやらない（6/12合意「急がない・二度手間回避」のとおり）。例外は「夏シーズン中の保険」として50円オーソリだけ先に買う場合のみ（経営判断）。以下が判断根拠。</div></div>
+    <div class="alert alert-brand"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>結論: Stripeに載せ替える。</strong> タイミングは今ではなく、DB再構築完了後に決済全体設計（キャンセルポリシー・振込オペ・月額課金）を固めてから、<strong>集約モデルの実装と同時に</strong>。オーソリの先行実装（80h）はやらない（6/12合意「急がない・二度手間回避」のとおり）。例外は「夏シーズン中の保険」として50円オーソリだけ先に買う場合のみ（経営判断）。以下が判断根拠。</div></div>
 
     <p style="font-size:14px;color:var(--sub);margin-top:16px">比較した3ルート:</p>
     <div class="routes-grid">
@@ -273,7 +318,7 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon">💡</span><div><strong>含意:</strong> RINCLEのユースケース（予約時50円検証→3日前全額オーソリ→当日キャプチャ / デポジットオーソリ数日間）は<strong>どちらでも実現可能</strong>。「Stripeはオーソリが7日しか持たないからPay.jp一択」という前回認識は、日本特例30日の確認で実質解消。海外発行カードは2026年8月以降どちらも実質5〜7日が上限になるため、インバウンド対応はどちらを選んでも短期オーソリ前提の設計が必要。</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>含意:</strong> RINCLEのユースケース（予約時50円検証→3日前全額オーソリ→当日キャプチャ / デポジットオーソリ数日間）は<strong>どちらでも実現可能</strong>。「Stripeはオーソリが7日しか持たないからPay.jp一択」という前回認識は、日本特例30日の確認で実質解消。海外発行カードは2026年8月以降どちらも実質5〜7日が上限になるため、インバウンド対応はどちらを選んでも短期オーソリ前提の設計が必要。</div></div>
 
     <h3>1.5 補足調査（#25）: 高額デポジットオーソリの与信通過率とリスク</h3>
     <div class="card">
@@ -292,8 +337,8 @@
       </div>
       <p style="font-size:12px;color:var(--sub)">推計の仮定: レンタル料の即時決済1〜2.5万円（実測平均¥10,200・ロード上位/E-Bikeで2〜3万）が同時に枠に乗る。判定されるのは「限度額」ではなく「空き枠（限度額−利用残高）」。高級車を借りる層はゴールド保有率が相対的に高い可能性はある（未検証）。</p>
     </div>
-    <div class="alert alert-red"><span class="a-icon">⚠</span><div><strong>リスク: デビット/プリペイドの即時引き落とし</strong> — オーソリでも<strong>即時に口座から実額が引き落とされ</strong>、返金まで数日〜2週間（案内上は最大20日程度）。30万円なら「30万円引かれた！」という重大クレームに直結。クレジットカードでも解放後の枠復活に数日かかる場合があり、「枠が戻らない」問い合わせ運用は必須。</div></div>
-    <div class="alert alert-amber"><span class="a-icon">💡</span><div><strong>Pay.jpとStripeの差（上記リスクを防ぐ制御手段）:</strong> <strong>Stripeなら「デポジットはクレジットのみ」と制御できる</strong>（PaymentMethodの<code>funding</code>で種別判定・Radarでブロック可）。<strong>Pay.jpはv1・v2ともカード情報に種別フィールドがなく安全に実装できない</strong>（v2のOpenAPI定義にもfunding/debit/prepaidの概念が存在しない・2026-06確認）— デポジット導入の可否自体が決済サービス選定の材料になる。</div></div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>リスク: デビット/プリペイドの即時引き落とし</strong> — オーソリでも<strong>即時に口座から実額が引き落とされ</strong>、返金まで数日〜2週間（案内上は最大20日程度）。30万円なら「30万円引かれた！」という重大クレームに直結。クレジットカードでも解放後の枠復活に数日かかる場合があり、「枠が戻らない」問い合わせ運用は必須。</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>Pay.jpとStripeの差（上記リスクを防ぐ制御手段）:</strong> <strong>Stripeなら「デポジットはクレジットのみ」と制御できる</strong>（PaymentMethodの<code>funding</code>で種別判定・Radarでブロック可）。<strong>Pay.jpはv1・v2ともカード情報に種別フィールドがなく安全に実装できない</strong>（v2のOpenAPI定義にもfunding/debit/prepaidの概念が存在しない・2026-06確認）— デポジット導入の可否自体が決済サービス選定の材料になる。</div></div>
   </div>
 
   <!-- 2 -->
@@ -327,13 +372,13 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon">💡</span><div><strong>含意:</strong> 現在の規模では月数百円の差。ただし<strong>GMVがスケールするほどPay.jpのコスト優位が効く</strong>（月商1,000万でスタンダード比月3万円差・ビジネスプラン移行なら月6万円差）。「手数料はほぼ同等」という前回の判断は新料金体系では成り立たない。現行契約から新料率への移行可否はPay.jpに要確認。</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>含意:</strong> 現在の規模では月数百円の差。ただし<strong>GMVがスケールするほどPay.jpのコスト優位が効く</strong>（月商1,000万でスタンダード比月3万円差・ビジネスプラン移行なら月6万円差）。「手数料はほぼ同等」という前回の判断は新料金体系では成り立たない。現行契約から新料率への移行可否はPay.jpに要確認。</div></div>
   </div>
 
   <!-- 3 -->
   <div class="section" id="s3">
     <div class="section-header"><div class="section-num">3</div><div><h2>3Dセキュア・CVC（事実関係を更新）</h2></div></div>
-    <div class="alert alert-red"><span class="a-icon">⚠</span><div><strong>前提:</strong> 3Dセキュア（3DS）はカード決済時の本人認証（不正利用対策）。<strong>2025年3月末までにEC加盟店への導入が義務化済みで、RINCLEは未導入</strong>（このまま運用を続けること自体がコンプライアンス・チャージバックリスク）。</div></div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>前提:</strong> 3Dセキュア（3DS）はカード決済時の本人認証（不正利用対策）。<strong>2025年3月末までにEC加盟店への導入が義務化済みで、RINCLEは未導入</strong>（このまま運用を続けること自体がコンプライアンス・チャージバックリスク）。</div></div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -374,7 +419,7 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon">💡</span><div><strong>補足: Pay.jp API v2とは</strong> — Pay.jpの新世代API。現行RINCLEはv1（テナント型Platform API含む）。v2はクレカに加えPayPay・Apple Pay等を一元管理でき、3DS等の購入者アクション型フローの統合が強化されている。ただしv1→v2はAPI体系が変わる移行作業であり、<strong>「Pay.jp続行で将来機能も取る」ルートは実質v2への載せ替えを含む</strong> = どのルートでも決済実装の作り替えは避けられない。</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>補足: Pay.jp API v2とは</strong> — Pay.jpの新世代API。現行RINCLEはv1（テナント型Platform API含む）。v2はクレカに加えPayPay・Apple Pay等を一元管理でき、3DS等の購入者アクション型フローの統合が強化されている。ただしv1→v2はAPI体系が変わる移行作業であり、<strong>「Pay.jp続行で将来機能も取る」ルートは実質v2への載せ替えを含む</strong> = どのルートでも決済実装の作り替えは避けられない。</div></div>
   </div>
 
   <!-- 5 -->
@@ -392,8 +437,8 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon">!</span><div><strong>増永さん側で決定が必要（旧移行方針の決め残しを統合）:</strong> キャンセルポリシーの策定（#28で設計中・雨無料/それ以外課金の方向は6/12合意）/ 弁護士回答（一括回収の会計・責任所在）/ 店舗への振込頻度（月1回 or 月2回）/ 振込手数料の負担者 / 追加オプションのシステム化可否</div></div>
-    <div class="alert alert-amber"><span class="a-icon">!</span><div><strong>技術的な確認事項:</strong> Stripe手数料率の最終確認 / Bubbleプラグインの選定・検証 / Webhook設計 / 領収書の発行義務・発行元（一括回収モデルではPEDALSTANDARDが発行元になる可能性。Stripeのレシートメール自動送信で対応見込み・法的要件は要確認）</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>増永さん側で決定が必要（旧移行方針の決め残しを統合）:</strong> キャンセルポリシーの策定（#28で設計中・雨無料/それ以外課金の方向は6/12合意）/ 弁護士回答（一括回収の会計・責任所在）/ 店舗への振込頻度（月1回 or 月2回）/ 振込手数料の負担者 / 追加オプションのシステム化可否</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>技術的な確認事項:</strong> Stripe手数料率の最終確認 / Bubbleプラグインの選定・検証 / Webhook設計 / 領収書の発行義務・発行元（一括回収モデルではPEDALSTANDARDが発行元になる可能性。Stripeのレシートメール自動送信で対応見込み・法的要件は要確認）</div></div>
   </div>
 
   <!-- 6 -->
@@ -401,7 +446,7 @@
     <div class="section-header"><div class="section-num">6</div><div><h2>決定後の移行計画（旧「Stripe移行方針」を統合・2026-06更新）</h2><div class="sh-sub">4/21・5/1合意の実行計画。Stripeを選んだ場合のフロー設計と移行ステップ。Pay.jp集約化（ルートB）でも決済フローの構造は同じ</div></div></div>
 
     <h3>6.1 決済フロー設計</h3>
-    <div class="alert alert-blue"><span class="a-icon">ℹ</span><div><strong>この6.1の旧設計は置き換え済みです。</strong>増永さんの構想（6/30受領）を受けた<strong>7/3定例の決定（当日決済のみ・オーソリなし）</strong>により、決済フローは別資料「予約・決済・貸出・返却フロー」（payment-flow.html）が最新です。以下は当時の設計として残しています。</div></div>
+    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>この6.1の旧設計は置き換え済みです。</strong>増永さんの構想（6/30受領）を受けた<strong>7/3定例の決定（当日決済のみ・オーソリなし）</strong>により、決済フローは別資料「予約・決済・貸出・返却フロー」（payment-flow.html）が最新です。以下は当時の設計として残しています。</div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>シーン</th><th>フロー</th><th>要点</th></tr></thead>
@@ -436,7 +481,7 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon">!</span><div>旧計画の日付（5/8決定・5/11実装開始）は、DB再構築優先への方針変更（5月）により失効。決済サービスは<strong>6/19にStripeへ決定済み</strong>。実装スケジュールは<strong>キャンセルポリシー確定後の詳細見積で引き直す</strong>（payment-flow.html参照）。</div></div>
+    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>旧計画の日付（5/8決定・5/11実装開始）は、DB再構築優先への方針変更（5月）により失効。決済サービスは<strong>6/19にStripeへ決定済み</strong>。実装スケジュールは<strong>キャンセルポリシー確定後の詳細見積で引き直す</strong>（payment-flow.html参照）。</div></div>
     <p style="font-size:12px;color:var(--sub)">出典: Pay.jp料金プラン / Pay.jpオーソリ仕様（authcapture）/ 海外カード制限告知（2026-03-03）/ Pay.jp 3DSガイドライン / Stripe料金 / Stripe Place a hold — 詳細URLは正本md（payjp-vs-stripe-comparison.md）の参考資料欄を参照</p>
   </div>
 
@@ -459,5 +504,42 @@
   正本: documents/2_requirements/04_integration/stripe/payjp-vs-stripe-comparison.md（md更新時はこのHTMLも同期すること）
 </footer>
 
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length && 'IntersectionObserver' in window) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          links.forEach(function(l){ l.classList.remove('cur'); });
+          map.forEach(function(m){ if (m[1] === e.target) m[0].classList.add('cur'); });
+        }
+      });
+    }, {rootMargin:'-15% 0px -65% 0px'});
+    map.forEach(function(m){ spy.observe(m[1]); });
+  }
+})();
+</script>
 </body>
 </html>
