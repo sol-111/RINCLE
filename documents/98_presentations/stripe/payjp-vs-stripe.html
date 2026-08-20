@@ -32,9 +32,21 @@
 
   .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
 
-  /* サマリーカード（ヒーロー下に重ねる） */
-  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;padding:0 28px}
-  .summary-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-lg);border-top:3px solid var(--brand)}
+  /* flow nav */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:nth-child(4n+1){border-left:none}
+  .flow a:nth-child(n+5){border-top:1px solid var(--border)}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:nth-child(4n)::after,.flow a:last-child::after{content:""}
+
+  /* サマリーカード（本文先頭） */
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:0 0 44px}
+  .summary-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--brand)}
   .summary-card h3{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--brand-deep);margin-bottom:6px}
   .summary-card p{font-size:13px;color:var(--text);line-height:1.7}
 
@@ -142,7 +154,8 @@
   .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
 
   @media (max-width:760px){
-    .summary-grid{margin-top:-40px}
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
     .routes-grid{grid-template-columns:1fr}
     .hero{padding:44px 24px 84px}
     .container{padding:28px 18px 60px}
@@ -184,26 +197,36 @@
   </div>
 </div>
 
-<div class="summary-grid">
-  <div class="summary-card">
-    <h3>短期</h3>
-    <p><strong>Pay.jp続行が速い</strong>。オーソリ実装は見積済み80h。ただし一部は将来捨てる実装</p>
-  </div>
-  <div class="summary-card">
-    <h3>中長期</h3>
-    <p><strong>Stripe優位は維持</strong>。ただし手数料はPay.jpが安くなり、前回より差は縮小</p>
-  </div>
-  <div class="summary-card">
-    <h3>結論</h3>
-    <p><strong>Stripeに載せ替える</strong>。時期は全体設計後・集約モデル実装と同時（オーソリ先行はやらない）</p>
-  </div>
-  <div class="summary-card">
-    <h3>新事実</h3>
-    <p>Pay.jp新料金3.3% / Stripeのオーソリは日本円30日 / Pay.jpも3DS対応済み</p>
-  </div>
-</div>
-
 <div class="container">
+
+  <nav class="flow">
+    <a href="#s0"><span class="fnum">0</span><div class="ft">結論サマリー</div><div class="fd">3ルート比較と判断根拠</div></a>
+    <a href="#s1"><span class="fnum">1</span><div class="ft">オーソリ仕様</div><div class="fd">有効期間とデポジット与信</div></a>
+    <a href="#s2"><span class="fnum">2</span><div class="ft">手数料比較</div><div class="fd">Pay.jp 3.3% vs Stripe 3.6%</div></a>
+    <a href="#s3"><span class="fnum">3</span><div class="ft">3Dセキュア・CVC</div><div class="fd">本人認証の義務化と検証の差</div></a>
+    <a href="#s4"><span class="fnum">4</span><div class="ft">その他の機能比較</div><div class="fd">領収書・サブスク・Bubble連携</div></a>
+    <a href="#s5"><span class="fnum">5</span><div class="ft">リスク・未解決事項</div><div class="fd">弁護士回答待ちと確認事項</div></a>
+    <a href="#s6"><span class="fnum">6</span><div class="ft">移行計画</div><div class="fd">フロー設計と移行ステップ</div></a>
+  </nav>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <h3>短期</h3>
+      <p><strong>Pay.jp続行が速い</strong>。オーソリ実装は見積済み80h。ただし一部は将来捨てる実装</p>
+    </div>
+    <div class="summary-card">
+      <h3>中長期</h3>
+      <p><strong>Stripe優位は維持</strong>。ただし手数料はPay.jpが安くなり、前回より差は縮小</p>
+    </div>
+    <div class="summary-card">
+      <h3>結論</h3>
+      <p><strong>Stripeに載せ替える</strong>。時期は全体設計後・集約モデル実装と同時（オーソリ先行はやらない）</p>
+    </div>
+    <div class="summary-card">
+      <h3>新事実</h3>
+      <p>Pay.jp新料金3.3% / Stripeのオーソリは日本円30日 / Pay.jpも3DS対応済み</p>
+    </div>
+  </div>
 
   <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>その後の更新（2026-08-20時点）:</strong> 決済サービスは<strong>6/19定例でStripeに決定</strong>（実装はタスク#35）。決済フローは<strong>7/3定例で「当日決済のみ」に決定</strong>し、本資料§6.1の旧設計は別資料「予約・決済・貸出・返却フロー」（payment-flow.html）に置き換え済み。<strong>デポジットは今回スコープ外で確定（6/30）</strong>。DB再構築は完了し、新サイトは7月上旬に本番リリース済み。</div></div>
 

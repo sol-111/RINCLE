@@ -21,7 +21,7 @@
   body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
   /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 40px;overflow:hidden}
+  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
   .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
   .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
   .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
@@ -32,11 +32,18 @@
 
   .container{max-width:980px;margin:0 auto;padding:24px 28px 80px}
 
-  /* tabs */
-  .tabs{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;padding:14px 4px;margin:0 0 20px;background:rgba(248,246,243,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
-  .tab-btn{border:1px solid #E0D8D0;background:#fff;color:var(--ink);border-radius:999px;padding:8px 16px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.4}
-  .tab-btn:hover{border-color:var(--brand)}
-  .tab-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  /* 章ナビ型タブ（見た目はflow navと同一・クリックでパネル切替） */
+  .flow-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .tab-btn{display:block;text-align:left;background:#fff;border:none;border-left:1px solid var(--border);padding:20px 18px 18px;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
+  .tab-btn:nth-child(4n+1){border-left:none}
+  .tab-btn:nth-child(n+5){border-top:1px solid var(--border)}
+  .tab-btn:hover{background:var(--brand-soft)}
+  .tab-btn .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
+  .tab-btn .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .tab-btn .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .tab-btn.active{background:var(--brand-soft)}
+  .tab-btn.active .fnum{background:var(--brand);color:#fff;box-shadow:none}
+  @media (max-width:760px){.flow-tabs{grid-template-columns:1fr 1fr;margin-top:-40px}.tab-btn{border-top:1px solid var(--border)}}
   .tab-panel{display:none}
   .tab-panel.active{display:block}
 
@@ -163,7 +170,7 @@
   @media (max-width:760px){
     .funnel-step{grid-template-columns:1fr}
     .funnel-header{display:none}
-    .hero{padding:44px 24px 36px}
+    .hero{padding:44px 24px 84px}
     .container{padding:20px 18px 60px}
   }
 
@@ -203,17 +210,17 @@
   </div>
 </div>
 
+<nav class="flow-tabs">
+  <button class="tab-btn active" data-target="panel-seo"><span class="fnum">1</span><div class="ft">SEO問題</div><div class="fd">Bubble製サイトの検索流入の弱点と対策</div></button>
+  <button class="tab-btn" data-target="panel-funnel"><span class="fnum">2</span><div class="ft">コンバージョンファネル</div><div class="fd">認知からリピートまで各段階の課題</div></button>
+  <button class="tab-btn" data-target="panel-mocks"><span class="fnum">3</span><div class="ft">競合弱点+施策モック</div><div class="fd">競合の弱点に打つ施策を画面案で提示</div></button>
+  <button class="tab-btn" data-target="panel-platform"><span class="fnum">4</span><div class="ft">PFの生死・収益・保険</div><div class="fd">店舗定着・収益モデル・保険の構造課題</div></button>
+  <button class="tab-btn" data-target="panel-coldstart"><span class="fnum">5</span><div class="ft">コールドスタート・計測</div><div class="fd">レビューゼロ期の突破と計測の整備</div></button>
+</nav>
+
 <div class="container">
 
 <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>2026-08-20注記:</strong> 本文中の「24店舗」は作成当時の値です（2026-08-20の本番サイト実測では店舗56・自転車374台）。DB再構築は完了し、新サイトは2026年7月上旬に本番リリース済み。2026-06-11のLighthouse・インデックス実測は旧サイトの値のため、新サイトでの再計測が必要です。</div></div>
-
-<div class="tabs">
-  <button class="tab-btn active" data-target="panel-seo">SEO問題</button>
-  <button class="tab-btn" data-target="panel-funnel">コンバージョンファネル</button>
-  <button class="tab-btn" data-target="panel-mocks">競合弱点+施策モック</button>
-  <button class="tab-btn" data-target="panel-platform">PFの生死・収益・保険</button>
-  <button class="tab-btn" data-target="panel-coldstart">コールドスタート・計測</button>
-</div>
 
 <!-- ============ SEO問題 ============ -->
 <div class="tab-panel active" id="panel-seo">

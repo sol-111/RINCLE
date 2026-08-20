@@ -21,7 +21,7 @@
   body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
   /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 40px;overflow:hidden}
+  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
   .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
   .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
   .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
@@ -31,6 +31,18 @@
   .hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
 
   .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+
+  /* flow nav（4列×2行） */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:nth-child(4n+1){border-left:none}
+  .flow a:nth-child(n+5){border-top:1px solid var(--border)}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:30px;height:30px;border-radius:999px;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px;padding:0 5px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:nth-child(4n)::after,.flow a:last-child::after{content:""}
 
   /* sections */
   .section{margin-bottom:56px;scroll-margin-top:20px}
@@ -159,8 +171,10 @@
   .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
 
   @media (max-width:760px){
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
     .kv-grid{grid-template-columns:1fr 1fr}
-    .hero{padding:44px 24px 36px}
+    .hero{padding:44px 24px 84px}
     .container{padding:28px 18px 60px}
   }
 
@@ -201,6 +215,18 @@
 </div>
 
 <div class="container">
+
+  <!-- 全体フロー（ナビ） -->
+  <nav class="flow">
+    <a href="#overview"><span class="fnum">0</span><div class="ft">登場人物と役割</div><div class="fd">お客さん→Pay.JP→店舗の流れ</div></a>
+    <a href="#shop-register"><span class="fnum">1</span><div class="ft">店舗の登録・審査</div><div class="fd">Pay.JP審査に通ると決済OK</div></a>
+    <a href="#card-register"><span class="fnum">2</span><div class="ft">カード登録</div><div class="fd">予約フローの「支払い方法」で</div></a>
+    <a href="#reserve"><span class="fnum">3</span><div class="ft">予約確定</div><div class="fd">この時点では課金なし</div></a>
+    <a href="#ride-start"><span class="fnum">3.5</span><div class="ft">ライド開始で決済</div><div class="fd">店舗の操作でカード引き落とし</div></a>
+    <a href="#extend"><span class="fnum">4</span><div class="ft">延長料金の決済</div><div class="fd">ライド終了時に追加引き落とし</div></a>
+    <a href="#refund"><span class="fnum">5</span><div class="ft">返金</div><div class="fd">管理画面から手動で実行</div></a>
+    <a href="#money"><span class="fnum">¥</span><div class="ft">お金の流れまとめ</div><div class="fd">決済1件あたりの分配と手数料</div></a>
+  </nav>
 
   <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>
     <strong>今後の決済はStripeへの載せ替えが決定しています（2026-06-19定例・実装タスク#35）。</strong>このページは、載せ替えまで現行本番で動き続けるPay.JP連携の説明です。<br>

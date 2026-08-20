@@ -21,7 +21,7 @@
   body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
   /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 40px;overflow:hidden}
+  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
   .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
   .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
   .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
@@ -32,6 +32,17 @@
   .hero p.hero-note{font-size:.82rem;opacity:.78;margin-top:8px}
 
   .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+
+  /* 章ナビ（フローナビ） */
+  .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:first-child{border-left:none}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:last-child::after{content:""}
 
   /* sections */
   .section{margin-bottom:56px;scroll-margin-top:20px}
@@ -205,7 +216,9 @@
 
   @media (max-width:760px){
     .compare{grid-template-columns:1fr}
-    .hero{padding:44px 24px 36px}
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
+    .hero{padding:44px 24px 84px}
     .container{padding:28px 18px 60px}
     .step-flow{flex-direction:column}
     .step-arrow{transform:rotate(90deg);align-self:center}
@@ -249,6 +262,16 @@
 </div>
 
 <div class="container">
+
+  <!-- 章ナビ -->
+  <nav class="flow">
+    <a href="#sec1"><span class="fnum">1</span><div class="ft">前提: RINCLEの現状</div><div class="fd">2026-06-11 本番DB実測</div></a>
+    <a href="#sec2"><span class="fnum">2</span><div class="ft">全チャネル一覧 &amp; ROI</div><div class="fd">Tier A〜Dで優先順位づけ</div></a>
+    <a href="#sec3"><span class="fnum">3</span><div class="ft">Tier A: 5施策の中身</div><div class="fd">高ROI×低コストの具体策</div></a>
+    <a href="#sec4"><span class="fnum">4</span><div class="ft">横断テーマ: E-Bike軸</div><div class="fd">複数チャネルを貫く切り口</div></a>
+    <a href="#sec5"><span class="fnum">5</span><div class="ft">ステマ規制に注意</div><div class="fd">レビュー依頼の法的な線引き</div></a>
+    <a href="#sec6"><span class="fnum">6</span><div class="ft">結論: SEOのROI</div><div class="fd">短期と長期を分けて評価</div></a>
+  </nav>
 
   <!-- ===== 1. 前提: RINCLEの現状 ===== -->
   <div class="section" id="sec1">

@@ -24,23 +24,20 @@
     line-height:1.75;
     -webkit-font-smoothing:antialiased;
   }
-  .wrapper{max-width:1100px;margin:0 auto;padding:40px 24px}
+  .wrapper{max-width:1100px;margin:0 auto;padding:0 24px 40px}
 
-  /* ---------- hero ---------- */
+  /* ---------- hero（標準・全幅） ---------- */
   .hero{
     position:relative;
     background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);
     color:var(--ink);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:48px 40px;
-    margin-bottom:40px;
-    box-shadow:var(--shadow-lg);
+    border-bottom:1px solid var(--border);
+    padding:52px 40px 88px;
     overflow:hidden;
   }
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:320px;height:320px;border-radius:50%;background:rgba(249,83,32,.05)}
-  .hero::after{content:"";position:absolute;right:60px;bottom:-140px;width:240px;height:240px;border-radius:50%;background:rgba(249,83,32,.07)}
-  .hero-inner{position:relative;z-index:1;display:flex;gap:20px;align-items:flex-start;text-align:left}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
+  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
+  .hero-inner{position:relative;z-index:1;max-width:1052px;margin:0 auto;display:flex;gap:20px;align-items:flex-start;text-align:left}
   .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
   .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
   .hero h1{font-size:2rem;font-weight:800;margin-bottom:8px}
@@ -95,10 +92,18 @@
   .arrow-down{text-align:center;font-size:1.4rem;color:#9A9189;margin:4px 0}
 
   /* ---------- tabs ---------- */
-  .tabs{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;padding:14px 4px;margin:0 0 20px;background:rgba(248,246,243,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
-  .tab-btn{border:1px solid #DDD5CC;background:#fff;color:var(--ink);border-radius:999px;padding:8px 16px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.4}
-  .tab-btn:hover{border-color:var(--brand)}
-  .tab-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  /* 章ナビ型タブ（見た目はflow navと同一・クリックでパネル切替） */
+  .flow-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:1052px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .tab-btn{display:block;text-align:left;background:#fff;border:none;border-left:1px solid var(--border);padding:20px 18px 18px;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
+  .tab-btn:nth-child(4n+1){border-left:none}
+  .tab-btn:nth-child(n+5){border-top:1px solid var(--border)}
+  .tab-btn:hover{background:var(--brand-soft)}
+  .tab-btn .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
+  .tab-btn .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .tab-btn .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .tab-btn.active{background:var(--brand-soft)}
+  .tab-btn.active .fnum{background:var(--brand);color:#fff;box-shadow:none}
+  @media (max-width:760px){.flow-tabs{grid-template-columns:1fr 1fr;margin-top:-40px}.tab-btn{border-top:1px solid var(--border)}}
   .tab-panel{display:none}
   .tab-panel.active{display:block}
 
@@ -282,11 +287,6 @@
 
 <div class="progress" aria-hidden="true"><i></i></div>
 
-<div class="wrapper">
-
-<!-- ============================================================ -->
-<!-- HERO -->
-<!-- ============================================================ -->
 <div class="hero">
   <div class="hero-inner">
     <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
@@ -302,15 +302,19 @@
 <!-- ============================================================ -->
 <!-- タブナビゲーション -->
 <!-- ============================================================ -->
-<div class="tabs">
-  <button class="tab-btn active" data-target="panel-intro">SEOって何</button>
-  <button class="tab-btn" data-target="panel-step1">Step 1: メタ情報</button>
-  <button class="tab-btn" data-target="panel-step2">Step 2: sitemap</button>
-  <button class="tab-btn" data-target="panel-step3">Step 3: Search Console</button>
-  <button class="tab-btn" data-target="panel-step4">Step 4: GA4・Clarity</button>
-  <button class="tab-btn" data-target="panel-step5">Step 5: 効果測定</button>
-  <button class="tab-btn" data-target="panel-roadmap">ロードマップ・チェック表</button>
-</div>
+<nav class="flow-tabs">
+  <button class="tab-btn active" data-target="panel-intro"><span class="fnum"><svg class="icon"><use href="#i-help"/></svg></span><div class="ft">SEOって何</div><div class="fd">現状と期待効果・なぜ今やるか</div></button>
+  <button class="tab-btn" data-target="panel-step1"><span class="fnum">1</span><div class="ft">メタ情報</div><div class="fd">検索結果とSNSでの見え方を整える</div></button>
+  <button class="tab-btn" data-target="panel-step2"><span class="fnum">2</span><div class="ft">sitemap</div><div class="fd">ページ一覧をGoogleに知らせる</div></button>
+  <button class="tab-btn" data-target="panel-step3"><span class="fnum">3</span><div class="ft">Search Console</div><div class="fd">Googleの管理画面に登録する</div></button>
+  <button class="tab-btn" data-target="panel-step4"><span class="fnum">4</span><div class="ft">GA4・Clarity</div><div class="fd">アクセス計測と行動録画の導入</div></button>
+  <button class="tab-btn" data-target="panel-step5"><span class="fnum">5</span><div class="ft">効果測定</div><div class="fd">設定後に何をどう確認するか</div></button>
+  <button class="tab-btn" data-target="panel-roadmap"><span class="fnum"><svg class="icon"><use href="#i-check"/></svg></span><div class="ft">ロードマップ・チェック表</div><div class="fd">進め方と設定の確認一覧</div></button>
+  <button class="tab-btn" data-target="panel-glossary"><span class="fnum"><svg class="icon"><use href="#i-file"/></svg></span><div class="ft">用語集</div><div class="fd">このガイドに出てくる用語の意味</div></button>
+</nav>
+
+<div class="wrapper">
+
 
 <div class="tab-panel active" id="panel-intro">
 <!-- ============================================================ -->
@@ -972,46 +976,6 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
   <p style="font-size:.85rem;color:#8B8279">※ Phase 3の方式は6/30定例で更新: 当初はサブディレクトリ（rincle.co.jp/blog/）+WordPressを推奨していたが、サブディレクトリ同居に必要なリバースプロキシは<strong>落ちるとブログもアプリも全滅する単一障害点</strong>になり、弊社にBubble×WordPressでの運用実績がなく障害切り分けも難しいため、<strong>当面は安全なサブドメイン配信で開始</strong>。サブディレクトリとのSEO差は弊社が改めて洗い出して再判断する（詳細:「ブログSEOの方針」§6）。</p>
 </div>
 
-<!-- ============================================================ -->
-<!-- 用語集 -->
-<!-- ============================================================ -->
-<div class="card">
-  <h2>用語集</h2>
-  <p style="margin-bottom:14px">このガイドに出てくる用語をまとめました。</p>
-  <table class="glossary-table">
-    <thead><tr><th>用語</th><th>意味</th></tr></thead>
-    <tbody>
-      <tr><td>SEO</td><td>Search Engine Optimization の略。検索エンジンで上位表示するための施策全般。</td></tr>
-      <tr><td>インデックス</td><td>Googleがページの情報をデータベースに登録すること。インデックスされないと検索結果に出ない。</td></tr>
-      <tr><td>クローラー</td><td>Googleがウェブを巡回してページ情報を集める自動プログラム（ロボット）。</td></tr>
-      <tr><td>titleタグ</td><td>ブラウザのタブと検索結果の青文字リンクに使われるページタイトル。</td></tr>
-      <tr><td>meta description</td><td>検索結果でタイトル下に表示されるグレーの説明文。クリック率に影響する。</td></tr>
-      <tr><td>OGP</td><td>Open Graph Protocol。SNSでURLを共有したときに表示されるカードの設定。</td></tr>
-      <tr><td>h1タグ</td><td>ページの大見出し。そのページのテーマをGoogleに伝える役割。</td></tr>
-      <tr><td>alt属性</td><td>画像の代替テキスト。画像が表示できないときやGoogleの画像理解に使われる。</td></tr>
-      <tr><td>canonical URL</td><td>複数URLで同じ内容がある場合に「正式なURL」を指定するタグ。</td></tr>
-      <tr><td>noindex</td><td>「このページは検索結果に載せないで」とGoogleに伝えるタグ。マイページ等の検索に出すべきでないページに設定する。</td></tr>
-      <tr><td>sitemap</td><td>サイト内の全ページURLをまとめたXMLファイル。Googleにページの存在を知らせる。</td></tr>
-      <tr><td>robots.txt</td><td>クローラーに対して「見てよい/見ないでほしい」ページを指示するファイル。</td></tr>
-      <tr><td>Search Console</td><td>Google提供の無料ツール。検索結果での見え方やエラーを確認・管理できる。</td></tr>
-      <tr><td>GA4</td><td>Google Analytics 4。サイト訪問者の行動を計測する無料のアクセス解析ツール。</td></tr>
-      <tr><td>Microsoft Clarity</td><td>Microsoftが無料で提供するユーザー行動分析ツール。セッション録画やヒートマップで「なぜ離脱するか」を映像で確認できる。</td></tr>
-      <tr><td>セッション録画</td><td>ユーザーがサイト上でどう操作したかを動画として記録・再生する機能。</td></tr>
-      <tr><td>ヒートマップ</td><td>ページのどこがよくクリックされているか、どこまでスクロールされているかを色（赤=多い/青=少ない）で可視化したもの。</td></tr>
-      <tr><td>デッドクリック</td><td>ユーザーがクリックしたけど何も反応しなかった箇所。UIが分かりにくい証拠。</td></tr>
-      <tr><td>LCP</td><td>Largest Contentful Paint。ページの一番大きな要素が表示されるまでの時間。</td></tr>
-      <tr><td>CVR</td><td>Conversion Rate。サイトに来た人のうち、予約まで完了した人の割合。</td></tr>
-      <tr><td>プリレンダリング</td><td>JSで動的に表示されるページを、事前にHTMLとして生成しておく技術。SEO対策に有効。</td></tr>
-      <tr><td>オーガニック検索</td><td>広告でなく自然な検索結果からのアクセスのこと。SEOで増やすのはこの流入。</td></tr>
-      <tr><td>直帰率</td><td>エンゲージメントしなかったセッションの割合。GA4では旧アナリティクス（1ページだけ見て帰った割合）と定義が異なる。</td></tr>
-      <tr><td>コンバージョン</td><td>サイト上で達成してほしい目標行動（例: レンタル予約の完了）。</td></tr>
-      <tr><td>ページビュー（PV）</td><td>ページが表示された回数。同じ人が2回見たら2PV。</td></tr>
-      <tr><td>検索クエリ</td><td>ユーザーがGoogleの検索窓に入力した言葉（キーワード）。</td></tr>
-      <tr><td>CTR</td><td>Click Through Rate（クリック率）。検索結果に表示された回数のうち実際にクリックされた割合。</td></tr>
-      <tr><td>ドメイン</td><td>サイトのアドレス（例: rincle.co.jp）。インターネット上の住所のようなもの。</td></tr>
-    </tbody>
-  </table>
-</div>
 
 <!-- ============================================================ -->
 <!-- チェックリスト -->
@@ -1075,6 +1039,50 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre>
 </div>
 
 </div><!-- /panel-roadmap -->
+
+<div class="tab-panel" id="panel-glossary">
+<!-- ============================================================ -->
+<!-- 用語集 -->
+<!-- ============================================================ -->
+<div class="card">
+  <h2>用語集</h2>
+  <p style="margin-bottom:14px">このガイドに出てくる用語をまとめました。</p>
+  <table class="glossary-table">
+    <thead><tr><th>用語</th><th>意味</th></tr></thead>
+    <tbody>
+      <tr><td>SEO</td><td>Search Engine Optimization の略。検索エンジンで上位表示するための施策全般。</td></tr>
+      <tr><td>インデックス</td><td>Googleがページの情報をデータベースに登録すること。インデックスされないと検索結果に出ない。</td></tr>
+      <tr><td>クローラー</td><td>Googleがウェブを巡回してページ情報を集める自動プログラム（ロボット）。</td></tr>
+      <tr><td>titleタグ</td><td>ブラウザのタブと検索結果の青文字リンクに使われるページタイトル。</td></tr>
+      <tr><td>meta description</td><td>検索結果でタイトル下に表示されるグレーの説明文。クリック率に影響する。</td></tr>
+      <tr><td>OGP</td><td>Open Graph Protocol。SNSでURLを共有したときに表示されるカードの設定。</td></tr>
+      <tr><td>h1タグ</td><td>ページの大見出し。そのページのテーマをGoogleに伝える役割。</td></tr>
+      <tr><td>alt属性</td><td>画像の代替テキスト。画像が表示できないときやGoogleの画像理解に使われる。</td></tr>
+      <tr><td>canonical URL</td><td>複数URLで同じ内容がある場合に「正式なURL」を指定するタグ。</td></tr>
+      <tr><td>noindex</td><td>「このページは検索結果に載せないで」とGoogleに伝えるタグ。マイページ等の検索に出すべきでないページに設定する。</td></tr>
+      <tr><td>sitemap</td><td>サイト内の全ページURLをまとめたXMLファイル。Googleにページの存在を知らせる。</td></tr>
+      <tr><td>robots.txt</td><td>クローラーに対して「見てよい/見ないでほしい」ページを指示するファイル。</td></tr>
+      <tr><td>Search Console</td><td>Google提供の無料ツール。検索結果での見え方やエラーを確認・管理できる。</td></tr>
+      <tr><td>GA4</td><td>Google Analytics 4。サイト訪問者の行動を計測する無料のアクセス解析ツール。</td></tr>
+      <tr><td>Microsoft Clarity</td><td>Microsoftが無料で提供するユーザー行動分析ツール。セッション録画やヒートマップで「なぜ離脱するか」を映像で確認できる。</td></tr>
+      <tr><td>セッション録画</td><td>ユーザーがサイト上でどう操作したかを動画として記録・再生する機能。</td></tr>
+      <tr><td>ヒートマップ</td><td>ページのどこがよくクリックされているか、どこまでスクロールされているかを色（赤=多い/青=少ない）で可視化したもの。</td></tr>
+      <tr><td>デッドクリック</td><td>ユーザーがクリックしたけど何も反応しなかった箇所。UIが分かりにくい証拠。</td></tr>
+      <tr><td>LCP</td><td>Largest Contentful Paint。ページの一番大きな要素が表示されるまでの時間。</td></tr>
+      <tr><td>CVR</td><td>Conversion Rate。サイトに来た人のうち、予約まで完了した人の割合。</td></tr>
+      <tr><td>プリレンダリング</td><td>JSで動的に表示されるページを、事前にHTMLとして生成しておく技術。SEO対策に有効。</td></tr>
+      <tr><td>オーガニック検索</td><td>広告でなく自然な検索結果からのアクセスのこと。SEOで増やすのはこの流入。</td></tr>
+      <tr><td>直帰率</td><td>エンゲージメントしなかったセッションの割合。GA4では旧アナリティクス（1ページだけ見て帰った割合）と定義が異なる。</td></tr>
+      <tr><td>コンバージョン</td><td>サイト上で達成してほしい目標行動（例: レンタル予約の完了）。</td></tr>
+      <tr><td>ページビュー（PV）</td><td>ページが表示された回数。同じ人が2回見たら2PV。</td></tr>
+      <tr><td>検索クエリ</td><td>ユーザーがGoogleの検索窓に入力した言葉（キーワード）。</td></tr>
+      <tr><td>CTR</td><td>Click Through Rate（クリック率）。検索結果に表示された回数のうち実際にクリックされた割合。</td></tr>
+      <tr><td>ドメイン</td><td>サイトのアドレス（例: rincle.co.jp）。インターネット上の住所のようなもの。</td></tr>
+    </tbody>
+  </table>
+</div>
+</div><!-- /panel-glossary -->
+
 
 <!-- footer -->
 <div style="text-align:center;padding:24px 0 8px;color:#9A9189;font-size:.82rem">

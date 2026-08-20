@@ -21,7 +21,7 @@
   body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
   /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 40px;overflow:hidden}
+  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
   .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
   .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
   .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
@@ -32,6 +32,16 @@
   .hero .status{display:inline-block;margin-top:12px;padding:4px 16px;border-radius:999px;background:rgba(35,32,29,.25);border:1px solid rgba(255,255,255,.3);font-size:.85rem;font-weight:700}
 
   .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+
+  /* フローナビ（章ナビ） */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:nth-child(4n+1){border-left:none}
+  .flow a:nth-child(n+5){border-top:1px solid var(--border)}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
 
   /* sections */
   .section{margin-bottom:56px;scroll-margin-top:20px}
@@ -135,8 +145,10 @@
 
   @media (max-width:760px){
     .compare{grid-template-columns:1fr}
-    .hero{padding:44px 24px 36px}
+    .hero{padding:44px 24px 84px}
     .container{padding:28px 18px 60px}
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
   }
 
   /* webfont: 和文の約物詰め + 表の等幅数字 */
@@ -178,10 +190,20 @@
 
 <div class="container">
 
+  <!-- 章ナビ -->
+  <nav class="flow">
+    <a href="#why"><span class="fnum">1</span><div class="ft">なぜ今整理するか</div><div class="fd">先行逃げ切りの中身を決める</div></a>
+    <a href="#premise"><span class="fnum">2</span><div class="ft">前提: CycleTrip</div><div class="fd">最有力競合の強みと弱みの要約</div></a>
+    <a href="#candidates"><span class="fnum">3</span><div class="ft">差別化候補の一覧</div><div class="fd">真似されにくさ×効果で整理</div></a>
+    <a href="#point"><span class="fnum">4</span><div class="ft">ポイント機能の深掘り</div><div class="fd">効く理由と懸念、変形案</div></a>
+    <a href="#priority"><span class="fnum">5</span><div class="ft">優先順位</div><div class="fd">競合参入前に何を実績にするか</div></a>
+    <a href="#homework"><span class="fnum">6</span><div class="ft">宿題・次のアクション</div><div class="fd">協議して決めること</div></a>
+  </nav>
+
   <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>関連資料: 競合調査レポート / アクションプラン（Tier番号はそちら参照）/ revenue-model.xlsx（数字の出典）。<br>※店舗数・台数の対外表記は協議中のため、本資料はDB実数（54店・369台＝2026-06-11実測）を使用。<strong>2026-08-20の本番サイト実測では店舗56・自転車374台</strong>。</div></div>
 
   <!-- 1 -->
-  <div class="section">
+  <div class="section" id="why">
     <div class="section-header"><div class="section-num">1</div><div><h2>なぜ今整理するか</h2><div class="sh-sub">先行逃げ切りの中身を決める</div></div></div>
     <div class="card">
       <p>スポーツバイクレンタル市場の成長にともない、<strong>近い将来、資本力のある事業者が同種のプラットフォーム型サービスで参入してくる可能性は高い</strong>と見ています。方針は「<strong>先行逃げ切り</strong>」、勝ち筋は「デザインで負けてもUX（使いやすさ）と店舗数・台数で勝つ」で一致済みです。</p>
@@ -190,7 +212,7 @@
   </div>
 
   <!-- 2 -->
-  <div class="section">
+  <div class="section" id="premise">
     <div class="section-header"><div class="section-num plain">2</div><div><h2>前提: 最有力の競合候補（CycleTrip）の強みと弱み</h2><div class="sh-sub">差別化の観点での要約</div></div></div>
     <div class="table-wrap">
       <table>
@@ -229,7 +251,7 @@
   </div>
 
   <!-- 3 -->
-  <div class="section">
+  <div class="section" id="candidates">
     <div class="section-header"><div class="section-num">3</div><div><h2>差別化候補の一覧</h2><div class="sh-sub">真似されにくさ × 効果で整理</div></div></div>
     <div class="card">
       <p>マーケットプレイスの防御は両面あります。<strong>利用者向け（デマンド側）より、店舗向け（サプライ側）のロックインの方が真似されにくく、効果が持続します</strong> — 店舗が離れなければ、競合は在庫ゼロからのスタートになるためです。</p>
@@ -267,7 +289,7 @@
   </div>
 
   <!-- 4 -->
-  <div class="section">
+  <div class="section" id="point">
     <div class="section-header"><div class="section-num">4</div><div><h2>深掘り: ポイント機能（リピート特典）</h2><div class="sh-sub">効く理由と懸念、台帳を持たない変形案</div></div></div>
     <div class="card">
       <p><strong>狙い:</strong> 「RINCLEから予約する方がお得」という需要側のスイッチングコスト。最重要ペルソナD（既存顧客）のリピート促進に直結します。</p>
@@ -306,7 +328,7 @@
   </div>
 
   <!-- 5 -->
-  <div class="section">
+  <div class="section" id="priority">
     <div class="section-header"><div class="section-num">5</div><div><h2>優先順位（たたき台）</h2><div class="sh-sub">競合ローンチ前に何を稼働実績にするか</div></div></div>
     <div class="card">
       <ol class="steps">
@@ -319,7 +341,7 @@
   </div>
 
   <!-- 6 -->
-  <div class="section">
+  <div class="section" id="homework">
     <div class="section-header"><div class="section-num plain">6</div><div><h2>宿題・次のアクション</h2><div class="sh-sub">協議して決めること</div></div></div>
     <div class="card">
       <ul class="todo">

@@ -21,7 +21,7 @@
   body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
   /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 40px;overflow:hidden}
+  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
   .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
   .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
   .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
@@ -32,6 +32,18 @@
   .hero p.meta{font-size:12.5px;opacity:.78;margin-top:12px}
 
   .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+
+  /* flow nav（7章・4列×2行） */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:nth-child(4n+1){border-left:none}
+  .flow a:nth-child(n+5){border-top:1px solid var(--border)}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:nth-child(4n)::after,.flow a:last-child::after{content:""}
 
   /* sections */
   .section{margin-bottom:56px;scroll-margin-top:20px}
@@ -107,7 +119,9 @@
   .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
 
   @media (max-width:760px){
-    .hero{padding:44px 24px 40px}
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
+    .hero{padding:44px 24px 84px}
     .container{padding:28px 18px 60px}
   }
 
@@ -149,6 +163,16 @@
 </div>
 
 <div class="container">
+
+  <nav class="flow">
+    <a href="#update"><span class="fnum">0</span><div class="ft">6/30定例での更新</div><div class="fd">実現方式が3点変わった</div></a>
+    <a href="#conclusion"><span class="fnum">1</span><div class="ft">結論</div><div class="fd">3軸＋用途振り分けのまとめ</div></a>
+    <a href="#where"><span class="fnum">2</span><div class="ft">どこに書くか</div><div class="fd">自社ドメインとnoteの分業</div></a>
+    <a href="#format"><span class="fnum">3</span><div class="ft">どの形式で</div><div class="fd">記事＋本体エリアページの2段構え</div></a>
+    <a href="#tool"><span class="fnum">4</span><div class="ft">何のツールで</div><div class="fd">WordPress vs Bubble vs note</div></a>
+    <a href="#routing"><span class="fnum">5</span><div class="ft">用途で振り分け</div><div class="fd">KWの性質で置き場所を変える</div></a>
+    <a href="#implementation"><span class="fnum">6</span><div class="ft">実現方式・始め方</div><div class="fd">サブドメイン開始・SEO差の洗い出し</div></a>
+  </nav>
 
   <!-- 0 6/30更新 -->
   <div class="section" id="update">

@@ -33,8 +33,21 @@
   .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
 
   /* サマリーカード（ヒーロー下に重ねる） */
-  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;padding:0 28px}
-  .summary-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-lg);border-top:3px solid var(--brand)}
+  /* flow nav */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:nth-child(4n+1){border-left:none}
+  .flow a:nth-child(n+5){border-top:1px solid var(--border)}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:nth-child(4n)::after,.flow a:last-child::after{content:""}
+
+  /* サマリーカード（本文先頭） */
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:0 0 44px}
+  .summary-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--brand)}
   .summary-card h3{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--brand-deep);margin-bottom:6px}
   .summary-card p{font-size:13px;color:var(--text);line-height:1.7}
 
@@ -139,7 +152,8 @@
   .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
 
   @media (max-width:760px){
-    .summary-grid{margin-top:-40px}
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
     .phase-grid{grid-template-columns:1fr}
     .hero{padding:44px 24px 84px}
     .container{padding:28px 18px 60px}
@@ -181,26 +195,37 @@
   </div>
 </div>
 
-<div class="summary-grid">
-  <div class="summary-card">
-    <h3>発行元</h3>
-    <p>Stripe領収書メールの発行元は<strong>PEDALSTANDARD</strong>（運営会社）。アカウントが1つなので販売店名は出ない。差出人は既定で <code>stripe.com</code>（自社ドメインに変更可）</p>
-  </div>
-  <div class="summary-card">
-    <h3>インボイス</h3>
-    <p>自動領収書メール「だけ」では<strong>適格請求書にならない</strong>。ただしBtoC中心で需要は限定的。法人需要には媒介者交付特例＋Stripe Invoicing等で対応</p>
-  </div>
-  <div class="summary-card">
-    <h3>お金の流れ</h3>
-    <p>受け取りは<strong>PEDALSTANDARD</strong>（全額入金→月次で販売店へ振込）。一方、消費税上の<strong>売上の主体は原則販売店</strong>。このズレが発行義務者の肝</p>
-  </div>
-  <div class="summary-card">
-    <h3>推奨</h3>
-    <p><strong>段階対応</strong>。まず全決済でStripe領収書メールを自動送信して開始。法人需要が出た段階でインボイス対応を追加する二段構え</p>
-  </div>
-</div>
-
 <div class="container">
+
+  <nav class="flow">
+    <a href="#s0"><span class="fnum">0</span><div class="ft">結論サマリー</div><div class="fd">3つの質問にまず3行で回答</div></a>
+    <a href="#s1"><span class="fnum">1</span><div class="ft">お金の流れ</div><div class="fd">支払先はPEDALSTANDARD</div></a>
+    <a href="#s2"><span class="fnum">2</span><div class="ft">領収書メールの仕組み</div><div class="fd">発行元表示はアカウント設定次第</div></a>
+    <a href="#s3"><span class="fnum">3</span><div class="ft">インボイス制度の基礎</div><div class="fd">領収書メールだけでは足りない</div></a>
+    <a href="#s4"><span class="fnum">4</span><div class="ft">発行義務者は誰か</div><div class="fd">原則は販売店・特例で代行可</div></a>
+    <a href="#s5"><span class="fnum">5</span><div class="ft">当てはめと推奨</div><div class="fd">二段構えの段階対応</div></a>
+    <a href="#s6"><span class="fnum">6</span><div class="ft">決めること</div><div class="fd">判断事項と専門家への確認</div></a>
+    <a href="#s7"><span class="fnum">7</span><div class="ft">出典一覧</div><div class="fd">国税庁・Stripe公式の一次資料</div></a>
+  </nav>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <h3>発行元</h3>
+      <p>Stripe領収書メールの発行元は<strong>PEDALSTANDARD</strong>（運営会社）。アカウントが1つなので販売店名は出ない。差出人は既定で <code>stripe.com</code>（自社ドメインに変更可）</p>
+    </div>
+    <div class="summary-card">
+      <h3>インボイス</h3>
+      <p>自動領収書メール「だけ」では<strong>適格請求書にならない</strong>。ただしBtoC中心で需要は限定的。法人需要には媒介者交付特例＋Stripe Invoicing等で対応</p>
+    </div>
+    <div class="summary-card">
+      <h3>お金の流れ</h3>
+      <p>受け取りは<strong>PEDALSTANDARD</strong>（全額入金→月次で販売店へ振込）。一方、消費税上の<strong>売上の主体は原則販売店</strong>。このズレが発行義務者の肝</p>
+    </div>
+    <div class="summary-card">
+      <h3>推奨</h3>
+      <p><strong>段階対応</strong>。まず全決済でStripe領収書メールを自動送信して開始。法人需要が出た段階でインボイス対応を追加する二段構え</p>
+    </div>
+  </div>
 
   <!-- 0 -->
   <div class="section" id="s0">

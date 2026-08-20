@@ -43,7 +43,7 @@ RINCLEのファビコン（`assets/rincle-favicon.png`・オレンジ地に白�
 
 ## ページの基本構造
 
-1. **hero** — ごく薄いオレンジがかったライト背景（`#FFF3ED`→`#FFFDFC`） + eyebrowラベル + h1 + リード文。左に`assets/rincle-favicon.png`のロゴチップ（角丸14px・48px）を置く。**ヒーローに統計チップは置かない**（2026-08-20清野さん指示で廃止）
+1. **hero（全ページ同一・全幅）** — ごく薄いオレンジがかったライト背景（`#FFF3ED`→`#FFFDFC`）。**角丸カード型のヒーローは禁止**（全幅+下ボーダーの標準形のみ） + eyebrowラベル + h1 + リード文。左に`assets/rincle-favicon.png`のロゴチップ（角丸14px・48px）を置く。**ヒーローに統計チップは置かない**（2026-08-20清野さん指示で廃止）
 2. **flow nav（任意）** — 手順・章が3〜5個あるページは、ヒーロー下に重ねるカード型ナビ（アンカーリンク）
 3. **section** — 番号チップ（section-num）+ h2 + サブ見出し。手順はオレンジ、前提・補足は`.plain`（チャコール）
 4. **card / term / alert / table / codeblock / ol.steps** — 下のテンプレート参照

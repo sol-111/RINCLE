@@ -21,7 +21,7 @@
   body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
   /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 40px;overflow:hidden}
+  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
   .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
   .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
   .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
@@ -33,11 +33,18 @@
 
   .container{max-width:980px;margin:0 auto;padding:24px 28px 80px}
 
-  /* tabs */
-  .tabs{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;padding:14px 4px;margin:0 0 20px;background:rgba(248,246,243,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
-  .tab-btn{border:1px solid #E0D8D0;background:#fff;color:var(--ink);border-radius:999px;padding:8px 16px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.4}
-  .tab-btn:hover{border-color:var(--brand)}
-  .tab-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  /* 章ナビ型タブ（見た目はflow navと同一・クリックでパネル切替） */
+  .flow-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .tab-btn{display:block;text-align:left;background:#fff;border:none;border-left:1px solid var(--border);padding:20px 18px 18px;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
+  .tab-btn:nth-child(4n+1){border-left:none}
+  .tab-btn:nth-child(n+5){border-top:1px solid var(--border)}
+  .tab-btn:hover{background:var(--brand-soft)}
+  .tab-btn .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
+  .tab-btn .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .tab-btn .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .tab-btn.active{background:var(--brand-soft)}
+  .tab-btn.active .fnum{background:var(--brand);color:#fff;box-shadow:none}
+  @media (max-width:760px){.flow-tabs{grid-template-columns:1fr 1fr;margin-top:-40px}.tab-btn{border-top:1px solid var(--border)}}
   .tab-panel{display:none}
   .tab-panel.active{display:block}
 
@@ -231,7 +238,7 @@
     .grid2 .full{grid-column:auto}
     .swot-grid{grid-template-columns:1fr}
     .vs-grid{grid-template-columns:1fr}
-    .hero{padding:44px 24px 36px}
+    .hero{padding:44px 24px 84px}
     .container{padding:20px 18px 60px}
   }
   @media (max-width:560px){
@@ -275,16 +282,16 @@
   </div>
 </div>
 
-<div class="container">
+<nav class="flow-tabs">
+  <button class="tab-btn active" data-target="panel-market"><span class="fnum">1</span><div class="ft">市場概況</div><div class="fd">サイクルツーリズム・E-Bike市場の現在地</div></button>
+  <button class="tab-btn" data-target="panel-players"><span class="fnum">2</span><div class="ft">RINCLE+競合5社</div><div class="fd">主要プレイヤーのプロフィール整理</div></button>
+  <button class="tab-btn" data-target="panel-model"><span class="fnum">3</span><div class="ft">モデル・料金比較</div><div class="fd">収益構造と料金水準の横並び比較</div></button>
+  <button class="tab-btn" data-target="panel-vs"><span class="fnum">4</span><div class="ft">1対1比較・SWOT</div><div class="fd">主要競合との直接比較と強み・弱み</div></button>
+  <button class="tab-btn" data-target="panel-additional"><span class="fnum">5</span><div class="ft">追加競合カテゴリ</div><div class="fd">シェアサイクルなど周辺サービスの整理</div></button>
+  <button class="tab-btn" data-target="panel-action"><span class="fnum"><svg class="icon"><use href="#i-check"/></svg></span><div class="ft">アクション・ペルソナ</div><div class="fd">調査から導く打ち手と狙う顧客像</div></button>
+</nav>
 
-<div class="tabs">
-  <button class="tab-btn active" data-target="panel-market">市場概況</button>
-  <button class="tab-btn" data-target="panel-players">RINCLE+競合5社</button>
-  <button class="tab-btn" data-target="panel-model">モデル・料金比較</button>
-  <button class="tab-btn" data-target="panel-vs">1対1比較・SWOT</button>
-  <button class="tab-btn" data-target="panel-additional">追加競合カテゴリ</button>
-  <button class="tab-btn" data-target="panel-action">アクション・ペルソナ</button>
-</div>
+<div class="container">
 
 <!-- ============ 市場概況 ============ -->
 <div class="tab-panel active" id="panel-market">

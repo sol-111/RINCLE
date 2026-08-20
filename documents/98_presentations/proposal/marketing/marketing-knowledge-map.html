@@ -21,7 +21,7 @@
   body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
   /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 40px;overflow:hidden}
+  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
   .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
   .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
   .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
@@ -32,6 +32,17 @@
   .hero p.hero-note{font-size:.82rem;opacity:.78;margin-top:8px}
 
   .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+
+  /* 章ナビ（フローナビ） */
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:first-child{border-left:none}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:last-child::after{content:""}
 
   /* sections */
   .section{margin-bottom:56px;scroll-margin-top:20px}
@@ -136,7 +147,9 @@
   .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
 
   @media (max-width:760px){
-    .hero{padding:44px 24px 36px}
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
+    .hero{padding:44px 24px 84px}
     .container{padding:28px 18px 60px}
     .section-lead{margin-left:0}
   }
@@ -179,6 +192,13 @@
 </div>
 
 <div class="container">
+
+  <!-- 章ナビ（ページの大構成） -->
+  <nav class="flow">
+    <a href="#overview"><span class="fnum">1</span><div class="ft">10カテゴリの俯瞰</div><div class="fd">「誰の力で届くか」で分類</div></a>
+    <a href="#map"><span class="fnum">2</span><div class="ft">全手法サマリー（地図表）</div><div class="fd">37手法をコスト・即効性で一覧</div></a>
+    <a href="#cat1"><span class="fnum">3</span><div class="ft">カテゴリ詳細</div><div class="fd">検索系〜パートナーシップ系まで10章</div></a>
+  </nav>
 
   <!-- ==================== カテゴリ俯瞰 ==================== -->
   <div class="section" id="overview">
