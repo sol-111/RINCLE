@@ -21,6 +21,20 @@ RINCLEのファビコン（`assets/rincle-favicon.png`・オレンジ地に白�
 | `--danger` | `#C21B3A` | 警告・NG（深紅。オレンジと混同しないよう紅寄り） |
 | `--info` | `#2563EB` | 補足情報（青） |
 
+## フォント（2026-08-20追加）
+
+- 欧文 = **Inter**、和文 = **Noto Sans JP**（Google Fonts）。`<head>`の`<title>`直後に:
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+```
+
+- Interを選んだ理由: `1 l I`の判別性（ID・URLが多い資料のため）、等幅数字で表の桁が揃う、Noto Sans JPと濃度が馴染む
+- フォールバックにシステムフォントを並べる（オフラインでも読める）。和文は`palt`、表は`tabular-nums`を有効化（テンプレに含む）
+- 「自己完結」原則の唯一の例外がこのGoogle Fonts
+
 ## ページの基本構造
 
 1. **hero** — オレンジのグラデーション背景 + eyebrowラベル + h1 + リード文。左に`assets/rincle-favicon.png`のロゴチップ（角丸14px・48px）を置く。**ヒーローに統計チップは置かない**（2026-08-20清野さん指示で廃止）
@@ -50,7 +64,8 @@ RINCLEのファビコン（`assets/rincle-favicon.png`・オレンジ地に白�
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased;font-feature-settings:'palt' 1}
+table{font-variant-numeric:tabular-nums}
 
 /* hero */
 .hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 88px;overflow:hidden}

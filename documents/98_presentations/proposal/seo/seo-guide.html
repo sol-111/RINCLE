@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RINCLE SEO設定ガイド（初心者向け）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
@@ -15,7 +18,7 @@
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;
+    font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',sans-serif;
     background:var(--bg);
     color:var(--text);
     line-height:1.75;
@@ -226,6 +229,10 @@
     .compare{grid-template-columns:1fr}
     .step{padding-left:50px}
   }
+
+  /* webfont: 和文の約物詰め + 表の等幅数字 */
+  body{font-feature-settings:'palt' 1}
+  table{font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
