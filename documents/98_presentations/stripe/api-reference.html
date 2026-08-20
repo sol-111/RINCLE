@@ -45,10 +45,6 @@
   .flow a:last-child::after{content:""}
 
   /* サマリーカード */
-  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:0 0 44px}
-  .summary-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--brand)}
-  .summary-card h3{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--brand-deep);margin-bottom:6px}
-  .summary-card p{font-size:13.5px;color:var(--text);line-height:1.7}
 
   /* sections */
   .section{margin-bottom:56px;scroll-margin-top:20px}
@@ -169,24 +165,6 @@
     <a href="#s5"><span class="fnum">5</span><div class="ft">RINCLEへの意味</div><div class="fd">移行コストと利点</div></a>
   </nav>
 
-  <div class="summary-grid">
-    <div class="summary-card">
-      <h3>中心概念</h3>
-      <p><strong>PaymentIntent</strong>（Pay.jp v2のPaymentFlowとほぼ同型）</p>
-    </div>
-    <div class="summary-card">
-      <h3>カード検証</h3>
-      <p><strong>SetupIntent</strong>が50円オーソリの代替（0円・3DS込み）</p>
-    </div>
-    <div class="summary-card">
-      <h3>月額課金</h3>
-      <p>Billing（Price + Subscription + Invoice）が<strong>提供済み</strong></p>
-    </div>
-    <div class="summary-card">
-      <h3>集約モデル</h3>
-      <p>素のアカウント1つで完結。<strong>Connect不要</strong></p>
-    </div>
-  </div>
 
   <!-- 1 -->
   <div class="section" id="s1">

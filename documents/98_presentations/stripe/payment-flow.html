@@ -45,10 +45,6 @@
   .flow a:last-child::after{content:""}
 
   /* サマリーカード */
-  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:0 0 44px}
-  .summary-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--brand)}
-  .summary-card h3{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--brand-deep);margin-bottom:6px}
-  .summary-card p{font-size:13px;color:var(--text);line-height:1.7}
 
   /* sections */
   .section{margin-bottom:56px;scroll-margin-top:20px}
@@ -233,24 +229,7 @@
     <a href="#s5"><span class="fnum">5</span><div class="ft">決定と残る論点</div><div class="fd">決めてもらうこと</div></a>
   </nav>
 
-  <div class="summary-grid">
-    <div class="summary-card">
-      <h3>決定（7/3定例）</h3>
-      <p><strong>当日決済のみ</strong>で確定。オーソリなし・QRチェックインなし。トラブルが多ければオーソリは後から検討</p>
-    </div>
-    <div class="summary-card">
-      <h3>お金が動く回数</h3>
-      <p>通常利用で<strong>最大2回</strong>（貸出開始時に全額＋返却時に追加分）。<strong>予約時は0円</strong></p>
-    </div>
-    <div class="summary-card">
-      <h3>オーソリを見送った理由</h3>
-      <p><strong>明細が最大3つに分かれる</strong>＋当日のオプション変更が頻発する現場と相性が悪い</p>
-    </div>
-    <div class="summary-card">
-      <h3>残る論点</h3>
-      <p>キャンセルポリシー・破損請求・本人確認（5章）。<strong>領収書/インボイスは調査完了</strong>（別資料 receipt-invoice.html）</p>
-    </div>
-  </div>
+  <div class="alert alert-green"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>決定（7/3定例）: 当日決済のみ</strong>で確定（オーソリなし・QRチェックインなし。トラブルが多ければオーソリは後から検討）。お金が動く回数は通常利用で<strong>最大2回</strong>（貸出開始時に全額＋返却時に追加分・<strong>予約時は0円</strong>）。オーソリを見送った理由は<strong>明細が最大3つに分かれる</strong>＋当日のオプション変更が頻発する現場と相性が悪いため。残る論点はキャンセルポリシー・破損請求・本人確認（5章）。<strong>領収書/インボイスは調査完了</strong>（別資料 receipt-invoice.html）。</div></div>
 
   <!-- 1 フロー図 -->
   <div class="section" id="s1">

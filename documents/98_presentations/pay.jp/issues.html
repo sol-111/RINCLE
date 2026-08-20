@@ -87,22 +87,6 @@
   code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
 
   /* ページ固有: 件数サマリーカード */
-  .kv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 24px}
-  .kv{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);text-align:center}
-  .kv.imm{border-top:4px solid var(--danger)}
-  .kv.tobe{border-top:4px solid var(--tobe)}
-  .kv.low{border-top:4px solid var(--info)}
-  .kv.total{border-top:4px solid var(--ink)}
-  .kv h3{font-size:11.5px;font-weight:800;letter-spacing:.08em;margin:0 0 4px;padding:0;border:none}
-  .kv.imm h3{color:var(--danger)}
-  .kv.tobe h3{color:var(--tobe)}
-  .kv.low h3{color:var(--info)}
-  .kv.total h3{color:var(--sub)}
-  .kv .count{font-size:34px;font-weight:800;line-height:1.2;color:var(--ink)}
-  .kv.imm .count{color:var(--danger)}
-  .kv.tobe .count{color:var(--tobe)}
-  .kv.low .count{color:var(--info)}
-  .kv .unit{font-size:13px;color:var(--sub)}
 
   /* ページ固有: 対応方針ボックス */
   .strategy{background:linear-gradient(135deg,#FFF4EF 0%,#FFF9F6 60%,#FDF6EE 100%);border:1px solid #FBD3C4;border-radius:var(--radius);padding:26px 30px;margin-bottom:40px}
@@ -253,12 +237,6 @@
     文中の画面名・ワークフロー名（shop_admin・index等）は調査時点＝DB再構築前の旧サイトのものです。#3（手数料15%）は2026-06に修正済み。その他の項目の現在の対応状況は個別に確認してください。
   </div></div>
 
-  <div class="kv-grid">
-    <div class="kv imm"><h3>🔴 即時対応</h3><div class="count">6</div><div class="unit">件</div></div>
-    <div class="kv tobe"><h3>🟠 改善時</h3><div class="count">3</div><div class="unit">件</div></div>
-    <div class="kv low"><h3>🔵 低優先</h3><div class="count">3</div><div class="unit">件</div></div>
-    <div class="kv total"><h3>合計</h3><div class="count">12</div><div class="unit">件</div></div>
-  </div>
 
   <div class="strategy">
     <h3>🎯 対応方針</h3>
