@@ -1,6 +1,7 @@
 # RINCLE SEO設定ガイド
 
-> 作成日: 2026-05-20 / 最終更新: 2026-07-02（title/h1の設定例を「ロードバイク」軸に統一〈6/12 KW方針・keyword-research.md〉、GA4の進捗と6/30定例のブログ方針を反映）
+> 作成日: 2026-05-20 / 最終更新: 2026-08-20（Step 2を全面改訂: sitemapはBubble自動生成を撤回し手動生成に方針変更〈正本: sitemap-creation-guide.md〉。1-7 noindex対象とチェックリストをDB再構築後の新ページ構成に更新。店舗56・自転車374〈2026-08-20 本番サイト実測〉）
+> 2026-07-02更新: title/h1の設定例を「ロードバイク」軸に統一〈6/12 KW方針・keyword-research.md〉、GA4の進捗と6/30定例のブログ方針を反映
 > 2026-06-11更新: 実測値・Bubbleネイティブ機能・Prerender最新情報を反映。本番DB実測の店舗54・車種369、アクセスログ実測の流入/CVRデータ
 > 対象: SEO初心者向け。専門用語をできるだけ噛み砕いて説明
 
@@ -270,12 +271,14 @@ Bubbleには標準で canonical 出力機能がある。手書きHTMLは不要�
 
 | 方針 | ページ | 理由 |
 |------|--------|------|
-| **noindex必須** | マイページ | ログイン後の個人情報ページ。検索結果に出ること自体が望ましくない |
-| **noindex推奨** | 予約ページ / 会員登録 / ログイン | 検索からいきなり来ても意味がない機能ページ |
-| index（何もしない） | 上記以外の全ページ | 検索流入の入口。特に店舗詳細・車種詳細はSEOの主力 |
+| **noindex必須** | マイページ（`/mypage`）/ 予約履歴一覧（`/user_reservation_list`） | ログイン後の個人情報ページ。検索結果に出ること自体が望ましくない |
+| **noindex推奨** | ログイン・会員登録（`/signin`）/ 予約（`/reservation`）/ パスワード再設定（`/reset_pw`）/ 加盟店申込（`/shop_form`）/ 管理画面4ページ（`/admin` `/admin_signin` `/admin_price_simulation` `/admin_update_calendar`） | 検索からいきなり来ても意味がない機能・内部ページ |
+| index（何もしない） | 上記以外の全ページ（トップ/検索/店舗詳細/自転車詳細/legal） | 検索流入の入口。特に店舗詳細・自転車詳細はSEOの主力 |
+
+※ 2026-08-20更新: DB再構築後の新ページ構成（19ページ）に合わせてページ名を差し替えた（旧: mypage / login / register / reserve）
 
 **Bubble.ioでの設定方法:**
-1. エディタで対象ページ（mypage / login / register / reserve）を開く
+1. エディタで対象ページ（mypage / user_reservation_list / signin / reservation / reset_pw / shop_form / admin系4ページ）を開く
 2. ページの何もない部分をダブルクリックしてページのプロパティを開く
 3. 「**Page HTML Header**」欄に以下を貼り付け:
 
@@ -283,7 +286,7 @@ Bubbleには標準で canonical 出力機能がある。手書きHTMLは不要�
 <meta name="robots" content="noindex">
 ```
 
-4. 対象4ページぶん繰り返してデプロイ
+4. 対象ページぶん繰り返してデプロイ
 
 **⚠️ 絶対にやってはいけないこと:**
 Settings > SEO/metatags > Script/meta tags in header（GA4スニペットを貼った場所）には貼らないこと。あそこは**全ページ共通**のヘッダーなので、noindexを書くとサイト全体がGoogleから消える。noindexは必ず**ページごと**のPage HTML Headerに設定する。
@@ -346,9 +349,17 @@ Googleロボット: 「rincle.co.jpに来たけど、トップページから
 
 sitemapがあると:
 ```
-Googleロボット: 「sitemapを見たら54店舗分のページと369台分の車種ページがあるんだな。
+Googleロボット: 「sitemapを見たら56店舗分のページと374台分の自転車ページがあるんだな。
                 全部見に行こう」
 ```
+
+### ⚠ 2026-08-20 作成方法を変更（旧記述の訂正）
+
+以前この節では「**方法A: Bubble標準のsitemap自動生成（Expose a sitemap file）を推奨**」としていたが、**撤回する**。
+
+- 自動生成で店舗・自転車の1件ずつのURLが載るのは、ページとデータの種類を直接ひも付けた作り（URLがパスにIDを含む方式）の場合だけ
+- DB再構築後の新サイトはひも付けない作り（`/shop_detail?shop=<ID>` のようにURLの後ろにIDを付ける方式）のため、**自動生成では店舗・自転車の個別URLが載らない**（2026-08-20 bubbleファイル+本番実測で確認）
+- そのため**手動生成に方針変更**。手順の正本は `sitemap-creation-guide.md`（同フォルダ）
 
 ### sitemapの中身（イメージ）
 
@@ -357,17 +368,17 @@ Googleロボット: 「sitemapを見たら54店舗分のページと369台分の
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rincle.co.jp/</loc>
-    <lastmod>2026-05-20</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://rincle.co.jp/shop_list</loc>
-    <lastmod>2026-05-20</lastmod>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784194786574x498131851707290800</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://rincle.co.jp/shop_detail/specialized-kobe</loc>
-    <lastmod>2026-05-20</lastmod>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1767680741415x960023914326261800</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <!-- 他のページも同様に追加 -->
@@ -376,40 +387,24 @@ Googleロボット: 「sitemapを見たら54店舗分のページと369台分の
 
 ### sitemapに登録するURL一覧
 
-sitemapには**サイト内の全ページ**のURLを登録する。ただし**noindexにするページ（予約/会員登録/ログイン/マイページ）は載せない**（「登録して」と「登録しないで」が矛盾するため。1-7参照）。
+登録するのは検索結果に出したいページだけ。noindexにするページ（1-7参照）は載せない（「登録して」と「登録しないで」が矛盾するため）。載せる/載せないの全ページ一覧は `sitemap-creation-guide.md` 参照。
 
 ```
-静的ページ（固定）:
+静的ページ（固定・3ページ）:
   /                  トップページ
-  /shop_list         店舗一覧
-  /bike_list         車種一覧
-  /search            検索
-  /beginner          はじめての方へ
-  /pricing           料金
-  /faq               よくある質問
-  /contact           お問い合わせ
-  /terms             利用規約
-  /privacy           プライバシーポリシー
-  → 計10ページ（固定で書く）
-  ※ /reserve /register /login /mypage はnoindexのため登録しない
+  /search            検索（条件パラメータなしの素のURL）
+  /legal             利用規約・プライバシーポリシー
 
 動的ページ（データに応じて増える）:
-  /shop_detail/specialized-kobe    店舗詳細 × 店舗数分
-  /shop_detail/specialized-kyoto
-  /shop_detail/winds-bikes
-  ... 全54店舗分（店舗が増えればその分URLも増える）
-
-  /bike_detail/specialized-allez   車種詳細 × 車種数分
-  /bike_detail/trek-domane-al2
-  /bike_detail/giant-escape-r3
-  ... 全369台分
+  /shop_detail?shop=<店舗ID>          店舗詳細 × 店舗数分
+  /bicycle_detail?bicycle=<自転車ID>  自転車詳細 × 台数分
 ```
 
-実数で計算すると（2026-06-11 本番DB実測: 店舗54・自転車369）:
+実数で計算すると（2026-08-20 本番サイト実測: 店舗56・自転車374）:
 ```
-静的ページ:    10 URL
-店舗詳細:      54 URL
-車種詳細:     369 URL
+静的ページ:     3 URL
+店舗詳細:      56 URL
+自転車詳細:   374 URL
 ──────────────
 合計:        約433 URL → 全部sitemapに登録する
 ```
@@ -418,32 +413,26 @@ sitemapには**サイト内の全ページ**のURLを登録する。ただし**n
 
 | タグ | 意味 | 設定例 |
 |------|------|--------|
-| `<loc>` | ページのURL | `https://rincle.co.jp/shop_detail/specialized-kobe` |
+| `<loc>` | ページのURL | `https://rincle.co.jp/shop_detail?shop=<店舗ID>` |
 | `<changefreq>` | 更新頻度のヒント | daily / weekly / monthly / yearly |
 | `<priority>` | サイト内での重要度（0.0〜1.0） | トップ=1.0、店舗詳細=0.8、規約=0.2 |
 
 ### RINCLEの現状
 
 ```
-https://rincle.co.jp/sitemap.xml → 404エラー（存在しない。2026-06-11実測で再確認）
+https://rincle.co.jp/sitemap.xml → 404エラー（存在しない。2026-08-20実測で再確認）
 ```
 
-### 作成方法（2026-06-11更新: Bubble標準機能を推奨）
+### 作成方法（2026-08-20更新: 手動生成に方針変更）
 
-**方法A: Bubble標準のsitemap自動生成機能を使う（推奨）**
+手順の正本は **`sitemap-creation-guide.md`（同フォルダ）**。概要だけ書くと:
 
-プラグインは不要。Bubbleには標準でsitemap自動生成機能があり、**店舗詳細・車種詳細などの動的ページ（DBレコード分）も自動で含まれる**（最大50,000 URL。Privacy Rolesで非公開データは自動的に除外される）。店舗や車種が増えても手動更新は不要。
+1. **bubbleファイルの用意** — アプリの設計データからページの種類を洗い出す（済み・ページを増やした時だけ再確認）
+2. **Data APIの設定** — Bubbleの Settings > API で `shop` と `Bicycle` だけ公開にチェックし、店舗・自転車のID一覧をプログラムから取れるようにする（個人情報を含む種類は絶対にチェックしない）
+3. **生成** — `generate_sitemap.js`（`documents/4_growth/03_seo/`）を実行するとData APIから全件取得してsitemap.xmlを出力する。削除済み・審査未通過の店舗、非表示・アーカイブの自転車は自動で除外
+4. **公開** — Settings > SEO/metatags の「**Hosting files in the root directory**」でsitemap.xmlをアップロードすると `rincle.co.jp/sitemap.xml` で配信される。標準の自動生成（Expose a sitemap file）は**OFFのまま**にする（同じURLを取り合うため）
 
-1. Settings > SEO/metatags を開く
-2. 「**Expose a sitemap file**」のチェックボックスをONにし、含めるページを選択（noindex対象の予約/会員登録/ログイン/マイページは含めない）（2026-06-11にBubble公式マニュアルでチェックボックス名を確認済み）
-3. `https://rincle.co.jp/sitemap.xml` でアクセスできることを確認
-
-（参考: Bubble公式マニュアル https://manual.bubble.io/core-resources/application-settings/seo-metatags ）
-
-**方法B: 手動で作成してホスティング（標準機能で要件を満たせない場合のみ）**
-1. 上のXMLの例を参考に、全ページのURLを列挙したファイルを作成
-2. `sitemap.xml` という名前で保存
-3. Cloudflare等の外部サービス経由で配信
+店舗・自転車が増えたら3→4を再実行する（月1回など運用の取り決めは増永さんと相談）。
 
 ### robots.txtへの追記
 
@@ -824,7 +813,7 @@ Step 1〜3を完遂してもインデックスが伸びない場合の次の一�
 
 ```
 Phase 1（今週・無料）: Bubbleネイティブ設定の完遂 = このガイドのStep 1〜4.5
-  ├─ sitemap自動生成ON（動的ページ含む）+ robots.txtにSitemap行
+  ├─ sitemap手動生成→Bubbleにアップロード（Step 2・自動生成は使わない）+ robots.txtにSitemap行
   ├─ canonical有効化 ← クエリパラメータ付きURLのインデックス汚染を止める（実害確認済み）
   ├─ ページ別title/meta description（店舗詳細はDB差し込みで店舗固有の文面に）
   ├─ og:imageを1200×630の専用画像に差し替え
@@ -890,12 +879,14 @@ Phase 3（中期）: SEOコンテンツを自社ドメイン配下で配信
 - [ ] 画像にalt属性を設定した
 - [ ] 「Enable canonical url」のチェックボックスをONにした（Bubble-defined canonical url tagが出力される）
 - [ ] 主要ページに構造化データ（BikeStore / Product+Offer / BreadcrumbList / FAQPage）を設定し、リッチリザルトテストで検証した
-- [ ] noindex対象ページ（マイページ/予約/会員登録/ログイン）のPage HTML Headerにnoindexを設定した
+- [ ] noindex対象ページ（マイページ/予約履歴一覧/ログイン・会員登録/予約/パスワード再設定/加盟店申込/管理画面4ページ）のPage HTML Headerにnoindexを設定した
 - [ ] index対象ページにnoindexが入っていないことを確認した
 - [ ] アプリ全体がインデックス可能なことを確認した（公開ページのソースに意図しないnoindexが無い・robots.txtで全体をブロックしていない。2026-06-11更新）
 
 ### sitemap / robots.txt
-- [ ] Bubble標準のsitemap自動生成「Expose a sitemap file」をONにした（動的ページが含まれることを確認）
+- [ ] Data APIで shop / Bicycle を公開にチェックし、本番デプロイした（`sitemap-creation-guide.md` 手順2）
+- [ ] `generate_sitemap.js` でsitemap.xmlを生成し、店舗数・自転車数がサイトの実数と合っていることを確認した
+- [ ] 「Hosting files in the root directory」でsitemap.xmlをアップロードした（自動生成「Expose a sitemap file」はOFFのまま）
 - [ ] https://rincle.co.jp/sitemap.xml でアクセスできることを確認した
 - [ ] robots.txtに `Sitemap: https://rincle.co.jp/sitemap.xml` を追記した
 
