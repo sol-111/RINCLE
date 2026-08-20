@@ -46,10 +46,6 @@
   .flow a:nth-child(4n)::after,.flow a:last-child::after{content:""}
 
   /* サマリーカード（本文先頭） */
-  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:0 0 44px}
-  .summary-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--brand)}
-  .summary-card h3{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--brand-deep);margin-bottom:6px}
-  .summary-card p{font-size:13px;color:var(--text);line-height:1.7}
 
   /* sections */
   .section{margin-bottom:56px;scroll-margin-top:20px}
@@ -208,24 +204,6 @@
     <a href="#s7"><span class="fnum">7</span><div class="ft">出典一覧</div><div class="fd">国税庁・Stripe公式の一次資料</div></a>
   </nav>
 
-  <div class="summary-grid">
-    <div class="summary-card">
-      <h3>発行元</h3>
-      <p>Stripe領収書メールの発行元は<strong>PEDALSTANDARD</strong>（運営会社）。アカウントが1つなので販売店名は出ない。差出人は既定で <code>stripe.com</code>（自社ドメインに変更可）</p>
-    </div>
-    <div class="summary-card">
-      <h3>インボイス</h3>
-      <p>自動領収書メール「だけ」では<strong>適格請求書にならない</strong>。ただしBtoC中心で需要は限定的。法人需要には媒介者交付特例＋Stripe Invoicing等で対応</p>
-    </div>
-    <div class="summary-card">
-      <h3>お金の流れ</h3>
-      <p>受け取りは<strong>PEDALSTANDARD</strong>（全額入金→月次で販売店へ振込）。一方、消費税上の<strong>売上の主体は原則販売店</strong>。このズレが発行義務者の肝</p>
-    </div>
-    <div class="summary-card">
-      <h3>推奨</h3>
-      <p><strong>段階対応</strong>。まず全決済でStripe領収書メールを自動送信して開始。法人需要が出た段階でインボイス対応を追加する二段構え</p>
-    </div>
-  </div>
 
   <!-- 0 -->
   <div class="section" id="s0">
