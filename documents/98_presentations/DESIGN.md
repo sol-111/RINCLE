@@ -214,7 +214,7 @@ footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
 .chart .cl{font-size:13.5px}
 .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
 .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
-.chart text.big{font-size:9px;font-weight:800;fill:var(--ink)}
+.chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
 ```
 
 ## アイコン・演出・ミニチャート（2026-08-20追加）
