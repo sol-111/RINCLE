@@ -3,6 +3,8 @@
 > 作成日: 2026-05-20
 > 前提: 競合調査・現状分析の結果に基づく実行計画
 > 関連: [competitive-analysis.md](competitive-analysis.md)（市場・競合・ペルソナ）/ [current-issues-and-solutions.md](current-issues-and-solutions.md)（課題・改善策）
+>
+> 2026-08-20注記: 本文中の「24店舗」は作成当時の値（2026-08-20の本番サイト実測では店舗56）。DB再構築は完了し新サイトは2026年7月上旬に本番リリース済み。GA4・Search Console・sitemap.xmlの本番設置はまだ（タスク#21-22）。sitemap.xmlは手動生成方式に決定（2026-08-20。正本: `../03_seo/sitemap-creation-guide.md`）
 
 ---
 
@@ -18,7 +20,7 @@
 | 1 | **GA4導入** | サイト訪問者の行動を記録開始。離脱ポイントが分かるようになる | 30分 |
 | 2 | **title / description設定** | 全ページにGoogleの検索結果に表示されるタイトルと説明文を設定 | 1〜2日 |
 | 3 | **OGP設定** | LINEやSNSでリンクを貼ったときにカード表示されるようにする | 同上 |
-| 4 | **sitemap.xml + robots.txt** | Googleに全ページの存在を教える | 半日 |
+| 4 | **sitemap.xml + robots.txt** | Googleに全ページの存在を教える（sitemap.xmlは手動生成方式に決定・2026-08-20。手順: [../03_seo/sitemap-creation-guide.md](../03_seo/sitemap-creation-guide.md)） | 半日 |
 | 5 | **Search Console登録** | Googleにサイトを申請し、インデックス登録をリクエスト | 1時間 |
 | 6 | **h1 / alt / canonical** | 各ページの見出し・画像説明・正式URLを設定 | 1〜2日 |
 | 7 | **クラリティ導入** | セッション録画・ヒートマップで「なぜ離脱するか」を可視化（無料） | 30分 |
@@ -146,6 +148,7 @@ Phase 1でベースラインを取得した上で、以下のKPIを追跡する�
 | パートナーショップ数 | 24店舗 | 30店舗 | 50店舗 |
 
 ※ 具体的な数値目標はPhase 1のベースラインデータ取得後に調整する
+※ 2026-08-20注記: KGI/KPI目標は凍結中（実績の月次記録は継続。ユーザー増と差別化実装後に設定）。パートナーショップ数のベースライン24店舗は当時の値で、2026-08-20実測では56店舗
 
 ---
 

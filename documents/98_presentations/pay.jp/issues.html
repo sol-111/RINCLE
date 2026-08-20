@@ -3,801 +3,305 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pay.JP 連携 修正一覧 - 優先順位付き対応計画</title>
+<title>Pay.JP 連携 修正一覧 | RINCLE</title>
 <style>
-  :root {
-    --primary: #2563eb;
-    --primary-light: #dbeafe;
-    --accent: #e94560;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --gray-50: #f8fafc;
-    --gray-100: #f1f5f9;
-    --gray-200: #e2e8f0;
-    --gray-300: #cbd5e1;
-    --gray-500: #64748b;
-    --gray-700: #334155;
-    --gray-900: #0f172a;
-    --radius: 12px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
-    --shadow-lg: 0 4px 24px rgba(0,0,0,0.1);
-    --immediate: #dc2626;
-    --immediate-light: #fef2f2;
-    --immediate-border: #fecaca;
-    --tobe: #d97706;
-    --tobe-light: #fffbeb;
-    --tobe-border: #fde68a;
-    --low: #6366f1;
-    --low-light: #eef2ff;
-    --low-border: #c7d2fe;
+  :root{
+    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
+    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
+    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
+    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
+    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
+    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
+    --tobe:#B45309; --tobe-light:#FFF4E0; --tobe-border:#F5D9A8;
+    --imm-light:#FDECEF; --imm-border:#F6C6D0;
+    --low-light:#EEF3FE; --low-border:#CBDCFA;
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
-    color: var(--gray-900);
-    background: var(--gray-50);
-    line-height: 1.8;
-    -webkit-font-smoothing: antialiased;
-  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
-  /* Hero */
-  .hero {
-    background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 50%, #f43f5e 100%);
-    color: #fff;
-    padding: 56px 40px 48px;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-  .hero-label {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(4px);
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
-  .hero p { font-size: 16px; opacity: 0.85; max-width: 600px; }
+  /* hero */
+  .hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 88px;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
+  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(35,32,29,.10)}
+  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
+  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
+  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
+  .hero p.lead{font-size:1rem;opacity:.92;max-width:700px}
 
-  /* Layout */
-  .container { max-width: 960px; margin: 0 auto; padding: 40px 32px 80px; }
+  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
 
-  /* Summary cards */
-  .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin: -40px 32px 40px;
-    position: relative;
-    z-index: 1;
-    max-width: 960px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 32px;
-  }
-  .summary-card {
-    background: #fff;
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: var(--shadow-lg);
-    text-align: center;
-  }
-  .summary-card.immediate { border-top: 4px solid var(--immediate); }
-  .summary-card.tobe { border-top: 4px solid var(--tobe); }
-  .summary-card.low { border-top: 4px solid var(--low); }
-  .summary-card.total { border-top: 4px solid var(--gray-900); }
-  .summary-card h3 {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
-  .summary-card.immediate h3 { color: var(--immediate); }
-  .summary-card.tobe h3 { color: var(--tobe); }
-  .summary-card.low h3 { color: var(--low); }
-  .summary-card.total h3 { color: var(--gray-700); }
-  .summary-card .count {
-    font-size: 36px;
-    font-weight: 800;
-    line-height: 1.2;
-  }
-  .summary-card.immediate .count { color: var(--immediate); }
-  .summary-card.tobe .count { color: var(--tobe); }
-  .summary-card.low .count { color: var(--low); }
-  .summary-card.total .count { color: var(--gray-900); }
-  .summary-card .unit {
-    font-size: 14px;
-    color: var(--gray-500);
-    font-weight: 500;
-  }
+  /* flow nav */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:first-child{border-left:none}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:last-child::after{content:""}
 
-  /* Strategy callout */
-  .strategy-box {
-    background: linear-gradient(135deg, #fef2f2 0%, #fff7ed 50%, #eff6ff 100%);
-    border: 2px solid var(--gray-200);
-    border-radius: var(--radius);
-    padding: 28px 32px;
-    margin-bottom: 40px;
-  }
-  .strategy-box h3 {
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--gray-900);
-    margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .strategy-box .goal {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--immediate);
-    margin-bottom: 16px;
-  }
-  .strategy-list {
-    list-style: none;
-    padding: 0;
-  }
-  .strategy-list li {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    font-size: 14px;
-    color: var(--gray-700);
-    margin-bottom: 8px;
-    line-height: 1.6;
-  }
-  .strategy-list li:last-child { margin-bottom: 0; }
-  .strategy-tag {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 700;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .strategy-tag.immediate { background: #fee2e2; color: #991b1b; }
-  .strategy-tag.tobe { background: #fef3c7; color: #92400e; }
-  .strategy-tag.low-tag { background: #e0e7ff; color: #3730a3; }
+  /* sections */
+  .section{margin-bottom:56px;scroll-margin-top:20px}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
+  .section-num.plain{background:linear-gradient(135deg,var(--ink),#4A4038);box-shadow:0 4px 12px rgba(35,32,29,.3)}
+  .section-num.imm{background:linear-gradient(135deg,var(--danger),#E4506F);box-shadow:0 4px 12px rgba(194,27,58,.35)}
+  .section-num.tobe{background:linear-gradient(135deg,var(--tobe),#D97A1F);box-shadow:0 4px 12px rgba(180,83,9,.35)}
+  .section-num.low{background:linear-gradient(135deg,var(--info),#5B8DEF);box-shadow:0 4px 12px rgba(37,99,235,.35)}
+  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
+  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
+  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
 
-  /* Sections */
-  .section { margin-bottom: 48px; }
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 24px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--gray-200);
-  }
-  .section-num {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    color: #fff;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: 800;
-    flex-shrink: 0;
-  }
-  .section-num.immediate { background: var(--immediate); }
-  .section-num.tobe { background: var(--tobe); }
-  .section-num.low { background: var(--low); }
-  .section-header h2 { font-size: 22px; font-weight: 700; }
-  .section-desc { color: var(--gray-500); font-size: 14px; margin-bottom: 20px; }
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
 
-  /* Issue cards */
-  .issue-card {
-    background: #fff;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin: 20px 0;
-    overflow: hidden;
-    transition: box-shadow 0.2s ease;
-  }
-  .issue-card:hover {
-    box-shadow: var(--shadow-lg);
-  }
-  .issue-card.immediate { border-left: 5px solid var(--immediate); }
-  .issue-card.tobe { border-left: 5px solid var(--tobe); }
-  .issue-card.low { border-left: 5px solid var(--low); }
+  /* alerts */
+  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
+  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
+  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
+  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
 
-  .issue-card-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 20px 24px 0;
-  }
-  .issue-number {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    font-size: 15px;
-    font-weight: 800;
-    flex-shrink: 0;
-    color: #fff;
-  }
-  .issue-number.immediate { background: var(--immediate); }
-  .issue-number.tobe { background: var(--tobe); }
-  .issue-number.low { background: var(--low); }
+  /* tables */
+  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+  thead th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
+  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#FBF8F5}
+  td.label{font-weight:700;color:var(--ink)}
 
-  .issue-title-area { flex: 1; }
-  .issue-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--gray-900);
-    line-height: 1.4;
-  }
+  /* badges */
+  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+  .badge.good{background:#EDFAF2;color:#136A41}
+  .badge.bad{background:#FDECEF;color:#8E1230}
+  .badge.warn{background:#FFF4E0;color:#8F5A0A}
+  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
+  .badge.low-b{background:var(--low-light);color:#1D48A6}
 
-  /* Order badge for immediate items */
-  .order-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 800;
-    flex-shrink: 0;
-    background: var(--immediate);
-    color: #fff;
-    white-space: nowrap;
-  }
-  .order-badge .order-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.25);
-    font-size: 12px;
-    font-weight: 800;
-  }
+  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
 
-  .category-badge {
-    display: inline-block;
-    padding: 3px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-  .category-badge.tobe { background: #fef3c7; color: #92400e; }
-  .category-badge.low-cat { background: #e0e7ff; color: #3730a3; }
+  /* ページ固有: 件数サマリーカード */
+  .kv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 24px}
+  .kv{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);text-align:center}
+  .kv.imm{border-top:4px solid var(--danger)}
+  .kv.tobe{border-top:4px solid var(--tobe)}
+  .kv.low{border-top:4px solid var(--info)}
+  .kv.total{border-top:4px solid var(--ink)}
+  .kv h3{font-size:11.5px;font-weight:800;letter-spacing:.08em;margin:0 0 4px;padding:0;border:none}
+  .kv.imm h3{color:var(--danger)}
+  .kv.tobe h3{color:var(--tobe)}
+  .kv.low h3{color:var(--info)}
+  .kv.total h3{color:var(--sub)}
+  .kv .count{font-size:34px;font-weight:800;line-height:1.2;color:var(--ink)}
+  .kv.imm .count{color:var(--danger)}
+  .kv.tobe .count{color:var(--tobe)}
+  .kv.low .count{color:var(--info)}
+  .kv .unit{font-size:13px;color:var(--sub)}
 
-  .issue-card-body {
-    padding: 16px 24px 24px;
-  }
+  /* ページ固有: 対応方針ボックス */
+  .strategy{background:linear-gradient(135deg,#FFF4EF 0%,#FFF9F6 60%,#FDF6EE 100%);border:1px solid #FBD3C4;border-radius:var(--radius);padding:26px 30px;margin-bottom:40px}
+  .strategy h3{margin:0 0 2px;padding:0;border:none;font-size:17px}
+  .strategy .goal{font-size:15px;font-weight:800;color:var(--brand-deep);margin-bottom:14px}
+  .strategy ul{list-style:none}
+  .strategy li{display:flex;align-items:baseline;gap:10px;font-size:14px;margin-bottom:8px;line-height:1.7}
+  .strategy li:last-child{margin-bottom:0}
 
-  .issue-field {
-    margin-top: 14px;
-  }
-  .issue-field:first-child {
-    margin-top: 0;
-  }
-  .issue-field-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    padding: 2px 10px;
-    border-radius: 4px;
-    margin-bottom: 6px;
-  }
-  .issue-field-label.phenomenon {
-    background: #f1f5f9;
-    color: var(--gray-700);
-  }
-  .issue-field-label.impact {
-    background: #fff1f2;
-    color: #be123c;
-  }
-  .issue-field-label.action {
-    background: #ecfdf5;
-    color: #065f46;
-  }
-  .issue-field-label.note {
-    background: #eff6ff;
-    color: #1e40af;
-  }
-  .issue-field-label.priority-reason {
-    background: #fef3c7;
-    color: #92400e;
-  }
-  .issue-field-text {
-    font-size: 14px;
-    color: var(--gray-700);
-    line-height: 1.7;
-    padding-left: 4px;
-  }
-  .issue-field-text ul {
-    list-style: none;
-    padding: 0;
-  }
-  .issue-field-text ul li {
-    position: relative;
-    padding-left: 16px;
-    margin-bottom: 4px;
-  }
-  .issue-field-text ul li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 10px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--gray-300);
-  }
+  /* ページ固有: 課題カード */
+  .issue-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin:20px 0;overflow:hidden;transition:box-shadow .2s}
+  .issue-card:hover{box-shadow:var(--shadow-lg)}
+  .issue-card.imm{border-left:5px solid var(--danger)}
+  .issue-card.tobe{border-left:5px solid var(--tobe)}
+  .issue-card.low{border-left:5px solid var(--info)}
+  .issue-head{display:flex;align-items:center;gap:14px;padding:20px 24px 0}
+  .issue-no{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:15px;font-weight:800;flex-shrink:0;color:#fff}
+  .issue-no.imm{background:var(--danger)}
+  .issue-no.tobe{background:var(--tobe)}
+  .issue-no.low{background:var(--info)}
+  .issue-title{flex:1;font-size:16.5px;font-weight:800;color:var(--ink);line-height:1.45}
+  .order-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:800;flex-shrink:0;background:var(--danger);color:#fff;white-space:nowrap}
+  .order-badge .on{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.25);font-size:12px;font-weight:800}
+  .issue-body{padding:16px 24px 24px}
+  .ifield{margin-top:14px}
+  .ifield:first-child{margin-top:0}
+  .ifield-label{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.05em;padding:2px 10px;border-radius:4px;margin-bottom:4px}
+  .ifield-label.ph{background:#EFEBE7;color:#4A4038}
+  .ifield-label.im{background:#FDECEF;color:#8E1230}
+  .ifield-label.ac{background:#EDFAF2;color:#136A41}
+  .ifield-label.nt{background:#EEF3FE;color:#1D48A6}
+  .ifield-text{font-size:14px;color:var(--text);line-height:1.75;padding-left:4px}
+  .ifield-text ul{list-style:none}
+  .ifield-text ul li{position:relative;padding-left:16px;margin-bottom:4px}
+  .ifield-text ul li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:#D9CFC5}
 
-  /* Priority reason callout */
-  .priority-reason-callout {
-    background: #fffbeb;
-    border: 1px solid #fde68a;
-    border-radius: 8px;
-    padding: 12px 16px;
-    margin-top: 14px;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-  }
-  .priority-reason-callout .pr-icon {
-    font-size: 16px;
-    flex-shrink: 0;
-    line-height: 1.6;
-  }
-  .priority-reason-callout .pr-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: #92400e;
-    margin-bottom: 2px;
-  }
-  .priority-reason-callout .pr-text {
-    font-size: 14px;
-    color: #78350f;
-    font-weight: 600;
-    line-height: 1.6;
-  }
+  /* 優先理由 */
+  .why{background:var(--tobe-light);border:1px solid var(--tobe-border);border-radius:8px;padding:12px 16px;margin-top:14px;display:flex;gap:10px;align-items:flex-start}
+  .why .w-icon{font-size:16px;flex-shrink:0;line-height:1.6}
+  .why .w-label{font-size:11px;font-weight:800;letter-spacing:.05em;color:#8F5A0A;margin-bottom:2px}
+  .why .w-text{font-size:14px;color:#6B4308;font-weight:700;line-height:1.6}
 
-  /* Cards / callouts */
-  .card {
-    background: #fff;
-    border-radius: var(--radius);
-    padding: 24px;
-    box-shadow: var(--shadow);
-    margin: 20px 0;
-  }
-  .callout {
-    border-radius: var(--radius);
-    padding: 16px 20px;
-    margin: 16px 0;
-    font-size: 14px;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  .callout-icon { font-size: 20px; flex-shrink: 0; line-height: 1.4; }
-  .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
-  .callout.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
-  .callout.success { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
-  .callout.danger { background: #fff1f2; border: 1px solid #fecdd3; color: #9f1239; }
+  /* 開発者向け詳細（アコーディオン） */
+  .dev-detail{margin-top:16px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .dev-detail summary{padding:12px 16px;font-size:13px;font-weight:800;color:var(--ink);background:#FBF8F5;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;user-select:none}
+  .dev-detail summary::-webkit-details-marker{display:none}
+  .dev-detail summary::before{content:"▶";font-size:10px;color:var(--brand);transition:transform .2s}
+  .dev-detail[open] summary::before{transform:rotate(90deg)}
+  .dd-body{padding:16px 20px;font-size:13px;color:var(--text);line-height:1.8;border-top:1px solid var(--border)}
+  .dd-body h5{font-size:13px;font-weight:800;color:var(--ink);margin:16px 0 6px}
+  .dd-body h5:first-child{margin-top:0}
+  .dd-body table{font-size:13px}
+  .dd-body thead th{padding:8px 12px;font-size:12px}
+  .dd-body td{padding:8px 12px}
+  .dd-body ul{padding-left:20px}
+  .dd-body ul li{margin-bottom:4px}
 
-  /* Tables */
-  .table-wrap { overflow-x: auto; margin: 16px 0; border-radius: var(--radius); box-shadow: var(--shadow); }
-  table { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
-  th {
-    background: var(--gray-900);
-    color: #fff;
-    padding: 12px 16px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 13px;
-    white-space: nowrap;
-  }
-  td { padding: 12px 16px; border-bottom: 1px solid var(--gray-100); }
-  tr:hover td { background: var(--gray-50); }
-  td:first-child { font-weight: 600; }
+  /* ページ固有: フロー図（開発者向け） */
+  .flow-diagram{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:8px 0;font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text);overflow-x:auto}
+  .flow-diagram .hl-line{background:#FDECEF;display:inline;padding:1px 4px;border-radius:3px;font-weight:700;color:#8E1230}
 
-  /* Status badges */
-  .badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 700;
-  }
-  .badge-immediate { background: #fee2e2; color: #991b1b; }
-  .badge-tobe { background: #fef3c7; color: #92400e; }
-  .badge-low { background: #e0e7ff; color: #3730a3; }
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
+  .footer-note{text-align:center;color:var(--sub);font-size:13px;padding:32px 0 0;border-top:1px solid var(--border);margin-top:20px}
 
-  /* Overview table */
-  .overview-table {
-    margin: 24px 0;
-  }
-  .overview-table table td:nth-child(1) { white-space: nowrap; width: 50px; text-align: center; }
-  .overview-table table td:nth-child(3) { white-space: nowrap; width: 120px; text-align: center; }
-
-  /* Accordion (dev detail) */
-  .dev-detail {
-    margin-top: 16px;
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .dev-detail summary {
-    padding: 12px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--gray-700);
-    background: var(--gray-50);
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    user-select: none;
-  }
-  .dev-detail summary::-webkit-details-marker { display: none; }
-  .dev-detail summary::before {
-    content: '▶';
-    font-size: 10px;
-    color: var(--gray-500);
-    transition: transform 0.2s;
-  }
-  .dev-detail[open] summary::before {
-    transform: rotate(90deg);
-  }
-  .dev-detail-body {
-    padding: 16px 20px;
-    font-size: 13px;
-    color: var(--gray-700);
-    line-height: 1.8;
-    border-top: 1px solid var(--gray-200);
-  }
-  .dev-detail-body h5 {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--gray-900);
-    margin: 16px 0 6px;
-  }
-  .dev-detail-body h5:first-child { margin-top: 0; }
-  .dev-detail-body table {
-    font-size: 13px;
-    margin: 8px 0;
-    box-shadow: none;
-  }
-  .dev-detail-body table th {
-    background: var(--gray-700);
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-  .dev-detail-body table td {
-    padding: 8px 12px;
-  }
-  .dev-detail-body code {
-    background: var(--gray-100);
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-size: 12px;
-    color: var(--gray-900);
-  }
-  .dev-detail-body .flow-diagram {
-    background: var(--gray-50);
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin: 8px 0;
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 13px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    color: var(--gray-700);
-  }
-  .dev-detail-body .flow-diagram .highlight-line {
-    background: #fee2e2;
-    display: inline;
-    padding: 1px 4px;
-    border-radius: 3px;
-    font-weight: 700;
-    color: #991b1b;
-  }
-
-  /* Footer note */
-  .footer-note {
-    text-align: center;
-    color: var(--gray-500);
-    font-size: 13px;
-    padding: 40px 0 0;
-    border-top: 1px solid var(--gray-200);
-    margin-top: 20px;
-  }
-
-  /* Responsive */
-  @media (max-width: 640px) {
-    .hero { padding: 32px 20px 28px; }
-    .hero h1 { font-size: 24px; }
-    .container { padding: 24px 16px 60px; }
-    .summary-grid { grid-template-columns: 1fr 1fr; padding: 0 16px; }
-    .issue-card-header { flex-wrap: wrap; }
-    .strategy-box { padding: 20px; }
+  @media (max-width:760px){
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
+    .kv-grid{grid-template-columns:1fr 1fr}
+    .issue-head{flex-wrap:wrap}
+    .strategy{padding:20px}
+    .hero{padding:44px 24px 84px}
+    .container{padding:28px 18px 60px}
   }
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <div class="hero-label">Issues / Action Plan</div>
-  <h1>Pay.JP 連携 修正一覧</h1>
-  <p>Yanoさんの調査報告（2026-04-16）および rincle.bubble 解析結果に基づく課題・改善項目の一覧です。</p>
-</div>
-
-<div class="summary-grid">
-  <div class="summary-card immediate">
-    <h3>&#x1F534; 即時対応</h3>
-    <div class="count">6</div>
-    <div class="unit">件</div>
-  </div>
-  <div class="summary-card tobe">
-    <h3>&#x1F7E0; 改善時</h3>
-    <div class="count">3</div>
-    <div class="unit">件</div>
-  </div>
-  <div class="summary-card low">
-    <h3>&#x1F535; 低優先</h3>
-    <div class="count">3</div>
-    <div class="unit">件</div>
-  </div>
-  <div class="summary-card total">
-    <h3>合計</h3>
-    <div class="count">12</div>
-    <div class="unit">件</div>
+  <div class="hero-inner">
+    <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
+    <div>
+      <span class="eyebrow">決済 — Pay.JP連携の課題と対応計画</span>
+      <h1>Pay.JP 連携 修正一覧</h1>
+      <p class="lead">Yanoさんの調査報告（2026-04-16）および rincle.bubble 解析結果に基づく課題・改善項目の一覧です。</p>
+    </div>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- Strategy / Policy -->
-  <div class="strategy-box">
-    <h3>&#x1F3AF; 対応方針</h3>
+  <nav class="flow">
+    <a href="#summary"><span class="fnum">▤</span><div class="ft">一覧サマリー</div><div class="fd">全12件をひと目で</div></a>
+    <a href="#immediate"><span class="fnum">6</span><div class="ft">即時対応</div><div class="fd">運用が壊れる・仕様未達</div></a>
+    <a href="#tobe"><span class="fnum">3</span><div class="ft">改善時に対応</div><div class="fd">改善フェーズでまとめて</div></a>
+    <a href="#low"><span class="fnum">3</span><div class="ft">低優先</div><div class="fd">運用への影響なし</div></a>
+  </nav>
+
+  <div class="alert alert-blue"><span class="a-icon">ℹ</span><div>
+    <strong>今後の決済はStripeへの載せ替えが決定しています（2026-06-19定例・実装タスク#35）。</strong>このページは現行Pay.JP連携の調査時点（2026-04-16）の課題一覧です。<br>
+    文中の画面名・ワークフロー名（shop_admin・index等）は調査時点＝DB再構築前の旧サイトのものです。#3（手数料15%）は2026-06に修正済み。その他の項目の現在の対応状況は個別に確認してください。
+  </div></div>
+
+  <div class="kv-grid">
+    <div class="kv imm"><h3>🔴 即時対応</h3><div class="count">6</div><div class="unit">件</div></div>
+    <div class="kv tobe"><h3>🟠 改善時</h3><div class="count">3</div><div class="unit">件</div></div>
+    <div class="kv low"><h3>🔵 低優先</h3><div class="count">3</div><div class="unit">件</div></div>
+    <div class="kv total"><h3>合計</h3><div class="count">12</div><div class="unit">件</div></div>
+  </div>
+
+  <div class="strategy">
+    <h3>🎯 対応方針</h3>
     <div class="goal">目標: まず運用上問題ない状態にする</div>
-    <ul class="strategy-list">
-      <li>
-        <span class="strategy-tag immediate">即時対応 6件</span>
-        運用が壊れる / 仕様未達 / 事故リスクがあるもの &#x2192; 着手順: #1 &#x2192; #2 &#x2192; #3 &#x2192; #4 &#x2192; #5 &#x2192; #6
-      </li>
-      <li>
-        <span class="strategy-tag tobe">改善時に対応 3件</span>
-        改善フェーズでまとめて対応
-      </li>
-      <li>
-        <span class="strategy-tag low-tag">低優先 3件</span>
-        運用に影響なし。余裕があれば対応
-      </li>
+    <ul>
+      <li><span class="badge bad">即時対応 6件</span><span>運用が壊れる / 仕様未達 / 事故リスクがあるもの → 着手順: #1 → #2 → #3 → #4 → #5 → #6</span></li>
+      <li><span class="badge warn">改善時に対応 3件</span><span>改善フェーズでまとめて対応</span></li>
+      <li><span class="badge low-b">低優先 3件</span><span>運用に影響なし。余裕があれば対応</span></li>
     </ul>
   </div>
 
-  <!-- Overview table -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num" style="background: var(--gray-900);">&#x1F4CB;</div>
-      <h2>一覧サマリー</h2>
-    </div>
+  <!-- 一覧サマリー -->
+  <div class="section" id="summary">
+    <div class="section-header"><div class="section-num plain">▤</div><div><h2>一覧サマリー</h2><div class="sh-sub">全12件のタイトルとカテゴリ</div></div></div>
 
-    <div class="overview-table">
-      <div class="table-wrap">
-        <table>
-          <tr>
-            <th>#</th>
-            <th>タイトル</th>
-            <th>カテゴリ</th>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>開発環境で本番キーが使用されている</td>
-            <td><span class="badge badge-immediate">即時対応</span></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>DBが完全オープン（セキュリティ）</td>
-            <td><span class="badge badge-immediate">即時対応</span></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>プラットフォーム手数料が契約と異なる（10% → 15%）</td>
-            <td><span class="badge badge-immediate">即時対応</span></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>延長決済の charge_id が保存されていない</td>
-            <td><span class="badge badge-immediate">即時対応</span></td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td>デフォルトカードの設定がドロップダウン選択と不一致</td>
-            <td><span class="badge badge-immediate">即時対応</span></td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td>オーソリ（与信確認）が未実装</td>
-            <td><span class="badge badge-immediate">即時対応</span></td>
-          </tr>
-          <tr>
-            <td>7</td>
-            <td>エラーハンドリングの改善</td>
-            <td><span class="badge badge-tobe">改善時</span></td>
-          </tr>
-          <tr>
-            <td>8</td>
-            <td>エラー通知・ログの仕組みがない</td>
-            <td><span class="badge badge-tobe">改善時</span></td>
-          </tr>
-          <tr>
-            <td>9</td>
-            <td>店舗招待URLのセキュリティ</td>
-            <td><span class="badge badge-tobe">改善時</span></td>
-          </tr>
-          <tr>
-            <td>10</td>
-            <td>PEDALSTANDARD の 15% 利用料請求の仕組みが未定</td>
-            <td><span class="badge badge-low">低優先</span></td>
-          </tr>
-          <tr>
-            <td>11</td>
-            <td>テナント登録時の銀行口座情報</td>
-            <td><span class="badge badge-low">低優先</span></td>
-          </tr>
-          <tr>
-            <td>12</td>
-            <td>Webhook名のtypo</td>
-            <td><span class="badge badge-low">低優先</span></td>
-          </tr>
-        </table>
-      </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:50px">#</th><th>タイトル</th><th style="width:140px">カテゴリ</th></tr></thead>
+        <tbody>
+          <tr><td style="text-align:center">1</td><td>開発環境で本番キーが使用されている</td><td style="text-align:center"><span class="badge bad">即時対応</span></td></tr>
+          <tr><td style="text-align:center">2</td><td>DBが完全オープン（セキュリティ）</td><td style="text-align:center"><span class="badge bad">即時対応</span></td></tr>
+          <tr><td style="text-align:center">3</td><td>プラットフォーム手数料が契約と異なる（10% → 15%）<span class="badge good" style="margin-left:8px">2026-06 修正済み</span></td><td style="text-align:center"><span class="badge bad">即時対応</span></td></tr>
+          <tr><td style="text-align:center">4</td><td>延長決済の charge_id が保存されていない</td><td style="text-align:center"><span class="badge bad">即時対応</span></td></tr>
+          <tr><td style="text-align:center">5</td><td>デフォルトカードの設定がドロップダウン選択と不一致</td><td style="text-align:center"><span class="badge bad">即時対応</span></td></tr>
+          <tr><td style="text-align:center">6</td><td>オーソリ（与信確認）が未実装</td><td style="text-align:center"><span class="badge bad">即時対応</span></td></tr>
+          <tr><td style="text-align:center">7</td><td>エラーハンドリングの改善</td><td style="text-align:center"><span class="badge warn">改善時</span></td></tr>
+          <tr><td style="text-align:center">8</td><td>エラー通知・ログの仕組みがない</td><td style="text-align:center"><span class="badge warn">改善時</span></td></tr>
+          <tr><td style="text-align:center">9</td><td>店舗招待URLのセキュリティ</td><td style="text-align:center"><span class="badge warn">改善時</span></td></tr>
+          <tr><td style="text-align:center">10</td><td>PEDALSTANDARD の 15% 利用料請求の仕組みが未定</td><td style="text-align:center"><span class="badge low-b">低優先</span></td></tr>
+          <tr><td style="text-align:center">11</td><td>テナント登録時の銀行口座情報</td><td style="text-align:center"><span class="badge low-b">低優先</span></td></tr>
+          <tr><td style="text-align:center">12</td><td>Webhook名のtypo</td><td style="text-align:center"><span class="badge low-b">低優先</span></td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <!-- ========== IMMEDIATE ========== -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num immediate">&#x26A0;</div>
-      <h2>即時対応</h2>
-    </div>
-    <p class="section-desc">運用が壊れる、仕様未達、または事故リスクがある問題です。着手順に沿って対処してください。</p>
+  <!-- ========== 即時対応 ========== -->
+  <div class="section" id="immediate">
+    <div class="section-header"><div class="section-num imm">⚠</div><div><h2>即時対応</h2><div class="sh-sub">運用が壊れる、仕様未達、または事故リスクがある問題。着手順に沿って対処する</div></div></div>
 
-    <!-- Issue #1 -->
-    <div class="issue-card immediate">
-      <div class="issue-card-header">
-        <div class="issue-number immediate">1</div>
-        <div class="issue-title-area">
-          <div class="issue-title">開発環境で本番キーが使用されている</div>
-        </div>
-        <div class="order-badge"><span class="order-num">1</span> 1st</div>
+    <!-- #1 -->
+    <div class="issue-card imm">
+      <div class="issue-head">
+        <div class="issue-no imm">1</div>
+        <div class="issue-title">開発環境で本番キーが使用されている</div>
+        <div class="order-badge"><span class="on">1</span> 1st</div>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">APIコネクタの設定が本番キーになっており、開発環境でも本番向けのAPIが呼ばれる</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">テストができない。開発中の操作が本番データに影響する可能性</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">開発用ワークフロー / 本番用ワークフローを分けるか、環境変数で切り替える仕組みを導入</div>
-        </div>
-        <div class="priority-reason-callout">
-          <div class="pr-icon">&#x1F4A1;</div>
-          <div>
-            <div class="pr-label">優先理由</div>
-            <div class="pr-text">全ての開発・テスト作業の前提。これがないと他の修正の検証もできない</div>
-          </div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">APIコネクタの設定が本番キーになっており、開発環境でも本番向けのAPIが呼ばれる</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">テストができない。開発中の操作が本番データに影響する可能性</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">開発用ワークフロー / 本番用ワークフローを分けるか、環境変数で切り替える仕組みを導入</div></div>
+        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">全ての開発・テスト作業の前提。これがないと他の修正の検証もできない</div></div></div>
       </div>
     </div>
 
-    <!-- Issue #2 -->
-    <div class="issue-card immediate">
-      <div class="issue-card-header">
-        <div class="issue-number immediate">2</div>
-        <div class="issue-title-area">
-          <div class="issue-title">DBが完全オープン（セキュリティ）</div>
-        </div>
-        <div class="order-badge"><span class="order-num">2</span> 2nd</div>
+    <!-- #2 -->
+    <div class="issue-card imm">
+      <div class="issue-head">
+        <div class="issue-no imm">2</div>
+        <div class="issue-title">DBが完全オープン（セキュリティ）</div>
+        <div class="order-badge"><span class="on">2</span> 2nd</div>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">DBは誰でも閲覧可能な状態</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">顧客情報・決済情報が外部から参照できるリスク</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">プライバシールールを設定し、適切なアクセス制御を行う</div>
-        </div>
-        <div class="priority-reason-callout">
-          <div class="pr-icon">&#x1F4A1;</div>
-          <div>
-            <div class="pr-label">優先理由</div>
-            <div class="pr-text">事故が起きたら取り返しがつかない。放置期間が長いほどリスク増大</div>
-          </div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">DBは誰でも閲覧可能な状態</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">顧客情報・決済情報が外部から参照できるリスク</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">プライバシールールを設定し、適切なアクセス制御を行う</div></div>
+        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">事故が起きたら取り返しがつかない。放置期間が長いほどリスク増大</div></div></div>
       </div>
     </div>
 
-    <!-- Issue #3 -->
-    <div class="issue-card immediate">
-      <div class="issue-card-header">
-        <div class="issue-number immediate">3</div>
-        <div class="issue-title-area">
-          <div class="issue-title">プラットフォーム手数料が契約と異なる（10% → 15%）</div>
-        </div>
-        <div class="order-badge"><span class="order-num">3</span> 3rd</div>
+    <!-- #3 -->
+    <div class="issue-card imm">
+      <div class="issue-head">
+        <div class="issue-no imm">3</div>
+        <div class="issue-title">プラットフォーム手数料が契約と異なる（10% → 15%）<span class="badge good" style="margin-left:8px;vertical-align:middle">2026-06 修正済み</span></div>
+        <div class="order-badge"><span class="on">3</span> 3rd</div>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">契約上のRINCLE取り分は売上の15%だが、現在のシステムでは10%に設定されている。全ての決済で5%分の収益が失われている</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">1万円の決済あたり500円の損失。取引が発生するたびに損失が拡大し続けている</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">Pay.JPのプラットフォーム手数料の設定値を10% → 15%に変更する（設定1箇所の変更のみ）</div>
-        </div>
-        <div class="priority-reason-callout">
-          <div class="pr-icon">&#x1F4A1;</div>
-          <div>
-            <div class="pr-label">優先理由</div>
-            <div class="pr-text">契約通りの収益が得られていない。修正は設定変更のみで工数最小、即日対応可能</div>
-          </div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象（調査時点）</div><div class="ifield-text">契約上のRINCLE取り分は売上の15%だが、調査時点のシステムでは10%に設定されていた。全ての決済で5%分の収益が失われていた</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響（調査時点）</div><div class="ifield-text">1万円の決済あたり500円の損失。取引が発生するたびに損失が拡大し続けていた</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">Pay.JPのプラットフォーム手数料の設定値を10% → 15%に変更する（設定1箇所の変更のみ）</div></div>
+        <div class="alert alert-green" style="margin-bottom:0"><span class="a-icon">✓</span><div><strong>この項目は対応済みです（2026-06）。</strong>platform_feeは契約通りの15%に修正済み（現行フロー資料の分配例も15%に更新済み）。切り替え前に作成された既存テナントへの適用状況は要確認。</div></div>
+        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">契約通りの収益が得られていない。修正は設定変更のみで工数最小、即日対応可能</div></div></div>
 
         <details class="dev-detail">
-          <summary>&#x1F527; 開発者向け詳細</summary>
-          <div class="dev-detail-body">
-
+          <summary>🔧 開発者向け詳細（調査時点の記録）</summary>
+          <div class="dd-body">
             <h5>設定値の場所</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>場所</th><th>現在の値</th><th>修正後</th></tr>
-                <tr>
-                  <td>Bubble Option Set <code>platform_fee</code></td>
-                  <td><strong>10</strong></td>
-                  <td><strong>15</strong></td>
-                </tr>
+                <thead><tr><th>場所</th><th>調査時点の値</th><th>修正後</th></tr></thead>
+                <tbody>
+                  <tr><td>Bubble Option Set <code>platform_fee</code></td><td><strong>10</strong></td><td><strong>15</strong></td></tr>
+                </tbody>
               </table>
             </div>
             <p>Bubble管理画面 → Data → Option Sets → <code>platform_fee</code> → 「デフォルト」の number 値を <strong>10 → 15</strong> に変更するだけ。</p>
@@ -806,28 +310,18 @@
             <div class="flow-diagram">platform_fee = デフォルト's number / 100 × amount
 
 例: 予約金額 10,000円の場合
-  現状: <span class="highlight-line">10 / 100 × 10,000 = 1,000円（10%）</span>
+  調査時点: <span class="hl-line">10 / 100 × 10,000 = 1,000円（10%）</span>
   修正後: 15 / 100 × 10,000 = 1,500円（15%）</div>
 
             <h5>この計算式が使われている全ワークフロー</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>ワークフロー</th><th>トリガー</th><th>画面</th></tr>
-                <tr>
-                  <td><code>Charge_by_car_id</code></td>
-                  <td>「ライド開始」ボタン</td>
-                  <td>shop_admin</td>
-                </tr>
-                <tr>
-                  <td><code>Charge_by_car_id</code></td>
-                  <td>「ライド終了」ボタン（延長料金）</td>
-                  <td>shop_admin</td>
-                </tr>
-                <tr>
-                  <td><code>Charge_by_car_id</code></td>
-                  <td>ステータス変更（管理者決済）</td>
-                  <td>admin</td>
-                </tr>
+                <thead><tr><th>ワークフロー</th><th>トリガー</th><th>画面</th></tr></thead>
+                <tbody>
+                  <tr><td><code>Charge_by_car_id</code></td><td>「ライド開始」ボタン</td><td>shop_admin</td></tr>
+                  <tr><td><code>Charge_by_car_id</code></td><td>「ライド終了」ボタン（延長料金）</td><td>shop_admin</td></tr>
+                  <tr><td><code>Charge_by_car_id</code></td><td>ステータス変更（管理者決済）</td><td>admin</td></tr>
+                </tbody>
               </table>
             </div>
             <p>3箇所すべてで同じ Option Set を参照しているため、<strong>Option Set の値を1箇所変えれば全ワークフローに反映される。</strong></p>
@@ -837,15 +331,17 @@
 amount:        合計金額（or 延長料金）
 currency:      "jpy"
 tenant:        店舗の tenant_id
-<span class="highlight-line">platform_fee:  デフォルト's number / 100 × amount  ← ここが10%</span></div>
+<span class="hl-line">platform_fee:  デフォルト's number / 100 × amount  ← 調査時点は10%</span></div>
 
             <h5>お金の流れの変化（1万円の場合）</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>受取人</th><th>現状（10%）</th><th>修正後（15%）</th></tr>
-                <tr><td>RINCLE（PEDALSTANDARD）</td><td>1,000円</td><td><strong>1,500円</strong></td></tr>
-                <tr><td>Pay.JP（カード手数料 約3.5%）</td><td>約350円</td><td>約350円</td></tr>
-                <tr><td>店舗（ネット入金）</td><td>約8,650円</td><td><strong>約8,150円</strong></td></tr>
+                <thead><tr><th>受取人</th><th>調査時点（10%）</th><th>修正後（15%）</th></tr></thead>
+                <tbody>
+                  <tr><td>RINCLE（PEDALSTANDARD）</td><td>1,000円</td><td><strong>1,500円</strong></td></tr>
+                  <tr><td>Pay.JP（カード手数料 約3.5%）</td><td>約350円</td><td>約350円</td></tr>
+                  <tr><td>店舗（ネット入金）</td><td>約8,650円</td><td><strong>約8,150円</strong></td></tr>
+                </tbody>
               </table>
             </div>
 
@@ -860,47 +356,31 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <!-- Issue #4 -->
-    <div class="issue-card immediate">
-      <div class="issue-card-header">
-        <div class="issue-number immediate">4</div>
-        <div class="issue-title-area">
-          <div class="issue-title">延長決済の charge_id が保存されていない</div>
-        </div>
-        <div class="order-badge"><span class="order-num">4</span> 4th</div>
+    <!-- #4 -->
+    <div class="issue-card imm">
+      <div class="issue-head">
+        <div class="issue-no imm">4</div>
+        <div class="issue-title">延長決済の charge_id が保存されていない</div>
+        <div class="order-badge"><span class="on">4</span> 4th</div>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">shop_admin の延長ワークフロー（<code>bTdud</code> / ライド終了ボタン）で Charge_by_car_id を実行した後、返却された charge_id を予約データに保存していない</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">延長分の返金時に <code>__charge_id</code> が空のため、返金できない可能性がある</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">延長決済成功後に <code>__charge_id</code> フィールドへ charge_id を保存する処理を追加</div>
-        </div>
-        <div class="priority-reason-callout">
-          <div class="pr-icon">&#x1F4A1;</div>
-          <div>
-            <div class="pr-label">優先理由</div>
-            <div class="pr-text">延長が発生した時点で返金不能になる（現時点で延長実績ゼロのため実害は未発生）</div>
-          </div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">shop_admin の延長ワークフロー（<code>bTdud</code> / ライド終了ボタン）で Charge_by_car_id を実行した後、返却された charge_id を予約データに保存していない</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">延長分の返金時に <code>__charge_id</code> が空のため、返金できない可能性がある</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">延長決済成功後に <code>__charge_id</code> フィールドへ charge_id を保存する処理を追加</div></div>
+        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">延長が発生した時点で返金不能になる（現時点で延長実績ゼロのため実害は未発生）</div></div></div>
 
         <details class="dev-detail">
-          <summary>&#x1F527; 開発者向け詳細</summary>
-          <div class="dev-detail-body">
-
+          <summary>🔧 開発者向け詳細</summary>
+          <div class="dd-body">
             <h5>DBフィールド構成（予約テーブル）</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>フィールド</th><th>用途</th><th>現状</th></tr>
-                <tr><td><code>charge_id</code></td><td>通常決済（ライド開始時）の決済ID</td><td>保存されている &#x2705;</td></tr>
-                <tr><td><code>__charge_id</code></td><td>延長決済（ライド終了時）の決済ID</td><td><strong>空のまま &#x274C;</strong></td></tr>
-                <tr><td><code>__charge_id1</code></td><td>返金用charge_id</td><td>&#x2014;</td></tr>
+                <thead><tr><th>フィールド</th><th>用途</th><th>現状</th></tr></thead>
+                <tbody>
+                  <tr><td><code>charge_id</code></td><td>通常決済（ライド開始時）の決済ID</td><td>保存されている ✅</td></tr>
+                  <tr><td><code>__charge_id</code></td><td>延長決済（ライド終了時）の決済ID</td><td><strong>空のまま ❌</strong></td></tr>
+                  <tr><td><code>__charge_id1</code></td><td>返金用charge_id</td><td>—</td></tr>
+                </tbody>
               </table>
             </div>
 
@@ -911,17 +391,17 @@ tenant:        店舗の tenant_id
    ↓
 ③ Pay.JP が決済成功 → charge_id を返す
    ↓
-<span class="highlight-line">④ ← ここで __charge_id に保存すべきだが、していない</span>
+<span class="hl-line">④ ← ここで __charge_id に保存すべきだが、していない</span>
    ↓
 ⑤ ステータスを「決済済み」に更新</div>
 
             <h5>返金時に何が起きるか</h5>
             <div class="flow-diagram">管理者が「返金あり」をクリック
    ↓
-通常分の返金 → <code>charge_id</code> で Pay.JP に返金依頼 → 成功 &#x2705;
+通常分の返金 → <code>charge_id</code> で Pay.JP に返金依頼 → 成功 ✅
    ↓
 延長分の返金 → <code>__charge_id</code> で Pay.JP に返金依頼
-   → <span class="highlight-line">空なので返金できない &#x274C;</span></div>
+   → <span class="hl-line">空なので返金できない ❌</span></div>
 
             <h5>修正内容</h5>
             <p><strong>対象:</strong> shop_admin「ライド終了」ボタンのワークフロー（<code>bTdud</code>）</p>
@@ -930,7 +410,7 @@ tenant:        店舗の tenant_id
 
 <strong>修正後:</strong>
   Charge_by_car_id
-    → <span class="highlight-line">make change 予約（__charge_id = API response の charge_id）</span>
+    → <span class="hl-line">make change 予約（__charge_id = API response の charge_id）</span>
     → make change 予約（ステータス: 決済済み）</div>
 
             <h5>補足</h5>
@@ -944,40 +424,22 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <!-- Issue #5 -->
-    <div class="issue-card immediate">
-      <div class="issue-card-header">
-        <div class="issue-number immediate">5</div>
-        <div class="issue-title-area">
-          <div class="issue-title">デフォルトカードの設定がドロップダウン選択と不一致</div>
-        </div>
-        <div class="order-badge"><span class="order-num">5</span> 5th</div>
+    <!-- #5 -->
+    <div class="issue-card imm">
+      <div class="issue-head">
+        <div class="issue-no imm">5</div>
+        <div class="issue-title">デフォルトカードの設定がドロップダウン選択と不一致</div>
+        <div class="order-badge"><span class="on">5</span> 5th</div>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">予約確定時に設定されるデフォルトカードは「取得した顧客カードの1つ目」であり、ユーザーがドロップダウンで選択したカードではない</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">ユーザーが選んだカードとは異なるカードで決済される可能性がある</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">ドロップダウンで選択されたカードをデフォルトカードに設定するよう修正</div>
-        </div>
-        <div class="priority-reason-callout">
-          <div class="pr-icon">&#x1F4A1;</div>
-          <div>
-            <div class="pr-label">優先理由</div>
-            <div class="pr-text">クレーム直結。複数カード登録ユーザーで発生する</div>
-          </div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">予約確定時に設定されるデフォルトカードは「取得した顧客カードの1つ目」であり、ユーザーがドロップダウンで選択したカードではない</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">ユーザーが選んだカードとは異なるカードで決済される可能性がある</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">ドロップダウンで選択されたカードをデフォルトカードに設定するよう修正</div></div>
+        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">クレーム直結。複数カード登録ユーザーで発生する</div></div></div>
 
         <details class="dev-detail">
-          <summary>&#x1F527; 開発者向け詳細</summary>
-          <div class="dev-detail-body">
-
+          <summary>🔧 開発者向け詳細</summary>
+          <div class="dd-body">
             <h5>現状のワークフロー（index / 予約確定ボタン）</h5>
             <div class="flow-diagram">① ユーザーがDropdownでカードを選択
    ↓
@@ -985,7 +447,7 @@ tenant:        店舗の tenant_id
    ↓
 ③ API <code>get_client_action</code> で顧客情報を取得
    ↓
-<span class="highlight-line">④ API account_register_default_card で1つ目のカードをデフォルトに設定</span>
+<span class="hl-line">④ API account_register_default_card で1つ目のカードをデフォルトに設定</span>
    ← Dropdownの選択値を無視して、取得したカード配列の先頭を使っている
    ↓
 ⑤ 予約レコード作成（ステータス: 来客待ち）</div>
@@ -996,12 +458,10 @@ tenant:        店舗の tenant_id
             <h5>修正内容</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>項目</th><th>現状</th><th>修正後</th></tr>
-                <tr>
-                  <td><code>default_card</code> パラメータ</td>
-                  <td>get_client_action の cards[0].id</td>
-                  <td><strong>Dropdown の value（ユーザー選択カードID）</strong></td>
-                </tr>
+                <thead><tr><th>項目</th><th>現状</th><th>修正後</th></tr></thead>
+                <tbody>
+                  <tr><td><code>default_card</code> パラメータ</td><td>get_client_action の cards[0].id</td><td><strong>Dropdown の value（ユーザー選択カードID）</strong></td></tr>
+                </tbody>
               </table>
             </div>
 
@@ -1020,47 +480,29 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <!-- Issue #6 -->
-    <div class="issue-card immediate">
-      <div class="issue-card-header">
-        <div class="issue-number immediate">6</div>
-        <div class="issue-title-area">
-          <div class="issue-title">オーソリ（与信確認）が未実装</div>
-        </div>
-        <div class="order-badge"><span class="order-num">6</span> 6th</div>
+    <!-- #6 -->
+    <div class="issue-card imm">
+      <div class="issue-head">
+        <div class="issue-no imm">6</div>
+        <div class="issue-title">オーソリ（与信確認）が未実装</div>
+        <div class="order-badge"><span class="on">6</span> 6th</div>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">クライアント提供の「RINCLEクレジット支払いフロー.pdf」ではオーソリ→キャプチャモデルが定義されているが、実際には実装されていない。予約時にオーソリなし、ライド開始時に直接課金している</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">クライアントは実装済みと認識している可能性が高い。未回収リスクの抑制が機能していない</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">オーソリ→キャプチャモデルを実装（<code>capture=false</code> / <code>expiry_days=60</code>）。最大予約先も60日に制限、営業カレンダーも60日分に縮小</div>
-        </div>
-        <div class="priority-reason-callout">
-          <div class="pr-icon">&#x1F4A1;</div>
-          <div>
-            <div class="pr-label">優先理由</div>
-            <div class="pr-text">クライアントが想定している仕様と実装が乖離している（仕様未達）</div>
-          </div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">クライアント提供の「RINCLEクレジット支払いフロー.pdf」ではオーソリ→キャプチャモデルが定義されているが、実際には実装されていない。予約時にオーソリなし、ライド開始時に直接課金している</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">クライアントは実装済みと認識している可能性が高い。未回収リスクの抑制が機能していない</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">オーソリ→キャプチャモデルを実装（<code>capture=false</code> / <code>expiry_days=60</code>）。最大予約先も60日に制限、営業カレンダーも60日分に縮小</div></div>
+        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">クライアントが想定している仕様と実装が乖離している（仕様未達）</div></div></div>
 
         <details class="dev-detail">
-          <summary>&#x1F527; 開発者向け詳細</summary>
-          <div class="dev-detail-body">
-
+          <summary>🔧 開発者向け詳細</summary>
+          <div class="dd-body">
             <h5>現状（As-Is）の決済フロー</h5>
             <div class="flow-diagram"><strong>予約確定時（index）:</strong>
   カード設定のみ。課金もオーソリもなし
 
 <strong>ライド開始時（shop_admin / ライド開始ボタン）:</strong>
   <code>POST /v1/charges</code>（capture=true ← デフォルト）
-  → <span class="highlight-line">全額を直接課金（オーソリなし）</span></div>
+  → <span class="hl-line">全額を直接課金（オーソリなし）</span></div>
 
             <h5>あるべき姿（To-Be）の決済フロー</h5>
             <div class="flow-diagram"><strong>予約確定時（index）:</strong>
@@ -1079,22 +521,12 @@ tenant:        店舗の tenant_id
             <h5>API パラメータの変更</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>タイミング</th><th>現状のAPI</th><th>修正後のAPI</th></tr>
-                <tr>
-                  <td>予約確定時</td>
-                  <td>なし（カード設定のみ）</td>
-                  <td><code>POST /charges</code> <strong>capture=false, expiry_days=60</strong></td>
-                </tr>
-                <tr>
-                  <td>ライド開始時</td>
-                  <td><code>POST /charges</code>（全額課金）</td>
-                  <td><code>POST /charges/:id/<strong>capture</strong></code></td>
-                </tr>
-                <tr>
-                  <td>キャンセル時</td>
-                  <td><code>POST /charges/:id/refund</code></td>
-                  <td>オーソリ自動失効（API不要）</td>
-                </tr>
+                <thead><tr><th>タイミング</th><th>現状のAPI</th><th>修正後のAPI</th></tr></thead>
+                <tbody>
+                  <tr><td>予約確定時</td><td>なし（カード設定のみ）</td><td><code>POST /charges</code> <strong>capture=false, expiry_days=60</strong></td></tr>
+                  <tr><td>ライド開始時</td><td><code>POST /charges</code>（全額課金）</td><td><code>POST /charges/:id/<strong>capture</strong></code></td></tr>
+                  <tr><td>キャンセル時</td><td><code>POST /charges/:id/refund</code></td><td>オーソリ自動失効（API不要）</td></tr>
+                </tbody>
               </table>
             </div>
 
@@ -1109,11 +541,13 @@ tenant:        店舗の tenant_id
             <h5>影響範囲</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>ページ</th><th>ワークフロー</th><th>変更内容</th></tr>
-                <tr><td><code>index</code></td><td>予約確定ボタン</td><td>オーソリAPI追加 + charge_id保存</td></tr>
-                <tr><td><code>shop_admin</code></td><td>ライド開始ボタン</td><td>Charge → Capture に変更</td></tr>
-                <tr><td><code>admin</code></td><td>キャンセル処理</td><td>Refund → 不要に（オーソリ解放）</td></tr>
-                <tr><td><code>admin</code></td><td>ステータス変更</td><td>Charge → Capture に変更</td></tr>
+                <thead><tr><th>ページ</th><th>ワークフロー</th><th>変更内容</th></tr></thead>
+                <tbody>
+                  <tr><td><code>index</code></td><td>予約確定ボタン</td><td>オーソリAPI追加 + charge_id保存</td></tr>
+                  <tr><td><code>shop_admin</code></td><td>ライド開始ボタン</td><td>Charge → Capture に変更</td></tr>
+                  <tr><td><code>admin</code></td><td>キャンセル処理</td><td>Refund → 不要に（オーソリ解放）</td></tr>
+                  <tr><td><code>admin</code></td><td>ステータス変更</td><td>Charge → Capture に変更</td></tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -1121,75 +555,60 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <div class="callout danger">
-      <div class="callout-icon">&#x1F6A8;</div>
-      <div><strong>即時対応の6件は着手順に沿って進めてください。</strong>まず #1（本番キー分離）→ #2（DB公開）で安全な環境を整え、#3（手数料15%修正）で収益損失を止めた上で、#4（charge_id保存）→ #5（カード選択）→ #6（オーソリ実装）の順に着手します。</div>
-    </div>
+    <div class="alert alert-red"><span class="a-icon">🚨</span><div><strong>即時対応の6件は着手順に沿って進めてください。</strong>まず #1（本番キー分離）→ #2（DB公開）で安全な環境を整え、#3（手数料15%修正）で収益損失を止めた上で、#4（charge_id保存）→ #5（カード選択）→ #6（オーソリ実装）の順に着手します。</div></div>
   </div>
 
   <!-- ========== 改善時に対応 ========== -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num tobe">&#x25B2;</div>
-      <h2>改善時に対応</h2>
-    </div>
-    <p class="section-desc">改善フェーズでまとめて対応する項目です。</p>
+  <div class="section" id="tobe">
+    <div class="section-header"><div class="section-num tobe">▲</div><div><h2>改善時に対応</h2><div class="sh-sub">改善フェーズでまとめて対応する項目</div></div></div>
 
-    <!-- Issue #7 -->
+    <!-- #7 -->
     <div class="issue-card tobe">
-      <div class="issue-card-header">
-        <div class="issue-number tobe">7</div>
-        <div class="issue-title-area">
-          <div class="issue-title">エラーハンドリングの改善</div>
-        </div>
-        <span class="category-badge tobe">改善時</span>
+      <div class="issue-head">
+        <div class="issue-no tobe">7</div>
+        <div class="issue-title">エラーハンドリングの改善</div>
+        <span class="badge warn">改善時</span>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">APIエラー時は JavaScript の <code>alert()</code> で生のエラーメッセージが表示される</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">ユーザーが困惑し、対処方法がわからない</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">
-            <ul>
-              <li>エラーパターンを書き出す</li>
-              <li>APIコネクタでエラー時もワークフローが止まらないよう設定</li>
-              <li>エラーコードに応じたユーザー向けメッセージを表示</li>
-            </ul>
-          </div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">APIエラー時は JavaScript の <code>alert()</code> で生のエラーメッセージが表示される</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">ユーザーが困惑し、対処方法がわからない</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">
+          <ul>
+            <li>エラーパターンを書き出す</li>
+            <li>APIコネクタでエラー時もワークフローが止まらないよう設定</li>
+            <li>エラーコードに応じたユーザー向けメッセージを表示</li>
+          </ul>
+        </div></div>
 
         <details class="dev-detail">
-          <summary>&#x1F527; 開発者向け詳細</summary>
-          <div class="dev-detail-body">
-
+          <summary>🔧 開発者向け詳細</summary>
+          <div class="dd-body">
             <h5>alert() が発生するワークフロー一覧</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>ページ</th><th>操作</th><th>API</th></tr>
-                <tr><td><code>index</code></td><td>予約確定</td><td><code>get_client_action</code> / <code>account_register_default_card</code></td></tr>
-                <tr><td><code>index</code></td><td>カード登録</td><td><code>Create Client</code> / <code>account_register_card</code></td></tr>
-                <tr><td><code>shop_admin</code></td><td>ライド開始</td><td><code>Charge_by_car_id</code></td></tr>
-                <tr><td><code>shop_admin</code></td><td>ライド終了（延長）</td><td><code>Charge_by_car_id</code></td></tr>
-                <tr><td><code>admin</code></td><td>ステータス変更（課金）</td><td><code>Charge_by_car_id</code></td></tr>
-                <tr><td><code>admin</code></td><td>ステータス変更（返金）</td><td><code>Charge_refund</code></td></tr>
+                <thead><tr><th>ページ</th><th>操作</th><th>API</th></tr></thead>
+                <tbody>
+                  <tr><td><code>index</code></td><td>予約確定</td><td><code>get_client_action</code> / <code>account_register_default_card</code></td></tr>
+                  <tr><td><code>index</code></td><td>カード登録</td><td><code>Create Client</code> / <code>account_register_card</code></td></tr>
+                  <tr><td><code>shop_admin</code></td><td>ライド開始</td><td><code>Charge_by_car_id</code></td></tr>
+                  <tr><td><code>shop_admin</code></td><td>ライド終了（延長）</td><td><code>Charge_by_car_id</code></td></tr>
+                  <tr><td><code>admin</code></td><td>ステータス変更（課金）</td><td><code>Charge_by_car_id</code></td></tr>
+                  <tr><td><code>admin</code></td><td>ステータス変更（返金）</td><td><code>Charge_refund</code></td></tr>
+                </tbody>
               </table>
             </div>
 
             <h5>Pay.JP の主要エラーコードとユーザー向けメッセージ案</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>エラーコード</th><th>意味</th><th>ユーザー向けメッセージ</th></tr>
-                <tr><td><code>card_error</code></td><td>カード決済エラー</td><td>「カード決済に失敗しました。別のカードをお試しください」</td></tr>
-                <tr><td><code>insufficient_funds</code></td><td>残高不足</td><td>「カードの残高が不足しています」</td></tr>
-                <tr><td><code>expired_card</code></td><td>有効期限切れ</td><td>「カードの有効期限が切れています」</td></tr>
-                <tr><td><code>processing_error</code></td><td>処理エラー</td><td>「決済処理中にエラーが発生しました。もう一度お試しください」</td></tr>
-                <tr><td><code>invalid_argument</code></td><td>パラメータ不正</td><td>（管理者へ通知。ユーザーには「エラーが発生しました」）</td></tr>
+                <thead><tr><th>エラーコード</th><th>意味</th><th>ユーザー向けメッセージ</th></tr></thead>
+                <tbody>
+                  <tr><td><code>card_error</code></td><td>カード決済エラー</td><td>「カード決済に失敗しました。別のカードをお試しください」</td></tr>
+                  <tr><td><code>insufficient_funds</code></td><td>残高不足</td><td>「カードの残高が不足しています」</td></tr>
+                  <tr><td><code>expired_card</code></td><td>有効期限切れ</td><td>「カードの有効期限が切れています」</td></tr>
+                  <tr><td><code>processing_error</code></td><td>処理エラー</td><td>「決済処理中にエラーが発生しました。もう一度お試しください」</td></tr>
+                  <tr><td><code>invalid_argument</code></td><td>パラメータ不正</td><td>（管理者へ通知。ユーザーには「エラーが発生しました」）</td></tr>
+                </tbody>
               </table>
             </div>
 
@@ -1205,38 +624,26 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <!-- Issue #8 -->
+    <!-- #8 -->
     <div class="issue-card tobe">
-      <div class="issue-card-header">
-        <div class="issue-number tobe">8</div>
-        <div class="issue-title-area">
-          <div class="issue-title">エラー通知・ログの仕組みがない</div>
-        </div>
-        <span class="category-badge tobe">改善時</span>
+      <div class="issue-head">
+        <div class="issue-no tobe">8</div>
+        <div class="issue-title">エラー通知・ログの仕組みがない</div>
+        <span class="badge warn">改善時</span>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">APIエラーが発生しても管理者・開発者に通知がこない。サーバーログは最短2週間で消える</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">エラーの検知・調査ができない</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">
-            <ul>
-              <li>エラー発生時にメール送信する仕組みを追加</li>
-              <li>永続的なログ保存の仕組みを導入</li>
-            </ul>
-          </div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">APIエラーが発生しても管理者・開発者に通知がこない。サーバーログは最短2週間で消える</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">エラーの検知・調査ができない</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">
+          <ul>
+            <li>エラー発生時にメール送信する仕組みを追加</li>
+            <li>永続的なログ保存の仕組みを導入</li>
+          </ul>
+        </div></div>
 
         <details class="dev-detail">
-          <summary>&#x1F527; 開発者向け詳細</summary>
-          <div class="dev-detail-body">
-
+          <summary>🔧 開発者向け詳細</summary>
+          <div class="dd-body">
             <h5>現状</h5>
             <ul>
               <li>APIエラー発生 → 管理者に通知なし。気付けない</li>
@@ -1247,15 +654,17 @@ tenant:        店舗の tenant_id
             <h5>新規テーブル: <code>Error_Log</code></h5>
             <div class="table-wrap">
               <table>
-                <tr><th>フィールド</th><th>型</th><th>説明</th></tr>
-                <tr><td><code>timestamp</code></td><td>date</td><td>エラー発生時刻</td></tr>
-                <tr><td><code>workflow_name</code></td><td>text</td><td>ワークフロー名（例: ライド開始）</td></tr>
-                <tr><td><code>error_code</code></td><td>text</td><td>Pay.JP エラーコード</td></tr>
-                <tr><td><code>error_message</code></td><td>text</td><td>エラーメッセージ</td></tr>
-                <tr><td><code>user_id</code></td><td>text</td><td>対象ユーザーID</td></tr>
-                <tr><td><code>reservation_id</code></td><td>text</td><td>対象予約ID</td></tr>
-                <tr><td><code>api_endpoint</code></td><td>text</td><td>呼び出したAPI名</td></tr>
-                <tr><td><code>resolved</code></td><td>yes/no</td><td>解決済みフラグ</td></tr>
+                <thead><tr><th>フィールド</th><th>型</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td><code>timestamp</code></td><td>date</td><td>エラー発生時刻</td></tr>
+                  <tr><td><code>workflow_name</code></td><td>text</td><td>ワークフロー名（例: ライド開始）</td></tr>
+                  <tr><td><code>error_code</code></td><td>text</td><td>Pay.JP エラーコード</td></tr>
+                  <tr><td><code>error_message</code></td><td>text</td><td>エラーメッセージ</td></tr>
+                  <tr><td><code>user_id</code></td><td>text</td><td>対象ユーザーID</td></tr>
+                  <tr><td><code>reservation_id</code></td><td>text</td><td>対象予約ID</td></tr>
+                  <tr><td><code>api_endpoint</code></td><td>text</td><td>呼び出したAPI名</td></tr>
+                  <tr><td><code>resolved</code></td><td>yes/no</td><td>解決済みフラグ</td></tr>
+                </tbody>
               </table>
             </div>
 
@@ -1278,33 +687,21 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <!-- Issue #9 -->
+    <!-- #9 -->
     <div class="issue-card tobe">
-      <div class="issue-card-header">
-        <div class="issue-number tobe">9</div>
-        <div class="issue-title-area">
-          <div class="issue-title">店舗招待URLのセキュリティ</div>
-        </div>
-        <span class="category-badge tobe">改善時</span>
+      <div class="issue-head">
+        <div class="issue-no tobe">9</div>
+        <div class="issue-title">店舗招待URLのセキュリティ</div>
+        <span class="badge warn">改善時</span>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">shop_form への招待URL を知っていれば誰でも店舗登録できる</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">不正な店舗登録のリスク</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">招待メール送信時にパラメータとしてメアドか招待アカウントをDB保存し、unique_id で認証する</div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">shop_form への招待URL を知っていれば誰でも店舗登録できる</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">不正な店舗登録のリスク</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">招待メール送信時にパラメータとしてメアドか招待アカウントをDB保存し、unique_id で認証する</div></div>
 
         <details class="dev-detail">
-          <summary>&#x1F527; 開発者向け詳細</summary>
-          <div class="dev-detail-body">
-
+          <summary>🔧 開発者向け詳細</summary>
+          <div class="dd-body">
             <h5>現状のフロー</h5>
             <div class="flow-diagram">① 管理者が shop_admin で「新規追加」をクリック
    ↓
@@ -1312,7 +709,7 @@ tenant:        店舗の tenant_id
    ↓
 ③ メール本文に shop_form のURLが記載される
    ↓
-<span class="highlight-line">④ URLを知っていれば誰でもアクセスして店舗登録できる</span></div>
+<span class="hl-line">④ URLを知っていれば誰でもアクセスして店舗登録できる</span></div>
 
             <h5>修正後のフロー</h5>
             <div class="flow-diagram">① 管理者が「招待メール送信」をクリック
@@ -1324,7 +721,7 @@ tenant:        店舗の tenant_id
    - used: false
    ↓
 ③ メール本文に token 付きURLを記載:
-   <code>https://rincle.app/shop_form?token=&lt;invitation_token&gt;</code>
+   <code>https://rincle.co.jp/shop_form?token=&lt;invitation_token&gt;</code>
    ↓
 ④ shop_form ページ読み込み時に検証:
    - token パラメータあり？ → なければ拒否
@@ -1337,12 +734,14 @@ tenant:        店舗の tenant_id
             <h5>新規テーブル: <code>Shop_Invitation</code></h5>
             <div class="table-wrap">
               <table>
-                <tr><th>フィールド</th><th>型</th><th>説明</th></tr>
-                <tr><td><code>invitation_token</code></td><td>text (UUID)</td><td>招待トークン</td></tr>
-                <tr><td><code>email</code></td><td>text</td><td>招待対象メールアドレス</td></tr>
-                <tr><td><code>expires_at</code></td><td>date</td><td>有効期限（7日後）</td></tr>
-                <tr><td><code>used</code></td><td>yes/no</td><td>使用済みフラグ</td></tr>
-                <tr><td><code>created_by</code></td><td>User</td><td>招待元管理者</td></tr>
+                <thead><tr><th>フィールド</th><th>型</th><th>説明</th></tr></thead>
+                <tbody>
+                  <tr><td><code>invitation_token</code></td><td>text (UUID)</td><td>招待トークン</td></tr>
+                  <tr><td><code>email</code></td><td>text</td><td>招待対象メールアドレス</td></tr>
+                  <tr><td><code>expires_at</code></td><td>date</td><td>有効期限（7日後）</td></tr>
+                  <tr><td><code>used</code></td><td>yes/no</td><td>使用済みフラグ</td></tr>
+                  <tr><td><code>created_by</code></td><td>User</td><td>招待元管理者</td></tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -1350,67 +749,37 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <div class="callout warning">
-      <div class="callout-icon">&#x26A0;&#xFE0F;</div>
-      <div><strong>改善時に対応の3件は改善フェーズでまとめて対応します。</strong>即時対応の5件が完了してから着手してください。</div>
-    </div>
+    <div class="alert alert-red"><span class="a-icon">⚠</span><div><strong>改善時に対応の3件は改善フェーズでまとめて対応します。</strong>即時対応の6件が完了してから着手してください。</div></div>
   </div>
 
-  <!-- ========== LOW ========== -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num low">&#x25CF;</div>
-      <h2>低優先</h2>
-    </div>
-    <p class="section-desc">運用に影響なし。余裕があれば対応する項目です。</p>
+  <!-- ========== 低優先 ========== -->
+  <div class="section" id="low">
+    <div class="section-header"><div class="section-num low">●</div><div><h2>低優先</h2><div class="sh-sub">運用に影響なし。余裕があれば対応する項目</div></div></div>
 
-    <!-- Issue #10 -->
+    <!-- #10 -->
     <div class="issue-card low">
-      <div class="issue-card-header">
-        <div class="issue-number low">10</div>
-        <div class="issue-title-area">
-          <div class="issue-title">PEDALSTANDARD の 15% 利用料請求の仕組みが未定</div>
-        </div>
-        <span class="category-badge low-cat">低優先</span>
+      <div class="issue-head">
+        <div class="issue-no low">10</div>
+        <div class="issue-title">PEDALSTANDARD の 15% 利用料請求の仕組みが未定</div>
+        <span class="badge low-b">低優先</span>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">PEDALSTANDARDから販売店への利用料15%の請求方法が決まっていない</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label note">&#x1F4D6; 現在の platform_fee</div>
-          <div class="issue-field-text">10%（Pay.JP上のプラットフォーム手数料）</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label note">&#x1F4D6; 検討案</div>
-          <div class="issue-field-text">platform_fee を 0 に寄せて、15% は Pay.JP とは別に毎月末請求する運用</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">ビジネス要件を確定させた上で実装方針を決定</div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">PEDALSTANDARDから販売店への利用料15%の請求方法が決まっていない</div></div>
+        <div class="ifield"><div class="ifield-label nt">📖 platform_fee の設定値</div><div class="ifield-text">15%（Pay.JP上のプラットフォーム手数料。調査時点は10%だったが、2026-06に契約通りの15%へ修正済み）</div></div>
+        <div class="ifield"><div class="ifield-label nt">📖 検討案</div><div class="ifield-text">platform_fee を 0 に寄せて、15% は Pay.JP とは別に毎月末請求する運用</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">ビジネス要件を確定させた上で実装方針を決定</div></div>
 
         <details class="dev-detail">
-          <summary>&#x1F527; 開発者向け詳細</summary>
-          <div class="dev-detail-body">
-
+          <summary>🔧 開発者向け詳細</summary>
+          <div class="dd-body">
             <h5>選択肢の比較</h5>
             <div class="table-wrap">
               <table>
-                <tr><th>方式</th><th>Pay.JP の platform_fee</th><th>RINCLE取り分</th><th>リスク</th></tr>
-                <tr>
-                  <td><strong>A. platform_fee を15%にする</strong></td>
-                  <td>15%（自動差引）</td>
-                  <td>Pay.JPが自動で分配</td>
-                  <td>低（自動徴収）</td>
-                </tr>
-                <tr>
-                  <td><strong>B. platform_fee を0にして月末請求</strong></td>
-                  <td>0%（差引なし）</td>
-                  <td>月末に請求書で15%回収</td>
-                  <td>高（未払いリスク）</td>
-                </tr>
+                <thead><tr><th>方式</th><th>Pay.JP の platform_fee</th><th>RINCLE取り分</th><th>リスク</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>A. platform_fee を15%にする</strong></td><td>15%（自動差引）</td><td>Pay.JPが自動で分配</td><td>低（自動徴収）</td></tr>
+                  <tr><td><strong>B. platform_fee を0にして月末請求</strong></td><td>0%（差引なし）</td><td>月末に請求書で15%回収</td><td>高（未払いリスク）</td></tr>
+                </tbody>
               </table>
             </div>
 
@@ -1424,74 +793,48 @@ tenant:        店舗の tenant_id
             </ul>
 
             <h5>現時点の方針</h5>
-            <p>まず #3 で <strong>platform_fee を15%に修正</strong>（方式A）して収益損失を止める。月末請求化（方式B）は別フェーズで検討。</p>
+            <p>まず #3 で <strong>platform_fee を15%に修正</strong>（方式A）して収益損失を止める（→ 2026-06に実施済み）。月末請求化（方式B）は別フェーズで検討。</p>
           </div>
         </details>
       </div>
     </div>
 
-    <!-- Issue #11 -->
+    <!-- #11 -->
     <div class="issue-card low">
-      <div class="issue-card-header">
-        <div class="issue-number low">11</div>
-        <div class="issue-title-area">
-          <div class="issue-title">テナント登録時の銀行口座情報</div>
-        </div>
-        <span class="category-badge low-cat">低優先</span>
+      <div class="issue-head">
+        <div class="issue-no low">11</div>
+        <div class="issue-title">テナント登録時の銀行口座情報</div>
+        <span class="badge low-b">低優先</span>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text">テナント登録時（shop_form）に銀行口座情報を送信・DB保存しているが、Marketplace型では必須ではない</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">不要なデータがDBに保存されている</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">Bubble側で使う必要がないため、DB保存をやめる</div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">テナント登録時（shop_form）に銀行口座情報を送信・DB保存しているが、Marketplace型では必須ではない</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">不要なデータがDBに保存されている</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">Bubble側で使う必要がないため、DB保存をやめる</div></div>
       </div>
     </div>
 
-    <!-- Issue #12 -->
+    <!-- #12 -->
     <div class="issue-card low">
-      <div class="issue-card-header">
-        <div class="issue-number low">12</div>
-        <div class="issue-title-area">
-          <div class="issue-title">Webhook名のtypo</div>
-        </div>
-        <span class="category-badge low-cat">低優先</span>
+      <div class="issue-head">
+        <div class="issue-no low">12</div>
+        <div class="issue-title">Webhook名のtypo</div>
+        <span class="badge low-b">低優先</span>
       </div>
-      <div class="issue-card-body">
-        <div class="issue-field">
-          <div class="issue-field-label phenomenon">&#x1F50D; 現象</div>
-          <div class="issue-field-text"><code>payjp_webhook_update_talent</code> は <code>tenant</code> の typo</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label impact">&#x1F4A5; 影響</div>
-          <div class="issue-field-text">動作には影響なし（Bubble内部IDで紐づいているため）</div>
-        </div>
-        <div class="issue-field">
-          <div class="issue-field-label action">&#x2705; 対応</div>
-          <div class="issue-field-text">可能であれば名称を修正（優先度低）</div>
-        </div>
+      <div class="issue-body">
+        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text"><code>payjp_webhook_update_talent</code> は <code>tenant</code> の typo</div></div>
+        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">動作には影響なし（Bubble内部IDで紐づいているため）</div></div>
+        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">可能であれば名称を修正（優先度低）</div></div>
       </div>
     </div>
 
-    <div class="callout info">
-      <div class="callout-icon">&#x2139;&#xFE0F;</div>
-      <div><strong>低優先の3件は運用に直接影響しません。</strong>#10 はビジネス要件の確定待ち、#11 と #12 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div>
-    </div>
+    <div class="alert alert-blue"><span class="a-icon">ℹ</span><div><strong>低優先の3件は運用に直接影響しません。</strong>#10 はビジネス要件の確定待ち、#11 と #12 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div></div>
   </div>
 
-  <!-- Footer -->
-  <div class="footer-note">
-    <p>調査日: 2026-04-16 / 調査担当: Yano / ソース: rincle.bubble 解析結果</p>
-  </div>
+  <div class="footer-note">調査日: 2026-04-16 / 調査担当: Yano / ソース: rincle.bubble 解析結果</div>
 
 </div>
+
+<footer>正本: documents/2_requirements/04_integration/pay.jp/payjp-issues.md（md更新時はこのHTMLも同期すること）</footer>
 
 </body>
 </html>

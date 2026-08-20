@@ -5,409 +5,181 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RINCLE マーケティングペルソナ</title>
 <style>
-  :root {
-    --accent-red: #e94560;
-    --accent-navy: #0f3460;
-    --accent-dark: #1a1a2e;
-    --bg: #f8f9fa;
-    --card-bg: #ffffff;
-    --text: #333333;
-    --text-light: #666666;
-    --border: #e8e8e8;
-    --radius: 12px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.06);
-    --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
+  :root{
+    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
+    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
+    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
+    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
+    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
+    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
   }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* hero */
+  .hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 88px;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
+  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(35,32,29,.10)}
+  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
+  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
+  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
+  .hero p.lead{font-size:1rem;opacity:.92;max-width:700px}
+  .hero p.hero-note{font-size:.8rem;opacity:.78;margin-top:8px;max-width:760px}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    padding: 40px 20px;
-  }
+  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  /* flow nav */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:first-child{border-left:none}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:last-child::after{content:""}
 
-  h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--accent-dark);
-    margin-bottom: 8px;
-  }
+  /* sections */
+  .section{margin-bottom:56px;scroll-margin-top:20px}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
+  .section-num.plain{background:linear-gradient(135deg,var(--ink),#4A4038);box-shadow:0 4px 12px rgba(35,32,29,.3)}
+  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
+  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
+  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
 
-  .report-date {
-    font-size: 14px;
-    color: var(--text-light);
-    margin-bottom: 40px;
-  }
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
 
-  h2 {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--accent-dark);
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--accent-red);
-    display: inline-block;
-  }
+  /* alerts */
+  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
+  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
+  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
+  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
+  .alert-warn{background:#FFF7E6;border:1px solid #F3E0B8;color:#8F5A0A}
 
-  .section {
-    margin-bottom: 48px;
-  }
+  /* tables */
+  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
+  thead th{background:var(--ink);color:#fff;padding:12px 14px;text-align:left;font-size:12px;font-weight:700;white-space:nowrap}
+  td{padding:11px 14px;border-bottom:1px solid #F2EEE9;vertical-align:top;line-height:1.7}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#FBF8F5}
+  tr.highlight td{background:var(--brand-soft) !important;color:var(--brand-deep);font-weight:600}
+  .col-now{background:#F6FDF9}
+  tr.highlight .col-now{background:var(--brand-soft)}
 
-  .card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 28px;
-    border: 1px solid var(--border);
-  }
+  /* badges */
+  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+  .badge.warn{background:#FFF4E0;color:#8F5A0A}
+  .badge-draft{display:inline-block;padding:1px 7px;border-radius:4px;font-size:10px;font-weight:700;background:#FFF4E0;color:#8F5A0A;margin-left:4px;white-space:nowrap;vertical-align:middle}
 
-  /* Tables */
-  .table-wrapper {
-    overflow-x: auto;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-  }
+  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    background: var(--card-bg);
-  }
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
 
-  thead th {
-    background: var(--accent-dark);
-    color: #ffffff;
-    padding: 14px 16px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 12px;
-    white-space: nowrap;
-  }
+  /* ── ページ固有: KPIカード ── */
+  .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+  .kpi-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);border-top:4px solid var(--ink);padding:20px 24px}
+  .kpi-label{font-size:12px;color:var(--sub);letter-spacing:.5px;margin-bottom:6px;font-weight:700}
+  .kpi-value{font-size:26px;font-weight:800;color:var(--ink);line-height:1.3}
+  .kpi-value.accent{color:var(--brand-deep)}
+  .kpi-value .unit{font-size:14px;font-weight:700}
+  .kpi-note{font-size:12px;color:var(--sub);margin-top:6px}
 
-  tbody td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
+  /* ── ページ固有: 事実/推測/未検証ラベル ── */
+  .label-fact,.label-guess,.label-unverified{display:inline-block;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:6px;white-space:nowrap}
+  .label-fact{background:#EEF3FE;color:#1D48A6}
+  .label-guess{background:#FFF4E0;color:#8F5A0A}
+  .label-unverified{background:#EFEBE6;color:#6E675F}
 
-  tbody tr:last-child td {
-    border-bottom: none;
-  }
+  .fact-list{list-style:none;padding:0}
+  .fact-list li{padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px;line-height:1.8}
+  .fact-list li:last-child{border-bottom:none}
 
-  tbody tr:hover {
-    background: #f5f7fa;
-  }
+  /* ── ページ固有: ペルソナカード ── */
+  .persona-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;margin-bottom:24px}
+  .persona-header{background:linear-gradient(135deg,var(--ink) 0%,#4A4038 100%);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .persona-letter{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--brand);color:#fff;font-size:16px;font-weight:800;flex-shrink:0}
+  .persona-title{font-size:17px;font-weight:800}
+  .persona-sub{font-size:12px;color:rgba(255,255,255,.72)}
+  .persona-flag{margin-left:auto;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap}
+  .flag-star{background:var(--brand);color:#fff}
+  .flag-hypo{background:#FFD98A;color:#5C3A05}
+  .persona-card.star{border:2px solid var(--brand)}
+  .persona-card.hypo{border:2px dashed #D8A144}
+  .persona-card.hypo .persona-header{background:linear-gradient(135deg,#4A4038 0%,#8F5A0A 100%)}
+  .persona-card.hypo .persona-letter{background:#C07A16}
 
-  tr.highlight {
-    background: #e8f0fe !important;
-    font-weight: 600;
-  }
+  .persona-body{padding:22px 24px;display:grid;grid-template-columns:1fr 1fr;gap:18px 28px}
+  .p-block .p-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--sub);margin-bottom:6px}
+  .p-block .p-content{font-size:13px;line-height:1.8}
 
-  tr.highlight td {
-    color: var(--accent-navy);
-  }
+  .motive{background:#FFF9F6;border-left:4px solid var(--brand);border-radius:0 8px 8px 0;padding:10px 14px;font-size:14px;font-weight:600;color:#7A3413}
 
-  /* summary table (6 columns) — keep readable */
-  .summary-table table { font-size: 12px; }
-  .summary-table thead th { padding: 12px 10px; font-size: 11px; }
-  .summary-table tbody td { padding: 10px; line-height: 1.6; }
-  .summary-table .col-now { background: #f0fdf4; }
-  .summary-table tr.highlight .col-now { background: #e8f0fe; }
-  .badge-draft {
-    display: inline-block;
-    padding: 1px 7px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 700;
-    background: #fef3c7;
-    color: #92400e;
-    margin-left: 4px;
-    white-space: nowrap;
-    vertical-align: middle;
-  }
+  .channel-list,.msg-list{list-style:none;padding:0}
+  .channel-list li{padding:3px 0;display:flex;gap:8px}
+  .ch-rank{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--ink);color:#fff;font-size:10px;font-weight:700;flex-shrink:0;margin-top:6px}
+  .msg-list li{padding:4px 0 4px 18px;position:relative}
+  .msg-list li::before{content:'○';position:absolute;left:0;color:var(--brand);font-weight:800}
+  .msg-list li.ng::before{content:'×';color:#B8AFA5}
+  .msg-list li.ng{color:var(--sub)}
 
-  /* KPI cards */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 16px;
-  }
+  .ltv-row{display:flex;gap:10px;flex-wrap:wrap}
+  .pill{display:inline-block;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700}
+  .pill-easy{background:#EDFAF2;color:#136A41}
+  .pill-mid{background:#FFF4E0;color:#8F5A0A}
+  .pill-hard{background:#FDECEF;color:#8E1230}
+  .pill-ltv{background:#EEF3FE;color:#1D48A6}
 
-  .kpi-card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    padding: 20px 24px;
-  }
+  .p-verify{grid-column:1/3;background:#FBF8F5;border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:12px;line-height:1.9;color:#544B44}
+  .p-verify .p-label{margin-bottom:4px}
 
-  .kpi-label {
-    font-size: 12px;
-    color: var(--text-light);
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-  }
-
-  .kpi-value {
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--accent-navy);
-    line-height: 1.3;
-  }
-
-  .kpi-value .unit { font-size: 14px; font-weight: 600; }
-
-  .kpi-note {
-    font-size: 12px;
-    color: var(--text-light);
-    margin-top: 6px;
-  }
-
-  /* fact / guess labels */
-  .label-fact, .label-guess, .label-unverified {
-    display: inline-block;
-    padding: 1px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 700;
-    margin-right: 6px;
-    white-space: nowrap;
-  }
-  .label-fact { background: #e8f0fe; color: var(--accent-navy); }
-  .label-guess { background: #fef3c7; color: #92400e; }
-  .label-unverified { background: #e2e3e5; color: #495057; }
-
-  .fact-list {
-    list-style: none;
-    padding: 0;
-  }
-
-  .fact-list li {
-    padding: 8px 0;
-    border-bottom: 1px dashed var(--border);
-    font-size: 13px;
-    line-height: 1.7;
-  }
-
-  .fact-list li:last-child { border-bottom: none; }
-
-  /* Persona cards */
-  .persona-card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-
-  .persona-header {
-    background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent-navy) 100%);
-    color: #ffffff;
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .persona-letter {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--accent-red);
-    color: #fff;
-    font-size: 16px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .persona-title {
-    font-size: 17px;
-    font-weight: 700;
-  }
-
-  .persona-sub {
-    font-size: 12px;
-    color: rgba(255,255,255,0.7);
-  }
-
-  .persona-flag {
-    margin-left: auto;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 20px;
-    white-space: nowrap;
-  }
-
-  .flag-star { background: var(--accent-red); color: #fff; }
-  .flag-hypo { background: #ffc107; color: #333; }
-
-  .persona-card.star { border: 2px solid var(--accent-red); }
-  .persona-card.hypo { border: 2px dashed #d97706; }
-  .persona-card.hypo .persona-header { background: linear-gradient(135deg, #4a3a10 0%, #8a6d1a 100%); }
-  .persona-card.hypo .persona-letter { background: #d97706; }
-
-  .persona-body {
-    padding: 22px 24px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px 28px;
-  }
-
-  .p-block .p-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-light);
-    margin-bottom: 6px;
-  }
-
-  .p-block .p-content {
-    font-size: 13px;
-    line-height: 1.7;
-  }
-
-  .motive {
-    background: #f5f7fa;
-    border-left: 4px solid var(--accent-navy);
-    border-radius: 0 8px 8px 0;
-    padding: 10px 14px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--accent-navy);
-  }
-
-  .channel-list, .msg-list {
-    list-style: none;
-    padding: 0;
-  }
-
-  .channel-list li {
-    padding: 3px 0;
-    display: flex;
-    gap: 8px;
-  }
-
-  .ch-rank {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--accent-navy);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 4px;
-  }
-
-  .msg-list li {
-    padding: 4px 0 4px 18px;
-    position: relative;
-  }
-
-  .msg-list li::before {
-    content: '○';
-    position: absolute;
-    left: 0;
-    color: var(--accent-red);
-    font-weight: 700;
-  }
-
-  .msg-list li.ng::before { content: '×'; color: #adb5bd; }
-  .msg-list li.ng { color: var(--text-light); }
-
-  .ltv-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .pill {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-  }
-
-  .pill-easy { background: #d4edda; color: #155724; }
-  .pill-mid { background: #fff3cd; color: #856404; }
-  .pill-hard { background: #fde8ec; color: #9b1c31; }
-  .pill-ltv { background: #e8f0fe; color: var(--accent-navy); }
-
-  .p-verify {
-    grid-column: 1 / 3;
-    background: #f8f9fa;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 12px;
-    line-height: 1.8;
-    color: #555;
-  }
-
-  .p-verify .p-label { margin-bottom: 4px; }
-
-  .note-box {
-    background: #fffbeb;
-    border: 1px solid #fde68a;
-    border-radius: var(--radius);
-    padding: 14px 20px;
-    margin-top: 16px;
-    font-size: 13px;
-    color: #92400e;
-  }
-
-  .insight-box {
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    border-radius: var(--radius);
-    padding: 16px 20px;
-    margin-top: 16px;
-    font-size: 13px;
-    color: #1e40af;
-  }
-
-  @media (max-width: 768px) {
-    body { padding: 20px 12px; }
-    h1 { font-size: 22px; }
-    .kpi-grid { grid-template-columns: 1fr; }
-    .persona-body { grid-template-columns: 1fr; }
-    .p-verify { grid-column: 1; }
+  @media (max-width:760px){
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
+    .hero{padding:44px 24px 84px}
+    .container{padding:28px 18px 60px}
+    .kpi-grid{grid-template-columns:1fr}
+    .persona-body{grid-template-columns:1fr}
+    .p-verify{grid-column:1}
+    .p-block[style*="grid-column"]{grid-column:1 !important}
   }
 </style>
 </head>
 <body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
+    <div>
+      <span class="eyebrow">マーケティング — ペルソナ</span>
+      <h1>RINCLE マーケティングペルソナ</h1>
+      <p class="lead">6つのペルソナ（A〜F）それぞれについて「どこにいるか・何で刺さるか・どう動かすか」を定義し、マーケ施策に直結させる資料です。</p>
+      <p class="hero-note">作成日: 2026-06-02 ／ 最終更新: 2026-06-18（Cに「競技を始めたい層」拡張ノートを追記。供給側のセグメント判断はidea-logに分離）／ 2026-06-12（6/12定例の答え合わせ反映。イベント参加者ペルソナを追加、シニア層を削除し採番をA〜Fに整理）</p>
+    </div>
+  </div>
+</div>
+
 <div class="container">
 
-  <!-- Title -->
-  <h1>RINCLE マーケティングペルソナ</h1>
-  <p class="report-date">作成日: 2026-06-02 ／ 最終更新: 2026-06-18（Cに「競技を始めたい層」拡張ノートを追記。供給側のセグメント判断はidea-logに分離）／ 2026-06-12（6/12定例の答え合わせ反映。イベント参加者ペルソナを追加、シニア層を削除し採番をA〜Fに整理）</p>
+  <!-- flow nav -->
+  <nav class="flow">
+    <a href="#summary"><span class="fnum">1</span><div class="ft">ペルソナ総括</div><div class="fd">一覧 &times; 優先アクション</div></a>
+    <a href="#hearing"><span class="fnum">2</span><div class="ft">6/12定例での答え合わせ</div><div class="fd">増永さんヒアリング</div></a>
+    <a href="#data"><span class="fnum">3</span><div class="ft">実測データによる検証</div><div class="fd">2026-06-11 本番DB実測</div></a>
+    <a href="#detail"><span class="fnum">4</span><div class="ft">ペルソナ詳細</div><div class="fd">A〜Fのカード</div></a>
+  </nav>
 
-  <!-- ペルソナ総括（一覧 × 優先アクション） -->
-  <div class="section">
-    <h2>ペルソナ総括（一覧 × 優先アクション）</h2>
-    <div class="table-wrapper summary-table">
+  <!-- ===== 1. ペルソナ総括 ===== -->
+  <div class="section" id="summary">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div><h2>ペルソナ総括（一覧 &times; 優先アクション）</h2><div class="sh-sub">D=既存顧客が最重要</div></div>
+    </div>
+    <div class="table-wrap">
       <table>
         <thead>
           <tr>
@@ -471,17 +243,20 @@
         </tbody>
       </table>
     </div>
-    <div class="note-box">
-      ・全ペルソナ共通の今すぐ施策: <strong>Googleビジネスプロフィール 54店舗分（実質52店）</strong> — 営業チームが既に実施中（6/12確認）<br>
+    <div class="alert alert-warn"><span class="a-icon">&#x2757;</span><div>
+      ・全ペルソナ共通の今すぐ施策: <strong>Googleビジネスプロフィール 54店舗分（実質52店・2026-06-11実測。2026-08-20の本番サイト実測では56店）</strong> — 営業チームが既に実施中（6/12確認）<br>
       ・ペルソナE・Fは素案（E=多言語対応、F=利用目的入力での定量化、の方針確定後に本採用）<br>
       ・<strong>「健康目的のシニア層」ペルソナは2026-06-12に削除し、採番を詰めた（旧E→D・旧F→E・旧G→F）</strong> — 6/12の運営ヒアリングで唯一言及がなく、実在根拠ゼロ×獲得難易度「高」のため。「E-Bikeお試し」店頭POPはシニア専用でなくE-Bike横断施策（B/E向け）として継続。利用目的入力+GA4の年齢データでシニア需要が見えたら再定義する<br>
       ・※ チャネル施策の前提: 予約は関西に偏在し、関東・九州・しまなみ圏は在庫があるのに予約ゼロ。広告投下前にエリア方針の決定が必要。効果測定はGA4設置が前提
-    </div>
+    </div></div>
   </div>
 
-  <!-- 6/12定例での答え合わせ -->
-  <div class="section">
-    <h2>6/12定例での答え合わせ（増永さんヒアリング）</h2>
+  <!-- ===== 2. 6/12定例での答え合わせ ===== -->
+  <div class="section" id="hearing">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div><h2>6/12定例での答え合わせ（増永さんヒアリング）</h2><div class="sh-sub">仮説と現場実感の突き合わせ</div></div>
+    </div>
     <div class="card">
       <ul class="fact-list">
         <li><span class="label-fact">事実</span><strong>来店者の約半分は「初めてロードバイクを体験したい・購入を考えている」層</strong> ＝ ペルソナA/Cが想定通り実在。「僕ら考えてたペルソナが来てくれてはいる」（増永さん）</li>
@@ -493,9 +268,12 @@
     </div>
   </div>
 
-  <!-- 実測データによる検証状況 -->
-  <div class="section">
-    <h2>実測データによる検証状況（2026-06-11 本番DB実測）</h2>
+  <!-- ===== 3. 実測データによる検証状況 ===== -->
+  <div class="section" id="data">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div><h2>実測データによる検証状況</h2><div class="sh-sub">2026-06-11 本番DB実測</div></div>
+    </div>
     <div class="kpi-grid">
       <div class="kpi-card">
         <div class="kpi-label">店舗数 ／ 利用者数</div>
@@ -509,12 +287,12 @@
       </div>
       <div class="kpi-card">
         <div class="kpi-label">平均予約単価（実測）</div>
-        <div class="kpi-value" style="color:#e94560;">約¥10,200<span class="unit">/件</span></div>
+        <div class="kpi-value accent">約¥10,200<span class="unit">/件</span></div>
         <div class="kpi-note">想定¥6,000を大きく上回る</div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label">2台予約の比率</div>
-        <div class="kpi-value" style="color:#e94560;">18%</div>
+        <div class="kpi-value accent">18%</div>
         <div class="kpi-note">グループ・同伴利用の示唆</div>
       </div>
       <div class="kpi-card">
@@ -537,14 +315,17 @@
         <li><span class="label-unverified">未検証</span>レビューゼロ・GA4未設置のため、ペルソナ別の流入・CVRの定量検証はまだ不可能。GA4設置＋リピート率計測（乗車人情報）待ち</li>
       </ul>
     </div>
-    <div class="note-box">
+    <div class="alert alert-warn"><span class="a-icon">&#x26A0;</span><div>
       <strong>注意:</strong> 累計70件と母数が小さいため、以下の各ペルソナ検証は「示唆」レベルです。
-    </div>
+    </div></div>
   </div>
 
-  <!-- ペルソナ詳細カード -->
-  <div class="section">
-    <h2>ペルソナ詳細（A〜F）</h2>
+  <!-- ===== 4. ペルソナ詳細カード ===== -->
+  <div class="section" id="detail">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div><h2>ペルソナ詳細（A〜F）</h2><div class="sh-sub">動機・チャネル・メッセージ・検証状況</div></div>
+    </div>
 
     <!-- ペルソナA -->
     <div class="persona-card">
@@ -580,7 +361,7 @@
               <li>「プロのスタッフが乗り方から教えます」</li>
               <li class="ng">「全国54店舗のプロショップネットワーク」（サービス側の都合）</li>
             </ul>
-            <p style="font-size:11px; color:#92400e; margin-top:6px;">※「1日6,000円」は入口価格としては有効だが、実測の平均単価は約¥10,200/件（複数日利用が主力）。複数日プランの提示も検討</p>
+            <p style="font-size:11px; color:#8F5A0A; margin-top:6px;">※「1日6,000円」は入口価格としては有効だが、実測の平均単価は約¥10,200/件（複数日利用が主力）。複数日プランの提示も検討</p>
           </div>
         </div>
         <div class="p-block" style="grid-column:1/3;">
@@ -707,7 +488,7 @@
           <div class="p-content">
             「ロードレース/グラベル等の競技を始めてみたい」層は、需要側ではCの<strong>高intent版</strong>（買う前に決戦用の本格機材を試したい）として吸収。新ペルソナは立てず、どの市場に在庫をつけて営業をかけるかを供給側のセグメントで整理する：
           </div>
-          <div class="table-wrapper summary-table" style="margin-top:10px;">
+          <div class="table-wrap" style="margin-top:10px;">
             <table>
               <thead>
                 <tr>
@@ -731,7 +512,7 @@
                   <td>成長中だが小ベース（ロードの数十分の一）</td>
                   <td>◎（高額・新カテゴリ＝「買う前に試す」が刺さる＋遠征）</td>
                   <td>中＋<strong>競合あり</strong>（CycleTrip等が先行）</td>
-                  <td>🔬成長枠・<strong>差別化が条件</strong></td>
+                  <td>&#x1F52C;成長枠・<strong>差別化が条件</strong></td>
                 </tr>
                 <tr>
                   <td>山＝MTB XCレース</td>
@@ -745,7 +526,7 @@
                   <td>極小（大学56団体・高校254校）</td>
                   <td>✕（競輪場の無料レンタルが主流）</td>
                   <td>激高（ピスト在庫0・競輪場併設店なし）</td>
-                  <td>❌見送り</td>
+                  <td>&#x274C;見送り</td>
                 </tr>
               </tbody>
             </table>
@@ -781,7 +562,7 @@
               <li><span class="ch-rank">3</span><span><strong>ショップのメール/LINE配信</strong> — 既存顧客リストに一斉配信</span></li>
               <li><span class="ch-rank">4</span><span><strong>グループライドイベント</strong> — 「バイクがない友人もRINCLEレンタルで参加OK」</span></li>
             </ul>
-            <p style="font-size:11px; color:#155724; margin-top:6px;"><strong>すべて既存接点の活用＝追加コストほぼゼロで着手可能</strong></p>
+            <p style="font-size:11px; color:#136A41; margin-top:6px;"><strong>すべて既存接点の活用＝追加コストほぼゼロで着手可能</strong></p>
           </div>
         </div>
         <div class="p-block">
@@ -907,12 +688,15 @@
           <div class="p-label">検証状況（2026-06-12時点）</div>
           <span class="label-fact">事実</span>来店者の<strong>約2割</strong>を占める（運営ヒアリング）＋ 大阪城トライアスロンで他社のイベント連携レンタルが満車になり、「むちゃくちゃ探してやっとたどり着いた」利用者がRINCLEに複数流入した実例あり。増永さん「ここは結構、今後ニーズあるかなと思ってる」<br>
           <span class="label-unverified">未検証</span>何で検索して到達したかは不明（「ロードバイク レンタル」と推測）。利用目的入力の実装（task_list #23）後に定量化できる<br>
-          <span class="label-guess">注意</span>高額機材の貸出になりやすい → 破損・盗難リスクはデポジットオーソリの検討（task_list #25）とセット
+          <span class="label-guess">注意</span>高額機材の貸出になりやすい → 破損・盗難リスクはデポジットオーソリの検討（task_list #25。デポジット自体は今回の開発スコープ外で確定・2026-06-30）とセット
         </div>
       </div>
     </div>
   </div>
 
 </div>
+
+<footer>正本: documents/4_growth/02_marketing/marketing-personas.md（md更新時はこのHTMLも同期すること）</footer>
+
 </body>
 </html>

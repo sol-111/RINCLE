@@ -5,502 +5,149 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RINCLE アクションプラン</title>
 <style>
-  :root {
-    --red: #e94560;
-    --navy: #0f3460;
-    --dark: #1a1a2e;
-    --phase1: #dc2626;
-    --phase2: #2563eb;
-    --phase3: #7c3aed;
-    --phase4: #059669;
-    --bg: #f8f9fb;
-    --card-bg: #ffffff;
-    --text: #1a1a2e;
-    --text-sub: #5a5a72;
-    --border: #e8e8ef;
-    --shadow: 0 4px 24px rgba(0,0,0,.07);
-    --shadow-hover: 0 8px 32px rgba(0,0,0,.12);
-    --radius: 12px;
+  :root{
+    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
+    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
+    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
+    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
+    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
+    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
+    --phase1:var(--brand); --phase2:#2563EB; --phase3:#7C3AED; --phase4:#1D9E5F; --gov:#23201D;
   }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* hero */
+  .hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 88px;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
+  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(35,32,29,.10)}
+  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
+  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
+  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
+  .hero p.lead{font-size:1rem;opacity:.92;max-width:700px}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    padding: 40px 20px;
-  }
+  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  /* flow nav */
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:first-child{border-left:none}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:last-child::after{content:""}
 
-  /* ─── Hero ─── */
-  .hero {
-    text-align: center;
-    margin-bottom: 56px;
-  }
-  .hero h1 {
-    font-size: 2.4rem;
-    font-weight: 800;
-    color: var(--dark);
-    letter-spacing: .02em;
-  }
-  .hero h1 span { color: var(--red); }
-  .hero p {
-    margin-top: 10px;
-    font-size: 1.05rem;
-    color: var(--text-sub);
-  }
+  /* sections */
+  .section{margin-bottom:56px;scroll-margin-top:20px}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
+  .section-num.plain{background:linear-gradient(135deg,var(--ink),#4A4038);box-shadow:0 4px 12px rgba(35,32,29,.3)}
+  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
+  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
 
-  /* ─── Section ─── */
-  .section {
-    margin-bottom: 56px;
-  }
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .section-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    font-weight: 800;
-    font-size: 1rem;
-    color: #fff;
-    flex-shrink: 0;
-  }
-  .section-title {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--dark);
-  }
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
 
-  /* ─── Card ─── */
-  .card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 28px 32px;
-    transition: box-shadow .2s;
-  }
-  .card:hover { box-shadow: var(--shadow-hover); }
+  /* alerts */
+  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
+  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
+  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
+  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
+  .alert-amber{background:#FFF4E0;border:1px solid #F5DFAE;color:#8F5A0A}
 
-  /* ─── Competitor Grid ─── */
-  .competitor-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 18px;
-    margin-bottom: 28px;
-  }
-  .competitor-card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 22px 20px;
-    border-top: 4px solid var(--navy);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .competitor-card .cc-name {
-    font-weight: 700;
-    font-size: .95rem;
-    color: var(--dark);
-  }
-  .competitor-card .cc-model {
-    font-size: .82rem;
-    color: var(--text-sub);
-  }
-  .competitor-card .cc-scale {
-    font-size: .8rem;
-    background: #eef2ff;
-    color: var(--navy);
-    border-radius: 6px;
-    padding: 4px 10px;
-    display: inline-block;
-    font-weight: 600;
-    margin-top: auto;
-  }
+  /* tables */
+  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:13.5px}
+  thead th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
+  td{padding:11px 16px;border-bottom:1px solid #F2EEE9;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#FBF8F5}
+  td.label{font-weight:700;color:var(--ink);white-space:nowrap}
 
-  /* ─── Conclusion Cards ─── */
-  .conclusion-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 18px;
-  }
-  .conclusion-card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 24px 26px;
-    border-left: 5px solid var(--red);
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-  }
-  .conclusion-card .cc-icon {
-    font-size: 1.6rem;
-    flex-shrink: 0;
-    line-height: 1;
-    margin-top: 2px;
-  }
-  .conclusion-card .cc-text {
-    font-size: .95rem;
-    font-weight: 600;
-    color: var(--dark);
-    line-height: 1.6;
-  }
+  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
 
-  /* ─── SEO Problem ─── */
-  .seo-problem { padding: 32px; }
-  .seo-bar-wrap {
-    margin: 20px 0 28px;
-  }
-  .seo-bar-label {
-    font-size: .85rem;
-    font-weight: 600;
-    color: var(--text-sub);
-    margin-bottom: 8px;
-  }
-  .seo-bar-track {
-    background: #f0f0f5;
-    border-radius: 8px;
-    height: 38px;
-    position: relative;
-    overflow: hidden;
-  }
-  .seo-bar-fill {
-    height: 100%;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    padding: 0 14px;
-    font-weight: 800;
-    font-size: .85rem;
-    color: #fff;
-  }
-  .seo-bar-total {
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: .82rem;
-    font-weight: 600;
-    color: var(--text-sub);
-  }
-  .seo-keyword-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 18px 0 24px;
-  }
-  .seo-keyword {
-    background: #fff0f0;
-    color: var(--red);
-    font-weight: 600;
-    font-size: .82rem;
-    border-radius: 20px;
-    padding: 6px 16px;
-    border: 1px solid #ffd6d6;
-  }
-  .seo-cause {
-    background: #fff8f0;
-    border-left: 4px solid #f59e0b;
-    border-radius: 8px;
-    padding: 16px 20px;
-    font-size: .9rem;
-    color: #92400e;
-  }
-  .seo-cause strong { color: #b45309; }
+  /* phase timeline */
+  .phase-timeline{position:relative}
+  .phase-block{position:relative;padding-left:44px;margin-bottom:36px}
+  .phase-block:last-child{margin-bottom:0}
+  .phase-block::before{content:'';position:absolute;left:15px;top:40px;bottom:-36px;width:3px;background:var(--border)}
+  .phase-block:last-child::before{display:none}
+  .phase-dot{position:absolute;left:4px;top:10px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;color:#fff}
+  .phase-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .phase-label{font-size:1.1rem;font-weight:800}
+  .phase-period{font-size:.78rem;font-weight:700;border-radius:20px;padding:3px 14px;color:#fff}
+  .phase-subtitle{font-size:.92rem;font-weight:700;color:var(--sub);margin-bottom:12px}
+  .task-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+  .task-item{background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);padding:14px 18px;display:flex;align-items:center;gap:10px;font-size:.88rem;font-weight:500;border-left:4px solid transparent}
+  .task-item .t-icon{font-size:1.1rem;flex-shrink:0}
+  .task-item .t-time{font-size:.72rem;font-weight:700;background:var(--bg);border-radius:6px;padding:2px 8px;margin-left:auto;flex-shrink:0;white-space:nowrap;color:var(--sub)}
+  .phase-note{border-left:4px solid #D97706;background:#FFF8EA;border-radius:8px;padding:14px 20px;font-size:.88rem;color:#8F5A0A;margin-top:12px}
+  .phase-note strong{color:#7A4D06}
+  .phase-note.blue{background:#EEF3FE;border-left-color:var(--info);color:#1D48A6}
+  .phase-note.blue strong{color:#1D48A6}
+  .phase-note.red{background:#FDECEF;border-left-color:var(--danger);color:#8E1230}
+  .phase-note.red strong{color:var(--danger)}
+  .tier-block{margin-bottom:16px}
+  .tier-label{font-size:.82rem;font-weight:800;border-radius:6px;padding:4px 12px;display:inline-block;margin-bottom:10px;color:#fff}
+  .tier-items{display:flex;flex-wrap:wrap;gap:8px}
+  .tier-chip{background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow);padding:8px 16px;font-size:.84rem;font-weight:500;border-left:4px solid transparent}
+  .tier-note{margin-top:8px;font-size:.78rem;color:var(--sub)}
+  .data-list{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+  .data-chip{background:#EEF3FE;color:var(--info);font-weight:700;font-size:.84rem;border-radius:8px;padding:8px 16px;border:1px solid #CBDCFA}
 
-  /* ─── Flywheel ─── */
-  .flywheel-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
-  }
-  .flywheel-ring {
-    position: relative;
-    width: 420px;
-    height: 420px;
-  }
-  .fw-node {
-    position: absolute;
-    background: var(--card-bg);
-    border: 2px solid var(--navy);
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: .75rem;
-    font-weight: 700;
-    color: var(--dark);
-    box-shadow: 0 2px 12px rgba(0,0,0,.08);
-    line-height: 1.3;
-    z-index: 2;
-    transition: transform .2s;
-  }
-  .fw-node:hover { transform: scale(1.08); }
-  .fw-node.bottleneck {
-    border-color: var(--red);
-    background: #fff0f3;
-    color: var(--red);
-    box-shadow: 0 0 0 4px rgba(233,69,96,.15), 0 2px 12px rgba(0,0,0,.08);
-  }
-  /* positions for 8 nodes in a circle (r=160) */
-  .fw-node:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
-  .fw-node:nth-child(2) { top: 12%; right: 2%; }
-  .fw-node:nth-child(3) { top: 50%; right: -8%; transform: translateY(-50%); }
-  .fw-node:nth-child(4) { bottom: 12%; right: 2%; }
-  .fw-node:nth-child(5) { bottom: 0; left: 50%; transform: translateX(-50%); }
-  .fw-node:nth-child(6) { bottom: 12%; left: 2%; }
-  .fw-node:nth-child(7) { top: 50%; left: -8%; transform: translateY(-50%); }
-  .fw-node:nth-child(8) { top: 12%; left: 2%; }
+  /* gantt */
+  .gantt-card{padding:26px 28px;overflow-x:auto}
+  .gantt-table{width:100%;min-width:700px;border-collapse:separate;border-spacing:0;background:transparent}
+  .gantt-table th{text-align:center;font-size:.75rem;font-weight:800;color:var(--sub);padding:8px 6px 14px;border-bottom:2px solid var(--border);background:transparent;white-space:nowrap}
+  .gantt-table td{padding:10px 6px;vertical-align:middle;border-bottom:none}
+  .gantt-table tbody tr:hover td{background:transparent}
+  .gantt-table .g-label{font-size:.84rem;font-weight:800;white-space:nowrap;padding-right:14px;min-width:120px}
+  .gantt-bar{height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;opacity:.94}
+  .legend-row{margin-top:24px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+  .legend-row span.item{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:700}
+  .legend-row i{width:14px;height:14px;border-radius:4px;display:inline-block}
 
-  .fw-arrow-ring {
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 260px; height: 260px;
-    margin-top: -130px;
-    margin-left: -130px;
-    border: 3px dashed var(--navy);
-    border-radius: 50%;
-    opacity: .25;
-    z-index: 1;
-  }
-  .fw-center-label {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: .85rem;
-    font-weight: 800;
-    color: var(--navy);
-    text-align: center;
-    z-index: 3;
-    line-height: 1.4;
-    opacity: .6;
-  }
-  .bottleneck-banner {
-    margin-top: 28px;
-    background: var(--red);
-    color: #fff;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 14px 28px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 16px rgba(233,69,96,.3);
-  }
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
 
-  /* ─── Phase Timeline ─── */
-  .phase-timeline {
-    position: relative;
-  }
-  .phase-block {
-    position: relative;
-    padding-left: 44px;
-    margin-bottom: 36px;
-  }
-  .phase-block:last-child { margin-bottom: 0; }
-  .phase-block::before {
-    content: '';
-    position: absolute;
-    left: 15px;
-    top: 40px;
-    bottom: -36px;
-    width: 3px;
-    background: var(--border);
-  }
-  .phase-block:last-child::before { display: none; }
-  .phase-dot {
-    position: absolute;
-    left: 4px;
-    top: 10px;
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .7rem;
-    font-weight: 800;
-    color: #fff;
-  }
-  .phase-head {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 14px;
-  }
-  .phase-label {
-    font-size: 1.1rem;
-    font-weight: 800;
-  }
-  .phase-period {
-    font-size: .78rem;
-    font-weight: 600;
-    border-radius: 20px;
-    padding: 3px 14px;
-    color: #fff;
-  }
-  .phase-subtitle {
-    font-size: .92rem;
-    font-weight: 600;
-    color: var(--text-sub);
-    margin-bottom: 12px;
-  }
-  .task-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 10px;
-  }
-  .task-item {
-    background: var(--card-bg);
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,.05);
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: .88rem;
-    font-weight: 500;
-    border-left: 4px solid transparent;
-  }
-  .task-item .t-icon {
-    font-size: 1.1rem;
-    flex-shrink: 0;
-  }
-  .task-item .t-time {
-    font-size: .72rem;
-    font-weight: 700;
-    background: #f5f5fa;
-    border-radius: 6px;
-    padding: 2px 8px;
-    margin-left: auto;
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-
-  .tier-block {
-    margin-bottom: 16px;
-  }
-  .tier-label {
-    font-size: .82rem;
-    font-weight: 700;
-    border-radius: 6px;
-    padding: 4px 12px;
-    display: inline-block;
-    margin-bottom: 10px;
-    color: #fff;
-  }
-  .tier-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .tier-chip {
-    background: var(--card-bg);
-    border-radius: 8px;
-    box-shadow: 0 1px 6px rgba(0,0,0,.06);
-    padding: 8px 16px;
-    font-size: .84rem;
-    font-weight: 500;
-    border-left: 4px solid transparent;
-  }
-
-  /* ─── Gantt Schedule ─── */
-  .gantt-card { padding: 32px; overflow-x: auto; }
-  .gantt-table {
-    width: 100%;
-    min-width: 700px;
-    border-collapse: separate;
-    border-spacing: 0;
-  }
-  .gantt-table th {
-    text-align: center;
-    font-size: .75rem;
-    font-weight: 700;
-    color: var(--text-sub);
-    padding: 8px 6px 14px;
-    border-bottom: 2px solid var(--border);
-  }
-  .gantt-table td {
-    padding: 10px 6px;
-    vertical-align: middle;
-  }
-  .gantt-table .g-label {
-    font-size: .84rem;
-    font-weight: 700;
-    white-space: nowrap;
-    padding-right: 14px;
-    min-width: 120px;
-  }
-  .gantt-bar {
-    height: 30px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .72rem;
-    font-weight: 700;
-    color: #fff;
-    opacity: .92;
-  }
-
-  /* ─── Data List ─── */
-  .data-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 12px;
-  }
-  .data-chip {
-    background: #eff6ff;
-    color: var(--phase2);
-    font-weight: 600;
-    font-size: .84rem;
-    border-radius: 8px;
-    padding: 8px 16px;
-    border: 1px solid #bfdbfe;
-  }
-
-  /* ─── Responsive ─── */
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 1.6rem; }
-    .flywheel-ring { width: 320px; height: 320px; }
-    .fw-node { width: 76px; height: 76px; font-size: .65rem; }
-    .conclusion-grid { grid-template-columns: 1fr; }
+  @media (max-width:760px){
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
+    .hero{padding:44px 24px 84px}
+    .container{padding:28px 18px 60px}
   }
 </style>
 </head>
 <body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
+    <div>
+      <span class="eyebrow">戦略 — アクションプラン</span>
+      <h1>RINCLE アクションプラン</h1>
+      <p class="lead">競合分析に基づく成長戦略と実行ロードマップ（作成: 2026-05-20）。前提となる市場・競合分析は競合調査レポート、課題・改善策は現状課題資料を参照。</p>
+    </div>
+  </div>
+</div>
+
 <div class="container">
 
-  <!-- Hero -->
-  <div class="hero">
-    <h1><span>RINCLE</span> アクションプラン</h1>
-    <p>競合分析に基づく成長戦略と実行ロードマップ</p>
-    <p style="margin-top:8px; font-size:.9rem; color:var(--text-sub);">前提: 市場・競合分析は01、課題・改善策は02を参照</p>
-  </div>
+  <nav class="flow">
+    <a href="#phases"><span class="fnum">1</span><div class="ft">実行フェーズ</div><div class="fd">Phase 1〜4 + 並行トラック</div></a>
+    <a href="#schedule"><span class="fnum">2</span><div class="ft">全体スケジュール</div><div class="fd">Week 1〜Month 6の流れ</div></a>
+    <a href="#kpi"><span class="fnum">3</span><div class="ft">KPI目標</div><div class="fd">追跡する指標と目標値</div></a>
+    <a href="#cost"><span class="fnum">4</span><div class="ft">概算費用</div><div class="fd">工数と外注時の目安</div></a>
+  </nav>
+
+  <div class="alert alert-amber"><span class="a-icon">!</span><div><strong>2026-08-20注記:</strong> 本文中の「24店舗」は作成当時の値です（2026-08-20の本番サイト実測では店舗56）。DB再構築は完了し、新サイトは2026年7月上旬に本番リリース済み。GA4・Search Console・sitemap.xmlの本番設置はまだ（タスク#21-22）。sitemap.xmlは手動生成方式に決定（2026-08-20・手順: <code>documents/4_growth/03_seo/sitemap-creation-guide.md</code>）。</div></div>
 
   <!-- ===== 1. 実行フェーズ ===== -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num" style="background:var(--dark);">1</div>
-      <div class="section-title">実行フェーズ</div>
-    </div>
+  <div class="section" id="phases">
+    <div class="section-header"><div class="section-num">1</div><div><h2>実行フェーズ</h2><div class="sh-sub">計測 → データ → UI/UX改善 → 集客の4段階 + 自治体営業の並行トラック</div></div></div>
 
     <div class="card phase-timeline">
 
@@ -508,7 +155,7 @@
       <div class="phase-block">
         <div class="phase-dot" style="background:var(--phase1);">1</div>
         <div class="phase-head">
-          <span class="phase-label" style="color:var(--phase1);">Phase 1</span>
+          <span class="phase-label" style="color:var(--brand-deep);">Phase 1</span>
           <span class="phase-period" style="background:var(--phase1);">今週〜2週間</span>
         </div>
         <div class="phase-subtitle">計測 + SEO基盤整備 + 即効集客</div>
@@ -526,7 +173,7 @@
             <span class="t-time">1〜2日</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
-            <span class="t-icon">&#x1F5FA;&#xFE0F;</span> sitemap.xml + robots.txt
+            <span class="t-icon">&#x1F5FA;&#xFE0F;</span> sitemap.xml + robots.txt（手動生成方式・2026-08-20決定）
             <span class="t-time">半日</span>
           </div>
           <div class="task-item" style="border-left-color:var(--phase1);">
@@ -562,15 +209,15 @@
             <span class="t-time">1〜2日</span>
           </div>
         </div>
-        <div style="margin-top:10px; font-size:.78rem; color:var(--text-sub);">※ SEOの効果は2〜6ヶ月後。その間ユーザーゼロを避けるため、即効性のあるショップチャネル/GBP/OTA体験プラン/メディア掲載依頼/保険棚卸しを同時に実施する。</div>
-        <div class="seo-cause" style="margin-top:12px;">
+        <div class="tier-note">※ SEOの効果は2〜6ヶ月後。その間ユーザーゼロを避けるため、即効性のあるショップチャネル/GBP/OTA体験プラン/メディア掲載依頼/保険棚卸しを同時に実施する。</div>
+        <div class="phase-note">
           <strong>GBPは規約準拠で実施（2026-06修正）:</strong> 第三者による無断登録は規約違反（プロフィール/アカウント停止の対象）。各店の<strong>同意取得 &#x2192; 既存プロフィールにRINCLEを「管理者」として招待 &#x2192; レンタル情報・予約リンクを追記</strong>の順で進める。「登録2〜3日」ではなく、ショップ調整込みの2〜4週間の継続オペレーション。
         </div>
-        <div class="seo-cause" style="margin-top:10px; background:#eff6ff; border-left-color:var(--phase2); color:#1e3a8a;">
-          <strong style="color:#1d4ed8;">OTAは「ルート付き体験プラン」として掲載:</strong> 時間貸しではなく「◯◯絶景ルート半日サイクリング（バイク・ヘルメット込み）」型で設計。初期費用ゼロ・成果手数料（じゃらん16.4% / アソビュー10〜20% / Klook 15〜20%）。手数料は広告費と捉え、<strong style="color:#1d4ed8;">OTA経由ユーザーのLINE登録 &#x2192; 自社リピート引き上げを必ずセット</strong>にする。
+        <div class="phase-note blue">
+          <strong>OTAは「ルート付き体験プラン」として掲載:</strong> 時間貸しではなく「◯◯絶景ルート半日サイクリング（バイク・ヘルメット込み）」型で設計。初期費用ゼロ・成果手数料（じゃらん16.4% / アソビュー10〜20% / Klook 15〜20%）。手数料は広告費と捉え、<strong>OTA経由ユーザーのLINE登録 &#x2192; 自社リピート引き上げを必ずセット</strong>にする。
         </div>
-        <div class="seo-cause" style="margin-top:10px; background:#fff0f3; border-left-color:var(--red); color:#9f1239;">
-          <strong style="color:var(--red);">保険・免責の注意:</strong> 一般的な施設賠償保険は<strong style="color:var(--red);">利用者の運転ミス事故を補償しない</strong>。レンタサイクル専用保険（最大1億円補償、6台で年12,000円）加入を加盟基準として整備する。
+        <div class="phase-note red">
+          <strong>保険・免責の注意:</strong> 一般的な施設賠償保険は<strong>利用者の運転ミス事故を補償しない</strong>。レンタサイクル専用保険（最大1億円補償、6台で年12,000円）加入を加盟基準として整備する。
         </div>
       </div>
 
@@ -582,7 +229,7 @@
           <span class="phase-period" style="background:var(--phase2);">1〜2週間</span>
         </div>
         <div class="phase-subtitle">データ取得 + デザイン改善設計</div>
-        <div style="font-size:.9rem; color:var(--text-sub); margin-bottom:8px;">取得データ:</div>
+        <div style="font-size:.9rem;color:var(--sub);margin-bottom:8px;">取得データ:</div>
         <div class="data-list">
           <span class="data-chip">&#x1F4C8; 訪問数</span>
           <span class="data-chip">&#x1F517; 流入元</span>
@@ -622,7 +269,7 @@
             <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F504; モード切替</span>
             <span class="tier-chip" style="border-left-color:var(--phase3);">&#x26A1; E-Bike独立カテゴリ化</span>
           </div>
-          <div style="margin-top:8px; font-size:.78rem; color:var(--text-sub);">※ 2026-06調査でKW優先順位を再編: SEO LPの最優先は<strong>「観光ルート名×レンタサイクル」</strong>（例:「しまなみ海道 レンタサイクル」— しまなみだけで年間17.3万台の実需）、次点で「都市名×ロードバイク レンタル」。E-Bikeレンタルは前年比+40%成長・販売台数はママチャリ超え — 専用KW群/LP/OTAプランで供給側対応が薄いうちに先行する（2026-06追加）。</div>
+          <div class="tier-note">※ 2026-06調査でKW優先順位を再編: SEO LPの最優先は<strong>「観光ルート名×レンタサイクル」</strong>（例:「しまなみ海道 レンタサイクル」— しまなみだけで年間17.3万台の実需）、次点で「都市名×ロードバイク レンタル」。E-Bikeレンタルは前年比+40%成長・販売台数はママチャリ超え — 専用KW群/LP/OTAプランで供給側対応が薄いうちに先行する（2026-06追加）。</div>
         </div>
 
         <div class="tier-block">
@@ -636,7 +283,7 @@
             <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F4CA; ショップ向けダッシュボード</span>
             <span class="tier-chip" style="border-left-color:var(--phase3);">&#x1F451; 会員ランク</span>
           </div>
-          <div style="margin-top:8px; font-size:.78rem; color:var(--text-sub);">※ 2026-06調査で具体化: <strong>電子免責同意</strong>（事前オンライン署名+店頭QR署名、月額$15〜）を予約後体験に統合し受付30分問題を同時に解消（免責文言は全店共通テンプレをRINCLEが提供）。購入導線は単なるリンクではなく<strong>「試乗履歴つき購入相談予約」</strong>として実装し物販送客を第2収益源に（Trekは「レンタル料100%を購入代金に充当」を標準特典化、レンティオはレンタル経由で購入数4倍以上の実績）。ダッシュボードの先行施策として<strong>「月次送客レポートメール」をPhase 2からGA4+予約データで手動実装</strong>し、開発完了を待たずに送客実績を毎月証明する。</div>
+          <div class="tier-note">※ 2026-06調査で具体化: <strong>電子免責同意</strong>（事前オンライン署名+店頭QR署名、月額$15〜）を予約後体験に統合し受付30分問題を同時に解消（免責文言は全店共通テンプレをRINCLEが提供）。購入導線は単なるリンクではなく<strong>「試乗履歴つき購入相談予約」</strong>として実装し物販送客を第2収益源に（Trekは「レンタル料100%を購入代金に充当」を標準特典化、レンティオはレンタル経由で購入数4倍以上の実績）。ダッシュボードの先行施策として<strong>「月次送客レポートメール」をPhase 2からGA4+予約データで手動実装</strong>し、開発完了を待たずに送客実績を毎月証明する。</div>
         </div>
       </div>
 
@@ -655,45 +302,42 @@
           <span class="tier-chip" style="border-left-color:var(--phase4);">&#x1F4F1; SNS運用</span>
           <span class="tier-chip" style="border-left-color:var(--phase4);">&#x1F5E3;&#xFE0F; 口コミ種まき（ステマ規制準拠）</span>
         </div>
-        <div class="seo-cause" style="margin-top:12px;">
+        <div class="phase-note">
           <strong>口コミ種まきはステマ規制対応で設計修正（2026-06）:</strong> 景表法ステマ規制（2023年10月施行）により「割引と引き換えにレビュー」は対価+依頼の事実だけで広告表示義務が発生し、違反は措置命令・課徴金の対象。体験モニターは <strong>(a) モニター利用とレビュー依頼を切り離す（投稿は任意・評価内容に条件をつけない）</strong>、または <strong>(b) 投稿に「モニター利用」である旨の表示を徹底</strong>。「高評価を条件に割引」は明確に違法。目標は各店舗5件・合計120件のまま。
         </div>
       </div>
 
-      <!-- 並行トラック: 自治体・DMO営業 -->
+      <!-- 並行トラック -->
       <div class="phase-block">
-        <div class="phase-dot" style="background:var(--navy);">G</div>
+        <div class="phase-dot" style="background:var(--gov);">G</div>
         <div class="phase-head">
-          <span class="phase-label" style="color:var(--navy);">並行トラック</span>
-          <span class="phase-period" style="background:var(--navy);">Phase 3〜・toCマーケと並行</span>
+          <span class="phase-label" style="color:var(--ink);">並行トラック</span>
+          <span class="phase-period" style="background:var(--gov);">Phase 3〜・toCマーケと並行</span>
         </div>
         <div class="phase-subtitle">自治体・DMO営業（2026-06調査で新設）</div>
         <div class="task-grid">
-          <div class="task-item" style="border-left-color:var(--navy);">
+          <div class="task-item" style="border-left-color:var(--gov);">
             <span class="t-icon">&#x1F3DB;&#xFE0F;</span> G1: 観光協会・DMOサイト掲載
             <span class="t-time">無料が多い</span>
           </div>
-          <div class="task-item" style="border-left-color:var(--navy);">
+          <div class="task-item" style="border-left-color:var(--gov);">
             <span class="t-icon">&#x1F4E2;</span> G2: 共同プレスリリース
             <span class="t-time">PR TIMES</span>
           </div>
-          <div class="task-item" style="border-left-color:var(--navy);">
+          <div class="task-item" style="border-left-color:var(--gov);">
             <span class="t-icon">&#x1F91D;</span> G3: 実証事業への参画提案
             <span class="t-time">参画事業者</span>
           </div>
         </div>
-        <div style="margin-top:10px; font-size:.78rem; color:var(--text-sub);">※ 調査自治体の54.5%がサイクルツーリズム施策を実施、最多施策は「レンタ/シェアサイクルの整備」(35%)だがノウハウ・人材不足が課題 — RINCLEが「予約システム+プロショップ網」をパッケージ営業できる非対称性。G1はナショナルサイクルルート（しまなみ・ビワイチ等）圏の加盟店から掲載依頼（信頼性の高い被リンクにもなる）。G2は24店舗・12都府県ネットワークを素材にメディア個別打診。G3はレンタサイクル事業者単独の補助金は確認できず、<strong>自治体・DMO主体の事業に「参画事業者」として入る</strong>形が現実的（しまなみ海道では観光庁実証事業に採択実績あり）。</div>
+        <div class="tier-note">※ 調査自治体の54.5%がサイクルツーリズム施策を実施、最多施策は「レンタ/シェアサイクルの整備」(35%)だがノウハウ・人材不足が課題 — RINCLEが「予約システム+プロショップ網」をパッケージ営業できる非対称性。G1はナショナルサイクルルート（しまなみ・ビワイチ等）圏の加盟店から掲載依頼（信頼性の高い被リンクにもなる）。G2は24店舗・12都府県ネットワークを素材にメディア個別打診。G3はレンタサイクル事業者単独の補助金は確認できず、<strong>自治体・DMO主体の事業に「参画事業者」として入る</strong>形が現実的（しまなみ海道では観光庁実証事業に採択実績あり）。</div>
       </div>
 
     </div>
   </div>
 
   <!-- ===== 2. 全体スケジュール ===== -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num" style="background:var(--dark);">2</div>
-      <div class="section-title">全体スケジュール</div>
-    </div>
+  <div class="section" id="schedule">
+    <div class="section-header"><div class="section-num">2</div><div><h2>全体スケジュール</h2><div class="sh-sub">Week 1からMonth 6までの流れ</div></div></div>
 
     <div class="card gantt-card">
       <table class="gantt-table">
@@ -709,7 +353,7 @@
         </thead>
         <tbody>
           <tr>
-            <td class="g-label" style="color:var(--phase1);">Phase 1<br><span style="font-size:.72rem; color:var(--text-sub);">計測+SEO基盤+即効集客</span></td>
+            <td class="g-label" style="color:var(--brand-deep);">Phase 1<br><span style="font-size:.72rem; color:var(--sub);">計測+SEO基盤+即効集客</span></td>
             <td><div class="gantt-bar" style="background:var(--phase1);">&#x25C9;</div></td>
             <td><div class="gantt-bar" style="background:var(--phase1); opacity:.5;">継続</div></td>
             <td><div class="gantt-bar" style="background:var(--phase1); opacity:.3;">GBP運用〜W4頃</div></td>
@@ -717,7 +361,7 @@
             <td></td>
           </tr>
           <tr>
-            <td class="g-label" style="color:var(--phase2);">Phase 2<br><span style="font-size:.72rem; color:var(--text-sub);">データ取得+設計<br>+送客レポート手動運用開始</span></td>
+            <td class="g-label" style="color:var(--phase2);">Phase 2<br><span style="font-size:.72rem; color:var(--sub);">データ取得+設計<br>+送客レポート手動運用開始</span></td>
             <td></td>
             <td><div class="gantt-bar" style="background:var(--phase2);">&#x25C9;</div></td>
             <td></td>
@@ -725,14 +369,14 @@
             <td></td>
           </tr>
           <tr>
-            <td class="g-label" style="color:var(--phase3);">Phase 3<br><span style="font-size:.72rem; color:var(--text-sub);">UI/UX改善</span></td>
+            <td class="g-label" style="color:var(--phase3);">Phase 3<br><span style="font-size:.72rem; color:var(--sub);">UI/UX改善</span></td>
             <td></td>
             <td></td>
             <td colspan="2"><div class="gantt-bar" style="background:var(--phase3);">Tier 1 → Tier 2 → Tier 3</div></td>
             <td><div class="gantt-bar" style="background:var(--phase3); opacity:.5;">継続</div></td>
           </tr>
           <tr>
-            <td class="g-label" style="color:var(--phase4);">Phase 4<br><span style="font-size:.72rem; color:var(--text-sub);">集客</span></td>
+            <td class="g-label" style="color:var(--phase4);">Phase 4<br><span style="font-size:.72rem; color:var(--sub);">集客</span></td>
             <td></td>
             <td></td>
             <td><div class="gantt-bar" style="background:var(--phase4); opacity:.4;">準備</div></td>
@@ -740,98 +384,84 @@
             <td><div class="gantt-bar" style="background:var(--phase4);">本格運用</div></td>
           </tr>
           <tr>
-            <td class="g-label" style="color:var(--navy);">並行トラック<br><span style="font-size:.72rem; color:var(--text-sub);">自治体・DMO営業</span></td>
+            <td class="g-label" style="color:var(--ink);">並行トラック<br><span style="font-size:.72rem; color:var(--sub);">自治体・DMO営業</span></td>
             <td></td>
             <td></td>
-            <td colspan="2"><div class="gantt-bar" style="background:var(--navy);">G1 → G2 → G3</div></td>
-            <td><div class="gantt-bar" style="background:var(--navy); opacity:.5;">継続</div></td>
+            <td colspan="2"><div class="gantt-bar" style="background:var(--gov);">G1 → G2 → G3</div></td>
+            <td><div class="gantt-bar" style="background:var(--gov); opacity:.5;">継続</div></td>
           </tr>
         </tbody>
       </table>
 
-      <div style="margin-top:24px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center;">
-        <span style="display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600;">
-          <span style="width:14px; height:14px; border-radius:4px; background:var(--phase1); display:inline-block;"></span> Phase 1: 計測+SEO基盤+即効集客
-        </span>
-        <span style="display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600;">
-          <span style="width:14px; height:14px; border-radius:4px; background:var(--phase2); display:inline-block;"></span> Phase 2: データ+設計
-        </span>
-        <span style="display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600;">
-          <span style="width:14px; height:14px; border-radius:4px; background:var(--phase3); display:inline-block;"></span> Phase 3: UI/UX
-        </span>
-        <span style="display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600;">
-          <span style="width:14px; height:14px; border-radius:4px; background:var(--phase4); display:inline-block;"></span> Phase 4: 集客
-        </span>
-        <span style="display:inline-flex; align-items:center; gap:6px; font-size:.8rem; font-weight:600;">
-          <span style="width:14px; height:14px; border-radius:4px; background:var(--navy); display:inline-block;"></span> 並行: 自治体・DMO営業
-        </span>
+      <div class="legend-row">
+        <span class="item"><i style="background:var(--phase1);"></i> Phase 1: 計測+SEO基盤+即効集客</span>
+        <span class="item"><i style="background:var(--phase2);"></i> Phase 2: データ+設計</span>
+        <span class="item"><i style="background:var(--phase3);"></i> Phase 3: UI/UX</span>
+        <span class="item"><i style="background:var(--phase4);"></i> Phase 4: 集客</span>
+        <span class="item"><i style="background:var(--gov);"></i> 並行: 自治体・DMO営業</span>
       </div>
     </div>
   </div>
 
   <!-- ===== 3. KPI目標 ===== -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num" style="background:var(--dark);">3</div>
-      <div class="section-title">KPI目標</div>
-    </div>
-    <p style="font-size:13px; color:#666; margin:8px 0 16px;">Phase 1でベースラインを取得した上で、以下のKPIを追跡する。</p>
-    <div style="overflow-x:auto; border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border:1px solid #e8e8e8;">
-      <table style="width:100%; border-collapse:collapse; font-size:13px; background:#fff;">
+  <div class="section" id="kpi">
+    <div class="section-header"><div class="section-num">3</div><div><h2>KPI目標</h2><div class="sh-sub">Phase 1でベースラインを取得した上で追跡する</div></div></div>
+    <div class="table-wrap">
+      <table>
         <thead>
           <tr>
-            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">KPI</th>
-            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">ベースライン</th>
-            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">Phase 2終了時</th>
-            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">Phase 3終了時</th>
+            <th>KPI</th>
+            <th>ベースライン</th>
+            <th>Phase 2終了時</th>
+            <th>Phase 3終了時</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">月間サイト訪問数</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; color:#999;">要計測</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">現状の2倍</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">現状の5倍</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">予約完了率（CVR）</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; color:#999;">要計測</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">現状+1%</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">現状+3%</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">月間予約数</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; color:#999;">要計測</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">現状の2倍</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">現状の5倍</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">レビュー数（累計）</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">0件</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">72件</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">120件</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">リピート率</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; color:#999;">要計測</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">10%</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">20%</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">レンタル→購入相談数（物販送客）</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">0件（T3-5実装後に計測）</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; color:#999;">—</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">計測開始・実績作り</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">Googleインデックス数</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">2ページ</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">30ページ以上</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">50ページ以上</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">主要KW検索順位</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">圏外</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">50位以内</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:700;">20位以内</td></tr>
-          <tr><td style="padding:10px 16px;">パートナーショップ数</td><td style="padding:10px 16px;">24店舗</td><td style="padding:10px 16px;">30店舗</td><td style="padding:10px 16px; font-weight:700;">50店舗</td></tr>
+          <tr><td class="label">月間サイト訪問数</td><td style="color:var(--sub);">要計測</td><td>現状の2倍</td><td style="font-weight:700;">現状の5倍</td></tr>
+          <tr><td class="label">予約完了率（CVR）</td><td style="color:var(--sub);">要計測</td><td>現状+1%</td><td style="font-weight:700;">現状+3%</td></tr>
+          <tr><td class="label">月間予約数</td><td style="color:var(--sub);">要計測</td><td>現状の2倍</td><td style="font-weight:700;">現状の5倍</td></tr>
+          <tr><td class="label">レビュー数（累計）</td><td>0件</td><td>72件</td><td style="font-weight:700;">120件</td></tr>
+          <tr><td class="label">リピート率</td><td style="color:var(--sub);">要計測</td><td>10%</td><td style="font-weight:700;">20%</td></tr>
+          <tr><td class="label">レンタル→購入相談数（物販送客）</td><td>0件（T3-5実装後に計測）</td><td style="color:var(--sub);">—</td><td style="font-weight:700;">計測開始・実績作り</td></tr>
+          <tr><td class="label">Googleインデックス数</td><td>2ページ</td><td>30ページ以上</td><td style="font-weight:700;">50ページ以上</td></tr>
+          <tr><td class="label">主要KW検索順位</td><td>圏外</td><td>50位以内</td><td style="font-weight:700;">20位以内</td></tr>
+          <tr><td class="label">パートナーショップ数</td><td>24店舗（当時。2026-08-20実測では56店舗）</td><td>30店舗</td><td style="font-weight:700;">50店舗</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:12px; color:#999; margin-top:8px;">※ 具体的な数値目標はPhase 1のベースラインデータ取得後に調整</p>
+    <p style="font-size:12px; color:var(--sub); margin-top:8px;">※ 具体的な数値目標はPhase 1のベースラインデータ取得後に調整<br>※ 2026-08-20注記: KGI/KPI目標は凍結中（実績の月次記録は継続。ユーザー増と差別化実装後に設定）</p>
   </div>
 
   <!-- ===== 4. 概算費用 ===== -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num" style="background:var(--dark);">4</div>
-      <div class="section-title">概算費用</div>
-    </div>
-    <div style="overflow-x:auto; border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,0.06); border:1px solid #e8e8e8;">
-      <table style="width:100%; border-collapse:collapse; font-size:13px; background:#fff;">
+  <div class="section" id="cost">
+    <div class="section-header"><div class="section-num">4</div><div><h2>概算費用</h2><div class="sh-sub">工数と外注する場合の目安</div></div></div>
+    <div class="table-wrap">
+      <table>
         <thead>
           <tr>
-            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">Phase</th>
-            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">主な施策</th>
-            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">概算工数</th>
-            <th style="background:#1a1a2e; color:#fff; padding:12px 16px; text-align:left;">外注する場合の目安</th>
+            <th>Phase</th>
+            <th>主な施策</th>
+            <th>概算工数</th>
+            <th>外注する場合の目安</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 1</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">GA4+クラリティ導入 + SEO基本設定 + 即効集客施策</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">5〜8人日 + GBP運用2〜4週間（継続）</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">10〜30万円（即効集客は無料〜手数料のみ）</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 2</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">データ取得 + デザイン改善設計</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">5〜10人日</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">30〜80万円</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 3 Tier 1</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">検索バー/空き表示/料金明示/キャンセルポリシー</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">10〜20人日</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">50〜150万円</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 3 Tier 2</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">比較機能/レビュー/SEOページ/初心者導線</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">20〜40人日</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">100〜300万円</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 3 Tier 3</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">LINE/リピート設計/ダッシュボード</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">20〜40人日</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">100〜300万円</td></tr>
-          <tr><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8; font-weight:600;">Phase 4</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">Google広告（月額）</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">—</td><td style="padding:10px 16px; border-bottom:1px solid #e8e8e8;">月5〜30万円（初期は小さく開始）</td></tr>
-          <tr><td style="padding:10px 16px; font-weight:600;">Phase 4</td><td style="padding:10px 16px;">SNS運用</td><td style="padding:10px 16px;">月2〜4人日</td><td style="padding:10px 16px;">月10〜30万円</td></tr>
+          <tr><td class="label">Phase 1</td><td>GA4+クラリティ導入 + SEO基本設定 + 即効集客施策</td><td>5〜8人日 + GBP運用2〜4週間（継続）</td><td>10〜30万円（即効集客は無料〜手数料のみ）</td></tr>
+          <tr><td class="label">Phase 2</td><td>データ取得 + デザイン改善設計</td><td>5〜10人日</td><td>30〜80万円</td></tr>
+          <tr><td class="label">Phase 3 Tier 1</td><td>検索バー/空き表示/料金明示/キャンセルポリシー</td><td>10〜20人日</td><td>50〜150万円</td></tr>
+          <tr><td class="label">Phase 3 Tier 2</td><td>比較機能/レビュー/SEOページ/初心者導線</td><td>20〜40人日</td><td>100〜300万円</td></tr>
+          <tr><td class="label">Phase 3 Tier 3</td><td>LINE/リピート設計/ダッシュボード</td><td>20〜40人日</td><td>100〜300万円</td></tr>
+          <tr><td class="label">Phase 4</td><td>Google広告（月額）</td><td>—</td><td>月5〜30万円（初期は小さく開始）</td></tr>
+          <tr><td class="label">Phase 4</td><td>SNS運用</td><td>月2〜4人日</td><td>月10〜30万円</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:12px; color:#999; margin-top:8px;">※ Bubble.ioベースの開発か別途フロントエンド開発かで大きく変動。内製の場合はエンジニア1〜2名で対応可能な範囲。</p>
+    <p style="font-size:12px; color:var(--sub); margin-top:8px;">※ Bubble.ioベースの開発か別途フロントエンド開発かで大きく変動。内製の場合はエンジニア1〜2名で対応可能な範囲。</p>
   </div>
 
 </div>
+
+<footer>正本: documents/4_growth/01_strategy/action-plan.md（md更新時はこのHTMLも同期すること）</footer>
+
 </body>
 </html>

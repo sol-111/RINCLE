@@ -247,9 +247,9 @@ LINEでリンクを送ったとき:
 
 例えば、同じページに以下の複数URLでアクセスできる場合:
 ```
-https://rincle.co.jp/shop_detail/12345
-https://rincle.co.jp/shop_detail/12345?ref=top
-https://rincle.co.jp/shop_detail/12345#section1
+https://rincle.co.jp/shop_detail?shop=12345
+https://rincle.co.jp/shop_detail?shop=12345&ref=top
+https://rincle.co.jp/shop_detail?shop=12345#section1
 ```
 Googleは「これは別々のページ？同じページ？」と迷う。canonicalを設定すると「全部同じページです。正式URLはこれです」と伝えられる。
 
@@ -501,7 +501,7 @@ SEO設定をしても、実際にGoogleに認識されているかを確認す�
 **5. インデックス登録をリクエスト**
 - 上部の検索バーにRINCLEの主要ページURLを入力
 - 「インデックス登録をリクエスト」をクリック
-- トップページ、店舗一覧、主要な店舗詳細ページを最低限リクエスト
+- トップページ、検索ページ、主要な店舗詳細ページを最低限リクエスト
 
 ### 登録後にやること
 

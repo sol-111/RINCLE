@@ -6,66 +6,102 @@
 <title>ブログSEOの方針 | RINCLE</title>
 <style>
   :root{
-    --navy:#0f3460; --navy-light:#1a4a8a; --red:#e94560;
-    --green:#27ae60; --bg:#f5f6fa; --text:#2c2c3a; --sub:#6b7280;
-    --border:#e5e7eb; --radius:12px;
-    --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
+    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
+    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
+    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
+    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
+    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
-  .hero{background:linear-gradient(135deg,#0f3460 0%,#1a4a8a 100%);color:#fff;padding:52px 40px 44px}
-  .hero h1{font-size:2rem;font-weight:800;margin-bottom:8px}
-  .hero p{font-size:1.02rem;opacity:.88;max-width:760px}
-  .hero-meta{margin-top:14px;font-size:13px;opacity:.7;display:flex;gap:20px;flex-wrap:wrap}
-  .container{max-width:960px;margin:0 auto;padding:40px 28px 80px}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
-  .section{margin-bottom:48px}
-  .section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
-  .section-num{display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--navy);color:#fff;border-radius:10px;font-size:17px;font-weight:800;flex-shrink:0}
-  .section-header h2{font-size:21px;font-weight:700}
-  h3{font-size:16px;font-weight:700;color:var(--navy);margin:26px 0 12px;padding-left:11px;border-left:3px solid var(--red)}
+  /* hero */
+  .hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 40px;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
+  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(35,32,29,.10)}
+  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
+  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
+  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
+  .hero p.lead{font-size:1rem;opacity:.92;max-width:700px}
+  .hero p.meta{font-size:12.5px;opacity:.78;margin-top:12px}
 
-  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin:16px 0}
-  .alert{border-radius:0 10px 10px 0;padding:16px 20px;margin:16px 0;font-size:14px}
-  .alert-red{background:#ffeef0;border-left:4px solid var(--red);color:#a0132e}
-  .alert-green{background:#eefbf3;border-left:4px solid var(--green);color:#1a7a42}
-  .alert-blue{background:#eef4ff;border-left:4px solid var(--navy);color:var(--navy)}
+  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
 
-  .table-wrap{overflow-x:auto;border-radius:var(--radius);box-shadow:var(--shadow);margin:16px 0}
+  /* sections */
+  .section{margin-bottom:56px;scroll-margin-top:20px}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
+  .section-num.plain{background:linear-gradient(135deg,var(--ink),#4A4038);box-shadow:0 4px 12px rgba(35,32,29,.3)}
+  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
+  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
+  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
+
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
+
+  /* alerts */
+  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
+  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
+  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
+  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
+
+  /* tables */
+  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
   table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
-  thead th{background:var(--navy);color:#fff;padding:11px 14px;text-align:left;font-size:13px;font-weight:600;white-space:nowrap}
-  td{padding:11px 14px;border-bottom:1px solid #f0f1f4;vertical-align:top}
+  thead th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
+  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:top}
   tr:last-child td{border-bottom:none}
-  tr:hover td{background:#f8f9fb}
-  td.label{font-weight:700;color:var(--navy);white-space:nowrap}
+  tbody tr:hover td{background:#FBF8F5}
+  td.label{font-weight:700;color:var(--ink);white-space:nowrap}
   td.center{text-align:center;white-space:nowrap}
-  .o{color:var(--green);font-weight:800}
-  .x{color:var(--red);font-weight:800}
-  .t{color:#92400e;font-weight:800}
+  .o{color:var(--ok);font-weight:800}
+  .x{color:var(--danger);font-weight:800}
+  .t{color:#8F5A0A;font-weight:800}
 
-  .badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
-  .badge.good{background:#eefbf3;color:#1a7a42}
-  .badge.bad{background:#ffeef0;color:#a0132e}
-  .badge.warn{background:#fff7e6;color:#92400e}
+  /* badges */
+  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+  .badge.good{background:#EDFAF2;color:#136A41}
+  .badge.bad{background:#FDECEF;color:#8E1230}
+  .badge.warn{background:#FFF4E0;color:#8F5A0A}
+  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
 
-  pre{font-size:13px;line-height:1.7;white-space:pre-wrap;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:var(--text);margin:0}
+  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
+  .codeblock{background:#221B16;color:#EDE6DF;border-radius:12px;padding:18px 22px;margin:16px 0;overflow-x:auto}
+  .codeblock pre{font-size:13px;line-height:1.8;white-space:pre;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#EDE6DF}
+  .codeblock .cm{color:#A89A8E}
+
   .src{font-size:12px;color:var(--sub);margin-top:6px}
+
   footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
+
+  @media (max-width:760px){
+    .hero{padding:44px 24px 40px}
+    .container{padding:28px 18px 60px}
+  }
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <h1>ブログSEOの方針 <span style="opacity:.8">どこに・どの形式・何のツールで書くか</span></h1>
-  <p>「地域ごとのサイクリングコースで集客したい」構想（6/12定例）の実現方式を、置き場所・形式・ツールの3軸で整理した報告です。</p>
-  <div class="hero-meta"><span>タスク#24</span><span>2026-06-12調査・06-24統合</span><span><strong>06-30定例で実現方式を更新</strong></span><span><strong>07-02 SEO差の洗い出しを追記（§6）</strong></span></div>
+  <div class="hero-inner">
+    <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
+    <div>
+      <span class="eyebrow">SEO — ブログ方針</span>
+      <h1>ブログSEOの方針 <span style="opacity:.85;font-size:1.3rem">どこに・どの形式・何のツールで書くか</span></h1>
+      <p class="lead">「地域ごとのサイクリングコースで集客したい」構想（6/12定例）の実現方式を、置き場所・形式・ツールの3軸で整理した報告です。</p>
+      <p class="meta">タスク#24 ｜ 2026-06-12調査・06-24統合 ｜ <strong>06-30定例で実現方式を更新</strong> ｜ <strong>07-02 SEO差の洗い出しを追記（§6）</strong></p>
+    </div>
+  </div>
 </div>
 
 <div class="container">
 
   <!-- 0 6/30更新 -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">0</div><h2>2026-06-30定例での更新（現在の方針はこちらが正）</h2></div>
+  <div class="section" id="update">
+    <div class="section-header"><div class="section-num plain">0</div><div><h2>2026-06-30定例での更新（現在の方針はこちらが正）</h2><div class="sh-sub">実現方式が3点変わった</div></div></div>
     <p style="font-size:14px">6/19報告→6/30定例の協議で、§2〜5の考え方（自社ドメインに書く・note併用・記事+エリアページ・用途で振り分け）はそのまま、<strong>実現方式が3点変わりました</strong>。</p>
     <div class="card">
       <ol style="padding-left:20px;font-size:14px">
@@ -77,8 +113,8 @@
   </div>
 
   <!-- 1 結論 -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">1</div><h2>結論（6/30更新後）</h2></div>
+  <div class="section" id="conclusion">
+    <div class="section-header"><div class="section-num">1</div><div><h2>結論（6/30更新後）</h2><div class="sh-sub">3軸＋用途振り分けのまとめ</div></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>観点</th><th>結論</th><th>ひとこと</th></tr></thead>
@@ -93,12 +129,12 @@
   </div>
 
   <!-- 2 どこに -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">2</div><h2>どこに書くか — 自社ドメイン vs note</h2></div>
-    <div class="alert alert-red">
+  <div class="section" id="where">
+    <div class="section-header"><div class="section-num">2</div><div><h2>どこに書くか — 自社ドメイン vs note</h2><div class="sh-sub">検索評価はどこに貯まるか</div></div></div>
+    <div class="alert alert-red"><span class="a-icon">⚠</span><div>
       <strong>noteで貯めたSEO評価は後から自社ドメインに移せません</strong>（無料版noteにリダイレクト機能がなく、評価はnote.comに帰属したまま）。「まずnoteで始めて育ったら自社へ引っ越す」は、引っ越しの瞬間に検索評価がゼロリセットされます。
-    </div>
-    <div class="alert alert-green"><strong>推奨は「移行」ではなく「最初から分業併用」。</strong></div>
+    </div></div>
+    <div class="alert alert-green"><span class="a-icon">✓</span><div><strong>推奨は「移行」ではなく「最初から分業併用」。</strong></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>役割</th><th>置き場所</th><th>理由</th></tr></thead>
@@ -111,7 +147,7 @@
     <h3>noteの実態（なぜ自社が必要か）</h3>
     <div class="card">
       <ul style="padding-left:20px;font-size:14px">
-        <li style="margin-bottom:6px"><strong>強み</strong>：ドメイン評価が高く公開直後でも検索流入が得やすい（会員777万人）</li>
+        <li style="margin-bottom:6px"><strong>強み</strong>：ドメイン評価が高く公開直後でも検索流入が得やすい（会員777万人・2024時点）</li>
         <li style="margin-bottom:6px"><strong>限界</strong>：HTMLタグ・構造化データのカスタマイズ不可。<strong>検索評価はすべてnote社に帰属</strong>（無料版は独自ドメイン不可）。<strong>noteのリンクは全てnofollow</strong>＝rincle.co.jpへの評価受け渡しは限定的</li>
         <li style="margin-bottom:6px"><strong>note pro の独自ドメインは月8万円（税抜）</strong>＝予約52件/月分に相当し、現段階では割に合わない</li>
         <li><strong>併用の定石</strong>：内容とターゲットを分ければカニバリしない。自社ブログ＝検索KW狙い／note＝初動露出・ファン形成</li>
@@ -121,46 +157,45 @@
   </div>
 
   <!-- 3 形式 -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">3</div><h2>どの形式で — LP vs ブログ記事</h2></div>
-    <div class="alert alert-green">
+  <div class="section" id="format">
+    <div class="section-header"><div class="section-num">3</div><div><h2>どの形式で — LP vs ブログ記事</h2><div class="sh-sub">集客と刈り取りの2段構え</div></div></div>
+    <div class="alert alert-green"><span class="a-icon">✓</span><div>
       <strong>SEOで集客するなら「ブログ記事 ＋ 本体サイトのエリアページ」。</strong> 狭義のLP（縦長1ページ・CV特化）はSEO目的では作りません。
-    </div>
+    </div></div>
     <div class="card">
       <p style="font-size:14px"><strong>狭義LPがSEOに弱い理由</strong>：①CV特化ページは被リンクがつきにくい ②1ページではKWを網羅できず薄い ③情報収集の検索意図に記事形式が優位</p>
       <p style="font-size:14px;margin-top:10px"><strong>※ ただし作り込んだ複数ページのLPなら別。</strong>中身が情報性を持ち複数ページに分かれていれば、それは実質ブログ/オウンドメディアと同じ（呼び名の差）。弱いのは「ペラ1枚の売り込み」。</p>
     </div>
     <h3>「ブログ記事 ＋ 本体エリアページ」とは</h3>
-    <p style="font-size:14px">2種類のページは<strong>ユーザーの段階が違う</strong>。「本体エリアページ」は新規に作る別物ではなく、<strong>rincle.co.jpの予約サイト側にある既存のエリア検索/店舗一覧ページ</strong>（sitemap化する約500URL）を指す。</p>
+    <p style="font-size:14px">2種類のページは<strong>ユーザーの段階が違う</strong>。「本体エリアページ」は新規に作る別物ではなく、<strong>rincle.co.jpの予約サイト側にある既存のエリア検索/店舗一覧ページ</strong>（sitemap化する約430URL〈店舗56・自転車374ほか静的ページ・2026-08-20本番実測〉）を指す。</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th></th><th>① ブログ記事</th><th>② 本体エリアページ</th></tr></thead>
         <tbody>
-          <tr><td class="label">置き場所</td><td>自社ブログ基盤（新設・当面サブドメインの静的LP。6/30更新）</td><td><code style="background:#f0f1f4;padding:2px 6px;border-radius:4px">rincle.co.jp</code> 予約サイト側（既存・Bubble）</td></tr>
+          <tr><td class="label">置き場所</td><td>自社ブログ基盤（新設・当面サブドメインの静的LP。6/30更新）</td><td><code>rincle.co.jp</code> 予約サイト側（既存・Bubble）</td></tr>
           <tr><td class="label">例</td><td>「神戸の海沿いサイクリングコース完全ガイド」</td><td>「神戸 ロードバイクレンタル（店舗一覧・予約）」</td></tr>
           <tr><td class="label">見ている人</td><td>情報収集段階（まだ借りると決めてない）</td><td>もう借りる気で探している（取引型）</td></tr>
           <tr><td class="label">役割</td><td><strong>集客</strong>（検索で広く拾う）→ 記事内リンクで②へ</td><td><strong>予約の刈り取り</strong>（ここでCV）</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="card">
-      <p style="font-size:13px;color:var(--sub);margin-bottom:8px">導線のイメージ</p>
-      <pre>検索「神戸 サイクリングコース」（どこ走ろう）
+    <div class="codeblock"><pre><span class="cm">導線のイメージ</span>
+
+検索「神戸 サイクリングコース」（どこ走ろう）
   → ① ブログ記事「神戸の海沿いコースガイド」      ← 集客（網を広げる）
     → 記事内リンク「このコースを走るなら →」
       → ② 本体エリアページ「神戸 ロードバイクレンタル」 ← 予約（刈り取り）
 
 検索「ロードバイク レンタル 神戸」（もう借りたい）
-  → ② 本体エリアページに直接着地 → 予約</pre>
-    </div>
+  → ② 本体エリアページに直接着地 → 予約</pre></div>
   </div>
 
   <!-- 4 ツール -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">4</div><h2>何のツールで — WordPress vs Bubble vs note</h2></div>
-    <div class="alert alert-blue" style="margin-top:0">
+  <div class="section" id="tool">
+    <div class="section-header"><div class="section-num">4</div><div><h2>何のツールで — WordPress vs Bubble vs note</h2><div class="sh-sub">6/19時点の比較として保存（WordPressは保留中）</div></div></div>
+    <div class="alert alert-blue" style="margin-top:0"><span class="a-icon">ℹ</span><div>
       <strong>6/30更新</strong>: WordPressは保留し、当面はClaude Code製の静的LPで自走することになりました（§0）。本節は6/19時点の比較として残します — WordPress vs BubbleのSEO比較は引き続き有効で、WordPressは記事運用が本格化した時（量産が回り始めた・代行に切り替える等）の選択肢です。
-    </div>
+    </div></div>
     <h3>CMSはWordPress（→ 6/30より保留・本格化時の選択肢）</h3>
     <p style="font-size:14px">先方（増永さん側）が自分で記事を書く方針のため、<strong>最も馴染みやすい管理画面（WYSIWYG・見たまま編集）と自走しやすさ</strong>を優先（IT知識が浅い・非エンジニアでも書ける／詰まっても日本語の解説・情報量が最多）。</p>
     <div class="table-wrap">
@@ -174,9 +209,9 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-blue">
+    <div class="alert alert-blue"><span class="a-icon">ℹ</span><div>
       ※ rincle.co.jpはBubbleホスティングのため、WordPress用サーバーは<strong>別途新規契約（純増コスト）</strong>。Bubble上にWordPressは載せられないので、§6のCloudflare Workerでサブディレクトリに同居させます。
-    </div>
+    </div></div>
 
     <h3>WordPress vs BubbleのCMS記事（Bubbleで十分か？）</h3>
     <p style="font-size:14px"><strong>SEOの強さは WordPress ＞ BubbleのCMS。ただしBubbleでも出せる（インデックスはされる）＝程度問題。</strong> タイトル/descを可変にしても、<strong>「重さ（表示速度）」と「本文がJSでしか出ない」の2つは記事ページでも残る</strong>。</p>
@@ -198,8 +233,8 @@
   </div>
 
   <!-- 5 用途で振り分け -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">5</div><h2>用途で振り分け</h2></div>
+  <div class="section" id="routing">
+    <div class="section-header"><div class="section-num">5</div><div><h2>用途で振り分け</h2><div class="sh-sub">狙いとKWの性質で置き場所を変える</div></div></div>
     <p style="font-size:14px">「全部WordPress」でも「全部Bubble」でもない。<strong>狙いとKWの性質で置き場所を変える</strong>。</p>
     <div class="table-wrap">
       <table>
@@ -245,8 +280,8 @@
   </div>
 
   <!-- 6 実現方式 -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">6</div><h2>実現方式・始め方（6/30更新）</h2></div>
+  <div class="section" id="implementation">
+    <div class="section-header"><div class="section-num">6</div><div><h2>実現方式・始め方（6/30更新）</h2><div class="sh-sub">サブディレクトリ vs サブドメイン・SEO差の洗い出し結果</div></div></div>
     <h3 style="margin-top:0">サブディレクトリ vs サブドメイン — 当面はサブドメインで開始</h3>
     <div class="table-wrap">
       <table>
@@ -267,9 +302,9 @@
     </div>
 
     <h3>SEO差の洗い出し結果（2026-07-02調査・6/30宿題の回答）</h3>
-    <div class="alert alert-green">
+    <div class="alert alert-green"><span class="a-icon">✓</span><div>
       <strong>結論: SEO差は「ゼロとは言い切れないが、RINCLEの規模では小さい」。</strong>しかも後から301リダイレクトで検索評価を引き継いでサブディレクトリへ移行できるため、サブドメインで始めても取り返しがつきます。<strong>当面サブドメイン継続を推奨します。</strong>
-    </div>
+    </div></div>
     <div class="card">
       <p style="font-size:14px;margin-bottom:8px"><strong>① Google公式は「どちらでも同等」を一貫して明言</strong></p>
       <ul style="padding-left:20px;font-size:14px;margin-bottom:16px">
@@ -307,9 +342,9 @@
     <h3>始め方と順序</h3>
     <div class="card">
       <ol style="padding-left:20px;font-size:14px">
-        <li style="margin-bottom:6px"><strong>前提</strong>：DB再構築完了・リリース → SEO基盤一式（メタ情報・sitemap・Search Console・GA4）。基盤構築は<strong>準委任で対応</strong></li>
+        <li style="margin-bottom:6px"><strong>前提</strong>：DB再構築・本番リリースは完了済み（2026年7月上旬）。次はSEO基盤一式（メタ情報・sitemap・Search Console・GA4）の整備で、基盤構築は<strong>準委任で対応</strong></li>
         <li style="margin-bottom:6px"><strong>記事（静的LP）は増永さん側がClaude Codeで作成して自走</strong>。量産は一瞬でできるが、<strong>AIの文章のまま公開すると検索順位が上がりにくいため公開前の手直しが必須</strong>。弊社はKW選定・ペルソナ選定を支援</li>
-        <li style="margin-bottom:6px">公開先はサブドメイン（LPが増えることを見越して<code style="background:#f0f1f4;padding:2px 6px;border-radius:4px">lp.</code>等の汎用名を推奨）。rincle.co.jp本体とペダルスタンダードHPの両方からリンクを張り、検索流入と併走。noteは即日開始できる</li>
+        <li style="margin-bottom:6px">公開先はサブドメイン（LPが増えることを見越して<code>lp.</code>等の汎用名を推奨）。rincle.co.jp本体とペダルスタンダードHPの両方からリンクを張り、検索流入と併走。noteは即日開始できる</li>
         <li style="margin-bottom:6px"><strong>優先KW</strong>：最優先「観光ルート名×レンタサイクル」（しまなみ海道・ビワイチ等）、次点「都市名×ロードバイク レンタル」。「スポーツバイク」軸は使わない</li>
         <li>1本目は加盟店が実在し実走できる地域（例: 神戸）から。記事テンプレ1種（コース概要・マップ・立ち寄りスポット・レンタル導線）を設計して量産</li>
       </ol>
@@ -319,7 +354,7 @@
 </div>
 
 <footer>
-  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/blog-seo-strategy.md（出典URL一覧は正本を参照）
+  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/blog-seo-strategy.md（出典URL一覧は正本を参照・md更新時はこのHTMLも同期すること）
 </footer>
 
 </body>

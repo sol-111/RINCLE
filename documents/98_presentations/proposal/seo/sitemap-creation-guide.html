@@ -6,122 +6,125 @@
 <title>sitemap.xml 作成手順 | RINCLE</title>
 <style>
   :root{
-    --navy:#0f3460; --navy-light:#1a4a8a; --red:#e94560;
-    --green:#27ae60; --amber:#b45309; --bg:#f5f6fa; --text:#2c2c3a; --sub:#6b7280;
-    --border:#e5e7eb; --radius:14px;
-    --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 14px rgba(0,0,0,.05);
-    --shadow-lg:0 4px 8px rgba(15,52,96,.10),0 12px 32px rgba(15,52,96,.10);
+    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
+    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
+    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
+    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
+    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
+    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
-  /* ============ hero ============ */
-  .hero{position:relative;background:linear-gradient(135deg,#0c2a4d 0%,#0f3460 45%,#1a4a8a 100%);color:#fff;padding:56px 40px 92px;overflow:hidden}
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.05)}
-  .hero::after{content:"";position:absolute;right:60px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(233,69,96,.12)}
-  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:4px 14px;margin-bottom:14px}
-  .hero h1{font-size:2.1rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-  .hero p.lead{font-size:1rem;opacity:.88;max-width:720px}
+  /* hero */
+  .hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 88px;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
+  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(35,32,29,.10)}
+  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
+  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
+  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
+  .hero p.lead{font-size:1rem;opacity:.92;max-width:700px}
+
   .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
 
-  /* ============ flow nav ============ */
+  /* flow nav */
   .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
   .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
   .flow a:first-child{border-left:none}
-  .flow a:hover{background:#f4f7fc}
-  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--navy);color:#fff;font-weight:800;font-size:14px;margin-bottom:8px}
-  .flow .ft{font-weight:800;font-size:14.5px;color:var(--navy);line-height:1.5}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
   .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
-  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#c9d2e0;font-weight:700}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
   .flow a:last-child::after{content:""}
 
-  /* ============ sections ============ */
+  /* sections */
   .section{margin-bottom:56px;scroll-margin-top:20px}
   .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--red),#f0637b);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(233,69,96,.35)}
-  .section-num.plain{background:linear-gradient(135deg,var(--navy),var(--navy-light));box-shadow:0 4px 12px rgba(15,52,96,.3)}
-  .section-header h2{font-size:21px;font-weight:800;color:#1a2340}
+  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
+  .section-num.plain{background:linear-gradient(135deg,var(--ink),#4A4038);box-shadow:0 4px 12px rgba(35,32,29,.3)}
+  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
   .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
-  h3{font-size:16px;font-weight:800;color:var(--navy);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--red)}
+  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
 
   .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
 
-  /* term = 用語解説 */
-  .term{display:flex;gap:14px;background:linear-gradient(135deg,#eef4ff,#f6f9ff);border:1px solid #d8e4f8;border-radius:12px;padding:16px 20px;margin:14px 0;font-size:14px}
-  .term .t-icon{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
-  .term .term-name{font-weight:800;color:var(--navy);margin-bottom:2px}
-  .term .t-body{color:#31415e}
+  /* term */
+  .term{display:flex;gap:14px;background:linear-gradient(135deg,#FFF4EF,#FFF9F6);border:1px solid #FBD3C4;border-radius:12px;padding:16px 20px;margin:14px 0;font-size:14px}
+  .term .t-icon{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .term .term-name{font-weight:800;color:var(--ink);margin-bottom:2px}
+  .term .t-body{color:#4A3F38}
 
   /* alerts */
   .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
   .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
-  .alert-red{background:#fff1f3;border:1px solid #ffd2da;color:#a0132e}
-  .alert-green{background:#effbf4;border:1px solid #c6ecd5;color:#166a3b}
-  .alert-blue{background:#eef4ff;border:1px solid #d8e4f8;color:#1e3a6e}
+  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
+  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
+  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
 
   /* compare */
   .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
   .compare-box{border-radius:12px;padding:20px 22px;background:#fff;border:2px solid var(--border)}
-  .compare-box.bad{border-color:#f3b3bf;background:#fff7f8}
-  .compare-box.good{border-color:#9adbb4;background:#f6fdf9}
+  .compare-box.bad{border-color:#F2AEBC;background:#FFF7F9}
+  .compare-box.good{border-color:#9ADBB4;background:#F6FDF9}
   .compare-box .cb-head{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;margin-bottom:8px}
-  .compare-box.bad .cb-head{color:#a0132e}
-  .compare-box.good .cb-head{color:#166a3b}
+  .compare-box.bad .cb-head{color:#8E1230}
+  .compare-box.good .cb-head{color:#136A41}
   .cb-mark{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:800;font-size:14px}
-  .bad .cb-mark{background:var(--red)}
-  .good .cb-mark{background:var(--green)}
-  .compare-box p{font-size:13.5px;color:#4b5563}
+  .bad .cb-mark{background:var(--danger)}
+  .good .cb-mark{background:var(--ok)}
+  .compare-box p{font-size:13.5px;color:#544B44}
 
   /* URL anatomy */
-  .url-anatomy{background:#0f172a;border-radius:12px;padding:22px 24px 14px;margin:16px 0;overflow-x:auto}
+  .url-anatomy{background:#221B16;border-radius:12px;padding:22px 24px 14px;margin:16px 0;overflow-x:auto}
   .url-line{font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:14.5px;white-space:nowrap;line-height:2.4}
   .url-line .seg{padding:3px 2px;border-radius:4px}
-  .url-line .seg-base{color:#94a3b8}
-  .url-line .seg-page{color:#7dd3fc;background:rgba(125,211,252,.12);border-bottom:2px solid #7dd3fc}
-  .url-line .seg-id{color:#fca5b3;background:rgba(233,69,96,.14);border-bottom:2px solid var(--red)}
+  .url-line .seg-base{color:#A89A8E}
+  .url-line .seg-page{color:#7CC7FF;background:rgba(124,199,255,.12);border-bottom:2px solid #7CC7FF}
+  .url-line .seg-id{color:#FFB27D;background:rgba(249,83,32,.16);border-bottom:2px solid var(--brand)}
   .url-legend{display:flex;gap:22px;margin-top:10px;flex-wrap:wrap}
-  .url-legend span{font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:6px}
+  .url-legend span{font-size:12px;color:#A89A8E;display:flex;align-items:center;gap:6px}
   .url-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
 
   /* tables */
   .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
   table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
-  thead th{background:var(--navy);color:#fff;padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
-  td{padding:12px 16px;border-bottom:1px solid #f0f1f4;vertical-align:middle}
+  thead th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
+  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:middle}
   tr:last-child td{border-bottom:none}
-  tbody tr:hover td{background:#f8f9fb}
-  td.label{font-weight:700;color:var(--navy);white-space:nowrap}
+  tbody tr:hover td{background:#FBF8F5}
+  td.label{font-weight:700;color:var(--ink);white-space:nowrap}
   .pri{display:flex;align-items:center;gap:10px;min-width:150px}
-  .pri .bar{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--red),#f0637b);flex-shrink:0}
+  .pri .bar{height:8px;border-radius:99px;background:linear-gradient(90deg,var(--brand-deep),var(--brand));flex-shrink:0}
   .pri .pv{font-size:12.5px;font-weight:700;color:var(--sub)}
-  .ng{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#fde3e8;color:var(--red);font-weight:800;font-size:12px;margin-right:4px}
+  .ng{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#FBD9E0;color:var(--danger);font-weight:800;font-size:12px;margin-right:4px}
 
-  code{background:#eef2f7;border:1px solid #dfe5ee;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#1e3a6e}
-  .codeblock{background:#0f172a;color:#e2e8f0;border-radius:12px;padding:18px 22px;margin:16px 0;overflow-x:auto}
-  .codeblock pre{font-size:13px;line-height:1.8;white-space:pre;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#e2e8f0}
-  .codeblock .cm{color:#7dd3fc}
-  .codeblock .hl{color:#fbbf24}
+  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
+  .codeblock{background:#221B16;color:#EDE6DF;border-radius:12px;padding:18px 22px;margin:16px 0;overflow-x:auto}
+  .codeblock pre{font-size:13px;line-height:1.8;white-space:pre;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#EDE6DF}
+  .codeblock .cm{color:#A89A8E}
+  .codeblock .hl{color:#FFB27D}
 
-  /* numbered steps */
+  /* steps */
   ol.steps{list-style:none;counter-reset:st;font-size:14px}
   ol.steps li{counter-increment:st;position:relative;padding:0 0 18px 46px}
   ol.steps li:last-child{padding-bottom:0}
-  ol.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:28px;height:28px;border-radius:50%;background:#eef2f9;border:2px solid var(--navy);color:var(--navy);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
-  ol.steps li:not(:last-child)::after{content:"";position:absolute;left:13.5px;top:32px;bottom:2px;width:2px;background:#dde4ef}
+  ol.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:28px;height:28px;border-radius:50%;background:var(--brand-soft);border:2px solid var(--brand);color:var(--brand-deep);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+  ol.steps li:not(:last-child)::after{content:"";position:absolute;left:13.5px;top:32px;bottom:2px;width:2px;background:#F0E3DA}
 
   ul.notes{list-style:none;font-size:14px}
   ul.notes li{position:relative;padding:6px 0 6px 28px}
-  ul.notes li::before{content:"!";position:absolute;left:2px;top:8px;width:18px;height:18px;border-radius:50%;background:#fde68a;color:#92400e;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center}
+  ul.notes li::before{content:"!";position:absolute;left:2px;top:8px;width:18px;height:18px;border-radius:50%;background:#FDE68A;color:#92400E;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center}
 
-  /* recap band */
-  .recap{background:linear-gradient(135deg,#0c2a4d,#1a4a8a);color:#fff;border-radius:var(--radius);padding:26px 30px;margin-top:8px;box-shadow:var(--shadow-lg)}
+  /* recap */
+  .recap{background:linear-gradient(135deg,var(--ink) 0%,#6B2F14 70%,var(--brand-deep) 100%);color:#fff;border-radius:var(--radius);padding:26px 30px;margin-top:8px;box-shadow:var(--shadow-lg)}
   .recap h2{font-size:17px;font-weight:800;margin-bottom:14px}
   .recap .r-flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13.5px}
-  .recap .r-chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:6px 16px;font-weight:700}
+  .recap .r-chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 16px;font-weight:700}
   .recap .r-arr{opacity:.6;font-weight:800}
-  .recap p{font-size:12.5px;opacity:.8;margin-top:14px}
+  .recap p{font-size:12.5px;opacity:.82;margin-top:14px}
 
   footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
 
@@ -129,7 +132,7 @@
     .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
     .flow a{border-top:1px solid var(--border)}
     .compare{grid-template-columns:1fr}
-    .hero{padding:44px 24px 32px}
+    .hero{padding:44px 24px 84px}
     .container{padding:28px 18px 60px}
   }
 </style>
@@ -138,9 +141,12 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <span class="eyebrow">SEO設定 — sitemap</span>
-    <h1>sitemap.xml 作成手順</h1>
-    <p class="lead">本番サイト（rincle.co.jp）の全ページ一覧をGoogleに知らせるsitemap.xmlを、BubbleのData APIを使って作り、Bubbleのルート直下に置いて登録するまでの手順です。</p>
+    <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
+    <div>
+      <span class="eyebrow">SEO設定 — sitemap</span>
+      <h1>sitemap.xml 作成手順</h1>
+      <p class="lead">本番サイト（rincle.co.jp）の全ページ一覧をGoogleに知らせるsitemap.xmlを、BubbleのData APIを使って作り、Bubbleのルート直下に置いて登録するまでの手順です。</p>
+    </div>
   </div>
 </div>
 
@@ -164,8 +170,8 @@
       <div class="url-line"><span class="seg seg-base">https://rincle.co.jp</span><span class="seg seg-page">/shop_detail</span><span class="seg seg-base">?shop=</span><span class="seg seg-id">&lt;店舗ID&gt;</span></div>
       <div class="url-line"><span class="seg seg-base">https://rincle.co.jp</span><span class="seg seg-page">/bicycle_detail</span><span class="seg seg-base">?bicycle=</span><span class="seg seg-id">&lt;自転車ID&gt;</span></div>
       <div class="url-legend">
-        <span><i style="background:#7dd3fc"></i>ページの種類（全部で19ページ）</span>
-        <span><i style="background:var(--red)"></i>データベース上のID（店舗56・自転車374）</span>
+        <span><i style="background:#7CC7FF"></i>ページの種類（全部で19ページ）</span>
+        <span><i style="background:var(--brand)"></i>データベース上のID（店舗56・自転車374）</span>
       </div>
     </div>
 

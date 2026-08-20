@@ -5,288 +5,205 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>予約・決済・貸出・返却フロー（決定版） | RINCLE</title>
 <style>
-  :root {
-    --primary: #1a1a2e;
-    --accent: #635bff;
-    --accent-light: #ede9fe;
-    --user: #0ea5e9;
-    --user-light: #e0f2fe;
-    --shop: #10b981;
-    --shop-light: #d1fae5;
-    --success: #10b981;
-    --success-light: #d1fae5;
-    --warning: #f59e0b;
-    --warning-light: #fef3c7;
-    --danger: #ef4444;
-    --gray-50: #f9fafb;
-    --gray-100: #f3f4f6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-500: #6b7280;
-    --gray-700: #374151;
-    --gray-900: #111827;
+  :root{
+    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
+    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
+    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
+    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
+    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
+    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-    color: var(--gray-900);
-    background: var(--gray-50);
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
-  .hero {
-    background: linear-gradient(135deg, #1e1b4b 0%, #4338ca 40%, #7c3aed 100%);
-    color: #fff;
-    padding: 56px 40px 48px;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::after {
-    content: '';
-    position: absolute; top: -50%; right: -20%;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-  .hero-label {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(4px);
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .hero h1 { font-size: 30px; font-weight: 800; margin-bottom: 12px; }
-  .hero p { font-size: 15px; opacity: 0.85; max-width: 680px; }
-  .hero-meta { margin-top: 16px; display: flex; gap: 24px; font-size: 13px; opacity: 0.7; flex-wrap: wrap; }
+  /* hero */
+  .hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 88px;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
+  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(35,32,29,.10)}
+  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
+  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
+  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
+  .hero p.lead{font-size:1rem;opacity:.92;max-width:700px}
+  .hero-meta{margin-top:14px;display:flex;gap:20px;font-size:12.5px;opacity:.8;flex-wrap:wrap}
 
-  .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin: -40px auto 40px;
-    position: relative;
-    z-index: 1;
-    max-width: 960px;
-    padding: 0 32px;
-  }
-  .summary-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
-    border-top: 3px solid var(--accent);
-  }
-  .summary-card h3 {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent);
-    margin-bottom: 6px;
-  }
-  .summary-card p { font-size: 13px; color: var(--gray-700); line-height: 1.6; }
+  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
 
-  section { padding: 48px 0; border-bottom: 1px solid var(--gray-200); }
-  section:last-of-type { border-bottom: none; }
-  h2 {
-    font-size: 22px; font-weight: 700; color: var(--primary);
-    margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
-  }
-  h2 .num {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 32px; height: 32px; background: var(--accent); color: #fff;
-    border-radius: 8px; font-size: 15px; font-weight: 700; flex-shrink: 0;
-  }
-  .section-lead { color: var(--gray-500); font-size: 15px; margin-bottom: 28px; }
-  h3 { font-size: 17px; font-weight: 700; color: var(--gray-700); margin: 32px 0 14px; }
+  /* flow nav（ヒーロー下に重ねる章ナビ） */
+  .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:-64px auto 36px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
+  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
+  .flow a:first-child{border-left:none}
+  .flow a:hover{background:var(--brand-soft)}
+  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;font-size:14px;margin-bottom:8px}
+  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
+  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
+  .flow a:last-child::after{content:""}
 
-  .card {
-    background: #fff; border: 1px solid var(--gray-200);
-    border-radius: 12px; padding: 28px; margin-bottom: 20px;
-  }
+  /* サマリーカード */
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:0 0 44px}
+  .summary-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--brand)}
+  .summary-card h3{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--brand-deep);margin-bottom:6px}
+  .summary-card p{font-size:13px;color:var(--text);line-height:1.7}
 
-  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 16px; }
-  thead th {
-    background: var(--gray-100); font-weight: 700; font-size: 13px;
-    letter-spacing: 0.04em; color: var(--gray-500); padding: 10px 14px;
-    text-align: left; border-bottom: 2px solid var(--gray-200);
-  }
-  tbody td { padding: 12px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
-  tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover { background: var(--gray-50); }
-  td.label { font-weight: 600; color: var(--gray-700); }
+  /* sections */
+  .section{margin-bottom:56px;scroll-margin-top:20px}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
+  .section-num.plain{background:linear-gradient(135deg,var(--ink),#4A4038);box-shadow:0 4px 12px rgba(35,32,29,.3)}
+  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
+  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
+  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
 
-  .badge {
-    display: inline-block; padding: 2px 10px; border-radius: 999px;
-    font-size: 12px; font-weight: 700; letter-spacing: 0.02em; white-space: nowrap;
-  }
-  .badge.good { background: var(--success-light); color: #065f46; }
-  .badge.warn { background: var(--warning-light); color: #92400e; }
-  .badge.bad { background: #fee2e2; color: #991b1b; }
-  .badge.plan { background: var(--gray-100); color: var(--gray-500); }
-  .badge.ours { background: var(--accent-light); color: var(--accent); }
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
 
-  .note {
-    background: #fffbeb; border-left: 4px solid var(--warning);
-    border-radius: 0 8px 8px 0; padding: 16px 20px;
-    font-size: 14px; color: var(--gray-700); margin: 20px 0;
-  }
-  .note strong { color: #92400e; }
-  .note.accent { background: var(--accent-light); border-left-color: var(--accent); }
-  .note.accent strong { color: var(--accent); }
-  .note.danger { background: #fef2f2; border-left-color: var(--danger); }
-  .note.danger strong { color: #991b1b; }
-  .note.green { background: #f0fdf4; border-left-color: var(--success); }
-  .note.green strong { color: #065f46; }
+  /* alerts */
+  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
+  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
+  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
+  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
+  .alert-amber{background:#FFF7E6;border:1px solid #F5DFB8;color:#8F5A0A}
+  .alert-brand{background:linear-gradient(135deg,#FFF4EF,#FFF9F6);border:1px solid #FBD3C4;color:#7A3212}
 
-  code {
-    font-family: 'SF Mono', 'Consolas', monospace;
-    background: var(--gray-100);
-    color: var(--accent);
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-size: 12px;
-  }
+  /* tables */
+  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+  thead th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
+  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#FBF8F5}
+  td.label{font-weight:700;color:var(--ink)}
+
+  /* badges */
+  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+  .badge.good{background:#EDFAF2;color:#136A41}
+  .badge.bad{background:#FDECEF;color:#8E1230}
+  .badge.warn{background:#FFF4E0;color:#8F5A0A}
+  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
+  .badge.ours{background:var(--brand-soft);color:var(--brand-deep)}
+
+  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
 
   /* ===== スイムレーン図（行=登場人物 / 横=時系列） ===== */
-  .actor-legend { display: flex; gap: 14px; flex-wrap: wrap; margin: 0 0 16px; font-size: 13px; }
-  .actor-chip {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 3px 12px; border-radius: 999px; font-weight: 700; font-size: 12px;
-  }
-  .actor-chip::before { content: ''; width: 8px; height: 8px; border-radius: 50%; }
-  .actor-chip.user { background: var(--user-light); color: #075985; }
-  .actor-chip.user::before { background: var(--user); }
-  .actor-chip.shop { background: var(--shop-light); color: #065f46; }
-  .actor-chip.shop::before { background: var(--shop); }
-  .actor-chip.sys { background: var(--accent-light); color: var(--accent); }
-  .actor-chip.sys::before { background: var(--accent); }
+  .actor-legend{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 16px;font-size:13px}
+  .actor-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:999px;font-weight:700;font-size:12px}
+  .actor-chip::before{content:'';width:8px;height:8px;border-radius:50%}
+  .actor-chip.user{background:#EEF3FE;color:#1D48A6}
+  .actor-chip.user::before{background:var(--info)}
+  .actor-chip.shop{background:#EDFAF2;color:#136A41}
+  .actor-chip.shop::before{background:var(--ok)}
+  .actor-chip.sys{background:var(--brand-soft);color:var(--brand-deep)}
+  .actor-chip.sys::before{background:var(--brand)}
 
-  .lane-wrap { overflow-x: auto; margin: 8px 0 8px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-  .lanes {
-    display: grid;
-    grid-template-columns: 92px repeat(5, minmax(158px, 1fr));
-    min-width: 920px;
-    background: #fff;
-    border: 1px solid var(--gray-200);
-    border-radius: 12px;
-    overflow: hidden;
-    font-size: 12px;
-  }
-  .lane-head {
-    background: var(--gray-900); color: #fff;
-    font-weight: 800; font-size: 12px; text-align: center;
-    padding: 10px 8px; line-height: 1.4;
-    border-left: 1px solid rgba(255,255,255,0.12);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  }
-  .lane-head .sub { font-weight: 600; font-size: 10.5px; opacity: 0.65; }
-  .lane-head.branchcol { background: #7f1d1d; }
-  .lane-corner {
-    background: var(--gray-900); color: rgba(255,255,255,0.7);
-    font-weight: 700; font-size: 11px; display: flex; align-items: center; justify-content: center;
-  }
-  .lane-label {
-    display: flex; align-items: center; justify-content: center; gap: 5px;
-    font-size: 11.5px; font-weight: 800; text-align: center;
-    padding: 10px 6px; border-top: 1px solid var(--gray-200);
-    background: var(--gray-50); line-height: 1.3;
-  }
-  .lane-label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .lane-label.user { color: #075985; } .lane-label.user::before { background: var(--user); }
-  .lane-label.shop { color: #065f46; } .lane-label.shop::before { background: var(--shop); }
-  .lane-label.sys  { color: var(--accent); } .lane-label.sys::before { background: var(--accent); }
-  .lane-label.money { color: #92400e; } .lane-label.money::before { content: '💰'; width: auto; height: auto; border-radius: 0; background: none; }
-  .lane-cell {
-    padding: 8px; border-top: 1px solid var(--gray-200); border-left: 1px solid var(--gray-100);
-    display: flex; flex-direction: column; gap: 6px; justify-content: flex-start;
-  }
-  .lane-cell.branchcol { background: #fff7f7; border-left: 2px dashed #fca5a5; }
-  .lane-cell.empty::before { content: '—'; color: var(--gray-300); text-align: center; margin: auto; }
-  .lane-cell.money {
-    background: #fffbeb; font-weight: 800; color: #92400e; text-align: center;
-    justify-content: center; font-size: 12.5px;
-  }
-  .lane-cell.money .free { color: var(--gray-400, #9ca3af); font-weight: 700; }
-  .lane-cell.money small { display: block; font-weight: 600; font-size: 10.5px; color: #b45309; }
-  .lanes.cols6 { grid-template-columns: 92px repeat(6, minmax(140px, 1fr)); min-width: 1030px; }
-  .mini .ok { color: #047857; font-weight: 800; }
-  .mini .ng { color: #b91c1c; font-weight: 800; }
-  .mini {
-    border-radius: 8px; padding: 7px 9px; line-height: 1.5; color: var(--gray-700);
-  }
-  .mini.user { background: var(--user-light); }
-  .mini.shop { background: var(--shop-light); }
-  .mini.sys  { background: var(--accent-light); }
-  .mini b { display: block; font-size: 12px; color: var(--gray-900); margin-bottom: 1px; }
-  .mini .n {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 17px; height: 17px; border-radius: 50%;
-    background: #fff; border: 1px solid rgba(0,0,0,0.15);
-    font-size: 10.5px; font-weight: 800; color: var(--gray-700);
-    margin-right: 4px; vertical-align: -3px;
-  }
-  .mini .star { font-weight: 800; color: var(--danger); }
-  .scroll-hint { font-size: 11.5px; color: var(--gray-500); text-align: right; margin-bottom: 16px; }
+  .lane-wrap{overflow-x:auto;margin:8px 0 8px;border-radius:12px;box-shadow:var(--shadow)}
+  .lanes{display:grid;grid-template-columns:92px repeat(6,minmax(140px,1fr));min-width:1030px;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:12px}
+  .lane-head{background:var(--ink);color:#fff;font-weight:800;font-size:12px;text-align:center;padding:10px 8px;line-height:1.4;border-left:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+  .lane-head .sub{font-weight:600;font-size:10.5px;opacity:.65}
+  .lane-head.branchcol{background:#7A1B2E}
+  .lane-corner{background:var(--ink);color:rgba(255,255,255,.7);font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center}
+  .lane-label{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;font-weight:800;text-align:center;padding:10px 6px;border-top:1px solid var(--border);background:#FBF8F5;line-height:1.3}
+  .lane-label::before{content:'';width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .lane-label.user{color:#1D48A6}.lane-label.user::before{background:var(--info)}
+  .lane-label.shop{color:#136A41}.lane-label.shop::before{background:var(--ok)}
+  .lane-label.sys{color:var(--brand-deep)}.lane-label.sys::before{background:var(--brand)}
+  .lane-label.money{color:#8F5A0A}.lane-label.money::before{content:'💰';width:auto;height:auto;border-radius:0;background:none}
+  .lane-cell{padding:8px;border-top:1px solid var(--border);border-left:1px solid #F2EEE9;display:flex;flex-direction:column;gap:6px;justify-content:flex-start}
+  .lane-cell.branchcol{background:#FFF7F9;border-left:2px dashed #F2AEBC}
+  .lane-cell.empty::before{content:'—';color:#D8D2CB;text-align:center;margin:auto}
+  .lane-cell.money{background:#FFF7E6;font-weight:800;color:#8F5A0A;text-align:center;justify-content:center;font-size:12.5px}
+  .lane-cell.money .free{color:#B8B0A6;font-weight:700}
+  .lane-cell.money small{display:block;font-weight:600;font-size:10.5px;color:#A9720F}
+  .mini{border-radius:8px;padding:7px 9px;line-height:1.5;color:var(--text)}
+  .mini.user{background:#EEF3FE}
+  .mini.shop{background:#EDFAF2}
+  .mini.sys{background:var(--brand-soft)}
+  .mini b{display:block;font-size:12px;color:var(--ink);margin-bottom:1px}
+  .mini .ok{color:#136A41;font-weight:800}
+  .mini .ng{color:var(--danger);font-weight:800}
+  .mini .n{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:#fff;border:1px solid rgba(35,32,29,.2);font-size:10.5px;font-weight:800;color:var(--ink);margin-right:4px;vertical-align:-3px}
+  .mini .star{font-weight:800;color:var(--danger)}
+  .scroll-hint{font-size:11.5px;color:var(--sub);text-align:right;margin-bottom:16px}
 
-  .branch {
-    border: 2px dashed var(--gray-300); border-radius: 12px;
-    padding: 16px 20px; margin: 12px 0; background: var(--gray-50);
-  }
-  .branch.red { border-color: #fca5a5; background: #fff7f7; }
-  .branch h5 { font-size: 13px; font-weight: 800; color: var(--danger); margin-bottom: 6px; }
-  .branch p, .branch li { font-size: 13px; color: var(--gray-700); }
-  .branch ol { padding-left: 18px; margin-top: 4px; }
-  .branch li { margin-bottom: 4px; }
+  /* 例外分岐の箱 */
+  .branch{border:2px dashed var(--border);border-radius:12px;padding:16px 20px;margin:12px 0;background:#fff}
+  .branch.red{border-color:#F2AEBC;background:#FFF7F9}
+  .branch h5{font-size:13px;font-weight:800;color:var(--danger);margin-bottom:6px}
+  .branch h5.brand{color:var(--brand-deep)}
+  .branch p,.branch li{font-size:13px;color:var(--text)}
+  .branch ol{padding-left:18px;margin-top:4px}
+  .branch li{margin-bottom:4px}
 
-  footer { text-align: center; padding: 40px 0; color: var(--gray-500); font-size: 13px; }
+  /* まとめバンド */
+  .recap{background:linear-gradient(135deg,var(--ink) 0%,#6B2F14 70%,var(--brand-deep) 100%);color:#fff;border-radius:var(--radius);padding:26px 30px;margin-top:8px;box-shadow:var(--shadow-lg)}
+  .recap h2{font-size:17px;font-weight:800;margin-bottom:14px}
+  .recap .r-flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13.5px}
+  .recap .r-chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 16px;font-weight:700}
+  .recap .r-arr{opacity:.6;font-weight:800}
+  .recap p{font-size:12.5px;opacity:.82;margin-top:14px}
+
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px;line-height:1.9}
+
+  @media (max-width:760px){
+    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
+    .flow a{border-top:1px solid var(--border)}
+    .hero{padding:44px 24px 84px}
+    .container{padding:28px 18px 60px}
+  }
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <div class="hero-label">Payment Flow / 2026-07-03 定例で決定</div>
-  <h1>予約・決済・貸出・返却フロー（決定版）</h1>
-  <p>増永さんの構想（6/30受領）を弊社がStripeの実装観点で検証・図解し、<strong>7/3定例で「当日決済のみ（オーソリなし・QRチェックインなし）」のフローに決定</strong>しました。弊社の変更・補強箇所には<span class="badge ours" style="margin:0 4px;">弊社提案</span>を付けています。</p>
-  <div class="hero-meta">
-    <span>ベース: 増永さん構想.md（6/30）</span>
-    <span>前提: Stripeへの載せ替え（6/19決定）</span>
-    <span>デポジットは今回スコープ外・将来対応できる設計にする（7/3）</span>
+  <div class="hero-inner">
+    <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
+    <div>
+      <span class="eyebrow">決済フロー — 7/3定例で決定</span>
+      <h1>予約・決済・貸出・返却フロー（決定版）</h1>
+      <p class="lead">増永さんの構想（6/30受領）を弊社がStripeの実装観点で検証・図解し、<strong>7/3定例で「当日決済のみ（オーソリなし・QRチェックインなし）」のフローに決定</strong>しました。弊社の変更・補強箇所には「弊社提案」の印を付けています。</p>
+      <div class="hero-meta">
+        <span>ベース: 増永さん構想.md（6/30）</span>
+        <span>前提: Stripeへの載せ替え（6/19決定）</span>
+        <span>デポジットは今回スコープ外・将来対応できる設計にする（7/3）</span>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="summary-grid">
-  <div class="summary-card">
-    <h3>決定（7/3定例）</h3>
-    <p><strong>当日決済のみ</strong>で確定。オーソリなし・QRチェックインなし。トラブルが多ければオーソリは後から検討</p>
-  </div>
-  <div class="summary-card">
-    <h3>お金が動く回数</h3>
-    <p>通常利用で<strong>最大2回</strong>（貸出開始時に全額＋返却時に追加分）。<strong>予約時は0円</strong></p>
-  </div>
-  <div class="summary-card">
-    <h3>オーソリを見送った理由</h3>
-    <p><strong>明細が最大3つに分かれる</strong>＋当日のオプション変更が頻発する現場と相性が悪い</p>
-  </div>
-  <div class="summary-card">
-    <h3>残る論点</h3>
-    <p>キャンセルポリシー・破損請求・本人確認（5章）。<strong>領収書/インボイスは弊社が調査して7/10報告</strong></p>
-  </div>
-</div>
+<div class="container">
 
-<main class="container">
+  <nav class="flow">
+    <a href="#s1"><span class="fnum">1</span><div class="ft">全体フロー図</div><div class="fd">誰が・いつ・何をするか</div></a>
+    <a href="#s2"><span class="fnum">2</span><div class="ft">旧設計からの変更</div><div class="fd">4/21合意から何が変わるか</div></a>
+    <a href="#s3"><span class="fnum">3</span><div class="ft">弊社の提案・論点</div><div class="fd">回収リスク・破損請求など</div></a>
+    <a href="#s4"><span class="fnum">4</span><div class="ft">実装可否まとめ</div><div class="fd">構想STEP別の実現方法</div></a>
+    <a href="#s5"><span class="fnum">5</span><div class="ft">決定と残る論点</div><div class="fd">決めてもらうこと</div></a>
+  </nav>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <h3>決定（7/3定例）</h3>
+      <p><strong>当日決済のみ</strong>で確定。オーソリなし・QRチェックインなし。トラブルが多ければオーソリは後から検討</p>
+    </div>
+    <div class="summary-card">
+      <h3>お金が動く回数</h3>
+      <p>通常利用で<strong>最大2回</strong>（貸出開始時に全額＋返却時に追加分）。<strong>予約時は0円</strong></p>
+    </div>
+    <div class="summary-card">
+      <h3>オーソリを見送った理由</h3>
+      <p><strong>明細が最大3つに分かれる</strong>＋当日のオプション変更が頻発する現場と相性が悪い</p>
+    </div>
+    <div class="summary-card">
+      <h3>残る論点</h3>
+      <p>キャンセルポリシー・破損請求・本人確認（5章）。<strong>領収書/インボイスは調査完了</strong>（別資料 receipt-invoice.html）</p>
+    </div>
+  </div>
 
   <!-- 1 フロー図 -->
-  <section>
-    <h2><span class="num">1</span> 全体フロー図（7/3決定）</h2>
-    <p class="section-lead">横が時間の流れ、行が「誰がやるか」、一番下の行がお金の動きです。<strong>赤い点線の列（キャンセル時・決済失敗時）は、発生した場合だけ通る分岐</strong>です。⑦の決済が成功すればそのまま⑧へ、失敗したら隣の「決済失敗時」列に入ってリカバリーします。</p>
+  <div class="section" id="s1">
+    <div class="section-header"><div class="section-num">1</div><div><h2>全体フロー図（7/3決定）</h2><div class="sh-sub">横が時間の流れ、行が「誰がやるか」、一番下の行がお金の動き</div></div></div>
+    <p style="font-size:14.5px;margin-bottom:14px"><strong>赤い点線の列（キャンセル時・決済失敗時）は、発生した場合だけ通る分岐</strong>です。⑦の決済が成功すればそのまま⑧へ、失敗したら隣の「決済失敗時」列に入ってリカバリーします。</p>
     <div class="actor-legend">
       <span class="actor-chip user">ユーザー（借りる人）</span>
       <span class="actor-chip shop">販売店</span>
@@ -294,7 +211,7 @@
     </div>
 
     <div class="lane-wrap">
-      <div class="lanes cols6">
+      <div class="lanes">
         <!-- ヘッダー行 -->
         <div class="lane-corner">時系列 →</div>
         <div class="lane-head">📅 予約時<span class="sub">数日〜数週間前</span></div>
@@ -375,9 +292,7 @@
     </div>
     <p class="scroll-hint">※ 画面が狭い場合は図を横にスクロールできます</p>
 
-    <div class="note green">
-      <strong>予約時・来店時に請求は発生しません。</strong>「予約はタダで気軽に、支払いは自転車を受け取るとき」という分かりやすいお金の流れです（ホテルのチェックイン精算に近い形）。決済が失敗しても<strong>本人が目の前にいるのでその場で支払い直せる</strong>のがこのフローの強みです。
-    </div>
+    <div class="alert alert-green"><span class="a-icon">✓</span><div><strong>予約時・来店時に請求は発生しません。</strong>「予約はタダで気軽に、支払いは自転車を受け取るとき」という分かりやすいお金の流れです（ホテルのチェックイン精算に近い形）。決済が失敗しても<strong>本人が目の前にいるのでその場で支払い直せる</strong>のがこのフローの強みです。</div></div>
 
     <h3>★ 例外時の分岐（詳細）</h3>
     <div class="branch red">
@@ -388,16 +303,15 @@
       </ol>
     </div>
     <div class="branch">
-      <h5 style="color:var(--accent);">★2 破損・高額請求が発生したら <span class="badge ours">弊社提案</span></h5>
+      <h5 class="brand">★2 破損・高額請求が発生したら <span class="badge ours">弊社提案</span></h5>
       <p>車体破損など<strong>金額が大きい・揉めやすい請求は、その場で決済せず「管理者確認 → 後日請求」を標準ルートに</strong>する（詳細は提案3-2）。店頭での言い合いを避け、金額の妥当性を運営が確認してから請求できる。</p>
     </div>
-  </section>
+  </div>
 
   <!-- 2 旧設計からの変更 -->
-  <section>
-    <h2><span class="num">2</span> これまでの設計から何が変わるか</h2>
-    <p class="section-lead">決済比較資料（payjp-vs-stripe）「6.1 決済フロー設計」の旧設計は、本資料のフローに置き換えます。</p>
-    <div class="card">
+  <div class="section" id="s2">
+    <div class="section-header"><div class="section-num">2</div><div><h2>これまでの設計から何が変わるか</h2><div class="sh-sub">決済比較資料（payjp-vs-stripe）「6.1 決済フロー設計」の旧設計は、本資料のフローに置き換えます</div></div></div>
+    <div class="table-wrap">
       <table>
         <thead><tr><th>シーン</th><th>旧設計（4/21合意）</th><th>今回の構想（6/30〜）</th><th>変わることの意味</th></tr></thead>
         <tbody>
@@ -428,73 +342,73 @@
         </tbody>
       </table>
     </div>
-  </section>
+  </div>
 
   <!-- 3 弊社からの提案・論点 -->
-  <section>
-    <h2><span class="num">3</span> 弊社からの提案・論点</h2>
-    <p class="section-lead">構想を検証して見えた、変更・補強したい点です。</p>
+  <div class="section" id="s3">
+    <div class="section-header"><div class="section-num">3</div><div><h2>弊社からの提案・論点</h2><div class="sh-sub">構想を検証して見えた、変更・補強したい点</div></div></div>
 
     <h3>3-1. 無断キャンセル料は「回収率100%ではない」前提で設計する <span class="badge warn">重要</span></h3>
     <div class="card">
-      <p style="font-size:14px; color:var(--gray-700); margin-bottom:12px;">本人がその場にいない請求（キャンセル料・無断キャンセル料）は、カードの限度額不足や本人認証の壁で<strong>一定回収できない</strong>。かつ、無断キャンセルするユーザーは、失敗後に別カードを出してくれる可能性が低い。ここは仕組み＋運用の合わせ技にします:</p>
-      <table>
-        <thead><tr><th>対策</th><th>内容</th><th>種別</th></tr></thead>
-        <tbody>
-          <tr><td class="label">同意の取り方が生命線</td><td>予約時に「登録カードへ請求されることがある」への<strong>明示的な同意</strong>を取る（構想STEP 1に既にあり）。Stripe上も「本人不在で請求してよいカード」として保存する設定にする — これで請求の成功率と正当性が大きく変わる</td><td><span class="badge good">実装</span></td></tr>
-          <tr><td class="label">前日リマインド通知 <span class="badge ours">弊社提案</span></td><td>前日にメール等で予約リマインドを自動送信。<strong>無断キャンセル自体を減らす</strong>のが一番の対策（キャンセル操作への導線も入れる）</td><td><span class="badge good">実装</span></td></tr>
-          <tr><td class="label">請求失敗時の逃げ道</td><td>①別カード案内 → ②請求書払い（Stripeの請求書リンクをメール送付）→ ③アカウント利用停止。それでも回収できない分は<strong>貸倒れとして許容する</strong>（回収に固執すると運用コストの方が高くつく）</td><td><span class="badge warn">運用</span></td></tr>
-        </tbody>
-      </table>
+      <p style="font-size:14px;margin-bottom:12px">本人がその場にいない請求（キャンセル料・無断キャンセル料）は、カードの限度額不足や本人認証の壁で<strong>一定回収できない</strong>。かつ、無断キャンセルするユーザーは、失敗後に別カードを出してくれる可能性が低い。ここは仕組み＋運用の合わせ技にします:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>対策</th><th>内容</th><th>種別</th></tr></thead>
+          <tbody>
+            <tr><td class="label">同意の取り方が生命線</td><td>予約時に「登録カードへ請求されることがある」への<strong>明示的な同意</strong>を取る（構想STEP 1に既にあり）。Stripe上も「本人不在で請求してよいカード」として保存する設定にする — これで請求の成功率と正当性が大きく変わる</td><td><span class="badge good">実装</span></td></tr>
+            <tr><td class="label">前日リマインド通知 <span class="badge ours">弊社提案</span></td><td>前日にメール等で予約リマインドを自動送信。<strong>無断キャンセル自体を減らす</strong>のが一番の対策（キャンセル操作への導線も入れる）</td><td><span class="badge good">実装</span></td></tr>
+            <tr><td class="label">請求失敗時の逃げ道</td><td>①別カード案内 → ②請求書払い（Stripeの請求書リンクをメール送付）→ ③アカウント利用停止。それでも回収できない分は<strong>貸倒れとして許容する</strong>（回収に固執すると運用コストの方が高くつく）</td><td><span class="badge warn">運用</span></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <h3>3-2. 破損・高額請求は「その場で決済しない」 <span class="badge ours">弊社提案</span></h3>
     <div class="card">
-      <p style="font-size:14px; color:var(--gray-700);">構想では返却時の追加決済に「車体・パーツの破損」も含まれていますが、破損は<strong>金額が大きく・査定が必要で・揉めやすい</strong>ため、延長料金と同じ流れに乗せないことを提案します。返却時にその場で決済するのは<strong>金額が機械的に決まるもの（延長・付属品紛失）だけ</strong>に絞り、破損は「状態記録を残す → 運営が金額を確認 → 後日登録カードへ請求（金額と内訳をメールで通知してから）」のルートに。店頭のトラブルを防ぎ、加盟店スタッフの心理的負担も減らせます。</p>
+      <p style="font-size:14px">構想では返却時の追加決済に「車体・パーツの破損」も含まれていますが、破損は<strong>金額が大きく・査定が必要で・揉めやすい</strong>ため、延長料金と同じ流れに乗せないことを提案します。返却時にその場で決済するのは<strong>金額が機械的に決まるもの（延長・付属品紛失）だけ</strong>に絞り、破損は「状態記録を残す → 運営が金額を確認 → 後日登録カードへ請求（金額と内訳をメールで通知してから）」のルートに。店頭のトラブルを防ぎ、加盟店スタッフの心理的負担も減らせます。</p>
     </div>
 
     <h3>3-3. その他の細かい補強</h3>
     <div class="card">
-      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700);">
-        <li style="margin-bottom:8px;"><strong>領収書は全決済で自動送信</strong>（Stripeの標準機能）。集約モデルでは発行元がPEDALSTANDARDになる見込みのため、手動発行オペを最初からゼロにする</li>
-        <li style="margin-bottom:8px;"><strong>二重決済の防止</strong>: 「決済して貸出開始」ボタンの連打・通信断で二重課金されない仕組み（Stripeの標準機能で対応可）を実装要件に含める</li>
-        <li style="margin-bottom:8px;"><strong>決済失敗の通知</strong>: キャンセル料などの請求が失敗したら、運営（増永さん側）に自動通知して対応漏れを防ぐ</li>
+      <ul style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:8px"><strong>領収書は全決済で自動送信</strong>（Stripeの標準機能）。集約モデルでは発行元がPEDALSTANDARDになる見込みのため、手動発行オペを最初からゼロにする</li>
+        <li style="margin-bottom:8px"><strong>二重決済の防止</strong>: 「決済して貸出開始」ボタンの連打・通信断で二重課金されない仕組み（Stripeの標準機能で対応可）を実装要件に含める</li>
+        <li><strong>決済失敗の通知</strong>: キャンセル料などの請求が失敗したら、運営（増永さん側）に自動通知して対応漏れを防ぐ</li>
       </ul>
     </div>
 
     <h3>3-4. （将来拡張）デポジットオーソリの設計メモ</h3>
     <div class="card">
-      <p style="font-size:14px; margin-bottom:8px;"><strong>動き方（導入した場合）</strong></p>
-      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700); margin-bottom:16px;">
-        <li style="margin-bottom:6px;">貸出時（本決済の後）に、デポジット額の<strong>利用枠だけを確保</strong>（オーソリ・請求はしない）</li>
-        <li style="margin-bottom:6px;">返却確認で問題なし → <strong>解放</strong>（数日で枠が戻る・お金は動かない）</li>
+      <p style="font-size:14px;margin-bottom:8px"><strong>動き方（導入した場合）</strong></p>
+      <ul style="padding-left:20px;font-size:14px;margin-bottom:16px">
+        <li style="margin-bottom:6px">貸出時（本決済の後）に、デポジット額の<strong>利用枠だけを確保</strong>（オーソリ・請求はしない）</li>
+        <li style="margin-bottom:6px">返却確認で問題なし → <strong>解放</strong>（数日で枠が戻る・お金は動かない）</li>
         <li>破損・紛失あり → <strong>損害分だけ確定（キャプチャ）して残りは解放</strong>。3-2の「後日請求」より確実に回収できる</li>
       </ul>
 
-      <p style="font-size:14px; margin-bottom:8px;"><strong>導入時の前提条件（調査済み・#25）</strong></p>
-      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700); margin-bottom:16px;">
-        <li style="margin-bottom:6px;"><strong>クレジットカード限定にする。</strong>デビット/プリペイドはオーソリでも実際にお金が引き落とされ、返金に最大2週間かかる（「30万円引かれた！」クレームに直結）。Stripeはカード種別を判定して弾ける — <strong>Pay.jpにはできなかったことで、Stripeを選んだ利点がそのまま効く</strong></li>
-        <li style="margin-bottom:6px;"><strong>金額は3〜5万円が現実解。</strong>一般カードのショッピング枠（10〜30万円スタートが相場）で通る上限の目安。高額にするほど「枠が足りず借りられない人」が増える（詳細: 決済基盤の方針資料 §1.5）</li>
+      <p style="font-size:14px;margin-bottom:8px"><strong>導入時の前提条件（調査済み・#25）</strong></p>
+      <ul style="padding-left:20px;font-size:14px;margin-bottom:16px">
+        <li style="margin-bottom:6px"><strong>クレジットカード限定にする。</strong>デビット/プリペイドはオーソリでも実際にお金が引き落とされ、返金に最大2週間かかる（「30万円引かれた！」クレームに直結）。Stripeはカード種別を判定して弾ける — <strong>Pay.jpにはできなかったことで、Stripeを選んだ利点がそのまま効く</strong></li>
+        <li style="margin-bottom:6px"><strong>金額は3〜5万円が現実解。</strong>一般カードのショッピング枠（10〜30万円スタートが相場）で通る上限の目安。高額にするほど「枠が足りず借りられない人」が増える（詳細: 決済基盤の方針資料 §1.5）</li>
         <li><strong>オーソリの有効期間は日本円で最長30日</strong> — 通常のレンタル期間なら余裕で収まる</li>
       </ul>
 
-      <p style="font-size:14px; margin-bottom:8px;"><strong>デポジットならOKな理由</strong></p>
-      <p style="font-size:14px; color:var(--gray-700); margin-bottom:16px;">オーソリ見送りの決め手だった「明細が分かれる・当日の金額変更と相性が悪い」は、<strong>レンタル料金のオーソリ</strong>の問題です。デポジットは<strong>金額が固定・単発</strong>（確保して、解放するか損害分だけ確定するか）なので、明細分割も増額の審査問題も起きません。</p>
+      <p style="font-size:14px;margin-bottom:8px"><strong>デポジットならOKな理由</strong></p>
+      <p style="font-size:14px;margin-bottom:16px">オーソリ見送りの決め手だった「明細が分かれる・当日の金額変更と相性が悪い」は、<strong>レンタル料金のオーソリ</strong>の問題です。デポジットは<strong>金額が固定・単発</strong>（確保して、解放するか損害分だけ確定するか）なので、明細分割も増額の審査問題も起きません。</p>
 
-      <p style="font-size:14px; margin-bottom:8px;"><strong>今回の実装に仕込んでおくこと（弊社対応）</strong></p>
-      <ul style="padding-left:20px; font-size:14px; color:var(--gray-700);">
-        <li style="margin-bottom:6px;">カードを「本人不在でも請求してよい」設定で保存（3-1の同意設計と共通 — デポジットオーソリにもそのまま使える）</li>
+      <p style="font-size:14px;margin-bottom:8px"><strong>今回の実装に仕込んでおくこと（弊社対応）</strong></p>
+      <ul style="padding-left:20px;font-size:14px">
+        <li style="margin-bottom:6px">カードを「本人不在でも請求してよい」設定で保存（3-1の同意設計と共通 — デポジットオーソリにもそのまま使える）</li>
         <li>本決済と独立した決済レコードを持てるDB設計にしておく（デポジットを1決済として後から追加できる形）</li>
       </ul>
-      <p style="font-size:13px; color:var(--gray-500); margin-top:12px;">導入判断の材料: 高額車両・E-Bikeでの破損・盗難トラブルの発生状況を運用開始後にモニタリングして決める。</p>
+      <p style="font-size:13px;color:var(--sub);margin-top:12px">導入判断の材料: 高額車両・E-Bikeでの破損・盗難トラブルの発生状況を運用開始後にモニタリングして決める。</p>
     </div>
-  </section>
+  </div>
 
   <!-- 4 実装可否まとめ -->
-  <section>
-    <h2><span class="num">4</span> 実装可否まとめ（構想STEP別）</h2>
-    <p class="section-lead">結論: 全STEP実装可能。Stripeの標準機能とBubbleの画面開発で組めます。</p>
-    <div class="card">
+  <div class="section" id="s4">
+    <div class="section-header"><div class="section-num">4</div><div><h2>実装可否まとめ（構想STEP別）</h2><div class="sh-sub">結論: 全STEP実装可能。Stripeの標準機能とBubbleの画面開発で組める</div></div></div>
+    <div class="table-wrap">
       <table>
         <thead><tr><th>構想のSTEP</th><th>実現方法</th><th>可否</th></tr></thead>
         <tbody>
@@ -511,27 +425,25 @@
         </tbody>
       </table>
     </div>
-    <div class="note accent">
-      <strong>スケジュール感:</strong> 実装はDB再構築のリリース（7/6-7予定）後。フロー自体は7/3に合意済みのため、詳細見積は<strong>キャンセルポリシーの確定</strong>を受けてから提示します。開発の山は「当日の内容確定（STEP 5）」と「受付〜決済の店頭オペ画面（STEP 4〜6）」の2つです（QRチェックインを作らない分、当初想定より軽くなります）。
-    </div>
-  </section>
+    <div class="alert alert-brand"><span class="a-icon">🗓</span><div><strong>スケジュール感:</strong> 実装はDB再構築のリリース（7月上旬に完了・本番リリース済み）後。フロー自体は7/3に合意済みのため、詳細見積は<strong>キャンセルポリシーの確定</strong>を受けてから提示します。開発の山は「当日の内容確定（STEP 5）」と「受付〜決済の店頭オペ画面（STEP 4〜6）」の2つです（QRチェックインを作らない分、当初想定より軽くなります）。</div></div>
+  </div>
 
   <!-- 5 決めてもらうこと -->
-  <section>
-    <h2><span class="num">5</span> 決定事項と残る論点（7/3更新）</h2>
+  <div class="section" id="s5">
+    <div class="section-header"><div class="section-num">5</div><div><h2>決定事項と残る論点（7/3更新）</h2></div></div>
 
     <h3>増永さん側で決めてもらうこと（残り）</h3>
-    <div class="card">
+    <div class="table-wrap">
       <table>
         <thead><tr><th>#</th><th>決めること</th><th>補足</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td class="label">キャンセルポリシーの中身<br><span style="font-weight:400;font-size:12px;color:var(--gray-500)">周辺ルールもセットで</span></td><td>基本の「何日前から・何%・無断キャンセルはいくら」に加えて、<strong>運用で必ず出てくる次の6点もセットで決めたい</strong>（バラバラに決めると二度手間になるため）。<strong>キャンセル料請求の実装と詳細見積はここが決まらないと着手できない</strong>
-            <ul style="padding-left:18px;margin-top:8px;font-size:13px;">
-              <li style="margin-bottom:4px;"><strong>日程変更のルール</strong> — キャンセルではなく「変更」の場合、キャンセル料はかかるか・何日前まで無料か</li>
-              <li style="margin-bottom:4px;"><strong>雨天キャンセルの判定方法</strong> — 雨天無料の方向（6/12合意）を、誰がどう判定するか（ユーザー申告／店舗判断／降水量などの基準）</li>
-              <li style="margin-bottom:4px;"><strong>無断キャンセルの確定タイミング</strong> — 予約時刻から何時間で無断キャンセル扱いにするか・自動か店舗操作か</li>
-              <li style="margin-bottom:4px;"><strong>延長料金の計算ルール</strong> — 何分単位・上限（丸1日を超えたら？）。返却時の追加決済の金額根拠</li>
-              <li style="margin-bottom:4px;"><strong>複数台・グループ予約の決済</strong> — 代表者のカードで合算1回か、1台ずつか</li>
+          <tr><td>1</td><td class="label">キャンセルポリシーの中身<br><span style="font-weight:400;font-size:12px;color:var(--sub)">周辺ルールもセットで</span></td><td>基本の「何日前から・何%・無断キャンセルはいくら」に加えて、<strong>運用で必ず出てくる次の6点もセットで決めたい</strong>（バラバラに決めると二度手間になるため）。<strong>キャンセル料請求の実装と詳細見積はここが決まらないと着手できない</strong>
+            <ul style="padding-left:18px;margin-top:8px;font-size:13px">
+              <li style="margin-bottom:4px"><strong>日程変更のルール</strong> — キャンセルではなく「変更」の場合、キャンセル料はかかるか・何日前まで無料か</li>
+              <li style="margin-bottom:4px"><strong>雨天キャンセルの判定方法</strong> — 雨天無料の方向（6/12合意）を、誰がどう判定するか（ユーザー申告／店舗判断／降水量などの基準）</li>
+              <li style="margin-bottom:4px"><strong>無断キャンセルの確定タイミング</strong> — 予約時刻から何時間で無断キャンセル扱いにするか・自動か店舗操作か</li>
+              <li style="margin-bottom:4px"><strong>延長料金の計算ルール</strong> — 何分単位・上限（丸1日を超えたら？）。返却時の追加決済の金額根拠</li>
+              <li style="margin-bottom:4px"><strong>複数台・グループ予約の決済</strong> — 代表者のカードで合算1回か、1台ずつか</li>
               <li><strong>盗難・事故時の金銭フロー</strong> — 補償オプションとの関係。破損と同じ「後日請求」ルートに乗せるか</li>
             </ul>
           </td></tr>
@@ -541,17 +453,26 @@
       </table>
     </div>
 
-    <div class="note accent">
-      <strong>弊社の宿題だった「領収書・インボイスの扱い」は調査完了。</strong>別資料「領収書・インボイスの扱い」（receipt-invoice.html・サイドバーから閲覧可）にまとめています。実装前に詰める細部は、キャンセルポリシー確定後の詳細設計・見積のタイミングで整理します。
-    </div>
-  </section>
+    <div class="alert alert-brand"><span class="a-icon">✔</span><div><strong>弊社の宿題だった「領収書・インボイスの扱い」は調査完了。</strong>別資料「領収書・インボイスの扱い」（receipt-invoice.html・サイドバーから閲覧可）にまとめています。実装前に詰める細部は、キャンセルポリシー確定後の詳細設計・見積のタイミングで整理します。</div></div>
+  </div>
 
-</main>
+  <!-- まとめ -->
+  <div class="recap">
+    <h2>お金の流れのまとめ</h2>
+    <div class="r-flow">
+      <span class="r-chip">予約時 ¥0（カード登録のみ）</span><span class="r-arr">→</span>
+      <span class="r-chip">貸出開始時に全額決済</span><span class="r-arr">→</span>
+      <span class="r-chip">返却時は追加分のみ</span>
+    </div>
+    <p>キャンセル時はキャンセル料を登録カードへ請求（発生した場合のみ）。破損は後日請求ルート（提案3-2）。実装の詳細見積はキャンセルポリシー確定後。</p>
+  </div>
+
+</div>
 
 <footer>
-  <div class="container">
-    &copy; 2026 Rincle Inc. &nbsp;|&nbsp; 本資料は社外秘です &nbsp;|&nbsp; ベース: documents/1_meeting_minutes/増永さん構想.md（6/30受領）＋弊社の実装検証 ｜ 7/3定例で決定（1_meeting_minutes/7.3.txt） &nbsp;|&nbsp; 関連: payjp-vs-stripe.html（「6.1 決済フロー設計」の旧設計は本資料で置き換え）
-  </div>
+  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です<br>
+  ベース: documents/1_meeting_minutes/増永さん構想.md（6/30受領）＋弊社の実装検証 ｜ 7/3定例で決定（1_meeting_minutes/7.3.txt）<br>
+  関連: payjp-vs-stripe.html（「6.1 決済フロー設計」の旧設計は本資料で置き換え）
 </footer>
 
 </body>

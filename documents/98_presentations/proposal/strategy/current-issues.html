@@ -1,397 +1,212 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RINCLE 現状課題と改善策</title>
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RINCLE 現状課題と改善策</title>
+<style>
+  :root{
+    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
+    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
+    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
+    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
+    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
+    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
-      background: #f5f5f5;
-      color: #1a1a2e;
-      line-height: 1.7;
-    }
+  /* hero */
+  .hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 40px;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
+  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(35,32,29,.10)}
+  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
+  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
+  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
+  .hero p.lead{font-size:1rem;opacity:.92;max-width:700px}
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 40px;
-    }
+  .container{max-width:980px;margin:0 auto;padding:24px 28px 80px}
 
-    h1 {
-      font-size: 2.2rem;
-      color: #0f3460;
-      text-align: center;
-      margin-bottom: 8px;
-    }
+  /* tabs */
+  .tabs{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;padding:14px 4px;margin:0 0 20px;background:rgba(248,246,243,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+  .tab-btn{border:1px solid #E0D8D0;background:#fff;color:var(--ink);border-radius:999px;padding:8px 16px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.4}
+  .tab-btn:hover{border-color:var(--brand)}
+  .tab-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
 
-    .subtitle {
-      text-align: center;
-      color: #666;
-      font-size: 1rem;
-      margin-bottom: 48px;
-    }
+  /* sections */
+  .section{margin-bottom:56px;scroll-margin-top:20px}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
+  .section-num.plain{background:linear-gradient(135deg,var(--ink),#4A4038);box-shadow:0 4px 12px rgba(35,32,29,.3)}
+  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
+  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
+  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
 
-    h2 {
-      font-size: 1.5rem;
-      color: #0f3460;
-      margin-bottom: 24px;
-      padding-bottom: 8px;
-      border-bottom: 3px solid #0f3460;
-      display: inline-block;
-    }
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
+  .card.edge-red{border-left:5px solid var(--danger)}
+  .card.edge-green{border-left:5px solid var(--ok)}
+  .card.edge-amber{border-left:5px solid #D97706}
+  .card h4.c-title{font-size:15.5px;font-weight:800;margin-bottom:8px;color:var(--ink)}
+  .card.edge-red h4.c-title{color:var(--danger)}
+  .card.edge-green h4.c-title{color:var(--ok)}
+  .card.edge-amber h4.c-title{color:#8F5A0A}
+  .card p.body{font-size:14px;color:var(--text)}
+  .problem-number{display:inline-flex;align-items:center;justify-content:center;background:var(--danger);color:#fff;width:28px;height:28px;border-radius:50%;font-size:.85rem;font-weight:800;margin-right:10px;flex-shrink:0}
+  .card-head-row{display:flex;align-items:center;margin-bottom:8px}
 
-    .section {
-      margin-bottom: 56px;
-    }
+  /* alerts */
+  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
+  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
+  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
+  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
+  .alert-amber{background:#FFF4E0;border:1px solid #F5DFAE;color:#8F5A0A}
 
-    /* ===== Cards ===== */
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      padding: 24px 28px;
-      margin-bottom: 16px;
-    }
+  /* tables */
+  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+  thead th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
+  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#FBF8F5}
 
-    .card-red {
-      border-left: 5px solid #e94560;
-    }
+  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+  .badge.good{background:#EDFAF2;color:#136A41}
+  .badge.bad{background:#FDECEF;color:#8E1230}
+  .badge.warn{background:#FFF4E0;color:#8F5A0A}
+  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
 
-    .card-green {
-      border-left: 5px solid #27ae60;
-    }
+  .tier-badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.75rem;font-weight:800;color:#fff;text-align:center;min-width:60px}
+  .tier-1{background:var(--danger)}
+  .tier-2{background:#D97706}
+  .tier-3{background:var(--info)}
+  .tier-future{background:#8B8178}
 
-    .card-yellow {
-      border-left: 5px solid #f39c12;
-    }
+  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
 
-    .card h3 {
-      font-size: 1.1rem;
-      margin-bottom: 6px;
-    }
+  /* ファネル */
+  .funnel-section{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 30px;margin-bottom:24px}
+  .funnel-header{display:grid;grid-template-columns:100px 1fr 1fr;gap:16px;margin-bottom:16px;font-weight:800;font-size:.82rem;color:var(--ink);letter-spacing:.5px}
+  .funnel-header span:nth-child(2),.funnel-header span:nth-child(3){padding-left:18px}
+  .funnel-phase-label{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#A79E94;margin:4px 0 12px}
+  .funnel-step{display:grid;grid-template-columns:100px 1fr 1fr;gap:16px;align-items:stretch;margin-bottom:12px}
+  .step-label{display:flex;align-items:center;justify-content:center;border-radius:8px;color:#fff;font-weight:800;font-size:.85rem;padding:12px 8px;text-align:center;line-height:1.3}
+  .step-label.red{background:var(--danger)}
+  .step-label.yellow{background:#D97706}
+  .step-label.green{background:var(--ok)}
+  .step-issue,.step-solution{border-radius:8px;padding:14px 18px;font-size:.9rem}
+  .step-issue{background:#FDF1F4;border:1px solid #F6C6D0}
+  .step-issue strong{color:var(--danger);display:block;margin-bottom:4px;font-size:.78rem;letter-spacing:.5px}
+  .step-solution{background:#F0FAF4;border:1px solid #BFE9D0}
+  .step-solution strong{color:var(--ok);display:block;margin-bottom:4px;font-size:.78rem;letter-spacing:.5px}
+  .funnel-divider{border:none;border-top:2px dashed var(--border);margin:20px 0}
 
-    .card-red h3 {
-      color: #e94560;
-    }
+  /* 施策モック */
+  .mock-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin:0 0 20px;padding:0;overflow:hidden}
+  .mock-head{color:#fff;padding:10px 20px;font-size:13px;font-weight:700;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .mock-head.t1{background:var(--danger)}
+  .mock-head.t2{background:#D97706}
+  .mock-head .mh-tag{background:rgba(255,255,255,.22);padding:2px 10px;border-radius:4px;font-size:11px}
+  .mock-weak{padding:10px 20px;font-size:12px;border-bottom:1px solid var(--border)}
+  .mock-weak.t1{background:#FDF1F4;color:#8E1230;border-bottom-color:#F6C6D0}
+  .mock-weak.t2{background:#FFF8EA;color:#8F5A0A;border-bottom-color:#F5DFAE}
+  .mock-body{padding:20px}
+  .mock-hint{background:#EEF3FE;border-radius:6px;padding:8px 12px;margin-top:12px;font-size:11px;color:#1D48A6}
 
-    .card-green h3 {
-      color: #27ae60;
-    }
+  /* ダークパネル */
+  .dark-panel{background:linear-gradient(135deg,var(--ink),#4A2818);color:#fff;border-radius:12px;padding:20px 24px;margin:12px 0 20px}
+  .dark-panel .dp-title{font-size:14px;font-weight:800;margin-bottom:6px}
+  .dark-panel .dp-body{font-size:13px;line-height:1.8;opacity:.92}
 
-    .card p {
-      color: #444;
-      font-size: 0.95rem;
-    }
+  /* 計測チップ */
+  .metric-row{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+  .metric-chip{background:#fff;border-radius:10px;padding:14px 18px;border:1px solid var(--border);min-width:160px;flex:1;box-shadow:var(--shadow)}
+  .metric-chip .mv{font-size:24px;font-weight:800;color:var(--danger)}
+  .metric-chip .ml{font-size:11px;color:var(--sub);margin-top:2px}
 
-    .problem-number {
-      display: inline-block;
-      background: #e94560;
-      color: #fff;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 28px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-right: 8px;
-      flex-shrink: 0;
-    }
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
 
-    .card-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-
-    /* ===== Funnel ===== */
-    .funnel-section {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      padding: 32px;
-      margin-bottom: 56px;
-    }
-
-    .funnel-step {
-      display: grid;
-      grid-template-columns: 100px 1fr 1fr;
-      gap: 16px;
-      align-items: stretch;
-      margin-bottom: 12px;
-    }
-
-    .step-label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.85rem;
-      padding: 12px 8px;
-      text-align: center;
-      line-height: 1.3;
-    }
-
-    .step-label.red { background: #e94560; }
-    .step-label.yellow { background: #f39c12; }
-    .step-label.green { background: #27ae60; }
-
-    .step-issue, .step-solution {
-      border-radius: 8px;
-      padding: 14px 18px;
-      font-size: 0.9rem;
-    }
-
-    .step-issue {
-      background: #fef0f0;
-      border: 1px solid #f5c6cb;
-    }
-
-    .step-issue strong {
-      color: #e94560;
-      display: block;
-      margin-bottom: 4px;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .step-solution {
-      background: #f0faf0;
-      border: 1px solid #c3e6cb;
-    }
-
-    .step-solution strong {
-      color: #27ae60;
-      display: block;
-      margin-bottom: 4px;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .funnel-header {
-      display: grid;
-      grid-template-columns: 100px 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
-      font-weight: 700;
-      font-size: 0.85rem;
-      color: #0f3460;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .funnel-header span:nth-child(2),
-    .funnel-header span:nth-child(3) {
-      padding-left: 18px;
-    }
-
-    .funnel-divider {
-      border: none;
-      border-top: 2px dashed #ddd;
-      margin: 20px 0;
-    }
-
-    .funnel-phase-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #999;
-      margin-bottom: 12px;
-      margin-top: 4px;
-    }
-
-    /* ===== Wireframes ===== */
-    .wireframes-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    .wireframe-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      padding: 24px;
-    }
-
-    .wireframe-card h3 {
-      color: #0f3460;
-      font-size: 1rem;
-      margin-bottom: 12px;
-    }
-
-    .wireframe {
-      background: #1a1a2e;
-      color: #a0e4a0;
-      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-      font-size: 0.72rem;
-      line-height: 1.5;
-      padding: 16px;
-      border-radius: 8px;
-      white-space: pre;
-      overflow-x: auto;
-    }
-
-    /* ===== Competitor Table ===== */
-    .table-wrapper {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      padding: 24px;
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
-
-    thead th {
-      background: #0f3460;
-      color: #fff;
-      padding: 12px 16px;
-      text-align: left;
-      font-weight: 600;
-      font-size: 0.85rem;
-    }
-
-    thead th:first-child { border-radius: 8px 0 0 0; }
-    thead th:last-child { border-radius: 0 8px 0 0; }
-
-    tbody td {
-      padding: 12px 16px;
-      border-bottom: 1px solid #eee;
-      vertical-align: top;
-    }
-
-    tbody tr:hover {
-      background: #f8f9fa;
-    }
-
-    .tier-badge {
-      display: inline-block;
-      padding: 3px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #fff;
-      text-align: center;
-      min-width: 60px;
-    }
-
-    .tier-1 { background: #dc2626; }
-    .tier-2 { background: #d97706; }
-    .tier-3 { background: #2563eb; }
-    .tier-future { background: #64748b; }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 768px) {
-      .container { padding: 20px; }
-      h1 { font-size: 1.6rem; }
-      .funnel-step {
-        grid-template-columns: 1fr;
-      }
-      .funnel-header {
-        display: none;
-      }
-      .wireframes-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* ===== Important Badge ===== */
-    .badge-important {
-      display: inline-block;
-      background: #e94560;
-      color: #fff;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 2px 10px;
-      border-radius: 20px;
-      margin-left: 8px;
-      vertical-align: middle;
-      letter-spacing: 0.5px;
-    }
-
-    .section-highlight {
-      background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
-      color: #fff;
-      border-radius: 12px;
-      padding: 20px 28px;
-      margin-bottom: 24px;
-    }
-
-    .section-highlight h2 {
-      color: #fff;
-      border-bottom-color: rgba(255,255,255,0.3);
-    }
-  </style>
+  @media (max-width:760px){
+    .funnel-step{grid-template-columns:1fr}
+    .funnel-header{display:none}
+    .hero{padding:44px 24px 36px}
+    .container{padding:20px 18px 60px}
+  }
+</style>
 </head>
 <body>
 
+<div class="hero">
+  <div class="hero-inner">
+    <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
+    <div>
+      <span class="eyebrow">戦略 — 現状課題と改善策</span>
+      <h1>RINCLE 現状課題と改善策</h1>
+      <p class="lead">プラットフォーム成長のために解決すべき課題と施策ロードマップ（作成: 2026-05-19 / 2026-06-11 実測で更新）</p>
+    </div>
+  </div>
+</div>
+
 <div class="container">
 
-  <!-- ===== Header ===== -->
-  <h1>RINCLE 現状課題と改善策</h1>
-  <p class="subtitle">プラットフォーム成長のために解決すべき課題と施策ロードマップ</p>
+<div class="alert alert-amber"><span class="a-icon">!</span><div><strong>2026-08-20注記:</strong> 本文中の「24店舗」は作成当時の値です（2026-08-20の本番サイト実測では店舗56・自転車374台）。DB再構築は完了し、新サイトは2026年7月上旬に本番リリース済み。2026-06-11のLighthouse・インデックス実測は旧サイトの値のため、新サイトでの再計測が必要です。</div></div>
 
-  <!-- ===== Section 1: SEO Problems ===== -->
+<div class="tabs">
+  <button class="tab-btn active" data-target="panel-seo">SEO問題</button>
+  <button class="tab-btn" data-target="panel-funnel">コンバージョンファネル</button>
+  <button class="tab-btn" data-target="panel-mocks">競合弱点+施策モック</button>
+  <button class="tab-btn" data-target="panel-platform">PFの生死・収益・保険</button>
+  <button class="tab-btn" data-target="panel-coldstart">コールドスタート・計測</button>
+</div>
+
+<!-- ============ SEO問題 ============ -->
+<div class="tab-panel active" id="panel-seo">
   <div class="section">
-    <h2>致命的問題: Bubble.ioのSEO問題 <span style="font-size:0.75rem; color:#666; font-weight:400;">（2026-06-11 実測で更新）</span></h2>
+    <div class="section-header"><div class="section-num">1</div><div><h2>致命的問題: Bubble.ioのSEO問題</h2><div class="sh-sub">2026-06-11 実測で更新（旧サイトでの計測値）</div></div></div>
 
-    <div class="card card-red">
-      <div class="card-header">
+    <div class="card edge-red">
+      <div class="card-head-row">
         <span class="problem-number">1</span>
-        <h3>インデックスは2〜3ページのみ — 真因は「CSRだから」ではなくディスカバリー問題</h3>
+        <h4 class="c-title">インデックスは2〜3ページのみ — 真因は「CSRだから」ではなくディスカバリー問題</h4>
       </div>
-      <p>2026-06実測: title/meta/OGPはサーバー側で出力済み（旧記述「メタ情報すらない」は誤り）。GooglebotはCSRページもレンダリングできる（Vercel×MERJ調査）。<br>
+      <p class="body">2026-06実測: title/meta/OGPはサーバー側で出力済み（旧記述「メタ情報すらない」は誤り）。GooglebotはCSRページもレンダリングできる（Vercel×MERJ調査）。<br>
       <strong>真因は「sitemap.xmlが404」+「初期HTMLに内部リンク（&lt;a&gt;）が皆無」</strong> → Googleがそもそもページを発見できない。canonical不在で検索パラメータ付きURLがインデックスされる実害も確認済み。</p>
     </div>
 
-    <div class="card card-red">
-      <div class="card-header">
+    <div class="card edge-red">
+      <div class="card-head-row">
         <span class="problem-number">2</span>
-        <h3>初回ロードは想定よりさらに遅い（Lighthouse実測）</h3>
+        <h4 class="c-title">初回ロードは想定よりさらに遅い（Lighthouse実測）</h4>
       </div>
-      <p>旧記述「LCP 3〜5秒」は過小評価だった。Lighthouse実測（モバイル）: <strong>スコア25/100、FCP 20.3秒、LCP 49.3秒、総重量9.2MB</strong>。<br>
-      ラボ値のため実回線の体感はこれより短いが、この重量ではどの回線でもLCP 2.5秒合格（Core Web Vitals）はほぼ不可能。モバイルユーザーの<strong>53%は3秒以上で離脱</strong>する（Google/SOASTA調査）。</p>
+      <p class="body">旧記述「LCP 3〜5秒」は過小評価だった。Lighthouse実測（モバイル・2026-06-11・旧サイト）: <strong>スコア25/100、FCP 20.3秒、LCP 49.3秒、総重量9.2MB</strong>。<br>
+      ラボ値のため実回線の体感はこれより短いが、この重量ではどの回線でもLCP 2.5秒合格（Core Web Vitals）はほぼ不可能。モバイルユーザーの<strong>53%は3秒以上で離脱</strong>する（Google/SOASTA調査）。※検索速度改善込みの新サイトが2026年7月にリリース済みのため要再計測。</p>
     </div>
 
-    <div class="card card-red">
-      <div class="card-header">
+    <div class="card edge-red">
+      <div class="card-head-row">
         <span class="problem-number">3</span>
-        <h3>料金・車種情報がクローラーに見えない（実測で裏付け）</h3>
+        <h4 class="c-title">料金・車種情報がクローラーに見えない（実測で裏付け）</h4>
       </div>
-      <p>初期HTMLの可視テキストはトップ6文字・店舗詳細31文字のみ。<strong>料金・車種・住所はゼロ</strong>。本文コンテンツだけがJS依存になっている。</p>
+      <p class="body">初期HTMLの可視テキストはトップ6文字・店舗詳細31文字のみ。<strong>料金・車種・住所はゼロ</strong>。本文コンテンツだけがJS依存になっている。</p>
     </div>
 
-    <div class="card card-green" style="margin-top: 24px;">
-      <h3>対策: 段階導入（いきなりSSR/SSG別建てに飛ばない）</h3>
-      <p style="margin-bottom:8px;"><strong style="color:#27ae60;">Phase 1（無料・即日〜数日）:</strong> Bubbleネイティブ設定の完遂 — sitemap自動生成ON / canonical有効化 / ページ別title・meta / Search Console登録。真因がディスカバリー問題である以上、これだけで大きく改善する可能性が十分ある。インデックス数を2〜4週間実測してから次の投資判断。</p>
-      <p style="margin-bottom:8px;"><strong style="color:#27ae60;">Phase 2（$49/月〜）:</strong> Prerender.io + Cloudflare Worker — ボットにのみレンダリング済みHTMLを配信（公式統合手順あり、所要30〜45分。人間の表示速度は改善しない点に注意）。</p>
-      <p><strong style="color:#27ae60;">Phase 3:</strong> SSG（Astro等）でSEOランディングページを別建て — 店舗×車種カテゴリページをサブディレクトリ配信。予約フローはBubbleのまま誘導。Bubble.ioを捨てる必要はない。</p>
+    <div class="card edge-green">
+      <h4 class="c-title">対策: 段階導入（いきなりSSR/SSG別建てに飛ばない）</h4>
+      <p class="body" style="margin-bottom:8px;"><strong style="color:var(--ok);">Phase 1（無料・即日〜数日）:</strong> Bubbleネイティブ設定の完遂 — sitemap.xml設置（<strong>2026-08-20更新: 手動生成方式に決定</strong>。Bubble標準の自動生成は新URL構成では店舗・自転車の個別URLが載らないため撤回。手順: <code>documents/4_growth/03_seo/sitemap-creation-guide.md</code>）/ canonical有効化 / ページ別title・meta / Search Console登録。真因がディスカバリー問題である以上、これだけで大きく改善する可能性が十分ある。インデックス数を2〜4週間実測してから次の投資判断。</p>
+      <p class="body" style="margin-bottom:8px;"><strong style="color:var(--ok);">Phase 2（$49/月〜）:</strong> Prerender.io + Cloudflare Worker — ボットにのみレンダリング済みHTMLを配信（公式統合手順あり、所要30〜45分。人間の表示速度は改善しない点に注意）。</p>
+      <p class="body"><strong style="color:var(--ok);">Phase 3:</strong> SSG（Astro等）でSEOランディングページを別建て — 店舗×車種カテゴリページをサブディレクトリ配信。予約フローはBubbleのまま誘導。Bubble.ioを捨てる必要はない。</p>
     </div>
   </div>
+</div>
 
-  <!-- ===== Section 2: Conversion Funnel ===== -->
+<!-- ============ コンバージョンファネル ============ -->
+<div class="tab-panel" id="panel-funnel">
   <div class="section">
-    <div class="section-highlight">
-      <h2>コンバージョンファネル <span class="badge-important">最重要</span></h2>
-      <p style="opacity:0.85; font-size:0.95rem;">ユーザーが「認知」から「リピート」に至るまでの各ステップの課題と改善施策</p>
-    </div>
+    <div class="section-header"><div class="section-num">2</div><div><h2>コンバージョンファネル <span class="badge bad">最重要</span></h2><div class="sh-sub">ユーザーが「認知」から「リピート」に至るまでの各ステップの課題と改善施策</div></div></div>
 
     <div class="funnel-section">
       <div class="funnel-header">
@@ -400,7 +215,6 @@
         <span>改善施策</span>
       </div>
 
-      <!-- Phase: Acquisition -->
       <p class="funnel-phase-label">Acquisition (集客)</p>
 
       <div class="funnel-step">
@@ -419,7 +233,7 @@
         <div class="step-label red">Step 1<br>ランディング</div>
         <div class="step-issue">
           <strong>課題</strong>
-          SPA読み込みが極端に遅い（実測FCP 20.3秒）、その間は白画面 or ローディング。5秒以内にサービスの価値が伝わるか疑問。
+          SPA読み込みが極端に遅い（旧サイト実測FCP 20.3秒）、その間は白画面 or ローディング。5秒以内にサービスの価値が伝わるか疑問。
         </div>
         <div class="step-solution">
           <strong>施策</strong>
@@ -427,13 +241,10 @@
         </div>
       </div>
 
-      <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:14px 18px; margin-top:12px; font-size:13px; color:#1e40af;">
-        <strong>ただし:</strong> UIが最低限整っていなければ集客しても離脱するだけ。Phase 3のTier 1（検索バー/料金明示/キャンセルポリシー）は「集客の前提条件」であり、集客と並行して実施する。
-      </div>
+      <div class="alert alert-blue" style="margin-top:12px;"><span class="a-icon">ℹ</span><div><strong>ただし:</strong> UIが最低限整っていなければ集客しても離脱するだけ。Tier 1（検索バー/料金明示/キャンセルポリシー）は「集客の前提条件」であり、集客と並行して実施する。</div></div>
 
       <hr class="funnel-divider">
 
-      <!-- Phase: Engagement -->
       <p class="funnel-phase-label">Engagement (探索・比較)</p>
 
       <div class="funnel-step">
@@ -448,9 +259,7 @@
         </div>
       </div>
 
-      <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:14px 18px; margin-top:12px; margin-bottom:12px; font-size:13px; color:#92400e;">
-        <strong>⚠️ 日付範囲をまたぐ空き検索のDB設計は地雷:</strong> Bubbleでは「予約済みレコードを除外する方式」が定石で、advancedフィルタ多用はクライアント処理のため件数増で破綻する。検索バー実装前にDB再構築プロジェクトと整合を取り、設計レビューを必須とする。
-      </div>
+      <div class="alert alert-amber" style="margin:12px 0;"><span class="a-icon">⚠</span><div><strong>日付範囲をまたぐ空き検索のDB設計は地雷:</strong> Bubbleでは「予約済みレコードを除外する方式」が定石で、advancedフィルタ多用はクライアント処理のため件数増で破綻する。検索バー実装前にDB再構築後の新設計（2026年7月に本番リリース済み）と整合を取り、設計レビューを必須とする。</div></div>
 
       <div class="funnel-step">
         <div class="step-label yellow">Step 2.5<br>比較・検討</div>
@@ -478,7 +287,6 @@
 
       <hr class="funnel-divider">
 
-      <!-- Phase: Conversion -->
       <p class="funnel-phase-label">Conversion (予約・決済)</p>
 
       <div class="funnel-step">
@@ -489,13 +297,12 @@
         </div>
         <div class="step-solution">
           <strong>施策</strong>
-          フォームは<strong style="display:inline; text-transform:none; letter-spacing:0;">合計8項目以下</strong>に（9項目以上はCVR約1/4: 4.2% vs 1項目18.2%・Baymard） / ゲスト予約OK（登録強制の撤廃でCVR 20〜30%向上） / カート放棄メール（放棄者の46%は24時間以内に再検索 → 1時間以内+翌朝の2通）
+          フォームは<strong>合計8項目以下</strong>に（9項目以上はCVR約1/4: 4.2% vs 1項目18.2%・Baymard） / ゲスト予約OK（登録強制の撤廃でCVR 20〜30%向上） / カート放棄メール（放棄者の46%は24時間以内に再検索 → 1時間以内+翌朝の2通）
         </div>
       </div>
 
       <hr class="funnel-divider">
 
-      <!-- Phase: Retention -->
       <p class="funnel-phase-label">Retention (利用・リピート)</p>
 
       <div class="funnel-step">
@@ -518,360 +325,334 @@
         </div>
         <div class="step-solution">
           <strong>施策</strong>
-          困ったときボタン / ライドサマリー / リピートクーポン / レビュー依頼は<strong style="display:inline; text-transform:none; letter-spacing:0;">返却後24〜48時間以内</strong>（投稿レビューの約70%は依頼メール経由） / 購入導線は「試乗履歴つき購入相談予約」として実装
+          困ったときボタン / ライドサマリー / リピートクーポン / レビュー依頼は<strong>返却後24〜48時間以内</strong>（投稿レビューの約70%は依頼メール経由） / 購入導線は「試乗履歴つき購入相談予約」として実装
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ===== Section: Integrated Weakness + Mockups ===== -->
+<!-- ============ 競合弱点+施策モック ============ -->
+<div class="tab-panel" id="panel-mocks">
   <div class="section">
-    <h2>競合弱点マッピング + 施策モック</h2>
-    <p style="font-size:14px; color:#666; margin-bottom:24px;">競合の弱点に対して何を作るか。Tier 1〜2はモック付き。</p>
+    <div class="section-header"><div class="section-num">3</div><div><h2>競合弱点マッピング + 施策モック</h2><div class="sh-sub">競合の弱点に対して何を作るか。Tier 1〜2はモック付き</div></div></div>
 
-    <!-- T1-1: 統合検索バー -->
-    <div class="card" style="margin-bottom:20px; padding:0; overflow:hidden;">
-      <div style="background:#dc2626; color:#fff; padding:10px 20px; font-size:13px; font-weight:700; display:flex; justify-content:space-between;">
+    <!-- T1-1 -->
+    <div class="mock-card">
+      <div class="mock-head t1">
         <span>T1-1. 統合検索バー + スマートフィルタ</span>
-        <span style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:4px; font-size:11px;">競合: 全社できていない</span>
+        <span class="mh-tag">競合: 全社できていない</span>
       </div>
-      <div style="background:#fef2f2; padding:10px 20px; font-size:12px; color:#991b1b; border-bottom:1px solid #fecaca;">
-        <strong>弱点:</strong> 日付×エリア×車種の横断検索ができない → ユーザーが「探せない→離脱」
-      </div>
-      <div style="padding:24px; background:#f8f9fa;">
-        <div style="background:#fff; border-radius:12px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-          <div style="text-align:center; font-size:18px; font-weight:700; color:#1a1a2e; margin-bottom:4px;">全国のプロショップでスポーツバイクをレンタル</div>
-          <div style="text-align:center; font-size:12px; color:#999; margin-bottom:20px;">24店舗 / 12都府県 / プロ整備済み</div>
-          <div style="display:flex; gap:8px;">
-            <div style="flex:1; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px;">
-              <div style="font-size:10px; color:#999;">エリア</div>
-              <div style="font-size:13px; color:#333; font-weight:600;">神戸・兵庫</div>
+      <div class="mock-weak t1"><strong>弱点:</strong> 日付×エリア×車種の横断検索ができない → ユーザーが「探せない→離脱」</div>
+      <div class="mock-body" style="background:var(--bg);">
+        <div style="background:#fff; border-radius:12px; padding:24px; box-shadow:var(--shadow);">
+          <div style="text-align:center; font-size:18px; font-weight:800; color:var(--ink); margin-bottom:4px;">全国のプロショップでスポーツバイクをレンタル</div>
+          <div style="text-align:center; font-size:12px; color:var(--sub); margin-bottom:20px;">24店舗 / 12都府県 / プロ整備済み（コピー例・2026-05時点の値）</div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:110px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px 12px;">
+              <div style="font-size:10px; color:var(--sub);">エリア</div>
+              <div style="font-size:13px; color:var(--text); font-weight:600;">神戸・兵庫</div>
             </div>
-            <div style="flex:1; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px;">
-              <div style="font-size:10px; color:#999;">日付</div>
-              <div style="font-size:13px; color:#333; font-weight:600;">5/24 (土)</div>
+            <div style="flex:1; min-width:110px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px 12px;">
+              <div style="font-size:10px; color:var(--sub);">日付</div>
+              <div style="font-size:13px; color:var(--text); font-weight:600;">5/24 (土)</div>
             </div>
-            <div style="flex:1; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px;">
-              <div style="font-size:10px; color:#999;">車種</div>
-              <div style="font-size:13px; color:#333; font-weight:600;">ロードバイク</div>
+            <div style="flex:1; min-width:110px; background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px 12px;">
+              <div style="font-size:10px; color:var(--sub);">車種</div>
+              <div style="font-size:13px; color:var(--text); font-weight:600;">ロードバイク</div>
             </div>
-            <div style="background:#e94560; color:#fff; border-radius:8px; padding:10px 20px; font-size:13px; font-weight:700; display:flex; align-items:center;">検索</div>
+            <div style="background:var(--brand); color:#fff; border-radius:8px; padding:10px 20px; font-size:13px; font-weight:700; display:flex; align-items:center;">検索</div>
           </div>
           <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
-            <span style="font-size:11px; color:#999;">フィルタ:</span>
-            <span style="font-size:11px; color:#0f3460; background:#eff6ff; padding:2px 8px; border-radius:4px; cursor:pointer;">ブランド</span>
-            <span style="font-size:11px; color:#0f3460; background:#eff6ff; padding:2px 8px; border-radius:4px; cursor:pointer;">予算</span>
-            <span style="font-size:11px; color:#0f3460; background:#eff6ff; padding:2px 8px; border-radius:4px; cursor:pointer;">E-Bike対応</span>
-            <span style="font-size:11px; color:#fff; background:#e94560; padding:2px 8px; border-radius:4px;">初心者おすすめ</span>
+            <span style="font-size:11px; color:var(--sub);">フィルタ:</span>
+            <span style="font-size:11px; color:var(--ink); background:#F3F0EC; padding:2px 8px; border-radius:4px;">ブランド</span>
+            <span style="font-size:11px; color:var(--ink); background:#F3F0EC; padding:2px 8px; border-radius:4px;">予算</span>
+            <span style="font-size:11px; color:var(--ink); background:#F3F0EC; padding:2px 8px; border-radius:4px;">E-Bike対応</span>
+            <span style="font-size:11px; color:#fff; background:var(--brand); padding:2px 8px; border-radius:4px;">初心者おすすめ</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- T1-2: カレンダー空き表示 -->
-    <div class="card" style="margin-bottom:20px; padding:0; overflow:hidden;">
-      <div style="background:#dc2626; color:#fff; padding:10px 20px; font-size:13px; font-weight:700; display:flex; justify-content:space-between;">
+    <!-- T1-2 -->
+    <div class="mock-card">
+      <div class="mock-head t1">
         <span>T1-2. カレンダー空き表示（残数付き）</span>
-        <span style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:4px; font-size:11px;">競合: クロスビー/PK/東京CT</span>
+        <span class="mh-tag">競合: クロスビー/PK/東京CT</span>
       </div>
-      <div style="background:#fef2f2; padding:10px 20px; font-size:12px; color:#991b1b; border-bottom:1px solid #fecaca;">
-        <strong>弱点:</strong> 空き状況がリアルタイムで見えない（クロスビー/PK/東京CT）→ 「空いてるか分からない→離脱」
-      </div>
-      <div style="padding:20px;">
-        <div style="font-size:13px; color:#666; margin-bottom:12px;">SPZ神戸 — 5月の空き状況</div>
+      <div class="mock-weak t1"><strong>弱点:</strong> 空き状況がリアルタイムで見えない（クロスビー/PK/東京CT）→ 「空いてるか分からない→離脱」</div>
+      <div class="mock-body">
+        <div style="font-size:13px; color:var(--sub); margin-bottom:12px;">SPZ神戸 — 5月の空き状況</div>
         <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; text-align:center; font-size:11px; margin-bottom:8px;">
-          <div style="color:#999; padding:4px;">月</div><div style="color:#999; padding:4px;">火</div><div style="color:#999; padding:4px;">水</div><div style="color:#999; padding:4px;">木</div><div style="color:#999; padding:4px;">金</div><div style="color:#dc2626; padding:4px;">土</div><div style="color:#dc2626; padding:4px;">日</div>
-          <div style="padding:6px; color:#ccc;">19</div><div style="padding:6px; color:#ccc;">20</div><div style="padding:6px; color:#ccc;">21</div><div style="padding:6px; color:#ccc;">22</div><div style="padding:6px; color:#ccc;">23</div>
-          <div style="padding:6px; background:#ecfdf5; border-radius:6px; cursor:pointer;"><strong>24</strong><br><span style="color:#059669; font-size:10px;">3台</span></div>
-          <div style="padding:6px; background:#ecfdf5; border-radius:6px; cursor:pointer;"><strong>25</strong><br><span style="color:#059669; font-size:10px;">5台</span></div>
-          <div style="padding:6px; background:#ecfdf5; border-radius:6px;">26<br><span style="color:#059669; font-size:10px;">4台</span></div>
-          <div style="padding:6px; background:#ecfdf5; border-radius:6px;">27<br><span style="color:#059669; font-size:10px;">4台</span></div>
-          <div style="padding:6px; background:#ecfdf5; border-radius:6px;">28<br><span style="color:#059669; font-size:10px;">3台</span></div>
-          <div style="padding:6px; background:#ecfdf5; border-radius:6px;">29<br><span style="color:#059669; font-size:10px;">5台</span></div>
-          <div style="padding:6px; background:#ecfdf5; border-radius:6px;">30<br><span style="color:#059669; font-size:10px;">2台</span></div>
-          <div style="padding:6px; background:#fffbeb; border-radius:6px;"><strong style="color:#dc2626;">31</strong><br><span style="color:#d97706; font-size:10px;">残1台</span></div>
-          <div style="padding:6px; background:#fef2f2; border-radius:6px;">1<br><span style="color:#dc2626; font-size:10px;">満車</span></div>
+          <div style="color:var(--sub); padding:4px;">月</div><div style="color:var(--sub); padding:4px;">火</div><div style="color:var(--sub); padding:4px;">水</div><div style="color:var(--sub); padding:4px;">木</div><div style="color:var(--sub); padding:4px;">金</div><div style="color:var(--danger); padding:4px;">土</div><div style="color:var(--danger); padding:4px;">日</div>
+          <div style="padding:6px; color:#CCC4BA;">19</div><div style="padding:6px; color:#CCC4BA;">20</div><div style="padding:6px; color:#CCC4BA;">21</div><div style="padding:6px; color:#CCC4BA;">22</div><div style="padding:6px; color:#CCC4BA;">23</div>
+          <div style="padding:6px; background:#EDFAF2; border-radius:6px; cursor:pointer;"><strong>24</strong><br><span style="color:var(--ok); font-size:10px;">3台</span></div>
+          <div style="padding:6px; background:#EDFAF2; border-radius:6px; cursor:pointer;"><strong>25</strong><br><span style="color:var(--ok); font-size:10px;">5台</span></div>
+          <div style="padding:6px; background:#EDFAF2; border-radius:6px;">26<br><span style="color:var(--ok); font-size:10px;">4台</span></div>
+          <div style="padding:6px; background:#EDFAF2; border-radius:6px;">27<br><span style="color:var(--ok); font-size:10px;">4台</span></div>
+          <div style="padding:6px; background:#EDFAF2; border-radius:6px;">28<br><span style="color:var(--ok); font-size:10px;">3台</span></div>
+          <div style="padding:6px; background:#EDFAF2; border-radius:6px;">29<br><span style="color:var(--ok); font-size:10px;">5台</span></div>
+          <div style="padding:6px; background:#EDFAF2; border-radius:6px;">30<br><span style="color:var(--ok); font-size:10px;">2台</span></div>
+          <div style="padding:6px; background:#FFF4E0; border-radius:6px;"><strong style="color:var(--danger);">31</strong><br><span style="color:#8F5A0A; font-size:10px;">残1台</span></div>
+          <div style="padding:6px; background:#FDECEF; border-radius:6px;">1<br><span style="color:var(--danger); font-size:10px;">満車</span></div>
         </div>
-        <div style="display:flex; gap:12px; font-size:11px; color:#999; margin-top:8px;">
-          <span><span style="display:inline-block; width:10px; height:10px; background:#ecfdf5; border-radius:2px; margin-right:4px;"></span>空きあり</span>
-          <span><span style="display:inline-block; width:10px; height:10px; background:#fffbeb; border-radius:2px; margin-right:4px;"></span>残りわずか</span>
-          <span><span style="display:inline-block; width:10px; height:10px; background:#fef2f2; border-radius:2px; margin-right:4px;"></span>満車</span>
+        <div style="display:flex; gap:12px; font-size:11px; color:var(--sub); margin-top:8px;">
+          <span><span style="display:inline-block; width:10px; height:10px; background:#EDFAF2; border-radius:2px; margin-right:4px;"></span>空きあり</span>
+          <span><span style="display:inline-block; width:10px; height:10px; background:#FFF4E0; border-radius:2px; margin-right:4px;"></span>残りわずか</span>
+          <span><span style="display:inline-block; width:10px; height:10px; background:#FDECEF; border-radius:2px; margin-right:4px;"></span>満車</span>
         </div>
       </div>
     </div>
 
-    <!-- T1-3: 料金シミュレーター -->
-    <div class="card" style="margin-bottom:20px; padding:0; overflow:hidden;">
-      <div style="background:#dc2626; color:#fff; padding:10px 20px; font-size:13px; font-weight:700; display:flex; justify-content:space-between;">
+    <!-- T1-3 -->
+    <div class="mock-card">
+      <div class="mock-head t1">
         <span>T1-3. 料金シミュレーター</span>
-        <span style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:4px; font-size:11px;">競合: PK/RINCLE自身</span>
+        <span class="mh-tag">競合: PK/RINCLE自身</span>
       </div>
-      <div style="background:#fef2f2; padding:10px 20px; font-size:12px; color:#991b1b; border-bottom:1px solid #fecaca;">
-        <strong>弱点:</strong> 料金がWebに載っていない/不明確（PK/RINCLE自身）→ 「いくらか分からない→離脱」
-      </div>
-      <div style="padding:20px;">
+      <div class="mock-weak t1"><strong>弱点:</strong> 料金がWebに載っていない/不明確（PK/RINCLE自身）→ 「いくらか分からない→離脱」</div>
+      <div class="mock-body">
         <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:16px;">
           <div>
-            <div style="font-size:11px; color:#999; margin-bottom:4px;">車種</div>
-            <div style="background:#f1f5f9; border:1px solid #e2e8f0; border-radius:6px; padding:8px 12px; font-size:13px;">ロードバイク ▼</div>
+            <div style="font-size:11px; color:var(--sub); margin-bottom:4px;">車種</div>
+            <div style="background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-size:13px;">ロードバイク ▼</div>
           </div>
           <div>
-            <div style="font-size:11px; color:#999; margin-bottom:4px;">日数</div>
-            <div style="background:#f1f5f9; border:1px solid #e2e8f0; border-radius:6px; padding:8px 12px; font-size:13px;">1日 ▼</div>
+            <div style="font-size:11px; color:var(--sub); margin-bottom:4px;">日数</div>
+            <div style="background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-size:13px;">1日 ▼</div>
           </div>
           <div>
-            <div style="font-size:11px; color:#999; margin-bottom:4px;">オプション</div>
-            <div style="background:#f1f5f9; border:1px solid #e2e8f0; border-radius:6px; padding:8px 12px; font-size:13px;">ヘルメット（無料）</div>
+            <div style="font-size:11px; color:var(--sub); margin-bottom:4px;">オプション</div>
+            <div style="background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 12px; font-size:13px;">ヘルメット（無料）</div>
           </div>
         </div>
-        <div style="background:#f8f9fa; border-radius:8px; padding:16px; text-align:center; border:2px solid #e2e8f0;">
-          <div style="font-size:12px; color:#999;">お見積り合計</div>
-          <div style="font-size:32px; font-weight:700; color:#e94560; margin:4px 0;">¥6,000</div>
-          <div style="font-size:12px; color:#999;">税込・保険込み</div>
+        <div style="background:var(--bg); border-radius:8px; padding:16px; text-align:center; border:2px solid var(--border);">
+          <div style="font-size:12px; color:var(--sub);">お見積り合計</div>
+          <div style="font-size:32px; font-weight:800; color:var(--brand-deep); margin:4px 0;">¥6,000</div>
+          <div style="font-size:12px; color:var(--sub);">税込・保険込み</div>
         </div>
         <div style="display:flex; gap:8px; margin-top:12px; justify-content:center; font-size:11px;">
-          <span style="color:#059669;">✓ 保険込み</span>
-          <span style="color:#059669;">✓ ヘルメット無料</span>
-          <span style="color:#059669;">✓ 追加料金なし</span>
+          <span style="color:var(--ok);">✓ 保険込み</span>
+          <span style="color:var(--ok);">✓ ヘルメット無料</span>
+          <span style="color:var(--ok);">✓ 追加料金なし</span>
         </div>
         <div style="text-align:center; margin-top:12px;">
-          <div style="display:inline-block; background:#e94560; color:#fff; padding:10px 40px; border-radius:8px; font-size:14px; font-weight:600;">この条件で予約する →</div>
+          <div style="display:inline-block; background:var(--brand); color:#fff; padding:10px 40px; border-radius:8px; font-size:14px; font-weight:700;">この条件で予約する →</div>
         </div>
       </div>
     </div>
 
-    <!-- T1-4: キャンセルポリシー -->
-    <div class="card" style="margin-bottom:20px; padding:0; overflow:hidden;">
-      <div style="background:#dc2626; color:#fff; padding:10px 20px; font-size:13px; font-weight:700; display:flex; justify-content:space-between;">
+    <!-- T1-4 -->
+    <div class="mock-card">
+      <div class="mock-head t1">
         <span>T1-4. キャンセルポリシー明示</span>
-        <span style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:4px; font-size:11px;">競合: 全社（明示不足）</span>
+        <span class="mh-tag">競合: 全社（明示不足）</span>
       </div>
-      <div style="background:#fef2f2; padding:10px 20px; font-size:12px; color:#991b1b; border-bottom:1px solid #fecaca;">
-        <strong>弱点:</strong> 悪天候時の不安で予約しない（全社で明示不足）→ 「雨だったらどうしよう→予約しない」
-      </div>
-      <div style="padding:20px;">
-        <div style="font-size:13px; color:#666; margin-bottom:12px;">検索結果カードや予約フロー内に、以下を目立つ位置で表示:</div>
-        <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:14px 18px; display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+      <div class="mock-weak t1"><strong>弱点:</strong> 悪天候時の不安で予約しない（全社で明示不足）→ 「雨だったらどうしよう→予約しない」</div>
+      <div class="mock-body">
+        <div style="font-size:13px; color:var(--sub); margin-bottom:12px;">検索結果カードや予約フロー内に、以下を目立つ位置で表示:</div>
+        <div style="background:#EDFAF2; border:1px solid #BFE9D0; border-radius:8px; padding:14px 18px; display:flex; align-items:center; gap:10px; margin-bottom:10px;">
           <div style="font-size:24px;">☀️</div>
           <div>
-            <div style="font-size:14px; font-weight:700; color:#059669;">悪天候時は無料キャンセル</div>
-            <div style="font-size:12px; color:#666;">前日に降水確率60%以上の場合、キャンセル料はかかりません</div>
+            <div style="font-size:14px; font-weight:800; color:var(--ok);">悪天候時は無料キャンセル</div>
+            <div style="font-size:12px; color:var(--sub);">前日に降水確率60%以上の場合、キャンセル料はかかりません</div>
           </div>
         </div>
-        <div style="background:#f8f9fa; border-radius:8px; padding:14px 18px; display:flex; align-items:center; gap:10px;">
+        <div style="background:var(--bg); border-radius:8px; padding:14px 18px; display:flex; align-items:center; gap:10px;">
           <div style="font-size:24px;">📅</div>
           <div>
-            <div style="font-size:14px; font-weight:700; color:#1a1a2e;">日程変更も柔軟に対応</div>
-            <div style="font-size:12px; color:#666;">前日18:00まで無料で日程変更が可能です</div>
+            <div style="font-size:14px; font-weight:800; color:var(--ink);">日程変更も柔軟に対応</div>
+            <div style="font-size:12px; color:var(--sub);">前日18:00まで無料で日程変更が可能です</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- T2-1: 空き状況一覧比較 -->
-    <div class="card" style="margin-bottom:20px; padding:0; overflow:hidden;">
-      <div style="background:#d97706; color:#fff; padding:10px 20px; font-size:13px; font-weight:700; display:flex; justify-content:space-between;">
+    <!-- T2-1 -->
+    <div class="mock-card">
+      <div class="mock-head t2">
         <span>T2-1. 空き状況の一覧比較（複数店舗を横並び）</span>
-        <span style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:4px; font-size:11px;">競合: 全社できていない</span>
+        <span class="mh-tag">競合: 全社できていない</span>
       </div>
-      <div style="background:#fffbeb; padding:10px 20px; font-size:12px; color:#92400e; border-bottom:1px solid #fde68a;">
-        <strong>弱点:</strong> 複数店舗の空きを比較できない（全社、特にジャイアント12店舗）→ 「1店舗ずつ見に行くしかない」
-      </div>
-      <div style="padding:20px;">
-        <div style="font-size:13px; color:#666; margin-bottom:4px;">5/24 (土) / ロードバイク / 関西エリア</div>
-        <div style="font-size:11px; color:#999; margin-bottom:14px;">3店舗で空きが見つかりました</div>
+      <div class="mock-weak t2"><strong>弱点:</strong> 複数店舗の空きを比較できない（全社、特にジャイアント12店舗）→ 「1店舗ずつ見に行くしかない」</div>
+      <div class="mock-body">
+        <div style="font-size:13px; color:var(--sub); margin-bottom:4px;">5/24 (土) / ロードバイク / 関西エリア</div>
+        <div style="font-size:11px; color:var(--sub); margin-bottom:14px;">3店舗で空きが見つかりました</div>
         <div style="overflow-x:auto;">
           <table style="width:100%; border-collapse:collapse; font-size:12px;">
             <thead>
               <tr>
-                <th style="background:#f8f9fa; padding:10px; text-align:left; border-bottom:2px solid #e2e8f0; color:#666;">店舗</th>
-                <th style="background:#f8f9fa; padding:10px; text-align:left; border-bottom:2px solid #e2e8f0; color:#666;">車種</th>
-                <th style="background:#f8f9fa; padding:10px; text-align:center; border-bottom:2px solid #e2e8f0; color:#666;">料金/日</th>
-                <th style="background:#f8f9fa; padding:10px; text-align:center; border-bottom:2px solid #e2e8f0; color:#666;">レビュー</th>
-                <th style="background:#f8f9fa; padding:10px; text-align:center; border-bottom:2px solid #e2e8f0; color:#666;">空き</th>
-                <th style="background:#f8f9fa; padding:10px; text-align:center; border-bottom:2px solid #e2e8f0; color:#666;"></th>
+                <th style="background:var(--bg); padding:10px; text-align:left; border-bottom:2px solid var(--border); color:var(--sub);">店舗</th>
+                <th style="background:var(--bg); padding:10px; text-align:left; border-bottom:2px solid var(--border); color:var(--sub);">車種</th>
+                <th style="background:var(--bg); padding:10px; text-align:center; border-bottom:2px solid var(--border); color:var(--sub);">料金/日</th>
+                <th style="background:var(--bg); padding:10px; text-align:center; border-bottom:2px solid var(--border); color:var(--sub);">レビュー</th>
+                <th style="background:var(--bg); padding:10px; text-align:center; border-bottom:2px solid var(--border); color:var(--sub);">空き</th>
+                <th style="background:var(--bg); padding:10px; text-align:center; border-bottom:2px solid var(--border); color:var(--sub);"></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td style="padding:10px; border-bottom:1px solid #f1f5f9; font-weight:600;">SPZ神戸</td>
-                <td style="padding:10px; border-bottom:1px solid #f1f5f9;">Specialized Allez</td>
-                <td style="padding:10px; text-align:center; border-bottom:1px solid #f1f5f9; font-weight:700; color:#e94560;">¥6,000</td>
-                <td style="padding:10px; text-align:center; border-bottom:1px solid #f1f5f9; color:#d97706;">★4.9</td>
-                <td style="padding:10px; text-align:center; border-bottom:1px solid #f1f5f9;"><span style="background:#ecfdf5; color:#059669; padding:2px 10px; border-radius:4px; font-weight:600;">3台</span></td>
-                <td style="padding:10px; text-align:center; border-bottom:1px solid #f1f5f9;"><span style="background:#e94560; color:#fff; padding:4px 14px; border-radius:6px; font-size:11px; font-weight:600;">予約</span></td>
+                <td style="padding:10px; border-bottom:1px solid #F2EEE9; font-weight:700;">SPZ神戸</td>
+                <td style="padding:10px; border-bottom:1px solid #F2EEE9;">Specialized Allez</td>
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #F2EEE9; font-weight:800; color:var(--brand-deep);">¥6,000</td>
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #F2EEE9; color:#D97706;">★4.9</td>
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #F2EEE9;"><span style="background:#EDFAF2; color:var(--ok); padding:2px 10px; border-radius:4px; font-weight:700;">3台</span></td>
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #F2EEE9;"><span style="background:var(--brand); color:#fff; padding:4px 14px; border-radius:6px; font-size:11px; font-weight:700;">予約</span></td>
               </tr>
               <tr>
-                <td style="padding:10px; border-bottom:1px solid #f1f5f9; font-weight:600;">〇〇サイクル 大阪</td>
-                <td style="padding:10px; border-bottom:1px solid #f1f5f9;">TREK Domane AL2</td>
-                <td style="padding:10px; text-align:center; border-bottom:1px solid #f1f5f9; font-weight:700; color:#e94560;">¥5,500</td>
-                <td style="padding:10px; text-align:center; border-bottom:1px solid #f1f5f9; color:#d97706;">★4.7</td>
-                <td style="padding:10px; text-align:center; border-bottom:1px solid #f1f5f9;"><span style="background:#ecfdf5; color:#059669; padding:2px 10px; border-radius:4px; font-weight:600;">5台</span></td>
-                <td style="padding:10px; text-align:center; border-bottom:1px solid #f1f5f9;"><span style="background:#e94560; color:#fff; padding:4px 14px; border-radius:6px; font-size:11px; font-weight:600;">予約</span></td>
+                <td style="padding:10px; border-bottom:1px solid #F2EEE9; font-weight:700;">〇〇サイクル 大阪</td>
+                <td style="padding:10px; border-bottom:1px solid #F2EEE9;">TREK Domane AL2</td>
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #F2EEE9; font-weight:800; color:var(--brand-deep);">¥5,500</td>
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #F2EEE9; color:#D97706;">★4.7</td>
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #F2EEE9;"><span style="background:#EDFAF2; color:var(--ok); padding:2px 10px; border-radius:4px; font-weight:700;">5台</span></td>
+                <td style="padding:10px; text-align:center; border-bottom:1px solid #F2EEE9;"><span style="background:var(--brand); color:#fff; padding:4px 14px; border-radius:6px; font-size:11px; font-weight:700;">予約</span></td>
               </tr>
               <tr>
-                <td style="padding:10px; font-weight:600;">△△バイクス 京都</td>
+                <td style="padding:10px; font-weight:700;">△△バイクス 京都</td>
                 <td style="padding:10px;">Cannondale CAAD</td>
-                <td style="padding:10px; text-align:center; font-weight:700; color:#e94560;">¥5,800</td>
-                <td style="padding:10px; text-align:center; color:#d97706;">★4.6</td>
-                <td style="padding:10px; text-align:center;"><span style="background:#fffbeb; color:#d97706; padding:2px 10px; border-radius:4px; font-weight:600;">残1台</span></td>
-                <td style="padding:10px; text-align:center;"><span style="background:#e94560; color:#fff; padding:4px 14px; border-radius:6px; font-size:11px; font-weight:600;">予約</span></td>
+                <td style="padding:10px; text-align:center; font-weight:800; color:var(--brand-deep);">¥5,800</td>
+                <td style="padding:10px; text-align:center; color:#D97706;">★4.6</td>
+                <td style="padding:10px; text-align:center;"><span style="background:#FFF4E0; color:#8F5A0A; padding:2px 10px; border-radius:4px; font-weight:700;">残1台</span></td>
+                <td style="padding:10px; text-align:center;"><span style="background:var(--brand); color:#fff; padding:4px 14px; border-radius:6px; font-size:11px; font-weight:700;">予約</span></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div style="background:#eff6ff; border-radius:6px; padding:8px 12px; margin-top:12px; font-size:11px; color:#1e40af;">
-          💡 プラットフォームだからこそできる体験。単店舗の競合には構造的に不可能。
-        </div>
+        <div class="mock-hint">💡 プラットフォームだからこそできる体験。単店舗の競合には構造的に不可能。</div>
       </div>
     </div>
 
-    <!-- T2-2: 自転車比較 -->
-    <div class="card" style="margin-bottom:20px; padding:0; overflow:hidden;">
-      <div style="background:#d97706; color:#fff; padding:10px 20px; font-size:13px; font-weight:700; display:flex; justify-content:space-between;">
+    <!-- T2-2 -->
+    <div class="mock-card">
+      <div class="mock-head t2">
         <span>T2-2. 自転車比較機能（価格.com型）</span>
-        <span style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:4px; font-size:11px;">競合: 全社できていない</span>
+        <span class="mh-tag">競合: 全社できていない</span>
       </div>
-      <div style="background:#fffbeb; padding:10px 20px; font-size:12px; color:#92400e; border-bottom:1px solid #fde68a;">
-        <strong>弱点:</strong> 自転車スペックを並べて比較できない（全社）→ 「どれがいいか分からない→離脱」
-      </div>
-      <div style="padding:20px; overflow-x:auto;">
+      <div class="mock-weak t2"><strong>弱点:</strong> 自転車スペックを並べて比較できない（全社）→ 「どれがいいか分からない→離脱」</div>
+      <div class="mock-body" style="overflow-x:auto;">
         <table style="width:100%; border-collapse:collapse; font-size:12px;">
           <thead>
             <tr>
-              <th style="background:#f8f9fa; padding:10px; text-align:left; border-bottom:2px solid #e2e8f0; color:#666; width:100px;"></th>
-              <th style="background:#f8f9fa; padding:10px; text-align:center; border-bottom:2px solid #e2e8f0; color:#1a1a2e; font-weight:700;">Specialized Allez</th>
-              <th style="background:#f8f9fa; padding:10px; text-align:center; border-bottom:2px solid #e2e8f0; color:#1a1a2e; font-weight:700;">TREK Domane AL2</th>
-              <th style="background:#f8f9fa; padding:10px; text-align:center; border-bottom:2px solid #e2e8f0; color:#1a1a2e; font-weight:700;">Cannondale CAAD</th>
+              <th style="background:var(--bg); padding:10px; text-align:left; border-bottom:2px solid var(--border); color:var(--sub); width:100px;"></th>
+              <th style="background:var(--bg); padding:10px; text-align:center; border-bottom:2px solid var(--border); color:var(--ink); font-weight:800;">Specialized Allez</th>
+              <th style="background:var(--bg); padding:10px; text-align:center; border-bottom:2px solid var(--border); color:var(--ink); font-weight:800;">TREK Domane AL2</th>
+              <th style="background:var(--bg); padding:10px; text-align:center; border-bottom:2px solid var(--border); color:var(--ink); font-weight:800;">Cannondale CAAD</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td style="padding:8px 10px; border-bottom:1px solid #f1f5f9; color:#999;">料金/日</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9; font-weight:700; color:#e94560;">¥6,000</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9; font-weight:700; color:#e94560;">¥5,500</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9; font-weight:700; color:#e94560;">¥5,800</td></tr>
-            <tr><td style="padding:8px 10px; border-bottom:1px solid #f1f5f9; color:#999;">フレーム</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9;">アルミ (E5)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9;">アルミ (Alpha)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9;">アルミ (CAAD)</td></tr>
-            <tr><td style="padding:8px 10px; border-bottom:1px solid #f1f5f9; color:#999;">コンポ</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9;">Sora 2x9</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9;">Claris 2x8</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9;">Sora 2x9</td></tr>
-            <tr><td style="padding:8px 10px; border-bottom:1px solid #f1f5f9; color:#999;">重量</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9;">9.2kg</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9;">9.8kg</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9;">9.5kg</td></tr>
-            <tr><td style="padding:8px 10px; border-bottom:1px solid #f1f5f9; color:#999;">レビュー</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9; color:#d97706;">★4.9 (12件)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9; color:#d97706;">★4.7 (8件)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #f1f5f9; color:#d97706;">★4.6 (5件)</td></tr>
-            <tr><td style="padding:8px 10px; color:#999;">空き</td><td style="padding:8px 10px; text-align:center; color:#059669; font-weight:600;">3台</td><td style="padding:8px 10px; text-align:center; color:#059669; font-weight:600;">5台</td><td style="padding:8px 10px; text-align:center; color:#d97706; font-weight:600;">残1台</td></tr>
+            <tr><td style="padding:8px 10px; border-bottom:1px solid #F2EEE9; color:var(--sub);">料金/日</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9; font-weight:800; color:var(--brand-deep);">¥6,000</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9; font-weight:800; color:var(--brand-deep);">¥5,500</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9; font-weight:800; color:var(--brand-deep);">¥5,800</td></tr>
+            <tr><td style="padding:8px 10px; border-bottom:1px solid #F2EEE9; color:var(--sub);">フレーム</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9;">アルミ (E5)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9;">アルミ (Alpha)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9;">アルミ (CAAD)</td></tr>
+            <tr><td style="padding:8px 10px; border-bottom:1px solid #F2EEE9; color:var(--sub);">コンポ</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9;">Sora 2x9</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9;">Claris 2x8</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9;">Sora 2x9</td></tr>
+            <tr><td style="padding:8px 10px; border-bottom:1px solid #F2EEE9; color:var(--sub);">重量</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9;">9.2kg</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9;">9.8kg</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9;">9.5kg</td></tr>
+            <tr><td style="padding:8px 10px; border-bottom:1px solid #F2EEE9; color:var(--sub);">レビュー</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9; color:#D97706;">★4.9 (12件)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9; color:#D97706;">★4.7 (8件)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid #F2EEE9; color:#D97706;">★4.6 (5件)</td></tr>
+            <tr><td style="padding:8px 10px; color:var(--sub);">空き</td><td style="padding:8px 10px; text-align:center; color:var(--ok); font-weight:700;">3台</td><td style="padding:8px 10px; text-align:center; color:var(--ok); font-weight:700;">5台</td><td style="padding:8px 10px; text-align:center; color:#8F5A0A; font-weight:700;">残1台</td></tr>
           </tbody>
         </table>
         <div style="display:flex; gap:8px; margin-top:12px;">
-          <div style="flex:1; text-align:center; background:#e94560; color:#fff; padding:8px; border-radius:6px; font-size:12px; font-weight:600;">予約する</div>
-          <div style="flex:1; text-align:center; background:#e94560; color:#fff; padding:8px; border-radius:6px; font-size:12px; font-weight:600;">予約する</div>
-          <div style="flex:1; text-align:center; background:#e94560; color:#fff; padding:8px; border-radius:6px; font-size:12px; font-weight:600;">予約する</div>
+          <div style="flex:1; text-align:center; background:var(--brand); color:#fff; padding:8px; border-radius:6px; font-size:12px; font-weight:700;">予約する</div>
+          <div style="flex:1; text-align:center; background:var(--brand); color:#fff; padding:8px; border-radius:6px; font-size:12px; font-weight:700;">予約する</div>
+          <div style="flex:1; text-align:center; background:var(--brand); color:#fff; padding:8px; border-radius:6px; font-size:12px; font-weight:700;">予約する</div>
         </div>
-        <div style="background:#eff6ff; border-radius:6px; padding:8px 12px; margin-top:10px; font-size:11px; color:#1e40af;">
-          💡 走りの軽さ重視なら「Allez」（レビュー評価No.1）/ 価格重視なら「Domane」（¥500安い）
-        </div>
+        <div class="mock-hint">💡 走りの軽さ重視なら「Allez」（レビュー評価No.1）/ 価格重視なら「Domane」（¥500安い）</div>
       </div>
     </div>
 
-    <!-- T2-3: レビューシステム -->
-    <div class="card" style="margin-bottom:20px; padding:0; overflow:hidden;">
-      <div style="background:#d97706; color:#fff; padding:10px 20px; font-size:13px; font-weight:700; display:flex; justify-content:space-between;">
+    <!-- T2-3 -->
+    <div class="mock-card">
+      <div class="mock-head t2">
         <span>T2-3. 3軸レビュー + ショップ返信</span>
-        <span style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:4px; font-size:11px;">競合: 業界全体でレビュー蓄積ゼロ</span>
+        <span class="mh-tag">競合: 業界全体でレビュー蓄積ゼロ</span>
       </div>
-      <div style="background:#fffbeb; padding:10px 20px; font-size:12px; color:#92400e; border-bottom:1px solid #fde68a;">
-        <strong>弱点:</strong> 口コミ・レビューがゼロ（クロスビー/PK/東京CT）→ 「本当に大丈夫？→予約しない」
-      </div>
-      <div style="padding:20px;">
-        <div style="display:flex; gap:20px; margin-bottom:16px;">
+      <div class="mock-weak t2"><strong>弱点:</strong> 口コミ・レビューがゼロ（クロスビー/PK/東京CT）→ 「本当に大丈夫？→予約しない」</div>
+      <div class="mock-body">
+        <div style="display:flex; gap:20px; margin-bottom:16px; flex-wrap:wrap;">
           <div style="text-align:center;">
-            <div style="font-size:11px; color:#999; margin-bottom:4px;">バイクの状態</div>
-            <div style="color:#d97706; font-size:14px;">★★★★★</div>
-            <div style="font-size:18px; font-weight:700; color:#1a1a2e;">5.0</div>
+            <div style="font-size:11px; color:var(--sub); margin-bottom:4px;">バイクの状態</div>
+            <div style="color:#D97706; font-size:14px;">★★★★★</div>
+            <div style="font-size:18px; font-weight:800; color:var(--ink);">5.0</div>
           </div>
           <div style="text-align:center;">
-            <div style="font-size:11px; color:#999; margin-bottom:4px;">ショップ対応</div>
-            <div style="color:#d97706; font-size:14px;">★★★★☆</div>
-            <div style="font-size:18px; font-weight:700; color:#1a1a2e;">4.5</div>
+            <div style="font-size:11px; color:var(--sub); margin-bottom:4px;">ショップ対応</div>
+            <div style="color:#D97706; font-size:14px;">★★★★☆</div>
+            <div style="font-size:18px; font-weight:800; color:var(--ink);">4.5</div>
           </div>
           <div style="text-align:center;">
-            <div style="font-size:11px; color:#999; margin-bottom:4px;">コースの楽しさ</div>
-            <div style="color:#d97706; font-size:14px;">★★★★★</div>
-            <div style="font-size:18px; font-weight:700; color:#1a1a2e;">5.0</div>
+            <div style="font-size:11px; color:var(--sub); margin-bottom:4px;">コースの楽しさ</div>
+            <div style="color:#D97706; font-size:14px;">★★★★★</div>
+            <div style="font-size:18px; font-weight:800; color:var(--ink);">5.0</div>
           </div>
         </div>
-        <div style="border:1px solid #e8e8e8; border-radius:8px; padding:14px; margin-bottom:10px;">
-          <div style="font-size:12px; color:#999; margin-bottom:4px;">田中さん — 2026年5月</div>
-          <div style="font-size:13px; color:#333; line-height:1.7;">初めてのロードバイクでしたが、スタッフさんが丁寧にブレーキや変速の操作を教えてくれて、安心して楽しめました！六甲山の景色が最高でした。</div>
+        <div style="border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:10px;">
+          <div style="font-size:12px; color:var(--sub); margin-bottom:4px;">田中さん — 2026年5月</div>
+          <div style="font-size:13px; color:var(--text); line-height:1.7;">初めてのロードバイクでしたが、スタッフさんが丁寧にブレーキや変速の操作を教えてくれて、安心して楽しめました！六甲山の景色が最高でした。</div>
           <div style="display:flex; gap:6px; margin-top:8px;">
-            <div style="width:50px; height:50px; background:#f1f5f9; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:16px;">📷</div>
-            <div style="width:50px; height:50px; background:#f1f5f9; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:16px;">📷</div>
+            <div style="width:50px; height:50px; background:var(--bg); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:16px;">📷</div>
+            <div style="width:50px; height:50px; background:var(--bg); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:16px;">📷</div>
           </div>
         </div>
-        <div style="background:#f0fdf4; border:1px solid #a7f3d0; border-radius:8px; padding:12px 14px; margin-left:20px;">
-          <div style="font-size:11px; color:#059669; font-weight:600; margin-bottom:4px;">💬 ショップからの返信 — SPZ神戸</div>
-          <div style="font-size:12px; color:#444; line-height:1.6;">ありがとうございます！次回は六甲山の裏側ルートもおすすめですよ。もう少し距離がありますが、海が見えて最高です！</div>
+        <div style="background:#EDFAF2; border:1px solid #BFE9D0; border-radius:8px; padding:12px 14px; margin-left:20px;">
+          <div style="font-size:11px; color:var(--ok); font-weight:700; margin-bottom:4px;">💬 ショップからの返信 — SPZ神戸</div>
+          <div style="font-size:12px; color:var(--text); line-height:1.6;">ありがとうございます！次回は六甲山の裏側ルートもおすすめですよ。もう少し距離がありますが、海が見えて最高です！</div>
         </div>
       </div>
     </div>
 
-  </div>
-
-  <!-- ===== T2-4: おすすめ診断モック ===== -->
-  <div class="section">
-    <h2>その他の施策（T2-4〜T3 / 将来）</h2>
-
-    <div class="card" style="margin-bottom:20px; padding:0; overflow:hidden;">
-      <div style="background:#d97706; color:#fff; padding:10px 20px; font-size:13px; font-weight:700; display:flex; justify-content:space-between;">
+    <!-- T2-4 -->
+    <div class="mock-card">
+      <div class="mock-head t2">
         <span>T2-4. おすすめ診断 + 初心者/経験者モード</span>
-        <span style="background:rgba(255,255,255,0.2); padding:2px 10px; border-radius:4px; font-size:11px;">競合: 全社できていない</span>
+        <span class="mh-tag">競合: 全社できていない</span>
       </div>
-      <div style="background:#fffbeb; padding:10px 20px; font-size:12px; color:#92400e; border-bottom:1px solid #fde68a;">
-        <strong>弱点:</strong> 初心者が何を借りればいいか分からない → 車種一覧を見ても「ロードとクロスどっち？」に答えがない → 離脱
-      </div>
-      <div style="padding:20px;">
+      <div class="mock-weak t2"><strong>弱点:</strong> 初心者が何を借りればいいか分からない → 車種一覧を見ても「ロードとクロスどっち？」に答えがない → 離脱</div>
+      <div class="mock-body">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-          <!-- 診断フロー -->
           <div>
-            <div style="font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:12px;">3問で最適な車種を提案</div>
-            <div style="background:#f8f9fa; border-radius:8px; padding:16px;">
-              <div style="font-size:12px; font-weight:700; color:#0f3460; margin-bottom:8px;">Q1. 経験は？</div>
+            <div style="font-size:13px; font-weight:800; color:var(--ink); margin-bottom:12px;">3問で最適な車種を提案</div>
+            <div style="background:var(--bg); border-radius:8px; padding:16px;">
+              <div style="font-size:12px; font-weight:800; color:var(--ink); margin-bottom:8px;">Q1. 経験は？</div>
               <div style="display:flex; gap:6px; margin-bottom:12px;">
-                <div style="flex:1; text-align:center; background:#e94560; color:#fff; padding:6px; border-radius:6px; font-size:11px; font-weight:600;">初めて</div>
-                <div style="flex:1; text-align:center; background:#fff; color:#666; padding:6px; border-radius:6px; font-size:11px; border:1px solid #e2e8f0;">少しある</div>
-                <div style="flex:1; text-align:center; background:#fff; color:#666; padding:6px; border-radius:6px; font-size:11px; border:1px solid #e2e8f0;">経験豊富</div>
+                <div style="flex:1; text-align:center; background:var(--brand); color:#fff; padding:6px; border-radius:6px; font-size:11px; font-weight:700;">初めて</div>
+                <div style="flex:1; text-align:center; background:#fff; color:var(--sub); padding:6px; border-radius:6px; font-size:11px; border:1px solid var(--border);">少しある</div>
+                <div style="flex:1; text-align:center; background:#fff; color:var(--sub); padding:6px; border-radius:6px; font-size:11px; border:1px solid var(--border);">経験豊富</div>
               </div>
-              <div style="font-size:12px; font-weight:700; color:#0f3460; margin-bottom:8px;">Q2. 目的は？</div>
+              <div style="font-size:12px; font-weight:800; color:var(--ink); margin-bottom:8px;">Q2. 目的は？</div>
               <div style="display:flex; gap:6px; margin-bottom:12px;">
-                <div style="flex:1; text-align:center; background:#fff; color:#666; padding:6px; border-radius:6px; font-size:11px; border:1px solid #e2e8f0;">街乗り</div>
-                <div style="flex:1; text-align:center; background:#e94560; color:#fff; padding:6px; border-radius:6px; font-size:11px; font-weight:600;">サイクリング</div>
-                <div style="flex:1; text-align:center; background:#fff; color:#666; padding:6px; border-radius:6px; font-size:11px; border:1px solid #e2e8f0;">購入検討</div>
+                <div style="flex:1; text-align:center; background:#fff; color:var(--sub); padding:6px; border-radius:6px; font-size:11px; border:1px solid var(--border);">街乗り</div>
+                <div style="flex:1; text-align:center; background:var(--brand); color:#fff; padding:6px; border-radius:6px; font-size:11px; font-weight:700;">サイクリング</div>
+                <div style="flex:1; text-align:center; background:#fff; color:var(--sub); padding:6px; border-radius:6px; font-size:11px; border:1px solid var(--border);">購入検討</div>
               </div>
-              <div style="font-size:12px; font-weight:700; color:#0f3460; margin-bottom:8px;">Q3. 体力に自信は？</div>
+              <div style="font-size:12px; font-weight:800; color:var(--ink); margin-bottom:8px;">Q3. 体力に自信は？</div>
               <div style="display:flex; gap:6px; margin-bottom:14px;">
-                <div style="flex:1; text-align:center; background:#fff; color:#666; padding:6px; border-radius:6px; font-size:11px; border:1px solid #e2e8f0;">あまりない</div>
-                <div style="flex:1; text-align:center; background:#e94560; color:#fff; padding:6px; border-radius:6px; font-size:11px; font-weight:600;">普通</div>
-                <div style="flex:1; text-align:center; background:#fff; color:#666; padding:6px; border-radius:6px; font-size:11px; border:1px solid #e2e8f0;">自信あり</div>
+                <div style="flex:1; text-align:center; background:#fff; color:var(--sub); padding:6px; border-radius:6px; font-size:11px; border:1px solid var(--border);">あまりない</div>
+                <div style="flex:1; text-align:center; background:var(--brand); color:#fff; padding:6px; border-radius:6px; font-size:11px; font-weight:700;">普通</div>
+                <div style="flex:1; text-align:center; background:#fff; color:var(--sub); padding:6px; border-radius:6px; font-size:11px; border:1px solid var(--border);">自信あり</div>
               </div>
-              <div style="text-align:center; background:#e94560; color:#fff; padding:10px; border-radius:6px; font-size:13px; font-weight:600;">おすすめを見る →</div>
+              <div style="text-align:center; background:var(--brand); color:#fff; padding:10px; border-radius:6px; font-size:13px; font-weight:700;">おすすめを見る →</div>
             </div>
           </div>
-          <!-- 結果 -->
           <div>
-            <div style="font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:12px;">あなたへのおすすめ</div>
-            <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:12px; margin-bottom:10px; font-size:12px; color:#065f46;">
+            <div style="font-size:13px; font-weight:800; color:var(--ink); margin-bottom:12px;">あなたへのおすすめ</div>
+            <div style="background:#EDFAF2; border:1px solid #BFE9D0; border-radius:8px; padding:12px; margin-bottom:10px; font-size:12px; color:#136A41;">
               初めてのサイクリングには<strong>クロスバイク</strong>がおすすめ！安定感があり、街中でもサイクリングロードでも快適です。
             </div>
-            <div style="border:1px solid #e8e8e8; border-radius:8px; padding:12px; margin-bottom:8px;">
+            <div style="border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:8px;">
               <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <div>
-                  <div style="display:inline-block; background:#ecfdf5; color:#059669; font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px; margin-bottom:4px;">初心者に最適</div>
-                  <div style="font-size:14px; font-weight:700; color:#1a1a2e;">GIANT Escape R3</div>
-                  <div style="font-size:11px; color:#999;">SPZ神戸 / クロスバイク</div>
+                  <div style="display:inline-block; background:#EDFAF2; color:var(--ok); font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px; margin-bottom:4px;">初心者に最適</div>
+                  <div style="font-size:14px; font-weight:800; color:var(--ink);">GIANT Escape R3</div>
+                  <div style="font-size:11px; color:var(--sub);">SPZ神戸 / クロスバイク</div>
                 </div>
-                <div style="font-size:15px; font-weight:700; color:#e94560;">¥4,500<span style="font-size:10px; color:#999;">/日</span></div>
+                <div style="font-size:15px; font-weight:800; color:var(--brand-deep);">¥4,500<span style="font-size:10px; color:var(--sub);">/日</span></div>
               </div>
             </div>
-            <div style="border:1px solid #e8e8e8; border-radius:8px; padding:12px;">
+            <div style="border:1px solid var(--border); border-radius:8px; padding:12px;">
               <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <div>
-                  <div style="display:inline-block; background:#eff6ff; color:#1e40af; font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px; margin-bottom:4px;">E-Bikeもおすすめ</div>
-                  <div style="font-size:14px; font-weight:700; color:#1a1a2e;">TREK Verve+ 2</div>
-                  <div style="font-size:11px; color:#999;">SPZ神戸 / E-Bike</div>
+                  <div style="display:inline-block; background:#EEF3FE; color:#1D48A6; font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px; margin-bottom:4px;">E-Bikeもおすすめ</div>
+                  <div style="font-size:14px; font-weight:800; color:var(--ink);">TREK Verve+ 2</div>
+                  <div style="font-size:11px; color:var(--sub);">SPZ神戸 / E-Bike</div>
                 </div>
-                <div style="font-size:15px; font-weight:700; color:#e94560;">¥5,500<span style="font-size:10px; color:#999;">/日</span></div>
+                <div style="font-size:15px; font-weight:800; color:var(--brand-deep);">¥5,500<span style="font-size:10px; color:var(--sub);">/日</span></div>
               </div>
             </div>
           </div>
@@ -879,7 +660,8 @@
       </div>
     </div>
 
-    <div class="table-wrapper">
+    <h3>その他の施策マッピング（T2後半〜T3 / 将来）</h3>
+    <div class="table-wrap">
       <table>
         <thead>
           <tr>
@@ -938,145 +720,137 @@
       </table>
     </div>
   </div>
+</div>
 
-  <!-- ===== Section 5: Platform Life-or-Death Issues ===== -->
-  <div style="margin-bottom:48px;">
-    <h2 style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:20px; padding-bottom:8px; border-bottom:2px solid #e94560; display:inline-block;">プラットフォームの生死を分ける問題</h2>
-    <p style="font-size:14px; color:#666; margin-bottom:16px;">ユーザー側のUIをいくら磨いても、ショップがRINCLEを使い続けてくれなければプラットフォームは死ぬ。</p>
+<!-- ============ PFの生死・収益・保険 ============ -->
+<div class="tab-panel" id="panel-platform">
+  <div class="section">
+    <div class="section-header"><div class="section-num">4</div><div><h2>プラットフォームの生死を分ける問題</h2><div class="sh-sub">ユーザー側のUIをいくら磨いても、ショップがRINCLEを使い続けてくれなければプラットフォームは死ぬ</div></div></div>
 
-    <div style="background:#1a1a2e; color:#fff; border-radius:10px; padding:18px 22px; margin:12px 0 20px;">
-      <div style="font-size:14px; font-weight:700; margin-bottom:6px;">先行事例の教訓（2026-06リサーチ）</div>
-      <div style="font-size:13px; line-height:1.7; opacity:0.9;">
+    <div class="dark-panel">
+      <div class="dp-title">先行事例の教訓（2026-06リサーチ）</div>
+      <div class="dp-body">
         <strong>Anyca</strong>（個人間カーシェア、2024年終了）: 利用会員は直近3年で約2倍に増えたのに、手数料15〜35%と供給側体験の悪化でオーナーが増えず終了。<br>
         <strong>Spinlister</strong>（米P2P自転車レンタル、2018年終了）: 貸し手の手間に報酬が見合わず供給が崩壊（ショップ在庫集約型のListNRideは存続）。<br>
         → <strong>需要が伸びても「ショップの手取り・手間・ROI」が見合わなければフライホイールは止まる。</strong>ショップ側体験はUX改善と同格の生存条件。
       </div>
     </div>
 
-    <div style="border-left:4px solid #dc2626; background:#fef2f2; border-radius:0 10px 10px 0; padding:16px 20px; margin:12px 0;">
-      <div style="font-size:15px; font-weight:700; color:#991b1b; margin-bottom:6px;">在庫管理の二重入力問題</div>
-      <div style="font-size:13px; color:#555;">ショップが自店の在庫管理とRINCLEの在庫を別々に管理 → 面倒 → 更新されない → 在庫ズレ → オーバーブッキング or 「満車」誤表示。<br>対策: 管理画面をとにかくシンプルに。Googleカレンダー連携/CSV/API提供。</div>
+    <div class="card edge-red">
+      <h4 class="c-title">在庫管理の二重入力問題</h4>
+      <p class="body">ショップが自店の在庫管理とRINCLEの在庫を別々に管理 → 面倒 → 更新されない → 在庫ズレ → オーバーブッキング or 「満車」誤表示。<br>対策: 管理画面をとにかくシンプルに。Googleカレンダー連携/CSV/API提供。</p>
     </div>
 
-    <div style="border-left:4px solid #dc2626; background:#fef2f2; border-radius:0 10px 10px 0; padding:16px 20px; margin:12px 0;">
-      <div style="font-size:15px; font-weight:700; color:#991b1b; margin-bottom:6px;">ショップのROIが見えない</div>
-      <div style="font-size:13px; color:#555;">「RINCLEに参加して、結局いくら儲かったの？」に答えられないと契約更新時に離脱。<br>対策: ダッシュボードで月次の予約数/売上/レビュー評価/「レンタル後に購入相談があった件数」を可視化。</div>
+    <div class="card edge-red">
+      <h4 class="c-title">ショップのROIが見えない</h4>
+      <p class="body">「RINCLEに参加して、結局いくら儲かったの？」に答えられないと契約更新時に離脱。<br>対策: ダッシュボードで月次の予約数/売上/レビュー評価/「レンタル後に購入相談があった件数」を可視化。</p>
     </div>
 
-    <div style="border-left:4px solid #d97706; background:#fffbeb; border-radius:0 10px 10px 0; padding:16px 20px; margin:12px 0;">
-      <div style="font-size:15px; font-weight:700; color:#92400e; margin-bottom:6px;">写真・データの品質バラバラ</div>
-      <div style="font-size:13px; color:#555;">高画質な店舗 vs スマホのぼやけた写真1枚。予約率に直結。<br>対策: 撮影ガイドライン提供。テンプレート的な商品登録フォーム。優秀ショップを検索上位表示。</div>
+    <div class="card edge-amber">
+      <h4 class="c-title">写真・データの品質バラバラ</h4>
+      <p class="body">高画質な店舗 vs スマホのぼやけた写真1枚。予約率に直結。<br>対策: 撮影ガイドライン提供。テンプレート的な商品登録フォーム。優秀ショップを検索上位表示。</p>
     </div>
 
-    <div style="border-left:4px solid #d97706; background:#fffbeb; border-radius:0 10px 10px 0; padding:16px 20px; margin:12px 0;">
-      <div style="font-size:15px; font-weight:700; color:#92400e; margin-bottom:6px;">サービス品質のばらつき</div>
-      <div style="font-size:13px; color:#555;">1店舗の悪い体験がRINCLE全体のブランドを毀損する。<br>対策: レビュースコアのモニタリング。認定制度（ブロンズ/シルバー/ゴールド）。</div>
+    <div class="card edge-amber">
+      <h4 class="c-title">サービス品質のばらつき</h4>
+      <p class="body">1店舗の悪い体験がRINCLE全体のブランドを毀損する。<br>対策: レビュースコアのモニタリング。認定制度（ブロンズ/シルバー/ゴールド）。</p>
     </div>
   </div>
 
-  <!-- ===== Section 5.5: Revenue Model (2026-06 added) ===== -->
-  <div style="margin-bottom:48px;">
-    <h2 style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:20px; padding-bottom:8px; border-bottom:2px solid #e94560; display:inline-block;">収益モデルが未定義 — 「誰からいくら取るか」を決める <span style="font-size:12px; color:#666; font-weight:400;">（2026-06追加）</span></h2>
+  <div class="section">
+    <div class="section-header"><div class="section-num plain">¥</div><div><h2>収益モデルが未定義 — 「誰からいくら取るか」を決める</h2><div class="sh-sub">2026-06追加</div></div></div>
 
-    <div class="card card-red">
-      <h3>レンタル手数料だけでは事業が立たない</h3>
-      <p>体験OTAの送客手数料相場は10〜20%（アソビュー・KLOOK）。掲載無料+成果報酬が業界標準。Anycaの15〜35%は供給離反を招いた危険域。<br>
+    <div class="card edge-red">
+      <h4 class="c-title">レンタル手数料だけでは事業が立たない</h4>
+      <p class="body">体験OTAの送客手数料相場は10〜20%（アソビュー・KLOOK）。掲載無料+成果報酬が業界標準。Anycaの15〜35%は供給離反を招いた危険域。<br>
       試算: レンタル単価6,000〜13,200円 × 手数料18% = <strong>1予約あたり1,080〜2,376円</strong>。初期の予約数では手数料収益だけで事業は成立しない。</p>
     </div>
 
-    <div class="card card-green">
-      <h3>本命収益源は物販送客（try-before-buy）</h3>
-      <p style="margin-bottom:8px;">米Trekは<strong>「レンタル料の100%を購入代金に充当」</strong>を標準特典化。国内スポーツバイクでは未確立の差別化余地。レンティオ公表値では、レンタル機会の提供で<strong>購入数が4倍以上</strong>になるケースもある（購入転換率3%の商品でも）。</p>
-      <p>購入成約への送客フィー（例: 車体価格の3〜5%）なら30万円の完成車で<strong>9,000〜15,000円/台</strong> — レンタル手数料の数倍。「レンタル料の購入充当」をRINCLE標準特典として全店共通化し、Step 7の「試乗履歴つき購入相談予約」と接続する。</p>
+    <div class="card edge-green">
+      <h4 class="c-title">本命収益源は物販送客（try-before-buy）</h4>
+      <p class="body" style="margin-bottom:8px;">米Trekは<strong>「レンタル料の100%を購入代金に充当」</strong>を標準特典化。国内スポーツバイクでは未確立の差別化余地。レンティオ公表値では、レンタル機会の提供で<strong>購入数が4倍以上</strong>になるケースもある（購入転換率3%の商品でも）。</p>
+      <p class="body">購入成約への送客フィー（例: 車体価格の3〜5%）なら30万円の完成車で<strong>9,000〜15,000円/台</strong> — レンタル手数料の数倍。「レンタル料の購入充当」をRINCLE標準特典として全店共通化し、Step 7の「試乗履歴つき購入相談予約」と接続する。</p>
     </div>
 
-    <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px 18px; font-size:13px; color:#1e40af;">
-      KPIに<strong>「テイクレート」「GMV」「レンタル→購入相談率・購入転換率」</strong>を追加する。
+    <div class="alert alert-blue"><span class="a-icon">ℹ</span><div>KPIに<strong>「テイクレート」「GMV」「レンタル→購入相談率・購入転換率」</strong>を追加する。</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><div class="section-num plain">§</div><div><h2>保険・賠償の構造的な穴</h2><div class="sh-sub">2026-06追加</div></div></div>
+
+    <div class="card edge-red">
+      <h4 class="c-title">施設賠償責任保険は「利用者の運転ミス」を補償しない</h4>
+      <p class="body">一般的な施設賠償責任保険の対象は事業者の整備・管理ミス起因のみ。<strong>大半の交通事故である利用者の運転ミスは補償されない</strong>。自転車事故は数千万円の賠償判例があり、保険加入を条例で義務化する自治体が拡大中。無保険の重大事故1件でプラットフォーム全体の信用が崩壊し得る。</p>
+    </div>
+
+    <div class="card edge-green">
+      <h4 class="c-title">対策: 全パートナー店舗（2026-08-20実測で56店舗）の保険加入状況の棚卸しが最優先</h4>
+      <p class="body" style="margin-bottom:8px;">レンタサイクル事業者専用保険（最大1億円補償、6台で年12,000円。自転車安全対策協議会）の加入を加盟基準として義務化を検討。</p>
+      <p class="body">高額車両（カーボンロード等）の破損時負担ルールと免責補償オプション（レンタルバイク業界の定番、収益源も兼ねる）を予約前に明示 — Step 3「本当に大丈夫？」の不安解消に直結。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ コールドスタート・計測 ============ -->
+<div class="tab-panel" id="panel-coldstart">
+  <div class="section">
+    <div class="section-header"><div class="section-num">5</div><div><h2>コールドスタート問題の突破</h2><div class="sh-sub">サービス開始3ヶ月（2026-05時点）。レビューゼロ、ブランド認知ゼロ</div></div></div>
+
+    <div class="card edge-green">
+      <h4 class="c-title">レビューの種まき戦略</h4>
+      <ul style="margin:8px 0 0 20px; font-size:13.5px;">
+        <li>パートナーショップの既存顧客にレビュー依頼</li>
+        <li>体験モニター募集（無料 or 50%OFF）— ただし投稿は任意とし、対価と紐づけない</li>
+        <li>自転車メディア・ブロガーに体験取材を依頼</li>
+        <li>目標: 各店舗最低5件、合計120件</li>
+      </ul>
+      <div class="alert alert-amber" style="margin-bottom:0;"><span class="a-icon">⚠</span><div><strong>ステマ規制（景表法、2023年10月施行）:</strong> 「レビュー投稿を条件」に対価を提供すると広告表示義務が発生し、措置命令・課徴金の対象になり得る。投稿してもらう場合は「モニター利用」である旨の表示を徹底。インセンティブは投稿行為のみに付与し、評価内容を条件にしない。</div></div>
+    </div>
+
+    <div class="card edge-green">
+      <h4 class="c-title">パートナーショップの既存チャネルを活用</h4>
+      <ul style="margin:8px 0 0 20px; font-size:13.5px;">
+        <li>各ショップのWebサイト・SNS・店頭POPにRINCLEへの導線を設置</li>
+        <li>ショップの既存顧客にRINCLEを紹介するメールを配信</li>
+        <li>ショップのGoogleビジネスプロフィールにRINCLEのリンクを追加</li>
+      </ul>
+      <div class="alert alert-green" style="margin-bottom:0;"><span class="a-icon">✓</span><div><strong>ポイント:</strong> 自社でゼロから集客するより、24店舗（当時。2026-08-20実測では56店舗）の既存集客力を借りる方がはるかに効率的</div></div>
     </div>
   </div>
 
-  <!-- ===== Section 5.6: Insurance Gap (2026-06 added) ===== -->
-  <div style="margin-bottom:48px;">
-    <h2 style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:20px; padding-bottom:8px; border-bottom:2px solid #e94560; display:inline-block;">保険・賠償の構造的な穴 <span style="font-size:12px; color:#666; font-weight:400;">（2026-06追加）</span></h2>
-
-    <div class="card card-red">
-      <h3>施設賠償責任保険は「利用者の運転ミス」を補償しない</h3>
-      <p>一般的な施設賠償責任保険の対象は事業者の整備・管理ミス起因のみ。<strong>大半の交通事故である利用者の運転ミスは補償されない</strong>。自転車事故は数千万円の賠償判例があり、保険加入を条例で義務化する自治体が拡大中。無保険の重大事故1件でプラットフォーム全体の信用が崩壊し得る。</p>
+  <div class="section">
+    <div class="section-header"><div class="section-num">6</div><div><h2>計測できていないものは改善できない</h2><div class="sh-sub">最低限把握すべき数値</div></div></div>
+    <div class="metric-row">
+      <div class="metric-chip"><div class="mv">???</div><div class="ml">月間サイト訪問数</div></div>
+      <div class="metric-chip"><div class="mv">???</div><div class="ml">検索→詳細 遷移率</div></div>
+      <div class="metric-chip"><div class="mv">???</div><div class="ml">予約完了率</div></div>
+      <div class="metric-chip"><div class="mv">???</div><div class="ml">No-show率</div></div>
+      <div class="metric-chip"><div class="mv">???</div><div class="ml">リピート率</div></div>
+      <div class="metric-chip"><div class="mv">???</div><div class="ml">GMV・テイクレート・レンタル→購入相談率</div></div>
     </div>
-
-    <div class="card card-green">
-      <h3>対策: 24店舗の保険加入状況の棚卸しが最優先</h3>
-      <p style="margin-bottom:8px;">レンタサイクル事業者専用保険（最大1億円補償、6台で年12,000円。自転車安全対策協議会）の加入を加盟基準として義務化を検討。</p>
-      <p>高額車両（カーボンロード等）の破損時負担ルールと免責補償オプション（レンタルバイク業界の定番、収益源も兼ねる）を予約前に明示 — Step 3「本当に大丈夫？」の不安解消に直結。</p>
-    </div>
+    <div class="alert alert-red"><span class="a-icon">!</span><div><strong>これらの数値が1つでも取れていないなら、まずアナリティクスの整備が最優先。</strong> どの施策をやるべきかは、ファネルのどこで一番漏れているかで決まる。（GA4の本番設置はまだ — タスク#21-22で対応予定・2026-08-20時点）</div></div>
   </div>
-
-  <!-- ===== Section 6: Cold Start Problem ===== -->
-  <div style="margin-bottom:48px;">
-    <h2 style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:20px; padding-bottom:8px; border-bottom:2px solid #e94560; display:inline-block;">コールドスタート問題の突破</h2>
-    <p style="font-size:14px; color:#666; margin-bottom:16px;">サービス開始3ヶ月。レビューゼロ、ブランド認知ゼロ。</p>
-
-    <div style="border-left:4px solid #059669; background:#f0fdf4; border-radius:0 10px 10px 0; padding:16px 20px; margin:12px 0;">
-      <div style="font-size:15px; font-weight:700; color:#065f46; margin-bottom:6px;">レビューの種まき戦略</div>
-      <div style="font-size:13px; color:#444;">
-        <ul style="margin:8px 0 0 16px;">
-          <li>パートナーショップの既存顧客にレビュー依頼</li>
-          <li>体験モニター募集（無料 or 50%OFF）— ただし投稿は任意とし、対価と紐づけない</li>
-          <li>自転車メディア・ブロガーに体験取材を依頼</li>
-          <li>目標: 各店舗最低5件、合計120件</li>
-        </ul>
-        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:6px; padding:10px 14px; margin-top:10px; font-size:12px; color:#92400e;"><strong>⚠️ ステマ規制（景表法、2023年10月施行）:</strong> 「レビュー投稿を条件」に対価を提供すると広告表示義務が発生し、措置命令・課徴金の対象になり得る。投稿してもらう場合は「モニター利用」である旨の表示を徹底。インセンティブは投稿行為のみに付与し、評価内容を条件にしない。</div>
-      </div>
-    </div>
-
-    <div style="border-left:4px solid #059669; background:#f0fdf4; border-radius:0 10px 10px 0; padding:16px 20px; margin:12px 0;">
-      <div style="font-size:15px; font-weight:700; color:#065f46; margin-bottom:6px;">パートナーショップの既存チャネルを活用</div>
-      <div style="font-size:13px; color:#444;">
-        <ul style="margin:8px 0 0 16px;">
-          <li>各ショップのWebサイト・SNS・店頭POPにRINCLEへの導線を設置</li>
-          <li>ショップの既存顧客にRINCLEを紹介するメールを配信</li>
-          <li>ショップのGoogleビジネスプロフィールにRINCLEのリンクを追加</li>
-        </ul>
-        <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:6px; padding:10px 14px; margin-top:10px; font-size:12px; color:#065f46;"><strong>ポイント:</strong> 自社でゼロから集客するより、24店舗の既存集客力を借りる方がはるかに効率的</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== Section 7: Metrics to Measure ===== -->
-  <div style="margin-bottom:48px;">
-    <h2 style="font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:20px; padding-bottom:8px; border-bottom:2px solid #e94560; display:inline-block;">計測できていないものは改善できない</h2>
-    <div style="display:flex; gap:12px; flex-wrap:wrap; margin:16px 0;">
-      <div style="background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #e8e8e8; min-width:160px; flex:1;">
-        <div style="font-size:24px; font-weight:700; color:#dc2626;">???</div>
-        <div style="font-size:11px; color:#999; margin-top:2px;">月間サイト訪問数</div>
-      </div>
-      <div style="background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #e8e8e8; min-width:160px; flex:1;">
-        <div style="font-size:24px; font-weight:700; color:#dc2626;">???</div>
-        <div style="font-size:11px; color:#999; margin-top:2px;">検索→詳細 遷移率</div>
-      </div>
-      <div style="background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #e8e8e8; min-width:160px; flex:1;">
-        <div style="font-size:24px; font-weight:700; color:#dc2626;">???</div>
-        <div style="font-size:11px; color:#999; margin-top:2px;">予約完了率</div>
-      </div>
-      <div style="background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #e8e8e8; min-width:160px; flex:1;">
-        <div style="font-size:24px; font-weight:700; color:#dc2626;">???</div>
-        <div style="font-size:11px; color:#999; margin-top:2px;">No-show率</div>
-      </div>
-      <div style="background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #e8e8e8; min-width:160px; flex:1;">
-        <div style="font-size:24px; font-weight:700; color:#dc2626;">???</div>
-        <div style="font-size:11px; color:#999; margin-top:2px;">リピート率</div>
-      </div>
-      <div style="background:#fff; border-radius:8px; padding:14px 18px; border:1px solid #e8e8e8; min-width:160px; flex:1;">
-        <div style="font-size:24px; font-weight:700; color:#dc2626;">???</div>
-        <div style="font-size:11px; color:#999; margin-top:2px;">GMV・テイクレート・レンタル→購入相談率</div>
-      </div>
-    </div>
-    <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:14px 18px; font-size:14px; color:#991b1b;">
-      <strong>これらの数値が1つでも取れていないなら、まずアナリティクスの整備が最優先。</strong> どの施策をやるべきかは、ファネルのどこで一番漏れているかで決まる。
-    </div>
-  </div>
+</div>
 
 </div>
 
+<footer>正本: documents/4_growth/01_strategy/current-issues-and-solutions.md（md更新時はこのHTMLも同期すること）</footer>
+
+<script>
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  function openTab(id){
+    tabBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.id === id); });
+    window.scrollTo({top: 0});
+  }
+  tabBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      openTab(b.dataset.target);
+      history.replaceState(null, '', '#' + b.dataset.target);
+    });
+  });
+  if (location.hash && document.getElementById(location.hash.slice(1))) openTab(location.hash.slice(1));
+</script>
 </body>
 </html>

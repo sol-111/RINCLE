@@ -1,6 +1,6 @@
 # Stripe API 一覧・概要（日本語まとめ・RINCLE向け）
 
-> Stripe移行（ルートC）を検討する際の設計たたき台。[Pay.jp v1まとめ](../pay.jp/payjp-api-v1-summary-ja.md) / [v2まとめ](../pay.jp/payjp-api-v2-summary-ja.md)の姉妹編。
+> Stripe移行（ルートC・**6/19定例で決定、実装はタスク#35**）の設計資料。作成時は検討用のたたき台だった。[Pay.jp v1まとめ](../pay.jp/payjp-api-v1-summary-ja.md) / [v2まとめ](../pay.jp/payjp-api-v2-summary-ja.md)の姉妹編。
 > 作成: 2026-06-12（タスク#20の派生）。**RINCLEの集約モデルで使う範囲に絞っている**（Stripe全体は数百エンドポイントあるため）。詳細は[公式APIリファレンス](https://docs.stripe.com/api)を参照。
 
 ---

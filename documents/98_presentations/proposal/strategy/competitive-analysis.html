@@ -5,512 +5,296 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RINCLE 競合調査レポート</title>
 <style>
-  :root {
-    --accent-red: #e94560;
-    --accent-navy: #0f3460;
-    --accent-dark: #1a1a2e;
-    --bg: #f8f9fa;
-    --card-bg: #ffffff;
-    --text: #333333;
-    --text-light: #666666;
-    --border: #e8e8e8;
-    --radius: 12px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.06);
-    --shadow-lg: 0 4px 12px rgba(0,0,0,0.08);
+  :root{
+    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
+    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
+    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
+    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
+    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
+    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
   }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* hero */
+  .hero{position:relative;background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 55%,#FF7A45 100%);color:#fff;padding:52px 40px 40px;overflow:hidden}
+  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.07)}
+  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(35,32,29,.10)}
+  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
+  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
+  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:3px 14px;margin-bottom:12px}
+  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
+  .hero p.lead{font-size:1rem;opacity:.92;max-width:700px}
+  .hero p.hero-date{font-size:12.5px;opacity:.8;margin-top:10px}
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.7;
-    padding: 40px 20px;
-  }
+  .container{max-width:980px;margin:0 auto;padding:24px 28px 80px}
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  /* tabs */
+  .tabs{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:8px;padding:14px 4px;margin:0 0 20px;background:rgba(248,246,243,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--border)}
+  .tab-btn{border:1px solid #E0D8D0;background:#fff;color:var(--ink);border-radius:999px;padding:8px 16px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;line-height:1.4}
+  .tab-btn:hover{border-color:var(--brand)}
+  .tab-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
 
-  h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--accent-dark);
-    margin-bottom: 8px;
-  }
+  /* sections */
+  .section{margin-bottom:56px;scroll-margin-top:20px}
+  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
+  .section-num.plain{background:linear-gradient(135deg,var(--ink),#4A4038);box-shadow:0 4px 12px rgba(35,32,29,.3)}
+  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
+  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
+  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
 
-  .report-date {
-    font-size: 14px;
-    color: var(--text-light);
-    margin-bottom: 40px;
-  }
+  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
 
-  h2 {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--accent-dark);
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid var(--accent-red);
-    display: inline-block;
-  }
+  /* alerts */
+  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
+  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
+  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
+  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
+  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
+  .alert-amber{background:#FFF4E0;border:1px solid #F5DFAE;color:#8F5A0A}
 
-  .section {
-    margin-bottom: 48px;
-  }
+  /* tables */
+  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
+  thead th{background:var(--ink);color:#fff;padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
+  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#FBF8F5}
+  td.label{font-weight:700;color:var(--ink);white-space:nowrap}
+  tr.highlight td{background:var(--brand-soft)!important;color:var(--brand-deep);font-weight:700}
 
-  .card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 28px;
-    border: 1px solid var(--border);
-  }
+  /* badges */
+  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;margin:2px 4px 2px 0}
+  .badge.good{background:#EDFAF2;color:#136A41}
+  .badge.bad{background:#FDECEF;color:#8E1230}
+  .badge.warn{background:#FFF4E0;color:#8F5A0A}
+  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
 
-  /* RINCLE Hero Card */
-  .rincle-hero {
-    background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent-navy) 100%);
-    color: #ffffff;
-    border-radius: var(--radius);
-    padding: 36px;
-    box-shadow: var(--shadow-lg);
-    border: none;
-    margin-bottom: 12px;
-  }
+  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
 
-  .rincle-hero h3 {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  /* 市場統計カード */
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+  .stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow)}
+  .stat-card .st-label{font-size:12px;color:var(--sub);letter-spacing:.05em;margin-bottom:8px;font-weight:700}
+  .stat-card .st-value{font-size:26px;font-weight:800;color:var(--ink);line-height:1.4}
+  .stat-card .st-value.brand{color:var(--brand-deep)}
+  .stat-card .st-body{font-size:13px;color:var(--sub);margin-top:8px}
+  .stat-card .st-src{font-size:11px;color:#A79E94;margin-top:6px}
+  .stat-card.edge-brand{border-left:4px solid var(--brand)}
+  .stat-card.edge-ink{border-left:4px solid var(--ink)}
 
-  .rincle-hero .info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-  }
+  /* 競合カード */
+  .comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .comp-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;transition:box-shadow .2s}
+  .comp-card:hover{box-shadow:var(--shadow-lg)}
+  .comp-card .comp-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;font-size:13px;font-weight:800;margin-bottom:12px}
+  .comp-card h4{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:4px}
+  .comp-card .comp-company{font-size:13px;color:var(--sub);margin-bottom:14px}
+  .comp-card .comp-detail{font-size:13px;color:var(--text);margin-bottom:6px;display:flex;gap:8px}
+  .comp-card .comp-detail .label{color:var(--sub);min-width:65px;flex-shrink:0}
+  .comp-card .comp-links{margin-top:auto;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap}
+  .comp-card .comp-links a{font-size:12px;color:var(--brand-deep);text-decoration:none;font-weight:700}
+  .comp-card .comp-links a:hover{text-decoration:underline;color:var(--brand)}
+  .comp-card.rincle{background:linear-gradient(135deg,var(--ink) 0%,#4A2818 100%);color:#fff;border:2px solid var(--brand)}
+  .comp-card.rincle .comp-num{background:#fff;color:var(--brand-deep)}
+  .comp-card.rincle h4{color:#fff}
+  .comp-card.rincle .comp-company{color:rgba(255,255,255,.65)}
+  .comp-card.rincle .comp-detail{color:#fff}
+  .comp-card.rincle .comp-detail .label{color:rgba(255,255,255,.55)}
+  .comp-card.rincle .comp-links{border-top-color:rgba(255,255,255,.2)}
+  .comp-card.rincle .comp-links a{color:#FFB27D}
+  .comp-card.rincle .comp-links a:hover{color:#fff}
+  .comp-card.threat-high{border-left:4px solid var(--danger)}
+  .comp-card.threat-high .comp-num{background:var(--danger)}
+  .comp-card.threat-mid{border-left:4px solid #D97706}
+  .comp-card.threat-mid .comp-num{background:#D97706}
 
-  .rincle-hero .info-item {
-    display: flex;
-    gap: 10px;
-    font-size: 14px;
-    line-height: 1.6;
-  }
+  /* ビジネスモデル図 */
+  .model-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin:0}
+  .model-card .mc-head{background:linear-gradient(135deg,var(--ink),#4A4038);color:#fff;padding:12px 20px;font-size:13px;font-weight:700}
+  .model-card.rincle-model{border:2px solid var(--brand)}
+  .model-card.rincle-model .mc-head{background:linear-gradient(135deg,var(--brand-deep),var(--brand));font-size:15px;padding:14px 20px}
+  .model-card .mc-body{padding:18px 20px}
+  .flow-nodes{display:flex;align-items:stretch;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .flow-node{border-radius:10px;padding:14px 20px;text-align:center;min-width:120px}
+  .flow-node .fn-icon{font-size:22px;margin-bottom:4px}
+  .flow-node .fn-name{font-size:13px;font-weight:800;color:var(--ink)}
+  .flow-node .fn-desc{font-size:11px;color:var(--sub)}
+  .flow-node .fn-money{font-size:11px;font-weight:700;margin-top:4px}
+  .flow-node.user{background:#EEF3FE;border:1px solid #CBDCFA}
+  .flow-node.pf{background:var(--brand-soft);border:2px solid var(--brand)}
+  .flow-node.pf .fn-name{color:var(--brand-deep)}
+  .flow-node.pf .fn-money{color:var(--brand-deep)}
+  .flow-node.shop{background:#EDFAF2;border:1px solid #BFE9D0}
+  .flow-node.shop .fn-money{color:var(--ok)}
+  .flow-arrow{font-size:20px;color:var(--brand);align-self:center}
+  .model-perks{display:flex;gap:12px;flex-wrap:wrap}
+  .model-perks div{flex:1;background:var(--bg);border-radius:8px;padding:10px 14px;font-size:12px;min-width:200px}
+  .model-perks strong{color:var(--ok)}
+  .model-issue{background:#FDECEF;border-radius:6px;padding:8px 10px;margin-top:10px;font-size:11px;color:#8E1230}
+  .model-note{font-size:12px;color:var(--text);line-height:1.7}
+  .model-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .model-grid .full{grid-column:1/3}
+  .mini-nodes{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px}
+  .mini-node{border-radius:8px;padding:10px 14px;text-align:center;font-size:11px;color:var(--sub)}
+  .mini-node .mn-icon{font-size:16px}
+  .mini-node.grey{background:#F3F0EC}
+  .mini-node.amber{background:#FFF4E0}
+  .mini-node.blue{background:#EEF3FE}
+  .mini-arrow{font-size:16px;color:#B8AEA2}
 
-  .rincle-hero .info-label {
-    color: rgba(255,255,255,0.6);
-    min-width: 70px;
-    flex-shrink: 0;
-  }
-
-  .rincle-hero .info-value {
-    color: #ffffff;
-  }
-
-  .rincle-hero a {
-    color: #8ecae6;
-    text-decoration: none;
-  }
-
-  .rincle-hero a:hover {
-    text-decoration: underline;
-  }
-
-  .tag-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    background: rgba(233, 69, 96, 0.25);
-    color: #ff8fa3;
-    border: 1px solid rgba(233, 69, 96, 0.3);
-  }
-
-  /* Competitor Grid */
-  .comp-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .comp-card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 24px;
-    border: 1px solid var(--border);
-    transition: box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .comp-card:hover {
-    box-shadow: var(--shadow-lg);
-  }
-
-  .comp-card .comp-links {
-    margin-top: auto;
-  }
-
-  /* RINCLE card in grid */
-  .comp-card.rincle {
-    background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent-navy) 100%);
-    color: #fff;
-    border: 2px solid var(--accent-red);
-  }
-  .comp-card.rincle .comp-num {
-    background: #fff;
-    color: var(--accent-red);
-  }
-  .comp-card.rincle h4 { color: #fff; }
-  .comp-card.rincle .comp-company { color: rgba(255,255,255,0.6); }
-  .comp-card.rincle .comp-detail .label { color: rgba(255,255,255,0.5); }
-  .comp-card.rincle .comp-detail { color: #fff; }
-  .comp-card.rincle .comp-links { border-top-color: rgba(255,255,255,0.15); }
-  .comp-card.rincle .comp-links a { color: #8ecae6; }
-  .comp-card.rincle .comp-links a:hover { color: #fff; }
-
-  .comp-card .comp-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--accent-red);
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-
-  .comp-card h4 {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--accent-dark);
-    margin-bottom: 4px;
-  }
-
-  .comp-card .comp-company {
-    font-size: 13px;
-    color: var(--text-light);
-    margin-bottom: 14px;
-  }
-
-  .comp-card .comp-detail {
-    font-size: 13px;
-    color: var(--text);
-    margin-bottom: 6px;
-    display: flex;
-    gap: 8px;
-  }
-
-  .comp-card .comp-detail .label {
-    color: var(--text-light);
-    min-width: 65px;
-    flex-shrink: 0;
-  }
-
-  .comp-card .comp-links {
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .comp-card .comp-links a {
-    font-size: 12px;
-    color: var(--accent-navy);
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .comp-card .comp-links a:hover {
-    text-decoration: underline;
-    color: var(--accent-red);
-  }
-
-  /* Tables */
-  .table-wrapper {
-    overflow-x: auto;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-    background: var(--card-bg);
-  }
-
-  thead th {
-    background: var(--accent-dark);
-    color: #ffffff;
-    padding: 14px 16px;
-    text-align: left;
-    font-weight: 600;
-    font-size: 12px;
-    white-space: nowrap;
-  }
-
-  tbody td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-
-  tbody tr:last-child td {
-    border-bottom: none;
-  }
-
-  tbody tr:hover {
-    background: #f5f7fa;
-  }
-
-  tr.highlight {
-    background: #e8f0fe !important;
-    font-weight: 600;
-  }
-
-  tr.highlight td {
-    color: var(--accent-navy);
-  }
-
-  /* 1v1 Comparison */
-  .vs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 20px;
-  }
-
-  .vs-card {
-    background: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    overflow: hidden;
-  }
-
-  .vs-card-header {
-    background: linear-gradient(135deg, var(--accent-dark), var(--accent-navy));
-    color: #ffffff;
-    padding: 16px 20px;
-    font-size: 15px;
-    font-weight: 700;
-  }
-
-  .vs-card-body {
-    padding: 20px;
-  }
-
-  .vs-section-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
-    color: var(--text-light);
-  }
-
-  .vs-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 16px;
-  }
-
-  .vs-items:last-child {
-    margin-bottom: 0;
-  }
-
-  .vs-summary {
-    margin-top: 16px;
-    padding-top: 14px;
-    border-top: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.7;
-  }
-
-  .vs-summary .vs-section-label {
-    margin-bottom: 4px;
-  }
-
-  .badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .badge-win {
-    background: #d4edda;
-    color: #155724;
-  }
-
-  .badge-lose {
-    background: #fde8ec;
-    color: #9b1c31;
-  }
-
-  .badge-draw {
-    background: #e2e3e5;
-    color: #495057;
-  }
+  /* vs カード */
+  .vs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px}
+  .vs-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
+  .vs-card-header{background:linear-gradient(135deg,var(--ink),#4A2818);color:#fff;padding:16px 20px;font-size:15px;font-weight:800}
+  .vs-card-body{padding:20px}
+  .vs-section-label{font-size:11px;font-weight:800;letter-spacing:.5px;margin-bottom:8px;color:var(--sub)}
+  .vs-items{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+  .vs-items:last-child{margin-bottom:0}
+  .vs-summary{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:13px;color:var(--text);line-height:1.7}
+  .vs-summary .vs-section-label{margin-bottom:4px}
 
   /* SWOT */
-  .swot-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+  .swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .swot-card{border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+  .swot-header{padding:14px 20px;font-size:15px;font-weight:800;color:#fff}
+  .swot-header.strength{background:var(--ok)}
+  .swot-header.weakness{background:var(--danger)}
+  .swot-header.opportunity{background:var(--info)}
+  .swot-header.threat{background:#D97706}
+  .swot-body{background:#fff;padding:20px;border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);flex:1}
+  .swot-body ul{list-style:none;padding:0}
+  .swot-body li{position:relative;padding:6px 0 6px 20px;font-size:13px;line-height:1.7}
+  .swot-body li::before{content:'';position:absolute;left:0;top:14px;width:8px;height:8px;border-radius:50%}
+  .swot-card.s li::before{background:var(--ok)}
+  .swot-card.w li::before{background:var(--danger)}
+  .swot-card.o li::before{background:var(--info)}
+  .swot-card.t li::before{background:#D97706}
+
+  /* アクション・ペルソナ カード */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+  .grid2 .full{grid-column:1/3}
+  .num-chip{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:var(--brand);padding:2px 10px;border-radius:4px;margin-bottom:10px}
+  .num-chip.ink{background:var(--ink)}
+  .num-chip.grey{background:#8B8178}
+  .num-chip.blue{background:var(--info)}
+  .num-chip.violet{background:#7C3AED}
+  .num-chip.green{background:var(--ok)}
+  .num-chip.amber{background:#D97706}
+  .grid2 h4{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:6px}
+  .grid2 .p-attr{font-size:12px;color:var(--sub);margin-bottom:10px}
+  .grid2 p.body{font-size:13px;color:var(--text);line-height:1.7}
+  .card.star{border:2px solid var(--brand)}
+
+  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
+
+  @media (max-width:860px){
+    .comp-grid{grid-template-columns:1fr 1fr}
+    .stat-grid{grid-template-columns:1fr}
+    .model-grid{grid-template-columns:1fr}
+    .model-grid .full{grid-column:auto}
+    .grid2{grid-template-columns:1fr}
+    .grid2 .full{grid-column:auto}
+    .swot-grid{grid-template-columns:1fr}
+    .vs-grid{grid-template-columns:1fr}
+    .hero{padding:44px 24px 36px}
+    .container{padding:20px 18px 60px}
   }
-
-  .swot-card {
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .swot-header {
-    padding: 14px 20px;
-    font-size: 15px;
-    font-weight: 700;
-    color: #ffffff;
-  }
-
-  .swot-header.strength { background: #28a745; }
-  .swot-header.weakness { background: var(--accent-red); }
-  .swot-header.opportunity { background: #007bff; }
-  .swot-header.threat { background: #ffc107; color: #333; }
-
-  .swot-body {
-    background: var(--card-bg);
-    padding: 20px;
-    border: 1px solid var(--border);
-    border-top: none;
-    border-radius: 0 0 var(--radius) var(--radius);
-    flex: 1;
-  }
-
-  .swot-body ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .swot-body li {
-    position: relative;
-    padding: 6px 0 6px 20px;
-    font-size: 13px;
-    line-height: 1.6;
-  }
-
-  .swot-body li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 13px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
-
-  .swot-card:nth-child(1) li::before { background: #28a745; }
-  .swot-card:nth-child(2) li::before { background: var(--accent-red); }
-  .swot-card:nth-child(3) li::before { background: #007bff; }
-  .swot-card:nth-child(4) li::before { background: #ffc107; }
-
-  @media (max-width: 768px) {
-    body { padding: 20px 12px; }
-    .comp-grid { grid-template-columns: 1fr 1fr; }
-    .vs-grid { grid-template-columns: 1fr; }
-    .swot-grid { grid-template-columns: 1fr; }
-    .rincle-hero .info-grid { grid-template-columns: 1fr; }
-    h1 { font-size: 22px; }
+  @media (max-width:560px){
+    .comp-grid{grid-template-columns:1fr}
   }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <!-- Title -->
-  <h1>RINCLE 競合調査レポート</h1>
-  <p class="report-date">作成日: 2026-05-19 ／ 最終更新: 2026-06-11（深掘り調査の結果を反映）</p>
-
-  <!-- 市場概況 -->
-  <div class="section">
-    <h2>市場概況</h2>
-    <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-top:20px;">
-      <div class="card">
-        <div style="font-size:12px; color:#666; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">サイクルツーリズム市場（日本）</div>
-        <div style="font-size:28px; font-weight:700; color:#0f3460;">CAGR 11.4%</div>
-        <div style="font-size:13px; color:#666; margin-top:8px;">2024年 約63.4億ドル → 2033年 164億ドル<br>国内一次データ: 年間約1,315億円（1人1回あたり消費額 31,024円→37,356円に上昇）</div>
-        <div style="font-size:11px; color:#999; margin-top:4px;">出典: Mordor Intelligence / GVR / サイクリスト国勢調査2021　※両者は市場定義が異なる</div>
-      </div>
-      <div class="card">
-        <div style="font-size:12px; color:#666; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">E-Bike市場（グローバル）</div>
-        <div style="font-size:28px; font-weight:700; color:#0f3460;">CAGR 14.4%</div>
-        <div style="font-size:13px; color:#666; margin-top:8px;">2025年 575億ドル → 2034年 1,932億ドル</div>
-        <div style="font-size:11px; color:#999; margin-top:4px;">出典: Fortune Business Insights</div>
-      </div>
-      <div class="card">
-        <div style="font-size:12px; color:#666; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">国内レンタル市場</div>
-        <div style="font-size:28px; font-weight:700; color:#e94560;">PF不在</div>
-        <div style="font-size:13px; color:#666; margin-top:8px;">大手プラットフォーマー不在は今も事実（直接競合は最大でも300台/3店舗）。ただし<strong>メーカー直営・供給網レンタルが既に本格稼働</strong>（2026-06更新）</div>
-      </div>
-    </div>
-    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; margin-top:16px;">
-      <div class="card" style="border-left:4px solid #e94560;">
-        <div style="font-size:12px; color:#666; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">しまなみジャパン 2025年度実績（過去最多）</div>
-        <div style="font-size:28px; font-weight:700; color:#e94560;">貸出 79,502件 ／ 訪日 +70%</div>
-        <div style="font-size:13px; color:#666; margin-top:8px;">貸出台数173,279台。国内+8%に対し訪日旅行者は前年度比<strong>+70%</strong>。成長要因は2023年10月からの<strong>予約・貸出のデジタル化（アプリ導入）</strong> — 「予約のデジタル化がレンタル実績を押し上げる」国内最大級の実例</div>
-        <div style="font-size:11px; color:#999; margin-top:4px;">出典: トラベルボイス 2026-04-30 / しまなみジャパン市場調査</div>
-      </div>
-      <div class="card" style="border-left:4px solid #0f3460;">
-        <div style="font-size:12px; color:#666; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">ナショナルサイクルルート（NCR）第3次指定</div>
-        <div style="font-size:28px; font-weight:700; color:#0f3460;">2026年夏 指定想定</div>
-        <div style="font-size:13px; color:#666; margin-top:8px;">候補7ルート（ふくしま浜通り178km・鳥取うみなみロード・フジイチ163km等）が審査入り。指定要件に<strong>「ゲートウェイでのレンタサイクル整備」「約20kmごとのサイクルステーション」</strong>が含まれ、指定を目指す自治体はレンタサイクル事業者を必要としている → RINCLEパートナー網との連携余地大</div>
-        <div style="font-size:11px; color:#999; margin-top:4px;">出典: 国交省 NCR制度資料 / Bicycle Club</div>
-      </div>
-    </div>
-    <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:16px 20px; margin-top:16px; font-size:13px; color:#1e40af;">
-      <strong>RINCLEにとっての意味（2026-06更新）:</strong> 年10%以上成長する市場に大手プラットフォーマーは依然不在、直接競合は全て自社保有型でスケーラビリティに限界。ただし競争は3正面に拡大 — (1) メーカー直営・供給網（Trek/Specialized/MERIDA/ヤマハ）、(2) インバウンド特化系（Livelo等）、(3) シェアサイクル/OTAの顧客接点独占。<strong>「マルチブランド横断 × 統一Web予約 × リアルタイム在庫」はどの陣営も持っていない。</strong>メーカーは自社ブランドしか並べられないため構造的に真似できず、ここがRINCLE唯一性の核。
+<div class="hero">
+  <div class="hero-inner">
+    <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
+    <div>
+      <span class="eyebrow">戦略 — 競合調査</span>
+      <h1>RINCLE 競合調査レポート</h1>
+      <p class="lead">スポーツバイクレンタル市場でRINCLEと競合する事業者を、市場データ・ビジネスモデル・料金・SWOTの観点から整理した調査レポートです。</p>
+      <p class="hero-date">作成日: 2026-05-19 ／ 最終更新: 2026-06-11（深掘り調査の結果を反映）</p>
     </div>
   </div>
+</div>
 
-  <!-- 調査対象 RINCLE + 競合5社 -->
+<div class="container">
+
+<div class="tabs">
+  <button class="tab-btn active" data-target="panel-market">市場概況</button>
+  <button class="tab-btn" data-target="panel-players">RINCLE+競合5社</button>
+  <button class="tab-btn" data-target="panel-model">モデル・料金比較</button>
+  <button class="tab-btn" data-target="panel-vs">1対1比較・SWOT</button>
+  <button class="tab-btn" data-target="panel-additional">追加競合カテゴリ</button>
+  <button class="tab-btn" data-target="panel-action">アクション・ペルソナ</button>
+</div>
+
+<!-- ============ 市場概況 ============ -->
+<div class="tab-panel active" id="panel-market">
   <div class="section">
-    <h2>RINCLE + 競合 5社</h2>
+    <div class="section-header"><div class="section-num">1</div><div><h2>市場概況</h2><div class="sh-sub">サイクルツーリズム・E-Bike・国内レンタル市場の現在地</div></div></div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="st-label">サイクルツーリズム市場（日本）</div>
+        <div class="st-value">CAGR 11.4%</div>
+        <div class="st-body">2024年 約63.4億ドル → 2033年 164億ドル<br>国内一次データ: 年間約1,315億円（1人1回あたり消費額 31,024円→37,356円に上昇）</div>
+        <div class="st-src">出典: Mordor Intelligence / GVR / サイクリスト国勢調査2021　※両者は市場定義が異なる</div>
+      </div>
+      <div class="stat-card">
+        <div class="st-label">E-Bike市場（グローバル）</div>
+        <div class="st-value">CAGR 14.4%</div>
+        <div class="st-body">2025年 575億ドル → 2034年 1,932億ドル</div>
+        <div class="st-src">出典: Fortune Business Insights</div>
+      </div>
+      <div class="stat-card">
+        <div class="st-label">国内レンタル市場</div>
+        <div class="st-value brand">PF不在</div>
+        <div class="st-body">大手プラットフォーマー不在は今も事実（直接競合は最大でも300台/3店舗）。ただし<strong>メーカー直営・供給網レンタルが既に本格稼働</strong>（2026-06更新）</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="stat-card edge-brand">
+        <div class="st-label">しまなみジャパン 2025年度実績（過去最多）</div>
+        <div class="st-value brand">貸出 79,502件 ／ 訪日 +70%</div>
+        <div class="st-body">貸出台数173,279台。国内+8%に対し訪日旅行者は前年度比<strong>+70%</strong>。成長要因は2023年10月からの<strong>予約・貸出のデジタル化（アプリ導入）</strong> — 「予約のデジタル化がレンタル実績を押し上げる」国内最大級の実例</div>
+        <div class="st-src">出典: トラベルボイス 2026-04-30 / しまなみジャパン市場調査</div>
+      </div>
+      <div class="stat-card edge-ink">
+        <div class="st-label">ナショナルサイクルルート（NCR）第3次指定</div>
+        <div class="st-value">2026年夏 指定想定</div>
+        <div class="st-body">候補7ルート（ふくしま浜通り178km・鳥取うみなみロード・フジイチ163km等）が審査入り。指定要件に<strong>「ゲートウェイでのレンタサイクル整備」「約20kmごとのサイクルステーション」</strong>が含まれ、指定を目指す自治体はレンタサイクル事業者を必要としている → RINCLEパートナー網との連携余地大</div>
+        <div class="st-src">出典: 国交省 NCR制度資料 / Bicycle Club</div>
+      </div>
+    </div>
+
+    <div class="alert alert-blue"><span class="a-icon">ℹ</span><div>
+      <strong>RINCLEにとっての意味（2026-06更新）:</strong> 年10%以上成長する市場に大手プラットフォーマーは依然不在、直接競合は全て自社保有型でスケーラビリティに限界。ただし競争は3正面に拡大 — (1) メーカー直営・供給網（Trek/Specialized/MERIDA/ヤマハ）、(2) インバウンド特化系（Livelo等）、(3) シェアサイクル/OTAの顧客接点独占。<strong>「マルチブランド横断 × 統一Web予約 × リアルタイム在庫」はどの陣営も持っていない。</strong>メーカーは自社ブランドしか並べられないため構造的に真似できず、ここがRINCLE唯一性の核。
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ RINCLE + 競合5社 ============ -->
+<div class="tab-panel" id="panel-players">
+  <div class="section">
+    <div class="section-header"><div class="section-num">2</div><div><h2>RINCLE + 競合 5社</h2><div class="sh-sub">調査対象のプロフィール</div></div></div>
+
+    <div class="alert alert-amber"><span class="a-icon">!</span><div>本レポートの店舗数・エリアは<strong>2026年5〜6月の調査時点の公表値</strong>です。本番サイトの実測（2026-08-20）ではRINCLE掲載は<strong>店舗56・自転車374台</strong>に拡大しています（対外向けの店舗数表記は別途調整中）。</div></div>
+
     <div class="comp-grid">
 
-      <!-- RINCLE -->
       <div class="comp-card rincle">
         <span class="comp-num">R</span>
         <h4>RINCLE（リンクル）</h4>
         <p class="comp-company">PEDALSTANDARD株式会社（代表: 増永康已）</p>
         <div class="comp-detail"><span class="label">モデル</span><span>プロショップネットワーク型PF</span></div>
-        <div class="comp-detail"><span class="label">エリア</span><span>12都府県・24店舗</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>12都府県・24店舗（2026-05調査時点の公表値）</span></div>
         <div class="comp-detail"><span class="label">設立</span><span>2024年6月（サービス: 2026年2月〜）</span></div>
         <div class="comp-detail"><span class="label">資本金</span><span>800万円</span></div>
         <div class="comp-detail"><span class="label">目標</span><span>47都道府県・300店舗・3,000台</span></div>
@@ -520,7 +304,6 @@
         </div>
       </div>
 
-      <!-- 1. CycleTrip BASE -->
       <div class="comp-card">
         <span class="comp-num">1</span>
         <h4>CycleTrip BASE</h4>
@@ -536,7 +319,6 @@
         </div>
       </div>
 
-      <!-- 2. ジャイアントストア -->
       <div class="comp-card">
         <span class="comp-num">2</span>
         <h4>ジャイアントストア</h4>
@@ -552,7 +334,6 @@
         </div>
       </div>
 
-      <!-- 3. クロスビープランニング -->
       <div class="comp-card">
         <span class="comp-num">3</span>
         <h4>クロスビープランニング</h4>
@@ -568,7 +349,6 @@
         </div>
       </div>
 
-      <!-- 4. 東京サイクリングツアー -->
       <div class="comp-card">
         <span class="comp-num">4</span>
         <h4>東京サイクリングツアー</h4>
@@ -584,7 +364,6 @@
         </div>
       </div>
 
-      <!-- 5. Power Kids -->
       <div class="comp-card">
         <span class="comp-num">5</span>
         <h4>Power Kids</h4>
@@ -602,11 +381,13 @@
 
     </div>
   </div>
+</div>
 
-  <!-- ビジネスモデル比較テーブル -->
+<!-- ============ モデル・料金比較 ============ -->
+<div class="tab-panel" id="panel-model">
   <div class="section">
-    <h2>ビジネスモデル比較</h2>
-    <div class="table-wrapper">
+    <div class="section-header"><div class="section-num">3</div><div><h2>ビジネスモデル比較</h2><div class="sh-sub">各社の型と規模（2026-05〜06調査時点）</div></div></div>
+    <div class="table-wrap">
       <table>
         <thead>
           <tr>
@@ -670,154 +451,118 @@
         </tbody>
       </table>
     </div>
+    <p style="font-size:12px;color:var(--sub)">※ RINCLEの店舗数は2026-05調査時点の公表値。本番サイト実測（2026-08-20）では店舗56・自転車374台。</p>
   </div>
 
-  <!-- ビジネスモデル詳細 -->
   <div class="section">
-    <h2>ビジネスモデルの仕組み</h2>
-    <p style="font-size:14px; color:#666; margin-bottom:20px;">各社の「どうやって収益を得ているか」を図解。</p>
+    <div class="section-header"><div class="section-num">4</div><div><h2>ビジネスモデルの仕組み</h2><div class="sh-sub">各社の「どうやって収益を得ているか」を図解</div></div></div>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+    <div class="model-grid">
 
-      <!-- RINCLE -->
-      <div class="card" style="border:2px solid #e94560; padding:0; overflow:hidden; grid-column:1/3;">
-        <div style="background:linear-gradient(135deg,#1a1a2e,#0f3460); color:#fff; padding:14px 20px; font-size:15px; font-weight:700;">RINCLE — プロショップネットワーク型プラットフォーム</div>
-        <div style="padding:24px;">
-          <div style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
-            <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:14px 20px; text-align:center; min-width:120px;">
-              <div style="font-size:22px; margin-bottom:4px;">👤</div>
-              <div style="font-size:13px; font-weight:700; color:#1a1a2e;">ユーザー</div>
-              <div style="font-size:11px; color:#666;">レンタル料金を支払い</div>
+      <div class="model-card rincle-model full">
+        <div class="mc-head">RINCLE — プロショップネットワーク型プラットフォーム</div>
+        <div class="mc-body">
+          <div class="flow-nodes">
+            <div class="flow-node user">
+              <div class="fn-icon">👤</div>
+              <div class="fn-name">ユーザー</div>
+              <div class="fn-desc">レンタル料金を支払い</div>
             </div>
-            <div style="font-size:20px; color:#e94560;">→</div>
-            <div style="background:#fef2f2; border:2px solid #e94560; border-radius:10px; padding:14px 20px; text-align:center; min-width:140px;">
-              <div style="font-size:22px; margin-bottom:4px;">🔗</div>
-              <div style="font-size:13px; font-weight:700; color:#e94560;">RINCLE</div>
-              <div style="font-size:11px; color:#666;">予約PF・決済・集客</div>
-              <div style="font-size:11px; color:#e94560; font-weight:600; margin-top:4px;">手数料を取得</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node pf">
+              <div class="fn-icon">🔗</div>
+              <div class="fn-name">RINCLE</div>
+              <div class="fn-desc">予約PF・決済・集客</div>
+              <div class="fn-money">手数料を取得</div>
             </div>
-            <div style="font-size:20px; color:#e94560;">→</div>
-            <div style="background:#f0fdf4; border:1px solid #a7f3d0; border-radius:10px; padding:14px 20px; text-align:center; min-width:120px;">
-              <div style="font-size:22px; margin-bottom:4px;">🏪</div>
-              <div style="font-size:13px; font-weight:700; color:#1a1a2e;">プロショップ</div>
-              <div style="font-size:11px; color:#666;">バイク提供・整備・接客</div>
-              <div style="font-size:11px; color:#059669; font-weight:600; margin-top:4px;">レンタル料を受取</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node shop">
+              <div class="fn-icon">🏪</div>
+              <div class="fn-name">プロショップ</div>
+              <div class="fn-desc">バイク提供・整備・接客</div>
+              <div class="fn-money">レンタル料を受取</div>
             </div>
           </div>
-          <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <div style="flex:1; background:#f8f9fa; border-radius:8px; padding:10px 14px; font-size:12px; min-width:200px;">
-              <strong style="color:#059669;">在庫リスクなし:</strong> バイクはショップが保有。RINCLEは在庫を持たない
-            </div>
-            <div style="flex:1; background:#f8f9fa; border-radius:8px; padding:10px 14px; font-size:12px; min-width:200px;">
-              <strong style="color:#059669;">スケーラブル:</strong> ショップを増やすだけで全国展開。設備投資不要
-            </div>
-            <div style="flex:1; background:#f8f9fa; border-radius:8px; padding:10px 14px; font-size:12px; min-width:200px;">
-              <strong style="color:#059669;">Win-Win:</strong> ショップは集客チャネル獲得 + レンタル→購入の導線
-            </div>
+          <div class="model-perks">
+            <div><strong>在庫リスクなし:</strong> バイクはショップが保有。RINCLEは在庫を持たない</div>
+            <div><strong>スケーラブル:</strong> ショップを増やすだけで全国展開。設備投資不要</div>
+            <div><strong>Win-Win:</strong> ショップは集客チャネル獲得 + レンタル→購入の導線</div>
           </div>
         </div>
       </div>
 
-      <!-- CycleTrip BASE -->
-      <div class="card" style="padding:0; overflow:hidden;">
-        <div style="background:#1a1a2e; color:#fff; padding:12px 20px; font-size:13px; font-weight:700;">CycleTrip BASE — 自社保有 + CtoC + サブスク</div>
-        <div style="padding:16px;">
-          <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
-            <div style="background:#f1f5f9; border-radius:8px; padding:10px 14px; text-align:center;">
-              <div style="font-size:16px;">👤</div>
-              <div style="font-size:11px; color:#666;">ユーザー</div>
-            </div>
-            <div style="font-size:16px; color:#999;">→</div>
-            <div style="background:#fef3c7; border-radius:8px; padding:10px 14px; text-align:center;">
-              <div style="font-size:16px;">🏢</div>
-              <div style="font-size:11px; color:#666;">CycleTrip</div>
-            </div>
+      <div class="model-card">
+        <div class="mc-head">CycleTrip BASE — 自社保有 + CtoC + サブスク</div>
+        <div class="mc-body">
+          <div class="mini-nodes">
+            <div class="mini-node grey"><div class="mn-icon">👤</div>ユーザー</div>
+            <div class="mini-arrow">→</div>
+            <div class="mini-node amber"><div class="mn-icon">🏢</div>CycleTrip</div>
           </div>
-          <div style="font-size:12px; color:#555; line-height:1.7;">
+          <div class="model-note">
             <strong>3本柱:</strong><br>
             ① 自社で300台保有→日/週/月額で貸出<br>
             ② 個人間シェア（CtoC）で手数料<br>
             ③ 年契約サブスク（月2,300円〜）
           </div>
-          <div style="background:#fef2f2; border-radius:6px; padding:8px 10px; margin-top:10px; font-size:11px; color:#991b1b;">
-            課題: 在庫300台の保有リスク。拡大に設備投資が必要
-          </div>
+          <div class="model-issue">課題: 在庫300台の保有リスク。拡大に設備投資が必要</div>
         </div>
       </div>
 
-      <!-- ジャイアントストア -->
-      <div class="card" style="padding:0; overflow:hidden;">
-        <div style="background:#1a1a2e; color:#fff; padding:12px 20px; font-size:13px; font-weight:700;">ジャイアントストア — メーカー直営</div>
-        <div style="padding:16px;">
-          <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:12px;">
-            <div style="background:#f1f5f9; border-radius:8px; padding:10px 14px; text-align:center;">
-              <div style="font-size:16px;">👤</div>
-              <div style="font-size:11px; color:#666;">ユーザー</div>
-            </div>
-            <div style="font-size:16px; color:#999;">→</div>
-            <div style="background:#dbeafe; border-radius:8px; padding:10px 14px; text-align:center;">
-              <div style="font-size:16px;">🏭</div>
-              <div style="font-size:11px; color:#666;">Giant直営店</div>
-            </div>
+      <div class="model-card">
+        <div class="mc-head">ジャイアントストア — メーカー直営</div>
+        <div class="mc-body">
+          <div class="mini-nodes">
+            <div class="mini-node grey"><div class="mn-icon">👤</div>ユーザー</div>
+            <div class="mini-arrow">→</div>
+            <div class="mini-node blue"><div class="mn-icon">🏭</div>Giant直営店</div>
           </div>
-          <div style="font-size:12px; color:#555; line-height:1.7;">
+          <div class="model-note">
             <strong>収益の本質:</strong> レンタルは<strong>マーケティングチャネル</strong>。試乗→GIANT製品の購入が本来の目的。レンタル収益はおまけ。
           </div>
-          <div style="background:#fef2f2; border-radius:6px; padding:8px 10px; margin-top:10px; font-size:11px; color:#991b1b;">
-            課題: GIANT/Livのみ。他ブランドは試せない
-          </div>
+          <div class="model-issue">課題: GIANT/Livのみ。他ブランドは試せない</div>
         </div>
       </div>
 
-      <!-- クロスビー -->
-      <div class="card" style="padding:0; overflow:hidden;">
-        <div style="background:#1a1a2e; color:#fff; padding:12px 20px; font-size:13px; font-weight:700;">クロスビー — レンタル + ガイドツアー</div>
-        <div style="padding:16px;">
-          <div style="font-size:12px; color:#555; line-height:1.7;">
+      <div class="model-card">
+        <div class="mc-head">クロスビー — レンタル + ガイドツアー</div>
+        <div class="mc-body">
+          <div class="model-note">
             <strong>体験型モデル:</strong> 自転車は売らず「サイクリング体験」を売る。レンタル料 + ツアーガイド料で収益化。<br>
             <strong>ツアー例:</strong> 朝ごパン3,000円〜 しまなみ海道18,000円
           </div>
-          <div style="background:#fef2f2; border-radius:6px; padding:8px 10px; margin-top:10px; font-size:11px; color:#991b1b;">
-            課題: 個人事業・1店舗。ガイドの稼働に依存
-          </div>
+          <div class="model-issue">課題: 個人事業・1店舗。ガイドの稼働に依存</div>
         </div>
       </div>
 
-      <!-- 東京サイクリングツアー -->
-      <div class="card" style="padding:0; overflow:hidden;">
-        <div style="background:#1a1a2e; color:#fff; padding:12px 20px; font-size:13px; font-weight:700;">東京サイクリングツアー — デリバリー型</div>
-        <div style="padding:16px;">
-          <div style="font-size:12px; color:#555; line-height:1.7;">
+      <div class="model-card">
+        <div class="mc-head">東京サイクリングツアー — デリバリー型</div>
+        <div class="mc-body">
+          <div class="model-note">
             <strong>無店舗モデル:</strong> 店舗を持たず、ホテル・駅に配送→回収。固定費を抑えた運営。<br>
             <strong>特徴:</strong> 乗り捨て自由、最大23時まで利用可
           </div>
-          <div style="background:#fef2f2; border-radius:6px; padding:8px 10px; margin-top:10px; font-size:11px; color:#991b1b;">
-            課題: 約40台・1人経営。配送が人手に依存
-          </div>
+          <div class="model-issue">課題: 約40台・1人経営。配送が人手に依存</div>
         </div>
       </div>
 
-      <!-- Power Kids -->
-      <div class="card" style="padding:0; overflow:hidden;">
-        <div style="background:#1a1a2e; color:#fff; padding:12px 20px; font-size:13px; font-weight:700;">Power Kids — プロショップ副次型</div>
-        <div style="padding:16px;">
-          <div style="font-size:12px; color:#555; line-height:1.7;">
+      <div class="model-card">
+        <div class="mc-head">Power Kids — プロショップ副次型</div>
+        <div class="mc-body">
+          <div class="model-note">
             <strong>本業は販売・整備:</strong> レンタルは付帯サービス。宅配ボックスで全国配送。<br>
             <strong>ユニーク:</strong> 決戦ホイール宅配レンタル（DURA-ACEグレード）
           </div>
-          <div style="background:#fef2f2; border-radius:6px; padding:8px 10px; margin-top:10px; font-size:11px; color:#991b1b;">
-            課題: 従業員4名。レンタルは善意の副次サービス
-          </div>
+          <div class="model-issue">課題: 従業員4名。レンタルは善意の副次サービス</div>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- 料金比較テーブル -->
   <div class="section">
-    <h2>料金比較（ロードバイク 1日あたり）</h2>
-    <div class="table-wrapper">
+    <div class="section-header"><div class="section-num">5</div><div><h2>料金比較（ロードバイク 1日あたり）</h2><div class="sh-sub">エントリー〜ハイエンドの価格帯</div></div></div>
+    <div class="table-wrap">
       <table>
         <thead>
           <tr>
@@ -866,28 +611,29 @@
       </table>
     </div>
   </div>
+</div>
 
-  <!-- RINCLE vs 各社 1対1比較 -->
+<!-- ============ 1対1比較・SWOT ============ -->
+<div class="tab-panel" id="panel-vs">
   <div class="section">
-    <h2>RINCLE vs 各社（1対1比較）</h2>
+    <div class="section-header"><div class="section-num">6</div><div><h2>RINCLE vs 各社（1対1比較）</h2><div class="sh-sub">どこで勝ちどこで負けているか</div></div></div>
     <div class="vs-grid">
 
-      <!-- vs CycleTrip BASE -->
       <div class="vs-card">
         <div class="vs-card-header">RINCLE vs CycleTrip BASE</div>
         <div class="vs-card-body">
           <p class="vs-section-label">RINCLE が優位</p>
           <div class="vs-items">
-            <span class="badge badge-win">店舗数</span>
-            <span class="badge badge-win">スケーラビリティ</span>
-            <span class="badge badge-win">試乗→購入</span>
+            <span class="badge good">店舗数</span>
+            <span class="badge good">スケーラビリティ</span>
+            <span class="badge good">試乗→購入</span>
           </div>
           <p class="vs-section-label">CycleTrip が優位</p>
           <div class="vs-items">
-            <span class="badge badge-lose">台数</span>
-            <span class="badge badge-lose">料金プラン</span>
-            <span class="badge badge-lose">配送</span>
-            <span class="badge badge-lose">多言語</span>
+            <span class="badge bad">台数</span>
+            <span class="badge bad">料金プラン</span>
+            <span class="badge bad">配送</span>
+            <span class="badge bad">多言語</span>
           </div>
           <div class="vs-summary">
             <p class="vs-section-label">総評</p>
@@ -896,22 +642,21 @@
         </div>
       </div>
 
-      <!-- vs ジャイアントストア -->
       <div class="vs-card">
         <div class="vs-card-header">RINCLE vs ジャイアントストア</div>
         <div class="vs-card-body">
           <p class="vs-section-label">RINCLE が優位</p>
           <div class="vs-items">
-            <span class="badge badge-win">ブランド選択肢</span>
-            <span class="badge badge-win">店舗数</span>
-            <span class="badge badge-win">エリアカバー</span>
-            <span class="badge badge-win">拡大スピード</span>
+            <span class="badge good">ブランド選択肢</span>
+            <span class="badge good">店舗数</span>
+            <span class="badge good">エリアカバー</span>
+            <span class="badge good">拡大スピード</span>
           </div>
           <p class="vs-section-label">ジャイアント が優位</p>
           <div class="vs-items">
-            <span class="badge badge-lose">ブランド認知度</span>
-            <span class="badge badge-lose">ワンウェイ</span>
-            <span class="badge badge-lose">多言語</span>
+            <span class="badge bad">ブランド認知度</span>
+            <span class="badge bad">ワンウェイ</span>
+            <span class="badge bad">多言語</span>
           </div>
           <div class="vs-summary">
             <p class="vs-section-label">総評</p>
@@ -920,20 +665,19 @@
         </div>
       </div>
 
-      <!-- vs クロスビープランニング -->
       <div class="vs-card">
         <div class="vs-card-header">RINCLE vs クロスビープランニング</div>
         <div class="vs-card-body">
           <p class="vs-section-label">RINCLE が優位</p>
           <div class="vs-items">
-            <span class="badge badge-win">スケール</span>
-            <span class="badge badge-win">予約UX</span>
-            <span class="badge badge-win">サイト品質</span>
+            <span class="badge good">スケール</span>
+            <span class="badge good">予約UX</span>
+            <span class="badge good">サイト品質</span>
           </div>
           <p class="vs-section-label">クロスビー が優位</p>
           <div class="vs-items">
-            <span class="badge badge-lose">初心者対応</span>
-            <span class="badge badge-lose">ツアー設計</span>
+            <span class="badge bad">初心者対応</span>
+            <span class="badge bad">ツアー設計</span>
           </div>
           <div class="vs-summary">
             <p class="vs-section-label">総評</p>
@@ -942,20 +686,19 @@
         </div>
       </div>
 
-      <!-- vs 東京サイクリングツアー -->
       <div class="vs-card">
         <div class="vs-card-header">RINCLE vs 東京サイクリングツアー</div>
         <div class="vs-card-body">
           <p class="vs-section-label">RINCLE が優位</p>
           <div class="vs-items">
-            <span class="badge badge-win">スケール</span>
-            <span class="badge badge-win">整備品質</span>
-            <span class="badge badge-win">E-Bike</span>
+            <span class="badge good">スケール</span>
+            <span class="badge good">整備品質</span>
+            <span class="badge good">E-Bike</span>
           </div>
           <p class="vs-section-label">東京CT が優位</p>
           <div class="vs-items">
-            <span class="badge badge-lose">乗り捨て</span>
-            <span class="badge badge-lose">利用時間</span>
+            <span class="badge bad">乗り捨て</span>
+            <span class="badge bad">利用時間</span>
           </div>
           <div class="vs-summary">
             <p class="vs-section-label">総評</p>
@@ -964,20 +707,19 @@
         </div>
       </div>
 
-      <!-- vs Power Kids -->
       <div class="vs-card">
         <div class="vs-card-header">RINCLE vs Power Kids</div>
         <div class="vs-card-body">
           <p class="vs-section-label">RINCLE が優位</p>
           <div class="vs-items">
-            <span class="badge badge-win">ビジネスモデル</span>
-            <span class="badge badge-win">店舗数</span>
-            <span class="badge badge-win">予約UX</span>
+            <span class="badge good">ビジネスモデル</span>
+            <span class="badge good">店舗数</span>
+            <span class="badge good">予約UX</span>
           </div>
           <p class="vs-section-label">Power Kids が優位</p>
           <div class="vs-items">
-            <span class="badge badge-lose">宅配</span>
-            <span class="badge badge-lose">ホイールレンタル</span>
+            <span class="badge bad">宅配</span>
+            <span class="badge bad">ホイールレンタル</span>
           </div>
           <div class="vs-summary">
             <p class="vs-section-label">総評</p>
@@ -989,13 +731,11 @@
     </div>
   </div>
 
-  <!-- SWOT分析 -->
   <div class="section">
-    <h2>SWOT 分析</h2>
+    <div class="section-header"><div class="section-num">7</div><div><h2>SWOT 分析</h2><div class="sh-sub">強み・弱み・機会・脅威（2026-06調査反映）</div></div></div>
     <div class="swot-grid">
 
-      <!-- 強み -->
-      <div class="swot-card">
+      <div class="swot-card s">
         <div class="swot-header strength">Strengths（強み）</div>
         <div class="swot-body">
           <ul>
@@ -1008,8 +748,7 @@
         </div>
       </div>
 
-      <!-- 弱み -->
-      <div class="swot-card">
+      <div class="swot-card w">
         <div class="swot-header weakness">Weaknesses（弱み）</div>
         <div class="swot-body">
           <ul>
@@ -1024,8 +763,7 @@
         </div>
       </div>
 
-      <!-- 機会 -->
-      <div class="swot-card">
+      <div class="swot-card o">
         <div class="swot-header opportunity">Opportunities（機会）</div>
         <div class="swot-body">
           <ul>
@@ -1041,8 +779,7 @@
         </div>
       </div>
 
-      <!-- 脅威 -->
-      <div class="swot-card">
+      <div class="swot-card t">
         <div class="swot-header threat">Threats（脅威）</div>
         <div class="swot-body">
           <ul>
@@ -1059,56 +796,57 @@
 
     </div>
   </div>
+</div>
 
-  <!-- 追加競合カテゴリ（2026-06 深掘り調査） -->
+<!-- ============ 追加競合カテゴリ ============ -->
+<div class="tab-panel" id="panel-additional">
   <div class="section">
-    <h2>追加競合カテゴリ（2026-06 深掘り調査で大幅更新）</h2>
+    <div class="section-header"><div class="section-num">8</div><div><h2>追加競合カテゴリ</h2><div class="sh-sub">2026-06 深掘り調査で大幅更新</div></div></div>
 
-    <!-- A. メーカー直営・供給網 -->
-    <p style="font-size:15px; font-weight:700; color:#1a1a2e; margin:20px 0 4px;">A.【最重要】メーカー直営・メーカー供給網レンタル — 「脅威（仮定）」が現実に</p>
-    <p style="font-size:13px; color:#666; margin-bottom:16px;">RINCLEと同じ「プロショップ品質 × 試乗→購入導線」を、メーカーが直営店で既に実装している。</p>
-    <div class="comp-grid" style="grid-template-columns: repeat(2, 1fr);">
-      <div class="comp-card" style="border-left:4px solid #e94560;">
+    <h3>A.【最重要】メーカー直営・メーカー供給網レンタル — 「脅威（仮定）」が現実に</h3>
+    <p style="font-size:13px;color:var(--sub);margin-bottom:16px">RINCLEと同じ「プロショップ品質 × 試乗→購入導線」を、メーカーが直営店で既に実装している。</p>
+    <div class="comp-grid" style="grid-template-columns:repeat(2,1fr);">
+      <div class="comp-card threat-high">
         <span class="comp-num">!</span>
         <h4>Trek 直営店レンタル</h4>
         <p class="comp-company">TREK Bicycle 東京青山 / 福岡天神（直営2店）</p>
         <div class="comp-detail"><span class="label">料金</span><span>¥5,000〜¥10,000/日（カーボンロード/E-Bikeまで）・最長10日</span></div>
         <div class="comp-detail"><span class="label">導線</span><span><strong>レンタル後1ヶ月以内の購入でレンタル料金分を車両代から割引</strong> — RINCLEの「試乗→購入」と完全に同じ訴求</span></div>
-        <div class="comp-detail"><span class="label">脅威度</span><span style="color:#e94560;font-weight:700;">高</span></div>
+        <div class="comp-detail"><span class="label">脅威度</span><span style="color:var(--danger);font-weight:800;">高</span></div>
         <div class="comp-links">
           <a href="https://www.trekbikes.com/jp/ja_JP/jblog/rental-bike-25/" target="_blank">公式案内</a>
         </div>
       </div>
-      <div class="comp-card" style="border-left:4px solid #e94560;">
+      <div class="comp-card threat-high">
         <span class="comp-num">!</span>
         <h4>Specialized 直営レンタル</h4>
         <p class="comp-company">名城 / 北海道ボールパークFビレッジ（直営2拠点）</p>
         <div class="comp-detail"><span class="label">導線</span><span><strong>「Try and Buy プログラム」</strong>: レンタル後3ヶ月以内の購入でレンタル料金分を割引。レンタル車＝試乗車と同車種</span></div>
         <div class="comp-detail"><span class="label">留意</span><span>RINCLEパートナーに「スペシャライズド神戸」が含まれるため、直営拡大方針との関係（競合化/共存）は要ヒアリング</span></div>
-        <div class="comp-detail"><span class="label">脅威度</span><span style="color:#e94560;font-weight:700;">高</span></div>
+        <div class="comp-detail"><span class="label">脅威度</span><span style="color:var(--danger);font-weight:800;">高</span></div>
         <div class="comp-links">
           <a href="https://specialized-store.jp/meijo/rental/" target="_blank">名城</a>
           <a href="https://specialized-store.jp/hokkaido-experience-center/rental/" target="_blank">北海道</a>
         </div>
       </div>
-      <div class="comp-card" style="border-left:4px solid #e94560;">
+      <div class="comp-card threat-high">
         <span class="comp-num">!</span>
         <h4>MERIDA「FEEL. E-BIKE」</h4>
         <p class="comp-company">MIYATA×MERIDA供給・現地施設運営（規模で既存競合を上回る）</p>
         <div class="comp-detail"><span class="label">規模</span><span><strong>全国50拠点以上</strong>（北海道〜沖縄。長野約15・静岡約8など観光地に厚い）</span></div>
         <div class="comp-detail"><span class="label">構造</span><span>「メーカーが車両供給し現地施設が貸す」分散ネットワーク型 — RINCLEのモデルに最も近い。ただし<strong>統一予約・決済・リアルタイム在庫は持たない</strong>（公式は検索のみ）</span></div>
-        <div class="comp-detail"><span class="label">脅威度</span><span style="color:#e94560;font-weight:700;">高（規模）／ RINCLEの優位: 統一Web予約・マルチブランド</span></div>
+        <div class="comp-detail"><span class="label">脅威度</span><span style="color:var(--danger);font-weight:800;">高（規模）／ RINCLEの優位: 統一Web予約・マルチブランド</span></div>
         <div class="comp-links">
           <a href="https://www.merida.jp/feel/rental/" target="_blank">レンタル検索</a>
         </div>
       </div>
-      <div class="comp-card" style="border-left:4px solid #d97706;">
-        <span class="comp-num" style="background:#d97706;">!</span>
+      <div class="comp-card threat-mid">
+        <span class="comp-num">!</span>
         <h4>ヤマハ YPJ ／ モンベル</h4>
         <p class="comp-company">メーカー組織化網・アウトドア大手</p>
         <div class="comp-detail"><span class="label">ヤマハ</span><span>スポーツ電動アシスト「YPJ」レンタルショップ網を公式に組織化・掲載</span></div>
         <div class="comp-detail"><span class="label">モンベル</span><span>レンタル対応6店舗（自社ブランドSCHEIDEGG）。館山市の観光施設にE-MTB供給など「自治体への車両供給元」の顔も</span></div>
-        <div class="comp-detail"><span class="label">脅威度</span><span style="color:#d97706;font-weight:700;">中 — ブランド力と店舗網で将来的に競合化リスク</span></div>
+        <div class="comp-detail"><span class="label">脅威度</span><span style="color:#D97706;font-weight:800;">中 — ブランド力と店舗網で将来的に競合化リスク</span></div>
         <div class="comp-links">
           <a href="https://www.yamaha-motor.co.jp/pas/ypj/rentalshop/" target="_blank">YPJ一覧</a>
           <a href="https://www.montbell.jp/generalpage/disp.php?id=545" target="_blank">モンベル</a>
@@ -1116,10 +854,9 @@
       </div>
     </div>
 
-    <!-- B. インバウンド特化系 -->
-    <p style="font-size:15px; font-weight:700; color:#1a1a2e; margin:32px 0 4px;">B. インバウンド特化の海外系プレイヤー（新カテゴリ）</p>
-    <p style="font-size:13px; color:#666; margin-bottom:16px;">いずれも規模は小さいが、<strong>「英語 × ホテルデリバリー × ハイエンドロード」の高単価セグメントを既に押さえている</strong>。多言語未対応のままではこの層を丸ごと取りこぼす。</p>
-    <div class="table-wrapper">
+    <h3>B. インバウンド特化の海外系プレイヤー（新カテゴリ）</h3>
+    <p style="font-size:13px;color:var(--sub);margin-bottom:16px">いずれも規模は小さいが、<strong>「英語 × ホテルデリバリー × ハイエンドロード」の高単価セグメントを既に押さえている</strong>。多言語未対応のままではこの層を丸ごと取りこぼす。</p>
+    <div class="table-wrap">
       <table>
         <thead>
           <tr>
@@ -1130,120 +867,145 @@
         </thead>
         <tbody>
           <tr>
-            <td><a href="https://www.livelo.cc/pages/road-bike-rental-tokyo" target="_blank">Livelo</a></td>
+            <td><a href="https://www.livelo.cc/pages/road-bike-rental-tokyo" target="_blank" style="color:var(--brand-deep);font-weight:700;">Livelo</a></td>
             <td>世界30都市以上展開の外資系ロードバイクレンタル。東京ではRibble（Ultegraカーボン）をホテルデリバリー。完全インバウンド向け</td>
             <td>多言語・ホテル配送・グローバル予約網が強み</td>
           </tr>
           <tr>
-            <td><a href="https://roadbikerentaljapan.com/" target="_blank">Road Bike Rental Japan</a></td>
+            <td><a href="https://roadbikerentaljapan.com/" target="_blank" style="color:var(--brand-deep);font-weight:700;">Road Bike Rental Japan</a></td>
             <td>インバウンド向けロード/ツーリングレンタル＋ガイド。Ride with GPSと提携</td>
             <td>英語完結のツーリング需要を先取り</td>
           </tr>
           <tr>
-            <td><a href="https://www.lotuscyclejapan.com/rental-bikes" target="_blank">Lotus Cycle Japan</a></td>
+            <td><a href="https://www.lotuscyclejapan.com/rental-bikes" target="_blank" style="color:var(--brand-deep);font-weight:700;">Lotus Cycle Japan</a></td>
             <td>ロード/E-Bike等を全国で柔軟に受取・返却（英語サイト）</td>
             <td>「全国×乗り捨て柔軟×英語」でRINCLEの弱点を突く構成</td>
           </tr>
           <tr>
-            <td><a href="https://www.bimbimbikes.com/bike-rental/japan" target="_blank">Bimbimbikes</a></td>
+            <td><a href="https://www.bimbimbikes.com/bike-rental/japan" target="_blank" style="color:var(--brand-deep);font-weight:700;">Bimbimbikes</a></td>
             <td>海外の自転車レンタル予約アグリゲーター。日本の提携店を英語で予約可能</td>
             <td>海外プラットフォーマーが「日本の棚」を既に持つ例</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:14px 20px; margin-top:12px; font-size:13px; color:#92400e;">
-      訪日メディアは「日本のシェアサイクルは日本の電話番号が必要・英語アプリが弱い」点を障壁として指摘 → <strong>英語対応するだけで差別化になる余地</strong>（出典: Japan Guide）
-    </div>
+    <div class="alert alert-amber"><span class="a-icon">!</span><div>訪日メディアは「日本のシェアサイクルは日本の電話番号が必要・英語アプリが弱い」点を障壁として指摘 → <strong>英語対応するだけで差別化になる余地</strong>（出典: Japan Guide）</div></div>
 
-    <!-- C/D. シェアサイクル・OTA -->
-    <p style="font-size:15px; font-weight:700; color:#1a1a2e; margin:32px 0 16px;">C／D. 隣接領域の再定義 — シェアサイクルは「顧客接点の独占」、OTAは「取るべき棚」</p>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-      <div class="card" style="border-left:4px solid #ffc107;">
-        <h4 style="font-size:15px; margin-bottom:8px;">シェアサイクル大手（HELLO CYCLING / LUUP）</h4>
-        <p style="font-size:13px; color:#444; line-height:1.7;">HELLO CYCLINGは全国約11,300ステーション・約50,000台・<strong>会員460万人超</strong>。LUUPは京都ポート1,300超など観光地に高密度展開。スポーツバイク参入の兆候はなし（2026-06時点）。</p>
-        <p style="font-size:13px; color:#444; line-height:1.7; margin-top:8px;"><strong>脅威の本質は車種拡大ではなく顧客接点（アプリ・会員基盤）の独占。</strong>観光地での「自転車でまわる体験」の第一想起を奪われつつある。RINCLEは「半日〜1日×ロングライド」の体験価値を明確に打ち出さないと中間層を失う。</p>
+    <h3>C／D. 隣接領域の再定義 — シェアサイクルは「顧客接点の独占」、OTAは「取るべき棚」</h3>
+    <div class="grid2">
+      <div class="card" style="border-left:4px solid #D97706;margin:0;">
+        <h4 style="font-size:15px;margin-bottom:8px;">シェアサイクル大手（HELLO CYCLING / LUUP）</h4>
+        <p class="body">HELLO CYCLINGは全国約11,300ステーション・約50,000台・<strong>会員460万人超</strong>。LUUPは京都ポート1,300超など観光地に高密度展開。スポーツバイク参入の兆候はなし（2026-06時点）。</p>
+        <p class="body" style="margin-top:8px;"><strong>脅威の本質は車種拡大ではなく顧客接点（アプリ・会員基盤）の独占。</strong>観光地での「自転車でまわる体験」の第一想起を奪われつつある。RINCLEは「半日〜1日×ロングライド」の体験価値を明確に打ち出さないと中間層を失う。</p>
       </div>
-      <div class="card" style="border-left:4px solid #007bff;">
-        <h4 style="font-size:15px; margin-bottom:8px;">アクティビティOTA — 競合ではなく「取るべき棚」</h4>
-        <p style="font-size:13px; color:#444; line-height:1.7;">アソビュー（CycleTrip掲載済み）／じゃらん遊び・体験（クロスビー掲載済み）／Klook（訪日客向けに東京・札幌・阿蘇等のレンタサイクル商品を多数販売、<strong>海外OTA経由のインバウンド予約導線が確立済み</strong>）／RYDE CYCLE（横断検索アプリ）。</p>
-        <p style="font-size:13px; color:#444; line-height:1.7; margin-top:8px;">OTAは在庫を持たないため直接競合ではないが、(1)「地名×レンタサイクル」の検索上流を押さえる、(2) 競合が既に掲載済み、の2点で<strong>RINCLEが未掲載のままだと発見可能性で構造的に不利</strong>。アソビュー/じゃらん/Klook掲載は検討価値が高い。</p>
+      <div class="card" style="border-left:4px solid var(--info);margin:0;">
+        <h4 style="font-size:15px;margin-bottom:8px;">アクティビティOTA — 競合ではなく「取るべき棚」</h4>
+        <p class="body">アソビュー（CycleTrip掲載済み）／じゃらん遊び・体験（クロスビー掲載済み）／Klook（訪日客向けに東京・札幌・阿蘇等のレンタサイクル商品を多数販売、<strong>海外OTA経由のインバウンド予約導線が確立済み</strong>）／RYDE CYCLE（横断検索アプリ）。</p>
+        <p class="body" style="margin-top:8px;">OTAは在庫を持たないため直接競合ではないが、(1)「地名×レンタサイクル」の検索上流を押さえる、(2) 競合が既に掲載済み、の2点で<strong>RINCLEが未掲載のままだと発見可能性で構造的に不利</strong>。アソビュー/じゃらん/Klook掲載は検討価値が高い。</p>
       </div>
     </div>
-    <div style="background:#f8f9fa; border:1px solid #e8e8e8; border-radius:12px; padding:14px 20px; margin-top:16px; font-size:12px; color:#555;">
-      <strong>その他の周辺プレイヤー:</strong> RIDEAWAY（多摩川中心・無人レンタル実験、脅威度 低〜中）／ ブリヂストン「エシクル」（子ども用サブスク）／ glafit「WANDERIDE」（宿×電動モビリティ）／ 自治体・DMO直営E-Bikeレンタル（十日町・戸隠・館山等 — 競合であると同時にRINCLEの予約システム提供先になり得る）
+    <div class="card" style="font-size:12px;color:var(--sub);">
+      <strong style="color:var(--ink);">その他の周辺プレイヤー:</strong> RIDEAWAY（多摩川中心・無人レンタル実験、脅威度 低〜中）／ ブリヂストン「エシクル」（子ども用サブスク）／ glafit「WANDERIDE」（宿×電動モビリティ）／ 自治体・DMO直営E-Bikeレンタル（十日町・戸隠・館山等 — 競合であると同時にRINCLEの予約システム提供先になり得る）
     </div>
   </div>
+</div>
 
-  <!-- 優先アクション候補 -->
+<!-- ============ アクション・ペルソナ ============ -->
+<div class="tab-panel" id="panel-action">
   <div class="section">
-    <h2>2026-06調査による優先アクション候補</h2>
-    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; margin-top:20px;">
-      <div class="card" style="border-left:4px solid #e94560;">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#e94560; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">1</div>
-        <h4 style="margin-bottom:6px; font-size:15px;">多言語対応（最低限英語）の前倒し</h4>
-        <p style="font-size:13px; color:#444; line-height:1.7;">しまなみの訪日利用+70%とLivelo等の存在が論拠。英語予約ページ＋Klook/アソビュー掲載で最小コスト検証が可能。</p>
+    <div class="section-header"><div class="section-num">9</div><div><h2>2026-06調査による優先アクション候補</h2><div class="sh-sub">優先度順の5テーマ</div></div></div>
+    <div class="grid2">
+      <div class="card" style="border-left:4px solid var(--brand);margin:0;">
+        <div class="num-chip">1</div>
+        <h4>多言語対応（最低限英語）の前倒し</h4>
+        <p class="body">しまなみの訪日利用+70%とLivelo等の存在が論拠。英語予約ページ＋Klook/アソビュー掲載で最小コスト検証が可能。</p>
       </div>
-      <div class="card" style="border-left:4px solid #e94560;">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#e94560; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">2</div>
-        <h4 style="margin-bottom:6px; font-size:15px;">NCR第3次指定に合わせた自治体営業</h4>
-        <p style="font-size:13px; color:#444; line-height:1.7;">2026年夏の指定前後に候補ルート沿線の自治体/DMOへパッケージ提案。しまなみの「デジタル化で過去最多」事例を根拠に。</p>
+      <div class="card" style="border-left:4px solid var(--brand);margin:0;">
+        <div class="num-chip">2</div>
+        <h4>NCR第3次指定に合わせた自治体営業</h4>
+        <p class="body">2026年夏の指定前後に候補ルート沿線の自治体/DMOへパッケージ提案。しまなみの「デジタル化で過去最多」事例を根拠に。</p>
       </div>
-      <div class="card" style="border-left:4px solid #0f3460;">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#0f3460; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">3</div>
-        <h4 style="margin-bottom:6px; font-size:15px;">OTA掲載戦略の策定</h4>
-        <p style="font-size:13px; color:#444; line-height:1.7;">アソビュー/じゃらん/Klookへの掲載可否・手数料・在庫連携を整理（競合は掲載済み）。</p>
+      <div class="card" style="border-left:4px solid var(--ink);margin:0;">
+        <div class="num-chip ink">3</div>
+        <h4>OTA掲載戦略の策定</h4>
+        <p class="body">アソビュー/じゃらん/Klookへの掲載可否・手数料・在庫連携を整理（競合は掲載済み）。</p>
       </div>
-      <div class="card" style="border-left:4px solid #0f3460;">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#0f3460; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">4</div>
-        <h4 style="margin-bottom:6px; font-size:15px;">メーカーとの関係整理</h4>
-        <p style="font-size:13px; color:#444; line-height:1.7;">パートナーが扱うブランドの直営レンタル拡大方針をヒアリングし、競合化リスクと「メーカー公認レンタルプラットフォーム」化の交渉余地を見極める。</p>
+      <div class="card" style="border-left:4px solid var(--ink);margin:0;">
+        <div class="num-chip ink">4</div>
+        <h4>メーカーとの関係整理</h4>
+        <p class="body">パートナーが扱うブランドの直営レンタル拡大方針をヒアリングし、競合化リスクと「メーカー公認レンタルプラットフォーム」化の交渉余地を見極める。</p>
       </div>
-      <div class="card" style="border-left:4px solid #64748b; grid-column:1/3;">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#64748b; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">5</div>
-        <h4 style="margin-bottom:6px; font-size:15px;">CycleTrip BASE 羽田モデルの監視</h4>
-        <p style="font-size:13px; color:#444; line-height:1.7;">交通ハブ×無人×割引の成果（4店舗目の有無）を四半期ごとにウォッチ。</p>
+      <div class="card full" style="border-left:4px solid #8B8178;margin:0;">
+        <div class="num-chip grey">5</div>
+        <h4>CycleTrip BASE 羽田モデルの監視</h4>
+        <p class="body">交通ハブ×無人×割引の成果（4店舗目の有無）を四半期ごとにウォッチ。</p>
       </div>
     </div>
   </div>
 
-  <!-- ターゲットペルソナ -->
   <div class="section">
-    <h2>ターゲットペルソナ</h2>
-    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; margin-top:20px;">
-      <div class="card">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#e94560; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">A</div>
-        <h4 style="margin-bottom:4px;">スポーツバイクデビューの会社員</h4>
-        <p style="font-size:12px; color:#666; margin-bottom:10px;">30代男性・都市部在住</p>
-        <p style="font-size:13px; color:#444; line-height:1.7;">「ロードバイクに興味あるけど、いきなり30万円は出せない。まず試してみたい」<br>→ プロショップの対面サポート + 気に入ったらその場で購入相談</p>
+    <div class="section-header"><div class="section-num">10</div><div><h2>ターゲットペルソナ（A〜F）</h2><div class="sh-sub">2026-06-12更新: 運営ヒアリングを受けて再編（シニア層を削除し、訪日旅行者・イベント参加者を追加）</div></div></div>
+    <p style="font-size:13px;color:var(--sub);margin-bottom:8px">獲得チャネル・刺さるメッセージ・検証状況の詳細は <code>documents/4_growth/02_marketing/marketing-personas.md</code> を参照。</p>
+    <div class="grid2">
+      <div class="card" style="margin:0;">
+        <div class="num-chip">A</div>
+        <h4>スポーツバイクデビューの会社員</h4>
+        <p class="p-attr">30代男性・都市部在住・会社員</p>
+        <p class="body">「ロードバイクに興味あるけど、いきなり30万円は出せない。まず試してみたい」<br>→ プロショップスタッフの対面サポート + 気に入ったらその場で購入相談</p>
       </div>
-      <div class="card">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#2563eb; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">B</div>
-        <h4 style="margin-bottom:4px;">旅先でサイクリングを楽しみたい旅行者</h4>
-        <p style="font-size:12px; color:#666; margin-bottom:10px;">40代夫婦・観光旅行中</p>
-        <p style="font-size:13px; color:#444; line-height:1.7;">「しまなみ海道をサイクリングしたい。でも自転車を持っていくのは面倒」<br>→ 全国24店舗のネットワーク + ショップ監修ルート情報</p>
+      <div class="card" style="margin:0;">
+        <div class="num-chip blue">B</div>
+        <h4>旅先でサイクリングを楽しみたい旅行者</h4>
+        <p class="p-attr">40代夫婦・観光旅行中</p>
+        <p class="body">「しまなみ海道をサイクリングしたい。でも自転車を持っていくのは面倒」<br>→ 全国のパートナー店舗網（2026-08-20実測で56店舗） + ショップスタッフ監修のルート情報</p>
       </div>
-      <div class="card">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#7c3aed; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">C</div>
-        <h4 style="margin-bottom:4px;">購入前にいろいろ試したい経験者</h4>
-        <p style="font-size:12px; color:#666; margin-bottom:10px;">20〜30代男性・クロスバイク所有</p>
-        <p style="font-size:13px; color:#444; line-height:1.7;">「次はロードバイクが欲しいけど、ブランドが多すぎて決められない」<br>→ マルチブランド対応 + プロショップで購入相談 + レンタル料金割引</p>
+      <div class="card" style="margin:0;">
+        <div class="num-chip violet">C</div>
+        <h4>購入前にいろいろ試したい経験者</h4>
+        <p class="p-attr">20〜30代男性・クロスバイク所有</p>
+        <p class="body">「次はロードバイクが欲しいけど、ブランドやモデルが多すぎて決められない。実際に乗ってから選びたい」<br>→ マルチブランド対応 + プロショップでそのまま購入相談 + レンタル料金割引</p>
       </div>
-      <div class="card">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#059669; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">D</div>
-        <h4 style="margin-bottom:4px;">健康目的のシニア層</h4>
-        <p style="font-size:12px; color:#666; margin-bottom:10px;">50〜60代・体力に自信がない</p>
-        <p style="font-size:13px; color:#444; line-height:1.7;">「健康のために運動したいけど、ランニングは膝が心配。E-Bikeなら続けられそう」<br>→ E-Bike対応ショップ + 初心者向け操作説明 + おすすめルート</p>
+      <div class="card star" style="margin:0;">
+        <div class="num-chip">D</div>
+        <h4>プロショップの既存顧客 <span class="badge brand">★獲得コスト最低の最重要ペルソナ</span></h4>
+        <p class="p-attr">全年代（男性が多い）・ショップ近隣在住・スポーツバイク所有者</p>
+        <p class="body">「友達や家族にもサイクリングを体験させたい」「別ブランドのバイクにも乗ってみたい」<br>→ ショップ店頭からの直接導線。すでにショップとの接点があるため獲得コストが最も低い</p>
       </div>
-      <div class="card" style="border:2px solid #d97706;">
-        <div style="font-size:11px; font-weight:700; color:#fff; background:#d97706; display:inline-block; padding:2px 10px; border-radius:4px; margin-bottom:10px;">E</div>
-        <h4 style="margin-bottom:4px;">プロショップの既存顧客 <span style="font-size:11px; color:#d97706;">★獲得コスト最低の最重要ペルソナ</span></h4>
-        <p style="font-size:12px; color:#666; margin-bottom:10px;">全年代・スポーツバイク所有者・ショップ近隣在住</p>
-        <p style="font-size:13px; color:#444; line-height:1.7;">「友達や家族にもサイクリングを体験させたい」「別ブランドも乗ってみたい」<br>→ ショップ店頭からの直接導線。すでに接点があるため獲得コストが最も低い</p>
+      <div class="card" style="margin:0;">
+        <div class="num-chip green">E</div>
+        <h4>訪日旅行者 <span class="badge warn">素案・2026-06-11追加</span></h4>
+        <p class="p-attr">30〜40代・台湾/香港/欧米豪の個人手配旅行者・サイクリング経験あり</p>
+        <p class="body">「日本でサイクリングしたい。英語で予約できる整備済みのバイクを探している」<br>→ 多言語未対応なのに来店実績あり（6/12運営ヒアリング:「対応したらめっちゃ来るイメージ」）。英語予約ページ+海外OTA掲載での最小コスト検証が先決</p>
+      </div>
+      <div class="card" style="margin:0;">
+        <div class="num-chip amber">F</div>
+        <h4>イベント参加者 <span class="badge warn">素案・2026-06-12追加</span></h4>
+        <p class="p-attr">トライアスロン・ロングライドイベントの出走者・機材を持っていない/遠征に持って行けない</p>
+        <p class="body">「〇〇大会に出たいが自転車がない」。日付・場所が確定しており検索意図が極めて明確。<strong>来店の約2割を占める</strong>（6/12運営ヒアリング）。大阪城トライアスロンで他社レンタル満車→RINCLEへ流入した実例あり<br>→ 大会会場近くの店舗網 × カーボンロード等の競技機材 × プロ整備</p>
       </div>
     </div>
   </div>
+</div>
 
 </div>
+
+<footer>正本: documents/4_growth/01_strategy/competitive-analysis.md（md更新時はこのHTMLも同期すること）</footer>
+
+<script>
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  function openTab(id){
+    tabBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.id === id); });
+    window.scrollTo({top: 0});
+  }
+  tabBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      openTab(b.dataset.target);
+      history.replaceState(null, '', '#' + b.dataset.target);
+    });
+  });
+  if (location.hash && document.getElementById(location.hash.slice(1))) openTab(location.hash.slice(1));
+</script>
 </body>
 </html>

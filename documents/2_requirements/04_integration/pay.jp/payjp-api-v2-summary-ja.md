@@ -1,5 +1,7 @@
 # PAY.JP API v2 一覧・概要（日本語まとめ）
 
+> **注記（2026-08-20）:** 今後の決済は **Stripeへの載せ替えが決定**（2026-06-19定例・実装タスク#35）。本書はその判断材料となったPay.JP v2の調査まとめ（現行本番はPay.JP v1で稼働中）。
+>
 > PAY.JPの新世代API（**2026-02-12提供開始**）のリファレンスまとめ。[v1まとめ](./payjp-api-v1-summary-ja.md)の姉妹編。
 > 作成: 2026-06-12（タスク#20 Pay.jp vs Stripe再調査の派生）。出典: [docs.pay.jp/v2](https://docs.pay.jp/v2) の公開OpenAPI定義（2.0.0）を解析 + [v1→v2移行ガイド](https://docs.pay.jp/v2/guide/v2-migration)。詳細パラメータは必ず公式を参照。
 
