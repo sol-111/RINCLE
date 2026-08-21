@@ -69,7 +69,6 @@
   <a href="#step2"><span class="fnum">2</span><span class="ft">Data APIの設定</span><span class="fd">店舗・自転車のID一覧を取る</span></a>
   <a href="#step3"><span class="fnum">3</span><span class="ft">sitemap.xmlを生成</span><span class="fd">スクリプトが取得〜組み立てまで実行</span></a>
   <a href="#step4"><span class="fnum">4</span><span class="ft">公開とGoogle登録</span><span class="fd">Bubbleに置いてSearch Consoleへ</span></a>
-    <a href="#log"><span class="fnum">5</span><span class="ft">実績</span><span class="fd">生成した記録</span></a>
 </nav>
 
 <div class="container">
@@ -88,7 +87,7 @@
       <div class="url-line"><span class="seg seg-base">https://rincle.co.jp</span><span class="seg seg-page">/bicycle_detail</span><span class="seg seg-base">?bicycle=</span><span class="seg seg-id">&lt;自転車ID&gt;</span></div>
       <div class="url-legend">
         <span><i style="background: #9FC5EA;"></i>ページの種類（全部で19ページ）</span>
-        <span><i style="background: #F0B08E;"></i>データベース上のID（店舗56・自転車374）</span>
+        <span><i style="background: #F0B08E;"></i>データベース上のID（2026-08-21時点で店舗63・自転車342）</span>
       </div>
     </div>
 
@@ -130,16 +129,16 @@
         <svg viewBox="0 0 42 42" role="img" aria-label="sitemap登録URLの構成比">
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"/>
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4"
-                  stroke-dasharray="86.4 13.6" stroke-dashoffset="25"/>
+                  stroke-dasharray="83.8 16.2" stroke-dashoffset="25"/>
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="2.4"
-                  stroke-dasharray="12.9 87.1" stroke-dashoffset="-61.4"/>
-          <text x="21" y="21" text-anchor="middle" class="big">433</text>
+                  stroke-dasharray="15.4 84.6" stroke-dashoffset="-58.8"/>
+          <text x="21" y="21" text-anchor="middle" class="big">408</text>
         </svg>
         <div class="cl">
-          <div><i style="background: var(--accent);"></i>自転車詳細（約86%）<strong>374</strong></div>
-          <div><i style="background: var(--ink);"></i>店舗詳細（約13%）<strong>56</strong></div>
+          <div><i style="background: var(--accent);"></i>自転車詳細（約84%）<strong>342</strong></div>
+          <div><i style="background: var(--ink);"></i>店舗詳細（約15%）<strong>63</strong></div>
           <div><i style="background: #EAE2D6;"></i>静的ページ（約1%）<strong>3</strong></div>
-          <div class="src" style="border-bottom: none;">単位: URL ／ sitemapのほとんどはデータ由来のURL。店舗・自転車が増えるほど再生成の価値が上がる</div>
+          <div class="src" style="border-bottom: none;">単位: URL ／ 2026-08-21に本番Data APIから生成した実数（合計408）。sitemapのほとんどはデータ由来のURLなので、店舗・自転車が増えるほど再生成の価値が上がる</div>
         </div>
       </div>
     </div>
@@ -232,7 +231,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
       </ol>
     </div>
     <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span>本番反映前に動きを試したい時は <code>--dev</code> を付けると開発版（version-test）のData APIで動きます。</span></div>
-    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>生成後の確認:</strong> 出力件数を下の「実績」と見比べる。店舗はサイトの検索に出る数より多くなるのが正常（在庫ゼロの店舗も載せるため）。自転車はほぼ一致するはずで、大きくズレたら除外条件の判定が実態と合っていないので要調査。</span></div>
+    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>生成後の確認:</strong> 出力件数を確かめる（2026-08-21の初回生成は 静的3 + 店舗63 + 自転車342 = 408 URL）。店舗はサイトの検索に出る数より多くなるのが正常（在庫ゼロの店舗も載せるため）。自転車はほぼ一致するはずで、大きくズレたら除外条件の判定が実態と合っていないので要調査。</span></div>
   </div>
 
   <!-- 手順4 -->
@@ -270,28 +269,6 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
     </ul>
   </div>
 
-  <div class="section" id="log">
-    <div class="section-header">
-      <div class="section-num">5</div>
-      <div class="sh-body"><h2>実績</h2><div class="sh-sub">生成した記録</div></div>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>日付</th><th>静的</th><th>店舗</th><th>自転車</th><th>合計</th><th>備考</th></tr></thead>
-        <tbody>
-          <tr>
-            <td class="label">2026-08-21</td>
-            <td class="num">3</td><td class="num">63</td><td class="num">342</td><td class="num">408</td>
-            <td>本番Data APIから初回生成。店舗は全67件中、審査未通過3・辞退1を除外（在庫ゼロの10店は掲載）。自転車は全440件中、非表示89・削除6・掲載しない店舗の9台を除外</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <ul class="notes">
-      <li>本番サイトの検索に出る店舗は53件（在庫のある店舗だけが表示されるため）。sitemapの63件との差10件は「レンタル車体準備中」等の在庫ゼロ店舗で、意図して載せている</li>
-    </ul>
-  </div>
-
   <!-- まとめ -->
   <div class="recap">
     <h2>運用のまとめ — 店舗・自転車が増えたら</h2>
@@ -300,7 +277,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
       <span class="r-chip">手順4: 再アップロード</span><span class="r-arr">→</span>
       <span class="r-chip hot">Search Consoleが自動で再読み込み</span>
     </div>
-    <p>手順1・2は最初の1回だけ（ページの種類を増やした時のみ再確認）。再生成の頻度（月1回など）は増永さんと相談して決める。再生成したら上の「実績」に1行足して、件数の推移を残す。</p>
+    <p>手順1・2は最初の1回だけ（ページの種類を増やした時のみ再確認）。再生成の頻度（月1回など）は増永さんと相談して決める。</p>
   </div>
 
 </div>
