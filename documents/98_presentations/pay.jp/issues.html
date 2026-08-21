@@ -6,190 +6,80 @@
 <title>Pay.JP 連携 修正一覧 | RINCLE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/design.css">
 <style>
-  :root{
-    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
-    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
-    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
-    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
-    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
-    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
-    --tobe:#B45309; --tobe-light:#FFF4E0; --tobe-border:#F5D9A8;
-    --imm-light:#FDECEF; --imm-border:#F6C6D0;
-    --low-light:#EEF3FE; --low-border:#CBDCFA;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
+/* ページ固有CSS — Pay.JP 連携 修正一覧（共通部品は ../assets/design.css を参照） */
 
-  /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
-  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
-  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
-  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
-  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-  .hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
+/* 対応方針（白面+罫線。塗らない） */
+.strategy{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:24px 28px;margin:28px 0 40px}
+.strategy h3{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);margin:0 0 4px}
+.strategy .goal{font-size:14px;font-weight:700;color:var(--accent);margin-bottom:14px}
+.strategy ul{list-style:none}
+.strategy li{display:flex;align-items:baseline;gap:12px;font-size:13.5px;margin-bottom:10px;line-height:1.8}
+.strategy li:last-child{margin-bottom:0}
 
-  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+/* 課題カード（白面+1px罫線・左2px罫線で区分。影なし） */
+.issue-card{background:var(--surface);border:1px solid var(--line);border-radius:4px;margin:28px 0;overflow:hidden}
+.issue-card.imm{border-left:2px solid var(--danger)}
+.issue-card.tobe{border-left:2px solid var(--gold)}
+.issue-card.low{border-left:2px solid var(--info)}
+.issue-head{display:flex;align-items:center;gap:14px;padding:20px 24px 0}
+.issue-no{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-family:var(--serif);font-size:14px;flex-shrink:0;background:var(--surface);border:1.5px solid var(--line)}
+.issue-no.imm{border-color:var(--danger);color:var(--danger)}
+.issue-no.tobe{border-color:var(--gold);color:var(--gold-text)}
+.issue-no.low{border-color:var(--info);color:var(--info)}
+.issue-title{flex:1;font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);line-height:1.55}
+.order-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:3px;font-size:11.5px;font-weight:700;flex-shrink:0;background:var(--surface);border:1px solid var(--danger-line);color:var(--danger-text);white-space:nowrap}
+.order-badge .on{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--danger-line);font-family:var(--serif);font-size:11px}
+.issue-body{padding:16px 24px 24px}
+.ifield{margin-top:16px}
+.ifield:first-child{margin-top:0}
+.ifield-label{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.16em;margin-bottom:4px}
+.ifield-label.ph{color:var(--sub)}
+.ifield-label.im{color:var(--danger)}
+.ifield-label.ac{color:var(--ok)}
+.ifield-label.nt{color:var(--info)}
+.ifield-text{font-size:13.5px;color:var(--text);line-height:1.9}
+.ifield-text ul{list-style:none}
+.ifield-text ul li{position:relative;padding-left:16px;margin-bottom:4px}
+.ifield-text ul li::before{content:"";position:absolute;left:0;top:12px;width:5px;height:5px;border-radius:50%;background:var(--line)}
 
-  /* flow nav */
-  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
-  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
-  .flow a:first-child{border-left:none}
-  .flow a:hover{background:var(--brand-soft)}
-  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
-  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
-  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
-  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
-  .flow a:last-child::after{content:""}
+/* 優先理由（琥珀の左罫線） */
+.why{background:var(--surface);border:1px solid var(--line-soft);border-left:2px solid var(--gold);padding:12px 16px;margin-top:16px}
+.why .w-label{font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--gold-text);margin-bottom:2px}
+.why .w-text{font-size:13.5px;color:var(--text);font-weight:700;line-height:1.8}
 
-  /* sections */
-  .section{margin-bottom:56px;scroll-margin-top:20px}
-  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
-  .section-num.plain{background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5}
-  .section-num.imm{background:linear-gradient(135deg,var(--danger),#E4506F);box-shadow:0 4px 12px rgba(194,27,58,.35)}
-  .section-num.tobe{background:linear-gradient(135deg,var(--tobe),#D97A1F);box-shadow:0 4px 12px rgba(180,83,9,.35)}
-  .section-num.low{background:linear-gradient(135deg,var(--info),#5B8DEF);box-shadow:0 4px 12px rgba(37,99,235,.35)}
-  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
-  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
-  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
+/* 開発者向け詳細（アコーディオン） */
+.dev-detail{margin-top:18px;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.dev-detail summary{padding:11px 16px;font-size:12.5px;font-weight:700;color:var(--ink);background:var(--paper);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;user-select:none}
+.dev-detail summary::-webkit-details-marker{display:none}
+.dev-detail summary::before{content:"";width:0;height:0;border-left:5px solid var(--accent);border-top:4px solid transparent;border-bottom:4px solid transparent;transition:transform .2s}
+.dev-detail[open] summary::before{transform:rotate(90deg)}
+.dd-body{padding:16px 20px;font-size:13px;color:var(--text);line-height:1.9;border-top:1px solid var(--line)}
+.dd-body h5{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--ink);margin:20px 0 6px}
+.dd-body h5:first-child{margin-top:0}
+.dd-body p{margin:8px 0}
+.dd-body table{font-size:13px}
+.dd-body td{padding:10px 14px 10px 0}
+.dd-body .table-wrap{margin:12px 0}
+.dd-body ul{padding-left:20px}
+.dd-body ul li{margin-bottom:4px}
 
-  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
+/* フロー図（等幅・薄い紙面+罫線。強調行のみ紅） */
+.flow-diagram{background:var(--paper);border:1px solid var(--line-soft);border-radius:4px;padding:16px 20px;margin:12px 0;font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:12.5px;line-height:1.8;white-space:pre-wrap;color:var(--text);overflow-x:auto}
+.flow-diagram .hl-line{background:var(--danger-soft);display:inline;padding:1px 4px;border-radius:3px;font-weight:700;color:var(--danger-text)}
 
-  /* alerts */
-  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
-  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
-  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
-  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
-  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
+/* バッジの追加色 */
+.badge.warn{background:var(--gold-soft);border:1px solid #EAD9AE;color:var(--gold-text)}
+.badge.low-b{background:var(--info-soft);border:1px solid var(--info-line);color:var(--info-text)}
 
-  /* tables */
-  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
-  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
-  thead th{background:#FBF8F5;color:var(--ink);border-bottom:2px solid var(--brand);padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
-  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:middle}
-  tr:last-child td{border-bottom:none}
-  tbody tr:hover td{background:#FBF8F5}
-  td.label{font-weight:700;color:var(--ink)}
+.footer-note{text-align:center;color:var(--sub);font-size:12px;padding:32px 0 0;border-top:1px solid var(--line);margin-top:20px}
 
-  /* badges */
-  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
-  .badge.good{background:#EDFAF2;color:#136A41}
-  .badge.bad{background:#FDECEF;color:#8E1230}
-  .badge.warn{background:#FFF4E0;color:#8F5A0A}
-  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
-  .badge.low-b{background:var(--low-light);color:#1D48A6}
-
-  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
-
-  /* ページ固有: 件数サマリーカード */
-
-  /* ページ固有: 対応方針ボックス */
-  .strategy{background:linear-gradient(135deg,#FFF4EF 0%,#FFF9F6 60%,#FDF6EE 100%);border:1px solid #FBD3C4;border-radius:var(--radius);padding:26px 30px;margin-bottom:40px}
-  .strategy h3{margin:0 0 2px;padding:0;border:none;font-size:17px}
-  .strategy .goal{font-size:15px;font-weight:800;color:var(--brand-deep);margin-bottom:14px}
-  .strategy ul{list-style:none}
-  .strategy li{display:flex;align-items:baseline;gap:10px;font-size:14px;margin-bottom:8px;line-height:1.7}
-  .strategy li:last-child{margin-bottom:0}
-
-  /* ページ固有: 課題カード */
-  .issue-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin:20px 0;overflow:hidden;transition:box-shadow .2s}
-  .issue-card:hover{box-shadow:var(--shadow-lg)}
-  .issue-card.imm{border-left:5px solid var(--danger)}
-  .issue-card.tobe{border-left:5px solid var(--tobe)}
-  .issue-card.low{border-left:5px solid var(--info)}
-  .issue-head{display:flex;align-items:center;gap:14px;padding:20px 24px 0}
-  .issue-no{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:15px;font-weight:800;flex-shrink:0;color:#fff}
-  .issue-no.imm{background:var(--danger)}
-  .issue-no.tobe{background:var(--tobe)}
-  .issue-no.low{background:var(--info)}
-  .issue-title{flex:1;font-size:16.5px;font-weight:800;color:var(--ink);line-height:1.45}
-  .order-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:800;flex-shrink:0;background:var(--danger);color:#fff;white-space:nowrap}
-  .order-badge .on{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.25);font-size:12px;font-weight:800}
-  .issue-body{padding:16px 24px 24px}
-  .ifield{margin-top:14px}
-  .ifield:first-child{margin-top:0}
-  .ifield-label{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.05em;padding:2px 10px;border-radius:4px;margin-bottom:4px}
-  .ifield-label.ph{background:#EFEBE7;color:#4A4038}
-  .ifield-label.im{background:#FDECEF;color:#8E1230}
-  .ifield-label.ac{background:#EDFAF2;color:#136A41}
-  .ifield-label.nt{background:#EEF3FE;color:#1D48A6}
-  .ifield-text{font-size:14px;color:var(--text);line-height:1.75;padding-left:4px}
-  .ifield-text ul{list-style:none}
-  .ifield-text ul li{position:relative;padding-left:16px;margin-bottom:4px}
-  .ifield-text ul li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:#D9CFC5}
-
-  /* 優先理由 */
-  .why{background:var(--tobe-light);border:1px solid var(--tobe-border);border-radius:8px;padding:12px 16px;margin-top:14px;display:flex;gap:10px;align-items:flex-start}
-  .why .w-icon{font-size:16px;flex-shrink:0;line-height:1.6}
-  .why .w-label{font-size:11px;font-weight:800;letter-spacing:.05em;color:#8F5A0A;margin-bottom:2px}
-  .why .w-text{font-size:14px;color:#6B4308;font-weight:700;line-height:1.6}
-
-  /* 開発者向け詳細（アコーディオン） */
-  .dev-detail{margin-top:16px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
-  .dev-detail summary{padding:12px 16px;font-size:13px;font-weight:800;color:var(--ink);background:#FBF8F5;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;user-select:none}
-  .dev-detail summary::-webkit-details-marker{display:none}
-  .dev-detail summary::before{content:"▶";font-size:10px;color:var(--brand);transition:transform .2s}
-  .dev-detail[open] summary::before{transform:rotate(90deg)}
-  .dd-body{padding:16px 20px;font-size:13px;color:var(--text);line-height:1.8;border-top:1px solid var(--border)}
-  .dd-body h5{font-size:13px;font-weight:800;color:var(--ink);margin:16px 0 6px}
-  .dd-body h5:first-child{margin-top:0}
-  .dd-body table{font-size:13px}
-  .dd-body thead th{padding:8px 12px;font-size:12px}
-  .dd-body td{padding:8px 12px}
-  .dd-body ul{padding-left:20px}
-  .dd-body ul li{margin-bottom:4px}
-
-  /* ページ固有: フロー図（開発者向け） */
-  .flow-diagram{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:8px 0;font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--text);overflow-x:auto}
-  .flow-diagram .hl-line{background:#FDECEF;display:inline;padding:1px 4px;border-radius:3px;font-weight:700;color:#8E1230}
-
-  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
-  .footer-note{text-align:center;color:var(--sub);font-size:13px;padding:32px 0 0;border-top:1px solid var(--border);margin-top:20px}
-
-  /* SVGアイコン（スプライト参照） */
-  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
-  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
-  .section-num .icon{width:22px;height:22px}
-
-  /* 読み進みバー */
-  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
-  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
-
-  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
-  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-  .rv-in{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  /* フローナビの現在地ハイライト */
-  .flow a.cur{background:var(--brand-soft)}
-  .flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
-
-  /* ミニチャート（ドーナツ） */
-  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .chart svg{width:130px;height:130px;flex-shrink:0}
-  .chart .cl{font-size:13.5px}
-  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
-  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
-
-  @media (max-width:760px){
-    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
-    .flow a{border-top:1px solid var(--border)}
-    .kv-grid{grid-template-columns:1fr 1fr}
-    .issue-head{flex-wrap:wrap}
-    .strategy{padding:20px}
-    .hero{padding:44px 24px 84px}
-    .container{padding:28px 18px 60px}
-  }
-
-  /* webfont: 和文の約物詰め + 表の等幅数字 */
-  body{font-feature-settings:'palt' 1}
-  table{font-variant-numeric:tabular-nums}
+@media (max-width:760px){
+  .issue-head{flex-wrap:wrap}
+  .strategy{padding:20px}
+}
 </style>
 </head>
 <body>
@@ -208,38 +98,41 @@
 <symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
 <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
 <symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></symbol>
 </defs></svg>
 
 <div class="progress" aria-hidden="true"><i></i></div>
 
 <div class="hero">
   <div class="hero-inner">
-    <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
-    <div>
-      <span class="eyebrow">決済 — Pay.JP連携の課題と対応計画</span>
-      <h1>Pay.JP 連携 修正一覧</h1>
-      <p class="lead">Yanoさんの調査報告（2026-04-16）および rincle.bubble 解析結果に基づく課題・改善項目の一覧です。</p>
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">決済 — Pay.JP連携の課題と対応計画</span>
+      </div>
     </div>
+    <h1>Pay.JP 連携 修正一覧</h1>
+    <p class="lead">Yanoさんの調査報告（2026-04-16）および rincle.bubble 解析結果に基づく課題・改善項目の一覧です。</p>
   </div>
 </div>
 
+<nav class="flow">
+  <a href="#summary"><span class="fnum">12</span><span class="ft">一覧サマリー</span><span class="fd">全12件をひと目で</span></a>
+  <a href="#immediate"><span class="fnum">6</span><span class="ft">即時対応</span><span class="fd">運用が壊れる・仕様未達</span></a>
+  <a href="#tobe"><span class="fnum">3</span><span class="ft">改善時に対応</span><span class="fd">改善フェーズでまとめて</span></a>
+  <a href="#low"><span class="fnum">3</span><span class="ft">低優先</span><span class="fd">運用への影響なし</span></a>
+</nav>
+
 <div class="container">
 
-  <nav class="flow">
-    <a href="#summary"><span class="fnum"><svg class="icon"><use href="#i-list"/></svg></span><div class="ft">一覧サマリー</div><div class="fd">全12件をひと目で</div></a>
-    <a href="#immediate"><span class="fnum">6</span><div class="ft">即時対応</div><div class="fd">運用が壊れる・仕様未達</div></a>
-    <a href="#tobe"><span class="fnum">3</span><div class="ft">改善時に対応</div><div class="fd">改善フェーズでまとめて</div></a>
-    <a href="#low"><span class="fnum">3</span><div class="ft">低優先</div><div class="fd">運用への影響なし</div></a>
-  </nav>
-
-  <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>
+  <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div>
     <strong>今後の決済はStripeへの載せ替えが決定しています（2026-06-19定例・実装タスク#35）。</strong>このページは現行Pay.JP連携の調査時点（2026-04-16）の課題一覧です。<br>
     文中の画面名・ワークフロー名（shop_admin・index等）は調査時点＝DB再構築前の旧サイトのものです。#3（手数料15%）は2026-06に修正済み。その他の項目の現在の対応状況は個別に確認してください。
   </div></div>
 
 
   <div class="strategy">
-    <h3>🎯 対応方針</h3>
+    <h3>対応方針</h3>
     <div class="goal">目標: まず運用上問題ない状態にする</div>
     <ul>
       <li><span class="badge bad">即時対応 6件</span><span>運用が壊れる / 仕様未達 / 事故リスクがあるもの → 着手順: #1 → #2 → #3 → #4 → #5 → #6</span></li>
@@ -250,7 +143,7 @@
 
   <!-- 一覧サマリー -->
   <div class="section" id="summary">
-    <div class="section-header"><div class="section-num plain"><svg class="icon"><use href="#i-list"/></svg></div><div><h2>一覧サマリー</h2><div class="sh-sub">全12件のタイトルとカテゴリ</div></div></div>
+    <div class="section-header"><div class="section-num">12</div><div class="sh-body"><h2>一覧サマリー</h2><div class="sh-sub">全12件のタイトルとカテゴリ</div></div></div>
 
     <div class="table-wrap">
       <table>
@@ -275,18 +168,18 @@
     <div class="card">
       <div class="chart">
         <svg viewBox="0 0 42 42" role="img" aria-label="課題12件のカテゴリ内訳">
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#F2EEE9" stroke-width="5"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--danger)" stroke-width="5"
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"/>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--danger)" stroke-width="2.4"
                   stroke-dasharray="50 50" stroke-dashoffset="25"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--tobe)" stroke-width="5"
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--gold)" stroke-width="2.4"
                   stroke-dasharray="25 75" stroke-dashoffset="-25"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--info)" stroke-width="5"
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--info)" stroke-width="2.4"
                   stroke-dasharray="25 75" stroke-dashoffset="-50"/>
           <text x="21" y="21" text-anchor="middle" class="big">12</text>
         </svg>
         <div class="cl">
           <div><i style="background:var(--danger)"></i>即時対応 <strong>6</strong>件（50%）</div>
-          <div><i style="background:var(--tobe)"></i>改善時に対応 <strong>3</strong>件（25%）</div>
+          <div><i style="background:var(--gold)"></i>改善時に対応 <strong>3</strong>件（25%）</div>
           <div><i style="background:var(--info)"></i>低優先 <strong>3</strong>件（25%）</div>
         </div>
       </div>
@@ -295,7 +188,7 @@
 
   <!-- ========== 即時対応 ========== -->
   <div class="section" id="immediate">
-    <div class="section-header"><div class="section-num imm"><svg class="icon"><use href="#i-alert"/></svg></div><div><h2>即時対応</h2><div class="sh-sub">運用が壊れる、仕様未達、または事故リスクがある問題。着手順に沿って対処する</div></div></div>
+    <div class="section-header"><div class="section-num">6</div><div class="sh-body"><h2>即時対応</h2><div class="sh-sub">運用が壊れる、仕様未達、または事故リスクがある問題。着手順に沿って対処する</div></div></div>
 
     <!-- #1 -->
     <div class="issue-card imm">
@@ -305,10 +198,10 @@
         <div class="order-badge"><span class="on">1</span> 1st</div>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">APIコネクタの設定が本番キーになっており、開発環境でも本番向けのAPIが呼ばれる</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">テストができない。開発中の操作が本番データに影響する可能性</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">開発用ワークフロー / 本番用ワークフローを分けるか、環境変数で切り替える仕組みを導入</div></div>
-        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">全ての開発・テスト作業の前提。これがないと他の修正の検証もできない</div></div></div>
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">APIコネクタの設定が本番キーになっており、開発環境でも本番向けのAPIが呼ばれる</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">テストができない。開発中の操作が本番データに影響する可能性</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">開発用ワークフロー / 本番用ワークフローを分けるか、環境変数で切り替える仕組みを導入</div></div>
+        <div class="why"><div><div class="w-label">優先理由</div><div class="w-text">全ての開発・テスト作業の前提。これがないと他の修正の検証もできない</div></div></div>
       </div>
     </div>
 
@@ -320,10 +213,10 @@
         <div class="order-badge"><span class="on">2</span> 2nd</div>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">DBは誰でも閲覧可能な状態</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">顧客情報・決済情報が外部から参照できるリスク</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">プライバシールールを設定し、適切なアクセス制御を行う</div></div>
-        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">事故が起きたら取り返しがつかない。放置期間が長いほどリスク増大</div></div></div>
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">DBは誰でも閲覧可能な状態</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">顧客情報・決済情報が外部から参照できるリスク</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">プライバシールールを設定し、適切なアクセス制御を行う</div></div>
+        <div class="why"><div><div class="w-label">優先理由</div><div class="w-text">事故が起きたら取り返しがつかない。放置期間が長いほどリスク増大</div></div></div>
       </div>
     </div>
 
@@ -335,14 +228,14 @@
         <div class="order-badge"><span class="on">3</span> 3rd</div>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象（調査時点）</div><div class="ifield-text">契約上のRINCLE取り分は売上の15%だが、調査時点のシステムでは10%に設定されていた。全ての決済で5%分の収益が失われていた</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響（調査時点）</div><div class="ifield-text">1万円の決済あたり500円の損失。取引が発生するたびに損失が拡大し続けていた</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">Pay.JPのプラットフォーム手数料の設定値を10% → 15%に変更する（設定1箇所の変更のみ）</div></div>
-        <div class="alert alert-green" style="margin-bottom:0"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>この項目は対応済みです（2026-06）。</strong>platform_feeは契約通りの15%に修正済み（現行フロー資料の分配例も15%に更新済み）。切り替え前に作成された既存テナントへの適用状況は要確認。</div></div>
-        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">契約通りの収益が得られていない。修正は設定変更のみで工数最小、即日対応可能</div></div></div>
+        <div class="ifield"><div class="ifield-label ph">現象（調査時点）</div><div class="ifield-text">契約上のRINCLE取り分は売上の15%だが、調査時点のシステムでは10%に設定されていた。全ての決済で5%分の収益が失われていた</div></div>
+        <div class="ifield"><div class="ifield-label im">影響（調査時点）</div><div class="ifield-text">1万円の決済あたり500円の損失。取引が発生するたびに損失が拡大し続けていた</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">Pay.JPのプラットフォーム手数料の設定値を10% → 15%に変更する（設定1箇所の変更のみ）</div></div>
+        <div class="alert alert-green" style="margin-bottom:0"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>この項目は対応済みです（2026-06）。</strong>platform_feeは契約通りの15%に修正済み（現行フロー資料の分配例も15%に更新済み）。切り替え前に作成された既存テナントへの適用状況は要確認。</div></div>
+        <div class="why"><div><div class="w-label">優先理由</div><div class="w-text">契約通りの収益が得られていない。修正は設定変更のみで工数最小、即日対応可能</div></div></div>
 
         <details class="dev-detail">
-          <summary>🔧 開発者向け詳細（調査時点の記録）</summary>
+          <summary>開発者向け詳細（調査時点の記録）</summary>
           <div class="dd-body">
             <h5>設定値の場所</h5>
             <div class="table-wrap">
@@ -413,21 +306,21 @@ tenant:        店舗の tenant_id
         <div class="order-badge"><span class="on">4</span> 4th</div>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">shop_admin の延長ワークフロー（<code>bTdud</code> / ライド終了ボタン）で Charge_by_car_id を実行した後、返却された charge_id を予約データに保存していない</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">延長分の返金時に <code>__charge_id</code> が空のため、返金できない可能性がある</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">延長決済成功後に <code>__charge_id</code> フィールドへ charge_id を保存する処理を追加</div></div>
-        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">延長が発生した時点で返金不能になる（現時点で延長実績ゼロのため実害は未発生）</div></div></div>
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">shop_admin の延長ワークフロー（<code>bTdud</code> / ライド終了ボタン）で Charge_by_car_id を実行した後、返却された charge_id を予約データに保存していない</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">延長分の返金時に <code>__charge_id</code> が空のため、返金できない可能性がある</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">延長決済成功後に <code>__charge_id</code> フィールドへ charge_id を保存する処理を追加</div></div>
+        <div class="why"><div><div class="w-label">優先理由</div><div class="w-text">延長が発生した時点で返金不能になる（現時点で延長実績ゼロのため実害は未発生）</div></div></div>
 
         <details class="dev-detail">
-          <summary>🔧 開発者向け詳細</summary>
+          <summary>開発者向け詳細</summary>
           <div class="dd-body">
             <h5>DBフィールド構成（予約テーブル）</h5>
             <div class="table-wrap">
               <table>
                 <thead><tr><th>フィールド</th><th>用途</th><th>現状</th></tr></thead>
                 <tbody>
-                  <tr><td><code>charge_id</code></td><td>通常決済（ライド開始時）の決済ID</td><td>保存されている ✅</td></tr>
-                  <tr><td><code>__charge_id</code></td><td>延長決済（ライド終了時）の決済ID</td><td><strong>空のまま ❌</strong></td></tr>
+                  <tr><td><code>charge_id</code></td><td>通常決済（ライド開始時）の決済ID</td><td>保存されている <svg class="icon" style="color:var(--ok)"><use href="#i-check"/></svg></td></tr>
+                  <tr><td><code>__charge_id</code></td><td>延長決済（ライド終了時）の決済ID</td><td><strong>空のまま <svg class="icon" style="color:var(--danger)"><use href="#i-x"/></svg></strong></td></tr>
                   <tr><td><code>__charge_id1</code></td><td>返金用charge_id</td><td>—</td></tr>
                 </tbody>
               </table>
@@ -447,10 +340,10 @@ tenant:        店舗の tenant_id
             <h5>返金時に何が起きるか</h5>
             <div class="flow-diagram">管理者が「返金あり」をクリック
    ↓
-通常分の返金 → <code>charge_id</code> で Pay.JP に返金依頼 → 成功 ✅
+通常分の返金 → <code>charge_id</code> で Pay.JP に返金依頼 → 成功 <svg class="icon" style="color:var(--ok)"><use href="#i-check"/></svg>
    ↓
 延長分の返金 → <code>__charge_id</code> で Pay.JP に返金依頼
-   → <span class="hl-line">空なので返金できない ❌</span></div>
+   → <span class="hl-line">空なので返金できない <svg class="icon" style="color:var(--danger)"><use href="#i-x"/></svg></span></div>
 
             <h5>修正内容</h5>
             <p><strong>対象:</strong> shop_admin「ライド終了」ボタンのワークフロー（<code>bTdud</code>）</p>
@@ -481,13 +374,13 @@ tenant:        店舗の tenant_id
         <div class="order-badge"><span class="on">5</span> 5th</div>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">予約確定時に設定されるデフォルトカードは「取得した顧客カードの1つ目」であり、ユーザーがドロップダウンで選択したカードではない</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">ユーザーが選んだカードとは異なるカードで決済される可能性がある</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">ドロップダウンで選択されたカードをデフォルトカードに設定するよう修正</div></div>
-        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">クレーム直結。複数カード登録ユーザーで発生する</div></div></div>
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">予約確定時に設定されるデフォルトカードは「取得した顧客カードの1つ目」であり、ユーザーがドロップダウンで選択したカードではない</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">ユーザーが選んだカードとは異なるカードで決済される可能性がある</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">ドロップダウンで選択されたカードをデフォルトカードに設定するよう修正</div></div>
+        <div class="why"><div><div class="w-label">優先理由</div><div class="w-text">クレーム直結。複数カード登録ユーザーで発生する</div></div></div>
 
         <details class="dev-detail">
-          <summary>🔧 開発者向け詳細</summary>
+          <summary>開発者向け詳細</summary>
           <div class="dd-body">
             <h5>現状のワークフロー（index / 予約確定ボタン）</h5>
             <div class="flow-diagram">① ユーザーがDropdownでカードを選択
@@ -537,13 +430,13 @@ tenant:        店舗の tenant_id
         <div class="order-badge"><span class="on">6</span> 6th</div>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">クライアント提供の「RINCLEクレジット支払いフロー.pdf」ではオーソリ→キャプチャモデルが定義されているが、実際には実装されていない。予約時にオーソリなし、ライド開始時に直接課金している</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">クライアントは実装済みと認識している可能性が高い。未回収リスクの抑制が機能していない</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">オーソリ→キャプチャモデルを実装（<code>capture=false</code> / <code>expiry_days=60</code>）。最大予約先も60日に制限、営業カレンダーも60日分に縮小</div></div>
-        <div class="why"><div class="w-icon">💡</div><div><div class="w-label">優先理由</div><div class="w-text">クライアントが想定している仕様と実装が乖離している（仕様未達）</div></div></div>
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">クライアント提供の「RINCLEクレジット支払いフロー.pdf」ではオーソリ→キャプチャモデルが定義されているが、実際には実装されていない。予約時にオーソリなし、ライド開始時に直接課金している</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">クライアントは実装済みと認識している可能性が高い。未回収リスクの抑制が機能していない</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">オーソリ→キャプチャモデルを実装（<code>capture=false</code> / <code>expiry_days=60</code>）。最大予約先も60日に制限、営業カレンダーも60日分に縮小</div></div>
+        <div class="why"><div><div class="w-label">優先理由</div><div class="w-text">クライアントが想定している仕様と実装が乖離している（仕様未達）</div></div></div>
 
         <details class="dev-detail">
-          <summary>🔧 開発者向け詳細</summary>
+          <summary>開発者向け詳細</summary>
           <div class="dd-body">
             <h5>現状（As-Is）の決済フロー</h5>
             <div class="flow-diagram"><strong>予約確定時（index）:</strong>
@@ -604,12 +497,12 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>即時対応の6件は着手順に沿って進めてください。</strong>まず #1（本番キー分離）→ #2（DB公開）で安全な環境を整え、#3（手数料15%修正）で収益損失を止めた上で、#4（charge_id保存）→ #5（カード選択）→ #6（オーソリ実装）の順に着手します。</div></div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>即時対応の6件は着手順に沿って進めてください。</strong>まず #1（本番キー分離）→ #2（DB公開）で安全な環境を整え、#3（手数料15%修正）で収益損失を止めた上で、#4（charge_id保存）→ #5（カード選択）→ #6（オーソリ実装）の順に着手します。</div></div>
   </div>
 
   <!-- ========== 改善時に対応 ========== -->
   <div class="section" id="tobe">
-    <div class="section-header"><div class="section-num tobe"><svg class="icon"><use href="#i-refresh"/></svg></div><div><h2>改善時に対応</h2><div class="sh-sub">改善フェーズでまとめて対応する項目</div></div></div>
+    <div class="section-header"><div class="section-num">3</div><div class="sh-body"><h2>改善時に対応</h2><div class="sh-sub">改善フェーズでまとめて対応する項目</div></div></div>
 
     <!-- #7 -->
     <div class="issue-card tobe">
@@ -619,9 +512,9 @@ tenant:        店舗の tenant_id
         <span class="badge warn">改善時</span>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">APIエラー時は JavaScript の <code>alert()</code> で生のエラーメッセージが表示される</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">ユーザーが困惑し、対処方法がわからない</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">APIエラー時は JavaScript の <code>alert()</code> で生のエラーメッセージが表示される</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">ユーザーが困惑し、対処方法がわからない</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">
           <ul>
             <li>エラーパターンを書き出す</li>
             <li>APIコネクタでエラー時もワークフローが止まらないよう設定</li>
@@ -630,7 +523,7 @@ tenant:        店舗の tenant_id
         </div></div>
 
         <details class="dev-detail">
-          <summary>🔧 開発者向け詳細</summary>
+          <summary>開発者向け詳細</summary>
           <div class="dd-body">
             <h5>alert() が発生するワークフロー一覧</h5>
             <div class="table-wrap">
@@ -681,9 +574,9 @@ tenant:        店舗の tenant_id
         <span class="badge warn">改善時</span>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">APIエラーが発生しても管理者・開発者に通知がこない。サーバーログは最短2週間で消える</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">エラーの検知・調査ができない</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">APIエラーが発生しても管理者・開発者に通知がこない。サーバーログは最短2週間で消える</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">エラーの検知・調査ができない</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">
           <ul>
             <li>エラー発生時にメール送信する仕組みを追加</li>
             <li>永続的なログ保存の仕組みを導入</li>
@@ -691,7 +584,7 @@ tenant:        店舗の tenant_id
         </div></div>
 
         <details class="dev-detail">
-          <summary>🔧 開発者向け詳細</summary>
+          <summary>開発者向け詳細</summary>
           <div class="dd-body">
             <h5>現状</h5>
             <ul>
@@ -744,12 +637,12 @@ tenant:        店舗の tenant_id
         <span class="badge warn">改善時</span>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">shop_form への招待URL を知っていれば誰でも店舗登録できる</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">不正な店舗登録のリスク</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">招待メール送信時にパラメータとしてメアドか招待アカウントをDB保存し、unique_id で認証する</div></div>
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">shop_form への招待URL を知っていれば誰でも店舗登録できる</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">不正な店舗登録のリスク</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">招待メール送信時にパラメータとしてメアドか招待アカウントをDB保存し、unique_id で認証する</div></div>
 
         <details class="dev-detail">
-          <summary>🔧 開発者向け詳細</summary>
+          <summary>開発者向け詳細</summary>
           <div class="dd-body">
             <h5>現状のフロー</h5>
             <div class="flow-diagram">① 管理者が shop_admin で「新規追加」をクリック
@@ -798,12 +691,12 @@ tenant:        店舗の tenant_id
       </div>
     </div>
 
-    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>改善時に対応の3件は改善フェーズでまとめて対応します。</strong>即時対応の6件が完了してから着手してください。</div></div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>改善時に対応の3件は改善フェーズでまとめて対応します。</strong>即時対応の6件が完了してから着手してください。</div></div>
   </div>
 
   <!-- ========== 低優先 ========== -->
   <div class="section" id="low">
-    <div class="section-header"><div class="section-num low"><svg class="icon"><use href="#i-info"/></svg></div><div><h2>低優先</h2><div class="sh-sub">運用に影響なし。余裕があれば対応する項目</div></div></div>
+    <div class="section-header"><div class="section-num">3</div><div class="sh-body"><h2>低優先</h2><div class="sh-sub">運用に影響なし。余裕があれば対応する項目</div></div></div>
 
     <!-- #10 -->
     <div class="issue-card low">
@@ -813,13 +706,13 @@ tenant:        店舗の tenant_id
         <span class="badge low-b">低優先</span>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">PEDALSTANDARDから販売店への利用料15%の請求方法が決まっていない</div></div>
-        <div class="ifield"><div class="ifield-label nt">📖 platform_fee の設定値</div><div class="ifield-text">15%（Pay.JP上のプラットフォーム手数料。調査時点は10%だったが、2026-06に契約通りの15%へ修正済み）</div></div>
-        <div class="ifield"><div class="ifield-label nt">📖 検討案</div><div class="ifield-text">platform_fee を 0 に寄せて、15% は Pay.JP とは別に毎月末請求する運用</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">ビジネス要件を確定させた上で実装方針を決定</div></div>
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">PEDALSTANDARDから販売店への利用料15%の請求方法が決まっていない</div></div>
+        <div class="ifield"><div class="ifield-label nt">platform_fee の設定値</div><div class="ifield-text">15%（Pay.JP上のプラットフォーム手数料。調査時点は10%だったが、2026-06に契約通りの15%へ修正済み）</div></div>
+        <div class="ifield"><div class="ifield-label nt">検討案</div><div class="ifield-text">platform_fee を 0 に寄せて、15% は Pay.JP とは別に毎月末請求する運用</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">ビジネス要件を確定させた上で実装方針を決定</div></div>
 
         <details class="dev-detail">
-          <summary>🔧 開発者向け詳細</summary>
+          <summary>開発者向け詳細</summary>
           <div class="dd-body">
             <h5>選択肢の比較</h5>
             <div class="table-wrap">
@@ -856,9 +749,9 @@ tenant:        店舗の tenant_id
         <span class="badge low-b">低優先</span>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text">テナント登録時（shop_form）に銀行口座情報を送信・DB保存しているが、Marketplace型では必須ではない</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">不要なデータがDBに保存されている</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">Bubble側で使う必要がないため、DB保存をやめる</div></div>
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text">テナント登録時（shop_form）に銀行口座情報を送信・DB保存しているが、Marketplace型では必須ではない</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">不要なデータがDBに保存されている</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">Bubble側で使う必要がないため、DB保存をやめる</div></div>
       </div>
     </div>
 
@@ -870,13 +763,13 @@ tenant:        店舗の tenant_id
         <span class="badge low-b">低優先</span>
       </div>
       <div class="issue-body">
-        <div class="ifield"><div class="ifield-label ph">🔍 現象</div><div class="ifield-text"><code>payjp_webhook_update_talent</code> は <code>tenant</code> の typo</div></div>
-        <div class="ifield"><div class="ifield-label im">💥 影響</div><div class="ifield-text">動作には影響なし（Bubble内部IDで紐づいているため）</div></div>
-        <div class="ifield"><div class="ifield-label ac">✅ 対応</div><div class="ifield-text">可能であれば名称を修正（優先度低）</div></div>
+        <div class="ifield"><div class="ifield-label ph">現象</div><div class="ifield-text"><code>payjp_webhook_update_talent</code> は <code>tenant</code> の typo</div></div>
+        <div class="ifield"><div class="ifield-label im">影響</div><div class="ifield-text">動作には影響なし（Bubble内部IDで紐づいているため）</div></div>
+        <div class="ifield"><div class="ifield-label ac">対応</div><div class="ifield-text">可能であれば名称を修正（優先度低）</div></div>
       </div>
     </div>
 
-    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>低優先の3件は運用に直接影響しません。</strong>#10 はビジネス要件の確定待ち、#11 と #12 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>低優先の3件は運用に直接影響しません。</strong>#10 はビジネス要件の確定待ち、#11 と #12 はコード品質の改善項目です。リソースに余裕があるタイミングで対処してください。</div></div>
   </div>
 
   <div class="footer-note">調査日: 2026-04-16 / 調査担当: Yano / ソース: rincle.bubble 解析結果</div>

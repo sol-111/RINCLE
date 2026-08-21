@@ -6,154 +6,36 @@
 <title>RINCLE 差別化戦略</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/design.css">
 <style>
-  :root{
-    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
-    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
-    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
-    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
-    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
-    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
+/* ページ固有CSS — 差別化戦略（共通部品は ../../assets/design.css を参照） */
 
-  /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
-  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
-  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
-  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
-  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-  .hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
-  .hero .status{display:inline-block;margin-top:12px;padding:4px 16px;border-radius:999px;background:rgba(35,32,29,.25);border:1px solid rgba(255,255,255,.3);font-size:.85rem;font-weight:700}
+.card p{font-size:13.5px;line-height:2}
+.card p+p{margin-top:14px}
 
-  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+/* 補足帯（旧callout → 用語解説と同じ左2px罫線型・塗りなし） */
+.callout{background:var(--surface);border:1px solid var(--line-soft);border-left:2px solid var(--accent);border-radius:0;padding:20px 24px;margin:28px 0;font-size:13.5px;line-height:2}
+.callout strong{color:var(--accent-deep)}
+.callout ul{margin:0;padding-left:1.2em}
+.callout li+li{margin-top:12px}
 
-  /* フローナビ（章ナビ） */
-  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
-  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
-  .flow a:nth-child(4n+1){border-left:none}
-  .flow a:nth-child(n+5){border-top:1px solid var(--border)}
-  .flow a:hover{background:var(--brand-soft)}
-  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
-  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
-  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
+/* 琥珀のアラート（お金・注意喚起） */
+.alert-amber{border-left-color:var(--gold);color:var(--gold-text)}
+.badge.warn{background:var(--gold-soft);border:1px solid #EAD9AE;color:var(--gold-text)}
 
-  /* sections */
-  .section{margin-bottom:56px;scroll-margin-top:20px}
-  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
-  .section-num.plain{background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5}
-  .section-num.small{font-size:14px}
-  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
-  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
+/* ×○対比の中の箇条書き（記号ではなく役割色の丸） */
+.compare-box ul{list-style:none;padding:0}
+.compare-box li{position:relative;padding:6px 0 6px 20px;font-size:12.5px;line-height:1.9;color:var(--text)}
+.compare-box li::before{content:'';position:absolute;left:0;top:16px;width:7px;height:7px;border-radius:50%}
+.compare-box.good li::before{background:var(--ok)}
+.compare-box.bad li::before{background:var(--gold)}
 
-  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
-  .card p+p{margin-top:10px}
-
-  /* alerts */
-  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
-  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
-  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
-  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
-  .alert-amber{background:#FFF4E0;border:1px solid #F5DFAE;color:#8F5A0A}
-
-  /* tables */
-  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
-  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
-  thead th{background:#FBF8F5;color:var(--ink);border-bottom:2px solid var(--brand);padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
-  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:top}
-  tr:last-child td{border-bottom:none}
-  tbody tr:hover td{background:#FBF8F5}
-  td.label{font-weight:800;color:var(--ink);white-space:nowrap}
-
-  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
-  .badge.good{background:#EDFAF2;color:#136A41}
-  .badge.bad{background:#FDECEF;color:#8E1230}
-  .badge.warn{background:#FFF4E0;color:#8F5A0A}
-  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
-
-  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
-
-  /* compare（効く理由/懸念） */
-  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
-  .compare-box{border-radius:12px;padding:20px 22px;background:#fff;border:2px solid var(--border)}
-  .compare-box.bad{border-color:#F2AEBC;background:#FFF7F9}
-  .compare-box.good{border-color:#9ADBB4;background:#F6FDF9}
-  .compare-box .cb-head{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;margin-bottom:8px}
-  .compare-box.bad .cb-head{color:#8E1230}
-  .compare-box.good .cb-head{color:#136A41}
-  .cb-mark{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:800;font-size:14px}
-  .bad .cb-mark{background:var(--danger)}
-  .good .cb-mark{background:var(--ok)}
-  .compare-box ul{list-style:none}
-  .compare-box li{padding:5px 0 5px 22px;position:relative;font-size:13.5px;color:#544B44}
-  .compare-box.good li::before{content:'◎';position:absolute;left:0;color:var(--ok);font-weight:800}
-  .compare-box.bad li::before{content:'△';position:absolute;left:0;color:#D97706;font-weight:800}
-
-  /* callout */
-  .callout{border-left:4px solid var(--brand);background:var(--brand-soft);border-radius:0 12px 12px 0;padding:18px 24px;margin-top:18px;font-size:14px}
-  .callout strong{color:var(--brand-deep)}
-  .callout ul{margin:0;padding-left:1.2em}
-  .callout li+li{margin-top:10px}
-
-  /* 優先順位 */
-  ol.steps{list-style:none;counter-reset:st;font-size:14px}
-  ol.steps li{counter-increment:st;position:relative;padding:0 0 18px 46px}
-  ol.steps li:last-child{padding-bottom:0}
-  ol.steps li::before{content:counter(st);position:absolute;left:0;top:1px;width:28px;height:28px;border-radius:50%;background:var(--brand-soft);border:2px solid var(--brand);color:var(--brand-deep);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
-  ol.steps li:not(:last-child)::after{content:"";position:absolute;left:13.5px;top:32px;bottom:2px;width:2px;background:#F0E3DA}
-  ol.steps strong{color:var(--ink)}
-
-  /* 宿題チェックリスト */
-  ul.todo{list-style:none;font-size:14px}
-  ul.todo li{padding:10px 0 10px 32px;position:relative;border-bottom:1px dashed var(--border)}
-  ul.todo li:last-child{border-bottom:none}
-  ul.todo li::before{content:'';position:absolute;left:4px;top:18px;width:14px;height:14px;border:2px solid var(--brand);border-radius:4px}
-
-  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
-
-  /* SVGアイコン（スプライト参照） */
-  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
-  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
-  .section-num .icon{width:22px;height:22px}
-
-  /* 読み進みバー */
-  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
-  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
-
-  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
-  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-  .rv-in{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  /* フローナビの現在地ハイライト */
-  .flow a.cur{background:var(--brand-soft)}
-  .flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
-
-  /* ミニチャート（ドーナツ） */
-  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .chart svg{width:130px;height:130px;flex-shrink:0}
-  .chart .cl{font-size:13.5px}
-  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
-  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
-
-  @media (max-width:760px){
-    .compare{grid-template-columns:1fr}
-    .hero{padding:44px 24px 84px}
-    .container{padding:28px 18px 60px}
-    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
-    .flow a{border-top:1px solid var(--border)}
-  }
-
-  /* webfont: 和文の約物詰め + 表の等幅数字 */
-  body{font-feature-settings:'palt' 1}
-  table{font-variant-numeric:tabular-nums}
+/* 宿題チェックリスト（角丸なしの四角い枠） */
+ul.todo{list-style:none;font-size:13.5px}
+ul.todo li{position:relative;padding:10px 0 10px 32px;border-bottom:1px solid var(--line-soft);line-height:1.9}
+ul.todo li:last-child{border-bottom:none}
+ul.todo li::before{content:'';position:absolute;left:3px;top:17px;width:13px;height:13px;border:1.5px solid var(--accent);border-radius:2px}
 </style>
 </head>
 <body>
@@ -178,33 +60,35 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
-    <div>
-      <span class="eyebrow">戦略 — 差別化</span>
-      <h1>RINCLE 差別化戦略</h1>
-      <p class="lead">将来の競合参入に備えて「それでもRINCLEを使う理由」をつくる。候補を「真似されにくさ × 効果」で整理し、優先順位を決めるためのたたき台です。</p>
-      <span class="status">原案・協議用たたき台（2026-06-12作成）</span>
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">戦略 — 差別化</span>
+      </div>
+      <span class="hero-no">STRATEGY</span>
     </div>
+    <h1>RINCLE 差別化戦略</h1>
+    <p class="lead">将来の競合参入に備えて「それでもRINCLEを使う理由」をつくる。候補を「真似されにくさ × 効果」で整理し、優先順位を決めるためのたたき台です。</p>
+    <div class="hero-meta">原案・協議用たたき台（2026-06-12作成）</div>
   </div>
 </div>
 
-<div class="container">
+<nav class="flow">
+  <a href="#why"><span class="fnum">1</span><span class="ft">なぜ今整理するか</span><span class="fd">先行逃げ切りの中身を決める</span></a>
+  <a href="#premise"><span class="fnum">2</span><span class="ft">前提: CycleTrip</span><span class="fd">最有力競合の強みと弱みの要約</span></a>
+  <a href="#candidates"><span class="fnum">3</span><span class="ft">差別化候補の一覧</span><span class="fd">真似されにくさ×効果で整理</span></a>
+  <a href="#point"><span class="fnum">4</span><span class="ft">ポイント機能の深掘り</span><span class="fd">効く理由と懸念、変形案</span></a>
+  <a href="#priority"><span class="fnum">5</span><span class="ft">優先順位</span><span class="fd">競合参入前に何を実績にするか</span></a>
+  <a href="#homework"><span class="fnum">6</span><span class="ft">宿題・次のアクション</span><span class="fd">協議して決めること</span></a>
+</nav>
 
-  <!-- 章ナビ -->
-  <nav class="flow">
-    <a href="#why"><span class="fnum">1</span><div class="ft">なぜ今整理するか</div><div class="fd">先行逃げ切りの中身を決める</div></a>
-    <a href="#premise"><span class="fnum">2</span><div class="ft">前提: CycleTrip</div><div class="fd">最有力競合の強みと弱みの要約</div></a>
-    <a href="#candidates"><span class="fnum">3</span><div class="ft">差別化候補の一覧</div><div class="fd">真似されにくさ×効果で整理</div></a>
-    <a href="#point"><span class="fnum">4</span><div class="ft">ポイント機能の深掘り</div><div class="fd">効く理由と懸念、変形案</div></a>
-    <a href="#priority"><span class="fnum">5</span><div class="ft">優先順位</div><div class="fd">競合参入前に何を実績にするか</div></a>
-    <a href="#homework"><span class="fnum">6</span><div class="ft">宿題・次のアクション</div><div class="fd">協議して決めること</div></a>
-  </nav>
+<div class="container">
 
   <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>関連資料: 競合調査レポート / アクションプラン（Tier番号はそちら参照）/ revenue-model.xlsx（数字の出典）。<br>※店舗数・台数の対外表記は協議中のため、本資料はDB実数（54店・369台＝2026-06-11実測）を使用。<strong>2026-08-20の本番サイト実測では店舗56・自転車374台</strong>。</div></div>
 
   <!-- 1 -->
   <div class="section" id="why">
-    <div class="section-header"><div class="section-num">1</div><div><h2>なぜ今整理するか</h2><div class="sh-sub">先行逃げ切りの中身を決める</div></div></div>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>なぜ今整理するか</h2><div class="sh-sub">先行逃げ切りの中身を決める</div></div></div>
     <div class="card">
       <p>スポーツバイクレンタル市場の成長にともない、<strong>近い将来、資本力のある事業者が同種のプラットフォーム型サービスで参入してくる可能性は高い</strong>と見ています。方針は「<strong>先行逃げ切り</strong>」、勝ち筋は「デザインで負けてもUX（使いやすさ）と店舗数・台数で勝つ」で一致済みです。</p>
       <p>競合がローンチした日に必要なのは、<strong>利用者が「それでもRINCLEで予約する理由」</strong>と、<strong>店舗が「それでもRINCLEに在庫を出し続ける理由」</strong>の両方です。本資料はその候補を「真似されにくさ × 効果」で整理し、優先順位を決めるためのたたき台です。</p>
@@ -213,18 +97,18 @@
 
   <!-- 2 -->
   <div class="section" id="premise">
-    <div class="section-header"><div class="section-num plain">2</div><div><h2>前提: 最有力の競合候補（CycleTrip）の強みと弱み</h2><div class="sh-sub">差別化の観点での要約</div></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>前提: 最有力の競合候補（CycleTrip）の強みと弱み</h2><div class="sh-sub">差別化の観点での要約</div></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:90px;"></th><th>内容</th><th>RINCLEへの含意</th></tr></thead>
         <tbody>
           <tr>
-            <td style="font-weight:800; color:var(--ok);">強み</td>
+            <td class="label" style="color:var(--ok);">強み</td>
             <td>ブランド・PR力（TV紹介・観光庁実証採択）/ 自社在庫約300台 / 24時間無人レンタル技術 / 親会社が保険事業中核 / 中古販売の購入導線</td>
             <td>認知勝負・資金勝負に持ち込まれると不利</td>
           </tr>
           <tr>
-            <td style="font-weight:800; color:#8F5A0A;">弱み</td>
+            <td class="label" style="color:var(--gold-text);">弱み</td>
             <td><strong>都市3拠点のみ・地方未対応</strong>（しまなみ等）/ 高価格（日額6,500円〜）/ 自社保有型で拡大が重い（7年で3店舗）/ 受付ワンオペ</td>
             <td><strong>地理カバレッジと店舗ネットワークでは現時点でRINCLEが圧倒</strong>（54店・369台 vs 3拠点・300台）</td>
           </tr>
@@ -236,7 +120,7 @@
 
   <!-- 2-2 -->
   <div class="section">
-    <div class="section-header"><div class="section-num plain small">2-2</div><div><h2>長期レンタル/サブスクへの向き合い方（やらない判断）</h2><div class="sh-sub">料金プランで揺さぶられたとき用の結論</div></div></div>
+    <div class="section-header"><div class="section-num">2-2</div><div class="sh-body"><h2>長期レンタル/サブスクへの向き合い方（やらない判断）</h2><div class="sh-sub">料金プランで揺さぶられたとき用の結論</div></div></div>
     <div class="card">
       <p>CycleTripの強みのひとつが<strong>料金プランの多様性</strong>（日/週/月/年/法人/撮影、サブスク月額2,300〜6,980円・1年契約。ただし解約ペナルティは6日前以降で6ヶ月分と重い）。「RINCLEも月貸し・サブスクをやるべきでは」という議論が出たとき用の結論を先に置く。</p>
     </div>
@@ -252,7 +136,7 @@
 
   <!-- 3 -->
   <div class="section" id="candidates">
-    <div class="section-header"><div class="section-num">3</div><div><h2>差別化候補の一覧</h2><div class="sh-sub">真似されにくさ × 効果で整理</div></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>差別化候補の一覧</h2><div class="sh-sub">真似されにくさ × 効果で整理</div></div></div>
     <div class="card">
       <p>マーケットプレイスの防御は両面あります。<strong>利用者向け（デマンド側）より、店舗向け（サプライ側）のロックインの方が真似されにくく、効果が持続します</strong> — 店舗が離れなければ、競合は在庫ゼロからのスタートになるためです。</p>
     </div>
@@ -272,17 +156,18 @@
     <div class="card">
       <div class="chart">
         <svg viewBox="0 0 42 42" role="img" aria-label="54店のうち当月予約ゼロの店舗の割合">
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#F2EEE9" stroke-width="5"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--brand)" stroke-width="5"
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"/>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4"
                   stroke-dasharray="77.8 22.2" stroke-dashoffset="25"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="5"
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="2.4"
                   stroke-dasharray="22.2 77.8" stroke-dashoffset="-52.8"/>
-          <text x="21" y="21" text-anchor="middle" class="big">54店</text>
+          <text x="21" y="21" text-anchor="middle" class="big">54</text>
         </svg>
         <div class="cl">
-          <div><i style="background:var(--brand)"></i>当月予約ゼロ <strong>42店</strong>（約78%）</div>
-          <div><i style="background:var(--ink)"></i>当月予約あり <strong>12店</strong>（約22%）</div>
-          <div style="margin-top:6px;color:var(--sub);font-size:12.5px">候補Aの「維持が課題」の実態。優先順位1（店舗ロックイン）では「離脱予備軍」と位置づけ</div>
+          <div><i style="background:var(--accent);"></i>当月予約ゼロ（約78%）<strong>42店</strong></div>
+          <div><i style="background:var(--ink);"></i>当月予約あり（約22%）<strong>12店</strong></div>
+          <div style="font-size:12.5px;color:var(--text);">候補Aの「維持が課題」の実態。優先順位1（店舗ロックイン）では「離脱予備軍」と位置づけ</div>
+          <div class="src" style="border-bottom:none;">単位: 店舗（中央の数字＝合計54店）／ 出典: 2026-06-11 DB実測</div>
         </div>
       </div>
     </div>
@@ -290,7 +175,7 @@
 
   <!-- 4 -->
   <div class="section" id="point">
-    <div class="section-header"><div class="section-num">4</div><div><h2>深掘り: ポイント機能（リピート特典）</h2><div class="sh-sub">効く理由と懸念、台帳を持たない変形案</div></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>深掘り: ポイント機能（リピート特典）</h2><div class="sh-sub">効く理由と懸念、台帳を持たない変形案</div></div></div>
     <div class="card">
       <p><strong>狙い:</strong> 「RINCLEから予約する方がお得」という需要側のスイッチングコスト。最重要ペルソナD（既存顧客）のリピート促進に直結します。</p>
     </div>
@@ -329,7 +214,7 @@
 
   <!-- 5 -->
   <div class="section" id="priority">
-    <div class="section-header"><div class="section-num">5</div><div><h2>優先順位（たたき台）</h2><div class="sh-sub">競合ローンチ前に何を稼働実績にするか</div></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>優先順位（たたき台）</h2><div class="sh-sub">競合ローンチ前に何を稼働実績にするか</div></div></div>
     <div class="card">
       <ol class="steps">
         <li><strong>店舗ロックイン（A+B）が本丸</strong> — 競合のプラットフォーム化が脅威になるのは店舗を引き抜かれたとき。月次送客レポートと「振り込まれる」精算を、競合ローンチ前に稼働実績にしておく。42店の予約ゼロ問題は、この文脈では「離脱予備軍」でもある</li>
@@ -342,7 +227,7 @@
 
   <!-- 6 -->
   <div class="section" id="homework">
-    <div class="section-header"><div class="section-num plain">6</div><div><h2>宿題・次のアクション</h2><div class="sh-sub">協議して決めること</div></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>宿題・次のアクション</h2><div class="sh-sub">協議して決めること</div></div></div>
     <div class="card">
       <ul class="todo">
         <li>協議: ポイント/クーポンの原資の考え方（手数料内で負担 vs 店舗と分担 vs 物販粗利から）</li>

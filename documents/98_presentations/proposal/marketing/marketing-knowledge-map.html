@@ -6,157 +6,84 @@
 <title>toCマーケティング手法 全体マップ — 集客の教科書</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/design.css">
 <style>
-  :root{
-    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
-    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
-    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
-    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
-    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
-    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
+/* ページ固有CSS — toCマーケティング手法 全体マップ（共通部品は ../../assets/design.css を参照） */
 
-  /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
-  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
-  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
-  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
-  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-  .hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
-  .hero p.hero-note{font-size:.82rem;opacity:.78;margin-top:8px}
+/* 章ナビ（3章なので3列） */
+.flow{grid-template-columns:repeat(3,1fr)}
+.flow a:nth-child(4n+1){border-left:1px solid var(--line-soft)}
+.flow a:nth-child(3n+1){border-left:none}
+.flow a:nth-child(n+5){border-top:none}
 
-  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+/* 章見出し（俯瞰2章は数字ではなく薄い大アイコン） */
+.section-header{margin-bottom:16px}
+.section-num.mark{display:flex;align-items:flex-end;line-height:1}
+.section-num.mark .icon{width:76px;height:76px;stroke:rgba(38,34,30,.16);stroke-width:1}
+.section-lead{font-size:13.5px;line-height:1.9;color:var(--text);margin:0 0 26px}
 
-  /* 章ナビ（フローナビ） */
-  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
-  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
-  .flow a:first-child{border-left:none}
-  .flow a:hover{background:var(--brand-soft)}
-  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
-  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
-  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
-  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
-  .flow a:last-child::after{content:""}
+/* カテゴリ俯瞰グリッド（白面+1px罫線・影なし） */
+.cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:8px 0 28px}
+.cat-card{display:block;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:18px 16px;text-decoration:none;color:inherit;transition:background .15s,border-color .15s}
+.cat-card:hover{background:var(--accent-faint);border-color:var(--accent)}
+.cat-card .cat-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--surface);border:1px solid var(--accent);color:var(--accent);border-radius:50%;font-family:var(--serif);font-size:12px;margin-bottom:10px}
+.cat-card h3{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);line-height:1.5;margin:0 0 6px}
+.cat-card p{font-size:11px;color:var(--sub);line-height:1.7}
 
-  /* sections */
-  .section{margin-bottom:56px;scroll-margin-top:20px}
-  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:6px}
-  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
-  .section-num.plain{background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5}
-  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
-  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
-  .section-lead{font-size:.95rem;color:var(--sub);margin:0 0 18px 58px}
+/* 全手法サマリー表（地図） */
+.map-table{font-size:13px}
+.map-table td{padding:12px 14px 12px 0}
+.map-table td.m-id{color:var(--sub);font-size:11.5px;white-space:nowrap;width:1%}
+.map-table td.m-name{font-weight:700;color:var(--ink);white-space:nowrap}
+.map-table td.m-name a{color:var(--ink);text-decoration:none}
+.map-table td.m-name a:hover{color:var(--accent-deep)}
+.map-table .cat-row td{background:var(--accent-faint);font-family:var(--serif);font-size:15px;color:var(--ink);padding:12px 14px}
+.map-table .cat-row td a{color:var(--ink);text-decoration:none}
+.map-table .cat-row td a:hover{color:var(--accent-deep);text-decoration:underline}
+.map-table tbody tr.cat-row:hover td{background:var(--accent-faint)}
 
-  /* alerts */
-  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
-  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
-  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
-  .alert-red a{color:#8E1230}
-  .alert-red b{color:#6E0C24}
+/* 相性の評価（星記号をやめ明朝数字+「/5」に） */
+.score{font-family:var(--serif);font-size:17px;color:var(--accent);white-space:nowrap}
+.score small{font-size:10.5px;color:var(--sub);margin-left:1px}
 
-  /* tables */
-  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
-  table{width:100%;border-collapse:collapse;background:#fff;font-size:13.5px}
-  thead th{background:#FBF8F5;color:var(--ink);border-bottom:2px solid var(--brand);padding:12px 14px;text-align:left;font-size:12.5px;font-weight:700;white-space:nowrap}
-  td{padding:9px 14px;border-bottom:1px solid #F2EEE9;vertical-align:middle}
-  tr:last-child td{border-bottom:none}
-  tbody tr:hover td{background:#FBF8F5}
+/* レベルバッジ（即効性/持続性） */
+.lv{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:3px;white-space:nowrap}
+.lv-high{background:var(--accent);color:var(--paper)}
+.lv-mid{background:var(--info-soft);color:var(--info-text);border:1px solid var(--info-line)}
+.lv-low{background:var(--paper);color:var(--sub);border:1px solid var(--line)}
 
-  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
+/* 手法カード（白面+1px罫線・影なし・見出しは明朝） */
+.m-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:8px 0 28px}
+.m-card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:22px 24px;display:flex;flex-direction:column}
+.m-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.m-head .m-num{display:inline-flex;align-items:center;justify-content:center;min-width:46px;height:26px;padding:0 10px;background:var(--surface);border:1px solid var(--accent);color:var(--accent);border-radius:3px;font-family:var(--serif);font-size:12px}
+.m-head h3{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);line-height:1.5;margin:0}
+.m-desc{font-size:13px;color:var(--text);line-height:1.9;margin-bottom:16px}
+.m-specs{margin-top:auto;border-top:1px solid var(--line-soft)}
+.spec{display:flex;gap:14px;padding:8px 0;border-bottom:1px solid var(--line-soft);font-size:12.5px;line-height:1.8}
+.spec:last-child{border-bottom:none}
+.spec .spec-label{min-width:96px;color:var(--sub);font-size:10.5px;letter-spacing:.1em;font-weight:700;padding-top:2px;white-space:nowrap}
+.spec .spec-val{color:var(--text)}
+.spec .spec-val b{color:var(--accent-deep)}
 
-  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px;line-height:1.9}
+/* ステマ注意バッジ・注記 */
+.b-pr{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;padding:2px 10px;border-radius:3px;background:var(--danger-soft);color:var(--danger-text);border:1px solid var(--danger-line);white-space:nowrap}
+.b-pr .icon{width:12px;height:12px}
+.m-note{background:var(--surface);border:1px solid var(--line-soft);border-left:2px solid var(--danger);font-size:12px;color:var(--danger-text);padding:10px 14px;margin-top:14px;line-height:1.8}
+.m-note b{color:var(--danger-text)}
+.alert-red a{color:var(--danger-text)}
+.alert-red b{color:var(--danger-text)}
 
-  /* ── ページ固有: カテゴリ俯瞰グリッド ── */
-  .cat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-  @media (max-width:980px){.cat-grid{grid-template-columns:repeat(3,1fr)}}
-  @media (max-width:640px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
-  .cat-card{display:block;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 14px;box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:box-shadow .2s,transform .2s,background .15s}
-  .cat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);background:var(--brand-soft)}
-  .cat-card .cat-num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;border-radius:50%;font-size:.78rem;font-weight:800;margin-bottom:8px}
-  .cat-card h3{font-size:.92rem;font-weight:800;color:var(--ink);line-height:1.4;margin-bottom:4px}
-  .cat-card p{font-size:.74rem;color:var(--sub);line-height:1.55}
-
-  /* ── ページ固有: サマリー表（地図） ── */
-  .map-table td.m-id{color:#A89A8E;font-size:.76rem;white-space:nowrap;width:1%}
-  .map-table td.m-name{font-weight:700;color:var(--ink);white-space:nowrap}
-  .map-table td.m-name a{color:var(--ink);text-decoration:none}
-  .map-table td.m-name a:hover{color:var(--brand-deep)}
-  .map-table .cat-row td{background:#F6EFE9;color:var(--ink);font-weight:800;font-size:.82rem;padding:8px 14px}
-  .map-table .cat-row td a{color:var(--ink);text-decoration:none}
-  .map-table .cat-row td a:hover{color:var(--brand-deep);text-decoration:underline}
-  .stars{color:var(--brand);letter-spacing:1px;white-space:nowrap}
-  .stars .off{color:#E4DCD3}
-
-  /* レベルバッジ（即効性/持続性） */
-  .lv{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 10px;border-radius:20px;white-space:nowrap}
-  .lv-high{background:var(--brand);color:#fff}
-  .lv-mid{background:#EEF3FE;color:#1D48A6;border:1px solid #CBDCFA}
-  .lv-low{background:#F1EEE9;color:#867E74;border:1px solid #E0D8CE}
-
-  /* ── ページ固有: 手法カード ── */
-  .m-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
-  @media (max-width:768px){.m-grid{grid-template-columns:1fr}}
-  .m-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:22px 24px;box-shadow:var(--shadow);transition:box-shadow .2s,transform .2s;display:flex;flex-direction:column}
-  .m-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
-  .m-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-  .m-head .m-num{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:26px;padding:0 8px;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;border-radius:20px;font-size:.74rem;font-weight:800}
-  .m-head h3{font-size:1.04rem;font-weight:800;color:var(--ink);line-height:1.4}
-  .m-desc{font-size:.85rem;color:#544B44;margin-bottom:14px}
-  .m-specs{margin-top:auto;border-top:1px solid #F2EEE9}
-  .spec{display:flex;gap:12px;padding:6px 0;border-bottom:1px solid #F2EEE9;font-size:.8rem}
-  .spec:last-child{border-bottom:none}
-  .spec .spec-label{min-width:92px;color:var(--sub);font-size:.74rem;font-weight:700;padding-top:1px;white-space:nowrap}
-  .spec .spec-val{color:var(--text)}
-  .spec .spec-val b{color:var(--brand-deep)}
-
-  /* ステマ注意バッジ・ボックス */
-  .b-pr{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 10px;border-radius:20px;background:#FDECEF;color:var(--danger);border:1px solid #F6C6D0;white-space:nowrap}
-  .m-note{background:#FDECEF;border:1px solid #F6C6D0;border-radius:8px;font-size:.76rem;color:#8E1230;padding:8px 12px;margin-top:12px;line-height:1.6}
-  .m-note b{color:#6E0C24}
-
-  /* SVGアイコン（スプライト参照） */
-  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
-  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
-  .section-num .icon{width:22px;height:22px}
-
-  /* 読み進みバー */
-  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
-  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
-
-  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
-  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-  .rv-in{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  /* フローナビの現在地ハイライト */
-  .flow a.cur{background:var(--brand-soft)}
-  .flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
-
-  /* ミニチャート（ドーナツ） */
-  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .chart svg{width:130px;height:130px;flex-shrink:0}
-  .chart .cl{font-size:13.5px}
-  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
-  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
-
-  @media (max-width:760px){
-    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
-    .flow a{border-top:1px solid var(--border)}
-    .hero{padding:44px 24px 84px}
-    .container{padding:28px 18px 60px}
-    .section-lead{margin-left:0}
-  }
-
-  /* webfont: 和文の約物詰め + 表の等幅数字 */
-  body{font-feature-settings:'palt' 1}
-  table{font-variant-numeric:tabular-nums}
+@media (max-width:980px){.cat-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:768px){.m-grid{grid-template-columns:1fr}}
+@media (max-width:640px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){
+  .flow{grid-template-columns:1fr 1fr}
+  .flow a:nth-child(3n+1){border-left:1px solid var(--line-soft)}
+  .flow a:nth-child(2n+1){border-left:none}
+  .section-num.mark .icon{width:52px;height:52px}
+}
 </style>
 </head>
 <body>
@@ -181,30 +108,33 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
-    <div>
-      <span class="eyebrow">マーケティング — 教科書</span>
-      <h1>toC マーケティング手法 全体マップ</h1>
-      <p class="lead">toC集客の手法を俯瞰する教科書 — 10カテゴリ・37手法を1枚に整理。RINCLEに限らず使える汎用知識資料です。</p>
-      <p class="hero-note">最終更新: 2026-06-11（ファクトチェック済み）</p>
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">マーケティング — 教科書</span>
+      </div>
+      <span class="hero-no">MARKETING</span>
     </div>
+    <h1>toC マーケティング手法 全体マップ</h1>
+    <p class="lead">toC集客の手法を俯瞰する教科書 — 10カテゴリ・37手法を1枚に整理。RINCLEに限らず使える汎用知識資料です。</p>
+    <div class="hero-meta">最終更新: 2026-06-11（ファクトチェック済み）</div>
   </div>
 </div>
 
-<div class="container">
+<!-- 章ナビ（ページの大構成。ページ内アンカーが多数あるためタブ化しない） -->
+<nav class="flow">
+  <a href="#overview"><span class="fnum">1</span><span class="ft">10カテゴリの俯瞰</span><span class="fd">「誰の力で届くか」で分類</span></a>
+  <a href="#map"><span class="fnum">2</span><span class="ft">全手法サマリー（地図表）</span><span class="fd">37手法をコスト・即効性で一覧</span></a>
+  <a href="#cat1"><span class="fnum">3</span><span class="ft">カテゴリ詳細</span><span class="fd">検索系〜パートナーシップ系まで10章</span></a>
+</nav>
 
-  <!-- 章ナビ（ページの大構成） -->
-  <nav class="flow">
-    <a href="#overview"><span class="fnum">1</span><div class="ft">10カテゴリの俯瞰</div><div class="fd">「誰の力で届くか」で分類</div></a>
-    <a href="#map"><span class="fnum">2</span><div class="ft">全手法サマリー（地図表）</div><div class="fd">37手法をコスト・即効性で一覧</div></a>
-    <a href="#cat1"><span class="fnum">3</span><div class="ft">カテゴリ詳細</div><div class="fd">検索系〜パートナーシップ系まで10章</div></a>
-  </nav>
+<div class="container">
 
   <!-- ==================== カテゴリ俯瞰 ==================== -->
   <div class="section" id="overview">
     <div class="section-header">
-      <div class="section-num plain"><svg class="icon"><use href="#i-list"/></svg></div>
-      <div><h2>10カテゴリの俯瞰</h2><div class="sh-sub">「誰の力で・どうやってユーザーに届くか」で分類</div></div>
+      <div class="section-num mark"><svg class="icon"><use href="#i-list"/></svg></div>
+      <div class="sh-body"><h2>10カテゴリの俯瞰</h2><div class="sh-sub">「誰の力で・どうやってユーザーに届くか」で分類</div></div>
     </div>
     <p class="section-lead">toCの集客手法は「誰の力で・どうやってユーザーに届くか」で10カテゴリに分けられます。カードをクリックすると各カテゴリの詳細へ。</p>
 
@@ -225,8 +155,8 @@
   <!-- ==================== 全手法サマリー（地図） ==================== -->
   <div class="section" id="map">
     <div class="section-header">
-      <div class="section-num plain"><svg class="icon"><use href="#i-map"/></svg></div>
-      <div><h2>全手法サマリー — この資料の「地図」</h2><div class="sh-sub">コスト・即効性・持続性・toCとの相性で一覧化</div></div>
+      <div class="section-num mark"><svg class="icon"><use href="#i-map"/></svg></div>
+      <div class="sh-body"><h2>全手法サマリー — この資料の「地図」</h2><div class="sh-sub">コスト・即効性・持続性・toCとの相性で一覧化</div></div>
     </div>
     <p class="section-lead">全37手法をコスト・即効性・持続性・toCとの相性で一覧化。手法名から各カテゴリの詳細に飛べます。</p>
 
@@ -239,61 +169,61 @@
         </thead>
         <tbody>
           <tr class="cat-row"><td colspan="6"><a href="#cat1">1. 検索系 — ユーザーが能動的に探しに来る</a></td></tr>
-          <tr><td class="m-id">1-1</td><td class="m-name"><a href="#cat1">SEO</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">1-2</td><td class="m-name"><a href="#cat1">MEO</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">1-3</td><td class="m-name"><a href="#cat1">ASO</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+          <tr><td class="m-id">1-1</td><td class="m-name"><a href="#cat1">SEO</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">1-2</td><td class="m-name"><a href="#cat1">MEO</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">1-3</td><td class="m-name"><a href="#cat1">ASO</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">3<small>/5</small></span></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat2">2. SNS系 — 認知・興味を作る</a></td></tr>
-          <tr><td class="m-id">2-1</td><td class="m-name"><a href="#cat2">Instagram</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">2-2</td><td class="m-name"><a href="#cat2">X（Twitter）</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
-          <tr><td class="m-id">2-3</td><td class="m-name"><a href="#cat2">ショート動画（TikTok等）</a></td><td>無料〜低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
-          <tr><td class="m-id">2-4</td><td class="m-name"><a href="#cat2">YouTube</a></td><td>中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
-          <tr><td class="m-id">2-5</td><td class="m-name"><a href="#cat2">LINE公式</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+          <tr><td class="m-id">2-1</td><td class="m-name"><a href="#cat2">Instagram</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">2-2</td><td class="m-name"><a href="#cat2">X（Twitter）</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">4<small>/5</small></span></td></tr>
+          <tr><td class="m-id">2-3</td><td class="m-name"><a href="#cat2">ショート動画（TikTok等）</a></td><td>無料〜低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">4<small>/5</small></span></td></tr>
+          <tr><td class="m-id">2-4</td><td class="m-name"><a href="#cat2">YouTube</a></td><td>中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">4<small>/5</small></span></td></tr>
+          <tr><td class="m-id">2-5</td><td class="m-name"><a href="#cat2">LINE公式</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat3">3. 広告系 — お金を払ってリーチする</a></td></tr>
-          <tr><td class="m-id">3-1</td><td class="m-name"><a href="#cat3">リスティング広告</a></td><td>中〜高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">3-2</td><td class="m-name"><a href="#cat3">ディスプレイ広告</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">3-3</td><td class="m-name"><a href="#cat3">SNS広告</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">3-4</td><td class="m-name"><a href="#cat3">YouTube広告</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">3-5</td><td class="m-name"><a href="#cat3">アフィリエイト</a> <span class="b-pr">景表法注意</span></td><td>成果報酬</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">3-6</td><td class="m-name"><a href="#cat3">インフルエンサー</a> <span class="b-pr">ステマ規制</span></td><td>高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+          <tr><td class="m-id">3-1</td><td class="m-name"><a href="#cat3">リスティング広告</a></td><td>中〜高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">3-2</td><td class="m-name"><a href="#cat3">ディスプレイ広告</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">3-3</td><td class="m-name"><a href="#cat3">SNS広告</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">3-4</td><td class="m-name"><a href="#cat3">YouTube広告</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">3-5</td><td class="m-name"><a href="#cat3">アフィリエイト</a> <span class="b-pr">景表法注意</span></td><td>成果報酬</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">3-6</td><td class="m-name"><a href="#cat3">インフルエンサー</a> <span class="b-pr">ステマ規制</span></td><td>高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">4<small>/5</small></span></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat4">4. コンテンツ系 — 情報で引き寄せる</a></td></tr>
-          <tr><td class="m-id">4-1</td><td class="m-name"><a href="#cat4">ブログ</a></td><td>低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
-          <tr><td class="m-id">4-2</td><td class="m-name"><a href="#cat4">メルマガ</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">4-3</td><td class="m-name"><a href="#cat4">ホワイトペーパー</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;<span class="off">&#9733;&#9733;&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">4-4</td><td class="m-name"><a href="#cat4">ウェビナー</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;<span class="off">&#9733;&#9733;&#9733;</span></span></td></tr>
+          <tr><td class="m-id">4-1</td><td class="m-name"><a href="#cat4">ブログ</a></td><td>低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">4<small>/5</small></span></td></tr>
+          <tr><td class="m-id">4-2</td><td class="m-name"><a href="#cat4">メルマガ</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">4-3</td><td class="m-name"><a href="#cat4">ホワイトペーパー</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">1<small>/5</small></span></td></tr>
+          <tr><td class="m-id">4-4</td><td class="m-name"><a href="#cat4">ウェビナー</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">2<small>/5</small></span></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat5">5. CRM/リテンション系 — 既存顧客を育てる</a></td></tr>
-          <tr><td class="m-id">5-1</td><td class="m-name"><a href="#cat5">CRM</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
-          <tr><td class="m-id">5-2</td><td class="m-name"><a href="#cat5">リターゲティング</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">5-3</td><td class="m-name"><a href="#cat5">プッシュ通知</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">5-4</td><td class="m-name"><a href="#cat5">ロイヤルティPG</a></td><td>低〜中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
+          <tr><td class="m-id">5-1</td><td class="m-name"><a href="#cat5">CRM</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">4<small>/5</small></span></td></tr>
+          <tr><td class="m-id">5-2</td><td class="m-name"><a href="#cat5">リターゲティング</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">5-3</td><td class="m-name"><a href="#cat5">プッシュ通知</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">5-4</td><td class="m-name"><a href="#cat5">ロイヤルティPG</a></td><td>低〜中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">4<small>/5</small></span></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat6">6. 口コミ/紹介系 — ユーザーが広めてくれる（要ステマ規制注意）</a></td></tr>
-          <tr><td class="m-id">6-1</td><td class="m-name"><a href="#cat6">紹介プログラム</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">6-2</td><td class="m-name"><a href="#cat6">UGC促進</a> <span class="b-pr">ステマ規制</span></td><td>無料〜低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">6-3</td><td class="m-name"><a href="#cat6">口コミ管理</a> <span class="b-pr">ステマ規制</span></td><td>無料</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+          <tr><td class="m-id">6-1</td><td class="m-name"><a href="#cat6">紹介プログラム</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">6-2</td><td class="m-name"><a href="#cat6">UGC促進</a> <span class="b-pr">ステマ規制</span></td><td>無料〜低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">6-3</td><td class="m-name"><a href="#cat6">口コミ管理</a> <span class="b-pr">ステマ規制</span></td><td>無料</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat7">7. プラットフォーム/マーケットプレイス系 — 他人の集客力を借りる</a></td></tr>
-          <tr><td class="m-id">7-1</td><td class="m-name"><a href="#cat7">体験PF掲載</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">7-2</td><td class="m-name"><a href="#cat7">ECモール</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+          <tr><td class="m-id">7-1</td><td class="m-name"><a href="#cat7">体験PF掲載</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">7-2</td><td class="m-name"><a href="#cat7">ECモール</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat8">8. オフライン系 — リアルで接点を作る</a></td></tr>
-          <tr><td class="m-id">8-1</td><td class="m-name"><a href="#cat8">イベント出展</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">8-2</td><td class="m-name"><a href="#cat8">チラシ/ポスティング</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;<span class="off">&#9733;&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">8-3</td><td class="m-name"><a href="#cat8">店頭POP</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
-          <tr><td class="m-id">8-4</td><td class="m-name"><a href="#cat8">無料体験</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
+          <tr><td class="m-id">8-1</td><td class="m-name"><a href="#cat8">イベント出展</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">8-2</td><td class="m-name"><a href="#cat8">チラシ/ポスティング</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">2<small>/5</small></span></td></tr>
+          <tr><td class="m-id">8-3</td><td class="m-name"><a href="#cat8">店頭POP</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">4<small>/5</small></span></td></tr>
+          <tr><td class="m-id">8-4</td><td class="m-name"><a href="#cat8">無料体験</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">5<small>/5</small></span></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat9">9. PR/ブランディング系 — メディアに取り上げてもらう</a></td></tr>
-          <tr><td class="m-id">9-1</td><td class="m-name"><a href="#cat9">プレスリリース</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">9-2</td><td class="m-name"><a href="#cat9">メディアリレーション</a></td><td>無料〜高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
-          <tr><td class="m-id">9-3</td><td class="m-name"><a href="#cat9">スポンサーシップ</a></td><td>高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="stars">&#9733;&#9733;<span class="off">&#9733;&#9733;&#9733;</span></span></td></tr>
+          <tr><td class="m-id">9-1</td><td class="m-name"><a href="#cat9">プレスリリース</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">9-2</td><td class="m-name"><a href="#cat9">メディアリレーション</a></td><td>無料〜高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">9-3</td><td class="m-name"><a href="#cat9">スポンサーシップ</a></td><td>高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">2<small>/5</small></span></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat10">10. パートナーシップ系 — 他社と組む</a></td></tr>
-          <tr><td class="m-id">10-1</td><td class="m-name"><a href="#cat10">コラボ/共同キャンペーン</a></td><td>案件次第</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;<span class="off">&#9733;</span></span></td></tr>
-          <tr><td class="m-id">10-2</td><td class="m-name"><a href="#cat10">パートナーチャネル</a></td><td>無料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td></tr>
-          <tr><td class="m-id">10-3</td><td class="m-name"><a href="#cat10">API連携/ウィジェット</a></td><td>中（開発費）</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="stars">&#9733;&#9733;&#9733;<span class="off">&#9733;&#9733;</span></span></td></tr>
+          <tr><td class="m-id">10-1</td><td class="m-name"><a href="#cat10">コラボ/共同キャンペーン</a></td><td>案件次第</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">4<small>/5</small></span></td></tr>
+          <tr><td class="m-id">10-2</td><td class="m-name"><a href="#cat10">パートナーチャネル</a></td><td>無料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">10-3</td><td class="m-name"><a href="#cat10">API連携/ウィジェット</a></td><td>中（開発費）</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">3<small>/5</small></span></td></tr>
         </tbody>
       </table>
     </div>
@@ -302,8 +232,8 @@
   <!-- ==================== 1. 検索系 ==================== -->
   <div class="section" id="cat1">
     <div class="section-header">
-      <div class="section-num">1</div>
-      <div><h2>検索系</h2><div class="sh-sub">ユーザーが能動的に探しに来る</div></div>
+      <div class="section-num">01</div>
+      <div class="sh-body"><h2>検索系</h2><div class="sh-sub">ユーザーが能動的に探しに来る</div></div>
     </div>
     <p class="section-lead">ユーザーが「探しに来る」。購買意欲が高いのが特徴。</p>
 
@@ -343,8 +273,8 @@
   <!-- ==================== 2. SNS系 ==================== -->
   <div class="section" id="cat2">
     <div class="section-header">
-      <div class="section-num">2</div>
-      <div><h2>SNS系</h2><div class="sh-sub">認知・興味を作る</div></div>
+      <div class="section-num">02</div>
+      <div class="sh-body"><h2>SNS系</h2><div class="sh-sub">認知・興味を作る</div></div>
     </div>
     <p class="section-lead">認知を広げ、興味を作り、ファンを育てる。</p>
 
@@ -404,12 +334,12 @@
   <!-- ==================== 3. 広告系 ==================== -->
   <div class="section" id="cat3">
     <div class="section-header">
-      <div class="section-num">3</div>
-      <div><h2>広告系</h2><div class="sh-sub">お金を払ってリーチする</div></div>
+      <div class="section-num">03</div>
+      <div class="sh-body"><h2>広告系</h2><div class="sh-sub">お金を払ってリーチする</div></div>
     </div>
     <p class="section-lead">お金を払って即座にリーチする。</p>
 
-    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>
       <b>ステマ規制（景品表示法・2023年10月施行）に注意</b><br>
       インフルエンサーへの依頼投稿（商品提供のみの<b>ギフティングを含む</b>）には「#PR」等の広告表示が<b>必須</b>。アフィリエイトでも広告主に景表法上の表示管理責任があり、アフィリエイターの誇大表現も広告主の責任になる。化粧品/健康食品等は薬機法の表現規制にも注意。
     </div></div>
@@ -456,7 +386,7 @@
       </div>
 
       <div class="m-card">
-        <div class="m-head"><span class="m-num">3-5</span><h3>アフィリエイト広告</h3><span class="b-pr">&#9888; 景表法注意</span></div>
+        <div class="m-head"><span class="m-num">3-5</span><h3>アフィリエイト広告</h3><span class="b-pr"><svg class="icon"><use href="#i-alert"/></svg>景表法注意</span></div>
         <p class="m-desc">ブロガーやメディアに紹介してもらい、成果（申込/購入）に応じて報酬を支払う。成果報酬型なので無駄な広告費がなく、第三者の推薦は信頼されやすい。アフィリエイターのリクルートと品質管理が課題。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">初期5〜10万円（ASP）+ 成果報酬（1件500〜5,000円程度）</span></div>
@@ -467,7 +397,7 @@
       </div>
 
       <div class="m-card">
-        <div class="m-head"><span class="m-num">3-6</span><h3>インフルエンサーマーケティング</h3><span class="b-pr">&#9888; ステマ規制</span></div>
+        <div class="m-head"><span class="m-num">3-6</span><h3>インフルエンサーマーケティング</h3><span class="b-pr"><svg class="icon"><use href="#i-alert"/></svg>ステマ規制</span></div>
         <p class="m-desc">SNS/YouTubeのインフルエンサーに商品/サービスを体験・紹介してもらう。商品提供のみで依頼する「ギフティング」も低コスト手法として定番。フォロワーからの信頼度が高くUGCも生まれるが、効果測定が難しい。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1件5〜100万円+（フォロワー数による）</span></div>
@@ -482,8 +412,8 @@
   <!-- ==================== 4. コンテンツ系 ==================== -->
   <div class="section" id="cat4">
     <div class="section-header">
-      <div class="section-num">4</div>
-      <div><h2>コンテンツ系</h2><div class="sh-sub">情報で引き寄せる</div></div>
+      <div class="section-num">04</div>
+      <div class="sh-body"><h2>コンテンツ系</h2><div class="sh-sub">情報で引き寄せる</div></div>
     </div>
     <p class="section-lead">有益な情報を提供して、ユーザーを引き寄せる。</p>
 
@@ -533,8 +463,8 @@
   <!-- ==================== 5. CRM/リテンション系 ==================== -->
   <div class="section" id="cat5">
     <div class="section-header">
-      <div class="section-num">5</div>
-      <div><h2>CRM/リテンション系</h2><div class="sh-sub">既存顧客を育てる</div></div>
+      <div class="section-num">05</div>
+      <div class="sh-body"><h2>CRM/リテンション系</h2><div class="sh-sub">既存顧客を育てる</div></div>
     </div>
     <p class="section-lead">一度来た顧客を逃さず、リピートさせる。</p>
 
@@ -580,12 +510,12 @@
   <!-- ==================== 6. 口コミ/紹介系 ==================== -->
   <div class="section" id="cat6">
     <div class="section-header">
-      <div class="section-num">6</div>
-      <div><h2>口コミ/紹介系</h2><div class="sh-sub">ユーザーが広めてくれる</div></div>
+      <div class="section-num">06</div>
+      <div class="sh-body"><h2>口コミ/紹介系</h2><div class="sh-sub">ユーザーが広めてくれる</div></div>
     </div>
     <p class="section-lead">ユーザーが自発的に広めてくれる。最もCAC（顧客獲得コスト）が低い。</p>
 
-    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>
       <b>ステマ規制の注意（景品表示法・2023年10月施行）</b><br>
       事業者が対価（金銭・商品提供・特典等）を渡して投稿やレビューを依頼する場合、<b>広告であることの明示（#PR等）が必要</b>。明示なしの依頼投稿・やらせレビューは景表法違反となる。
       出典: <a href="https://www.caa.go.jp/policies/policy/representation/fair_labeling/stealth_marketing" target="_blank" rel="noopener">消費者庁 ステルスマーケティング規制</a>
@@ -602,7 +532,7 @@
       </div>
 
       <div class="m-card">
-        <div class="m-head"><span class="m-num">6-2</span><h3>UGC（ユーザー生成コンテンツ）の促進</h3><span class="b-pr">&#9888; ステマ規制</span></div>
+        <div class="m-head"><span class="m-num">6-2</span><h3>UGC（ユーザー生成コンテンツ）の促進</h3><span class="b-pr"><svg class="icon"><use href="#i-alert"/></svg>ステマ規制</span></div>
         <p class="m-desc">ユーザーにSNS投稿やレビューを促し、それをマーケティングに活用。広告費ゼロで、第三者の声は広告より信頼される。コントロールが難しくネガティブなUGCも出る。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料〜低（投稿キャンペーンの特典費用）</span></div>
@@ -612,7 +542,7 @@
       </div>
 
       <div class="m-card">
-        <div class="m-head"><span class="m-num">6-3</span><h3>口コミサイト/レビュー管理</h3><span class="b-pr">&#9888; ステマ規制</span></div>
+        <div class="m-head"><span class="m-num">6-3</span><h3>口コミサイト/レビュー管理</h3><span class="b-pr"><svg class="icon"><use href="#i-alert"/></svg>ステマ規制</span></div>
         <p class="m-desc">Google口コミ、食べログ、じゃらん等のレビューサイトでの評価を管理。購買決定に大きな影響を持ち、SEO効果もある。ネガティブレビューへの対応が必要。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料</span></div>
@@ -626,8 +556,8 @@
   <!-- ==================== 7. プラットフォーム系 ==================== -->
   <div class="section" id="cat7">
     <div class="section-header">
-      <div class="section-num">7</div>
-      <div><h2>プラットフォーム/マーケットプレイス系</h2><div class="sh-sub">他人の集客力を借りる</div></div>
+      <div class="section-num">07</div>
+      <div class="sh-body"><h2>プラットフォーム/マーケットプレイス系</h2><div class="sh-sub">他人の集客力を借りる</div></div>
     </div>
     <p class="section-lead">他人の集客力を借りる。</p>
 
@@ -656,8 +586,8 @@
   <!-- ==================== 8. オフライン系 ==================== -->
   <div class="section" id="cat8">
     <div class="section-header">
-      <div class="section-num">8</div>
-      <div><h2>オフライン系</h2><div class="sh-sub">リアルで接点を作る</div></div>
+      <div class="section-num">08</div>
+      <div class="sh-body"><h2>オフライン系</h2><div class="sh-sub">リアルで接点を作る</div></div>
     </div>
     <p class="section-lead">リアルでの接点を作る。</p>
 
@@ -703,8 +633,8 @@
   <!-- ==================== 9. PR/ブランディング系 ==================== -->
   <div class="section" id="cat9">
     <div class="section-header">
-      <div class="section-num">9</div>
-      <div><h2>PR/ブランディング系</h2><div class="sh-sub">メディアに取り上げてもらう</div></div>
+      <div class="section-num">09</div>
+      <div class="sh-body"><h2>PR/ブランディング系</h2><div class="sh-sub">メディアに取り上げてもらう</div></div>
     </div>
     <p class="section-lead">メディアに取り上げてもらい、信頼と認知を獲得する。</p>
 
@@ -743,7 +673,7 @@
   <div class="section" id="cat10">
     <div class="section-header">
       <div class="section-num">10</div>
-      <div><h2>パートナーシップ系</h2><div class="sh-sub">他社と組む</div></div>
+      <div class="sh-body"><h2>パートナーシップ系</h2><div class="sh-sub">他社と組む</div></div>
     </div>
     <p class="section-lead">他社と組んで、互いの顧客にリーチする。</p>
 

@@ -6,24 +6,25 @@
   <title>Rincle - クライアント説明資料</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="assets/rincle-favicon.png">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --sidebar-width: 260px;
-      --color-bg: #f8f9fa;
-      --color-sidebar: #23201d;
-      --color-sidebar-hover: #2e2924;
-      --color-sidebar-active: #3d3128;
-      --color-accent: #f95320;
-      --color-text: #333;
-      --color-text-light: #94a3b8;
+      --color-bg: #FBF9F5;
+      --color-sidebar: #26221E;
+      --color-sidebar-hover: #322C27;
+      --color-sidebar-active: #3E332B;
+      --color-accent: #B8532F;
+      --color-text: #57504A;
+      --color-text-light: #A9A199;
     }
 
     body {
-      font-family:'Inter','Noto Sans JP',-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+      font-family:'Noto Sans JP',-apple-system, BlinkMacSystemFont, 'Hiragino Sans', Meiryo, sans-serif;
+      font-feature-settings:'palt' 1;
       background: var(--color-bg);
       color: var(--color-text);
       display: flex;
@@ -48,9 +49,10 @@
     }
 
     .sidebar-header h1 {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
+      font-family:'Shippori Mincho',serif;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
     }
 
     .sidebar-header p {
@@ -75,7 +77,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: #e2e8f0;
+      color: #E5DDD2;
       cursor: pointer;
       user-select: none;
       transition: background 0.15s;
@@ -111,7 +113,7 @@
     .nav-item {
       display: block;
       padding: 9px 20px 9px 32px;
-      color: #cbd5e1;
+      color: #CFC7BE;
       text-decoration: none;
       font-size: 13px;
       cursor: pointer;
@@ -152,7 +154,7 @@
     .topbar {
       padding: 16px 32px;
       background: #fff;
-      border-bottom: 1px solid #e2e8f0;
+      border-bottom: 1px solid #E5DDD2;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -188,7 +190,7 @@
       justify-content: center;
       height: 100%;
       text-align: center;
-      color: #94a3b8;
+      color: #A9A199;
     }
 
     .welcome h2 {
@@ -285,7 +287,7 @@
     let currentGroup = null;
 
     if (pages.length === 0) {
-      nav.innerHTML = '<div style="padding:20px;color:#94a3b8;font-size:13px;">まだ資料がありません。<br>pages 配列にエントリを追加してください。</div>';
+      nav.innerHTML = '<div style="padding:20px;color:#A9A199;font-size:13px;">まだ資料がありません。<br>pages 配列にエントリを追加してください。</div>';
       return;
     }
 

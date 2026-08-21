@@ -6,160 +6,62 @@
 <title>決済基盤の方針 — Pay.jp vs Stripe 比較・移行計画 | RINCLE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/design.css">
 <style>
-  :root{
-    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
-    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
-    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
-    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
-    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
-    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
+  /* ページ固有CSS — 決済基盤の方針（共通部品は ../assets/design.css を参照） */
 
-  /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
-  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
-  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
-  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
-  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-  .hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
+  /* 章の交互背景: 本文先頭に注記アラートがあるため白⇄紙の順番を反転（最初の章=白） */
+  .container > .section:nth-of-type(odd){background:transparent;box-shadow:none;clip-path:none}
+  .container > .section:nth-of-type(even){background:var(--surface);box-shadow:0 0 0 100vmax var(--surface);clip-path:inset(0 -100vmax)}
 
-  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+  /* アラートの追加2色（琥珀=お金・焦がし=結論） */
+  .alert-amber{border-left-color:var(--gold);color:var(--gold-text)}
+  .alert-brand{border-left-color:var(--accent);color:var(--accent-deep)}
 
-  /* flow nav */
-  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
-  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
-  .flow a:nth-child(4n+1){border-left:none}
-  .flow a:nth-child(n+5){border-top:1px solid var(--border)}
-  .flow a:hover{background:var(--brand-soft)}
-  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
-  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
-  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
-  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
-  .flow a:nth-child(4n)::after,.flow a:last-child::after{content:""}
-
-  /* サマリーカード（本文先頭） */
-
-  /* sections */
-  .section{margin-bottom:56px;scroll-margin-top:20px}
-  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
-  .section-num.plain{background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5}
-  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
-  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
-  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
-
-  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
-
-  /* alerts */
-  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
-  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
-  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
-  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
-  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
-  .alert-amber{background:#FFF7E6;border:1px solid #F5DFB8;color:#8F5A0A}
-  .alert-brand{background:linear-gradient(135deg,#FFF4EF,#FFF9F6);border:1px solid #FBD3C4;color:#7A3212}
-
-  /* tables */
-  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
-  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
-  thead th{background:#FBF8F5;color:var(--ink);border-bottom:2px solid var(--brand);padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
-  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:top}
-  tr:last-child td{border-bottom:none}
-  tbody tr:hover td{background:#FBF8F5}
-  td.label{font-weight:700;color:var(--ink)}
-  thead th.payjp{color:#1D48A6}
-  thead th.stripe{color:var(--brand-deep)}
-  thead th.dim{color:#B8B0A6;font-weight:600;white-space:normal}
-  td.dim{color:#B8B0A6}
-  thead th.merit{background:#EDFAF2;color:#136A41}
-  thead th.demerit{background:#FDECEF;color:#8E1230}
-  td.merit{background:#F6FDF9}
-  td.demerit{background:#FFF7F9}
-  tbody tr:hover td.merit{background:#EDFAF2}
-  tbody tr:hover td.demerit{background:#FDECEF}
-  tr.now td{background:#EEF3FE}
-  tbody tr.now:hover td{background:#E2EBFC}
-  tr.hl td{background:var(--brand-soft)}
-  tbody tr.hl:hover td{background:#FFE5DA}
-
-  /* badges */
-  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
-  .badge.good{background:#EDFAF2;color:#136A41}
-  .badge.bad{background:#FDECEF;color:#8E1230}
-  .badge.warn{background:#FFF4E0;color:#8F5A0A}
-  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
-  .badge.now{background:#EEF3FE;color:#1D48A6}
-  .badge.neutral{background:#F2EEE9;color:var(--sub)}
-
-  /* 3ルートの箱 */
-  .routes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0 8px}
-  .route-box{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
-  .route-box h4{font-size:15px;font-weight:800;margin:6px 0 2px;color:var(--ink)}
-  .route-box p{font-size:13px;color:var(--sub);flex:1;margin:0}
+  /* 3ルートの箱（白面+1px罫線・影なし・角丸4px） */
+  .routes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:28px 0 8px}
+  .route-box{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+  .route-box h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);line-height:1.6}
+  .route-box p{font-size:12.5px;color:var(--text);line-height:1.9;flex:1}
   .route-box.dimmed{opacity:.62}
-  .route-box.selected{border:2px solid var(--brand);box-shadow:0 0 0 4px var(--brand-soft)}
-  .route-chip{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;color:#fff;font-weight:800;font-size:14px;flex-shrink:0}
-  .route-verdict{font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px;align-self:flex-start}
-  .route-verdict.no{background:#F2EEE9;color:var(--sub)}
-  .route-verdict.neutral{background:#EEF3FE;color:#1D48A6}
-  .route-verdict.yes{background:var(--brand);color:#fff}
+  .route-box.selected{border-color:var(--accent)}
 
-  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
+  /* ルート記号（白面+役割色の輪郭丸+明朝文字。ol.steps li::beforeと同型） */
+  .route-chip{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1.5px solid var(--sub);color:var(--sub);font-family:var(--serif);font-size:13px;flex-shrink:0}
+  .route-chip.b{border-color:var(--info);color:var(--info)}
+  .route-chip.c{border-color:var(--accent);color:var(--accent)}
+  td .route-chip{width:24px;height:24px;font-size:12px;margin-right:6px;vertical-align:-6px}
 
-  /* まとめバンド */
-  .recap{background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 70%,#FF7A45 100%);color:#fff;border-radius:var(--radius);padding:26px 30px;margin-top:8px;box-shadow:var(--shadow-lg)}
-  .recap h2{font-size:17px;font-weight:800;margin-bottom:14px}
-  .recap .r-flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13.5px}
-  .recap .r-chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 16px;font-weight:700}
-  .recap .r-arr{opacity:.6;font-weight:800}
-  .recap p{font-size:12.5px;opacity:.82;margin-top:14px}
+  /* 結論の札（badge型） */
+  .route-verdict{display:inline-block;font-size:12px;font-weight:700;padding:4px 12px;border-radius:3px;align-self:flex-start}
+  .route-verdict.no{border:1px solid var(--line);color:var(--sub)}
+  .route-verdict.neutral{border:1px solid var(--info-line);color:var(--info-text)}
+  .route-verdict.yes{background:var(--accent);color:var(--paper)}
 
-  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px;line-height:1.9}
+  /* 表の細部（比較列の色分けは文字色のみ・塗りは使わない） */
+  thead th.payjp{color:var(--info)}
+  thead th.stripe{color:var(--accent)}
+  thead th.dim{color:#B0A79D;white-space:normal}
+  td.dim{color:#B0A79D}
+  thead th.merit{color:var(--ok)}
+  thead th.demerit{color:var(--danger)}
+  tr.hl td{background:var(--accent-faint)}
+  tbody tr.hl:hover td{background:var(--accent-soft)}
+  td.label{white-space:normal}
 
-  /* SVGアイコン（スプライト参照） */
-  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
-  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
-  .section-num .icon{width:22px;height:22px}
+  /* バッジの追加色 */
+  .badge.warn{border:1px solid #EAD9AE;background:var(--gold-soft);color:var(--gold-text)}
+  .badge.now{border:1px solid var(--info-line);background:var(--info-soft);color:var(--info-text)}
+  .badge.neutral{border:1px solid var(--line);color:var(--sub)}
 
-  /* 読み進みバー */
-  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
-  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
+  /* カード内のリスト */
+  .card ul{padding-left:20px;font-size:13.5px}
+  .card li{line-height:1.95}
 
-  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
-  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-  .rv-in{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  /* フローナビの現在地ハイライト */
-  .flow a.cur{background:var(--brand-soft)}
-  .flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
-
-  /* ミニチャート（ドーナツ） */
-  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .chart svg{width:130px;height:130px;flex-shrink:0}
-  .chart .cl{font-size:13.5px}
-  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
-  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
-
-  @media (max-width:760px){
-    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
-    .flow a{border-top:1px solid var(--border)}
+  @media (max-width:860px){
     .routes-grid{grid-template-columns:1fr}
-    .hero{padding:44px 24px 84px}
-    .container{padding:28px 18px 60px}
   }
-
-  /* webfont: 和文の約物詰め + 表の等幅数字 */
-  body{font-feature-settings:'palt' 1}
-  table{font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
@@ -173,7 +75,7 @@
 <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
 <symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
 <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
-<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
 <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
 <symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
 <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
@@ -182,54 +84,58 @@
 
 <div class="progress" aria-hidden="true"><i></i></div>
 
+<!-- ========== HERO ========== -->
 <div class="hero">
   <div class="hero-inner">
-    <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
-    <div>
-      <span class="eyebrow">決済基盤 — 再調査 2026-06</span>
-      <h1>決済基盤の方針（比較・移行計画）</h1>
-      <p class="lead">6/12定例の依頼に基づく再調査（Pay.jpオーソリ実装前提で短期/中長期の2軸評価）に、旧「Stripe移行方針」（4/21合意）を§6として統合した決済基盤の正本資料です。</p>
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">決済基盤 — 再調査 2026-06</span>
+      </div>
+      <span class="hero-no">STRIPE</span>
     </div>
+    <h1>決済基盤の方針（比較・移行計画）</h1>
+    <p class="lead">6/12定例の依頼に基づく再調査（Pay.jpオーソリ実装前提で短期/中長期の2軸評価）に、旧「Stripe移行方針」（4/21合意）を§6として統合した決済基盤の正本資料です。</p>
   </div>
 </div>
 
+<!-- 章ナビ -->
+<nav class="flow">
+  <a href="#s0"><span class="fnum">0</span><span class="ft">結論サマリー</span><span class="fd">3ルート比較と判断根拠</span></a>
+  <a href="#s1"><span class="fnum">1</span><span class="ft">オーソリ仕様</span><span class="fd">有効期間とデポジット与信</span></a>
+  <a href="#s2"><span class="fnum">2</span><span class="ft">手数料比較</span><span class="fd">Pay.jp 3.3% vs Stripe 3.6%</span></a>
+  <a href="#s3"><span class="fnum">3</span><span class="ft">3Dセキュア・CVC</span><span class="fd">本人認証の義務化と検証の差</span></a>
+  <a href="#s4"><span class="fnum">4</span><span class="ft">その他の機能比較</span><span class="fd">領収書・サブスク・Bubble連携</span></a>
+  <a href="#s5"><span class="fnum">5</span><span class="ft">リスク・未解決事項</span><span class="fd">弁護士回答待ちと確認事項</span></a>
+  <a href="#s6"><span class="fnum">6</span><span class="ft">移行計画</span><span class="fd">フロー設計と移行ステップ</span></a>
+</nav>
+
 <div class="container">
 
-  <nav class="flow">
-    <a href="#s0"><span class="fnum">0</span><div class="ft">結論サマリー</div><div class="fd">3ルート比較と判断根拠</div></a>
-    <a href="#s1"><span class="fnum">1</span><div class="ft">オーソリ仕様</div><div class="fd">有効期間とデポジット与信</div></a>
-    <a href="#s2"><span class="fnum">2</span><div class="ft">手数料比較</div><div class="fd">Pay.jp 3.3% vs Stripe 3.6%</div></a>
-    <a href="#s3"><span class="fnum">3</span><div class="ft">3Dセキュア・CVC</div><div class="fd">本人認証の義務化と検証の差</div></a>
-    <a href="#s4"><span class="fnum">4</span><div class="ft">その他の機能比較</div><div class="fd">領収書・サブスク・Bubble連携</div></a>
-    <a href="#s5"><span class="fnum">5</span><div class="ft">リスク・未解決事項</div><div class="fd">弁護士回答待ちと確認事項</div></a>
-    <a href="#s6"><span class="fnum">6</span><div class="ft">移行計画</div><div class="fd">フロー設計と移行ステップ</div></a>
-  </nav>
-
-
-  <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>その後の更新（2026-08-20時点）:</strong> 決済サービスは<strong>6/19定例でStripeに決定</strong>（実装はタスク#35）。決済フローは<strong>7/3定例で「当日決済のみ」に決定</strong>し、本資料§6.1の旧設計は別資料「予約・決済・貸出・返却フロー」（payment-flow.html）に置き換え済み。<strong>デポジットは今回スコープ外で確定（6/30）</strong>。DB再構築は完了し、新サイトは7月上旬に本番リリース済み。</div></div>
+  <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>その後の更新（2026-08-20時点）:</strong> 決済サービスは<strong>6/19定例でStripeに決定</strong>（実装はタスク#35）。決済フローは<strong>7/3定例で「当日決済のみ」に決定</strong>し、本資料§6.1の旧設計は別資料「予約・決済・貸出・返却フロー」（payment-flow.html）に置き換え済み。<strong>デポジットは今回スコープ外で確定（6/30）</strong>。DB再構築は完了し、新サイトは7月上旬に本番リリース済み。</div></div>
 
   <!-- 0 -->
   <div class="section" id="s0">
-    <div class="section-header"><div class="section-num plain">0</div><div><h2>結論サマリー</h2><div class="sh-sub">再調査（2026-06）の結論と判断根拠</div></div></div>
+    <div class="section-header"><div class="section-num">00</div><div class="sh-body"><h2>結論サマリー</h2><div class="sh-sub">再調査（2026-06）の結論と判断根拠</div></div></div>
 
-    <div class="alert alert-brand"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>結論: Stripeに載せ替える。</strong> タイミングは今ではなく、DB再構築完了後に決済全体設計（キャンセルポリシー・振込オペ・月額課金）を固めてから、<strong>集約モデルの実装と同時に</strong>。オーソリの先行実装（80h）はやらない（6/12合意「急がない・二度手間回避」のとおり）。例外は「夏シーズン中の保険」として50円オーソリだけ先に買う場合のみ（経営判断）。以下が判断根拠。</div></div>
+    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>結論: Stripeに載せ替える。</strong> タイミングは今ではなく、DB再構築完了後に決済全体設計（キャンセルポリシー・振込オペ・月額課金）を固めてから、<strong>集約モデルの実装と同時に</strong>。オーソリの先行実装（80h）はやらない（6/12合意「急がない・二度手間回避」のとおり）。例外は「夏シーズン中の保険」として50円オーソリだけ先に買う場合のみ（経営判断）。以下が判断根拠。</div></div>
 
-    <p style="font-size:14px;color:var(--sub);margin-top:16px">比較した3ルート:</p>
+    <p style="font-size:14px;color:var(--sub)">比較した3ルート:</p>
     <div class="routes-grid">
       <div class="route-box dimmed">
-        <span class="route-chip" style="background:#F2EEE9;color:var(--sub);box-shadow:inset 0 0 0 1.5px #E0DAD2">A</span>
+        <span class="route-chip">A</span>
         <h4>オーソリだけ先行実装</h4>
         <p>現行テナント型のまま、50円検証→当日キャプチャを追加する短期の保険</p>
         <div class="route-verdict no">結論: やらない</div>
       </div>
       <div class="route-box">
-        <span class="route-chip" style="background:var(--info)">B</span>
+        <span class="route-chip b">B</span>
         <h4>Pay.jpのまま集約モデル化</h4>
         <p>Platform API撤去・単一アカウント型へ作り替え（契約変更の可否は要確認）</p>
         <div class="route-verdict neutral">対抗案（コスト最重視なら）</div>
       </div>
       <div class="route-box selected">
-        <span class="route-chip" style="background:var(--brand)">C</span>
+        <span class="route-chip c">C</span>
         <h4>Stripeへ載せ替え+集約モデル化</h4>
         <p>公式プラグイン+PaymentIntentで最終形を直接つくる</p>
         <div class="route-verdict yes">結論: これ（6/19決定）</div>
@@ -242,12 +148,12 @@
         <thead><tr><th style="width:200px"></th><th class="merit">メリット</th><th class="demerit">デメリット</th></tr></thead>
         <tbody>
           <tr>
-            <td class="label"><span class="route-chip" style="background:#F2EEE9;color:var(--sub);box-shadow:inset 0 0 0 1.5px #E0DAD2;margin-right:6px">A</span>Pay.jp続行<br>（オーソリ80h）</td>
+            <td class="label"><span class="route-chip">A</span>Pay.jp続行<br>（オーソリ80h）</td>
             <td class="merit">載せ替えなしで最速（見積済み80h・2週間）。決済失敗の事前検知がすぐ手に入る</td>
             <td class="demerit"><strong>80hはほぼ全額が掛け捨て</strong>（50円オーソリ相当のカード有効性チェックは、Stripeでは標準機能=SetupIntentで0円でできるため作り直しになる）。3DS・CVC・紙請求は未解決のまま</td>
           </tr>
           <tr>
-            <td class="label"><span class="route-chip" style="background:var(--brand);margin-right:6px">C</span>Stripeへ今すぐ載せ替え</td>
+            <td class="label"><span class="route-chip c">C</span>Stripeへ今すぐ載せ替え</td>
             <td class="merit">作るものがそのまま最終形になる（捨てる実装ゼロ）</td>
             <td class="demerit">全体設計が先に必要で「今すぐ」に間に合わない。DB再構築と並走になり非現実的</td>
           </tr>
@@ -262,12 +168,12 @@
         <thead><tr><th style="width:200px"></th><th class="merit">メリット</th><th class="demerit">デメリット</th></tr></thead>
         <tbody>
           <tr>
-            <td class="label"><span class="route-chip" style="background:var(--info);margin-right:6px">B</span>Pay.jp<br>（集約化・v1/v2）</td>
+            <td class="label"><span class="route-chip b">B</span>Pay.jp<br>（集約化・v1/v2）</td>
             <td class="merit"><strong>手数料が安い</strong>（3.3% vs 3.6%。月商1,000万なら月3万円差・ビジネスプラン移行なら月6万円差）。カード再登録不要の可能性（v2は自動マッピング）。3DSも対応済み</td>
             <td class="demerit"><strong>CVC検証が仕様上不可</strong>（決済失敗の温床が残る）。<strong>デポジットを安全に実装できない</strong>（デビット判別不可・v1/v2とも）。Bubbleプラグインなし。v2は未成熟（サブスク未提供）</td>
           </tr>
           <tr>
-            <td class="label"><span class="route-chip" style="background:var(--brand);margin-right:6px">C</span>Stripe</td>
+            <td class="label"><span class="route-chip c">C</span>Stripe</td>
             <td class="merit">3DS/CVC/領収書が標準・Bubble公式プラグイン・<strong>月額課金（Billing）提供済み</strong>・デポジット制御可・弊社が慣れている</td>
             <td class="demerit"><strong>手数料3.6%で高い</strong>（唯一の構造的デメリット）。カード再登録88人が必要</td>
           </tr>
@@ -278,7 +184,7 @@
 
   <!-- 1 -->
   <div class="section" id="s1">
-    <div class="section-header"><div class="section-num">1</div><div><h2>オーソリ仕様の比較（再調査の核心）</h2><div class="sh-sub">2026-06に公式ドキュメントで裏取り</div></div></div>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>オーソリ仕様の比較（再調査の核心）</h2><div class="sh-sub">2026-06に公式ドキュメントで裏取り</div></div></div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -318,7 +224,7 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>含意:</strong> RINCLEのユースケース（予約時50円検証→3日前全額オーソリ→当日キャプチャ / デポジットオーソリ数日間）は<strong>どちらでも実現可能</strong>。「Stripeはオーソリが7日しか持たないからPay.jp一択」という前回認識は、日本特例30日の確認で実質解消。海外発行カードは2026年8月以降どちらも実質5〜7日が上限になるため、インバウンド対応はどちらを選んでも短期オーソリ前提の設計が必要。</div></div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>含意:</strong> RINCLEのユースケース（予約時50円検証→3日前全額オーソリ→当日キャプチャ / デポジットオーソリ数日間）は<strong>どちらでも実現可能</strong>。「Stripeはオーソリが7日しか持たないからPay.jp一択」という前回認識は、日本特例30日の確認で実質解消。海外発行カードは2026年8月以降どちらも実質5〜7日が上限になるため、インバウンド対応はどちらを選んでも短期オーソリ前提の設計が必要。</div></div>
 
     <h3>1.5 補足調査（#25）: 高額デポジットオーソリの与信通過率とリスク</h3>
     <div class="card">
@@ -337,13 +243,13 @@
       </div>
       <p style="font-size:12px;color:var(--sub)">推計の仮定: レンタル料の即時決済1〜2.5万円（実測平均¥10,200・ロード上位/E-Bikeで2〜3万）が同時に枠に乗る。判定されるのは「限度額」ではなく「空き枠（限度額−利用残高）」。高級車を借りる層はゴールド保有率が相対的に高い可能性はある（未検証）。</p>
     </div>
-    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>リスク: デビット/プリペイドの即時引き落とし</strong> — オーソリでも<strong>即時に口座から実額が引き落とされ</strong>、返金まで数日〜2週間（案内上は最大20日程度）。30万円なら「30万円引かれた！」という重大クレームに直結。クレジットカードでも解放後の枠復活に数日かかる場合があり、「枠が戻らない」問い合わせ運用は必須。</div></div>
-    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>Pay.jpとStripeの差（上記リスクを防ぐ制御手段）:</strong> <strong>Stripeなら「デポジットはクレジットのみ」と制御できる</strong>（PaymentMethodの<code>funding</code>で種別判定・Radarでブロック可）。<strong>Pay.jpはv1・v2ともカード情報に種別フィールドがなく安全に実装できない</strong>（v2のOpenAPI定義にもfunding/debit/prepaidの概念が存在しない・2026-06確認）— デポジット導入の可否自体が決済サービス選定の材料になる。</div></div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>リスク: デビット/プリペイドの即時引き落とし</strong> — オーソリでも<strong>即時に口座から実額が引き落とされ</strong>、返金まで数日〜2週間（案内上は最大20日程度）。30万円なら「30万円引かれた！」という重大クレームに直結。クレジットカードでも解放後の枠復活に数日かかる場合があり、「枠が戻らない」問い合わせ運用は必須。</div></div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>Pay.jpとStripeの差（上記リスクを防ぐ制御手段）:</strong> <strong>Stripeなら「デポジットはクレジットのみ」と制御できる</strong>（PaymentMethodの<code>funding</code>で種別判定・Radarでブロック可）。<strong>Pay.jpはv1・v2ともカード情報に種別フィールドがなく安全に実装できない</strong>（v2のOpenAPI定義にもfunding/debit/prepaidの概念が存在しない・2026-06確認）— デポジット導入の可否自体が決済サービス選定の材料になる。</div></div>
   </div>
 
   <!-- 2 -->
   <div class="section" id="s2">
-    <div class="section-header"><div class="section-num">2</div><div><h2>手数料比較（2026-06の公式料金で更新）</h2><div class="sh-sub">前回資料の「Pay.jp 3.0%/3.6%」は旧体系。現行は以下</div></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>手数料比較（2026-06の公式料金で更新）</h2><div class="sh-sub">前回資料の「Pay.jp 3.0%/3.6%」は旧体系。現行は以下</div></div></div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -365,20 +271,20 @@
           <tr><th>月間GMV</th><th class="payjp">Pay.jp 3.3%</th><th class="dim">Pay.jp ビジネス（2.78%+2万円・参考）</th><th class="stripe">Stripe 3.6%</th></tr>
         </thead>
         <tbody>
-          <tr><td>21.5万円（2026-05実績）</td><td>7,095円</td><td class="dim">—</td><td>7,740円</td></tr>
-          <tr><td>100万円</td><td>33,000円</td><td class="dim">—</td><td>36,000円</td></tr>
-          <tr><td>400万円</td><td>132,000円</td><td class="dim">131,200円</td><td>144,000円</td></tr>
-          <tr><td>1,000万円</td><td>330,000円</td><td class="dim">298,000円</td><td>360,000円</td></tr>
+          <tr><td class="label">21.5万円（2026-05実績）</td><td>7,095円</td><td class="dim">—</td><td>7,740円</td></tr>
+          <tr><td class="label">100万円</td><td>33,000円</td><td class="dim">—</td><td>36,000円</td></tr>
+          <tr><td class="label">400万円</td><td>132,000円</td><td class="dim">131,200円</td><td>144,000円</td></tr>
+          <tr><td class="label">1,000万円</td><td>330,000円</td><td class="dim">298,000円</td><td>360,000円</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>含意:</strong> 現在の規模では月数百円の差。ただし<strong>GMVがスケールするほどPay.jpのコスト優位が効く</strong>（月商1,000万でスタンダード比月3万円差・ビジネスプラン移行なら月6万円差）。「手数料はほぼ同等」という前回の判断は新料金体系では成り立たない。現行契約から新料率への移行可否はPay.jpに要確認。</div></div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>含意:</strong> 現在の規模では月数百円の差。ただし<strong>GMVがスケールするほどPay.jpのコスト優位が効く</strong>（月商1,000万でスタンダード比月3万円差・ビジネスプラン移行なら月6万円差）。「手数料はほぼ同等」という前回の判断は新料金体系では成り立たない。現行契約から新料率への移行可否はPay.jpに要確認。</div></div>
   </div>
 
   <!-- 3 -->
   <div class="section" id="s3">
-    <div class="section-header"><div class="section-num">3</div><div><h2>3Dセキュア・CVC（事実関係を更新）</h2></div></div>
-    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>前提:</strong> 3Dセキュア（3DS）はカード決済時の本人認証（不正利用対策）。<strong>2025年3月末までにEC加盟店への導入が義務化済みで、RINCLEは未導入</strong>（このまま運用を続けること自体がコンプライアンス・チャージバックリスク）。</div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>3Dセキュア・CVC（事実関係を更新）</h2></div></div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>前提:</strong> 3Dセキュア（3DS）はカード決済時の本人認証（不正利用対策）。<strong>2025年3月末までにEC加盟店への導入が義務化済みで、RINCLEは未導入</strong>（このまま運用を続けること自体がコンプライアンス・チャージバックリスク）。</div></div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -402,7 +308,7 @@
 
   <!-- 4 -->
   <div class="section" id="s4">
-    <div class="section-header"><div class="section-num">4</div><div><h2>その他の機能比較</h2></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>その他の機能比較</h2></div></div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -419,12 +325,12 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>補足: Pay.jp API v2とは</strong> — Pay.jpの新世代API。現行RINCLEはv1（テナント型Platform API含む）。v2はクレカに加えPayPay・Apple Pay等を一元管理でき、3DS等の購入者アクション型フローの統合が強化されている。ただしv1→v2はAPI体系が変わる移行作業であり、<strong>「Pay.jp続行で将来機能も取る」ルートは実質v2への載せ替えを含む</strong> = どのルートでも決済実装の作り替えは避けられない。</div></div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>補足: Pay.jp API v2とは</strong> — Pay.jpの新世代API。現行RINCLEはv1（テナント型Platform API含む）。v2はクレカに加えPayPay・Apple Pay等を一元管理でき、3DS等の購入者アクション型フローの統合が強化されている。ただしv1→v2はAPI体系が変わる移行作業であり、<strong>「Pay.jp続行で将来機能も取る」ルートは実質v2への載せ替えを含む</strong> = どのルートでも決済実装の作り替えは避けられない。</div></div>
   </div>
 
   <!-- 5 -->
   <div class="section" id="s5">
-    <div class="section-header"><div class="section-num">5</div><div><h2>リスク・未解決事項</h2></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>リスク・未解決事項</h2></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>項目</th><th>状態</th></tr></thead>
@@ -437,16 +343,16 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>増永さん側で決定が必要（旧移行方針の決め残しを統合）:</strong> キャンセルポリシーの策定（#28で設計中・雨無料/それ以外課金の方向は6/12合意）/ 弁護士回答（一括回収の会計・責任所在）/ 店舗への振込頻度（月1回 or 月2回）/ 振込手数料の負担者 / 追加オプションのシステム化可否</div></div>
-    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>技術的な確認事項:</strong> Stripe手数料率の最終確認 / Bubbleプラグインの選定・検証 / Webhook設計 / 領収書の発行義務・発行元（一括回収モデルではPEDALSTANDARDが発行元になる可能性。Stripeのレシートメール自動送信で対応見込み・法的要件は要確認）</div></div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>増永さん側で決定が必要（旧移行方針の決め残しを統合）:</strong> キャンセルポリシーの策定（#28で設計中・雨無料/それ以外課金の方向は6/12合意）/ 弁護士回答（一括回収の会計・責任所在）/ 店舗への振込頻度（月1回 or 月2回）/ 振込手数料の負担者 / 追加オプションのシステム化可否</div></div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>技術的な確認事項:</strong> Stripe手数料率の最終確認 / Bubbleプラグインの選定・検証 / Webhook設計 / 領収書の発行義務・発行元（一括回収モデルではPEDALSTANDARDが発行元になる可能性。Stripeのレシートメール自動送信で対応見込み・法的要件は要確認）</div></div>
   </div>
 
   <!-- 6 -->
   <div class="section" id="s6">
-    <div class="section-header"><div class="section-num">6</div><div><h2>決定後の移行計画（旧「Stripe移行方針」を統合・2026-06更新）</h2><div class="sh-sub">4/21・5/1合意の実行計画。Stripeを選んだ場合のフロー設計と移行ステップ。Pay.jp集約化（ルートB）でも決済フローの構造は同じ</div></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>決定後の移行計画（旧「Stripe移行方針」を統合・2026-06更新）</h2><div class="sh-sub">4/21・5/1合意の実行計画。Stripeを選んだ場合のフロー設計と移行ステップ。Pay.jp集約化（ルートB）でも決済フローの構造は同じ</div></div></div>
 
     <h3>6.1 決済フロー設計</h3>
-    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>この6.1の旧設計は置き換え済みです。</strong>増永さんの構想（6/30受領）を受けた<strong>7/3定例の決定（当日決済のみ・オーソリなし）</strong>により、決済フローは別資料「予約・決済・貸出・返却フロー」（payment-flow.html）が最新です。以下は当時の設計として残しています。</div></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>この6.1の旧設計は置き換え済みです。</strong>増永さんの構想（6/30受領）を受けた<strong>7/3定例の決定（当日決済のみ・オーソリなし）</strong>により、決済フローは別資料「予約・決済・貸出・返却フロー」（payment-flow.html）が最新です。以下は当時の設計として残しています。</div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>シーン</th><th>フロー</th><th>要点</th></tr></thead>
@@ -462,9 +368,9 @@
 
     <h3>6.2 店舗への振込・登録</h3>
     <div class="card">
-      <ul style="padding-left:20px;font-size:14px">
-        <li style="margin-bottom:8px"><strong>振込:</strong> 月次で店舗別売上を集計 → カード手数料+利用料15%を差引 → 振込。紙請求は廃止、未払いリスクゼロ</li>
-        <li style="margin-bottom:8px"><strong>店舗登録:</strong> 決済アカウント作成・審査（現行8ステップ）が丸ごと不要に。店舗情報の代行入力運用は継続</li>
+      <ul>
+        <li><strong>振込:</strong> 月次で店舗別売上を集計 → カード手数料+利用料15%を差引 → 振込。紙請求は廃止、未払いリスクゼロ</li>
+        <li><strong>店舗登録:</strong> 決済アカウント作成・審査（現行8ステップ）が丸ごと不要に。店舗情報の代行入力運用は継続</li>
         <li><strong>領収書:</strong> お金の当事者がユーザー⇔PEDALSTANDARDになるため発行元が変わる見込み。Stripeのレシートメール自動送信を利用（法的要件は要確認）</li>
       </ul>
     </div>
@@ -481,7 +387,7 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>旧計画の日付（5/8決定・5/11実装開始）は、DB再構築優先への方針変更（5月）により失効。決済サービスは<strong>6/19にStripeへ決定済み</strong>。実装スケジュールは<strong>キャンセルポリシー確定後の詳細見積で引き直す</strong>（payment-flow.html参照）。</div></div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>旧計画の日付（5/8決定・5/11実装開始）は、DB再構築優先への方針変更（5月）により失効。決済サービスは<strong>6/19にStripeへ決定済み</strong>。実装スケジュールは<strong>キャンセルポリシー確定後の詳細見積で引き直す</strong>（payment-flow.html参照）。</div></div>
     <p style="font-size:12px;color:var(--sub)">出典: Pay.jp料金プラン / Pay.jpオーソリ仕様（authcapture）/ 海外カード制限告知（2026-03-03）/ Pay.jp 3DSガイドライン / Stripe料金 / Stripe Place a hold — 詳細URLは正本md（payjp-vs-stripe-comparison.md）の参考資料欄を参照</p>
   </div>
 
@@ -492,7 +398,7 @@
       <span class="r-chip">再調査（#20・#25）完了</span><span class="r-arr">→</span>
       <span class="r-chip">6/19 Stripeに決定（実装#35）</span><span class="r-arr">→</span>
       <span class="r-chip">6/30 デポジットはスコープ外で確定</span><span class="r-arr">→</span>
-      <span class="r-chip">7/3 当日決済フローに決定</span>
+      <span class="r-chip hot">7/3 当日決済フローに決定</span>
     </div>
     <p>決済フローの最新版は payment-flow.html、領収書・インボイスの調査は receipt-invoice.html を参照。実装（#35）の詳細見積はキャンセルポリシー（#28）の確定後。</p>
   </div>

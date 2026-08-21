@@ -1,0 +1,249 @@
+/* HTML資料デザインシステム CSSテンプレート — 誌面エディトリアル版（2026-08-21全面改定）
+   正本の見た目: デザインシステムキャンバス（RINCLE デザインシステム）
+   ※Webフォント必須: <head>にShippori Mincho+Noto Sans JPのlinkを入れる（snippets.html冒頭参照）
+   ※カラートークンはRINCLE値。案件ごとに --accent 系をブランドから導出して差し替える
+     （原色をそのまま使わず、彩度を落とした「焦がしトーン」にするのがこの様式の鍵。RINCLE: #F95320 → #B8532F） */
+
+:root{
+  --paper:#FBF9F5;          /* 紙: ページ背景 */
+  --ink:#26221E;            /* 墨: 見出し・強い罫線 */
+  --text:#57504A;           /* 本文 */
+  --sub:#8B8279;            /* 弱い文字・注記 */
+  --accent:#B8532F;         /* 焦がしブランド色（差し色） */
+  --accent-deep:#8F3E20;    /* ホバー等の濃い側 */
+  --accent-soft:#F3E6DC;    /* 淡いブランド面（選択・ホバー） */
+  --accent-faint:#F7F1EA;   /* さらに淡い面（行ホバー・現在地） */
+  --line:#DCD3C8;           /* 罫線（強） */
+  --line-soft:#E5DDD2;      /* 罫線（弱） */
+  --surface:#FFFFFF;        /* 白面 */
+  --ok:#3E6B4F;   --ok-soft:#EDF4EE;   --ok-line:#C6DCCB;   --ok-text:#2C5138;
+  --danger:#A8323E; --danger-soft:#F9EDEE; --danger-line:#E8C9CD; --danger-text:#7E2630;
+  --info:#3B5B84;  --info-soft:#EEF2F7;  --info-line:#CBD7E5;  --info-text:#2E4869;
+  --gold:#C99A2E;  --gold-text:#8F5A0A;  --gold-soft:#F7EFDF;
+  --code-bg:#221B16;
+  --serif:'Shippori Mincho',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans JP',-apple-system,BlinkMacSystemFont,'Hiragino Sans',Meiryo,sans-serif;background:var(--paper);color:var(--text);line-height:2;-webkit-font-smoothing:antialiased;font-feature-settings:'palt' 1}
+table{font-variant-numeric:tabular-nums}
+strong{color:var(--ink)}
+a{color:var(--accent);text-underline-offset:4px}
+a:hover{color:var(--accent-deep)}
+
+/* ---------- ヒーロー（全幅・罫線で締める） ---------- */
+.hero{background:var(--paper);border-bottom:1px solid var(--line);padding:56px 40px 92px}
+.hero-inner{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+.hero-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ink);padding-bottom:14px}
+.hero-brand{display:flex;align-items:center;gap:12px}
+.hero-logo{width:30px;height:30px;border-radius:8px}
+.hero-kicker{font-size:12px;letter-spacing:.22em;color:#6E675F}
+.hero-no{font-family:var(--serif);font-size:13px;letter-spacing:.18em;color:var(--accent)}
+.hero h1{font-family:var(--serif);font-size:52px;font-weight:600;line-height:1.4;color:var(--ink);letter-spacing:.02em;margin-top:52px}
+.hero p.lead{font-size:15px;line-height:2.1;color:var(--text);max-width:680px;margin-top:20px}
+.hero .hero-meta{font-size:12px;color:var(--sub);margin-top:14px}
+
+/* ---------- 章ナビ（ヒーロー下・全ページ必須） ---------- */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);margin:-64px auto 48px;position:relative;z-index:2;max-width:1080px;background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:4px;overflow:hidden}
+.flow a{display:flex;flex-direction:column;gap:5px;text-decoration:none;color:inherit;padding:20px 22px;border-left:1px solid var(--line-soft);transition:background .15s}
+.flow a:nth-child(4n+1){border-left:none}
+.flow a:nth-child(n+5){border-top:1px solid var(--line-soft)}
+.flow a:hover{background:var(--accent-faint)}
+.flow a.cur{background:var(--accent-faint)}
+.flow .fnum{font-family:var(--serif);font-size:20px;color:var(--text)}
+.flow a.cur .fnum{color:var(--accent)}
+.flow .ft{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.5}
+.flow .fd{font-size:11px;color:var(--sub);line-height:1.6}
+
+/* 章ナビ型タブ（見た目は.flowと同一・クリックでパネル切替） */
+.flow-tabs{display:grid;grid-template-columns:repeat(4,1fr);margin:-64px auto 48px;position:relative;z-index:2;max-width:1080px;background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:4px;overflow:hidden}
+.tab-btn{display:flex;flex-direction:column;gap:5px;text-align:left;background:var(--surface);border:none;border-left:1px solid var(--line-soft);padding:20px 22px;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
+.tab-btn:nth-child(4n+1){border-left:none}
+.tab-btn:nth-child(n+5){border-top:1px solid var(--line-soft)}
+.tab-btn:hover{background:var(--accent-faint)}
+.tab-btn .fnum{font-family:var(--serif);font-size:20px;color:var(--text)}
+.tab-btn .ft{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.5}
+.tab-btn .fd{font-size:11px;color:var(--sub);line-height:1.6}
+.tab-btn.active{background:var(--accent-faint)}
+.tab-btn.active .fnum{color:var(--accent)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+.container{max-width:1080px;margin:0 auto;padding:36px 28px 80px}
+
+/* ---------- セクション（薄い大番号+明朝見出し） ---------- */
+.section{margin-bottom:0;padding:56px 0 40px;scroll-margin-top:20px}
+.container > .section:nth-of-type(odd),
+.tab-panel > .section:nth-of-type(odd){background:var(--surface);box-shadow:0 0 0 100vmax var(--surface);clip-path:inset(0 -100vmax)}
+.section > p{margin:22px 0}
+.section-header{display:flex;align-items:flex-end;gap:24px;margin-bottom:40px}
+.section-num{font-family:var(--serif);font-size:88px;line-height:.9;font-weight:700;color:rgba(38,34,30,.08);flex-shrink:0}
+.section-header .sh-body{display:flex;flex-direction:column;gap:6px;padding-bottom:6px}
+.section-header h2{font-family:var(--serif);font-size:30px;font-weight:600;color:var(--ink);line-height:1.5}
+.section-header .sh-sub{font-size:12.5px;letter-spacing:.08em;color:var(--accent)}
+h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);margin:44px 0 18px}
+
+/* ---------- カード（白面+罫線。影は浮遊部品のみ） ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:24px 26px;margin:28px 0}
+.card.sel{border-color:var(--accent)}
+.kicker{font-size:10.5px;letter-spacing:.16em;color:var(--accent);font-weight:700}
+
+/* ---------- 用語解説 ---------- */
+.term{border-left:2px solid var(--accent);background:var(--surface);border-top:1px solid var(--line-soft);border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);padding:18px 24px;margin:28px 0;display:flex;flex-direction:column;gap:6px}
+.term .term-name{font-family:var(--serif);font-size:16px;color:var(--ink)}
+.term .term-tag{font-size:11px;color:var(--sub)}
+.term .t-body{font-size:13.5px;line-height:2;color:var(--text)}
+
+/* ---------- アラート（補足=藍/確認=緑/警告=紅） ---------- */
+.alert{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line-soft);border-left-width:2px;padding:15px 18px;margin:28px 0;font-size:13.5px;line-height:1.9}
+.alert .a-icon{flex-shrink:0;margin-top:4px;width:17px;height:17px}
+.alert-blue{border-left-color:var(--info);color:var(--info-text)}
+.alert-green{border-left-color:var(--ok);color:var(--ok-text)}
+.alert-red{border-left-color:var(--danger);color:var(--danger-text)}
+
+/* ---------- ×○対比 ---------- */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:28px 0}
+.compare-box{background:var(--surface);border-radius:4px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.compare-box.bad{border:1px solid var(--danger-line)}
+.compare-box.good{border:1px solid var(--ok-line)}
+.cb-head{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.compare-box.bad .cb-head{color:var(--danger-text)}
+.compare-box.good .cb-head{color:var(--ok-text)}
+.cb-mark{width:22px;height:22px;border-radius:50%;color:var(--paper);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.bad .cb-mark{background:var(--danger)}
+.good .cb-mark{background:var(--ok)}
+.compare-box p{font-size:12.5px;line-height:1.9;color:var(--text)}
+
+/* ---------- 表（上罫は墨2px・項目名は明朝） ---------- */
+.table-wrap{overflow-x:auto;margin:28px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{border-bottom:2px solid var(--ink);padding:0 16px 12px 0;text-align:left;font-size:11px;letter-spacing:.18em;font-weight:500;color:var(--sub);white-space:nowrap}
+td{padding:18px 16px 18px 0;border-bottom:1px solid var(--line-soft);vertical-align:baseline}
+tbody tr:hover td{background:var(--accent-faint)}
+td.label{font-family:var(--serif);font-size:17px;color:var(--ink);white-space:nowrap}
+td.num{font-family:var(--serif);font-size:15px;color:var(--accent);text-align:right;white-space:nowrap}
+.pri{display:flex;align-items:center;gap:14px}
+.pri .bar{height:7px;border-radius:99px;background:var(--accent);flex-shrink:0}
+.pri .pv{font-family:var(--serif);font-size:14px;color:var(--ink)}
+
+/* ---------- バッジ・タグ ---------- */
+.badge{display:inline-block;padding:4px 12px;border-radius:3px;font-size:12px;font-weight:700;white-space:nowrap}
+.badge.ink{background:var(--ink);color:var(--paper)}
+.badge.brand{background:var(--accent);color:var(--paper)}
+.badge.good{background:var(--ok-soft);border:1px solid var(--ok-line);color:var(--ok-text)}
+.badge.bad{background:var(--danger-soft);border:1px solid var(--danger-line);color:var(--danger-text)}
+.badge.plain{border:1px solid var(--line);color:var(--text)}
+
+/* ---------- コード・URL構造図（唯一のダーク面） ---------- */
+code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:3px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:var(--accent-deep)}
+.codeblock{background:var(--code-bg);color:#EDE6DF;border-radius:5px;padding:18px 22px;margin:28px 0;overflow-x:auto}
+.codeblock pre{font-size:12.5px;line-height:1.9;white-space:pre;font-family:'SFMono-Regular',Menlo,Consolas,monospace}
+.codeblock .cm{color:#A89A8E}
+.codeblock .hl{color:#F0B08E}
+.codeblock .hl2{color:#9FC5EA}
+
+/* ---------- 番号つき手順（丸+縦罫線） ---------- */
+ol.steps{list-style:none;counter-reset:st;font-size:13.5px}
+ol.steps li{counter-increment:st;position:relative;padding:0 0 30px 48px;line-height:1.9}
+ol.steps li:last-child{padding-bottom:0}
+ol.steps li::before{content:counter(st);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:13px;display:flex;align-items:center;justify-content:center}
+ol.steps li:not(:last-child)::after{content:"";position:absolute;left:14.5px;top:34px;bottom:2px;width:1px;background:var(--line)}
+
+/* ---------- 注意リスト（※印） ---------- */
+ul.notes{list-style:none;font-size:13px;color:var(--text)}
+ul.notes li{position:relative;padding:6px 0 6px 26px;line-height:1.9}
+ul.notes li::before{content:"※";position:absolute;left:0;top:6px;color:var(--accent);font-weight:700}
+
+/* ---------- まとめ帯（ページ内で唯一の濃い塗り） ---------- */
+.recap{background:var(--ink);color:var(--paper);border-radius:4px;padding:26px 30px;margin-top:8px;display:flex;flex-direction:column;gap:14px}
+.recap h2{font-family:var(--serif);font-size:17px;font-weight:600}
+.recap .r-flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:12.5px}
+.recap .r-chip{border:1px solid rgba(251,249,245,.4);border-radius:999px;padding:5px 14px}
+.recap .r-chip.hot{border-color:var(--accent);background:rgba(184,83,47,.25)}
+.recap .r-arr{opacity:.5}
+.recap p{font-size:11.5px;opacity:.7}
+
+/* ---------- チャート（線は細く・中央は数字だけ・出典は凡例側） ---------- */
+.chart{display:flex;gap:40px;align-items:center;flex-wrap:wrap}
+.chart svg{width:150px;height:150px;flex-shrink:0}
+.chart text.big{font-family:var(--serif);font-size:10px;fill:#26221E;dominant-baseline:central}
+.chart .cl{display:flex;flex-direction:column;min-width:280px;font-size:13.5px}
+.chart .cl > div{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line-soft);padding:10px 0}
+.chart .cl > div:last-of-type{border-bottom:none}
+.chart .cl i{width:10px;height:10px;border-radius:2px;display:inline-block;flex-shrink:0}
+.chart .cl strong{margin-left:auto;font-family:var(--serif);font-weight:500}
+.chart .src{font-size:10.5px;color:var(--sub);padding-top:8px}
+.hbar{display:grid;grid-template-columns:190px 1fr 56px;align-items:center;gap:14px;margin:8px 0}
+.hbar .track{height:16px;background:#EAE2D6;border-radius:2px}
+.hbar .fill{height:16px;background:var(--accent);border-radius:2px}
+.hbar .val{font-family:var(--serif);font-size:15px;text-align:right}
+.stat{display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--ink);padding-left:24px}
+.stat .n{font-family:var(--serif);font-size:60px;line-height:1;color:var(--ink)}
+.stat .n.hot{color:var(--accent)}
+.stat .l{font-size:10.5px;color:var(--sub)}
+
+/* ---------- スイムレーン（横=フェーズ/縦=役割・例外列=紅破線・お金=琥珀） ---------- */
+.lane-wrap{border:1px solid var(--line);border-radius:6px;overflow-x:auto;background:var(--surface);margin:28px 0}
+.lanes{display:grid;font-size:12px;min-width:900px}
+.lane-corner{background:#F3EFE8;border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:var(--sub)}
+.lane-head{background:#F3EFE8;font-weight:700;font-size:11.5px;text-align:center;padding:10px 8px;line-height:1.5;border-left:1px solid var(--line-soft);border-bottom:2px solid var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.lane-head .sub{font-weight:500;font-size:10px;color:var(--sub)}
+.lane-head.ex{background:#F5E7EA;color:var(--danger)}
+.lane-head.ex .sub{color:#B76A76}
+.lane-label{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;font-weight:700;text-align:center;padding:10px 6px;border-top:1px solid var(--line-soft);background:var(--paper);line-height:1.4}
+.lane-label i{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.lane-label.user{color:var(--info)} .lane-label.user i{background:var(--info)}
+.lane-label.shop{color:var(--ok)} .lane-label.shop i{background:var(--ok)}
+.lane-label.sys{color:var(--accent)} .lane-label.sys i{background:var(--accent)}
+.lane-label.money{color:var(--gold-text)} .lane-label.money i{background:var(--gold)}
+.lane-cell{padding:10px;border-top:1px solid var(--line-soft);border-left:1px solid #F0EBE4;font-size:11.5px;line-height:1.7;background:var(--surface);display:flex;flex-direction:column;gap:4px}
+.lane-cell.ex{background:#FBF3F4;border-left:2px dashed #E0AAB4}
+.lane-cell.empty{color:#C9BFB4;text-align:center;justify-content:center}
+.lane-cell.money{background:var(--gold-soft);font-weight:700;color:var(--gold-text);text-align:center;justify-content:center;font-size:12px}
+.lane-cell.money small{display:block;font-weight:500;font-size:10px;color:#A9720F}
+.legend{display:flex;align-items:center;gap:24px;flex-wrap:wrap;font-size:12.5px;margin:12px 0}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* ---------- フェーズ帯（現在だけブランド色） ---------- */
+.phases{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;margin:28px 0}
+.phase{border-top:3px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:4px}
+.phase .pn{font-family:var(--serif);font-size:15px;color:var(--sub)}
+.phase .pt{font-size:12px;font-weight:700;color:var(--text)}
+.phase .ps{font-size:10.5px;color:var(--sub)}
+.phase.done{border-top-color:var(--ink)} .phase.done .pn{color:var(--ink)}
+.phase.now{border-top-color:var(--accent)} .phase.now .pn,.phase.now .pt{color:var(--accent)}
+
+/* ---------- 縦フロー（分岐つき） ---------- */
+.fbox{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:12px 18px;font-size:12.5px;font-weight:700;text-align:center}
+.fbox.q{border-color:var(--accent);color:var(--accent)}
+.fbox.yes{background:var(--ok-soft);border-color:var(--ok-line);color:var(--ok-text)}
+.fbox.no{background:var(--danger-soft);border-color:var(--danger-line);color:var(--danger-text)}
+.farr{display:flex;justify-content:center;color:var(--accent);font-size:15px;line-height:1;padding:4px 0}
+
+/* ---------- スライド（16:9・定例でそのまま映す型） ---------- */
+.slide{width:100%;aspect-ratio:16/9;background:#FDFCFA;border:1px solid var(--line);border-radius:4px;box-shadow:0 10px 30px -16px rgba(38,34,30,.3);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.slide-ft{position:absolute;left:5%;right:5%;bottom:3%;display:flex;justify-content:space-between;align-items:center;font-size:.6em;letter-spacing:.14em;color:#A9A199}
+.slide .ghost{font-family:var(--serif);font-weight:700;line-height:1;color:rgba(184,83,47,.14)}
+
+/* ---------- 読み進みバー・演出 ---------- */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+.progress i{display:block;height:100%;width:0;background:var(--accent)}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.rv-in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ---------- SVGアイコン（線幅1.5・スプライト参照） ---------- */
+.icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+
+footer{text-align:center;padding:36px 0;color:var(--sub);font-size:12px;border-top:1px solid var(--line);max-width:1080px;margin:0 auto}
+
+@media (max-width:760px){
+  .hero{padding:44px 24px 84px}
+  .hero h1{font-size:32px;margin-top:36px}
+  .flow,.flow-tabs{grid-template-columns:1fr 1fr;margin-top:-40px}
+  .flow a,.tab-btn{border-top:1px solid var(--line-soft)}
+  .compare{grid-template-columns:1fr}
+  .container{padding:28px 18px 60px}
+  .section-num{font-size:56px}
+}

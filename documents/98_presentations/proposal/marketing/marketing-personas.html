@@ -6,180 +6,90 @@
 <title>RINCLE マーケティングペルソナ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/design.css">
 <style>
-  :root{
-    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
-    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
-    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
-    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
-    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
-    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
+/* ページ固有CSS — マーケティングペルソナ（共通部品は ../../assets/design.css を参照） */
 
-  /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
-  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
-  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
-  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
-  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-  .hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
-  .hero p.hero-note{font-size:.8rem;opacity:.78;margin-top:8px;max-width:760px}
+/* KPIカード（.stat型: 左1px墨罫+明朝特大+日付つき出典） */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin:28px 0}
+.kpi-card{display:flex;flex-direction:column;gap:4px;border-left:1px solid var(--ink);padding-left:20px}
+.kpi-label{font-size:10.5px;letter-spacing:.08em;font-weight:700;color:var(--sub)}
+.kpi-value{font-family:var(--serif);font-size:32px;line-height:1.3;color:var(--ink)}
+.kpi-value.accent{color:var(--accent)}
+.kpi-value .unit{font-size:.45em}
+.kpi-note{font-size:11.5px;color:var(--sub);margin-top:4px;line-height:1.8}
+.kpi-card.accent-edge{border-left-color:var(--accent)}
 
-  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+/* 事実/推測/未検証ラベル */
+.label-fact,.label-guess,.label-unverified{display:inline-block;padding:1px 8px;border-radius:3px;font-size:10.5px;font-weight:700;margin-right:6px;white-space:nowrap}
+.label-fact{background:var(--info-soft);border:1px solid var(--info-line);color:var(--info-text)}
+.label-guess{background:var(--gold-soft);border:1px solid #EAD9AE;color:var(--gold-text)}
+.label-unverified{background:var(--paper);border:1px solid var(--line);color:var(--sub)}
 
-  /* flow nav */
-  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
-  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
-  .flow a:first-child{border-left:none}
-  .flow a:hover{background:var(--brand-soft)}
-  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
-  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
-  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
-  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
-  .flow a:last-child::after{content:""}
+.fact-list{list-style:none;padding:0}
+.fact-list li{padding:12px 0;border-bottom:1px solid var(--line-soft);font-size:13px;line-height:1.9}
+.fact-list li:last-child{border-bottom:none}
 
-  /* sections */
-  .section{margin-bottom:56px;scroll-margin-top:20px}
-  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
-  .section-num.plain{background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5}
-  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
-  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
-  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
+/* ペルソナカード（白面+1px罫線・ヘッダーの塗り面なし。D=accent罫線 / 仮説=破線） */
+.persona-card{background:var(--surface);border:1px solid var(--line);border-radius:4px;overflow:hidden;margin:24px 0}
+.persona-card.star{border-color:var(--accent)}
+.persona-card.hypo{border-style:dashed}
+.persona-header{padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--line-soft)}
+.persona-letter{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:15px;flex-shrink:0}
+.persona-card.hypo .persona-letter{border-color:var(--gold);color:var(--gold-text)}
+.persona-title{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--ink);line-height:1.5}
+.persona-sub{font-size:11.5px;color:var(--sub);line-height:1.7}
+.persona-flag{margin-left:auto;text-align:right;max-width:330px;font-size:10.5px;font-weight:700;letter-spacing:.1em;line-height:1.7}
+.flag-star{color:var(--accent)}
+.flag-hypo{color:var(--gold-text)}
 
-  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
+.persona-body{padding:22px 24px;display:grid;grid-template-columns:1fr 1fr;gap:20px 28px}
+.p-block .p-label{font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--accent);margin-bottom:8px}
+.p-block .p-content{font-size:13px;line-height:1.9}
+.p-note{font-size:11px;margin-top:6px}
+.p-note.gold{color:var(--gold-text)}
+.p-note.ok{color:var(--ok-text)}
 
-  /* alerts */
-  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
-  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
-  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
-  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
-  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
-  .alert-warn{background:#FFF7E6;border:1px solid #F3E0B8;color:#8F5A0A}
+/* 動機の一言（塗り面をやめ白面+左2px accent罫線・明朝） */
+.motive{background:var(--surface);border:1px solid var(--line-soft);border-left:2px solid var(--accent);padding:14px 18px;font-family:var(--serif);font-size:15px;line-height:1.9;color:var(--accent-deep)}
 
-  /* tables */
-  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
-  table{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
-  thead th{background:#FBF8F5;color:var(--ink);border-bottom:2px solid var(--brand);padding:12px 14px;text-align:left;font-size:12px;font-weight:700;white-space:nowrap}
-  td{padding:11px 14px;border-bottom:1px solid #F2EEE9;vertical-align:top;line-height:1.7}
-  tr:last-child td{border-bottom:none}
-  tbody tr:hover td{background:#FBF8F5}
-  tr.highlight td{background:var(--brand-soft) !important;color:var(--brand-deep);font-weight:600}
-  .col-now{background:#F6FDF9}
-  tr.highlight .col-now{background:var(--brand-soft)}
+.channel-list,.msg-list{list-style:none;padding:0}
+.channel-list li{padding:4px 0;display:flex;gap:10px;line-height:1.9}
+.ch-rank{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:10.5px;flex-shrink:0;margin-top:6px}
+.msg-list li{padding:4px 0 4px 20px;position:relative;line-height:1.9}
+.msg-list li::before{content:'○';position:absolute;left:0;color:var(--accent)}
+.msg-list li.ng::before{content:'×';color:var(--sub)}
+.msg-list li.ng{color:var(--sub)}
 
-  /* badges */
-  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
-  .badge.warn{background:#FFF4E0;color:#8F5A0A}
-  .badge-draft{display:inline-block;padding:1px 7px;border-radius:4px;font-size:10px;font-weight:700;background:#FFF4E0;color:#8F5A0A;margin-left:4px;white-space:nowrap;vertical-align:middle}
+.ltv-row{display:flex;gap:10px;flex-wrap:wrap}
+.pill{display:inline-block;padding:3px 12px;border-radius:3px;font-size:11.5px;font-weight:700}
+.pill-easy{background:var(--ok-soft);border:1px solid var(--ok-line);color:var(--ok-text)}
+.pill-mid{background:var(--gold-soft);border:1px solid #EAD9AE;color:var(--gold-text)}
+.pill-hard{background:var(--danger-soft);border:1px solid var(--danger-line);color:var(--danger-text)}
+.pill-ltv{background:var(--info-soft);border:1px solid var(--info-line);color:var(--info-text)}
 
-  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
+.p-verify{grid-column:1/3;background:var(--paper);border:1px solid var(--line-soft);border-radius:4px;padding:14px 18px;font-size:12px;line-height:2;color:var(--text)}
+.p-verify .p-label{margin-bottom:6px}
 
-  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
+.badge-draft{display:inline-block;padding:1px 7px;border-radius:3px;font-size:10px;font-weight:700;background:var(--gold-soft);border:1px solid #EAD9AE;color:var(--gold-text);margin-left:4px;white-space:nowrap;vertical-align:middle}
 
-  /* ── ページ固有: KPIカード ── */
-  .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
-  .kpi-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);border-top:4px solid var(--ink);padding:20px 24px}
-  .kpi-label{font-size:12px;color:var(--sub);letter-spacing:.5px;margin-bottom:6px;font-weight:700}
-  .kpi-value{font-size:26px;font-weight:800;color:var(--ink);line-height:1.3}
-  .kpi-value.accent{color:var(--brand-deep)}
-  .kpi-value .unit{font-size:14px;font-weight:700}
-  .kpi-note{font-size:12px;color:var(--sub);margin-top:6px}
+/* 表の補助（最重要行のハイライト・今すぐ列） */
+tr.highlight td{background:var(--accent-faint);color:var(--accent-deep)}
+.col-now{background:var(--ok-soft)}
+tr.highlight .col-now{background:var(--accent-faint)}
+.alert-amber{border-left-color:var(--gold);color:var(--gold-text)}
+.t-danger{color:var(--danger-text);font-weight:700}
 
-  /* ── ページ固有: 事実/推測/未検証ラベル ── */
-  .label-fact,.label-guess,.label-unverified{display:inline-block;padding:1px 8px;border-radius:4px;font-size:11px;font-weight:700;margin-right:6px;white-space:nowrap}
-  .label-fact{background:#EEF3FE;color:#1D48A6}
-  .label-guess{background:#FFF4E0;color:#8F5A0A}
-  .label-unverified{background:#EFEBE6;color:#6E675F}
-
-  .fact-list{list-style:none;padding:0}
-  .fact-list li{padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px;line-height:1.8}
-  .fact-list li:last-child{border-bottom:none}
-
-  /* ── ページ固有: ペルソナカード ── */
-  .persona-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;margin-bottom:24px}
-  .persona-header{background:#F6F1EC;color:var(--ink);padding:18px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .persona-letter{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--brand);color:#fff;font-size:16px;font-weight:800;flex-shrink:0}
-  .persona-title{font-size:17px;font-weight:800}
-  .persona-sub{font-size:12px;color:var(--sub)}
-  .persona-flag{margin-left:auto;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap}
-  .flag-star{background:var(--brand);color:#fff}
-  .flag-hypo{background:#FFD98A;color:#5C3A05}
-  .persona-card.star{border:2px solid var(--brand)}
-  .persona-card.hypo{border:2px dashed #D8A144}
-  .persona-card.hypo .persona-header{background:#FAF3E3}
-  .persona-card.hypo .persona-letter{background:#C07A16}
-
-  .persona-body{padding:22px 24px;display:grid;grid-template-columns:1fr 1fr;gap:18px 28px}
-  .p-block .p-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--sub);margin-bottom:6px}
-  .p-block .p-content{font-size:13px;line-height:1.8}
-
-  .motive{background:#FFF9F6;border-left:4px solid var(--brand);border-radius:0 8px 8px 0;padding:10px 14px;font-size:14px;font-weight:600;color:#7A3413}
-
-  .channel-list,.msg-list{list-style:none;padding:0}
-  .channel-list li{padding:3px 0;display:flex;gap:8px}
-  .ch-rank{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-size:10px;font-weight:700;flex-shrink:0;margin-top:6px}
-  .msg-list li{padding:4px 0 4px 18px;position:relative}
-  .msg-list li::before{content:'○';position:absolute;left:0;color:var(--brand);font-weight:800}
-  .msg-list li.ng::before{content:'×';color:#B8AFA5}
-  .msg-list li.ng{color:var(--sub)}
-
-  .ltv-row{display:flex;gap:10px;flex-wrap:wrap}
-  .pill{display:inline-block;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700}
-  .pill-easy{background:#EDFAF2;color:#136A41}
-  .pill-mid{background:#FFF4E0;color:#8F5A0A}
-  .pill-hard{background:#FDECEF;color:#8E1230}
-  .pill-ltv{background:#EEF3FE;color:#1D48A6}
-
-  .p-verify{grid-column:1/3;background:#FBF8F5;border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:12px;line-height:1.9;color:#544B44}
-  .p-verify .p-label{margin-bottom:4px}
-
-  /* SVGアイコン（スプライト参照） */
-  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
-  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
-  .section-num .icon{width:22px;height:22px}
-
-  /* 読み進みバー */
-  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
-  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
-
-  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
-  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-  .rv-in{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  /* フローナビの現在地ハイライト */
-  .flow a.cur{background:var(--brand-soft)}
-  .flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
-
-  /* ミニチャート（ドーナツ） */
-  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .chart svg{width:130px;height:130px;flex-shrink:0}
-  .chart .cl{font-size:13.5px}
-  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
-  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
-
-  @media (max-width:760px){
-    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
-    .flow a{border-top:1px solid var(--border)}
-    .hero{padding:44px 24px 84px}
-    .container{padding:28px 18px 60px}
-    .kpi-grid{grid-template-columns:1fr}
-    .persona-body{grid-template-columns:1fr}
-    .p-verify{grid-column:1}
-    .p-block[style*="grid-column"]{grid-column:1 !important}
-  }
-
-  /* webfont: 和文の約物詰め + 表の等幅数字 */
-  body{font-feature-settings:'palt' 1}
-  table{font-variant-numeric:tabular-nums}
+@media (max-width:860px){
+  .kpi-grid{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .persona-body{grid-template-columns:1fr}
+  .p-verify{grid-column:1}
+  .p-block.wide{grid-column:1 !important}
+  .persona-flag{margin-left:0;text-align:left;max-width:none}
+}
 </style>
 </head>
 <body>
@@ -204,31 +114,34 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
-    <div>
-      <span class="eyebrow">マーケティング — ペルソナ</span>
-      <h1>RINCLE マーケティングペルソナ</h1>
-      <p class="lead">6つのペルソナ（A〜F）それぞれについて「どこにいるか・何で刺さるか・どう動かすか」を定義し、マーケ施策に直結させる資料です。</p>
-      <p class="hero-note">作成日: 2026-06-02 ／ 最終更新: 2026-06-18（Cに「競技を始めたい層」拡張ノートを追記。供給側のセグメント判断はidea-logに分離）／ 2026-06-12（6/12定例の答え合わせ反映。イベント参加者ペルソナを追加、シニア層を削除し採番をA〜Fに整理）</p>
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">マーケティング — ペルソナ</span>
+      </div>
+      <span class="hero-no">MARKETING</span>
     </div>
+    <h1>RINCLE マーケティングペルソナ</h1>
+    <p class="lead">6つのペルソナ（A〜F）それぞれについて「どこにいるか・何で刺さるか・どう動かすか」を定義し、マーケ施策に直結させる資料です。</p>
+    <div class="hero-meta">作成日: 2026-06-02 ／ 最終更新: 2026-06-18（Cに「競技を始めたい層」拡張ノートを追記。供給側のセグメント判断はidea-logに分離）／ 2026-06-12（6/12定例の答え合わせ反映。イベント参加者ペルソナを追加、シニア層を削除し採番をA〜Fに整理）</div>
   </div>
 </div>
 
-<div class="container">
+<!-- 章ナビ -->
+<nav class="flow">
+  <a href="#summary"><span class="fnum">1</span><span class="ft">ペルソナ総括</span><span class="fd">一覧 &times; 優先アクション</span></a>
+  <a href="#hearing"><span class="fnum">2</span><span class="ft">6/12定例での答え合わせ</span><span class="fd">増永さんヒアリング</span></a>
+  <a href="#data"><span class="fnum">3</span><span class="ft">実測データによる検証</span><span class="fd">2026-06-11 本番DB実測</span></a>
+  <a href="#detail"><span class="fnum">4</span><span class="ft">ペルソナ詳細</span><span class="fd">A〜Fのカード</span></a>
+</nav>
 
-  <!-- flow nav -->
-  <nav class="flow">
-    <a href="#summary"><span class="fnum">1</span><div class="ft">ペルソナ総括</div><div class="fd">一覧 &times; 優先アクション</div></a>
-    <a href="#hearing"><span class="fnum">2</span><div class="ft">6/12定例での答え合わせ</div><div class="fd">増永さんヒアリング</div></a>
-    <a href="#data"><span class="fnum">3</span><div class="ft">実測データによる検証</div><div class="fd">2026-06-11 本番DB実測</div></a>
-    <a href="#detail"><span class="fnum">4</span><div class="ft">ペルソナ詳細</div><div class="fd">A〜Fのカード</div></a>
-  </nav>
+<div class="container">
 
   <!-- ===== 1. ペルソナ総括 ===== -->
   <div class="section" id="summary">
     <div class="section-header">
-      <div class="section-num">1</div>
-      <div><h2>ペルソナ総括（一覧 &times; 優先アクション）</h2><div class="sh-sub">D=既存顧客が最重要</div></div>
+      <div class="section-num">01</div>
+      <div class="sh-body"><h2>ペルソナ総括（一覧 &times; 優先アクション）</h2><div class="sh-sub">D=既存顧客が最重要</div></div>
     </div>
     <div class="table-wrap">
       <table>
@@ -244,7 +157,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>A</td>
+            <td class="label">A</td>
             <td>デビューの会社員（30代男性・都市部）</td>
             <td><strong>実在確認済み（6/12）</strong></td>
             <td>中 / 中〜高</td>
@@ -252,7 +165,7 @@
             <td>Google広告・Instagram広告</td>
           </tr>
           <tr>
-            <td>B</td>
+            <td class="label">B</td>
             <td>旅先の旅行者（40代夫婦）</td>
             <td>少数派（6/12）</td>
             <td>中 / 低〜中</td>
@@ -260,7 +173,7 @@
             <td>地域別SEO LP（しまなみ等）</td>
           </tr>
           <tr>
-            <td>C</td>
+            <td class="label">C</td>
             <td>購入前に試したい経験者（20〜30代男性）</td>
             <td><strong>実在確認済み（6/12）</strong></td>
             <td>低 / 高</td>
@@ -268,7 +181,7 @@
             <td>自転車メディアタイアップ</td>
           </tr>
           <tr class="highlight">
-            <td>D</td>
+            <td class="label">D</td>
             <td><strong>プロショップの既存顧客 ★最重要</strong></td>
             <td>示唆あり</td>
             <td><strong>最低 / 高</strong></td>
@@ -276,7 +189,7 @@
             <td>—（継続運用）</td>
           </tr>
           <tr>
-            <td>E</td>
+            <td class="label">E</td>
             <td>訪日旅行者<span class="badge-draft">素案</span></td>
             <td><strong>未対応でも来店あり（6/12）</strong></td>
             <td>中〜高 / 中</td>
@@ -284,7 +197,7 @@
             <td>英語予約ページ+Klookで最小コスト検証</td>
           </tr>
           <tr>
-            <td>F</td>
+            <td class="label">F</td>
             <td>イベント参加者<span class="badge-draft">素案・6/12追加</span></td>
             <td><strong>約2割を占める（6/12）</strong></td>
             <td>中 / 中</td>
@@ -294,7 +207,7 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-warn"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>
       ・全ペルソナ共通の今すぐ施策: <strong>Googleビジネスプロフィール 54店舗分（実質52店・2026-06-11実測。2026-08-20の本番サイト実測では56店）</strong> — 営業チームが既に実施中（6/12確認）<br>
       ・ペルソナE・Fは素案（E=多言語対応、F=利用目的入力での定量化、の方針確定後に本採用）<br>
       ・<strong>「健康目的のシニア層」ペルソナは2026-06-12に削除し、採番を詰めた（旧E→D・旧F→E・旧G→F）</strong> — 6/12の運営ヒアリングで唯一言及がなく、実在根拠ゼロ×獲得難易度「高」のため。「E-Bikeお試し」店頭POPはシニア専用でなくE-Bike横断施策（B/E向け）として継続。利用目的入力+GA4の年齢データでシニア需要が見えたら再定義する<br>
@@ -305,8 +218,8 @@
   <!-- ===== 2. 6/12定例での答え合わせ ===== -->
   <div class="section" id="hearing">
     <div class="section-header">
-      <div class="section-num">2</div>
-      <div><h2>6/12定例での答え合わせ（増永さんヒアリング）</h2><div class="sh-sub">仮説と現場実感の突き合わせ</div></div>
+      <div class="section-num">02</div>
+      <div class="sh-body"><h2>6/12定例での答え合わせ（増永さんヒアリング）</h2><div class="sh-sub">仮説と現場実感の突き合わせ</div></div>
     </div>
     <div class="card">
       <ul class="fact-list">
@@ -322,8 +235,8 @@
   <!-- ===== 3. 実測データによる検証状況 ===== -->
   <div class="section" id="data">
     <div class="section-header">
-      <div class="section-num">3</div>
-      <div><h2>実測データによる検証状況</h2><div class="sh-sub">2026-06-11 本番DB実測</div></div>
+      <div class="section-num">03</div>
+      <div class="sh-body"><h2>実測データによる検証状況</h2><div class="sh-sub">2026-06-11 本番DB実測</div></div>
     </div>
     <div class="kpi-grid">
       <div class="kpi-card">
@@ -336,12 +249,12 @@
         <div class="kpi-value">70<span class="unit">件</span></div>
         <div class="kpi-note">うち5月完了 21件</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card accent-edge">
         <div class="kpi-label">平均予約単価（実測）</div>
         <div class="kpi-value accent">約¥10,200<span class="unit">/件</span></div>
         <div class="kpi-note">想定¥6,000を大きく上回る</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card accent-edge">
         <div class="kpi-label">2台予約の比率</div>
         <div class="kpi-value accent">18%</div>
         <div class="kpi-note">グループ・同伴利用の示唆</div>
@@ -361,15 +274,15 @@
     <div class="card">
       <div class="chart">
         <svg viewBox="0 0 42 42" role="img" aria-label="2台予約の比率 18%">
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#F2EEE9" stroke-width="5"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--brand)" stroke-width="5"
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"/>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4"
                   stroke-dasharray="18 82" stroke-dashoffset="25"/>
-          <text x="21" y="21" text-anchor="middle" class="big">18%</text>
+          <text x="21" y="21" text-anchor="middle" class="big">18</text>
         </svg>
         <div class="cl">
-          <div><i style="background:var(--brand)"></i>2台予約 <strong>18%</strong></div>
-          <div><i style="background:#F2EEE9"></i>それ以外の予約 <strong>82%</strong></div>
-          <div style="margin-top:6px;color:var(--sub);font-size:12.5px">グループ・同伴利用（A／B／D）の実在を示唆</div>
+          <div><i style="background:var(--accent)"></i>2台予約 <strong>18%</strong></div>
+          <div><i style="background:#EAE2D6"></i>それ以外の予約 <strong>82%</strong></div>
+          <div class="src" style="border-bottom:none">グループ・同伴利用（A／B／D）の実在を示唆</div>
         </div>
       </div>
     </div>
@@ -382,7 +295,7 @@
         <li><span class="label-unverified">未検証</span>レビューゼロ・GA4未設置のため、ペルソナ別の流入・CVRの定量検証はまだ不可能。GA4設置＋リピート率計測（乗車人情報）待ち</li>
       </ul>
     </div>
-    <div class="alert alert-warn"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>
       <strong>注意:</strong> 累計70件と母数が小さいため、以下の各ペルソナ検証は「示唆」レベルです。
     </div></div>
   </div>
@@ -390,8 +303,8 @@
   <!-- ===== 4. ペルソナ詳細カード ===== -->
   <div class="section" id="detail">
     <div class="section-header">
-      <div class="section-num">4</div>
-      <div><h2>ペルソナ詳細（A〜F）</h2><div class="sh-sub">動機・チャネル・メッセージ・検証状況</div></div>
+      <div class="section-num">04</div>
+      <div class="sh-body"><h2>ペルソナ詳細（A〜F）</h2><div class="sh-sub">動機・チャネル・メッセージ・検証状況</div></div>
     </div>
 
     <!-- ペルソナA -->
@@ -404,7 +317,7 @@
         </div>
       </div>
       <div class="persona-body">
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">動機の一言</div>
           <div class="motive">「ロードバイクかっこいいな。でも30万円は出せない。いきなり買って合わなかったらどうしよう」</div>
         </div>
@@ -428,10 +341,10 @@
               <li>「プロのスタッフが乗り方から教えます」</li>
               <li class="ng">「全国54店舗のプロショップネットワーク」（サービス側の都合）</li>
             </ul>
-            <p style="font-size:11px; color:#8F5A0A; margin-top:6px;">※「1日6,000円」は入口価格としては有効だが、実測の平均単価は約¥10,200/件（複数日利用が主力）。複数日プランの提示も検討</p>
+            <p class="p-note gold">※「1日6,000円」は入口価格としては有効だが、実測の平均単価は約¥10,200/件（複数日利用が主力）。複数日プランの提示も検討</p>
           </div>
         </div>
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">獲得難易度・LTV</div>
           <div class="ltv-row">
             <span class="pill pill-mid">獲得難易度: 中</span>
@@ -458,7 +371,7 @@
         </div>
       </div>
       <div class="persona-body">
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">動機の一言</div>
           <div class="motive">「しまなみ海道をサイクリングしたい！でも自転車は持っていけない。夫婦で体力差があるからE-Bikeがあると嬉しい」</div>
         </div>
@@ -484,7 +397,7 @@
             </ul>
           </div>
         </div>
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">獲得難易度・LTV</div>
           <div class="ltv-row">
             <span class="pill pill-mid">獲得難易度: 中</span>
@@ -511,7 +424,7 @@
         </div>
       </div>
       <div class="persona-body">
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">動機の一言</div>
           <div class="motive">「SpecializedとTREKどっちがいい？実際に乗ってみないと分からない。50万円のバイク、失敗したくない」</div>
         </div>
@@ -537,7 +450,7 @@
             </ul>
           </div>
         </div>
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">獲得難易度・LTV</div>
           <div class="ltv-row">
             <span class="pill pill-easy">獲得難易度: 低</span>
@@ -550,12 +463,12 @@
           <span class="label-unverified">未検証</span>試乗→購入の転換率は計測手段がない。ブランド違いのリピート予約はリピート率計測（乗車人情報）の整備待ち<br>
           <span class="label-fact">事実・6/12</span><strong>販売店が最も求めているのがこの層</strong>: 「体験してもらって購入につながる、ものすごい狭いところ。実際そこが来てる感じはする」（増永さん）→ Cはペルソナとして実在し、かつ供給側（店舗）のモチベーションとも一致する最重要級
         </div>
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">拡張: 「競技を始めたい層」はCで捉える（2026-06-18追記）</div>
           <div class="p-content">
             「ロードレース/グラベル等の競技を始めてみたい」層は、需要側ではCの<strong>高intent版</strong>（買う前に決戦用の本格機材を試したい）として吸収。新ペルソナは立てず、どの市場に在庫をつけて営業をかけるかを供給側のセグメントで整理する：
           </div>
-          <div class="table-wrap" style="margin-top:10px;">
+          <div class="table-wrap">
             <table>
               <thead>
                 <tr>
@@ -568,37 +481,37 @@
               </thead>
               <tbody>
                 <tr class="highlight">
-                  <td>街＝ロード競技/イベント</td>
+                  <td class="label">街＝ロード競技/イベント</td>
                   <td>大</td>
                   <td>◎（遠征・出走で実需証明済み＝F/2割/大阪城トライアスロン）</td>
                   <td>低（ロード167台・既存ショップで足りる）</td>
                   <td class="col-now"><strong>今すぐ（near-term本命）</strong></td>
                 </tr>
                 <tr>
-                  <td>山＝グラベル</td>
+                  <td class="label">山＝グラベル</td>
                   <td>成長中だが小ベース（ロードの数十分の一）</td>
                   <td>◎（高額・新カテゴリ＝「買う前に試す」が刺さる＋遠征）</td>
                   <td>中＋<strong>競合あり</strong>（CycleTrip等が先行）</td>
-                  <td>&#x1F52C;成長枠・<strong>差別化が条件</strong></td>
+                  <td>成長枠・<strong>差別化が条件</strong></td>
                 </tr>
                 <tr>
-                  <td>山＝MTB XCレース</td>
+                  <td class="label">山＝MTB XCレース</td>
                   <td>小（競技人口限定的）</td>
                   <td>△（競技勢は自前。所有文化強い）</td>
                   <td>中</td>
                   <td>低・後回し（グラベルのついで枠）</td>
                 </tr>
                 <tr>
-                  <td>競輪（トラック）</td>
+                  <td class="label">競輪（トラック）</td>
                   <td>極小（大学56団体・高校254校）</td>
                   <td>✕（競輪場の無料レンタルが主流）</td>
                   <td>激高（ピスト在庫0・競輪場併設店なし）</td>
-                  <td>&#x274C;見送り</td>
+                  <td><span class="t-danger">見送り</span></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div class="p-content" style="margin-top:8px;">
+          <div class="p-content">
             <span class="label-fact">リサーチ確定・6/18</span>順位仮説（グラベル＞MTB＞トラック）は支持。ただし<strong>グラベルは空白市場ではなく先行レンタル事業者（CycleTrip等／¥5,500〜9,000）が既存</strong>で、攻める根拠は「空白」→「成長カテゴリで差別化余地」に修正。near-termの勝ち筋は在庫不要・実需証明済みのロード競技/イベントSEO。供給側の判断・出典は idea-log.md「競技セグメントへの在庫拡張営業」が正本。出走目的の「競技に出たい層」は<strong>ペルソナF</strong>側（Cは"試して買う"、Fは"出走で借りる"）。
           </div>
         </div>
@@ -616,7 +529,7 @@
         <span class="persona-flag flag-star">★ 最重要: 獲得コスト最低 × LTV高</span>
       </div>
       <div class="persona-body">
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">動機の一言</div>
           <div class="motive">「友達をサイクリングに連れて行きたいけど、友達はバイクを持ってない。家族にも体験させたい。別ブランドも乗ってみたい」</div>
         </div>
@@ -629,7 +542,7 @@
               <li><span class="ch-rank">3</span><span><strong>ショップのメール/LINE配信</strong> — 既存顧客リストに一斉配信</span></li>
               <li><span class="ch-rank">4</span><span><strong>グループライドイベント</strong> — 「バイクがない友人もRINCLEレンタルで参加OK」</span></li>
             </ul>
-            <p style="font-size:11px; color:#136A41; margin-top:6px;"><strong>すべて既存接点の活用＝追加コストほぼゼロで着手可能</strong></p>
+            <p class="p-note ok"><strong>すべて既存接点の活用＝追加コストほぼゼロで着手可能</strong></p>
           </div>
         </div>
         <div class="p-block">
@@ -643,7 +556,7 @@
             </ul>
           </div>
         </div>
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">獲得難易度・LTV</div>
           <div class="ltv-row">
             <span class="pill pill-easy">獲得難易度: 最低（全ペルソナ中）</span>
@@ -670,7 +583,7 @@
         <span class="persona-flag flag-hypo">素案（2026-06-11追加）: 全項目が仮説</span>
       </div>
       <div class="persona-body">
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">動機の一言</div>
           <div class="motive">「日本でサイクリングしたい（しまなみ海道は海外でも有名）。整備されたバイクを英語で予約したいが、日本の電話番号が必要なサービスが多くて困る」</div>
         </div>
@@ -693,7 +606,7 @@
             </ul>
           </div>
         </div>
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">獲得難易度・LTV</div>
           <div class="ltv-row">
             <span class="pill pill-mid">獲得難易度: 中〜高</span>
@@ -721,7 +634,7 @@
         <span class="persona-flag flag-hypo">素案（2026-06-12追加）: 6/12運営ヒアリングで判明した実在層</span>
       </div>
       <div class="persona-body">
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">動機の一言</div>
           <div class="motive">「イベントに出たいが自転車を持っていない（or 持って行けない）」。日付・場所がイベントで確定しており、検索意図が極めて明確で締切がある</div>
         </div>
@@ -744,7 +657,7 @@
             </ul>
           </div>
         </div>
-        <div class="p-block" style="grid-column:1/3;">
+        <div class="p-block wide" style="grid-column:1/3;">
           <div class="p-label">獲得難易度・LTV</div>
           <div class="ltv-row">
             <span class="pill pill-mid">獲得難易度: 中</span>
@@ -785,7 +698,7 @@
     }, {rootMargin:'0px 0px -8% 0px'});
     targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
   }
-  // フローナビの現在地ハイライト（読み位置より上の最後の章を点灯。最上部では消灯）
+  // 章ナビの現在地ハイライト（読み位置より上の最後の章を点灯。最上部では消灯）
   var links = document.querySelectorAll('.flow a[href^="#"]');
   if (links.length) {
     var map = [];

@@ -6,157 +6,60 @@
 <title>PAY.JP API v1 リファレンス | RINCLE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/design.css">
 <style>
-  :root{
-    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
-    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
-    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
-    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
-    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
-    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
+/* ページ固有CSS — PAY.JP API v1 リファレンス（共通部品は ../assets/design.css を参照） */
 
-  /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
-  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
-  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
-  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
-  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-  .hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
+/* 章ナビ6列 */
+.flow{grid-template-columns:repeat(6,1fr)}
+.flow a:nth-child(4n+1){border-left:1px solid var(--line-soft)}
+.flow a:first-child{border-left:none}
+.flow a:nth-child(n+5){border-top:none}
 
-  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+/* HTTPメソッドのラベル（白面+役割色の輪郭。塗らない） */
+.method{display:inline-block;padding:1px 8px;border-radius:3px;font-size:10.5px;font-weight:700;letter-spacing:.08em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;min-width:52px;text-align:center;background:var(--surface);border:1px solid var(--line)}
+.method-get{border-color:var(--ok-line);color:var(--ok-text)}
+.method-post{border-color:var(--info-line);color:var(--info-text)}
+.method-delete{border-color:var(--danger-line);color:var(--danger-text)}
 
-  /* flow nav（3列×2行） */
-  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
-  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
-  .flow a:nth-child(3n+1){border-left:none}
-  .flow a:nth-child(n+4){border-top:1px solid var(--border)}
-  .flow a:hover{background:var(--brand-soft)}
-  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
-  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
-  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
-  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
-  .flow a:nth-child(3n)::after,.flow a:last-child::after{content:""}
+/* エンドポイント表記（inline codeと同じ面） */
+.endpoint{font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:12.5px;color:var(--text);background:#F6EFE9;border:1px solid #E8DCD2;padding:2px 8px;border-radius:3px;white-space:nowrap}
+.endpoint .param{color:var(--accent-deep);font-weight:700}
 
-  /* sections */
-  .section{margin-bottom:56px;scroll-margin-top:20px}
-  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
-  .section-num.plain{background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5}
-  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
-  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
-  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
-  h3 .badge{vertical-align:middle;margin-left:8px}
+/* 全体像の要点（.stat型: 左1px墨罫+項目名+値） */
+.kv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:28px 0}
+.kv{border-left:1px solid var(--ink);padding-left:20px}
+.kv h3{font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--accent);margin:0 0 6px;font-family:inherit}
+.kv p{font-size:13.5px;color:var(--text);line-height:1.8}
 
-  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
-  .card h4{font-size:14.5px;font-weight:800;color:var(--ink);margin-bottom:10px}
-  .card ul{padding-left:20px;font-size:14px}
-  .card ul li{margin-bottom:6px}
-  .card ul li:last-child{margin-bottom:0}
+/* Webhookイベント一覧（罫線リスト型） */
+.event-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:28px 0}
+.event-item{display:flex;gap:10px;align-items:baseline;padding:9px 14px;background:var(--surface);border:1px solid var(--line-soft);border-radius:3px;font-size:13px}
+.event-type{font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:12px;color:var(--accent-deep);font-weight:700;white-space:nowrap}
+.event-desc{color:var(--sub);font-size:12px}
 
-  /* alerts */
-  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
-  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
-  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
-  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
-  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
+/* 参考リンク（白面+1px罫線・URLは弱い文字） */
+.link-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:28px 0}
+.link-card{display:block;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:18px 20px;text-decoration:none;transition:border-color .2s,background .2s}
+.link-card:hover{border-color:var(--accent);background:var(--accent-faint)}
+.link-card .link-text{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);line-height:1.6}
+.link-card .link-url{font-size:11.5px;color:var(--sub);word-break:break-all;margin-top:2px}
 
-  /* tables */
-  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
-  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
-  thead th{background:#FBF8F5;color:var(--ink);border-bottom:2px solid var(--brand);padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
-  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:middle}
-  tr:last-child td{border-bottom:none}
-  tbody tr:hover td{background:#FBF8F5}
-  td.label{font-weight:700;color:var(--ink);white-space:nowrap}
+h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.note-p{font-size:13px;color:var(--sub);margin:0 0 8px;line-height:1.9}
+.card p{font-size:14px;line-height:1.9}
+td{vertical-align:top}
 
-  /* badges */
-  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
-  .badge.good{background:#EDFAF2;color:#136A41}
-  .badge.bad{background:#FDECEF;color:#8E1230}
-  .badge.warn{background:#FFF4E0;color:#8F5A0A}
-  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
-
-  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
-
-  /* ページ固有: HTTPメソッドのチップ */
-  .method{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:800;letter-spacing:.5px;font-family:'SFMono-Regular',Menlo,Consolas,monospace;min-width:56px;text-align:center}
-  .method-get{background:#EDFAF2;color:#136A41}
-  .method-post{background:#EEF3FE;color:#1D48A6}
-  .method-delete{background:#FDECEF;color:#8E1230}
-
-  /* ページ固有: エンドポイント表記 */
-  .endpoint{font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:13px;color:var(--text);background:#F6EFE9;border:1px solid #E8DCD2;padding:3px 8px;border-radius:5px;white-space:nowrap}
-  .endpoint .param{color:var(--brand-deep);font-weight:700}
-
-  /* ページ固有: サマリーカード */
-  .kv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0 8px}
-  .kv{background:#fff;border:1px solid var(--border);border-top:3px solid var(--brand);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
-  .kv h3{font-size:11.5px;font-weight:800;letter-spacing:.08em;color:var(--brand-deep);margin:0 0 6px;padding:0;border:none}
-  .kv p{font-size:13.5px;color:var(--text);line-height:1.6}
-
-  /* ページ固有: Webhookイベント一覧 */
-  .event-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
-  .event-item{display:flex;gap:8px;align-items:baseline;padding:8px 12px;background:#fff;border-radius:8px;border:1px solid var(--border);font-size:13px}
-  .event-type{font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:12px;color:var(--brand-deep);font-weight:700;white-space:nowrap}
-  .event-desc{color:var(--sub);font-size:12px}
-
-  /* ページ固有: 参考リンク */
-  .link-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:16px 0}
-  .link-card{display:flex;align-items:center;gap:12px;background:#fff;border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);text-decoration:none;color:var(--text);border:1px solid var(--border);transition:border-color .2s,background .2s}
-  .link-card:hover{border-color:var(--brand);background:var(--brand-soft)}
-  .link-card .link-icon{font-size:24px;flex-shrink:0}
-  .link-card .link-text{font-size:14px;font-weight:700;color:var(--ink)}
-  .link-card .link-url{font-size:12px;color:var(--sub);word-break:break-all}
-
-  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
-
-  /* SVGアイコン（スプライト参照） */
-  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
-  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
-  .section-num .icon{width:22px;height:22px}
-
-  /* 読み進みバー */
-  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
-  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
-
-  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
-  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-  .rv-in{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  /* フローナビの現在地ハイライト */
-  .flow a.cur{background:var(--brand-soft)}
-  .flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
-
-  /* ミニチャート（ドーナツ） */
-  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .chart svg{width:130px;height:130px;flex-shrink:0}
-  .chart .cl{font-size:13.5px}
-  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
-  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
-
-  @media (max-width:760px){
-    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
-    .flow a{border-top:1px solid var(--border)}
-    .kv-grid{grid-template-columns:1fr 1fr}
-    .event-grid{grid-template-columns:1fr}
-    .link-grid{grid-template-columns:1fr}
-    .endpoint{font-size:11px}
-    .hero{padding:44px 24px 84px}
-    .container{padding:28px 18px 60px}
-  }
-
-  /* webfont: 和文の約物詰め + 表の等幅数字 */
-  body{font-feature-settings:'palt' 1}
-  table{font-variant-numeric:tabular-nums}
+@media (max-width:860px){
+  .kv-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .flow{grid-template-columns:1fr 1fr}
+  .flow a{border-left:1px solid var(--line-soft)}
+  .event-grid,.link-grid{grid-template-columns:1fr}
+  .endpoint{font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -181,39 +84,42 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
-    <div>
-      <span class="eyebrow">決済 — API Reference / v1</span>
-      <h1>PAY.JP API v1 リファレンス</h1>
-      <p class="lead">PAY.JP REST API (v1) の全リソース・エンドポイントを日本語で整理したリファレンスです。移行・設計のたたき台としてご利用ください。</p>
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">決済 — API Reference / v1</span>
+      </div>
     </div>
+    <h1>PAY.JP API v1 リファレンス</h1>
+    <p class="lead">PAY.JP REST API (v1) の全リソース・エンドポイントを日本語で整理したリファレンスです。移行・設計のたたき台としてご利用ください。</p>
   </div>
 </div>
 
+<!-- 全体フロー（ナビ） -->
+<nav class="flow">
+  <a href="#s1"><span class="fnum">1</span><span class="ft">全体像</span><span class="fd">認証・プロトコル・レスポンスの基本</span></a>
+  <a href="#s2"><span class="fnum">2</span><span class="ft">共通機能</span><span class="fd">エラー・レートリミット・Webhook</span></a>
+  <a href="#s3"><span class="fnum">3</span><span class="ft">標準API</span><span class="fd">リソース別エンドポイント一覧</span></a>
+  <a href="#s4"><span class="fnum">4</span><span class="ft">Platform API</span><span class="fd">テナントの売上分配・入金（BETA）</span></a>
+  <a href="#s5"><span class="fnum">5</span><span class="ft">Rincleでの利用状況</span><span class="fd">BubbleのAPI Connector・Webhook</span></a>
+  <a href="#s6"><span class="fnum">6</span><span class="ft">参考リンク</span><span class="fd">公式ドキュメントの一覧</span></a>
+</nav>
+
 <div class="container">
 
-  <!-- 全体フロー（ナビ） -->
-  <nav class="flow">
-    <a href="#s1"><span class="fnum">1</span><div class="ft">全体像</div><div class="fd">認証・プロトコル・レスポンスの基本</div></a>
-    <a href="#s2"><span class="fnum">2</span><div class="ft">共通機能</div><div class="fd">エラー・レートリミット・Webhook</div></a>
-    <a href="#s3"><span class="fnum">3</span><div class="ft">標準API</div><div class="fd">リソース別エンドポイント一覧</div></a>
-    <a href="#s4"><span class="fnum">4</span><div class="ft">Platform API</div><div class="fd">テナントの売上分配・入金（BETA）</div></a>
-    <a href="#s5"><span class="fnum">5</span><div class="ft">Rincleでの利用状況</div><div class="fd">BubbleのAPI Connector・Webhook</div></a>
-    <a href="#s6"><span class="fnum"><svg class="icon"><use href="#i-arrow"/></svg></span><div class="ft">参考リンク</div><div class="fd">公式ドキュメントの一覧</div></a>
-  </nav>
-
-  <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>今後の決済はStripeへの載せ替えが決定しています（2026-06-19定例・実装タスク#35）。</strong>Pay.JPは現行本番で稼働中のため、本リファレンスは現行連携の保守・移行検討用の資料です。</div></div>
+  <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>今後の決済はStripeへの載せ替えが決定しています（2026-06-19定例・実装タスク#35）。</strong>Pay.JPは現行本番で稼働中のため、本リファレンスは現行連携の保守・移行検討用の資料です。</div></div>
 
 
   <!-- 1 全体像 -->
   <div class="section" id="s1">
-    <div class="section-header"><div class="section-num">1</div><div><h2>全体像</h2><div class="sh-sub">認証・プロトコル・レスポンスの基本</div></div></div>
-<div class="kv-grid">
-    <div class="kv"><h3>Base URL</h3><p><code>https://api.pay.jp/v1/</code></p></div>
-    <div class="kv"><h3>Protocol</h3><p>HTTPS のみ</p></div>
-    <div class="kv"><h3>Authentication</h3><p>Basic認証 (<code>sk_...</code>)</p></div>
-    <div class="kv"><h3>Response</h3><p>JSON (UTF-8)</p></div>
-  </div>
+    <div class="section-header"><div class="section-num">1</div><div class="sh-body"><h2>全体像</h2><div class="sh-sub">認証・プロトコル・レスポンスの基本</div></div></div>
+
+    <div class="kv-grid">
+      <div class="kv"><h3>Base URL</h3><p><code>https://api.pay.jp/v1/</code></p></div>
+      <div class="kv"><h3>Protocol</h3><p>HTTPS のみ</p></div>
+      <div class="kv"><h3>Authentication</h3><p>Basic認証 (<code>sk_...</code>)</p></div>
+      <div class="kv"><h3>Response</h3><p>JSON (UTF-8)</p></div>
+    </div>
 
     <div class="table-wrap">
       <table>
@@ -230,12 +136,12 @@
       </table>
     </div>
 
-    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-file"/></svg></span><div><strong>API v2 について:</strong> PAY.JP v2 ドキュメントでは、クレジット以外の手段や Checkout 等が扱われます。本ドキュメントは <strong>v1 REST のリソース中心</strong>です。</div></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-file"/></svg><div><strong>API v2 について:</strong> PAY.JP v2 ドキュメントでは、クレジット以外の手段や Checkout 等が扱われます。本ドキュメントは <strong>v1 REST のリソース中心</strong>です。</div></div>
   </div>
 
   <!-- 2 共通機能 -->
   <div class="section" id="s2">
-    <div class="section-header"><div class="section-num">2</div><div><h2>共通機能（リソース以外）</h2><div class="sh-sub">エラー・レートリミット・一覧取得・メタデータ・Webhook</div></div></div>
+    <div class="section-header"><div class="section-num">2</div><div class="sh-body"><h2>共通機能（リソース以外）</h2><div class="sh-sub">エラー・レートリミット・一覧取得・メタデータ・Webhook</div></div></div>
 
     <div class="table-wrap">
       <table>
@@ -281,9 +187,9 @@
 
   <!-- 3 標準API -->
   <div class="section" id="s3">
-    <div class="section-header"><div class="section-num">3</div><div><h2>標準 API — リソース別エンドポイント</h2><div class="sh-sub">詳細パラメータ・制約は必ず公式ドキュメントを参照</div></div></div>
+    <div class="section-header"><div class="section-num">3</div><div class="sh-body"><h2>標準 API — リソース別エンドポイント</h2><div class="sh-sub">詳細パラメータ・制約は必ず公式ドキュメントを参照</div></div></div>
 
-    <h3>💳 Charge（支払い）</h3>
+    <h3>Charge（支払い）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -300,7 +206,7 @@
       </table>
     </div>
 
-    <h3>👤 Customer（顧客）</h3>
+    <h3>Customer（顧客）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -314,7 +220,7 @@
       </table>
     </div>
 
-    <h3>💳 Customer に紐づく Card（カード）</h3>
+    <h3>Customer に紐づく Card（カード）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -328,7 +234,7 @@
       </table>
     </div>
 
-    <h3>🔁 Customer に紐づく Subscription（定期課金の参照）</h3>
+    <h3>Customer に紐づく Subscription（定期課金の参照）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -339,7 +245,7 @@
       </table>
     </div>
 
-    <h3>📋 Plan（プラン）</h3>
+    <h3>Plan（プラン）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -353,7 +259,7 @@
       </table>
     </div>
 
-    <h3>🔄 Subscription（定期課金）</h3>
+    <h3>Subscription（定期課金）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -370,8 +276,8 @@
       </table>
     </div>
 
-    <h3>🔑 Token（トークン）</h3>
-    <p style="font-size:13.5px;color:var(--sub);margin-bottom:4px">カード番号等を<strong>トークン化</strong>したオブジェクト。サーバーは原則<strong>生のカードデータを扱わず</strong>トークンで Charge 等に渡す。</p>
+    <h3>Token（トークン）</h3>
+    <p class="note-p">カード番号等を<strong>トークン化</strong>したオブジェクト。サーバーは原則<strong>生のカードデータを扱わず</strong>トークンで Charge 等に渡す。</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -383,7 +289,7 @@
       </table>
     </div>
 
-    <h3>🏦 Transfer（入金）</h3>
+    <h3>Transfer（入金）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -395,7 +301,7 @@
       </table>
     </div>
 
-    <h3>📄 Statement（取引明細）</h3>
+    <h3>Statement（取引明細）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -407,7 +313,7 @@
       </table>
     </div>
 
-    <h3>📅 Term（集計区間）</h3>
+    <h3>Term（集計区間）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -418,7 +324,7 @@
       </table>
     </div>
 
-    <h3>💰 Balance（残高）</h3>
+    <h3>Balance（残高）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -430,7 +336,7 @@
       </table>
     </div>
 
-    <h3>📨 Event（イベント）</h3>
+    <h3>Event（イベント）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -441,7 +347,7 @@
       </table>
     </div>
 
-    <h3>🛡 ThreeDSecureRequest（3D セキュアリクエスト）</h3>
+    <h3>ThreeDSecureRequest（3D セキュアリクエスト）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -453,7 +359,7 @@
       </table>
     </div>
 
-    <h3>👥 Account（アカウント）</h3>
+    <h3>Account（アカウント）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -463,7 +369,7 @@
       </table>
     </div>
 
-    <h3>🔐 3-D Secure（開始 URL）</h3>
+    <h3>3-D Secure（開始 URL）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -476,18 +382,18 @@
 
   <!-- 4 Platform API -->
   <div class="section" id="s4">
-    <div class="section-header"><div class="section-num plain">4</div><div><h2>Platform API <span class="badge brand">BETA</span></h2><div class="sh-sub">マーケットプレイス型・Payouts 型アカウント向け。テナントごとに売上分配・入金・プラットフォーム手数料などを扱う</div></div></div>
+    <div class="section-header"><div class="section-num">4</div><div class="sh-body"><h2>Platform API <span class="badge brand">BETA</span></h2><div class="sh-sub">マーケットプレイス型・Payouts 型アカウント向け。テナントごとに売上分配・入金・プラットフォーム手数料などを扱う</div></div></div>
 
     <div class="card">
       <h4>Platform API の特徴</h4>
-      <ul>
+      <ul class="notes">
         <li>通常の <strong>Charge / Transfer</strong> を拡張して利用する部分と、<strong>Tenant / TenantTransfer</strong> 専用リソースがある</li>
         <li>Platform 利用時、<strong>Plan / Subscription の一部 API は利用不可</strong>（公式に「準備中」と記載）という制約あり</li>
         <li>認証・JSON 形式は v1 共通項目に準拠。Platform 固有の <code>error[code]</code> が追加される</li>
       </ul>
     </div>
 
-    <h3>🏢 Tenant（テナント）<span class="badge brand">Platform</span></h3>
+    <h3>Tenant（テナント）<span class="badge brand">Platform</span></h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -502,7 +408,7 @@
       </table>
     </div>
 
-    <h3>💸 Tenant Transfer（テナント入金）<span class="badge brand">Platform</span></h3>
+    <h3>Tenant Transfer（テナント入金）<span class="badge brand">Platform</span></h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
@@ -515,7 +421,7 @@
       </table>
     </div>
 
-    <h3>🔧 Charge / Transfer for Platform <span class="badge brand">Platform</span></h3>
+    <h3>Charge / Transfer for Platform <span class="badge brand">Platform</span></h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th>リソース</th><th>説明</th></tr></thead>
@@ -529,37 +435,33 @@
 
   <!-- 5 Rincleでの利用状況 -->
   <div class="section" id="s5">
-    <div class="section-header"><div class="section-num plain">5</div><div><h2>Rincle（Bubble）での利用状況</h2><div class="sh-sub">現行本番のBubbleアプリでどう使われているか</div></div></div>
+    <div class="section-header"><div class="section-num">5</div><div class="sh-body"><h2>Rincle（Bubble）での利用状況</h2><div class="sh-sub">現行本番のBubbleアプリでどう使われているか</div></div></div>
 
     <div class="card">
       <h4>API Connector / Webhook 定義</h4>
-      <p style="font-size:14px">API Connector には<strong>テナント / 顧客 / カード / トークン / 課金 / 返金</strong>など <code>api.pay.jp/v1/...</code> の呼び出しがまとまって定義されています。</p>
-      <p style="font-size:14px;margin-top:8px">Webhook では <code>payjp_webhook_charge_captured</code> 等の <strong>API Event</strong> が pay.jp フォルダにあります。</p>
+      <p>API Connector には<strong>テナント / 顧客 / カード / トークン / 課金 / 返金</strong>など <code>api.pay.jp/v1/...</code> の呼び出しがまとまって定義されています。</p>
+      <p style="margin-top:8px">Webhook では <code>payjp_webhook_charge_captured</code> 等の <strong>API Event</strong> が pay.jp フォルダにあります。</p>
     </div>
 
-    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-file"/></svg></span><div>一覧の正本（コネクタ全件・参照回数・Webhook WF 等）は <strong>payjp-rincle-bubble-usage.md</strong>（<code>scripts/generate_bubble_docs.py</code> が rincle.bubble から生成）を参照してください。</div></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-file"/></svg><div>一覧の正本（コネクタ全件・参照回数・Webhook WF 等）は <strong>payjp-rincle-bubble-usage.md</strong>（<code>scripts/generate_bubble_docs.py</code> が rincle.bubble から生成）を参照してください。</div></div>
   </div>
 
   <!-- 6 参考リンク -->
   <div class="section" id="s6">
-    <div class="section-header"><div class="section-num plain"><svg class="icon"><use href="#i-arrow"/></svg></div><div><h2>参考リンク</h2><div class="sh-sub">公式ドキュメント</div></div></div>
+    <div class="section-header"><div class="section-num">6</div><div class="sh-body"><h2>参考リンク</h2><div class="sh-sub">公式ドキュメント</div></div></div>
 
     <div class="link-grid">
       <a class="link-card" href="https://pay.jp/docs/api/" target="_blank" rel="noopener">
-        <div class="link-icon">📖</div>
-        <div><div class="link-text">PAY.JP API リファレンス（v1）</div><div class="link-url">pay.jp/docs/api/</div></div>
+        <div class="link-text">PAY.JP API リファレンス（v1）</div><div class="link-url">pay.jp/docs/api/</div>
       </a>
       <a class="link-card" href="https://pay.jp/docs/" target="_blank" rel="noopener">
-        <div class="link-icon">🏠</div>
-        <div><div class="link-text">PAY.JP ドキュメントトップ</div><div class="link-url">pay.jp/docs/</div></div>
+        <div class="link-text">PAY.JP ドキュメントトップ</div><div class="link-url">pay.jp/docs/</div>
       </a>
       <a class="link-card" href="https://docs.pay.jp/v2" target="_blank" rel="noopener">
-        <div class="link-icon">🚀</div>
-        <div><div class="link-text">PAY.JP v2 ドキュメント</div><div class="link-url">docs.pay.jp/v2</div></div>
+        <div class="link-text">PAY.JP v2 ドキュメント</div><div class="link-url">docs.pay.jp/v2</div>
       </a>
       <a class="link-card" href="https://pay.jp/v1/platform-introduction" target="_blank" rel="noopener">
-        <div class="link-icon">🤝</div>
-        <div><div class="link-text">Platform チュートリアル</div><div class="link-url">pay.jp/v1/platform-introduction</div></div>
+        <div class="link-text">Platform チュートリアル</div><div class="link-url">pay.jp/v1/platform-introduction</div>
       </a>
     </div>
   </div>

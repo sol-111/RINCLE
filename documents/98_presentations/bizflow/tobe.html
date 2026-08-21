@@ -6,232 +6,74 @@
 <title>Rincle 業務フロー図（目標 To-Be）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/design.css">
 <style>
-  :root{
-    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
-    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
-    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
-    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
-    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
-    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
+  /* ===== ページ固有: 業務フロー図（§3-A仕様） ===== */
+  .section-desc{color:var(--sub);font-size:14px}
+  .card h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin-bottom:14px}
+  .alert-amber{border-left-color:var(--gold);color:var(--gold-text)}
 
-  /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
-  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
-  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
-  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
-  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-  .hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
+  /* 変更点タグ（NEW / CHANGED） */
+  .tag-new{display:inline-block;border:1px solid var(--accent);color:var(--accent);font-size:10px;font-weight:700;letter-spacing:.12em;padding:1px 8px;border-radius:3px;vertical-align:middle;line-height:1.6}
 
-  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+  /* フェーズ目次（.phases型・役割ドットつき・変更フェーズ=焦がし） */
+  .phase .ps i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
+  .phase .ps i.user{background:var(--info)}
+  .phase .ps i.store{background:var(--ok)}
+  .phase .ps i.admin{background:var(--accent)}
 
-  /* sections */
-  .section{margin-bottom:56px;scroll-margin-top:20px}
-  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
-  .section-num.plain{background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5}
-  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
-  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
-  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
-
-  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
-  .card h4{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-
-  /* term = 用語解説 */
-  .term{display:flex;gap:14px;background:linear-gradient(135deg,#FFF4EF,#FFF9F6);border:1px solid #FBD3C4;border-radius:12px;padding:16px 20px;margin:14px 0;font-size:14px}
-  .term .t-icon{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
-  .term .term-name{font-weight:800;color:var(--ink);margin-bottom:2px}
-  .term .t-body{color:#4A3F38}
-
-  /* alerts */
-  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
-  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
-  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
-  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
-  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
-  .alert-amber{background:#FFF4E0;border:1px solid #F3DFAE;color:#8F5A0A}
-
-  /* compare（対比2枚組） */
-  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
-  .compare-box{border-radius:12px;padding:20px 22px;background:#fff;border:2px solid var(--border)}
-  .compare-box .cb-head{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;margin-bottom:8px}
-  .compare-box p{font-size:13.5px;color:#544B44}
-  .compare-box.asis{border-color:#D8D2CA}
-  .compare-box.asis .cb-head{color:var(--sub);font-size:13px;text-transform:uppercase;letter-spacing:1px}
-  .compare-box.tobe{border-color:#FBB394;background:#FFF8F4}
-  .compare-box.tobe .cb-head{color:var(--brand-deep);font-size:13px;text-transform:uppercase;letter-spacing:1px}
-  .compare-box .highlight{font-weight:800;color:var(--ink)}
-
-  /* badges */
-  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
-  .badge.good{background:#EDFAF2;color:#136A41}
-  .badge.bad{background:#FDECEF;color:#8E1230}
-  .badge.warn{background:#FFF4E0;color:#8F5A0A}
-  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
-
-  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
-
-  ul.notes{list-style:none;font-size:14px}
-  ul.notes li{position:relative;padding:6px 0 6px 28px}
-  ul.notes li::before{content:"!";position:absolute;left:2px;top:8px;width:18px;height:18px;border-radius:50%;background:#FDE68A;color:#92400E;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center}
-
-  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px}
-
-  /* ===== ページ固有: 業務フロー図（登場人物の色分け） ===== */
-  :root{
-    --user:#2563EB; --user-bg:#EEF3FE; --user-border:#CBDCFA;
-    --store:#1D9E5F; --store-bg:#EDFAF2; --store-border:#BFE9D0;
-    --admin:#D8400F; --admin-bg:#FFF0EA; --admin-border:#FBD3C4;
-    --notify:#8F5A0A; --notify-bg:#FFF4E0; --notify-border:#F3DFAE;
-    --external:#C21B3A; --external-bg:#FDECEF; --external-border:#F6C6D0;
-    --error:#C21B3A;
-  }
-
-  /* 要点サマリー（ヒーロー下に重ねる） */
-  .roles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 auto 40px;position:relative;z-index:2}
-  .role-card{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow-lg);border-top:3px solid var(--brand)}
-  .role-card h3{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--brand-deep);margin:0 0 4px;padding:0;border:none}
-  .role-card p{font-size:14px;font-weight:600;color:#4A4038;line-height:1.5}
-
-  /* 凡例 */
-  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:40px;padding:20px 24px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
-  .legend-title{font-size:13px;font-weight:800;color:var(--sub);width:100%;margin-bottom:4px}
-  .legend-item{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
-  .legend-dot{width:14px;height:14px;border-radius:4px;flex-shrink:0}
-  .legend-dot.user{background:var(--user)}
-  .legend-dot.store{background:var(--store)}
-  .legend-dot.admin{background:var(--admin)}
-  .legend-dot.notify{background:#C77F0A}
-  .legend-dot.external{background:var(--external)}
-  .legend-dot.error{background:transparent;border:2px dashed var(--error)}
-
-  /* フェーズ一覧（横スクロールの目次） */
-  .timeline{display:flex;gap:6px;margin-bottom:48px;overflow-x:auto;padding:4px 0 16px;scroll-behavior:smooth}
-  .timeline::-webkit-scrollbar{height:6px}
-  .timeline::-webkit-scrollbar-thumb{background:#D8D2CA;border-radius:3px}
-  .tl-phase{flex:0 0 auto;min-width:140px;border-radius:var(--radius);background:#fff;border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;transition:transform .15s,box-shadow .15s;text-decoration:none;color:inherit}
-  .tl-phase:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
-  .tl-num{padding:10px 16px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,var(--brand),#FF7A45)}
-  .tl-body{padding:12px 16px}
-  .tl-body h4{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3;color:var(--ink)}
-  .tl-actors{display:flex;gap:4px}
-  .tl-actor{width:8px;height:8px;border-radius:2px}
-  .tl-actor.user{background:var(--user)}
-  .tl-actor.store{background:var(--store)}
-  .tl-actor.admin{background:var(--admin)}
-  .tl-badge{display:inline-block;background:var(--brand-soft);color:var(--brand-deep);font-size:10px;font-weight:800;padding:1px 6px;border-radius:4px;margin-top:4px}
-
-  /* スイムレーン図 */
-  .swim{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin:24px 0;overflow-x:auto}
-  .swim-inner{min-width:600px;padding:24px}
-  .swim-row{display:flex;align-items:center;gap:8px;padding:10px 0;min-height:56px}
-  .swim-row + .swim-row{border-top:1px dashed var(--border)}
-  .swim-label{width:80px;flex-shrink:0;font-size:12px;font-weight:700;letter-spacing:.5px;text-align:right;padding-right:12px}
-  .swim-label.user{color:var(--user)}
-  .swim-label.store{color:var(--store)}
-  .swim-label.admin{color:var(--admin)}
+  /* スイムレーン（横型。ノード=白面+1px罫線・レーンラベル=役割色文字+丸ドット） */
+  .swim{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin:28px 0 0;overflow-x:auto}
+  .swim-inner{min-width:600px;padding:16px 24px}
+  .swim-row{display:flex;align-items:center;gap:8px;padding:10px 0;min-height:52px}
+  .swim-row + .swim-row{border-top:1px solid var(--line-soft)}
+  .swim-label{width:92px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;gap:6px;font-size:11px;font-weight:700;text-align:right;padding-right:12px;line-height:1.4}
+  .swim-label i{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+  .swim-label.user{color:var(--info)} .swim-label.user i{background:var(--info)}
+  .swim-label.store{color:var(--ok)} .swim-label.store i{background:var(--ok)}
+  .swim-label.admin{color:var(--accent)} .swim-label.admin i{background:var(--accent)}
+  .swim-label.gold{color:var(--gold-text)} .swim-label.gold i{background:var(--gold)}
+  .swim-label.ext{color:var(--danger)} .swim-label.ext i{background:var(--danger)}
   .swim-track{display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap}
-  .swim-node{display:inline-flex;align-items:center;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;white-space:nowrap;border:2px solid;line-height:1.3}
-  .swim-node.user{background:var(--user-bg);border-color:var(--user-border);color:var(--user)}
-  .swim-node.store{background:var(--store-bg);border-color:var(--store-border);color:var(--store)}
-  .swim-node.admin{background:var(--admin-bg);border-color:var(--admin-border);color:var(--admin)}
-  .swim-node.notify{background:var(--notify-bg);border-color:var(--notify-border);color:var(--notify)}
-  .swim-node.external{background:var(--external-bg);border-color:var(--external-border);color:var(--external)}
-  .swim-node.decision{border-radius:4px;border-style:dashed;font-size:12px;padding:4px 10px}
-  .swim-node.error{border-style:dashed;opacity:.7}
-  .swim-node.key{border-width:3px;box-shadow:0 0 0 3px rgba(249,83,32,.15)}
-  .swim-arrow{color:#D8D2CA;font-size:16px;font-weight:700;flex-shrink:0}
+  .swim-node{display:inline-flex;align-items:center;padding:6px 12px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;background:var(--surface);border:1px solid var(--line);color:var(--ink);line-height:1.4}
+  .swim-node.decision{border-style:dashed}
+  .swim-node.error{border:1px dashed var(--danger-line);color:var(--danger-text)}
+  .swim-node.hot{border:1.5px solid var(--accent);color:var(--accent-deep)}
+  .swim-arrow{color:var(--line);font-size:14px;font-weight:700;flex-shrink:0}
+  .swim-arrow.hot{color:var(--accent)}
   .swim-branch{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
-  .swim-branch-label{font-size:10px;font-weight:700;color:var(--sub);background:#F2EEE9;padding:1px 8px;border-radius:4px}
-  .swim-branch-label.ok{color:var(--store);background:var(--store-bg)}
-  .swim-branch-label.ng{color:var(--error);background:var(--external-bg)}
-  .swim-tag{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;margin-left:4px;vertical-align:middle}
-  .swim-tag.new{background:var(--brand-soft);color:var(--brand-deep)}
+  .swim-branch-label{font-size:10px;font-weight:700;color:var(--sub);border:1px solid var(--line-soft);padding:1px 8px;border-radius:3px;background:var(--surface)}
+  .swim-branch-label.ok{color:var(--ok);border-color:var(--ok-line)}
+  .swim-branch-label.ng{color:var(--danger);border:1px dashed var(--danger-line)}
 
-  /* 手順の縦フロー（登場人物つき） */
-  .pflow{margin:20px 0}
+  /* 手順の縦フロー（役割色の輪郭丸+明朝数字） */
+  .pflow{margin:12px 0 0}
   .pflow-step{display:flex;gap:16px;position:relative;padding-bottom:8px}
-  .pflow-step:not(:last-child){padding-bottom:20px}
-  .pflow-step:not(:last-child)::after{content:'';position:absolute;left:19px;top:44px;bottom:0;width:2px;background:var(--border)}
-  .pflow-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;position:relative;z-index:1}
-  .pflow-dot.user{background:var(--user-bg);color:var(--user)}
-  .pflow-dot.store{background:var(--store-bg);color:var(--store)}
-  .pflow-dot.admin{background:var(--admin-bg);color:var(--admin)}
-  .pflow-dot.notify{background:var(--notify-bg);color:var(--notify)}
-  .pflow-dot.external{background:var(--external-bg);color:var(--external)}
-  .pflow-dot.system{background:#F2EEE9;color:#4A4038}
-  .pflow-dot.brand{background:var(--brand-soft);color:var(--brand-deep)}
-  .pflow-body{flex:1;padding-top:6px}
-  .pflow-actor{font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:2px}
-  .pflow-actor.user{color:var(--user)}
-  .pflow-actor.store{color:var(--store)}
-  .pflow-actor.admin{color:var(--admin)}
-  .pflow-actor.notify{color:var(--notify)}
-  .pflow-actor.external{color:var(--external)}
-  .pflow-actor.system{color:var(--sub)}
-  .pflow-text{font-size:15px;color:#4A4038}
-  .pflow-note{font-size:13px;color:var(--sub);margin-top:4px;padding-left:12px;border-left:2px solid var(--border)}
+  .pflow-step:not(:last-child){padding-bottom:22px}
+  .pflow-step:not(:last-child)::after{content:'';position:absolute;left:17px;top:40px;bottom:2px;width:1px;background:var(--line)}
+  .pflow-dot{width:34px;height:34px;border-radius:50%;background:var(--surface);border:1.5px solid;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:13px;flex-shrink:0;position:relative;z-index:1}
+  .pflow-dot.user{color:var(--info);border-color:var(--info)}
+  .pflow-dot.store{color:var(--ok);border-color:var(--ok)}
+  .pflow-dot.admin,.pflow-dot.system,.pflow-dot.brand{color:var(--accent);border-color:var(--accent)}
+  .pflow-dot.notify{color:var(--gold-text);border-color:var(--gold)}
+  .pflow-dot.external{color:var(--danger);border-color:var(--danger)}
+  .pflow-body{flex:1;padding-top:3px}
+  .pflow-actor{font-size:10.5px;font-weight:700;letter-spacing:.16em;margin-bottom:2px}
+  .pflow-actor.user{color:var(--info)}
+  .pflow-actor.store{color:var(--ok)}
+  .pflow-actor.admin,.pflow-actor.system{color:var(--accent)}
+  .pflow-actor.notify{color:var(--gold-text)}
+  .pflow-actor.external{color:var(--danger)}
+  .pflow-text{font-size:14px;color:var(--text);line-height:1.9}
+  .pflow-note{font-size:12.5px;color:var(--sub);margin-top:4px;padding-left:12px;border-left:1px solid var(--line-soft);line-height:1.9}
 
-  .section-desc{color:var(--sub);font-size:14px;margin-bottom:16px}
-  .badge-new{display:inline-block;background:var(--brand-soft);color:var(--brand-deep);font-size:11px;font-weight:800;padding:2px 8px;border-radius:4px}
-
-  /* SVGアイコン（スプライト参照） */
-  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
-  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
-  .section-num .icon{width:22px;height:22px}
-
-  /* 読み進みバー */
-  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
-  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
-
-  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
-  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-  .rv-in{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  /* 章ナビ（フローナビ） */
-  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
-  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
-  .flow a:nth-child(4n+1){border-left:none}
-  .flow a:nth-child(n+5){border-top:1px solid var(--border)}
-  .flow a:hover{background:var(--brand-soft)}
-  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
-  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
-  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
-  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
-  .flow a:nth-child(4n)::after,.flow a:last-child::after{content:""}
-
-  /* フローナビの現在地ハイライト */
-  .flow a.cur{background:var(--brand-soft)}
-  .flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
-
-  /* ミニチャート（ドーナツ） */
-  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .chart svg{width:130px;height:130px;flex-shrink:0}
-  .chart .cl{font-size:13.5px}
-  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
-  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
-
-  @media (max-width:760px){
-    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
-    .flow a{border-top:1px solid var(--border)}
-    .roles{grid-template-columns:1fr 1fr}
-    .compare{grid-template-columns:1fr}
-    .hero{padding:44px 24px 84px}
-    .container{padding:28px 18px 60px}
-  }
-
-  /* webfont: 和文の約物詰め + 表の等幅数字 */
-  body{font-feature-settings:'palt' 1}
-  table{font-variant-numeric:tabular-nums}
+  /* As-Is / To-Be 対比（白面+罫線・To-Be側だけ罫線を焦がしに） */
+  .compare-box.asis{border:1px solid var(--line)}
+  .compare-box.asis .cb-head{color:var(--sub);font-size:10.5px;letter-spacing:.16em}
+  .compare-box.tobe{border:1px solid var(--accent)}
+  .compare-box.tobe .cb-head{color:var(--accent);font-size:10.5px;letter-spacing:.16em}
+  .compare-box .highlight{font-weight:700;color:var(--ink)}
 </style>
 </head>
 <body>
@@ -245,7 +87,7 @@
 <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
 <symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
 <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
-<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
 <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
 <symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
 <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
@@ -257,101 +99,47 @@
 <!-- ========== HERO ========== -->
 <div class="hero">
   <div class="hero-inner">
-    <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
-    <div>
-      <span class="eyebrow">業務フロー — To-Be（目標）</span>
-      <h1>Rincle 業務フロー図（目標）</h1>
-      <p class="lead">オーソリ&rarr;キャプチャの2段階決済モデルへ移行し、キャンセルしやすく未回収リスクの低い体験を実現します。</p>
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">RINCLE — 業務フロー — To-Be（目標）</span>
+      </div>
+      <span class="hero-no">TO-BE（目標）</span>
     </div>
+    <h1>Rincle 業務フロー図（目標）</h1>
+    <p class="lead">オーソリ&rarr;キャプチャの2段階決済モデルへ移行し、キャンセルしやすく未回収リスクの低い体験を実現します。</p>
   </div>
 </div>
 
+<!-- 章ナビ -->
+<nav class="flow">
+  <a href="#phase1"><span class="fnum">1</span><span class="ft">アカウント・認証</span><span class="fd">認証の流れはAs-Isと同じ</span></a>
+  <a href="#phase2"><span class="fnum">2</span><span class="ft">店舗準備・承認</span><span class="fd">出店から自転車登録まで（変更なし）</span></a>
+  <a href="#phase3"><span class="fnum">3</span><span class="ft">自転車検索・閲覧</span><span class="fd">検索フローはAs-Isと同じ</span></a>
+  <a href="#phase4"><span class="fnum">4</span><span class="ft">予約＋オーソリ</span><span class="fd">予約時は与信枠の確保のみ・お金は動かない</span></a>
+  <a href="#phase5"><span class="fnum">5</span><span class="ft">来店・キャプチャ</span><span class="fd">ライド開始で決済が確定する</span></a>
+  <a href="#phase6"><span class="fnum">6</span><span class="ft">返却・完了</span><span class="fd">返却からレンタル完了までの流れ</span></a>
+  <a href="#phase7"><span class="fnum">7</span><span class="ft">キャンセル・オーソリ解放</span><span class="fd">解放のみで完了・返金処理は不要</span></a>
+  <a href="#summary"><span class="fnum"><svg class="icon"><use href="#i-check"/></svg></span><span class="ft">フロー全体のまとめ</span><span class="fd">2段階決済モデルの要点整理</span></a>
+</nav>
+
 <div class="container">
 
-  <!-- 章ナビ -->
-  <nav class="flow">
-    <a href="#phase1"><span class="fnum">1</span><div class="ft">アカウント・認証</div><div class="fd">認証の流れはAs-Isと同じ</div></a>
-    <a href="#phase2"><span class="fnum">2</span><div class="ft">店舗準備・承認</div><div class="fd">出店から自転車登録まで（変更なし）</div></a>
-    <a href="#phase3"><span class="fnum">3</span><div class="ft">自転車検索・閲覧</div><div class="fd">検索フローはAs-Isと同じ</div></a>
-    <a href="#phase4"><span class="fnum">4</span><div class="ft">予約＋オーソリ</div><div class="fd">予約時は与信枠の確保のみ・お金は動かない</div></a>
-    <a href="#phase5"><span class="fnum">5</span><div class="ft">来店・キャプチャ</div><div class="fd">ライド開始で決済が確定する</div></a>
-    <a href="#phase6"><span class="fnum">6</span><div class="ft">返却・完了</div><div class="fd">返却からレンタル完了までの流れ</div></a>
-    <a href="#phase7"><span class="fnum">7</span><div class="ft">キャンセル・オーソリ解放</div><div class="fd">解放のみで完了・返金処理は不要</div></a>
-    <a href="#summary"><span class="fnum"><svg class="icon"><use href="#i-check"/></svg></span><div class="ft">フロー全体のまとめ</div><div class="fd">2段階決済モデルの要点整理</div></a>
-  </nav>
-
-  
-
-  <div class="alert alert-blue">
-    <span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span>
+  <!-- 決済基盤の注記 -->
+  <div class="alert alert-blue" style="margin-top:0">
+    <svg class="a-icon icon"><use href="#i-info"/></svg>
     <div><strong>決済基盤についての注記（2026-08-20時点）：</strong>このページの図は、決済をPay.JP前提に設計した当時のものです。その後、決済基盤はStripeへの載せ替えが決定しました（2026-06-19決定・実装タスク#35。比較の正本: documents/2_requirements/04_integration/stripe/payjp-vs-stripe-comparison.md）。図中の「Pay.JP」という記載やAPI名は、実装時にStripe向けに読み替えて詳細を確定します。</div>
   </div>
 
-  <!-- 凡例 -->
-  <div class="legend">
-    <div class="legend-title">凡例（色の意味）</div>
-    <div class="legend-item"><div class="legend-dot user"></div>ユーザー操作</div>
-    <div class="legend-item"><div class="legend-dot store"></div>店舗操作</div>
-    <div class="legend-item"><div class="legend-dot admin"></div>管理者操作</div>
-    <div class="legend-item"><div class="legend-dot notify"></div>自動通知</div>
-    <div class="legend-item"><div class="legend-dot external"></div>外部サービス(Pay.JP)</div>
-    <div class="legend-item"><div class="legend-dot error"></div>エラー・異常系</div>
-  </div>
-
-  <!-- フェーズ一覧 -->
-  <div class="timeline">
-    <a class="tl-phase" href="#phase1">
-      <div class="tl-num">Phase 1</div>
-      <div class="tl-body">
-        <h4>アカウント・認証</h4>
-        <div class="tl-actors"><div class="tl-actor user"></div></div>
-      </div>
-    </a>
-    <a class="tl-phase" href="#phase2">
-      <div class="tl-num">Phase 2</div>
-      <div class="tl-body">
-        <h4>店舗準備・承認</h4>
-        <div class="tl-actors"><div class="tl-actor store"></div><div class="tl-actor admin"></div></div>
-      </div>
-    </a>
-    <a class="tl-phase" href="#phase3">
-      <div class="tl-num">Phase 3</div>
-      <div class="tl-body">
-        <h4>自転車検索</h4>
-        <div class="tl-actors"><div class="tl-actor user"></div></div>
-      </div>
-    </a>
-    <a class="tl-phase" href="#phase4">
-      <div class="tl-num">Phase 4</div>
-      <div class="tl-body">
-        <h4>予約 + オーソリ</h4>
-        <div class="tl-actors"><div class="tl-actor user"></div><div class="tl-actor store"></div></div>
-        <div class="tl-badge">CHANGED</div>
-      </div>
-    </a>
-    <a class="tl-phase" href="#phase5">
-      <div class="tl-num">Phase 5</div>
-      <div class="tl-body">
-        <h4>来店・キャプチャ</h4>
-        <div class="tl-actors"><div class="tl-actor store"></div></div>
-        <div class="tl-badge">CHANGED</div>
-      </div>
-    </a>
-    <a class="tl-phase" href="#phase6">
-      <div class="tl-num">Phase 6</div>
-      <div class="tl-body">
-        <h4>返却・完了</h4>
-        <div class="tl-actors"><div class="tl-actor store"></div><div class="tl-actor admin"></div></div>
-      </div>
-    </a>
-    <a class="tl-phase" href="#phase7">
-      <div class="tl-num">Phase 7</div>
-      <div class="tl-body">
-        <h4>キャンセル・解放</h4>
-        <div class="tl-actors"><div class="tl-actor user"></div><div class="tl-actor store"></div></div>
-        <div class="tl-badge">CHANGED</div>
-      </div>
-    </a>
+  <!-- フェーズ一覧（目次・変更フェーズ=焦がし） -->
+  <div class="phases">
+    <div class="phase"><span class="pn">Phase 1</span><span class="pt">アカウント・認証</span><span class="ps"><i class="user"></i></span></div>
+    <div class="phase"><span class="pn">Phase 2</span><span class="pt">店舗準備・承認</span><span class="ps"><i class="store"></i><i class="admin"></i></span></div>
+    <div class="phase"><span class="pn">Phase 3</span><span class="pt">自転車検索</span><span class="ps"><i class="user"></i></span></div>
+    <div class="phase now"><span class="pn">Phase 4</span><span class="pt">予約 + オーソリ</span><span class="ps"><i class="user"></i><i class="store"></i><span class="tag-new">CHANGED</span></span></div>
+    <div class="phase now"><span class="pn">Phase 5</span><span class="pt">来店・キャプチャ</span><span class="ps"><i class="store"></i><span class="tag-new">CHANGED</span></span></div>
+    <div class="phase"><span class="pn">Phase 6</span><span class="pt">返却・完了</span><span class="ps"><i class="store"></i><i class="admin"></i></span></div>
+    <div class="phase now"><span class="pn">Phase 7</span><span class="pt">キャンセル・解放</span><span class="ps"><i class="user"></i><i class="store"></i><span class="tag-new">CHANGED</span></span></div>
   </div>
 
   <!-- ================================================================ -->
@@ -359,14 +147,14 @@
   <!-- ================================================================ -->
   <div class="section" id="phase1">
     <div class="section-header">
-      <div class="section-num">1</div>
-      <div><h2>アカウント・認証</h2></div>
+      <div class="section-num">01</div>
+      <div class="sh-body"><h2>アカウント・認証</h2></div>
     </div>
     <p class="section-desc">ユーザーの認証フローです。As-Is と同じです。カード登録は予約フローの「支払い方法」ステップで行います（As-Isと変更なし）。</p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
-        <div class="swim-label user">ユーザー</div>
+        <div class="swim-label user"><i></i>ユーザー</div>
         <div class="swim-track">
           <div class="swim-node user">開始</div>
           <div class="swim-arrow">&rarr;</div>
@@ -397,9 +185,18 @@
         </div>
       </div>
     </div></div>
+    <div class="legend">
+      <span class="kicker">凡例（色の意味）</span>
+      <span><i style="background:var(--info)"></i>ユーザー操作</span>
+      <span><i style="background:var(--ok)"></i>店舗操作</span>
+      <span><i style="background:var(--accent)"></i>管理者操作</span>
+      <span><i style="background:var(--gold)"></i>自動通知</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)</span>
+      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+    </div>
 
     <div class="alert alert-green">
-      <span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span>
+      <svg class="a-icon icon"><use href="#i-check"/></svg>
       <div><strong>As-Is と同じ：</strong>カード登録は予約フローの「支払い方法」ステップで行います。この部分はAs-Isから変更ありません。To-Beでの変更点は Phase 4 の「オーソリ（与信枠確保）」の追加です。</div>
     </div>
   </div>
@@ -409,14 +206,14 @@
   <!-- ================================================================ -->
   <div class="section" id="phase2">
     <div class="section-header">
-      <div class="section-num">2</div>
-      <div><h2>店舗準備・承認 / マスタ管理</h2></div>
+      <div class="section-num">02</div>
+      <div class="sh-body"><h2>店舗準備・承認 / マスタ管理</h2></div>
     </div>
     <p class="section-desc">加盟店の出店から自転車登録までの流れです。As-Is と基本的に同じです。</p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
-        <div class="swim-label store">店舗</div>
+        <div class="swim-label store"><i></i>店舗</div>
         <div class="swim-track">
           <div class="swim-node store">店舗登録</div>
           <div class="swim-arrow">&rarr;</div>
@@ -430,7 +227,7 @@
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label admin">管理者</div>
+        <div class="swim-label admin"><i></i>管理者</div>
         <div class="swim-track">
           <div style="width:60px"></div>
           <div class="swim-node notify">申請通知</div>
@@ -454,7 +251,7 @@
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label store">マスタ管理</div>
+        <div class="swim-label store"><i></i>マスタ管理</div>
         <div class="swim-track">
           <div class="swim-node store">自転車登録</div>
           <div class="swim-arrow">&rarr;</div>
@@ -466,9 +263,17 @@
         </div>
       </div>
     </div></div>
+    <div class="legend">
+      <span><i style="background:var(--info)"></i>ユーザー操作</span>
+      <span><i style="background:var(--ok)"></i>店舗操作</span>
+      <span><i style="background:var(--accent)"></i>管理者操作</span>
+      <span><i style="background:var(--gold)"></i>自動通知</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)</span>
+      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+    </div>
 
     <div class="alert alert-blue">
-      <span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span>
+      <svg class="a-icon icon"><use href="#i-info"/></svg>
       <div><strong>プラットフォーム利用料の変更：</strong>Pay.JP の <code>platform_fee</code> での都度10%差引を廃止し、売上の<strong>15%を毎月末に別途請求</strong>する方式に変更。Pay.JP テナントには手数料率 0% を設定します。</div>
     </div>
   </div>
@@ -478,14 +283,14 @@
   <!-- ================================================================ -->
   <div class="section" id="phase3">
     <div class="section-header">
-      <div class="section-num">3</div>
-      <div><h2>自転車検索・閲覧</h2></div>
+      <div class="section-num">03</div>
+      <div class="sh-body"><h2>自転車検索・閲覧</h2></div>
     </div>
     <p class="section-desc">ユーザーが自転車を検索するフローです。As-Is と同じです。</p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
-        <div class="swim-label user">ユーザー</div>
+        <div class="swim-label user"><i></i>ユーザー</div>
         <div class="swim-track">
           <div class="swim-node user">エリア・日時選択</div>
           <div class="swim-arrow">&rarr;</div>
@@ -510,6 +315,14 @@
         </div>
       </div>
     </div></div>
+    <div class="legend">
+      <span><i style="background:var(--info)"></i>ユーザー操作</span>
+      <span><i style="background:var(--ok)"></i>店舗操作</span>
+      <span><i style="background:var(--accent)"></i>管理者操作</span>
+      <span><i style="background:var(--gold)"></i>自動通知</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)</span>
+      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+    </div>
   </div>
 
   <!-- ================================================================ -->
@@ -517,14 +330,14 @@
   <!-- ================================================================ -->
   <div class="section" id="phase4">
     <div class="section-header">
-      <div class="section-num">4</div>
-      <div><h2>予約 + オーソリ（与信枠確保）</h2></div>
+      <div class="section-num">04</div>
+      <div class="sh-body"><h2>予約 + オーソリ（与信枠確保）</h2></div>
     </div>
-    <p class="section-desc"><span class="badge-new">CHANGED</span> 予約フロー内でカード情報を入力し、<strong>オーソリ（与信枠の確保）</strong>を実行します。お金はまだ動きません。</p>
+    <p class="section-desc"><span class="tag-new">CHANGED</span> 予約フロー内でカード情報を入力し、<strong>オーソリ（与信枠の確保）</strong>を実行します。お金はまだ動きません。</p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
-        <div class="swim-label user">ユーザー</div>
+        <div class="swim-label user"><i></i>ユーザー</div>
         <div class="swim-track">
           <div class="swim-node user decision">在庫確認</div>
           <div class="swim-arrow">&rarr;</div>
@@ -533,23 +346,23 @@
           <div class="swim-node user">Step2 顧客情報</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-node user">Step3 内容確認</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node user key">Step4 カード入力</div>
-          <div class="swim-tag new">NEW</div>
+          <div class="swim-arrow hot">&rarr;</div>
+          <div class="swim-node user hot">Step4 カード入力</div>
+          <span class="tag-new">NEW</span>
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label" style="color:var(--external)">Pay.JP</div>
+        <div class="swim-label ext"><i></i>Pay.JP</div>
         <div class="swim-track">
           <div style="width:420px"></div>
-          <div class="swim-node external key">オーソリ（与信枠確保）</div>
+          <div class="swim-node external hot">オーソリ（与信枠確保）</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-node external decision">オーソリOK?</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-branch">
             <div>
               <div class="swim-branch-label ok">OK</div>
-              <div class="swim-node user" style="margin-top:4px;border-color:var(--user);background:var(--user);color:#fff;font-weight:700">予約確定（与信済）</div>
+              <div class="swim-node user hot" style="margin-top:4px">予約確定（与信済）</div>
             </div>
             <div style="margin-top:6px">
               <div class="swim-branch-label ng">NG</div>
@@ -559,7 +372,7 @@
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label" style="color:var(--notify)">通知</div>
+        <div class="swim-label gold"><i></i>通知</div>
         <div class="swim-track">
           <div style="width:520px"></div>
           <div class="swim-node notify">予約確認メール（ユーザー）</div>
@@ -568,16 +381,24 @@
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label store">店舗</div>
+        <div class="swim-label store"><i></i>店舗</div>
         <div class="swim-track">
           <div style="width:570px"></div>
           <div class="swim-node store">予約詳細確認</div>
         </div>
       </div>
     </div></div>
+    <div class="legend">
+      <span><i style="background:var(--info)"></i>ユーザー操作</span>
+      <span><i style="background:var(--ok)"></i>店舗操作</span>
+      <span><i style="background:var(--accent)"></i>管理者操作</span>
+      <span><i style="background:var(--gold)"></i>自動通知</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)</span>
+      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+    </div>
 
     <div class="card">
-      <h4>&#x1F4B3; 予約+オーソリ フロー詳細</h4>
+      <h4>予約+オーソリ フロー詳細</h4>
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot system">1</div>
@@ -621,11 +442,8 @@
     </div>
 
     <div class="term">
-      <div class="t-icon"><svg class="icon"><use href="#i-help"/></svg></div>
-      <div class="t-body">
-        <div class="term-name">「オーソリ」とは？</div>
-        クレジットカードの利用可能枠を一時的に「取り置き」する仕組みです。お客さんの口座からお金は引き落とされません。例えるなら、レストランの予約で「席を確保する」ようなものです。実際にお金が動くのは Phase 5 のキャプチャ時です。
-      </div>
+      <div class="term-name">「オーソリ」とは？ <span class="term-tag">— 用語</span></div>
+      <div class="t-body">クレジットカードの利用可能枠を一時的に「取り置き」する仕組みです。お客さんの口座からお金は引き落とされません。例えるなら、レストランの予約で「席を確保する」ようなものです。実際にお金が動くのは Phase 5 のキャプチャ時です。</div>
     </div>
   </div>
 
@@ -634,33 +452,33 @@
   <!-- ================================================================ -->
   <div class="section" id="phase5">
     <div class="section-header">
-      <div class="section-num">5</div>
-      <div><h2>来店・キャプチャ（決済確定）</h2></div>
+      <div class="section-num">05</div>
+      <div class="sh-body"><h2>来店・キャプチャ（決済確定）</h2></div>
     </div>
-    <p class="section-desc"><span class="badge-new">CHANGED</span> 店舗が「ライド開始」を押すと<strong>キャプチャ（決済確定）</strong>が実行されます。<strong>ここで初めてお金が動きます。</strong></p>
+    <p class="section-desc"><span class="tag-new">CHANGED</span> 店舗が「ライド開始」を押すと<strong>キャプチャ（決済確定）</strong>が実行されます。<strong>ここで初めてお金が動きます。</strong></p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
-        <div class="swim-label store">店舗</div>
+        <div class="swim-label store"><i></i>店舗</div>
         <div class="swim-track">
           <div class="swim-node store">自転車準備</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store key" style="border-color:var(--store);background:var(--store);color:#fff">ライド開始ボタン</div>
-          <div class="swim-tag new">NEW</div>
+          <div class="swim-arrow hot">&rarr;</div>
+          <div class="swim-node store hot">ライド開始ボタン</div>
+          <span class="tag-new">NEW</span>
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label" style="color:var(--external)">Pay.JP</div>
+        <div class="swim-label ext"><i></i>Pay.JP</div>
         <div class="swim-track">
           <div style="width:165px"></div>
-          <div class="swim-node external key">キャプチャ（決済確定）</div>
+          <div class="swim-node external hot">キャプチャ（決済確定）</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-node external decision">キャプチャOK?</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-branch">
             <div>
               <div class="swim-branch-label ok">OK</div>
-              <div class="swim-node store" style="margin-top:4px;border-color:var(--store);background:var(--store);color:#fff">貸出中（RIDE!）</div>
+              <div class="swim-node store hot" style="margin-top:4px">貸出中（RIDE!）</div>
             </div>
             <div style="margin-top:6px">
               <div class="swim-branch-label ng">NG</div>
@@ -670,9 +488,17 @@
         </div>
       </div>
     </div></div>
+    <div class="legend">
+      <span><i style="background:var(--info)"></i>ユーザー操作</span>
+      <span><i style="background:var(--ok)"></i>店舗操作</span>
+      <span><i style="background:var(--accent)"></i>管理者操作</span>
+      <span><i style="background:var(--gold)"></i>自動通知</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)</span>
+      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+    </div>
 
     <div class="card">
-      <h4>&#x1F6B2; キャプチャフロー詳細</h4>
+      <h4>キャプチャフロー詳細</h4>
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot store">1</div>
@@ -715,7 +541,7 @@
     </div>
 
     <div class="alert alert-amber">
-      <span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span>
+      <svg class="a-icon icon"><use href="#i-alert"/></svg>
       <div><strong>決め残し：</strong>キャプチャ失敗時の救済フロー（別カード再決済の画面フロー）と、二重キャプチャ防止の仕組みは要定義です。</div>
     </div>
 
@@ -736,37 +562,45 @@
   <!-- ================================================================ -->
   <div class="section" id="phase6">
     <div class="section-header">
-      <div class="section-num">6</div>
-      <div><h2>返却・完了</h2></div>
+      <div class="section-num">06</div>
+      <div class="sh-body"><h2>返却・完了</h2></div>
     </div>
     <p class="section-desc">ユーザーが自転車を返却し、レンタルが完了するまでの流れです。As-Is と基本的に同じです。</p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
-        <div class="swim-label store">店舗</div>
+        <div class="swim-label store"><i></i>店舗</div>
         <div class="swim-track">
           <div class="swim-node store">貸出中</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-node store">返却確認</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store" style="border-color:var(--store);background:var(--store);color:#fff">完了処理</div>
+          <div class="swim-arrow hot">&rarr;</div>
+          <div class="swim-node store hot">完了処理</div>
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label admin">管理者</div>
+        <div class="swim-label admin"><i></i>管理者</div>
         <div class="swim-track">
           <div class="swim-node admin">予約モニタリング</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-node admin">売上レポート</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-node admin">月末15%請求</div>
-          <div class="swim-tag new">NEW</div>
+          <span class="tag-new">NEW</span>
         </div>
       </div>
     </div></div>
+    <div class="legend">
+      <span><i style="background:var(--info)"></i>ユーザー操作</span>
+      <span><i style="background:var(--ok)"></i>店舗操作</span>
+      <span><i style="background:var(--accent)"></i>管理者操作</span>
+      <span><i style="background:var(--gold)"></i>自動通知</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)</span>
+      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+    </div>
 
     <div class="card">
-      <h4>&#x2705; 返却フロー詳細</h4>
+      <h4>返却フロー詳細</h4>
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot store">1</div>
@@ -799,14 +633,14 @@
   <!-- ================================================================ -->
   <div class="section" id="phase7">
     <div class="section-header">
-      <div class="section-num">7</div>
-      <div><h2>キャンセル・オーソリ解放</h2></div>
+      <div class="section-num">07</div>
+      <div class="sh-body"><h2>キャンセル・オーソリ解放</h2></div>
     </div>
-    <p class="section-desc"><span class="badge-new">CHANGED</span> キャンセル時は<strong>オーソリ解放</strong>だけで完了します。お金を引き落としていないので返金処理は不要です。</p>
+    <p class="section-desc"><span class="tag-new">CHANGED</span> キャンセル時は<strong>オーソリ解放</strong>だけで完了します。お金を引き落としていないので返金処理は不要です。</p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
-        <div class="swim-label user">ユーザー</div>
+        <div class="swim-label user"><i></i>ユーザー</div>
         <div class="swim-track">
           <div class="swim-node user">予約一覧</div>
           <div class="swim-arrow">&rarr;</div>
@@ -816,16 +650,16 @@
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label" style="color:var(--external)">Pay.JP</div>
+        <div class="swim-label ext"><i></i>Pay.JP</div>
         <div class="swim-track">
           <div style="width:240px"></div>
-          <div class="swim-node external key">オーソリ解放</div>
-          <div class="swim-tag new">NEW</div>
-          <div style="margin-left:12px;font-size:13px;color:var(--store);font-weight:600">返金処理は不要!</div>
+          <div class="swim-node external hot">オーソリ解放</div>
+          <span class="tag-new">NEW</span>
+          <div style="margin-left:12px;font-size:12px;color:var(--ok);font-weight:700">返金処理は不要!</div>
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label" style="color:var(--notify)">通知</div>
+        <div class="swim-label gold"><i></i>通知</div>
         <div class="swim-track">
           <div style="width:240px"></div>
           <div class="swim-node notify">キャンセル確認メール（ユーザー）</div>
@@ -834,16 +668,24 @@
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label store">店舗</div>
+        <div class="swim-label store"><i></i>店舗</div>
         <div class="swim-track">
           <div style="width:370px"></div>
           <div class="swim-node store">キャンセル確認・在庫開放</div>
         </div>
       </div>
     </div></div>
+    <div class="legend">
+      <span><i style="background:var(--info)"></i>ユーザー操作</span>
+      <span><i style="background:var(--ok)"></i>店舗操作</span>
+      <span><i style="background:var(--accent)"></i>管理者操作</span>
+      <span><i style="background:var(--gold)"></i>自動通知</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)</span>
+      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+    </div>
 
     <div class="card">
-      <h4>&#x274C; キャンセル + オーソリ解放フロー詳細</h4>
+      <h4>キャンセル + オーソリ解放フロー詳細</h4>
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot user">1</div>
@@ -879,7 +721,7 @@
     </div>
 
     <div class="alert alert-green">
-      <span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span>
+      <svg class="a-icon icon"><use href="#i-check"/></svg>
       <div>
         <strong>キャンセルが大幅に簡単になります。</strong><br>
         As-Is では管理者が手動で Pay.JP の返金APIを呼ぶ必要がありましたが、To-Be ではオーソリ解放だけで完了。雨の日でも気軽にキャンセルできる体験を実現します。キャンセル料は基本的に請求しない方針です。
@@ -904,22 +746,22 @@
   <div class="section" id="phase7-5">
     <div class="section-header">
       <div class="section-num">7.5</div>
-      <div><h2>キャプチャ後の返金フロー</h2></div>
+      <div class="sh-body"><h2>キャプチャ後の返金フロー</h2></div>
     </div>
     <p class="section-desc">ライド開始後（キャプチャ済み）にトラブル等で返金が必要になった場合のフローです。<strong>オーソリ解放ではなく「返金」処理になります。</strong></p>
 
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
-        <div class="swim-label store">店舗</div>
+        <div class="swim-label store"><i></i>店舗</div>
         <div class="swim-track">
           <div class="swim-node store">返金事由の発生</div>
           <div style="margin-left:8px;font-size:12px;color:var(--sub)">（車体トラブル等）</div>
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label admin">管理者</div>
+        <div class="swim-label admin"><i></i>管理者</div>
         <div class="swim-track">
-          <div class="swim-node admin" style="border-color:var(--admin);background:var(--admin);color:#fff">返金操作（admin画面）</div>
+          <div class="swim-node admin hot">返金操作（admin画面）</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-node external">Pay.JP 返金処理</div>
           <div class="swim-arrow">&rarr;</div>
@@ -927,16 +769,24 @@
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label" style="color:var(--notify)">通知</div>
+        <div class="swim-label gold"><i></i>通知</div>
         <div class="swim-track">
           <div style="width:200px"></div>
           <div class="swim-node notify">返金完了メール（ユーザー）</div>
         </div>
       </div>
     </div></div>
+    <div class="legend">
+      <span><i style="background:var(--info)"></i>ユーザー操作</span>
+      <span><i style="background:var(--ok)"></i>店舗操作</span>
+      <span><i style="background:var(--accent)"></i>管理者操作</span>
+      <span><i style="background:var(--gold)"></i>自動通知</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)</span>
+      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+    </div>
 
     <div class="card">
-      <h4>&#x21A9;&#xFE0F; キャプチャ後返金フロー詳細</h4>
+      <h4>キャプチャ後返金フロー詳細</h4>
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot store">1</div>
@@ -973,7 +823,7 @@
     </div>
 
     <div class="alert alert-amber">
-      <span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span>
+      <svg class="a-icon icon"><use href="#i-alert"/></svg>
       <div>
         <strong>Phase 7（オーソリ解放）との違い：</strong><br>
         ・ライド開始前のキャンセル → オーソリ解放（お金は動いていないので返金不要）<br>
@@ -988,11 +838,11 @@
   <!-- ================================================================ -->
   <div class="section" id="summary">
     <div class="section-header">
-      <div class="section-num plain"><svg class="icon"><use href="#i-check"/></svg></div>
-      <div><h2>フロー全体のまとめ</h2></div>
+      <div class="section-num">08</div>
+      <div class="sh-body"><h2>フロー全体のまとめ</h2></div>
     </div>
 
-    <div class="card" style="border-top:3px solid var(--brand)">
+    <div class="card sel">
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot brand">1</div>
@@ -1045,8 +895,8 @@
   <!-- ================================================================ -->
   <div class="section" id="open">
     <div class="section-header">
-      <div class="section-num plain"><svg class="icon"><use href="#i-alert"/></svg></div>
-      <div><h2>決め残し</h2></div>
+      <div class="section-num">09</div>
+      <div class="sh-body"><h2>決め残し</h2></div>
     </div>
     <p class="section-desc">今後、詳細を詰める必要がある項目です。</p>
 

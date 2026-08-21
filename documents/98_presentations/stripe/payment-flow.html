@@ -6,181 +6,65 @@
 <title>予約・決済・貸出・返却フロー（決定版） | RINCLE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/design.css">
 <style>
-  :root{
-    --brand:#F95320; --brand-deep:#D8400F; --brand-soft:#FFF0EA;
-    --ink:#23201D; --text:#2E2A26; --sub:#6E675F;
-    --bg:#F8F6F3; --border:#E9E4DE; --radius:14px;
-    --ok:#1D9E5F; --danger:#C21B3A; --info:#2563EB;
-    --shadow:0 1px 3px rgba(35,32,29,.08),0 4px 14px rgba(35,32,29,.06);
-    --shadow-lg:0 4px 8px rgba(216,64,15,.08),0 12px 32px rgba(35,32,29,.12);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter','Noto Sans JP',-apple-system,BlinkMacSystemFont,'Segoe UI','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);line-height:1.85;-webkit-font-smoothing:antialiased}
+  /* ページ固有CSS — 予約・決済・貸出・返却フロー（共通部品は ../assets/design.css を参照） */
 
-  /* hero */
-  .hero{position:relative;background:linear-gradient(135deg,#FFF3ED 0%,#FFF9F5 55%,#FFFDFC 100%);color:var(--ink);border-bottom:1px solid var(--border);padding:52px 40px 88px;overflow:hidden}
-  .hero::before{content:"";position:absolute;right:-120px;top:-120px;width:380px;height:380px;border-radius:50%;background:rgba(249,83,32,.05)}
-  .hero::after{content:"";position:absolute;right:70px;bottom:-160px;width:280px;height:280px;border-radius:50%;background:rgba(249,83,32,.07)}
-  .hero-inner{position:relative;max-width:980px;margin:0 auto;z-index:1;display:flex;gap:20px;align-items:flex-start}
-  .hero-logo{width:48px;height:48px;border-radius:14px;box-shadow:0 4px 14px rgba(35,32,29,.25);flex-shrink:0;margin-top:4px}
-  .hero .eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--brand-soft);border:1px solid #F8C9B5;color:var(--brand-deep);border-radius:999px;padding:3px 14px;margin-bottom:12px}
-  .hero h1{font-size:2.05rem;font-weight:800;margin-bottom:10px;letter-spacing:.01em}
-  .hero p.lead{font-size:1rem;color:#5A5049;max-width:700px}
-  .hero-meta{margin-top:14px;display:flex;gap:20px;font-size:12.5px;opacity:.8;flex-wrap:wrap}
+  /* 章の交互背景: 本文先頭に決定アラートがあるため白⇄紙の順番を反転（最初の章=白） */
+  .container > .section:nth-of-type(odd){background:transparent;box-shadow:none;clip-path:none}
+  .container > .section:nth-of-type(even){background:var(--surface);box-shadow:0 0 0 100vmax var(--surface);clip-path:inset(0 -100vmax)}
 
-  .container{max-width:980px;margin:0 auto;padding:36px 28px 80px}
+  /* ヒーローのメタ行（項目を横並びに） */
+  .hero-meta{display:flex;gap:20px;flex-wrap:wrap}
 
-  /* flow nav（ヒーロー下に重ねる章ナビ） */
-  .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:-64px auto 44px;position:relative;z-index:2;max-width:980px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);overflow:hidden}
-  .flow a{display:block;text-decoration:none;color:inherit;padding:20px 18px 18px;position:relative;border-left:1px solid var(--border);transition:background .15s}
-  .flow a:first-child{border-left:none}
-  .flow a:hover{background:var(--brand-soft)}
-  .flow .fnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5;font-weight:800;font-size:14px;margin-bottom:8px}
-  .flow .ft{font-weight:800;font-size:14.5px;color:var(--ink);line-height:1.5}
-  .flow .fd{font-size:12px;color:var(--sub);margin-top:3px;line-height:1.6}
-  .flow a::after{content:"›";position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:22px;color:#E3C9BB;font-weight:700}
-  .flow a:last-child::after{content:""}
+  /* アラートの追加2色（琥珀=注意・焦がし=結論） */
+  .alert-amber{border-left-color:var(--gold);color:var(--gold-text)}
+  .alert-brand{border-left-color:var(--accent);color:var(--accent-deep)}
 
-  /* サマリーカード */
+  /* バッジの追加色 */
+  .badge.warn{border:1px solid #EAD9AE;background:var(--gold-soft);color:var(--gold-text)}
+  .badge.ours{border:1px solid var(--accent);color:var(--accent-deep)}
 
-  /* sections */
-  .section{margin-bottom:56px;scroll-margin-top:20px}
-  .section-header{display:flex;align-items:center;gap:14px;margin-bottom:22px}
-  .section-num{display:flex;align-items:center;justify-content:center;width:44px;height:44px;background:linear-gradient(135deg,var(--brand),#FF7A45);color:#fff;border-radius:12px;font-size:19px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(249,83,32,.35)}
-  .section-num.plain{background:var(--brand-soft);color:var(--brand-deep);box-shadow:inset 0 0 0 1.5px #F8C9B5}
-  .section-header h2{font-size:21px;font-weight:800;color:var(--ink)}
-  .section-header .sh-sub{font-size:12.5px;color:var(--sub);margin-top:1px}
-  h3{font-size:16px;font-weight:800;color:var(--ink);margin:28px 0 12px;padding-left:12px;border-left:4px solid var(--brand)}
+  /* カード内の本文・箇条書き */
+  .card p{font-size:13.5px;line-height:2}
+  .card ul{padding-left:20px;font-size:13.5px}
+  .card li{margin-bottom:8px;line-height:1.95}
+  .card li:last-child{margin-bottom:0}
 
-  .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:26px 28px;box-shadow:var(--shadow);margin:16px 0}
+  /* ===== スイムレーン（横=フェーズ / 縦=役割 / 例外列=紅面+破線 / お金の行=琥珀） ===== */
+  .lanes{min-width:1030px}
+  .lane-head .lh-t{display:inline-flex;align-items:center;gap:5px}
+  .lane-head .lh-t .icon{width:14px;height:14px}
+  .lane-label span{display:inline-block}
+  .lane-cell.empty::before{content:'—'}
 
-  /* alerts */
-  .alert{border-radius:12px;padding:16px 20px;margin:16px 0;font-size:14px;display:flex;gap:12px;align-items:flex-start}
-  .alert .a-icon{flex-shrink:0;font-size:17px;line-height:1.6}
-  .alert-red{background:#FDECEF;border:1px solid #F6C6D0;color:#8E1230}
-  .alert-green{background:#EDFAF2;border:1px solid #BFE9D0;color:#136A41}
-  .alert-blue{background:#EEF3FE;border:1px solid #CBDCFA;color:#1D48A6}
-  .alert-amber{background:#FFF7E6;border:1px solid #F5DFB8;color:#8F5A0A}
-  .alert-brand{background:linear-gradient(135deg,#FFF4EF,#FFF9F6);border:1px solid #FBD3C4;color:#7A3212}
+  /* レーン内のノード（白面+1px罫線・角丸4px・影なし） */
+  .mini{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:8px 10px;font-size:11px;line-height:1.7;color:var(--text)}
+  .mini b{display:block;font-size:11px;font-weight:700;color:var(--ink);margin-bottom:2px}
+  .mini .ok{color:var(--ok);font-weight:700}
+  .mini .ng{color:var(--danger);font-weight:700}
+  .mini .star{font-weight:700;color:var(--danger)}
+  .mini .n{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--surface);border:1px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:10.5px;margin-right:4px;vertical-align:-3px}
 
-  /* tables */
-  .table-wrap{overflow-x:auto;border-radius:12px;box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
-  table{width:100%;border-collapse:collapse;background:#fff;font-size:14px}
-  thead th{background:#FBF8F5;color:var(--ink);border-bottom:2px solid var(--brand);padding:12px 16px;text-align:left;font-size:13px;font-weight:700;white-space:nowrap}
-  td{padding:12px 16px;border-bottom:1px solid #F2EEE9;vertical-align:top}
-  tr:last-child td{border-bottom:none}
-  tbody tr:hover td{background:#FBF8F5}
-  td.label{font-weight:700;color:var(--ink)}
+  /* お金の行（琥珀）— 金額なしは弱い文字色 */
+  .lane-cell.money .mv{display:inline-flex;align-items:center;justify-content:center;gap:5px}
+  .lane-cell.money .mv .icon{width:13px;height:13px}
+  .lane-cell.money .free{color:var(--sub);font-weight:700}
 
-  /* badges */
-  .badge{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
-  .badge.good{background:#EDFAF2;color:#136A41}
-  .badge.bad{background:#FDECEF;color:#8E1230}
-  .badge.warn{background:#FFF4E0;color:#8F5A0A}
-  .badge.brand{background:var(--brand-soft);color:var(--brand-deep)}
-  .badge.ours{background:var(--brand-soft);color:var(--brand-deep)}
+  .section > p.scroll-hint{font-size:11.5px;color:var(--sub);text-align:right;margin:6px 0 16px}
 
-  code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:5px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:#9C3D12}
-
-  /* ===== スイムレーン図（行=登場人物 / 横=時系列） ===== */
-  .actor-legend{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 16px;font-size:13px}
-  .actor-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:999px;font-weight:700;font-size:12px}
-  .actor-chip::before{content:'';width:8px;height:8px;border-radius:50%}
-  .actor-chip.user{background:#EEF3FE;color:#1D48A6}
-  .actor-chip.user::before{background:var(--info)}
-  .actor-chip.shop{background:#EDFAF2;color:#136A41}
-  .actor-chip.shop::before{background:var(--ok)}
-  .actor-chip.sys{background:var(--brand-soft);color:var(--brand-deep)}
-  .actor-chip.sys::before{background:var(--brand)}
-
-  .lane-wrap{overflow-x:auto;margin:8px 0 8px;border-radius:12px;box-shadow:var(--shadow)}
-  .lanes{display:grid;grid-template-columns:92px repeat(6,minmax(140px,1fr));min-width:1030px;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;font-size:12px}
-  .lane-head{background:#F6F1EC;color:var(--ink);font-weight:800;font-size:12px;text-align:center;padding:10px 8px;line-height:1.4;border-left:1px solid var(--border);border-bottom:2px solid var(--brand);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
-  .lane-head .sub{font-weight:600;font-size:10.5px;color:var(--sub)}
-  .lane-head.branchcol{background:#FDECEF;color:#8E1230}
-  .lane-head.branchcol .sub{color:#B04A62}
-  .lane-corner{background:#F6F1EC;color:var(--sub);border-bottom:2px solid var(--brand);font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center}
-  .lane-label{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11.5px;font-weight:800;text-align:center;padding:10px 6px;border-top:1px solid var(--border);background:#FBF8F5;line-height:1.3}
-  .lane-label::before{content:'';width:8px;height:8px;border-radius:50%;flex-shrink:0}
-  .lane-label.user{color:#1D48A6}.lane-label.user::before{background:var(--info)}
-  .lane-label.shop{color:#136A41}.lane-label.shop::before{background:var(--ok)}
-  .lane-label.sys{color:var(--brand-deep)}.lane-label.sys::before{background:var(--brand)}
-  .lane-label.money{color:#8F5A0A}.lane-label.money::before{content:'💰';width:auto;height:auto;border-radius:0;background:none}
-  .lane-cell{padding:8px;border-top:1px solid var(--border);border-left:1px solid #F2EEE9;display:flex;flex-direction:column;gap:6px;justify-content:flex-start}
-  .lane-cell.branchcol{background:#FFF7F9;border-left:2px dashed #F2AEBC}
-  .lane-cell.empty::before{content:'—';color:#D8D2CB;text-align:center;margin:auto}
-  .lane-cell.money{background:#FFF7E6;font-weight:800;color:#8F5A0A;text-align:center;justify-content:center;font-size:12.5px}
-  .lane-cell.money .free{color:#B8B0A6;font-weight:700}
-  .lane-cell.money small{display:block;font-weight:600;font-size:10.5px;color:#A9720F}
-  .mini{border-radius:8px;padding:7px 9px;line-height:1.5;color:var(--text)}
-  .mini.user{background:#EEF3FE}
-  .mini.shop{background:#EDFAF2}
-  .mini.sys{background:var(--brand-soft)}
-  .mini b{display:block;font-size:12px;color:var(--ink);margin-bottom:1px}
-  .mini .ok{color:#136A41;font-weight:800}
-  .mini .ng{color:var(--danger);font-weight:800}
-  .mini .n{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:#fff;border:1px solid rgba(35,32,29,.2);font-size:10.5px;font-weight:800;color:var(--ink);margin-right:4px;vertical-align:-3px}
-  .mini .star{font-weight:800;color:var(--danger)}
-  .scroll-hint{font-size:11.5px;color:var(--sub);text-align:right;margin-bottom:16px}
-
-  /* 例外分岐の箱 */
-  .branch{border:2px dashed var(--border);border-radius:12px;padding:16px 20px;margin:12px 0;background:#fff}
-  .branch.red{border-color:#F2AEBC;background:#FFF7F9}
-  .branch h5{font-size:13px;font-weight:800;color:var(--danger);margin-bottom:6px}
-  .branch h5.brand{color:var(--brand-deep)}
-  .branch p,.branch li{font-size:13px;color:var(--text)}
-  .branch ol{padding-left:18px;margin-top:4px}
+  /* 例外分岐の箱（破線の罫線・白面） */
+  .branch{background:var(--surface);border:1px dashed var(--line);border-radius:4px;padding:18px 22px;margin:18px 0}
+  .branch.red{border-color:var(--danger-line)}
+  .branch h5{font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--danger);margin-bottom:8px}
+  .branch h5.brand{color:var(--accent-deep)}
+  .branch p,.branch li{font-size:13px;line-height:1.95;color:var(--text)}
+  .branch ol{padding-left:20px;margin-top:6px}
   .branch li{margin-bottom:4px}
 
-  /* まとめバンド */
-  .recap{background:linear-gradient(135deg,var(--brand-deep) 0%,var(--brand) 70%,#FF7A45 100%);color:#fff;border-radius:var(--radius);padding:26px 30px;margin-top:8px;box-shadow:var(--shadow-lg)}
-  .recap h2{font-size:17px;font-weight:800;margin-bottom:14px}
-  .recap .r-flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13.5px}
-  .recap .r-chip{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 16px;font-weight:700}
-  .recap .r-arr{opacity:.6;font-weight:800}
-  .recap p{font-size:12.5px;opacity:.82;margin-top:14px}
-
-  footer{text-align:center;padding:36px 0;color:var(--sub);font-size:13px;line-height:1.9}
-
-  /* SVGアイコン（スプライト参照） */
-  .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
-  .t-icon .icon,.a-icon .icon{width:18px;height:18px}
-  .section-num .icon{width:22px;height:22px}
-
-  /* 読み進みバー */
-  .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
-  .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand-deep),var(--brand))}
-
-  /* ふわっと表示（JSが.rvを付与するのでJS無効時は普通に見える） */
-  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
-  .rv-in{opacity:1;transform:none}
-  @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
-
-  /* フローナビの現在地ハイライト */
-  .flow a.cur{background:var(--brand-soft)}
-  .flow a.cur .fnum{background:var(--brand);color:#fff;box-shadow:none}
-
-  /* ミニチャート（ドーナツ） */
-  .chart{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
-  .chart svg{width:130px;height:130px;flex-shrink:0}
-  .chart .cl{font-size:13.5px}
-  .chart .cl div{display:flex;align-items:center;gap:8px;margin:4px 0}
-  .chart .cl i{width:10px;height:10px;border-radius:3px;display:inline-block;flex-shrink:0}
-  .chart text.big{font-size:9px;font-weight:800;fill:var(--ink);dominant-baseline:central}
-
-  @media (max-width:760px){
-    .flow{grid-template-columns:1fr 1fr;margin-top:-40px}
-    .flow a{border-top:1px solid var(--border)}
-    .hero{padding:44px 24px 84px}
-    .container{padding:28px 18px 60px}
-  }
-
-  /* webfont: 和文の約物詰め + 表の等幅数字 */
-  body{font-feature-settings:'palt' 1}
-  table{font-variant-numeric:tabular-nums}
+  /* 表の細部（項目名は改行を許容・セル内の箇条書き） */
+  td.label{white-space:normal}
 </style>
 </head>
 <body>
@@ -194,136 +78,145 @@
 <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
 <symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
 <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
-<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
 <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
 <symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
 <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
 <symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><line x1="8" y1="3" x2="8" y2="6"/><line x1="16" y1="3" x2="16" y2="6"/></symbol>
+<symbol id="i-bike" viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="2"/><line x1="2.5" y1="10" x2="21.5" y2="10"/><line x1="6" y1="14.5" x2="10" y2="14.5"/></symbol>
+<symbol id="i-yen" viewBox="0 0 24 24"><path d="M7 5l5 7 5-7"/><line x1="12" y1="12" x2="12" y2="19"/><line x1="8" y1="13.8" x2="16" y2="13.8"/><line x1="8" y1="16.6" x2="16" y2="16.6"/></symbol>
 </defs></svg>
 
 <div class="progress" aria-hidden="true"><i></i></div>
 
+<!-- ========== HERO ========== -->
 <div class="hero">
   <div class="hero-inner">
-    <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
-    <div>
-      <span class="eyebrow">決済フロー — 7/3定例で決定</span>
-      <h1>予約・決済・貸出・返却フロー（決定版）</h1>
-      <p class="lead">増永さんの構想（6/30受領）を弊社がStripeの実装観点で検証・図解し、<strong>7/3定例で「当日決済のみ（オーソリなし・QRチェックインなし）」のフローに決定</strong>しました。弊社の変更・補強箇所には「弊社提案」の印を付けています。</p>
-      <div class="hero-meta">
-        <span>ベース: 増永さん構想.md（6/30）</span>
-        <span>前提: Stripeへの載せ替え（6/19決定）</span>
-        <span>デポジットは今回スコープ外・将来対応できる設計にする（7/3）</span>
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">決済フロー — 7/3定例で決定</span>
       </div>
+      <span class="hero-no">STRIPE</span>
+    </div>
+    <h1>予約・決済・貸出・返却フロー（決定版）</h1>
+    <p class="lead">増永さんの構想（6/30受領）を弊社がStripeの実装観点で検証・図解し、<strong>7/3定例で「当日決済のみ（オーソリなし・QRチェックインなし）」のフローに決定</strong>しました。弊社の変更・補強箇所には「弊社提案」の印を付けています。</p>
+    <div class="hero-meta">
+      <span>ベース: 増永さん構想.md（6/30）</span>
+      <span>前提: Stripeへの載せ替え（6/19決定）</span>
+      <span>デポジットは今回スコープ外・将来対応できる設計にする（7/3）</span>
     </div>
   </div>
 </div>
 
+<!-- 章ナビ -->
+<nav class="flow">
+  <a href="#s1"><span class="fnum">1</span><span class="ft">全体フロー図</span><span class="fd">誰が・いつ・何をするか</span></a>
+  <a href="#s2"><span class="fnum">2</span><span class="ft">旧設計からの変更</span><span class="fd">4/21合意から何が変わるか</span></a>
+  <a href="#s3"><span class="fnum">3</span><span class="ft">弊社の提案・論点</span><span class="fd">回収リスク・破損請求など</span></a>
+  <a href="#s4"><span class="fnum">4</span><span class="ft">実装可否まとめ</span><span class="fd">構想STEP別の実現方法</span></a>
+  <a href="#s5"><span class="fnum">5</span><span class="ft">決定と残る論点</span><span class="fd">決めてもらうこと</span></a>
+</nav>
+
 <div class="container">
 
-  <nav class="flow">
-    <a href="#s1"><span class="fnum">1</span><div class="ft">全体フロー図</div><div class="fd">誰が・いつ・何をするか</div></a>
-    <a href="#s2"><span class="fnum">2</span><div class="ft">旧設計からの変更</div><div class="fd">4/21合意から何が変わるか</div></a>
-    <a href="#s3"><span class="fnum">3</span><div class="ft">弊社の提案・論点</div><div class="fd">回収リスク・破損請求など</div></a>
-    <a href="#s4"><span class="fnum">4</span><div class="ft">実装可否まとめ</div><div class="fd">構想STEP別の実現方法</div></a>
-    <a href="#s5"><span class="fnum">5</span><div class="ft">決定と残る論点</div><div class="fd">決めてもらうこと</div></a>
-  </nav>
-
-  <div class="alert alert-green"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>決定（7/3定例）: 当日決済のみ</strong>で確定（オーソリなし・QRチェックインなし。トラブルが多ければオーソリは後から検討）。お金が動く回数は通常利用で<strong>最大2回</strong>（貸出開始時に全額＋返却時に追加分・<strong>予約時は0円</strong>）。オーソリを見送った理由は<strong>明細が最大3つに分かれる</strong>＋当日のオプション変更が頻発する現場と相性が悪いため。残る論点はキャンセルポリシー・破損請求・本人確認（5章）。<strong>領収書/インボイスは調査完了</strong>（別資料 receipt-invoice.html）。</div></div>
+  <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>決定（7/3定例）: 当日決済のみ</strong>で確定（オーソリなし・QRチェックインなし。トラブルが多ければオーソリは後から検討）。お金が動く回数は通常利用で<strong>最大2回</strong>（貸出開始時に全額＋返却時に追加分・<strong>予約時は0円</strong>）。オーソリを見送った理由は<strong>明細が最大3つに分かれる</strong>＋当日のオプション変更が頻発する現場と相性が悪いため。残る論点はキャンセルポリシー・破損請求・本人確認（5章）。<strong>領収書/インボイスは調査完了</strong>（別資料 receipt-invoice.html）。</div></div>
 
   <!-- 1 フロー図 -->
   <div class="section" id="s1">
-    <div class="section-header"><div class="section-num">1</div><div><h2>全体フロー図（7/3決定）</h2><div class="sh-sub">横が時間の流れ、行が「誰がやるか」、一番下の行がお金の動き</div></div></div>
-    <p style="font-size:14.5px;margin-bottom:14px"><strong>赤い点線の列（キャンセル時・決済失敗時）は、発生した場合だけ通る分岐</strong>です。⑦の決済が成功すればそのまま⑧へ、失敗したら隣の「決済失敗時」列に入ってリカバリーします。</p>
-    <div class="actor-legend">
-      <span class="actor-chip user">ユーザー（借りる人）</span>
-      <span class="actor-chip shop">販売店</span>
-      <span class="actor-chip sys">RINCLEシステム（Stripe）</span>
-    </div>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>全体フロー図（7/3決定）</h2><div class="sh-sub">横が時間の流れ、行が「誰がやるか」、一番下の行がお金の動き</div></div></div>
+    <p style="font-size:14px"><strong>赤い点線の列（キャンセル時・決済失敗時）は、発生した場合だけ通る分岐</strong>です。⑦の決済が成功すればそのまま⑧へ、失敗したら隣の「決済失敗時」列に入ってリカバリーします。</p>
 
     <div class="lane-wrap">
-      <div class="lanes">
+      <div class="lanes" style="grid-template-columns:92px repeat(6,minmax(140px,1fr))">
         <!-- ヘッダー行 -->
         <div class="lane-corner">時系列 →</div>
-        <div class="lane-head">📅 予約時<span class="sub">数日〜数週間前</span></div>
-        <div class="lane-head branchcol">⚠ キャンセル時<span class="sub">発生した場合のみ</span></div>
-        <div class="lane-head">🚲 当日: 来店・受付<span class="sub">店頭</span></div>
-        <div class="lane-head">💳 当日: 決済・貸出<span class="sub">店頭</span></div>
-        <div class="lane-head branchcol">⚠ 決済失敗時<span class="sub">⑦が失敗した場合のみ</span></div>
-        <div class="lane-head">🔁 返却時<span class="sub">店頭</span></div>
+        <div class="lane-head"><span class="lh-t"><svg class="icon"><use href="#i-calendar"/></svg>予約時</span><span class="sub">数日〜数週間前</span></div>
+        <div class="lane-head ex"><span class="lh-t"><svg class="icon"><use href="#i-alert"/></svg>キャンセル時</span><span class="sub">発生した場合のみ</span></div>
+        <div class="lane-head"><span class="lh-t"><svg class="icon"><use href="#i-bike"/></svg>当日: 来店・受付</span><span class="sub">店頭</span></div>
+        <div class="lane-head"><span class="lh-t"><svg class="icon"><use href="#i-card"/></svg>当日: 決済・貸出</span><span class="sub">店頭</span></div>
+        <div class="lane-head ex"><span class="lh-t"><svg class="icon"><use href="#i-alert"/></svg>決済失敗時</span><span class="sub">⑦が失敗した場合のみ</span></div>
+        <div class="lane-head"><span class="lh-t"><svg class="icon"><use href="#i-refresh"/></svg>返却時</span><span class="sub">店頭</span></div>
 
         <!-- ユーザー行 -->
-        <div class="lane-label user">ユーザー</div>
+        <div class="lane-label user"><i></i><span>ユーザー</span></div>
         <div class="lane-cell">
-          <div class="mini user"><b><span class="n">1</span>予約＋カード登録</b>店舗・自転車・日時を選択。キャンセル料の規約に同意</div>
+          <div class="mini"><b><span class="n">1</span>予約＋カード登録</b>店舗・自転車・日時を選択。キャンセル料の規約に同意</div>
         </div>
-        <div class="lane-cell branchcol">
-          <div class="mini user"><b>キャンセル操作</b>（無断キャンセルは操作なし）</div>
+        <div class="lane-cell ex">
+          <div class="mini"><b>キャンセル操作</b>（無断キャンセルは操作なし）</div>
         </div>
         <div class="lane-cell">
-          <div class="mini user"><b><span class="n">4</span>来店（アプリ操作なし）</b>名前か予約番号を伝えるだけ。QRチェックインは作らない（7/3合意）</div>
+          <div class="mini"><b><span class="n">4</span>来店（アプリ操作なし）</b>名前か予約番号を伝えるだけ。QRチェックインは作らない（7/3合意）</div>
         </div>
         <div class="lane-cell empty"></div>
-        <div class="lane-cell branchcol">
-          <div class="mini user"><b>支払いQRをスマホで読み取り</b>Stripeの決済画面で<strong>別カード・Apple Pay・Google Pay</strong>のどれかで支払い直す</div>
+        <div class="lane-cell ex">
+          <div class="mini"><b>支払いQRをスマホで読み取り</b>Stripeの決済画面で<strong>別カード・Apple Pay・Google Pay</strong>のどれかで支払い直す</div>
         </div>
         <div class="lane-cell">
-          <div class="mini user"><b><span class="n">9</span>自転車を返却</b></div>
+          <div class="mini"><b><span class="n">9</span>自転車を返却</b></div>
         </div>
 
         <!-- 販売店行 -->
-        <div class="lane-label shop">販売店</div>
+        <div class="lane-label shop"><i></i><span>販売店</span></div>
         <div class="lane-cell">
-          <div class="mini shop"><b><span class="n">3</span>予約確認・準備</b>管理画面と通知で内容を確認</div>
+          <div class="mini"><b><span class="n">3</span>予約確認・準備</b>管理画面と通知で内容を確認</div>
         </div>
-        <div class="lane-cell branchcol empty"></div>
+        <div class="lane-cell ex empty"></div>
         <div class="lane-cell">
-          <div class="mini shop"><b><span class="n">5</span>予約を開いて本人確認→内容確定</b>管理画面で予約を検索。オプション追加・車両変更などを反映して最終金額を確定</div>
-        </div>
-        <div class="lane-cell">
-          <div class="mini shop"><b><span class="n">6</span>「決済して貸出開始」ボタン</b>1アクションで⑦の決済が走る</div>
-          <div class="mini shop"><b><span class="n">8</span>説明・状態記録→引き渡し</b><span class="ok">決済成功後</span>、傷・付属品を写真で記録して引き渡し</div>
-        </div>
-        <div class="lane-cell branchcol">
-          <div class="mini shop"><b>支払いQRを画面に表示して案内</b>店員はカード番号に触れない。再決済が済んだら⑧へ</div>
+          <div class="mini"><b><span class="n">5</span>予約を開いて本人確認→内容確定</b>管理画面で予約を検索。オプション追加・車両変更などを反映して最終金額を確定</div>
         </div>
         <div class="lane-cell">
-          <div class="mini shop"><b><span class="n">10</span>返却確認</b>時間超過・傷・付属品を貸出時の記録と突き合わせ</div>
-          <div class="mini shop"><b><span class="n">12</span>返却完了</b>ステータスを「返却済み」へ</div>
+          <div class="mini"><b><span class="n">6</span>「決済して貸出開始」ボタン</b>1アクションで⑦の決済が走る</div>
+          <div class="mini"><b><span class="n">8</span>説明・状態記録→引き渡し</b><span class="ok">決済成功後</span>、傷・付属品を写真で記録して引き渡し</div>
+        </div>
+        <div class="lane-cell ex">
+          <div class="mini"><b>支払いQRを画面に表示して案内</b>店員はカード番号に触れない。再決済が済んだら⑧へ</div>
+        </div>
+        <div class="lane-cell">
+          <div class="mini"><b><span class="n">10</span>返却確認</b>時間超過・傷・付属品を貸出時の記録と突き合わせ</div>
+          <div class="mini"><b><span class="n">12</span>返却完了</b>ステータスを「返却済み」へ</div>
         </div>
 
         <!-- システム行 -->
-        <div class="lane-label sys">RINCLE<br>システム<br>(Stripe)</div>
+        <div class="lane-label sys"><i></i><span>RINCLE<br>システム<br>(Stripe)</span></div>
         <div class="lane-cell">
-          <div class="mini sys"><b><span class="n">2</span>カード有効性を自動チェック</b>¥0で検証・保存（本人認証込み）。無効カードはこの場で弾く</div>
+          <div class="mini"><b><span class="n">2</span>カード有効性を自動チェック</b>¥0で検証・保存（本人認証込み）。無効カードはこの場で弾く</div>
         </div>
-        <div class="lane-cell branchcol">
-          <div class="mini sys"><b>キャンセル料を登録カードへ請求 <span class="star">★1</span></b>ポリシーに沿って自動計算</div>
+        <div class="lane-cell ex">
+          <div class="mini"><b>キャンセル料を登録カードへ請求 <span class="star">★1</span></b>ポリシーに沿って自動計算</div>
         </div>
         <div class="lane-cell empty"></div>
         <div class="lane-cell">
-          <div class="mini sys"><b><span class="n">7</span>登録カードへ本決済 — ここで分岐</b><span class="ok">✔ 成功</span> → 「貸出中」へ変更・領収書メール自動送信 → ⑧へ<br><span class="ng">✖ 失敗</span> → 一回限りの支払いQRを発行して右の列へ</div>
+          <div class="mini"><b><span class="n">7</span>登録カードへ本決済 — ここで分岐</b><span class="ok">✔ 成功</span> → 「貸出中」へ変更・領収書メール自動送信 → ⑧へ<br><span class="ng">✖ 失敗</span> → 一回限りの支払いQRを発行して右の列へ</div>
         </div>
-        <div class="lane-cell branchcol">
-          <div class="mini sys"><b>再決済の結果で分岐</b><span class="ok">✔ 成功</span> → 「貸出中」へ変更（⑧に合流）<br><span class="ng">✖ 失敗</span> → 貸出不可 or 管理者対応</div>
+        <div class="lane-cell ex">
+          <div class="mini"><b>再決済の結果で分岐</b><span class="ok">✔ 成功</span> → 「貸出中」へ変更（⑧に合流）<br><span class="ng">✖ 失敗</span> → 貸出不可 or 管理者対応</div>
         </div>
         <div class="lane-cell">
-          <div class="mini sys"><b><span class="n">11</span>追加分があれば追加決済</b>延長・紛失分のみ。破損は後日請求 <span class="star">★2</span></div>
+          <div class="mini"><b><span class="n">11</span>追加分があれば追加決済</b>延長・紛失分のみ。破損は後日請求 <span class="star">★2</span></div>
         </div>
 
         <!-- お金行 -->
-        <div class="lane-label money">お金の動き</div>
+        <div class="lane-label money"><i></i><span>お金の動き</span></div>
         <div class="lane-cell money"><span class="free">¥0</span></div>
-        <div class="lane-cell money branchcol">💰 キャンセル料</div>
+        <div class="lane-cell money ex" style="background:var(--gold-soft)"><span class="mv"><svg class="icon"><use href="#i-yen"/></svg>キャンセル料</span></div>
         <div class="lane-cell money"><span class="free">¥0</span></div>
-        <div class="lane-cell money">💰 全額<small>基本＋オプション＋当日変更分</small></div>
-        <div class="lane-cell money branchcol">💰 全額<small>別カード等で支払い直し</small></div>
-        <div class="lane-cell money">💰 追加分のみ<small>なければ¥0</small></div>
+        <div class="lane-cell money"><span class="mv"><svg class="icon"><use href="#i-yen"/></svg>全額</span><small>基本＋オプション＋当日変更分</small></div>
+        <div class="lane-cell money ex" style="background:var(--gold-soft)"><span class="mv"><svg class="icon"><use href="#i-yen"/></svg>全額</span><small>別カード等で支払い直し</small></div>
+        <div class="lane-cell money"><span class="mv"><svg class="icon"><use href="#i-yen"/></svg>追加分のみ</span><small>なければ¥0</small></div>
       </div>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--info)"></i>ユーザー（借りる人）</span>
+      <span><i style="background:var(--ok)"></i>販売店</span>
+      <span><i style="background:var(--accent)"></i>RINCLEシステム（Stripe）</span>
     </div>
     <p class="scroll-hint">※ 画面が狭い場合は図を横にスクロールできます</p>
 
-    <div class="alert alert-green"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>予約時・来店時に請求は発生しません。</strong>「予約はタダで気軽に、支払いは自転車を受け取るとき」という分かりやすいお金の流れです（ホテルのチェックイン精算に近い形）。決済が失敗しても<strong>本人が目の前にいるのでその場で支払い直せる</strong>のがこのフローの強みです。</div></div>
+    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>予約時・来店時に請求は発生しません。</strong>「予約はタダで気軽に、支払いは自転車を受け取るとき」という分かりやすいお金の流れです（ホテルのチェックイン精算に近い形）。決済が失敗しても<strong>本人が目の前にいるのでその場で支払い直せる</strong>のがこのフローの強みです。</div></div>
 
     <h3>★ 例外時の分岐（詳細）</h3>
     <div class="branch red">
@@ -341,7 +234,7 @@
 
   <!-- 2 旧設計からの変更 -->
   <div class="section" id="s2">
-    <div class="section-header"><div class="section-num">2</div><div><h2>これまでの設計から何が変わるか</h2><div class="sh-sub">決済比較資料（payjp-vs-stripe）「6.1 決済フロー設計」の旧設計は、本資料のフローに置き換えます</div></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>これまでの設計から何が変わるか</h2><div class="sh-sub">決済比較資料（payjp-vs-stripe）「6.1 決済フロー設計」の旧設計は、本資料のフローに置き換えます</div></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>シーン</th><th>旧設計（4/21合意）</th><th>今回の構想（6/30〜）</th><th>変わることの意味</th></tr></thead>
@@ -377,11 +270,11 @@
 
   <!-- 3 弊社からの提案・論点 -->
   <div class="section" id="s3">
-    <div class="section-header"><div class="section-num">3</div><div><h2>弊社からの提案・論点</h2><div class="sh-sub">構想を検証して見えた、変更・補強したい点</div></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>弊社からの提案・論点</h2><div class="sh-sub">構想を検証して見えた、変更・補強したい点</div></div></div>
 
     <h3>3-1. 無断キャンセル料は「回収率100%ではない」前提で設計する <span class="badge warn">重要</span></h3>
     <div class="card">
-      <p style="font-size:14px;margin-bottom:12px">本人がその場にいない請求（キャンセル料・無断キャンセル料）は、カードの限度額不足や本人認証の壁で<strong>一定回収できない</strong>。かつ、無断キャンセルするユーザーは、失敗後に別カードを出してくれる可能性が低い。ここは仕組み＋運用の合わせ技にします:</p>
+      <p style="margin-bottom:12px">本人がその場にいない請求（キャンセル料・無断キャンセル料）は、カードの限度額不足や本人認証の壁で<strong>一定回収できない</strong>。かつ、無断キャンセルするユーザーは、失敗後に別カードを出してくれる可能性が低い。ここは仕組み＋運用の合わせ技にします:</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>対策</th><th>内容</th><th>種別</th></tr></thead>
@@ -396,40 +289,40 @@
 
     <h3>3-2. 破損・高額請求は「その場で決済しない」 <span class="badge ours">弊社提案</span></h3>
     <div class="card">
-      <p style="font-size:14px">構想では返却時の追加決済に「車体・パーツの破損」も含まれていますが、破損は<strong>金額が大きく・査定が必要で・揉めやすい</strong>ため、延長料金と同じ流れに乗せないことを提案します。返却時にその場で決済するのは<strong>金額が機械的に決まるもの（延長・付属品紛失）だけ</strong>に絞り、破損は「状態記録を残す → 運営が金額を確認 → 後日登録カードへ請求（金額と内訳をメールで通知してから）」のルートに。店頭のトラブルを防ぎ、加盟店スタッフの心理的負担も減らせます。</p>
+      <p>構想では返却時の追加決済に「車体・パーツの破損」も含まれていますが、破損は<strong>金額が大きく・査定が必要で・揉めやすい</strong>ため、延長料金と同じ流れに乗せないことを提案します。返却時にその場で決済するのは<strong>金額が機械的に決まるもの（延長・付属品紛失）だけ</strong>に絞り、破損は「状態記録を残す → 運営が金額を確認 → 後日登録カードへ請求（金額と内訳をメールで通知してから）」のルートに。店頭のトラブルを防ぎ、加盟店スタッフの心理的負担も減らせます。</p>
     </div>
 
     <h3>3-3. その他の細かい補強</h3>
     <div class="card">
-      <ul style="padding-left:20px;font-size:14px">
-        <li style="margin-bottom:8px"><strong>領収書は全決済で自動送信</strong>（Stripeの標準機能）。集約モデルでは発行元がPEDALSTANDARDになる見込みのため、手動発行オペを最初からゼロにする</li>
-        <li style="margin-bottom:8px"><strong>二重決済の防止</strong>: 「決済して貸出開始」ボタンの連打・通信断で二重課金されない仕組み（Stripeの標準機能で対応可）を実装要件に含める</li>
+      <ul>
+        <li><strong>領収書は全決済で自動送信</strong>（Stripeの標準機能）。集約モデルでは発行元がPEDALSTANDARDになる見込みのため、手動発行オペを最初からゼロにする</li>
+        <li><strong>二重決済の防止</strong>: 「決済して貸出開始」ボタンの連打・通信断で二重課金されない仕組み（Stripeの標準機能で対応可）を実装要件に含める</li>
         <li><strong>決済失敗の通知</strong>: キャンセル料などの請求が失敗したら、運営（増永さん側）に自動通知して対応漏れを防ぐ</li>
       </ul>
     </div>
 
     <h3>3-4. （将来拡張）デポジットオーソリの設計メモ</h3>
     <div class="card">
-      <p style="font-size:14px;margin-bottom:8px"><strong>動き方（導入した場合）</strong></p>
-      <ul style="padding-left:20px;font-size:14px;margin-bottom:16px">
-        <li style="margin-bottom:6px">貸出時（本決済の後）に、デポジット額の<strong>利用枠だけを確保</strong>（オーソリ・請求はしない）</li>
-        <li style="margin-bottom:6px">返却確認で問題なし → <strong>解放</strong>（数日で枠が戻る・お金は動かない）</li>
+      <p style="margin-bottom:8px"><strong>動き方（導入した場合）</strong></p>
+      <ul style="margin-bottom:16px">
+        <li>貸出時（本決済の後）に、デポジット額の<strong>利用枠だけを確保</strong>（オーソリ・請求はしない）</li>
+        <li>返却確認で問題なし → <strong>解放</strong>（数日で枠が戻る・お金は動かない）</li>
         <li>破損・紛失あり → <strong>損害分だけ確定（キャプチャ）して残りは解放</strong>。3-2の「後日請求」より確実に回収できる</li>
       </ul>
 
-      <p style="font-size:14px;margin-bottom:8px"><strong>導入時の前提条件（調査済み・#25）</strong></p>
-      <ul style="padding-left:20px;font-size:14px;margin-bottom:16px">
-        <li style="margin-bottom:6px"><strong>クレジットカード限定にする。</strong>デビット/プリペイドはオーソリでも実際にお金が引き落とされ、返金に最大2週間かかる（「30万円引かれた！」クレームに直結）。Stripeはカード種別を判定して弾ける — <strong>Pay.jpにはできなかったことで、Stripeを選んだ利点がそのまま効く</strong></li>
-        <li style="margin-bottom:6px"><strong>金額は3〜5万円が現実解。</strong>一般カードのショッピング枠（10〜30万円スタートが相場）で通る上限の目安。高額にするほど「枠が足りず借りられない人」が増える（詳細: 決済基盤の方針資料 §1.5）</li>
+      <p style="margin-bottom:8px"><strong>導入時の前提条件（調査済み・#25）</strong></p>
+      <ul style="margin-bottom:16px">
+        <li><strong>クレジットカード限定にする。</strong>デビット/プリペイドはオーソリでも実際にお金が引き落とされ、返金に最大2週間かかる（「30万円引かれた！」クレームに直結）。Stripeはカード種別を判定して弾ける — <strong>Pay.jpにはできなかったことで、Stripeを選んだ利点がそのまま効く</strong></li>
+        <li><strong>金額は3〜5万円が現実解。</strong>一般カードのショッピング枠（10〜30万円スタートが相場）で通る上限の目安。高額にするほど「枠が足りず借りられない人」が増える（詳細: 決済基盤の方針資料 §1.5）</li>
         <li><strong>オーソリの有効期間は日本円で最長30日</strong> — 通常のレンタル期間なら余裕で収まる</li>
       </ul>
 
-      <p style="font-size:14px;margin-bottom:8px"><strong>デポジットならOKな理由</strong></p>
-      <p style="font-size:14px;margin-bottom:16px">オーソリ見送りの決め手だった「明細が分かれる・当日の金額変更と相性が悪い」は、<strong>レンタル料金のオーソリ</strong>の問題です。デポジットは<strong>金額が固定・単発</strong>（確保して、解放するか損害分だけ確定するか）なので、明細分割も増額の審査問題も起きません。</p>
+      <p style="margin-bottom:8px"><strong>デポジットならOKな理由</strong></p>
+      <p style="margin-bottom:16px">オーソリ見送りの決め手だった「明細が分かれる・当日の金額変更と相性が悪い」は、<strong>レンタル料金のオーソリ</strong>の問題です。デポジットは<strong>金額が固定・単発</strong>（確保して、解放するか損害分だけ確定するか）なので、明細分割も増額の審査問題も起きません。</p>
 
-      <p style="font-size:14px;margin-bottom:8px"><strong>今回の実装に仕込んでおくこと（弊社対応）</strong></p>
-      <ul style="padding-left:20px;font-size:14px">
-        <li style="margin-bottom:6px">カードを「本人不在でも請求してよい」設定で保存（3-1の同意設計と共通 — デポジットオーソリにもそのまま使える）</li>
+      <p style="margin-bottom:8px"><strong>今回の実装に仕込んでおくこと（弊社対応）</strong></p>
+      <ul>
+        <li>カードを「本人不在でも請求してよい」設定で保存（3-1の同意設計と共通 — デポジットオーソリにもそのまま使える）</li>
         <li>本決済と独立した決済レコードを持てるDB設計にしておく（デポジットを1決済として後から追加できる形）</li>
       </ul>
       <p style="font-size:13px;color:var(--sub);margin-top:12px">導入判断の材料: 高額車両・E-Bikeでの破損・盗難トラブルの発生状況を運用開始後にモニタリングして決める。</p>
@@ -438,7 +331,7 @@
 
   <!-- 4 実装可否まとめ -->
   <div class="section" id="s4">
-    <div class="section-header"><div class="section-num">4</div><div><h2>実装可否まとめ（構想STEP別）</h2><div class="sh-sub">結論: 全STEP実装可能。Stripeの標準機能とBubbleの画面開発で組める</div></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>実装可否まとめ（構想STEP別）</h2><div class="sh-sub">結論: 全STEP実装可能。Stripeの標準機能とBubbleの画面開発で組める</div></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>構想のSTEP</th><th>実現方法</th><th>可否</th></tr></thead>
@@ -456,19 +349,19 @@
         </tbody>
       </table>
     </div>
-    <div class="alert alert-brand"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>スケジュール感:</strong> 実装はDB再構築のリリース（7月上旬に完了・本番リリース済み）後。フロー自体は7/3に合意済みのため、詳細見積は<strong>キャンセルポリシーの確定</strong>を受けてから提示します。開発の山は「当日の内容確定（STEP 5）」と「受付〜決済の店頭オペ画面（STEP 4〜6）」の2つです（QRチェックインを作らない分、当初想定より軽くなります）。</div></div>
+    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>スケジュール感:</strong> 実装はDB再構築のリリース（7月上旬に完了・本番リリース済み）後。フロー自体は7/3に合意済みのため、詳細見積は<strong>キャンセルポリシーの確定</strong>を受けてから提示します。開発の山は「当日の内容確定（STEP 5）」と「受付〜決済の店頭オペ画面（STEP 4〜6）」の2つです（QRチェックインを作らない分、当初想定より軽くなります）。</div></div>
   </div>
 
   <!-- 5 決めてもらうこと -->
   <div class="section" id="s5">
-    <div class="section-header"><div class="section-num">5</div><div><h2>決定事項と残る論点（7/3更新）</h2></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>決定事項と残る論点（7/3更新）</h2></div></div>
 
     <h3>増永さん側で決めてもらうこと（残り）</h3>
     <div class="table-wrap">
       <table>
         <thead><tr><th>#</th><th>決めること</th><th>補足</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td class="label">キャンセルポリシーの中身<br><span style="font-weight:400;font-size:12px;color:var(--sub)">周辺ルールもセットで</span></td><td>基本の「何日前から・何%・無断キャンセルはいくら」に加えて、<strong>運用で必ず出てくる次の6点もセットで決めたい</strong>（バラバラに決めると二度手間になるため）。<strong>キャンセル料請求の実装と詳細見積はここが決まらないと着手できない</strong>
+          <tr><td>1</td><td class="label">キャンセルポリシーの中身<br><span style="font-family:'Noto Sans JP',sans-serif;font-weight:400;font-size:12px;color:var(--sub)">周辺ルールもセットで</span></td><td>基本の「何日前から・何%・無断キャンセルはいくら」に加えて、<strong>運用で必ず出てくる次の6点もセットで決めたい</strong>（バラバラに決めると二度手間になるため）。<strong>キャンセル料請求の実装と詳細見積はここが決まらないと着手できない</strong>
             <ul style="padding-left:18px;margin-top:8px;font-size:13px">
               <li style="margin-bottom:4px"><strong>日程変更のルール</strong> — キャンセルではなく「変更」の場合、キャンセル料はかかるか・何日前まで無料か</li>
               <li style="margin-bottom:4px"><strong>雨天キャンセルの判定方法</strong> — 雨天無料の方向（6/12合意）を、誰がどう判定するか（ユーザー申告／店舗判断／降水量などの基準）</li>
@@ -484,7 +377,7 @@
       </table>
     </div>
 
-    <div class="alert alert-brand"><span class="a-icon"><svg class="icon"><use href="#i-check"/></svg></span><div><strong>弊社の宿題だった「領収書・インボイスの扱い」は調査完了。</strong>別資料「領収書・インボイスの扱い」（receipt-invoice.html・サイドバーから閲覧可）にまとめています。実装前に詰める細部は、キャンセルポリシー確定後の詳細設計・見積のタイミングで整理します。</div></div>
+    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>弊社の宿題だった「領収書・インボイスの扱い」は調査完了。</strong>別資料「領収書・インボイスの扱い」（receipt-invoice.html・サイドバーから閲覧可）にまとめています。実装前に詰める細部は、キャンセルポリシー確定後の詳細設計・見積のタイミングで整理します。</div></div>
   </div>
 
   <!-- まとめ -->
@@ -492,7 +385,7 @@
     <h2>お金の流れのまとめ</h2>
     <div class="r-flow">
       <span class="r-chip">予約時 ¥0（カード登録のみ）</span><span class="r-arr">→</span>
-      <span class="r-chip">貸出開始時に全額決済</span><span class="r-arr">→</span>
+      <span class="r-chip hot">貸出開始時に全額決済</span><span class="r-arr">→</span>
       <span class="r-chip">返却時は追加分のみ</span>
     </div>
     <p>キャンセル時はキャンセル料を登録カードへ請求（発生した場合のみ）。破損は後日請求ルート（提案3-2）。実装の詳細見積はキャンセルポリシー確定後。</p>
