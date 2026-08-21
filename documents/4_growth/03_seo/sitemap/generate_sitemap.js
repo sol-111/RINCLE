@@ -1,6 +1,6 @@
 // sitemap.xml生成スクリプト
-// 使い方: node documents/4_growth/03_seo/generate_sitemap.js
-// 出力:   documents/4_growth/03_seo/sitemap.xml
+// 使い方: node documents/4_growth/03_seo/sitemap/generate_sitemap.js
+// 出力:   documents/4_growth/03_seo/sitemap/sitemap.xml
 // 前提:   BubbleのData APIで shop / Bicycle が公開されていること（手順は同フォルダの sitemap-creation-guide.md）
 const fs = require("fs");
 const path = require("path");
@@ -80,7 +80,7 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
   const today = new Date().toISOString().slice(0, 10);
   let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
   xml += `<!-- RINCLE sitemap.xml（${today}生成 / 静的3 + 店舗${liveShops.length} + 自転車${liveBicycles.length} = ${urls.length} URL） -->\n`;
-  xml += `<!-- 作り方・更新方法: documents/4_growth/03_seo/sitemap-creation-guide.md -->\n`;
+  xml += `<!-- 作り方・更新方法: documents/4_growth/03_seo/sitemap/sitemap-creation-guide.md -->\n`;
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
   for (const u of urls) {
     if (u.comment) xml += `  <!-- ${esc(u.comment)} -->\n`;

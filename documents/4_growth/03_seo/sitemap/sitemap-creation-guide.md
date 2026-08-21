@@ -86,8 +86,8 @@ remainingが0になるまでcursorを進める。
 同じフォルダの `generate_sitemap.js` が手順2の取得〜XML組み立てまで全部やる:
 
 ```bash
-node documents/4_growth/03_seo/generate_sitemap.js
-# → documents/4_growth/03_seo/sitemap.xml が出力される
+node documents/4_growth/03_seo/sitemap/generate_sitemap.js
+# → documents/4_growth/03_seo/sitemap/sitemap.xml が出力される
 ```
 
 スクリプトがやっていること

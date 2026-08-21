@@ -2,7 +2,7 @@
 
 > 作成日: 2026-05-19
 >
-> 2026-08-20注記: 本文中の「24店舗」は作成当時の値（2026-08-20の本番サイト実測では店舗56・自転車374台）。DB再構築は完了し、新サイトは2026年7月上旬に本番リリース済み。2026-06-11のLighthouse・インデックス実測は旧サイトの値のため、新サイトでの再計測が必要。sitemap.xmlは手動生成方式に決定（2026-08-20。正本: `../03_seo/sitemap-creation-guide.md`）
+> 2026-08-20注記: 本文中の「24店舗」は作成当時の値（2026-08-20の本番サイト実測では店舗56・自転車374台）。DB再構築は完了し、新サイトは2026年7月上旬に本番リリース済み。2026-06-11のLighthouse・インデックス実測は旧サイトの値のため、新サイトでの再計測が必要。sitemap.xmlは手動生成方式に決定（2026-08-20。正本: `../03_seo/sitemap/sitemap-creation-guide.md`）
 
 ---
 
@@ -28,7 +28,7 @@ RINCLEはBubble.ioで構築されている。立ち上げスピードでは正�
 3. **料金・車種情報がクローラーに見えない**（実測で裏付け: 初期HTMLにゼロ）
 
 **対策: 段階導入（いきなりSSR/SSG別建てに飛ばない）**
-- **Phase 1（無料・即日〜数日）: Bubbleネイティブ設定の完遂** — sitemap.xml設置（2026-08-20更新: 手動生成方式に決定。Bubble標準の自動生成は新URL構成では店舗・自転車の個別URLが載らないため撤回。手順は`../03_seo/sitemap-creation-guide.md`）/canonical有効化/ページ別title・meta/h1/Search Console登録。真因がディスカバリー問題である以上、これだけで大きく改善する可能性が十分ある。インデックス数を2〜4週間実測してから次の投資判断
+- **Phase 1（無料・即日〜数日）: Bubbleネイティブ設定の完遂** — sitemap.xml設置（2026-08-20更新: 手動生成方式に決定。Bubble標準の自動生成は新URL構成では店舗・自転車の個別URLが載らないため撤回。手順は`../03_seo/sitemap/sitemap-creation-guide.md`）/canonical有効化/ページ別title・meta/h1/Search Console登録。真因がディスカバリー問題である以上、これだけで大きく改善する可能性が十分ある。インデックス数を2〜4週間実測してから次の投資判断
 - **Phase 2（$49/月〜）: Prerender.io + Cloudflare Worker** — ボットにのみレンダリング済みHTMLを配信（公式統合手順あり、所要30〜45分。人間の表示速度は改善しない点に注意）
 - **Phase 3: SSG（Astro等）でSEOランディングページを別建て** — 店舗×車種カテゴリページを生成し、サブディレクトリ配信（`rincle.co.jp/shops/...`、Phase 2のCloudflareフロントに相乗り可）。予約フローはBubbleのまま誘導。Bubble.ioを捨てる必要はない
 
@@ -213,7 +213,7 @@ RINCLEはBubble.ioで構築されている。立ち上げスピードでは正�
 1. アナリティクス整備（GA4 + イベントトラッキング）
 2. PageSpeed計測（Core Web Vitals確認）※2026-06-11実測済み: スコア25/LCP 49.3s（前述）
 3. SEOインデックス確認（`site:rincle.co.jp`）※2026-06-11確認済み: 2〜3ページのみ。正確な数はSearch Consoleで
-4. SEO Phase 1: Bubbleネイティブ設定の完遂（sitemap.xml設置〈手動生成方式に決定・2026-08-20。手順は`../03_seo/sitemap-creation-guide.md`〉/canonical/ページ別title — 手順は`../03_seo/seo-setup-guide.md`）
+4. SEO Phase 1: Bubbleネイティブ設定の完遂（sitemap.xml設置〈手動生成方式に決定・2026-08-20。手順は`../03_seo/sitemap/sitemap-creation-guide.md`〉/canonical/ページ別title — 手順は`../03_seo/seo-setup-guide.md`）
 
 ### Tier 1: 今月やる
 1. 検索バーの実装（[エリア][日付][車種]→検索）

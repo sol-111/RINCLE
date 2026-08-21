@@ -1,6 +1,6 @@
 # RINCLE SEO設定ガイド
 
-> 作成日: 2026-05-20 / 最終更新: 2026-08-20（Step 2を全面改訂: sitemapはBubble自動生成を撤回し手動生成に方針変更〈正本: sitemap-creation-guide.md〉。1-7 noindex対象とチェックリストをDB再構築後の新ページ構成に更新。店舗56・自転車374〈2026-08-20 本番サイト実測〉）
+> 作成日: 2026-05-20 / 最終更新: 2026-08-20（Step 2を全面改訂: sitemapはBubble自動生成を撤回し手動生成に方針変更〈正本: sitemap/sitemap-creation-guide.md〉。1-7 noindex対象とチェックリストをDB再構築後の新ページ構成に更新。店舗56・自転車374〈2026-08-20 本番サイト実測〉）
 > 2026-07-02更新: title/h1の設定例を「ロードバイク」軸に統一〈6/12 KW方針・keyword-research.md〉、GA4の進捗と6/30定例のブログ方針を反映
 > 2026-06-11更新: 実測値・Bubbleネイティブ機能・Prerender最新情報を反映。本番DB実測の店舗54・車種369、アクセスログ実測の流入/CVRデータ
 > 対象: SEO初心者向け。専門用語をできるだけ噛み砕いて説明
@@ -359,7 +359,7 @@ Googleロボット: 「sitemapを見たら56店舗分のページと374台分の
 
 - 自動生成で店舗・自転車の1件ずつのURLが載るのは、ページとデータの種類を直接ひも付けた作り（URLがパスにIDを含む方式）の場合だけ
 - DB再構築後の新サイトはひも付けない作り（`/shop_detail?shop=<ID>` のようにURLの後ろにIDを付ける方式）のため、**自動生成では店舗・自転車の個別URLが載らない**（2026-08-20 bubbleファイル+本番実測で確認）
-- そのため**手動生成に方針変更**。手順の正本は `sitemap-creation-guide.md`（同フォルダ）
+- そのため**手動生成に方針変更**。手順の正本は `sitemap/sitemap-creation-guide.md`（同フォルダのsitemapフォルダ内）
 
 ### sitemapの中身（イメージ）
 
@@ -387,7 +387,7 @@ Googleロボット: 「sitemapを見たら56店舗分のページと374台分の
 
 ### sitemapに登録するURL一覧
 
-登録するのは検索結果に出したいページだけ。noindexにするページ（1-7参照）は載せない（「登録して」と「登録しないで」が矛盾するため）。載せる/載せないの全ページ一覧は `sitemap-creation-guide.md` 参照。
+登録するのは検索結果に出したいページだけ。noindexにするページ（1-7参照）は載せない（「登録して」と「登録しないで」が矛盾するため）。載せる/載せないの全ページ一覧は `sitemap/sitemap-creation-guide.md` 参照。
 
 ```
 静的ページ（固定・3ページ）:
@@ -425,11 +425,11 @@ https://rincle.co.jp/sitemap.xml → 404エラー（存在しない。2026-08-20
 
 ### 作成方法（2026-08-20更新: 手動生成に方針変更）
 
-手順の正本は **`sitemap-creation-guide.md`（同フォルダ）**。概要だけ書くと:
+手順の正本は **`sitemap/sitemap-creation-guide.md`（同フォルダのsitemapフォルダ内）**。概要だけ書くと:
 
 1. **bubbleファイルの用意** — アプリの設計データからページの種類を洗い出す（済み・ページを増やした時だけ再確認）
 2. **Data APIの設定** — Bubbleの Settings > API で `shop` と `Bicycle` だけ公開にチェックし、店舗・自転車のID一覧をプログラムから取れるようにする（個人情報を含む種類は絶対にチェックしない）
-3. **生成** — `generate_sitemap.js`（`documents/4_growth/03_seo/`）を実行するとData APIから全件取得してsitemap.xmlを出力する。削除済み・審査未通過の店舗、非表示・アーカイブの自転車は自動で除外
+3. **生成** — `generate_sitemap.js`（`documents/4_growth/03_seo/sitemap/`）を実行するとData APIから全件取得してsitemap.xmlを出力する。削除済み・審査未通過の店舗、非表示・アーカイブの自転車は自動で除外
 4. **公開** — Settings > SEO/metatags の「**Hosting files in the root directory**」でsitemap.xmlをアップロードすると `rincle.co.jp/sitemap.xml` で配信される。標準の自動生成（Expose a sitemap file）は**OFFのまま**にする（同じURLを取り合うため）
 
 店舗・自転車が増えたら3→4を再実行する（月1回など運用の取り決めは増永さんと相談）。
@@ -884,7 +884,7 @@ Phase 3（中期）: SEOコンテンツを自社ドメイン配下で配信
 - [ ] アプリ全体がインデックス可能なことを確認した（公開ページのソースに意図しないnoindexが無い・robots.txtで全体をブロックしていない。2026-06-11更新）
 
 ### sitemap / robots.txt
-- [ ] Data APIで shop / Bicycle を公開にチェックし、本番デプロイした（`sitemap-creation-guide.md` 手順2）
+- [ ] Data APIで shop / Bicycle を公開にチェックし、本番デプロイした（`sitemap/sitemap-creation-guide.md` 手順2）
 - [ ] `generate_sitemap.js` でsitemap.xmlを生成し、店舗数・自転車数がサイトの実数と合っていることを確認した
 - [ ] 「Hosting files in the root directory」でsitemap.xmlをアップロードした（自動生成「Expose a sitemap file」はOFFのまま）
 - [ ] https://rincle.co.jp/sitemap.xml でアクセスできることを確認した

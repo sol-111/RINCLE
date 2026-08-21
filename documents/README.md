@@ -106,9 +106,10 @@ documents/
 │   │   ├── seo-support-plan.md      #   SEO記事作成代行プラン（提案・2026-06-19）
 │   │   ├── keyword-research.md     #   検索KW調査メモ（ロードバイク軸の定量裏付け・2026-06-12）
 │   │   ├── seo_page_settings.csv   #   15画面分のtitle/description/OGP/h1/canonical
-│   │   ├── sitemap-creation-guide.md  # sitemap.xmlの作成手順（正本）
-│   │   ├── generate_sitemap.js     #   Data APIから本番sitemapを生成するスクリプト
-│   │   └── sitemap.xml             #   本番用sitemap（2026-08-21生成・408 URL）
+│   │   └── sitemap/                # sitemap関連をまとめたフォルダ
+│   │       ├── sitemap-creation-guide.md  # 作成手順（正本）
+│   │       ├── generate_sitemap.js #   Data APIから生成するスクリプト
+│   │       └── sitemap.xml         #   本番用（2026-08-21生成・408 URL）
 │   │
 │   └── 04_analytics/               # 計測
 │       └── ga4_tracking_items.csv  #   GA4計測項目一覧（41項目・KPI対応・Phase1〜3）

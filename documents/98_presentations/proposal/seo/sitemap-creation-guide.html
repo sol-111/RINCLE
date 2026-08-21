@@ -221,9 +221,9 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
       <div class="section-num">05</div>
       <div class="sh-body"><h2>手順3. sitemap.xmlを生成する</h2><div class="sh-sub">スクリプトが取得〜XML組み立てまで全部やる</div></div>
     </div>
-    <p style="font-size: 14px;">生成スクリプト <code>generate_sitemap.js</code>（リポジトリの <code>documents/4_growth/03_seo/</code>）を実行します。</p>
-    <div class="codeblock"><pre>node documents/4_growth/03_seo/generate_sitemap.js
-<span class="cm"># → documents/4_growth/03_seo/sitemap.xml が出力される</span></pre></div>
+    <p style="font-size: 14px;">生成スクリプト <code>generate_sitemap.js</code>（リポジトリの <code>documents/4_growth/03_seo/sitemap/</code>）を実行します。</p>
+    <div class="codeblock"><pre>node documents/4_growth/03_seo/sitemap/generate_sitemap.js
+<span class="cm"># → documents/4_growth/03_seo/sitemap/sitemap.xml が出力される</span></pre></div>
     <div class="card">
       <ol class="steps">
         <li>Data APIから店舗・自転車の全件を取得（cursorを進めながら）</li>
@@ -305,7 +305,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
 
 </div>
 
-<footer>正本: documents/4_growth/03_seo/sitemap-creation-guide.md（md更新時はこのHTMLも同期すること）</footer>
+<footer>正本: documents/4_growth/03_seo/sitemap/sitemap-creation-guide.md（md更新時はこのHTMLも同期すること）</footer>
 
 <script>
 (function(){

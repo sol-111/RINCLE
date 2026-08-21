@@ -32,4 +32,4 @@ documents/rincle.bubble
 *.bubble
 
 # sitemap生成スクリプトの開発版出力（--dev。テストDBのIDなので本番と無関係）
-documents/4_growth/03_seo/sitemap_devcheck.xml
+documents/4_growth/03_seo/sitemap/sitemap_devcheck.xml
