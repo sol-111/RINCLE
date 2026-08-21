@@ -1,0 +1,2453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RINCLE sitemap.xml（2026-08-21生成 / 静的3 + 店舗63 + 自転車342 = 408 URL） -->
+<!-- 作り方・更新方法: documents/4_growth/03_seo/sitemap-creation-guide.md -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- トップページ -->
+  <url>
+    <loc>https://rincle.co.jp/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <!-- 検索（条件パラメータなし） -->
+  <url>
+    <loc>https://rincle.co.jp/search</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- 利用規約・プライバシーポリシー -->
+  <url>
+    <loc>https://rincle.co.jp/legal</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  <!-- RINCLE 千葉柏店/オンザロード柏店　（レンタル車体準備中） -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201028916x310724166556071600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 茨城守谷店/オンザロード守谷店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201029175x737716189484689300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 茨城つくば店/オンザロードつくば店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201029340x628753700399960600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 神奈川小田原店/エンドウ商会 (レンタル車体準備中） -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201029541x309935222462879940</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 大阪平野/バイクプロショップ スクアドラ（レンタル車体準備中） -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201029793x697107409806852000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 滋賀守山/スクアドラ滋賀守山（レンタル車体準備中） -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201029935x119114211474401710</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 愛媛大三島店/ローロサイクルワークス R-HUB店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201030084x878488951182108300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 大阪南河内店/BICYCLE STEP  -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201030358x739738315518292000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 大阪住之江店/スペシャライズド住之江　 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201030493x779782819534695800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 神戸東灘店/BICYCLE STORE Rideworks -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201030659x257012422768823070</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 茨城日立店/BICYCLE PARK O2 日立本店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201030872x792152547624915000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 茨城ひたちなか店/BICYCLE PARK O2 ひたちなか店  -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201031059x424750705224383760</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 群馬伊勢崎店/POWER KIDS伊勢崎店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201031287x908902906209130200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 熊本駅店/スペシャライズド熊本 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201031477x479744496774088500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 熊本中央店/BEACH LINE BICYCLE  -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201031660x430021666486431600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE東京駒沢公園店/LORO bicycles 駒沢公園店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201031854x796753712099001300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE東京東日本橋駅店/LORO CYCLEWORKS TOKYO -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201032016x436735660867238340</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE福岡赤坂駅店/LORO CYCLEWORKS FUKUOKA   -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201032265x564157555313590900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE愛媛松山市駅店/LORO CYCLEWORKS MATSUYAMA -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201032411x680341710859929700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE広島尾道駅店/LORO CYCLEWORKS ONOMICHI    -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201033377x573162146841333060</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 神戸三宮駅店 /Brompton Junction KOBE -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201033629x229613967831543400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 京都北大路駅店/LORO CYCLEWORKS KYOTO  -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201033836x247308666053444030</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 大阪北浜駅店/LORO CYCLEWORKS -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201034068x773078628002865900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 神奈川横浜桜木町駅店/LORO CYCLEWORKS YOKOHAMA  -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201034312x788873075800388700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 東京世田谷用賀店/LORO SETAGAYA -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201034511x546144154822683970</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 東京三越駅前店/LORO SLOW SPOT 日本橋 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201034698x874746878026602500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 岡山西川原駅店 / cycle shop Freedom  -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201034884x195860927947486340</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 岡山総社店 / WAVE BIKES 総社店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201035071x422065792083614600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 高松空港通り店 / WAVE BIKES 高松店  -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201035355x789527217294322800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 岡山上中野店 / WAVE BIKES 岡山店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201035859x183252333979593730</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 愛媛西条北店 / WINDS BIKES　 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201036023x646676543126248800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 奈良登美ヶ丘駅前店 / バイシクルカラー奈良登美ヶ丘店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201036275x516672893951175300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 奈良公園店 / cycle shop Re Belle. -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201036500x698807147207757300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 広島福山店 / サイクルハウス ケンズ -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201036736x829259668611392000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 熊本南店 / しゃりんかん 浜線店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201037190x235666585127260130</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 名鉄東岡崎駅店 / スペシャライズド 岡崎 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201037432x717050239121777040</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 名古屋名城公園駅店 / スペシャライズド 名城 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201037687x260953836406306000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 名古屋ささしまライブ駅店 / カミハギサイクル ささしま店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201037935x692523721360157800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 名古屋徳重駅店 / カミハギサイクル 緑店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201038351x300494610737140900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 愛知小牧店 / カミハギサイクル 小牧本店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201038510x274216332581510100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 東京立川駅店/BICIAMORE 立川店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201038672x369979433180893700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 仙台大町西公園駅店/BICIAMORE 仙台店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201038861x701860167881784400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 千葉原木中山駅店/BICIAMORE 千葉店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201039098x292879320888932400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 東京稲城矢ノ口駅店 / スペシャライズド 稲城 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201039247x531232066625278340</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 広島駅店/BICIAMORE 広島店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201039403x828061235364066600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 東京西新宿駅店/スペシャライズド CPO -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201039531x108386113397360260</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 埼玉浦和駅店 / BICIAMORE 浦和店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201039669x665648575781668100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 福岡薬院駅店/BICIAMORE 福岡店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201039835x527293698768897860</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 横浜元町中華街駅店 / BICIAMORE 横浜店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201039980x289784968109035840</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 名古屋車道駅店/BICIAMORE 名古屋店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201040133x849239263662037100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 東京広尾駅店/BICIAMORE 南麻布店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201040285x727741472868499000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 芦屋甲南山手店/BICIAMORE 芦屋店 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201040418x414169461630666200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 神戸駅店 / スペシャライズド神戸 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201040668x538573828307214600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 箕面稲店 / スペシャライズド箕面 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201040812x135457154539752050</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 京都西京極駅店 / スペシャライズド京都 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201040957x106611676762389920</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 尼崎西昆陽店 / THE EARTH BIKES -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784201041101x118677463101759970</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE 静岡島田店/なるおかサイクル -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784688246513x293456252351922000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE神奈川横須賀店/TRIPCYCLE -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1784783084695x597693934936482700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE東京成城学園前駅店/BEX ISOYA成城 -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1785218153703x603835497492252200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE神奈川川崎店/BEX ISOYA川崎（レンタル車体準備中） -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1785218802149x853825005877516800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE東京御茶ノ水店/スペシャライズド スタジオ 御茶ノ水（レンタル車体準備中） -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1786948151752x153904678075960540</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE栃木宇都宮店/スペシャライズド 宇都宮（レンタル車体準備中） -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1786948566698x412735363352612740</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- RINCLE栃木佐野店/サイクルショップFUN（レンタル車体準備中） -->
+  <url>
+    <loc>https://rincle.co.jp/shop_detail?shop=1786951834973x568843826423768300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- TREK・FX3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1756786708092x942137123166748700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL4.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757083287193x870438053642502100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL5.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757489422443x314931374835892200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・TARMAC SL7 SPORT  -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757489979417x971666513706090500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL 5.0 EQ 2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757494457834x680946574082179100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL 4.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757494522054x570371339552817150</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL5.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757494641860x629527647115804700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL5.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757494698176x245746431172542460</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL5.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757494805219x907295589199773700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL 5.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757496535769x991251215110635500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL2 5.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1757496696682x411558502889947140</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・MADONE SLR -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760174481246x613146029588217900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domana AL2 Gen4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760175590636x268868480699203600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・DOMANE AL 2 Gen4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760176195886x609390798111244300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・DOMANE SL5  -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760177150246x468220258652520450</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-WORKS AETHOS 2 - SRAM RED AXS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760252490529x699936558182563800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760774632654x287978856133165060</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760774773655x792711036749742100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane+ AL 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760775122546x777309517100089300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane+ AL 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760775163585x572304763766702100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Marlin+ 6 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760775360936x607496364142624800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL 5.0 EQ 2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760775524363x568427849400188900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-Works Tarmac SL8 SRAM RED AXS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1760777726771x158060102652002300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS 2 EXPERT - SHIMANO ULTEGRA DI2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1761448781080x874373402627932200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-WORKS TARMAC SL8 - SRAM RED AXS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1761448788471x895633076452851700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・DIVERGE E5 COMP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1762846415190x843643968612991000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・TREK SILQUE S5 105  2×11SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763204701736x118675310278344700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- COLNAGO・MONDO 2.0 TIAGRA 2×10SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763204810223x242662723615981570</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- FELT・AR 105 2×11SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763204867127x821553733690720300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ALLEZ COMP 105 2×12SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763454684576x588399295545737200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-Works Tarmac SL9(3時間貸のみ) -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763454703662x211992244739375100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ALLEZ CUES 2×10SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763454794686x219417911200055300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ALLEZ CUES 2×10SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763454901074x139888427122294780</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Aethos 2 Expert UDi2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763455205406x513386086787186700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS PRO UDI2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763455676126x608315549147725800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- CANNONDALE・SYNAPSE シマノ 105 R7000 2×11段変速 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763952037874x181232391726039040</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- FUJI・BALLAD Ω シマノ ソラ R3000 2×9段変速 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763952167347x647181104906764300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TESTACH・シマノ 105 5800 2×11段変速 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1763952257156x760733856252035100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ALLEZ COMP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1765184384751x974212928920879100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ALLEZ SPORT -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1765184572694x437503350358147100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BIANCHI・IMOLA TIAGRA 2×10SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766129650229x249578842938671100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BIANCHI・VIA NIRONE 105 2×10SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766130146810x537324436153958400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- CANNONDALE ・CAAD8 TIAGRA 2×10SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766130322948x311574776974409700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL 2 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766202394831x659442502766166000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 3 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766204092319x485060779362746400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX+ 2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766204465341x892700438655926300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL 5 Gen 8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766205504628x865433481051897900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・ONE SERIES 1.2 SORA 2×9SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766809459956x583596440185471000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- FUJI・BARRACUDA R TIAGRA 2×10SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766809660886x589767972775788500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- ANCHOR・RA700 105 2×10SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766814628168x602368960014843900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- LOUIS GARNEAU・CTR TIAGRA 4500 2×9速 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766831507221x628824101053005800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- CANNONDALE・SYNAPSE TIAGRA 4500 2×9速 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766832037231x893931332622614500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- GIANT・CONTEND CLARIS R2000 2×8速 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766832169409x688393751827578900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS 2 PRO - SHIMANO ULTEGRA DI2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766996340655x859003813726257200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ALLEZ COMP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766996645695x872088398070808600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ROUBAIX SL8 SPORT 105 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766996992126x436275790667055100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-WORKS AETHOS SRAM RED AXS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766997483509x197893326359756800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL 2 4.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1766998353189x291199222307618800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・ LEXA SL -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1767680741415x960023914326261800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- PINARELLO・X3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1767926561999x999920629078556700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・MADONE SLR GEN8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1767927230079x829358889650880500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・S6L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768040172446x940766077847076900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・MADONE SL5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768040232521x952478232813502500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- CANNONDALE・TOPSTONE 2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768040270888x105366430602756100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768040396682x572647381342879740</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・EMONDA ALR 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768040466753x350969762754068500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane SL 6 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768110201719x113647714607824900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 3 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768112998284x171581781459599360</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 3 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768113076702x737891932918251500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 3 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768113175506x719105809902469100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL 4 Gen 3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768113305794x844126051713155100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane+ AL 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768113454494x810338044253831200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX+ 2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768113587645x605551720394391600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Allant+ 8 Stagger -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768113948396x978656017922916400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Powerfly 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768114089117x118591829551611900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL 6 Gen 8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768114235487x501320294879199200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 2 Disc Gen 3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768116694624x623933426676793300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・SYNAPSE CARBON 3L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768560508170x161190060052447230</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-WORKS TARMAC SL8 DURA-ACE -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768560596149x672382534407684100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ALLEZ E5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768560640542x920528874406674400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・SIRRUS X 2.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768560702683x654981065330655200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- ORBEA・GAIN M20i -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768560795339x941528772458577900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- ORBEA・OCCAM SL H30 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768560932396x895670885523914800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPCIALIZED・SIRRUS X 3.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768618476979x296847478516088800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPCIALIZED・ROCKHOPPER COMP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768618738004x329539724380733440</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPCIALIZED・ALLEZ COMP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768618920389x556493519310028800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPCIALIZED・TARMAC SL8 PRO -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768619210858x699291972546330600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Turbo Vado SL2 5.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768625000877x203927735275356160</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ROUBAIX SL8 COMP - SHIMANO 105 DI2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768626077576x673808426124181500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ROUBAIX COMP SRAM Rival eTap AXS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768627362276x439268565324398600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- GIANT・TCR 0 105 2×11SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768646786200x364608736646135800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- FELT・F85 SORA  2×9 SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768699941657x432362335769722900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- INTERMAX・RAYS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1768812648507x648544048304357400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS 2 PRO -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770514491771x641665644451594200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・SIRRUS X 2.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770514628814x691287227738357800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・topstorn 4 AL -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770604693216x137450412022956030</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・topstorn 4 AL -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770605036424x581166482006212600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・topstorn 4 AL -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770605247210x360177596977119200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL5 Gen8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770708252510x242624412355133440</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL 5 Gen5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770709330547x237205607060865020</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 3 Gen4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770709542220x979839341482737700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 2 Gen4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770710205344x603674732150652900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 1 Gen4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770710640592x583247249869111300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL 4.0 STEP THROUGH -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770784871517x448792182986375200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS 2 PRO - SRAM FORCE AXS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770785078465x322264632026464260</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・CAAD13 Disk 105 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770954090029x932649269668085800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・synapse3 AL -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770954195536x701715638044852200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- RIDLEY・FENIX -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770954306764x433253684647034900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・habit carbon -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770954880059x243673410687729660</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・Quick NEO -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770955037216x463530293261500400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・Topstone NEO 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1770958096705x858706984902066200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane +AL5（電動アシストロードバイク） -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1771062257305x606739730907529200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX +2（電動アシストクロスバイク） -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1771226555077x379945088175308800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1771228288892x942453671881343000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1771228886419x508883532244320260</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL 2 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1772278170100x340930154597449700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL2 4.0 Non-EQ -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1772436575514x980256345222021100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- MATE Bike・Fusion 2.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773025412169x408091615981731840</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Sirrrus X 2.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773040786871x301993306756743200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Vado SL 4.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773041159100x695999102236753900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Roubaix SL8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773041518228x137093181081649150</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Tarmac SL8 Comp -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773041787988x806267665734959100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Roubaix SL8 Comp -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773041889460x408745062795575300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Allez -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773043119543x961754349528154100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- CANNONDALE・Topstone 2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773047747634x945011230321672200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Chisel HT -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773114427375x695486548514963500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773117360506x103211030367174660</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX Sport4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773118451457x684329977434341400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL 2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773119164843x537506098339643400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773119749292x297859992986583040</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Allant+ 8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773119844672x344845610662756350</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773292116989x422825873999134700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773292238892x444895930735394800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Marlin7 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773292362227x793164859910389800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773300994428x765934867339542500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cannondale・Synapse carbon 3L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773301499879x214047181740965900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Emonda ALR 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773301568161x759098603545034800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Checkpoint SL 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773301649110x978258180528930800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・EPIC 8 COMP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773396255826x735425910178578400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ROUBAIX SL8  Tiagra -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1773992194892x527350383581069300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BRUNO・MIXTE -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1774172451662x688757920291881000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS 2 EXPERT - SHIMANO ULTEGRA DI2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1774257609900x259419193972097020</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・TARMAC SL8 COMP SRAM RIVAL AXS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1774599966878x225122931318980600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ROUBAIX SPORT -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1774867872929x799634508175638500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Tarmac SL7 Sport 2x12SPEED -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1775192488660x712129682346868700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Roubaix SL8 Sport -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1775193085435x873000904120336400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・7.2FX -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1775396036680x106709997841285120</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX1 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1775471740645x481199120488333300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL 5 Gen 8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1775883370679x986775504634511400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Émonda S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1775896005524x317438026955096060</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ROUBAIX COMP RIVAL AXS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1775975321763x620862008169070600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS 2 COMP - SHIMANO 105 DI2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1775978692483x585992867437346800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・TARMAC SL8 COMP - SHIMANO 105 DI2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1776414997365x741979396631167000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL 2 4.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777194145840x647180965996658700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・G Line -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777515795805x229391979133534200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- birdy・standard -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777516584751x807378965986017300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- tyrell・Fxα -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777517018227x911343052668010500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- KHS・F-20RC -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777517059948x179884405013086200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- KHS・P-20R -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777517095914x463320944637116400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- iruka・iruka S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777517129750x959814534986989600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- tern・Vektron N8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777517371633x430425459693453300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- FUJI・MX-E -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777517518608x819043761731928000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX3 DISC -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777528184423x508764400301113340</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777528356202x908491718451527700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Rail5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777528527441x584678124702400500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Marlin 6 Gen 3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777529414376x620109869141196800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・BROMPTON M6R -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777609446763x780270051179364400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 2 Gen4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777612730925x578874857789325300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BESV・PSA1 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777612950809x742458777757810700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- DAHON・K3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777613569314x952574659867443200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・DOMANE AL 2 Gen4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777614179783x261078536080588800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・SIRRUS X 3.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777614953159x921032857800671200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・TARMAC SL7 SPORT - SHIMANO 105 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777616221478x964353657546997800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS SPORT - SHIMANO 105 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777616498189x340553034473406460</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Daytona・DE01S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777787236787x938487475994361900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialized・Tarmac SL8 105Di2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777797321059x502201809416224800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialzied・Aethos2 Expert shimano Ultegra Di2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777797862336x669017163275173900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialized・Roubaix SL8 Sport -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777798320157x285116587923996670</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialized・Allez Sport -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777798584794x767668376692850700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・T LINE -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777798589928x604949588534100000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・G LINE -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777798691123x605996367467774000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialized・Allez Sport -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777798745202x261563612972187650</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・P LINE -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777798821968x988237567583060000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・C LINE -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777798901881x116128082468274180</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Birdy・Standard DISC -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777798983068x840678638923284500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Carry Me・Air -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799030875x977976516768432100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialzied・Sirrus X 4.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799085637x268879616208011260</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Dahon・K9X -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799093191x279069279328403460</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Dahon・K3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799126872x432814695811907600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Dahon・K-Forth -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799173830x254440283384053760</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialzied・Sirrus X 2.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799266498x651555566540292100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Tern・Vektron N8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799267381x180501651135922180</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BESV・PSF2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799347140x227072962868019200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialized・Sirrus X 3.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799436941x668292640753320000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialzied・Sirrus 3.0 ST -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799644842x519140741234556900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialzied・Chisel Hardtail -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799796007x879356998805094400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialzied・Status2 140 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777799962669x498050096971120600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Specialzied・Levo SL Comp Carbon -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777800234542x576775301588844500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 2 Disc -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777858746631x301792932947820540</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 3 Disc -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777858854071x813625609615048700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Daytona・DE01S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777862741927x592944415310086100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- tern・Vektron S10 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777863973312x871429038348959700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Daytona・DE01S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777865193273x978134167717675000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Daytona・DE01S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777865280814x948010218480468000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Daytona・DE01S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777865374395x126839740335390720</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Daytona・DE01S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777865437056x231270386672861200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SLR 9 Gen 8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777865920551x401767388353396740</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Checkpoint SL 5 AXS Gen 3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777867020742x515818122182393860</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Daytona・DE01S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777867685896x542706041330073600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- DAHON・D-Zero -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777868501302x165045787493138430</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- DAHON・D-Zero -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777868528522x990343752383201300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- iruka・iruka S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777868744623x975138633023488000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- iruka・iruka S -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777868805310x270881779665600500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- tern・Vektron S10 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777869004327x402622689472938000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- tern・Vektron S10 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777869089264x620810083306307600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・M6L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777869734318x404492810990649340</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・M6L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777869845643x844853467508637700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・M6L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777870641225x811111076511350800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・M6R -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777870721446x402659900752396300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・M6R -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777875074807x524605688027807740</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・M6R -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777875343540x445057724625715200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・P6E -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777875460849x336566082781577200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・S6L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777875676762x821340909694615600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Marlin7 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777877691438x833836050354012200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Rail5GEN3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777878708363x104451708716318720</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- birdy・AIR -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777883579804x364118643409420300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- tern・Verge N8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777883833692x837731002043596800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- CUBE・ATTAIN GTC PRO -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777885729834x825791478124511200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- KOLiBRI・KOLiBRI -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777885868838x305069694253269000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- LOOK・785 HUEZ DISC -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777885978203x429914610471796740</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- CANNONDALE・QUICK 3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777886902930x957025176091099100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BESV・PSA1 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777887079828x944775183713435600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・T Line Urban Low -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777888124948x217660490643406850</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・C Line Urban(4速) Mid  -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777889061663x686557375531057200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・C Line Explore(6速)-S6L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777890502268x658446893641367600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Birdy・CLASSIC -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777894441278x850606190202978300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777942699357x380983428474470400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane SL 6 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777942879786x948149597175283700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・P-Line S4L Urban -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777943825443x783845340786196500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・C-Line M12L Explore -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777945458697x272987078399623170</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・C Line Explore(12速) Low -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777945678260x285466739338641400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・P Line Exploer(12速)withRack Mid -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777946196171x721467795759169500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMTPON・Pline　M12L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777956994308x303258707993559040</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMTPON・Cline　M6L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777957126428x700077333736325100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMTPON・S2L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777957317073x248751119547760640</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- DAHON・K3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777959285962x530743781863194600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・G Line Naked -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777960382563x959589900228493300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・G Line -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1777963092056x580219525036769300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Tyrell・FSX -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778046679359x445178414295154700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・P Line Explore Low -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778141036004x893599706081919000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・P Line Urban Middle -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778141148156x485240864212254700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・C Line Explore Middle With Rack -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778142507218x233043297693597700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・C Line Urban Low -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778143070492x466827007595380740</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Precaliber 20" -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778312159566x251855640242683900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Precaliber 24" -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778312358383x965198634477682700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・C Line S2L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778569168846x975954220500910000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Aethos 2 Pro -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778653902309x969547616940720100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Tarmac SL8 Pro -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778654573334x921854464696254500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Roubaix SL8 Sport -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778660413969x333890518766583800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・Turbo Vado SL 2 4.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778664560431x896576069199724500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BROMPTON・C line M6R -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1778830779108x212301701877858300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 2 Stepover Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779343449918x556167308263030800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 3 Stepover Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779348380821x597278971595849700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 3 Stepover Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779348572064x625948883763068900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Precaliber 16 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779349150763x431425225563045900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Precaliber 20 7-speed -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779349460546x919793430702587900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Precaliber24-8-speed -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779349693517x711984390736183300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL 4 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779350324528x876252887964975100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL 6 Gen 8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779350659682x644860264443805700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SLR 9 Gen 8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779354789378x494380737458339800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Boone 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779356745459x747707845738233900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Supercaliber 9.7 Gen 1 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779357411850x343988589287702500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Marlin 5 Gen 3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1779358165546x565215010243477500</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-WORKS AETHOS 2 Di2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1780122922474x465814527453429760</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・TARMAC SL 8 PRO eTAP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1780123396552x244044873434923000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS 2  EXPERT FORCE AXS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1780123683432x357041335157391360</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・TARMAC  SL7 COMP  -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1780124034028x709502750072504300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・AETHOS COMP RIVAL eTAP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1780124426702x131088501857845250</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・CREO 2 COMP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1780125149398x316990216882094100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・CRUX DSW COMP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1780125434907x101036917384806400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL2 4.0 STEP THROUGH -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1780125811103x781050789187027000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- PINARELLO・DOGMA F -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1781069830973x730680528617603100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- cervelo・R5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1781070316251x307697070007910400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL4 GEN4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1781343960850x131847933447634940</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782551585413x748151919614361600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782551723646x572473383978008600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782551798377x366119348493877250</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782551987622x407710142293344260</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782552105337x641469448519942100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX Sport SL 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782552181844x972134337288601600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・プリカリバー24 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782552710506x840514705463181300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・マドンSL6 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782557365729x324984315663613950</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・ドマーネAL5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782557498192x736218780769714200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・ドマーネAL4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782557569279x494722495865946100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・ドマーネAL2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782557689540x653356601720176600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・ドマーネAL2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782728114459x286005108538605570</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782728709578x700099785953902600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782728917754x905868516332929000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・マーリン5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782729240735x467374448898736100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・マーリン+ 6 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782729705887x227865559086661630</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・マドンSL5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1782730173715x102900233279373310</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・ドマーネAL2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1783374196370x359747861109276700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-Works Tarmac SL9 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1783410956576x937844037965054000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Brompton・M3L -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1783585682252x954145751964844000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL2 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1784009376870x661291060829356000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL2 Gen4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1784013580698x376422999754014700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- S-WORKS・TARMAC SL9 - SHIMANO DURA-ACE DI2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1784254622123x355521954632016520</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-WORKS Tarmac SL9  -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1784532525614x919699641102349700</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-Works Tarmac SL9(3時間貸のみ) -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1784861343426x352867975344179900</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED ・S-Works Tarmac SL9(3時間貸のみ) -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1784862827183x804840098804083600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Rail 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1784880459210x499496952530525060</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX 2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785055428153x837442566877344000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・DOMANE AL4 Gen3 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785227959395x610154754725426300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Powerfly 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785228306601x832708828843928800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane AL 5 Gen 4 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785228581457x692187970908061400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・FX2 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785229982442x600746694059166100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SL 6 Gen 8 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785230407709x759904979101702800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone SLR9 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785390651497x907715611543211300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane SLR6 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785392171872x485036107378084860</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Trek Checkpoint＋ SL5 （電動アシストグラベルロードバイク） -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785392881611x968917573634489200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Madone　SL5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785393718426x397462578176979200</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・マドンSL5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785643104035x631549305625392000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・S-WORKS TARMAC SL9 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785739854083x417710160807361000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・MADONE SL -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785740535426x160849899128578720</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・DIVERGE ELITE E5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785742133502x928064110058641800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・DIVERGE E5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785742372878x252266799138261000</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL 4.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785742653143x611744585303743100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・CREO SL EXPERT -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785743183944x516415500687773760</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・VADO SL 2 4.0 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785743926187x312491994996093600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- birdy・Standard -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785744719286x507296884704795600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- Reach・FRAME SET -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1785751674926x583986101320011400</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- ORBEA・TERRA M30 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786259327327x545761875738595800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- tern・vektron　S10 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786582610004x270995592905949980</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- tern・vektron　S10 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786582689536x789352203770867800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- TREK・Domane SL 4 Gen 5 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786680115528x696097576233016600</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SCOTT・SPEEDSTER 30 -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786778645739x876087713178389800</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- JAMIS・RENEGADE EXILE -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786778853652x231356953758651940</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- LAPIERRE・AIRCODE 300 MCP -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786779180003x103953169225685420</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- PINARELLO・GAN RS -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786779354712x899147666606945300</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- SPECIALIZED・ROUBAIX EXPERT -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786779543383x288458712088859100</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- BIANCHI・OLTRE XR3 DISC -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786779740631x374541584550608830</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- CANNONDALE・SUPERSIX EVO DISC -->
+  <url>
+    <loc>https://rincle.co.jp/bicycle_detail?bicycle=1786779897294x467215656464137860</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

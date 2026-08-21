@@ -69,6 +69,7 @@
   <a href="#step2"><span class="fnum">2</span><span class="ft">Data APIの設定</span><span class="fd">店舗・自転車のID一覧を取る</span></a>
   <a href="#step3"><span class="fnum">3</span><span class="ft">sitemap.xmlを生成</span><span class="fd">スクリプトが取得〜組み立てまで実行</span></a>
   <a href="#step4"><span class="fnum">4</span><span class="ft">公開とGoogle登録</span><span class="fd">Bubbleに置いてSearch Consoleへ</span></a>
+    <a href="#log"><span class="fnum">5</span><span class="ft">実績</span><span class="fd">生成した記録</span></a>
 </nav>
 
 <div class="container">
@@ -226,12 +227,12 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
     <div class="card">
       <ol class="steps">
         <li>Data APIから店舗・自転車の全件を取得（cursorを進めながら）</li>
-        <li>サイトに出ていないものを除外 — 店舗: 削除済み（<code>deleted_at</code>）・審査未通過（<code>brand_status</code> が passed 以外）/ 自転車: 削除済み・アーカイブ済み（<code>__is_archive</code>）・ユーザー非表示（<code>rental_status</code>）</li>
+        <li>借りられないもの・存在しないものを除外 — 店舗: 削除済み（<code>deleted_at</code>）・審査未通過（<code>brand_status</code> が passed 以外）／ 自転車: 削除済み・アーカイブ済み（<code>__is_archive</code>）・ユーザー非表示（<code>rental_status</code>）・<strong>掲載しない店舗に属するもの</strong>（予約できないため）。<strong>在庫ゼロの店舗は載せる</strong> — 検索は<strong>ページの歴</strong>が効くので、「レンタル車体準備中」の店舗も入荷を待たずにURLを育てておく（2026-08-21 清野さん判断）</li>
         <li>静的3ページ + 店舗 + 自転車のURLを並べたXMLを出力</li>
       </ol>
     </div>
     <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span>本番反映前に動きを試したい時は <code>--dev</code> を付けると開発版（version-test）のData APIで動きます。</span></div>
-    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>生成後の確認:</strong> 出力された店舗数・自転車数が、本番サイトの検索で見える数とだいたい合っているか見る。大きくズレたら除外条件（削除・アーカイブの判定）が実態と合っていないので要調査。</span></div>
+    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>生成後の確認:</strong> 出力件数を下の「実績」と見比べる。店舗はサイトの検索に出る数より多くなるのが正常（在庫ゼロの店舗も載せるため）。自転車はほぼ一致するはずで、大きくズレたら除外条件の判定が実態と合っていないので要調査。</span></div>
   </div>
 
   <!-- 手順4 -->
@@ -266,6 +267,28 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
       <li>ファイルは<strong>バージョンごと</strong>の扱い（Bubble画面の説明文より）。本番で見えない場合はどのバージョンにアップしたかを確認</li>
       <li>ファイル名はアプリのページ名と重複してはいけない（<code>sitemap.xml</code> なら問題なし）</li>
       <li>Bubble標準のsitemap自動生成（Settings &gt; SEO/metatags の「Expose a sitemap file」）は<strong>OFFのまま</strong>にする。ONにすると同じ <code>sitemap.xml</code> の場所を取り合ってしまう</li>
+    </ul>
+  </div>
+
+  <div class="section" id="log">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="sh-body"><h2>実績</h2><div class="sh-sub">生成した記録</div></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>日付</th><th>静的</th><th>店舗</th><th>自転車</th><th>合計</th><th>備考</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="label">2026-08-21</td>
+            <td class="num">3</td><td class="num">63</td><td class="num">342</td><td class="num">408</td>
+            <td>本番Data APIから初回生成。店舗は全67件中、審査未通過3・辞退1を除外（在庫ゼロの10店は掲載）。自転車は全440件中、非表示89・削除6・掲載しない店舗の9台を除外</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="notes">
+      <li>本番サイトの検索に出る店舗は53件（在庫のある店舗だけが表示されるため）。sitemapの63件との差10件は「レンタル車体準備中」等の在庫ゼロ店舗で、意図して載せている</li>
     </ul>
   </div>
 

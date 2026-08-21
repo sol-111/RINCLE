@@ -34,6 +34,8 @@ async function fetchAll(type) {
 
 // 掲載してよい店舗: 削除されておらず、審査通過（passed）のもの
 // （brand_status: passed / in_review / declined。フィールドが無い古いデータは載せる側に倒す）
+// ※在庫ゼロの店舗（「レンタル車体準備中」等）も載せる — SEOはページの歴が効くため、
+//   入荷前からURLを登録して育てておく（2026-08-21 清野さん判断）
 const isLiveShop = (r) => !r.deleted_at && (!r.brand_status || r.brand_status === "passed");
 
 // 掲載してよい自転車: 削除されておらず、アーカイブされておらず、「ユーザー非表示」でないもの
@@ -46,9 +48,12 @@ const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
   console.log("Data APIから取得中…");
   const [shops, bicycles] = await Promise.all([fetchAll("shop"), fetchAll("bicycle")]);
   const liveShops = shops.filter(isLiveShop);
-  const liveBicycles = bicycles.filter(isLiveBicycle);
-  console.log(`店舗: 全${shops.length}件 → 掲載${liveShops.length}件（削除済み・審査未通過を除外）`);
-  console.log(`自転車: 全${bicycles.length}件 → 掲載${liveBicycles.length}件（削除・アーカイブ・ユーザー非表示を除外）`);
+  const liveShopIds = new Set(liveShops.map((s) => s._id));
+  // 掲載しない店舗（審査未通過・削除済み）に属する自転車は、予約できないので載せない
+  const liveBicycles = bicycles.filter((b) => isLiveBicycle(b) && b.shop && liveShopIds.has(b.shop));
+  const orphan = bicycles.filter((b) => isLiveBicycle(b) && !(b.shop && liveShopIds.has(b.shop))).length;
+  console.log(`店舗: 全${shops.length}件 → 掲載${liveShops.length}件（削除済み・審査未通過を除外／在庫ゼロの店舗も載せる）`);
+  console.log(`自転車: 全${bicycles.length}件 → 掲載${liveBicycles.length}件（削除・アーカイブ・ユーザー非表示、および掲載しない店舗の${orphan}台を除外）`);
 
   const urls = [
     { loc: `${BASE}/`, changefreq: "weekly", priority: "1.0", comment: "トップページ" },
