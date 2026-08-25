@@ -55,6 +55,17 @@ a:hover{color:var(--accent-deep)}
 .flow .ft{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.5}
 .flow .fd{font-size:11px;color:var(--sub);line-height:1.6}
 
+/* 章ナビの最終行に空きマスがある時（項目数が4の倍数でない時）も罫線を通す:
+   残り幅いっぱいの埋めマスを::afterで作る。2段以上ある時だけ上罫線もつける */
+.flow:has(> a:nth-child(4n+1):last-child)::after,
+.flow-tabs:has(> .tab-btn:nth-child(4n+1):last-child)::after{content:"";grid-column:span 3/-1;border-left:1px solid var(--line-soft)}
+.flow:has(> a:nth-child(4n+2):last-child)::after,
+.flow-tabs:has(> .tab-btn:nth-child(4n+2):last-child)::after{content:"";grid-column:span 2/-1;border-left:1px solid var(--line-soft)}
+.flow:has(> a:nth-child(4n+3):last-child)::after,
+.flow-tabs:has(> .tab-btn:nth-child(4n+3):last-child)::after{content:"";grid-column:span 1/-1;border-left:1px solid var(--line-soft)}
+.flow:has(> a:nth-child(5))::after,
+.flow-tabs:has(> .tab-btn:nth-child(5))::after{border-top:1px solid var(--line-soft)}
+
 /* 章ナビ型タブ（見た目は.flowと同一・クリックでパネル切替） */
 .flow-tabs{display:grid;grid-template-columns:repeat(4,1fr);margin:-64px auto 48px;position:relative;z-index:2;max-width:1080px;background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:4px;overflow:hidden}
 .tab-btn{display:flex;flex-direction:column;gap:5px;text-align:left;background:var(--surface);border:none;border-left:1px solid var(--line-soft);padding:20px 22px;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
@@ -243,6 +254,9 @@ footer{text-align:center;padding:36px 0;color:var(--sub);font-size:12px;border-t
   .hero h1{font-size:32px;margin-top:36px}
   .flow,.flow-tabs{grid-template-columns:1fr 1fr;margin-top:-40px}
   .flow a,.tab-btn{border-top:1px solid var(--line-soft)}
+  .flow::after,.flow-tabs::after{display:none}
+  .flow:has(> a:nth-child(2n+1):last-child)::after,
+  .flow-tabs:has(> .tab-btn:nth-child(2n+1):last-child)::after{content:"";display:block;grid-column:span 1/-1;border-left:1px solid var(--line-soft);border-top:1px solid var(--line-soft)}
   .compare{grid-template-columns:1fr}
   .container{padding:28px 18px 60px}
   .section-num{font-size:56px}
