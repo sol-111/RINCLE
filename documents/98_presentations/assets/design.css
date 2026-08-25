@@ -227,6 +227,7 @@ ul.notes li::before{content:"※";position:absolute;left:0;top:6px;color:var(--a
 .lane-label.shop{color:var(--ok)} .lane-label.shop i{background:var(--ok)}
 .lane-label.sys{color:var(--accent)} .lane-label.sys i{background:var(--accent)}
 .lane-label.money{color:var(--gold-text)} .lane-label.money i{background:var(--gold)}
+.lane-label.ext{color:var(--danger)} .lane-label.ext i{background:var(--danger)}
 .lane-cell{padding:10px;border-top:1px solid var(--line-soft);border-left:1px solid #F0EBE4;font-size:11.5px;line-height:1.7;background:var(--surface);display:flex;flex-direction:column;gap:4px}
 .lane-cell.ex{background:#FBF3F4;border-left:2px dashed #E0AAB4}
 .lane-cell.empty{color:#C9BFB4;text-align:center;justify-content:center}

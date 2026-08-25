@@ -309,65 +309,39 @@
     </div>
     <p class="section-desc">加盟店がRincleに出店し、自転車を登録して予約を受けられるようになるまでの流れです。</p>
 
-    <div class="swim"><div class="swim-inner">
-      <div class="swim-row">
-        <div class="swim-label store"><i></i>店舗</div>
-        <div class="swim-track">
-          <div class="swim-node store">店舗登録</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store">申請送信</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store" style="opacity:0.5">審査待ち...</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store">アカウント有効化</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store">ログイン</div>
-        </div>
+    <div class="lane-wrap">
+      <div class="lanes" style="grid-template-columns: 96px 1fr 1.2fr 1fr 1.4fr;">
+        <div class="lane-corner">時系列 →</div>
+        <div class="lane-head">1 出店申請</div>
+        <div class="lane-head">2 審査・承認</div>
+        <div class="lane-head ex">例外: 却下<span class="sub">審査NGの場合</span></div>
+        <div class="lane-head">3 開店準備<span class="sub">承認後・マスタ管理</span></div>
+
+        <div class="lane-label shop"><i></i>店舗</div>
+        <div class="lane-cell">店舗登録 → 申請送信</div>
+        <div class="lane-cell">審査待ち…</div>
+        <div class="lane-cell ex"></div>
+        <div class="lane-cell">アカウント有効化 → ログイン → <strong>自転車登録・料金プラン設定・カレンダー設定</strong><small>以後は在庫ステータスを随時管理</small></div>
+
+        <div class="lane-label sys"><i></i>管理者</div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell">申請通知 → ダッシュボードで<strong>店舗審査</strong> → 承認</div>
+        <div class="lane-cell ex">却下</div>
+        <div class="lane-cell"></div>
+
+        <div class="lane-label money"><i></i>通知</div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell">承認メール</div>
+        <div class="lane-cell ex">却下メール</div>
+        <div class="lane-cell"></div>
       </div>
-      <div class="swim-row">
-        <div class="swim-label admin"><i></i>管理者</div>
-        <div class="swim-track">
-          <div style="width:60px"></div>
-          <div class="swim-node notify">申請通知</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node admin">ダッシュボード</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node admin decision">店舗審査</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-branch">
-            <div style="display:flex;gap:8px">
-              <div>
-                <div class="swim-branch-label ok">承認</div>
-                <div class="swim-node notify" style="margin-top:4px">承認メール</div>
-              </div>
-              <div>
-                <div class="swim-branch-label ng">却下</div>
-                <div class="swim-node notify error" style="margin-top:4px">却下メール</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="swim-row">
-        <div class="swim-label store"><i></i>マスタ管理</div>
-        <div class="swim-track">
-          <div class="swim-node store">自転車登録</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store">料金プラン設定</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store">カレンダー設定</div>
-          <div style="margin-left:8px"></div>
-          <div class="swim-node store" style="opacity:0.7">在庫ステータス管理</div>
-        </div>
-      </div>
-    </div></div>
+    </div>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者操作</span>
-      <span><i style="background:var(--gold)"></i>自動通知</span>
-      <span><i style="background:var(--danger)"></i>外部サービス</span>
-      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+      <span><i style="background:var(--accent)"></i>管理者・システム</span>
+      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)・例外</span>
     </div>
 
     <div class="card">
@@ -504,45 +478,40 @@
     </div>
     <p class="section-desc">ユーザーが自転車を予約するフローです。<strong>この時点ではカード引き落としは行われません。</strong></p>
 
-    <div class="swim"><div class="swim-inner">
-      <div class="swim-row">
-        <div class="swim-label user"><i></i>ユーザー</div>
-        <div class="swim-track">
-          <div class="swim-node user decision">在庫確認</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node user">Step1 空車確認</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node user">Step2 顧客情報</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node user">Step3 内容確認</div>
-          <div class="swim-arrow hot">&rarr;</div>
-          <div class="swim-node user hot">Step4 確定（未決済）</div>
-        </div>
+    <div class="lane-wrap">
+      <div class="lanes" style="grid-template-columns: 96px 1.2fr 1fr 1.4fr;">
+        <div class="lane-corner">時系列 →</div>
+        <div class="lane-head">1 予約入力<span class="sub">Step1〜3</span></div>
+        <div class="lane-head">2 予約確定<span class="sub">未決済のまま</span></div>
+        <div class="lane-head">3 通知・確認</div>
+
+        <div class="lane-label user"><i></i>ユーザー</div>
+        <div class="lane-cell">在庫確認 → 空車確認 → 顧客情報 → 内容確認<small>支払方法（カード or 現地払い）もここで選択</small></div>
+        <div class="lane-cell"><strong>Step4 確定（未決済）</strong><small>ステータス「来客待ち」で予約作成</small></div>
+        <div class="lane-cell"></div>
+
+        <div class="lane-label money"><i></i>通知</div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell">予約確認メール（ユーザー）・予約通知メール（店舗）</div>
+
+        <div class="lane-label shop"><i></i>店舗</div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell">予約詳細確認 → 自転車の準備へ</div>
+
+        <div class="lane-label money"><i></i>お金の動き</div>
+        <div class="lane-cell money">¥0</div>
+        <div class="lane-cell money">¥0<small>カード引き落としはまだ</small></div>
+        <div class="lane-cell money">¥0<small>決済はPhase 5の貸出開始時</small></div>
       </div>
-      <div class="swim-row">
-        <div class="swim-label gold"><i></i>通知</div>
-        <div class="swim-track">
-          <div style="width:500px"></div>
-          <div class="swim-node notify">予約確認メール（ユーザー）</div>
-          <div style="width:8px"></div>
-          <div class="swim-node notify">予約通知メール（店舗）</div>
-        </div>
-      </div>
-      <div class="swim-row">
-        <div class="swim-label store"><i></i>店舗</div>
-        <div class="swim-track">
-          <div style="width:540px"></div>
-          <div class="swim-node store">予約詳細確認</div>
-        </div>
-      </div>
-    </div></div>
+    </div>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者操作</span>
-      <span><i style="background:var(--gold)"></i>自動通知</span>
-      <span><i style="background:var(--danger)"></i>外部サービス</span>
-      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+      <span><i style="background:var(--accent)"></i>管理者・システム</span>
+      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)・例外</span>
     </div>
 
     <div class="card">
@@ -611,47 +580,50 @@
     </div>
     <p class="section-desc">ユーザーが来店し、店舗が自転車を貸し出すフローです。<strong>決済はこのタイミングで店舗が実行します。</strong></p>
 
-    <div class="swim"><div class="swim-inner">
-      <div class="swim-row">
-        <div class="swim-label store"><i></i>店舗</div>
-        <div class="swim-track">
-          <div class="swim-node store">自転車準備</div>
-          <div class="swim-arrow hot">&rarr;</div>
-          <div class="swim-node store hot">貸出開始ボタン</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node external">Pay.JP 決済処理</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store decision">決済OK?</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-branch">
-            <div>
-              <div class="swim-branch-label ok">OK</div>
-              <div class="swim-node store" style="margin-top:4px">貸出中</div>
-            </div>
-            <div style="margin-top:6px">
-              <div class="swim-branch-label ng">NG</div>
-              <div class="swim-node store error" style="margin-top:4px">現地払いに変更</div>
-            </div>
-          </div>
-        </div>
+    <div class="lane-wrap">
+      <div class="lanes" style="grid-template-columns: 96px 1fr 1fr 1.1fr 1.3fr 1fr;">
+        <div class="lane-corner">時系列 →</div>
+        <div class="lane-head">1 来店前</div>
+        <div class="lane-head">2 貸出開始</div>
+        <div class="lane-head">3 決済<span class="sub">全額を直接課金</span></div>
+        <div class="lane-head ex">例外: 決済失敗<span class="sub">発生した場合のみ</span></div>
+        <div class="lane-head">4 貸出</div>
+
+        <div class="lane-label shop"><i></i>店舗</div>
+        <div class="lane-cell">自転車準備</div>
+        <div class="lane-cell"><strong>貸出開始ボタン</strong><small>これがカード課金のトリガー</small></div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell ex">現地払い（現金）に切り替えて貸出</div>
+        <div class="lane-cell"><strong>貸出中</strong></div>
+
+        <div class="lane-label ext"><i></i>Pay.JP</div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell"><strong>決済処理</strong><small>登録済みカードに課金（charge作成）</small></div>
+        <div class="lane-cell ex">失敗を返却 → 店舗へ</div>
+        <div class="lane-cell"></div>
+
+        <div class="lane-label sys"><i></i>管理者</div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell ex">決済エラー時は状況を確認して対応</div>
+        <div class="lane-cell"></div>
+
+        <div class="lane-label money"><i></i>お金の動き</div>
+        <div class="lane-cell money">¥0</div>
+        <div class="lane-cell money">¥0</div>
+        <div class="lane-cell money"><strong>全額</strong><small>貸出開始時に課金</small></div>
+        <div class="lane-cell ex money">現金で回収</div>
+        <div class="lane-cell money">決済済み</div>
       </div>
-      <div class="swim-row">
-        <div class="swim-label admin"><i></i>管理者</div>
-        <div class="swim-track">
-          <div style="width:480px"></div>
-          <div class="swim-node admin" style="opacity:0.6">決済エラー時 &rarr;</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node admin">決済問題対応</div>
-        </div>
-      </div>
-    </div></div>
+    </div>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者操作</span>
-      <span><i style="background:var(--gold)"></i>自動通知</span>
-      <span><i style="background:var(--danger)"></i>外部サービス</span>
-      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+      <span><i style="background:var(--accent)"></i>管理者・システム</span>
+      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)・例外</span>
     </div>
 
     <div class="card">
@@ -714,33 +686,27 @@
     </div>
     <p class="section-desc">ユーザーが自転車を返却し、レンタルが完了するまでの流れです。</p>
 
-    <div class="swim"><div class="swim-inner">
-      <div class="swim-row">
-        <div class="swim-label store"><i></i>店舗</div>
-        <div class="swim-track">
-          <div class="swim-node store">貸出中</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node store">返却確認</div>
-          <div class="swim-arrow hot">&rarr;</div>
-          <div class="swim-node store hot">完了処理</div>
-        </div>
+    <div class="lane-wrap">
+      <div class="lanes" style="grid-template-columns: 96px repeat(2, minmax(0,1fr));">
+        <div class="lane-corner">時系列 →</div>
+        <div class="lane-head">1 返却</div>
+        <div class="lane-head">2 完了処理</div>
+
+        <div class="lane-label shop"><i></i>店舗</div>
+        <div class="lane-cell">貸出中 → 返却確認<small>車体の状態をチェック</small></div>
+        <div class="lane-cell"><strong>完了処理</strong><small>予約を完了にする</small></div>
+
+        <div class="lane-label sys"><i></i>管理者</div>
+        <div class="lane-cell">予約モニタリング</div>
+        <div class="lane-cell">売上レポート確認</div>
       </div>
-      <div class="swim-row">
-        <div class="swim-label admin"><i></i>管理者</div>
-        <div class="swim-track">
-          <div class="swim-node admin">予約モニタリング</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node admin">売上レポート</div>
-        </div>
-      </div>
-    </div></div>
+    </div>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者操作</span>
-      <span><i style="background:var(--gold)"></i>自動通知</span>
-      <span><i style="background:var(--danger)"></i>外部サービス</span>
-      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+      <span><i style="background:var(--accent)"></i>管理者・システム</span>
+      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)・例外</span>
     </div>
 
     <div class="card">
@@ -783,50 +749,45 @@
     </div>
     <p class="section-desc">ユーザーが予約をキャンセルする場合のフローです。<strong>返金は管理者が手動で処理します。</strong></p>
 
-    <div class="swim"><div class="swim-inner">
-      <div class="swim-row">
-        <div class="swim-label user"><i></i>ユーザー</div>
-        <div class="swim-track">
-          <div class="swim-node user">予約一覧</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node user decision">キャンセルする?</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node user">キャンセル完了</div>
-        </div>
+    <div class="lane-wrap">
+      <div class="lanes" style="grid-template-columns: 96px 1.2fr 1.3fr 1.3fr;">
+        <div class="lane-corner">時系列 →</div>
+        <div class="lane-head">1 キャンセル操作</div>
+        <div class="lane-head">2 通知・在庫対応</div>
+        <div class="lane-head ex">3 返金（手動）<span class="sub">決済済みの場合</span></div>
+
+        <div class="lane-label user"><i></i>ユーザー</div>
+        <div class="lane-cell">予約一覧 → キャンセルする? → <strong>キャンセル完了</strong></div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell ex"></div>
+
+        <div class="lane-label money"><i></i>通知</div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell">キャンセル確認メール（ユーザー）・キャンセル通知メール（店舗）</div>
+        <div class="lane-cell ex"></div>
+
+        <div class="lane-label shop"><i></i>店舗</div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell">キャンセル確認・対応<small>在庫を戻す</small></div>
+        <div class="lane-cell ex"></div>
+
+        <div class="lane-label sys"><i></i>管理者</div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell"></div>
+        <div class="lane-cell ex"><strong>返金処理（手動）</strong> → 料金シミュレーション</div>
+
+        <div class="lane-label money"><i></i>お金の動き</div>
+        <div class="lane-cell money">¥0</div>
+        <div class="lane-cell money">¥0</div>
+        <div class="lane-cell ex money">決済済み額から<strong>返金</strong></div>
       </div>
-      <div class="swim-row">
-        <div class="swim-label gold"><i></i>通知</div>
-        <div class="swim-track">
-          <div style="width:280px"></div>
-          <div class="swim-node notify">キャンセル確認メール（ユーザー）</div>
-          <div style="width:8px"></div>
-          <div class="swim-node notify">キャンセル通知メール（店舗）</div>
-        </div>
-      </div>
-      <div class="swim-row">
-        <div class="swim-label store"><i></i>店舗</div>
-        <div class="swim-track">
-          <div style="width:340px"></div>
-          <div class="swim-node store">キャンセル確認・対応</div>
-        </div>
-      </div>
-      <div class="swim-row">
-        <div class="swim-label admin"><i></i>管理者</div>
-        <div class="swim-track">
-          <div style="width:340px"></div>
-          <div class="swim-node admin hot">返金処理（手動）</div>
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-node admin">料金シミュレーション</div>
-        </div>
-      </div>
-    </div></div>
+    </div>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者操作</span>
-      <span><i style="background:var(--gold)"></i>自動通知</span>
-      <span><i style="background:var(--danger)"></i>外部サービス</span>
-      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+      <span><i style="background:var(--accent)"></i>管理者・システム</span>
+      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
+      <span><i style="background:var(--danger)"></i>外部サービス(Pay.JP)・例外</span>
     </div>
 
     <div class="card">
