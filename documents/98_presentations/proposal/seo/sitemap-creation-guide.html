@@ -87,7 +87,7 @@
       <div class="url-line"><span class="seg seg-base">https://rincle.co.jp</span><span class="seg seg-page">/bicycle_detail</span><span class="seg seg-base">?bicycle=</span><span class="seg seg-id">&lt;自転車ID&gt;</span></div>
       <div class="url-legend">
         <span><i style="background: #9FC5EA;"></i>ページの種類（全部で19ページ）</span>
-        <span><i style="background: #F0B08E;"></i>データベース上のID（2026-08-21時点で店舗63・自転車342）</span>
+        <span><i style="background: #F0B08E;"></i>データベース上のID（sitemapに載せるのは店舗63・自転車342〈2026-08-21時点〉）</span>
       </div>
     </div>
 
@@ -231,7 +231,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
       </ol>
     </div>
     <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span>本番反映前に動きを試したい時は <code>--dev</code> を付けると開発版（version-test）のData APIで動きます。</span></div>
-    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>生成後の確認:</strong> 出力件数を確かめる（2026-08-21の初回生成は 静的3 + 店舗63 + 自転車342 = 408 URL）。店舗はサイトの検索に出る数より多くなるのが正常（在庫ゼロの店舗も載せるため）。自転車はほぼ一致するはずで、大きくズレたら除外条件の判定が実態と合っていないので要調査。</span></div>
+    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>生成後の確認:</strong> 出力件数を確かめる（2026-08-21の初回生成は 静的3 + 店舗63 + 自転車342 = 408 URL。店舗は全67件中、審査未通過3・辞退1を除外／自転車は全440件中、非表示89〈うち削除済み6〉と掲載しない店舗の9台を除外）。店舗はサイトの検索に出る数より多くなるのが正常（在庫ゼロの店舗も載せるため。2026-08-21時点で sitemap 63件 / 検索表示 53件）。自転車はほぼ一致するはずで、大きくズレたら除外条件の判定が実態と合っていないので要調査。</span></div>
   </div>
 
   <!-- 手順4 -->
