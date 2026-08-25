@@ -3,7 +3,7 @@
 > タスク#24（とその派生論点）/ 2026-06-12調査・2026-06-24に3資料を統合・**2026-06-30定例で実現方式を更新（§1・§6）**
 > 背景: 増永さんの「地域ごとのサイクリングコースで集客したい」構想（6/12定例）の実現方式。
 > ※ 本資料は旧 `note-vs-owned-blog` / `lp-vs-blog-article` / `wordpress-vs-bubble-cms` を1本に統合したもの。
-> 関連: [seo-setup-guide.md](seo-setup-guide.md)（Bubbleの実測データ）/ [keyword-research.md](keyword-research.md)（狙うKW）/ [blog-implementation-guide.md](blog-implementation-guide.md)（WordPress実装手順・保留中の選択肢として保管）
+> 関連: [seo-setup-guide.md](seo-setup-guide.md)（Bubbleの実測データ）/ [keyword-research.md](keyword-research.md)（狙うKW）
 
 ---
 
@@ -168,7 +168,7 @@
 
 - **6/30定例の結論: 安全側のサブドメインで開始**。どうしても本体のドメインパワーを上げたい場合はリスクを承知の上でサブディレクトリ対応も可能、という整理
 - **宿題（弊社）は7/2に調査完了** → 結果は次項。**差は小さく、後から移行もできるため、サブドメイン継続を推奨**
-- サブディレクトリを採用する場合の技術詳細（リバースプロキシ・DNS検証・WordPress構築手順）は [blog-implementation-guide.md](blog-implementation-guide.md) に保管済み。BubbleのCloudflare移行によりDNSがA/AAAAレコードだとWorkerがバイパスされる報告があるため、採用時はrincle.co.jpのDNS構成の技術検証が必要
+- サブディレクトリを採用する場合の技術詳細をまとめた実装手順書（blog-implementation-guide.md）は2026-08-25に削除した（当面サブドメイン方針のため。必要になったらgit履歴から復元できる）。BubbleのCloudflare移行によりDNSがA/AAAAレコードだとWorkerがバイパスされる報告があるため、採用時はrincle.co.jpのDNS構成の技術検証が必要
 
 ### SEO差の洗い出し結果（2026-07-02調査・6/30宿題の回答）
 

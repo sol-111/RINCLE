@@ -101,8 +101,6 @@ documents/
 │   ├── 03_seo/                     # SEO実務
 │   │   ├── seo-setup-guide.md      #   SEO設定ガイド（GA4・Clarity導入手順含む）
 │   │   ├── blog-seo-strategy.md    #   ブログSEOの方針（どこに/形式/ツール・#24統合・2026-06-24）
-│   │   ├── blog-implementation-guide.md    # WordPress構築の実装手順書（社内向け・保留中）
-│   │   ├── blog-implementation-guide.html  # 同HTML版（保留中）
 │   │   ├── seo-support-plan.md      #   SEO記事作成代行プラン（提案・2026-06-19）
 │   │   ├── keyword-research.md     #   検索KW調査メモ（ロードバイク軸の定量裏付け・2026-06-12）
 │   │   ├── seo_page_settings.csv   #   15画面分のtitle/description/OGP/h1/canonical
