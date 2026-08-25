@@ -33,3 +33,6 @@ documents/rincle.bubble
 
 # sitemap生成スクリプトの開発版出力（--dev。テストDBのIDなので本番と無関係）
 documents/4_growth/03_seo/sitemap/sitemap_devcheck.xml
+
+# 先方向けSEOレポート一式（売上等の数字を公開リポジトリに載せない・2026-08-25清野さん判断。別マシンへは手動コピー）
+documents/4_growth/03_seo/seo-report/
