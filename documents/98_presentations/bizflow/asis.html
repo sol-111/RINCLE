@@ -32,40 +32,6 @@
   .phase .ps i.admin{background:var(--accent)}
 
   /* スイムレーン（横型。ノード=白面+1px罫線・レーンラベル=役割色文字+丸ドット） */
-  .swim{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin:28px 0 0;overflow-x:auto}
-  .swim-inner{min-width:600px;padding:16px 24px}
-  .swim-row{display:flex;align-items:center;gap:10px;padding:14px 0;min-height:56px}
-  .swim-row + .swim-row{border-top:1px solid var(--line-soft)}
-  .swim-label{width:92px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;gap:6px;font-size:11px;font-weight:700;text-align:right;padding-right:12px;line-height:1.4}
-  .swim-label i{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
-  .swim-label.user{color:var(--info)} .swim-label.user i{background:var(--info)}
-  .swim-label.store{color:var(--ok)} .swim-label.store i{background:var(--ok)}
-  .swim-label.admin{color:var(--accent)} .swim-label.admin i{background:var(--accent)}
-  .swim-label.gold{color:var(--gold-text)} .swim-label.gold i{background:var(--gold)}
-  .swim-label.ext{color:var(--danger)} .swim-label.ext i{background:var(--danger)}
-  .swim-track{display:flex;align-items:center;gap:0;flex:1;flex-wrap:wrap;row-gap:10px}
-  /* ノード: 白面+罫線+役割色の左罫3px。文字は詰めすぎない */
-  .swim-node{display:inline-flex;align-items:center;padding:8px 13px;border-radius:4px;font-size:11.5px;font-weight:500;white-space:nowrap;background:var(--surface);border:1px solid var(--line);color:var(--ink);line-height:1.5}
-  .swim-node.user{border-left:3px solid var(--info)}
-  .swim-node.store{border-left:3px solid var(--ok)}
-  .swim-node.admin,.swim-node.system,.swim-node.brand{border-left:3px solid var(--accent)}
-  .swim-node.notify,.swim-node.gold{border-left:3px solid var(--gold)}
-  .swim-node.ext{border-left:3px solid var(--danger)}
-  /* 判定はピル型（線だけで形を変える） */
-  .swim-node.decision{border-radius:999px;border-color:var(--ink);font-weight:700;padding:8px 15px}
-  .swim-node.error{border:1px dashed var(--danger-line);border-left:3px solid var(--danger);color:var(--danger-text)}
-  .swim-node.hot{border-color:var(--accent);border-left-width:3px;border-left-color:var(--accent);color:var(--accent-deep);font-weight:700}
-  /* 矢印: 文字でなく線+矢じりを描く（高さが常にノード中央に揃う） */
-  .swim-arrow{flex-shrink:0;width:22px;height:1px;background:var(--line);position:relative;margin:0 4px;font-size:0;align-self:center}
-  .swim-arrow::after{content:"";position:absolute;right:-1px;top:-3px;border-left:6px solid var(--line);border-top:3.5px solid transparent;border-bottom:3.5px solid transparent}
-  .swim-arrow.hot{background:var(--accent)}
-  .swim-arrow.hot::after{border-left-color:var(--accent)}
-  /* 分岐: 左の縦レールで束ね、各枝はラベル（キッカー）+列 */
-  .swim-branch{display:flex;flex-direction:column;gap:12px;align-items:flex-start;border-left:1px solid var(--line);padding:2px 0 2px 16px;margin-left:2px}
-  .swim-branch-label{font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--sub);border:none;padding:0;background:none}
-  .swim-branch-label.ok{color:var(--ok)}
-  .swim-branch-label.ng{color:var(--danger)}
-
   /* 手順の縦フロー（役割色の輪郭丸+明朝数字） */
   .pflow{margin:12px 0 0}
   .pflow-step{display:flex;gap:16px;position:relative;padding-bottom:8px}

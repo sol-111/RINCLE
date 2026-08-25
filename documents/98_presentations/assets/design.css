@@ -250,15 +250,11 @@ ul.notes li::before{content:"※";position:absolute;left:0;top:6px;color:var(--a
 .swim-label.gold{color:var(--gold-text)} .swim-label.gold i{background:var(--gold)}
 .swim-label.ext{color:var(--danger)} .swim-label.ext i{background:var(--danger)}
 .swim-track{display:flex;align-items:center;gap:0;flex:1;flex-wrap:wrap;row-gap:10px}
-.swim-node{display:inline-flex;align-items:center;padding:8px 13px;border-radius:4px;font-size:11.5px;font-weight:500;white-space:nowrap;background:var(--surface);border:1px solid var(--line);color:var(--ink);line-height:1.5}
-.swim-node.user{border-left:3px solid var(--info)}
-.swim-node.store{border-left:3px solid var(--ok)}
-.swim-node.admin,.swim-node.system,.swim-node.brand{border-left:3px solid var(--accent)}
-.swim-node.notify,.swim-node.gold{border-left:3px solid var(--gold)}
-.swim-node.ext{border-left:3px solid var(--danger)}
-.swim-node.decision{border-radius:999px;border-color:var(--ink);font-weight:700;padding:8px 15px}
-.swim-node.error{border:1px dashed var(--danger-line);border-left:3px solid var(--danger);color:var(--danger-text)}
-.swim-node.hot{border-color:var(--accent);border-left-width:3px;border-left-color:var(--accent);color:var(--accent-deep);font-weight:700}
+/* ノードはニュートラルなピル型チップ（役割は行ラベルが示すので、ノードには色を付けない） */
+.swim-node{display:inline-flex;align-items:center;padding:8px 16px;border-radius:999px;font-size:11.5px;font-weight:500;white-space:nowrap;background:var(--surface);border:1px solid var(--line);color:var(--ink);line-height:1.5}
+.swim-node.decision{border-color:var(--ink);font-weight:700}
+.swim-node.error{border:1px dashed var(--danger-line);color:var(--danger-text)}
+.swim-node.hot{border-color:var(--accent);background:var(--accent-faint);color:var(--accent-deep);font-weight:700}
 .swim-arrow{flex-shrink:0;width:22px;height:1px;background:var(--line);position:relative;margin:0 4px;font-size:0;align-self:center}
 .swim-arrow::after{content:"";position:absolute;right:-1px;top:-3px;border-left:6px solid var(--line);border-top:3.5px solid transparent;border-bottom:3.5px solid transparent}
 .swim-arrow.hot{background:var(--accent)}
