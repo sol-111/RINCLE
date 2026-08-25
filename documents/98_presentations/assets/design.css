@@ -133,6 +133,7 @@ td{padding:18px 16px 18px 0;border-bottom:1px solid var(--line-soft);vertical-al
 tbody tr:hover td{background:var(--accent-faint)}
 td.label{font-family:var(--serif);font-size:17px;color:var(--ink);white-space:nowrap}
 td.num{font-family:var(--serif);font-size:15px;color:var(--accent);text-align:right;white-space:nowrap}
+th.num{text-align:right} /* 数値列は見出しも右揃えにして値と縦を揃える */
 .pri{display:flex;align-items:center;gap:14px}
 .pri .bar{height:7px;border-radius:99px;background:var(--accent);flex-shrink:0}
 .pri .pv{font-family:var(--serif);font-size:14px;color:var(--ink)}
