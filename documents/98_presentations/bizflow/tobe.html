@@ -24,27 +24,6 @@
   .phase .ps i.admin{background:var(--accent)}
 
   /* スイムレーン（横型。ノード=白面+1px罫線・レーンラベル=役割色文字+丸ドット） */
-  /* 手順の縦フロー（役割色の輪郭丸+明朝数字） */
-  .pflow{margin:12px 0 0}
-  .pflow-step{display:flex;gap:16px;position:relative;padding-bottom:8px}
-  .pflow-step:not(:last-child){padding-bottom:22px}
-  .pflow-step:not(:last-child)::after{content:'';position:absolute;left:17px;top:40px;bottom:2px;width:1px;background:var(--line)}
-  .pflow-dot{width:34px;height:34px;border-radius:50%;background:var(--surface);border:1.5px solid;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:13px;flex-shrink:0;position:relative;z-index:1}
-  .pflow-dot.user{color:var(--info);border-color:var(--info)}
-  .pflow-dot.store{color:var(--ok);border-color:var(--ok)}
-  .pflow-dot.admin,.pflow-dot.system,.pflow-dot.brand{color:var(--accent);border-color:var(--accent)}
-  .pflow-dot.notify{color:var(--gold-text);border-color:var(--gold)}
-  .pflow-dot.external{color:var(--danger);border-color:var(--danger)}
-  .pflow-body{flex:1;padding-top:3px}
-  .pflow-actor{font-size:10.5px;font-weight:700;letter-spacing:.16em;margin-bottom:2px}
-  .pflow-actor.user{color:var(--info)}
-  .pflow-actor.store{color:var(--ok)}
-  .pflow-actor.admin,.pflow-actor.system{color:var(--accent)}
-  .pflow-actor.notify{color:var(--gold-text)}
-  .pflow-actor.external{color:var(--danger)}
-  .pflow-text{font-size:14px;color:var(--text);line-height:1.9}
-  .pflow-note{font-size:12.5px;color:var(--sub);margin-top:4px;padding-left:12px;border-left:1px solid var(--line-soft);line-height:1.9}
-
   /* As-Is / To-Be 対比（白面+罫線・To-Be側だけ罫線を焦がしに） */
   .compare-box.asis{border:1px solid var(--line)}
   .compare-box.asis .cb-head{color:var(--sub);font-size:10.5px;letter-spacing:.16em}

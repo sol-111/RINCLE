@@ -263,6 +263,39 @@ ul.notes li::before{content:"※";position:absolute;left:0;top:6px;color:var(--a
 .swim-branch-label{font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--sub)}
 .swim-branch-label.ok{color:var(--ok)}
 .swim-branch-label.ng{color:var(--danger)}
+/* ---------- 役割つき縦フロー（.pflow: 番号丸=役割色の輪郭+明朝数字・役割キッカー・本文・注記） ---------- */
+.pflow{margin:12px 0 0}
+.pflow-step{display:flex;gap:16px;position:relative;padding-bottom:8px}
+.pflow-step:not(:last-child){padding-bottom:22px}
+.pflow-step:not(:last-child)::after{content:'';position:absolute;left:17px;top:40px;bottom:2px;width:1px;background:var(--line)}
+.pflow-dot{width:34px;height:34px;border-radius:50%;background:var(--surface);border:1.5px solid;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:13px;flex-shrink:0;position:relative;z-index:1}
+.pflow-dot.user{color:var(--info);border-color:var(--info)}
+.pflow-dot.store{color:var(--ok);border-color:var(--ok)}
+.pflow-dot.admin,.pflow-dot.system,.pflow-dot.brand{color:var(--accent);border-color:var(--accent)}
+.pflow-dot.notify{color:var(--gold-text);border-color:var(--gold)}
+.pflow-dot.external{color:var(--danger);border-color:var(--danger)}
+.pflow-body{flex:1;padding-top:3px}
+.pflow-actor{font-size:10.5px;font-weight:700;letter-spacing:.16em;margin-bottom:2px}
+.pflow-actor.user{color:var(--info)}
+.pflow-actor.store{color:var(--ok)}
+.pflow-actor.admin,.pflow-actor.system{color:var(--accent)}
+.pflow-actor.notify{color:var(--gold-text)}
+.pflow-actor.external{color:var(--danger)}
+.pflow-text{font-size:14px;color:var(--text);line-height:1.9}
+.pflow-note{font-size:12.5px;color:var(--sub);margin-top:4px;padding-left:12px;border-left:1px solid var(--line-soft);line-height:1.9}
+
+/* ---------- ファネル（.funnel: 段階ごとの絞り込み。棒の幅=構成比・段間に転換率） ---------- */
+.funnel{display:flex;flex-direction:column;gap:4px;margin:24px 0}
+.funnel .frow{display:flex;align-items:center;gap:12px}
+.funnel .fbar{height:34px;min-width:44px;background:var(--accent);border-radius:4px;flex-shrink:0;display:flex;align-items:center;padding:0 14px;color:#fff;font-size:12px;white-space:nowrap}
+/* 段の濃さは明示クラスで（nth-of-typeは転換率の行が挟まるとズレるため使わない） */
+.funnel .fbar.f2{opacity:.72}
+.funnel .fbar.f3{opacity:.5}
+.funnel .fbar.f4{opacity:.35}
+.funnel .fv{font-family:var(--serif);font-size:15px;color:var(--ink);white-space:nowrap}
+.funnel .fl{font-size:12px;color:var(--sub);white-space:nowrap}
+.funnel .fconv{display:flex;align-items:center;gap:8px;padding:2px 0 2px 14px;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--sub)}
+.funnel .fconv::before{content:"↓";color:var(--line)}
 
 /* ---------- フェーズ帯（現在だけブランド色） ---------- */
 .phases{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;margin:28px 0}
