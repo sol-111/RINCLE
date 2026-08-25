@@ -192,6 +192,26 @@ ul.notes li::before{content:"※";position:absolute;left:0;top:6px;color:var(--a
 .stat .n{font-family:var(--serif);font-size:60px;line-height:1;color:var(--ink)}
 .stat .n.hot{color:var(--accent)}
 .stat .l{font-size:10.5px;color:var(--sub)}
+/* ---------- 統計カードの列+前月比（.stat-row > .stat / .d=前月比） ---------- */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin:28px 0 12px}
+.stat .n small{font-size:20px;color:var(--sub);margin-left:4px;font-weight:400}
+.stat .d{font-size:12px;font-family:var(--serif)}
+.stat .d.up{color:var(--ok)}
+.stat .d.down{color:var(--danger)}
+
+/* ---------- 横棒ペア（当月×前月の比較チャート。当月=焦がし/前月=下地） ---------- */
+.bars{display:flex;flex-direction:column;gap:16px;margin:24px 0}
+.bars .brow{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center}
+.bars .bl{font-size:12.5px;color:var(--text);line-height:1.6}
+.bars .bpair{display:flex;flex-direction:column;gap:5px}
+.bars .bline{display:flex;align-items:center}
+.bars .b{height:15px;min-width:2px;flex-shrink:0}
+.bars .b.cur{background:var(--accent)}
+.bars .b.prev{background:#EAE2D6}
+.bars .bv{font-family:var(--serif);font-size:12.5px;margin-left:8px;white-space:nowrap;color:var(--ink)}
+.bars .bv small{color:var(--sub);font-family:var(--sans);font-size:10.5px;margin-left:4px}
+.bars-legend{display:flex;gap:22px;font-size:11px;color:var(--sub);margin-top:-6px}
+.bars-legend i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px;vertical-align:-1px}
 
 /* ---------- スイムレーン（横=フェーズ/縦=役割・例外列=紅破線・お金=琥珀） ---------- */
 .lane-wrap{border:1px solid var(--line);border-radius:6px;overflow-x:auto;background:var(--surface);margin:28px 0}
@@ -260,4 +280,6 @@ footer{text-align:center;padding:36px 0;color:var(--sub);font-size:12px;border-t
   .compare{grid-template-columns:1fr}
   .container{padding:28px 18px 60px}
   .section-num{font-size:56px}
+  .stat-row{grid-template-columns:1fr;gap:20px}
+  .bars .brow{grid-template-columns:1fr;gap:6px}
 }
