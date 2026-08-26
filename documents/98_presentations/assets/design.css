@@ -93,6 +93,7 @@ a:hover{color:var(--accent-deep)}
 .section-header h2{font-family:var(--serif);font-size:30px;font-weight:600;color:var(--ink);line-height:1.5}
 .section-header .sh-sub{font-size:12.5px;letter-spacing:.08em;color:var(--accent)}
 h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);margin:44px 0 18px}
+h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin:26px 0 12px;line-height:1.6}
 
 /* ---------- カード（白面+罫線。影は浮遊部品のみ） ---------- */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:24px 26px;margin:28px 0}
