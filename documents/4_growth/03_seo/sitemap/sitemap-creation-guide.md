@@ -106,6 +106,9 @@ node documents/4_growth/03_seo/sitemap/generate_sitemap.js
 
 ## 手順4. 公開とGoogleへの登録
 
+> ✅ **2026-08-26 完了**: Bubbleにアップロード・本番デプロイ（HTTP 200・text/xml）→ Search Consoleから送信し、
+> ステータス**「成功しました」・検出408ページ**を確認。以後は「運用のまとめ」の再生成→再アップロードだけでよい。
+
 作ったsitemap.xmlは、Bubbleの機能でそのまま `rincle.co.jp/sitemap.xml` に置ける。
 
 ▼ Search Console
