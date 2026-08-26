@@ -127,10 +127,11 @@ h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);marg
 .bad .cb-mark{background:var(--danger)}
 .good .cb-mark{background:var(--ok)}
 .compare-box p{font-size:12.5px;line-height:1.9;color:var(--text)}
-/* ---------- 小見出し分節（.sub-item: 章の中のテーマを上罫線+明朝小見出しで分ける。
-   箱にはしない — 白面カードだと用語解説と紛れ、箱が並んでうるさくなるため（2026-08-26変更） ---------- */
-.sub-item{border-top:1px solid var(--line);padding:26px 0 4px;margin:36px 0 0}
-.sub-item h4{margin:0 0 14px;font-size:18px}
+/* ---------- 小見出し分節（.sub-item: 章の中のテーマを「明朝見出し+右へ伸びる罫線」で分ける。
+   箱にはしない — 白面カードだと用語解説と紛れ、箱が並んでうるさくなる（2026-08-26決定・案C採用） ---------- */
+.sub-item{margin:36px 0 0}
+.sub-item h4{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--ink);line-height:1.6;margin:0 0 14px;display:flex;align-items:center;gap:16px}
+.sub-item h4::after{content:"";flex:1;height:1px;background:var(--line)}
 .sub-item p{font-size:13.5px;margin-bottom:8px}
 
 /* ---------- 表（上罫は墨2px・項目名は明朝） ---------- */
