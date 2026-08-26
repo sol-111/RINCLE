@@ -114,9 +114,12 @@ h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);marg
 
 /* ---------- ×○対比 ---------- */
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:28px 0}
-.compare-box{background:var(--surface);border-radius:4px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
-.compare-box.bad{border:1px solid var(--danger-line)}
-.compare-box.good{border:1px solid var(--ok-line)}
+.compare-box{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;display:flex;flex-direction:column;gap:8px} /* 素でも枠あり（変種は色を変えるだけ） */
+.compare-box.bad{border-color:var(--danger-line)}
+.compare-box.good{border-color:var(--ok-line)}
+.compare-box.asis .cb-head{color:var(--sub)}
+.compare-box.tobe{border-color:var(--accent)}
+.compare-box.tobe .cb-head{color:var(--accent)}
 .cb-head{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
 .compare-box.bad .cb-head{color:var(--danger-text)}
 .compare-box.good .cb-head{color:var(--ok-text)}
