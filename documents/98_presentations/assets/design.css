@@ -177,15 +177,17 @@ code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:3px;padding:1px 7
 
 /* ---------- 番号つき手順（丸+縦罫線） ---------- */
 ol.steps{list-style:none;counter-reset:st;font-size:13.5px}
-ol.steps li{counter-increment:st;position:relative;padding:0 0 30px 48px;line-height:1.9}
-ol.steps li:last-child{padding-bottom:0}
-ol.steps li::before{content:counter(st);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:13px;display:flex;align-items:center;justify-content:center}
-ol.steps li:not(:last-child)::after{content:"";position:absolute;left:14.5px;top:34px;bottom:2px;width:1px;background:var(--line)}
+ol.steps > li{counter-increment:st;position:relative;padding:0 0 30px 48px;line-height:1.9}
+ol.steps > li:last-child{padding-bottom:0}
+ol.steps > li::before{content:counter(st);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:13px;display:flex;align-items:center;justify-content:center}
+ol.steps > li:not(:last-child)::after{content:"";position:absolute;left:14.5px;top:34px;bottom:2px;width:1px;background:var(--line)}
 
 /* ---------- 注意リスト（※印） ---------- */
 ul.notes{list-style:none;font-size:13px;color:var(--text)}
 ul.notes li{position:relative;padding:6px 0 6px 26px;line-height:1.9}
 ul.notes li::before{content:"※";position:absolute;left:0;top:6px;color:var(--accent);font-weight:700}
+/* 手順リスト直後の注意リストは密着させない */
+ol.steps + ul.notes{margin-top:26px}
 
 /* ---------- まとめ帯（ページ内で唯一の濃い塗り） ---------- */
 .recap{background:var(--ink);color:var(--paper);border-radius:4px;padding:26px 30px;margin-top:8px;display:flex;flex-direction:column;gap:14px}
