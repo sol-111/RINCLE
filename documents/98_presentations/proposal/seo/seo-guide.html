@@ -471,25 +471,108 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
 
       <!-- ===== Step 3 ===== -->
       <div class="step" data-num="3">
-        <h3>Google Search Console 登録</h3>
-        <p><strong>Google Search Console（サーチコンソール）</strong>は、Googleが提供する無料ツールです。サイトがGoogleにどう見えているかを確認・管理できます。</p>
+        <h3>Google Search Console — Googleとの窓口</h3>
+        <p><strong>Google Search Console（サーチコンソール）</strong>は、Googleが無料で提供する「あなたのサイトがGoogleにどう見えているか」を確認・操作できる管理画面です。SEOの効果測定は、最終的にすべてこの画面の数字で答え合わせします。</p>
 
-        <div class="alert alert-blue">
-          <svg class="a-icon icon"><use href="#i-info"/></svg>
-          <span><strong>2026-08-26更新: プロパティは既に存在していました。</strong><code>rincle.co.jp</code> のドメインプロパティが登録・所有者確認済み（所有者は増永さん側のアカウントと思われる —「設定 &gt; ユーザーと権限」で確認できる）。弊社は権限を付与されたユーザーとしてアクセス可能なため、<strong>プロパティ作成と所有権確認の作業は不要</strong>です。</span>
+        <div class="compare">
+          <div class="compare-box good">
+            <div class="cb-head"><span class="cb-mark">◎</span>Search Consoleが見るもの</div>
+            <p>検索結果に<strong>「出るまで」</strong>。何ページ登録されたか・どんな検索語で何回表示されたか・何位か・何回クリックされたか。</p>
+          </div>
+          <div class="compare-box asis">
+            <div class="cb-head"><span class="cb-mark">→</span>GA4が見るもの（Step 4）</div>
+            <p>サイトに<strong>「来た後」</strong>。何人来たか・どこから来たか・どのページを見て予約したか。SCとGA4は入口と中身で役割分担している。</p>
+          </div>
         </div>
 
-        <ol class="steps">
-          <li><a href="https://search.google.com/search-console" target="_blank">Search Console</a>にGoogleアカウントでログインし、プロパティ <code>rincle.co.jp</code> を開く</li>
-          <li>設定 →「ユーザーと権限」で自分の権限を確認（「フル」ならsitemap送信・URL検査まで一通りできる。「制限付き」なら閲覧のみのため、所有者にフルへの変更を依頼）</li>
-          <li>月次レポート自動化用のロボット（サービスアカウント）の追加は<strong>所有者のみ可能</strong> → 所有者に「制限付きで追加」を依頼する</li>
-          <li>「URL検査」でトップ・検索ページ・主要な店舗詳細の<strong>インデックス登録をリクエスト</strong></li>
-        </ol>
+        <h4>仕組み: 検索結果に載るまでの3段階</h4>
+        <div class="term">
+          <div class="term-name">クロール <span class="term-tag">— 用語</span></div>
+          <div class="t-body">Googleのロボット（Googlebot）がページを読みに来ること。ロボットは「知っているURL」しか読みに来ない — だからsitemapでURL一覧を渡す（Step 2）。</div>
+        </div>
+        <div class="term">
+          <div class="term-name">インデックス <span class="term-tag">— 用語</span></div>
+          <div class="t-body">読んだページがGoogleのデータベースに登録されること。<strong>登録されていないページは、何を検索しても出てこない</strong>。クロール → インデックス → 検索結果に表示、の順で進む。</div>
+        </div>
+        <p>RINCLEは2026年6月の診断でインデックスが<strong>2〜3ページ</strong>しかなかった（=Googleがページを見つけられていない「ディスカバリー問題」）。sitemapとこのStepの作業は、その解決策そのものです。</p>
 
+        <h4>RINCLEの状態と権限の仕組み（2026-08-26時点）</h4>
+        <p>プロパティ <code>rincle.co.jp</code> は登録・所有者確認済み（所有者は増永さん側のアカウント —「設定 &gt; ユーザーと権限」で確認できる）。弊社は権限を付与されたユーザーとしてアクセスできるため、プロパティ作成の作業は不要でした。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>権限</th><th>できること</th></tr></thead>
+            <tbody>
+              <tr><td class="label">所有者</td><td>すべての操作+<strong>ユーザーやロボットの追加・削除</strong>（これだけは所有者限定）</td></tr>
+              <tr><td class="label">フル</td><td>データ閲覧+sitemap送信・URL検査などの操作</td></tr>
+              <tr><td class="label">制限付き</td><td>データの閲覧のみ</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="notes">
+          <li>月次レポート自動化用のロボット（サービスアカウント）の追加は所有者のみ可能 → 所有者に「制限付きで追加」を依頼する</li>
+        </ul>
+
+        <h4>sitemapの送信 — ✅ 2026-08-26 完了</h4>
+        <p><strong>なぜ「送信」するのか:</strong></p>
+        <ul class="notes">
+          <li>sitemap.xmlをサイトに置いただけだと、Googleが自力で気づくのを待つことになる。送信すれば「ここに一覧表を置いた」と直接知らせられる（確実で速い）</li>
+          <li>送信すると<strong>読み込みの結果が画面で見える</strong>ようになる — 何ページ検出されたか・エラーが無いか。置くだけでは確認手段がない</li>
+        </ul>
+        <p><strong>方法:</strong></p>
+        <ol class="steps">
+          <li>左メニュー「サイトマップ」を開く</li>
+          <li>「新しいサイトマップの追加」に <code>https://rincle.co.jp/sitemap.xml</code> を入力（ドメインプロパティなので完全なURLで）</li>
+          <li>「送信」→ ステータスが「成功しました」になればOK（送信直後は「取得できませんでした」と出ることがあるが、Googleが再取得して数時間〜1日で直る）</li>
+        </ol>
         <div class="alert alert-green">
           <svg class="a-icon icon"><use href="#i-check"/></svg>
-          <span>登録後、左メニューの「サイトマップ」からStep 2のsitemap（<code>sitemap.xml</code>）を送信しましょう。1〜2週間後に「カバレッジ」（インデックス数）・「検索パフォーマンス」（表示キーワード）・「エラー」を確認します。</span>
+          <span><strong>2026-08-26 送信済み: 「成功しました」・検出408ページ。</strong>今後sitemapを作り直した時は、Bubbleに再アップロードするだけでよい（Googleが定期的に再読込する。急ぐ時だけ再送信）。</span>
         </div>
+
+        <h4>URL検査 — 主要ページの「割り込み申請」</h4>
+        <p><strong>なぜやるのか:</strong></p>
+        <ul class="notes">
+          <li>sitemapは「一覧を渡す」だけで、いつ読みに来るかはGoogle任せ（数日〜数週間かかる）</li>
+          <li>URL検査から「インデックス登録をリクエスト」すると、そのページを<strong>優先的に見てもらえる</strong> — 行列への割り込み申請のようなもので、立ち上がりが速くなる</li>
+          <li>1日にリクエストできる件数には上限がある（10件ほど）ので、<strong>価値の高いページから</strong>使う</li>
+        </ul>
+        <p><strong>方法:</strong> 画面上部の検索バーにURLを貼る → 検査結果が出たら「<strong>インデックス登録をリクエスト</strong>」ボタン（1件1〜2分かかる）。</p>
+        <p><strong>リクエスト対象（2026-08-26選定・静的2+在庫の多い店舗8）:</strong> 店舗ページは「尾道 ロードバイク レンタル」のような地域検索の受け皿になるため、在庫が多く中身が濃い順に選んだ。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ページ</th><th>URL</th></tr></thead>
+            <tbody>
+              <tr><td class="label">トップ</td><td><code>https://rincle.co.jp/</code></td></tr>
+              <tr><td class="label">検索</td><td><code>https://rincle.co.jp/search</code></td></tr>
+              <tr><td class="label">広島尾道（24台）</td><td><code>https://rincle.co.jp/shop_detail?shop=1784201033377x573162146841333060</code></td></tr>
+              <tr><td class="label">尼崎西昆陽（14台）</td><td><code>https://rincle.co.jp/shop_detail?shop=1784201041101x118677463101759970</code></td></tr>
+              <tr><td class="label">茨城つくば（12台）</td><td><code>https://rincle.co.jp/shop_detail?shop=1784201029340x628753700399960600</code></td></tr>
+              <tr><td class="label">大阪南河内（12台）</td><td><code>https://rincle.co.jp/shop_detail?shop=1784201030358x739738315518292000</code></td></tr>
+              <tr><td class="label">熊本駅（12台）</td><td><code>https://rincle.co.jp/shop_detail?shop=1784201031477x479744496774088500</code></td></tr>
+              <tr><td class="label">熊本南（12台）</td><td><code>https://rincle.co.jp/shop_detail?shop=1784201037190x235666585127260130</code></td></tr>
+              <tr><td class="label">京都西京極駅（12台）</td><td><code>https://rincle.co.jp/shop_detail?shop=1784201040957x106611676762389920</code></td></tr>
+              <tr><td class="label">愛媛松山市駅（11台）</td><td><code>https://rincle.co.jp/shop_detail?shop=1784201032411x680341710859929700</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="notes">
+          <li>自転車詳細（342ページ）は個別リクエストせず、sitemapからの自然な巡回に任せる（上限枠は店舗ページに使う）</li>
+        </ul>
+
+        <h4>日々どこを見るか</h4>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>左メニュー</th><th>見るもの</th><th>何がわかる</th></tr></thead>
+            <tbody>
+              <tr><td class="label">ページ</td><td>インデックス登録済みの数</td><td>408ページ中いくつ検索に載ったか — sitemap効果の答え合わせ。6月時点の2〜3ページからの伸びを見る</td></tr>
+              <tr><td class="label">検索パフォーマンス</td><td>表示回数・クリック数・平均掲載順位・検索語</td><td>どんな言葉で検索されて出ているか — 「ロードバイク軸」のKW戦略の実測</td></tr>
+              <tr><td class="label">サイトマップ</td><td>ステータス・検出ページ数</td><td>sitemapが正しく読まれ続けているか。再生成後の反映確認もここ</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="notes">
+          <li>インデックス数・表示回数・クリック数は月次レポートに自動掲載予定（ロボットの追加が済み次第、実装）</li>
+        </ul>
       </div>
 
     </div>
