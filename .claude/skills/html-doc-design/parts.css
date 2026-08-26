@@ -1,0 +1,412 @@
+/* ============================================================================
+   html-doc-design 拡張UI部品 CSS（parts.css）— 誌面エディトリアル版
+   ----------------------------------------------------------------------------
+   これは「拡張UI部品」だけを集めたファイル。
+   ・**資料ページは template.css だけで足りる。** 章ナビ・カード・用語解説・
+     アラート・表・コード・手順・チャート・スイムレーン・スライドの額は
+     すべて template.css 側にある（そちらが核部品の正本）。
+   ・このファイルは「画面の部品（ボタン・入力欄・タブ・モーダル・カンバン等）を
+     資料の中で見せたい時」用。**必要な部品だけコピーして使う**。全部を
+     読み込む必要はない。
+   ・template.css とクラス名は一切重複させていない（同じ役割の部品も作らない）。
+     使う時は template.css を先に読み込むこと（色トークンをここから参照する）。
+   ・色はすべて template.css の CSS変数（--accent / --ink / --paper / --line /
+     --line-soft / --surface / --ok / --danger / --info / --gold / --sub /
+     --text / --serif …）を使う。変数に該当が無い中間色だけ16進数で直書き。
+   ・状態は is- 接頭辞（.is-on / .is-open / .is-done / .is-now / .is-bad …）。
+   ・見本ページ: gallery.html ／ 見た目の正本: _source/ の .dc.html 群
+   ============================================================================ */
+
+/* ---------- アイコン（線画・角丸・線幅1.5。絵文字は使わない） ---------- */
+.ic{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.ic-md{width:20px;height:20px}
+.ic-sm{width:16px;height:16px}
+.icon-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:20px 14px}
+.icon-cell{display:flex;flex-direction:column;align-items:center;gap:8px}
+.icon-name{font-size:10.5px;color:var(--sub);text-align:center}
+
+/* ---------- パレット見本（色トークンの一覧） ---------- */
+.sw-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.sw{display:flex;flex-direction:column;gap:8px}
+.sw-chip{height:56px;border-radius:3px}
+.sw-chip-sm{height:40px;border-radius:3px}
+.sw-chip.is-pale,.sw-chip-sm.is-pale{border:1px solid var(--line)}
+.sw-name{font-size:12px;font-weight:700;color:var(--ink)}
+.sw-hex{font-size:11px;color:var(--sub)}
+.sw-note{display:flex;gap:24px;flex-wrap:wrap;font-size:11.5px;color:var(--sub)}
+
+/* ---------- 書体見本 ---------- */
+.spec-row{display:flex;align-items:baseline;gap:24px;flex-wrap:wrap}
+.spec-row.is-ruled{border-bottom:1px solid var(--line-soft);padding-bottom:14px}
+.spec-note{font-size:11px;color:var(--sub)}
+
+/* ---------- グリッド見本（12カラム・ガター24px） ---------- */
+.gridguide{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;height:72px}
+.gridcol{background:var(--accent-soft);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.gridnote{display:flex;gap:24px;flex-wrap:wrap;font-size:11px;color:var(--sub)}
+
+/* ---------- キャレットと選択 ---------- */
+.caret{display:inline-block;width:1.5px;height:18px;background:var(--ink);vertical-align:-3px}
+.text-sel{background:var(--accent-soft)}
+
+/* ---------- ボタン（主=墨・強い誘導=ブランド色。角丸3px・高さ44px） ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 26px;border:1px solid transparent;border-radius:3px;background:transparent;color:var(--ink);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.btn-main{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn-cta{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.btn-next{border-color:var(--ink);color:var(--ink)}
+.btn-link{padding:0 14px;border:none;color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.btn-off{background:#EFEAE3;border-color:var(--line-soft);color:#A9A199;cursor:default}
+.btn-danger{background:var(--danger);border-color:var(--danger);color:var(--paper)}
+.btn-quiet{border-color:var(--line);color:var(--text)}
+.btn-sm{height:40px;padding:0 20px;font-size:13px}
+.btn-row{height:auto;padding:12px 16px;background:var(--surface);font-size:13px;font-weight:400}
+.btn-del{border-color:var(--danger-line);background:#FDF3F4;color:var(--danger)}
+.btn-sq{width:44px;height:44px;padding:0;border-color:var(--line);background:var(--surface);color:var(--ink)}
+.btn-sq.is-open{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn-circle{width:36px;height:36px;padding:0;border-radius:50%;border-color:var(--line);background:var(--surface);color:var(--ink)}
+.btn-ico{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ---------- 入力欄と検索（枠は罫線1px・フォーカスで墨・エラーで紅） ---------- */
+.field{display:flex;flex-direction:column;gap:7px}
+.field-label{font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--text)}
+.field-label.is-bad{color:var(--danger)}
+.input{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:14px;color:var(--ink)}
+.input.is-ph{color:#A9A199}
+.input.is-focus{border-color:var(--ink)}
+.input.is-bad{border-color:var(--danger)}
+.field-err{font-size:11px;color:var(--danger)}
+.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:11px 18px;font-size:14px;color:#A9A199}
+.search-icon{width:17px;height:17px;stroke:var(--sub);fill:none;stroke-width:1.5;stroke-linecap:round;flex-shrink:0}
+
+/* ---------- チェックボックス（四角・墨塗りに白チェック・中間は横棒） ---------- */
+.chk{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--ink)}
+.chk-box{width:20px;height:20px;flex-shrink:0;border:1.5px solid var(--text);border-radius:3px;background:var(--surface);display:inline-flex;align-items:center;justify-content:center}
+.chk-box.is-on{border-color:var(--ink);background:var(--ink)}
+.chk-mark{width:13px;height:13px;stroke:var(--paper);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.chk-part{width:10px;height:2.4px;background:var(--paper);display:inline-block}
+
+/* ---------- ラジオボタン（丸・選択はブランド色の点） ---------- */
+.radio{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--ink)}
+.radio.is-on{font-weight:700}
+.radio.is-off{color:#A9A199}
+.radio-box{width:20px;height:20px;flex-shrink:0;border:1.5px solid var(--text);border-radius:50%;background:var(--surface);display:inline-flex;align-items:center;justify-content:center}
+.radio-box.is-on{border-color:var(--accent)}
+.radio.is-off .radio-box{border-color:var(--line-soft);background:#F3EFE9}
+.radio-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block}
+
+/* ---------- トグルスイッチ（オンはブランド色・設定の即時反映だけに使う） ---------- */
+.switch{display:inline-flex;align-items:center;gap:12px;font-size:14px;color:var(--ink)}
+.switch.is-on{font-weight:700}
+.switch-track{width:44px;height:24px;flex-shrink:0;border-radius:999px;background:#D9D1C7;display:inline-flex;align-items:center;padding:0 3px}
+.switch-track.is-on{background:var(--accent);justify-content:flex-end}
+.switch-knob{width:18px;height:18px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(38,34,30,.3);display:inline-block}
+
+/* ---------- スライダー（値は明朝で添える） ---------- */
+.slider{display:flex;align-items:center;gap:20px}
+.slider-rail{flex:1;height:2px;background:var(--line);position:relative}
+.slider-done{position:absolute;left:0;top:0;height:2px;background:var(--accent)}
+.slider-knob{position:absolute;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent)}
+.slider-val{font-family:var(--serif);font-size:18px;min-width:48px;text-align:right;color:var(--ink)}
+
+/* ---------- 数値スピナー（上下の段付きで数を送る） ---------- */
+.spin{display:inline-flex;align-items:stretch;border:1px solid var(--line);border-radius:3px;background:var(--surface);overflow:hidden}
+.spin-btn{width:40px;border:none;background:var(--paper);font-family:inherit;font-size:16px;color:var(--text);cursor:pointer}
+.spin-btn:first-child{border-right:1px solid var(--line-soft)}
+.spin-btn:last-child{border-left:1px solid var(--line-soft)}
+.spin-val{padding:11px 20px;font-family:var(--serif);font-size:17px;min-width:56px;text-align:center;color:var(--ink)}
+
+/* ---------- 右クリックメニュー（浮遊部品なので影あり） ---------- */
+.menu{background:var(--surface);border:1px solid var(--line);border-radius:4px;box-shadow:0 8px 24px -10px rgba(38,34,30,.25);min-width:240px;padding:6px 0}
+.menu-item{display:flex;justify-content:space-between;gap:24px;padding:10px 18px;font-size:13.5px;color:var(--ink)}
+.menu-item.is-on{background:var(--accent-soft)}
+.menu-item.is-danger{color:var(--danger)}
+.menu-key{font-size:12px;color:var(--sub)}
+.menu-sep{border-top:1px solid var(--line-soft);margin:6px 0}
+
+/* ---------- タブ（選択中はブランド色の下線） ---------- */
+.tabs{display:flex;gap:32px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.tabs-item{padding:8px 2px 12px;font-size:14.5px;color:var(--sub)}
+.tabs-item.is-on{font-weight:700;color:var(--ink);border-bottom:2px solid var(--accent);margin-bottom:-1px}
+
+/* ---------- ドロップダウン（閉じ/開き・選択行は淡いブランド面） ---------- */
+.dd{display:flex;flex-direction:column;min-width:220px}
+.dd-head{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:12px 16px;font-size:14px;min-width:220px;color:var(--ink)}
+.dd-head.is-open{border-color:var(--ink);border-radius:3px 3px 0 0}
+.dd-caret{width:14px;height:14px;stroke:var(--text);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.dd-head.is-open .dd-caret{stroke:var(--ink)}
+.dd-list{background:var(--surface);border:1px solid var(--line);border-top:none;border-radius:0 0 4px 4px;box-shadow:0 10px 26px -12px rgba(38,34,30,.3);padding:6px 0}
+.dd-item{padding:9px 16px;font-size:13.5px;color:var(--ink)}
+.dd-item.is-on{background:var(--accent-soft);font-weight:700}
+
+/* ---------- パンくず（現在地だけ墨の太字） ---------- */
+.crumbs{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13.5px}
+.crumbs-sep{color:#C9BFB4}
+.crumbs-cur{font-weight:700;color:var(--ink)}
+
+/* ---------- 段階ナビ（ウィザード。章ナビの親） ---------- */
+.wiz{display:flex;align-items:center;max-width:640px}
+.wiz-step{display:flex;flex-direction:column;align-items:center;gap:8px}
+.wiz-num{width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--sub);display:inline-flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px}
+.wiz-num.is-done{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.wiz-num.is-now{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.wiz-label{font-size:11px;color:var(--sub)}
+.wiz-step.is-done .wiz-label{color:var(--text)}
+.wiz-step.is-now .wiz-label{color:var(--ink);font-weight:700}
+.wiz-line{flex:1;height:1px;background:var(--line);margin:0 10px 22px}
+.wiz-line.is-done{background:var(--ink)}
+
+/* ---------- ドロワー（画面の端から引き出す目次） ---------- */
+.drawer-demo{width:420px;height:200px;border:1px solid var(--line);border-radius:4px;background:#F3EFE9;position:relative;overflow:hidden}
+.drawer-veil{position:absolute;inset:0;background:rgba(38,34,30,.28)}
+.drawer{position:absolute;top:0;left:0;bottom:0;width:180px;background:var(--paper);border-right:1px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:10px}
+.drawer-kicker{font-size:10px;letter-spacing:.18em;color:var(--accent);font-weight:700}
+.drawer-item{font-size:12px;color:var(--text);padding-left:10px}
+.drawer-item.is-on{font-weight:700;color:var(--ink);border-left:2px solid var(--accent);padding-left:8px}
+
+/* ---------- ページャ（現在ページは墨の塗り） ---------- */
+.pager{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px}
+.pager-link{text-decoration:none;padding:8px 12px}
+.pager-num{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+.pager-num.is-on{border-color:var(--ink);background:var(--ink);color:var(--paper);font-weight:700}
+.pager-gap{color:var(--sub);padding:0 4px}
+
+/* ---------- ヘッダー / フッターの帯（資料内で見せる時用） ---------- */
+.doc-head{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--ink);padding-bottom:12px}
+.doc-foot{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--ink);padding-top:12px;font-size:11px;color:var(--sub)}
+
+/* ---------- スクロールバー（細く・薄く・読む邪魔をしない） ---------- */
+.scrollbox{width:320px;height:120px;border:1px solid var(--line);border-radius:3px;background:var(--surface);position:relative;padding:14px 24px 14px 16px;font-size:12px;line-height:1.9;color:var(--sub)}
+.scrollbox-thumb{position:absolute;top:10px;right:5px;width:5px;height:46px;border-radius:99px;background:#C9BFB4}
+/* 実際にスクロールする箱に付ける版（幅5px・つまみは罫線色、ホバーで弱い文字色） */
+.thin-scroll{scrollbar-width:thin;scrollbar-color:#C9BFB4 transparent}
+.thin-scroll::-webkit-scrollbar{width:5px;height:5px}
+.thin-scroll::-webkit-scrollbar-track{background:transparent}
+.thin-scroll::-webkit-scrollbar-thumb{background:#C9BFB4;border-radius:99px}
+.thin-scroll::-webkit-scrollbar-thumb:hover{background:var(--sub)}
+
+/* ---------- ウィンドウ（資料内でアプリ画面を見せる額縁） ---------- */
+.win{width:480px;border:1px solid var(--line);border-radius:6px;background:var(--surface);overflow:hidden}
+.win-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line-soft);background:#F7F3EC}
+.win-dot{width:10px;height:10px;border-radius:50%;background:#C9BFB4;display:inline-block}
+.win-title{margin-left:8px;font-size:12px;color:var(--text)}
+.win-body{padding:20px;font-size:12.5px;color:var(--sub)}
+
+/* ---------- 確認ダイアログ（浮遊部品。破壊ボタンは紅） ---------- */
+.veil{background:rgba(38,34,30,.32);border-radius:6px;padding:40px;display:flex;justify-content:center}
+.dialog{background:var(--paper);border-radius:5px;padding:28px 30px;width:380px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 60px -20px rgba(38,34,30,.5)}
+.dialog-title{font-family:var(--serif);font-size:18px;color:var(--ink)}
+.dialog-body{font-size:13px;line-height:1.9;color:var(--text)}
+.dialog-acts{display:flex;justify-content:flex-end;gap:12px;padding-top:6px}
+
+/* ---------- アコーディオン（開いている行だけ ＋ が − になる） ---------- */
+.acc{border-top:1px solid var(--ink)}
+.acc-row{border-bottom:1px solid var(--line)}
+.acc-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 4px;font-size:14.5px;color:var(--text)}
+.acc-head.is-open{font-weight:700;color:var(--ink)}
+.acc-mark{font-family:var(--serif);font-size:18px;color:var(--sub)}
+.acc-head.is-open .acc-mark{color:var(--accent)}
+.acc-body{padding:0 4px 18px;font-size:13px;line-height:2;color:var(--text)}
+
+/* ---------- カルーセル（現在位置は点で示す） ---------- */
+.carousel{display:flex;flex-direction:column;gap:12px}
+.carousel-row{display:flex;align-items:center;gap:12px}
+.carousel-stage{flex:1;height:150px;border:1px solid var(--line);border-radius:4px;background:repeating-linear-gradient(45deg,#F3EFE9 0 10px,#EDE7DE 10px 20px);display:flex;align-items:center;justify-content:center}
+.carousel-tag{font-size:11px;letter-spacing:.14em;color:var(--sub);background:var(--paper);padding:4px 12px;border:1px solid var(--line);border-radius:999px}
+.carousel-dots{display:flex;justify-content:center;gap:8px}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:#C9BFB4;display:inline-block}
+.carousel-dot.is-on{width:20px;border-radius:99px;background:var(--accent)}
+
+/* ---------- 机まわり（フォルダの行+行アクション） ---------- */
+.fchip{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:3px;background:var(--surface);padding:12px 18px}
+.fchip-name{font-size:13px;font-weight:700;color:var(--ink)}
+.fchip-meta{font-size:11px;color:var(--sub)}
+
+/* ---------- アバター（頭文字+淡い面。写真は使わない） ---------- */
+.ava{width:40px;height:40px;flex-shrink:0;border-radius:50%;background:var(--accent);color:var(--paper);display:inline-flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px}
+.ava-ink{background:var(--ink);color:var(--paper)}
+.ava-soft{background:var(--accent-soft);color:var(--accent);border:1px solid #E4CDBB}
+.ava-lg{width:48px;height:48px;font-size:19px}
+.ava-sm{width:32px;height:32px;font-size:13px}
+.ava-num{font-family:inherit;font-size:11px;font-weight:700}
+.ava-stack{display:flex}
+.ava-stack .ava{border:2px solid var(--paper)}
+.ava-stack .ava+.ava{margin-left:-10px}
+
+/* ---------- ヒーローの見本（資料の顔。画像に頼らず罫線で組む） ---------- */
+.hdemo-title{font-family:var(--serif);font-size:38px;line-height:1.4;color:var(--ink)}
+.hdemo-lead{font-size:13.5px;line-height:2;color:var(--text);max-width:560px}
+.hdemo-rule{width:64px;height:1px;background:var(--ink);margin-top:4px}
+
+/* ---------- テンプレート（ページ雛形のワイヤー） ---------- */
+.wires{display:flex;gap:20px;flex-wrap:wrap}
+.wire{width:130px;display:flex;flex-direction:column;gap:8px}
+.wire-box{height:170px;border:1px solid var(--line);border-radius:3px;background:var(--surface);padding:12px;display:flex;flex-direction:column;gap:6px}
+.wire-cols{display:flex;gap:8px;flex:1}
+.wire-side{flex:1;border-left:1px solid var(--line);padding-left:8px;display:flex;flex-direction:column;gap:4px}
+.wire-hot{background:var(--accent)}
+.wire-ink{background:var(--ink)}
+.wire-soft{background:var(--line-soft)}
+.wire-face{background:var(--accent-soft)}
+.wire-label{font-size:10.5px;color:var(--sub);text-align:center}
+
+/* ---------- トースト（隅にぽんと出て消える通知。成功は墨・失敗は紅） ---------- */
+.toast{display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:4px;padding:14px 18px;box-shadow:0 14px 34px -14px rgba(38,34,30,.5);font-size:13.5px}
+.toast-bad{background:var(--danger)}
+.toast-icon{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+/* ---------- ツールチップ（用語解説の軽量版） ---------- */
+.tip-wrap{position:relative;display:inline-block}
+.tip{position:absolute;bottom:34px;left:0;background:var(--ink);color:var(--paper);font-size:12px;line-height:1.7;padding:10px 14px;border-radius:4px;width:250px}
+.tip-term{font-size:14.5px;border-bottom:1.5px dotted var(--accent);color:var(--ink);cursor:help}
+
+/* ---------- 進捗バー / 読み進みバーの見本 ---------- */
+.pbar{display:flex;align-items:center;gap:18px}
+.pbar-track{flex:1;height:6px;border-radius:99px;background:#E8E1D7}
+.pbar-fill{height:6px;border-radius:99px;background:var(--accent)}
+.pbar-fill.is-done{background:var(--ok)}
+.pbar-val{font-family:var(--serif);font-size:15px;min-width:44px;text-align:right;color:var(--ink)}
+.pbar-val.is-done{color:var(--ok)}
+.pbar-thin{display:block;height:3px;background:#E8E1D7}
+.pbar-thin i{display:block;height:3px;background:var(--accent)}
+
+/* ---------- ローディング（待ち時間が読めない時は回る輪+一言） ---------- */
+@keyframes parts-spin{to{transform:rotate(360deg)}}
+.spinner{width:30px;height:30px;flex-shrink:0;animation:parts-spin 1s linear infinite}
+.spinner-ring{fill:none;stroke:#E8E1D7;stroke-width:4}
+.spinner-arc{fill:none;stroke:var(--accent);stroke-width:4;stroke-linecap:round}
+.spinner-row{display:flex;align-items:center;gap:18px;font-size:13.5px;color:var(--text)}
+@media (prefers-reduced-motion:reduce){.spinner{animation:none}}
+
+/* ---------- 空の状態（理由と次の一歩を添える） ---------- */
+.empty-state{border:1px dashed #C9BFB4;border-radius:4px;background:var(--surface);padding:40px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.empty-state-icon{width:30px;height:30px;stroke:#C9BFB4;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.empty-state-title{font-family:var(--serif);font-size:16px;color:var(--ink)}
+.empty-state-note{font-size:12.5px;line-height:1.9;color:var(--sub)}
+
+/* ---------- 受信箱リスト（未読は点+太字・時刻は右端） ---------- */
+.inbox{border-top:1px solid var(--ink);background:var(--surface)}
+.inbox-row{display:flex;align-items:center;gap:14px;padding:15px 16px;border-bottom:1px solid var(--line-soft)}
+.inbox-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.inbox-row.is-unread .inbox-dot{background:var(--accent)}
+.inbox-title{flex:1;font-size:13.5px;color:var(--text)}
+.inbox-row.is-unread .inbox-title{font-weight:700;color:var(--ink)}
+.inbox-time{font-size:11.5px;color:var(--sub)}
+
+/* ---------- カンバン（列=状態。列名はキッカー+件数） ---------- */
+.kanban{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.kanban-col{display:flex;flex-direction:column;gap:10px}
+.kanban-head{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--ink);padding-bottom:8px}
+.kanban-head.is-now{border-bottom-color:var(--accent)}
+.kanban-name{font-size:11px;letter-spacing:.16em;font-weight:700;color:var(--text)}
+.kanban-count{font-family:var(--serif);font-size:13px;color:var(--sub)}
+.kanban-head.is-now .kanban-name,.kanban-head.is-now .kanban-count{color:var(--accent)}
+.kanban-card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px 16px;font-size:12.5px;line-height:1.7;color:var(--ink)}
+.kanban-card.is-now{border-color:var(--accent)}
+.kanban-card.is-done{background:#F7F3EC;border-color:var(--line-soft);color:var(--sub);text-decoration:line-through}
+.kanban-tag{font-size:10.5px;font-weight:700;color:var(--accent);margin-top:6px}
+.kanban-meta{font-size:10.5px;color:var(--sub);margin-top:6px}
+
+/* ---------- ガント（進行中だけブランド色・予定は罫線枠） ---------- */
+.gantt{display:flex;flex-direction:column}
+.gantt-head,.gantt-row{display:grid;grid-template-columns:130px repeat(4,1fr)}
+.gantt-head{font-size:10.5px;letter-spacing:.12em;color:var(--sub);border-bottom:1px solid var(--ink);padding-bottom:8px}
+.gantt-row{align-items:center;height:44px;border-bottom:1px solid var(--line-soft)}
+.gantt-name{font-size:12.5px;font-weight:700;color:var(--ink)}
+.gantt-bar{height:12px;border-radius:2px;background:var(--ink)}
+.gantt-bar.is-now{background:var(--accent)}
+.gantt-bar.is-plan{background:transparent;border:1px solid var(--accent)}
+.gantt-legend{display:flex;gap:20px;flex-wrap:wrap;font-size:10.5px;color:var(--sub);padding-top:10px}
+.gantt-key{display:inline-block;width:12px;height:8px;border-radius:2px;background:var(--ink)}
+.gantt-key.is-now{background:var(--accent)}
+.gantt-key.is-plan{background:transparent;border:1px solid var(--accent)}
+
+/* ---------- 統計カードの並び（ダッシュボード。数字は明朝・注は日付つき） ---------- */
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;display:flex;flex-direction:column;gap:4px}
+.kpi-label{font-size:10.5px;letter-spacing:.16em;font-weight:700;color:var(--accent)}
+.kpi-val{display:flex;align-items:baseline;gap:6px}
+.kpi-num{font-family:var(--serif);font-size:40px;line-height:1.1;color:var(--ink)}
+.kpi-unit{font-size:12px;color:var(--sub)}
+.kpi-note{font-size:10.5px;color:var(--sub)}
+
+/* ---------- タグの×（template.css の .badge と併用） ---------- */
+.tag-x{color:var(--sub);margin-left:6px}
+
+/* ---------- チャートの補助色（変数に無い下地色をクラス化） ---------- */
+.ct-ring{fill:none;stroke-width:2.4}
+.ct-rest-line{stroke:#EAE2D6}
+.ct-a{stroke:var(--accent)}
+.ct-b{stroke:var(--ink)}
+.ct-rest{background:#EAE2D6}
+.ct-lose{background:#C9BFB4}
+
+/* ---------- 番号つきの約束事リスト（明朝の番号+一文） ---------- */
+.numnote{display:flex;flex-direction:column;gap:10px;font-size:13.5px;line-height:1.9;color:var(--text)}
+.numnote-row{display:flex;gap:12px}
+.numnote-n{font-family:var(--serif);color:var(--accent);flex-shrink:0}
+
+/* ---------- URL構造図（コード面の上に色分け+下線） ---------- */
+.urlmap{background:var(--code-bg);border-radius:5px;padding:18px 22px;font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:13px;line-height:2.2;overflow-x:auto}
+.urlmap-line{white-space:nowrap}
+.u-dim{color:#A89A8E}
+.u-path{color:#9FC5EA;border-bottom:1.5px solid #9FC5EA}
+.u-id{color:#F0B08E;border-bottom:1.5px solid var(--accent)}
+
+/* ============================================================================
+   スライドの型（額縁は template.css の .slide / .slide-ft / .ghost を使う）
+   ※ここは元データと同じ実寸。.slide に max-width:560px と font-size:15px を
+     付けた状態で正しく見える（.slide-ft が .6em=9px になる）。
+     大きく映す時は各値を em に読み替える。
+   ============================================================================ */
+.sd-cover{flex:1;display:flex;flex-direction:column;gap:12px;padding:40px 44px 0}
+.sd-cover-top{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--ink);padding-bottom:10px}
+.sd-cover-body{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+.sd-title{font-family:var(--serif);font-size:34px;line-height:1.4;color:var(--ink)}
+.sd-rule{width:48px;height:2px;background:var(--accent)}
+.sd-lead{font-size:11.5px;line-height:1.9;color:var(--text);max-width:360px}
+.sd-chapter{flex:1;display:flex;align-items:center;gap:24px;padding:0 44px}
+.sd-eyebrow{font-size:9.5px;letter-spacing:.2em;font-weight:700;color:var(--accent)}
+.sd-ch-name{font-family:var(--serif);font-size:28px;color:var(--ink)}
+.sd-ch-sub{font-size:11px;color:var(--sub)}
+.sd-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 56px;text-align:center}
+.sd-msg{font-family:var(--serif);font-size:26px;line-height:1.7;color:var(--ink)}
+.sd-hair{width:48px;height:1px;background:var(--ink)}
+.sd-note{font-size:11px;color:var(--sub)}
+.sd-nums{flex:1;display:flex;align-items:center;justify-content:center;gap:48px;padding:0 44px}
+.sd-bignum{font-family:var(--serif);font-size:96px;line-height:1;color:var(--accent)}
+.sd-bignum-label{font-size:11px;letter-spacing:.14em;color:var(--text)}
+.sd-vline{width:1px;height:110px;background:var(--line)}
+.sd-mini{display:flex;flex-direction:column;gap:10px;font-size:12px;color:var(--text)}
+.sd-mini-row{display:flex;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line-soft);padding-bottom:6px}
+.sd-mini-row strong{font-family:var(--serif)}
+.sd-src{font-size:9.5px;color:#A9A199}
+.sd-split{flex:1;display:grid;grid-template-columns:1fr 1.1fr;gap:28px;padding:34px 44px 30px}
+.sd-claim{display:flex;flex-direction:column;gap:10px;justify-content:center}
+.sd-claim-title{font-family:var(--serif);font-size:21px;line-height:1.6;color:var(--ink)}
+.sd-claim-note{font-size:10.5px;line-height:1.8;color:var(--text)}
+.sd-tbl{display:flex;flex-direction:column;justify-content:center;font-size:10.5px}
+.sd-tbl-head{display:grid;grid-template-columns:1fr .5fr;border-bottom:1.5px solid var(--ink);padding-bottom:5px;letter-spacing:.12em;color:var(--sub);font-size:8.5px}
+.sd-tbl-row{display:grid;grid-template-columns:1fr .5fr;border-bottom:1px solid var(--line-soft);padding:7px 0}
+.sd-tbl-row:last-child{border-bottom:none}
+.sd-tbl-row span:first-child{font-weight:700;color:var(--ink)}
+.sd-tbl-num{text-align:right;font-family:var(--serif);color:var(--accent)}
+.sd-pane{flex:1;display:flex;flex-direction:column;gap:14px;padding:30px 44px}
+.sd-pane-title{font-family:var(--serif);font-size:17px;color:var(--ink)}
+.sd-vs{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1}
+.sd-vs-box{border-radius:4px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.sd-vs-box.is-bad{border:1px solid var(--danger-line);background:#FDFAF9}
+.sd-vs-box.is-good{border:1px solid var(--ok-line);background:#FBFDFB}
+.sd-vs-head{display:flex;align-items:center;gap:8px}
+.sd-vs-mark{width:18px;height:18px;border-radius:50%;color:var(--paper);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.sd-vs-box.is-bad .sd-vs-mark{background:var(--danger)}
+.sd-vs-box.is-good .sd-vs-mark{background:var(--ok)}
+.sd-vs-name{font-size:12px;font-weight:700}
+.sd-vs-box.is-bad .sd-vs-name{color:var(--danger-text)}
+.sd-vs-box.is-good .sd-vs-name{color:var(--ok-text)}
+.sd-vs-note{font-size:10.5px;line-height:1.8;color:var(--text)}
+.sd-todo{display:flex;flex-direction:column;border-top:1.5px solid var(--ink)}
+.sd-todo-row{display:grid;grid-template-columns:1fr 100px 90px;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:11px}
+.sd-todo-row:last-child{border-bottom:none}
+.sd-todo-row span:first-child{font-weight:700;color:var(--ink)}
+.sd-todo-who{color:var(--text)}
+.sd-todo-when{text-align:right;font-family:var(--serif);color:var(--accent)}

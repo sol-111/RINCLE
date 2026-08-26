@@ -1,0 +1,329 @@
+<!-- HTML資料デザインシステム 部品雛形集 — 誌面エディトリアル版（コピーして使う。CSSは template.css） -->
+
+<!-- ============ Webフォント（<head>の<title>直後・必須） ============ -->
+<!-- 見出し=Shippori Mincho（明朝）、本文=Noto Sans JP。オフライン時はシステムフォントに落ちる -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- ============ SVGアイコンスプライト（<body>先頭・使い方: <svg class="icon"><use href="#i-check"/></svg>） ============ -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-api" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><polyline points="16 5 20 9 16 13"/><line x1="20" y1="15" x2="4" y2="15"/><polyline points="8 11 4 15 8 19"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><polyline points="21 3 21 8 16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13"/><path d="M22 2 15 21 11 13 3 9Z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><line x1="4.5" y1="6" x2="4.5" y2="6"/><line x1="4.5" y1="12" x2="4.5" y2="12"/><line x1="4.5" y1="18" x2="4.5" y2="18"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z"/><line x1="9" y1="4" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="20"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<!-- ============ 読み進みバー（<body>先頭） ============ -->
+<div class="progress" aria-hidden="true"><i></i></div>
+
+<!-- ============ ヒーロー（全幅・上下の墨罫線で締める。ロゴパスは階層に合わせる） ============ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../assets/logo.png" alt="ブランド名">
+        <span class="hero-kicker">BRAND — カテゴリ</span>
+      </div>
+      <span class="hero-no">資料 07</span>
+    </div>
+    <h1>ページタイトル</h1>
+    <p class="lead">1〜2文のリード。誰向けに何をまとめた資料か。</p>
+    <div class="hero-meta">最終更新 2026-08-21（更新内容の一言）</div>
+  </div>
+</div>
+
+<!-- ============ 章ナビ（全ページ必須・アンカー版。項目最大8個=4列×2行） ============ -->
+<nav class="flow">
+  <a href="#step1" class="cur"><span class="fnum">1</span><span class="ft">章タイトル</span><span class="fd">一言説明</span></a>
+  <a href="#step2"><span class="fnum">2</span><span class="ft">章タイトル</span><span class="fd">一言説明</span></a>
+</nav>
+
+<!-- ============ 章ナビ型タブ（長いページ用。data-target=パネルid・scriptは末尾） ============ -->
+<nav class="flow-tabs">
+  <button class="tab-btn active" data-target="panel-a"><span class="fnum">1</span><span class="ft">タブ名A</span><span class="fd">一言説明</span></button>
+  <button class="tab-btn" data-target="panel-b"><span class="fnum">2</span><span class="ft">タブ名B</span><span class="fd">一言説明</span></button>
+</nav>
+<div class="tab-panel active" id="panel-a">...</div>
+<div class="tab-panel" id="panel-b">...</div>
+
+<!-- ============ セクション見出し（薄い大番号+明朝） ============ -->
+<div class="section" id="step1">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="sh-body"><h2>章タイトル</h2><div class="sh-sub">サブ説明（キッカー）</div></div>
+  </div>
+  ...
+</div>
+
+<!-- ============ 用語解説 ============ -->
+<div class="term">
+  <div class="term-name">Data API <span class="term-tag">— 用語</span></div>
+  <div class="t-body">日常語に開いた説明文。</div>
+</div>
+
+<!-- ============ 小見出し分節（章内のテーマ区切り。キッカーは省略可。箱で囲うのは不可=用語解説と紛れる） ============ -->
+<div class="sub-item">
+  <div class="kick">テーマの予告の一言</div>
+  <h4>テーマの見出し</h4>
+  <p>本文。中に表・手順・アラートを入れてよい。</p>
+</div>
+
+<!-- ============ アラート3種（補足=藍/確認=緑/警告=紅） ============ -->
+<div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>補足:</strong> 本文</span></div>
+<div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>確認ポイント:</strong> 本文</span></div>
+<div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><strong>警告:</strong> 本文</span></div>
+
+<!-- ============ ×○対比 ============ -->
+<div class="compare">
+  <div class="compare-box bad"><div class="cb-head"><span class="cb-mark">×</span>ダメな案</div><p>理由</p></div>
+  <div class="compare-box good"><div class="cb-head"><span class="cb-mark">○</span>採用案</div><p>理由</p></div>
+</div>
+
+<!-- ============ 表（項目名=明朝 td.label・数値=td.num・優先度バー） ============ -->
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>ページ</th><th>URL</th><th style="text-align: right;">優先度</th></tr></thead>
+    <tbody>
+      <tr><td class="label">トップ</td><td><code>/</code></td><td class="num">1.0</td></tr>
+      <tr><td class="label">店舗詳細</td><td><code>/shop_detail?shop=ID</code></td>
+          <td><div class="pri" style="justify-content: flex-end;"><span class="bar" style="width: 80px;"></span><span class="pv">0.8</span></div></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ 前月比較表（.table-mom: グループ行で分節・当月=墨/前月=グレー/増減=意味色。増えたら悪い指標は色を反転） ============ -->
+<div class="table-wrap">
+  <table class="table-mom">
+    <thead><tr><th>指標</th><th class="num">当月</th><th class="num">前月</th><th class="num">前月比</th></tr></thead>
+    <tbody>
+      <tr class="tgroup"><td colspan="4">グループ名</td></tr>
+      <tr><td class="label">良い指標</td><td class="num">11</td><td class="num prev">6</td><td class="num up">+83.3%</td></tr>
+      <tr><td class="label">悪化した指標</td><td class="num">6</td><td class="num prev">3</td><td class="num down">+100.0%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ コードブロック（唯一のダーク面） ============ -->
+<div class="codeblock"><pre><span class="cm"># コメント</span>
+command --option <span class="hl">強調</span> <span class="hl2">二次強調</span></pre></div>
+
+<!-- ============ 番号つき手順 / 注意リスト ============ -->
+<ol class="steps">
+  <li>手順1</li>
+  <li>手順2</li>
+</ol>
+<ul class="notes">
+  <li>注意事項（※印で表示される）</li>
+</ul>
+
+<!-- ============ まとめ帯（墨・ページ内で唯一の濃い塗り） ============ -->
+<div class="recap">
+  <h2>運用のまとめ</h2>
+  <div class="r-flow">
+    <span class="r-chip">手順A</span><span class="r-arr">→</span>
+    <span class="r-chip hot">仕上げ</span>
+  </div>
+  <p>補足。</p>
+</div>
+
+<!-- ============ ドーナツチャート（線2.4・中央は数字だけ・出典は凡例側） ============ -->
+<div class="card">
+  <div class="chart">
+    <svg viewBox="0 0 42 42" role="img" aria-label="構成比">
+      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"></circle>
+      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="86.4 13.6" stroke-dashoffset="25"></circle>
+      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-dasharray="12.9 87.1" stroke-dashoffset="-61.4"></circle>
+      <text x="21" y="21" text-anchor="middle" class="big">433</text>
+    </svg>
+    <div class="cl">
+      <div><i style="background: var(--accent);"></i>系列A<strong>374</strong></div>
+      <div><i style="background: var(--ink);"></i>系列B<strong>56</strong></div>
+      <div><i style="background: #EAE2D6;"></i>系列C（残余=下地色）<strong>3</strong></div>
+      <div class="src" style="border-bottom: none;">単位: URL ／ 出典: 2026-08-20 実測</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 横棒グラフ / 統計数字 ============ -->
+<div class="hbar"><div style="font-size: 13px; font-weight: 700;">勝った側</div><div class="track"><div class="fill" style="width: 100%;"></div></div><div class="val">10件</div></div>
+<div class="hbar"><div style="font-size: 13px; color: var(--text);">負けた側</div><div class="track"><div class="fill" style="width: 40%; background: #C9BFB4;"></div></div><div class="val" style="color: var(--sub);">4件</div></div>
+<div class="stat"><div class="n hot">433</div><div class="l">ラベル（日付つき出典）</div></div>
+
+<!-- ============ 統計カード列（KPIの見せ場。ラベル→明朝特大→前月比の順・.d.up=緑/.d.down=紅） ============ -->
+<div class="stat-row">
+  <div class="stat"><span class="l">指標名</span><span class="n hot">11<small>件</small></span><span class="d up">+83.3%（前月比）</span></div>
+  <div class="stat"><span class="l">指標名</span><span class="n">¥75,443</span><span class="d down">-39.8%（前月比）</span></div>
+  <div class="stat"><span class="l">指標名</span><span class="n">41<small>人</small></span><span class="d up">+310.0%（前月比）</span></div>
+</div>
+
+<!-- ============ 横棒ペア（当月×前月の2時点比較。棒の幅=ペア内最大を100%に） ============ -->
+<div class="bars">
+  <div class="brow"><span class="bl">指標名</span><div class="bpair">
+    <div class="bline"><div class="b cur" style="width:100%"></div><span class="bv">11件</span></div>
+    <div class="bline"><div class="b prev" style="width:55%"></div><span class="bv">6件<small>前月</small></span></div>
+  </div></div>
+</div>
+<div class="bars-legend"><span><i style="background:var(--accent)"></i>当月</span><span><i style="background:#EAE2D6"></i>前月</span></div>
+
+<!-- ============ ファネル（段階の絞り込み。段の濃さは.f2/.f3で明示指定・段間に転換率） ============ -->
+<div class="funnel">
+  <div class="frow"><div class="fbar" style="width:100%">入口の母数</div><span class="fv">51</span></div>
+  <div class="fconv">完了率 22%</div>
+  <div class="frow"><div class="fbar f2" style="width:22%"></div><span class="fv">11</span><span class="fl">到達（日付つき出典）</span></div>
+</div>
+
+<!-- ============ スイムレーン（横=フェーズ/縦=役割。例外列=ex・お金の行=money） ============ -->
+<div class="lane-wrap">
+  <div class="lanes" style="grid-template-columns: 96px repeat(3, minmax(0,1fr));">
+    <div class="lane-corner">レーン</div>
+    <div class="lane-head">1 予約時<span class="sub">補足</span></div>
+    <div class="lane-head ex">例外: キャンセル時<span class="sub">発生した場合のみ</span></div>
+    <div class="lane-head">2 当日<span class="sub">店頭</span></div>
+
+    <div class="lane-label user"><i></i>ユーザー</div>
+    <div class="lane-cell">予約を確定</div>
+    <div class="lane-cell ex">オンラインで取消</div>
+    <div class="lane-cell">来店して受付</div>
+
+    <div class="lane-label sys"><i></i>システム</div>
+    <div class="lane-cell">予約を登録</div>
+    <div class="lane-cell ex">予約を取消</div>
+    <div class="lane-cell"><strong>全額を決済</strong></div>
+
+    <div class="lane-label money"><i></i>お金の動き</div>
+    <div class="lane-cell money">¥0</div>
+    <div class="lane-cell ex money" style="background: var(--gold-soft);">¥0</div>
+    <div class="lane-cell money">全額<small>貸出開始時</small></div>
+  </div>
+</div>
+<div class="legend">
+  <span><i style="background: var(--info);"></i>ユーザー操作</span>
+  <span><i style="background: var(--ok);"></i>店舗操作</span>
+  <span><i style="background: var(--accent);"></i>システム・自動処理</span>
+  <span><i style="background: var(--gold);"></i>お金の動き</span>
+  <span><i style="background: var(--danger);"></i>例外・異常系</span>
+</div>
+
+<!-- ============ 横フロー（.swim: 行=役割・ピルチップの流れ。判定=decision・強調=hot・エラー=error・分岐=swim-branch） ============ -->
+<div class="swim"><div class="swim-inner">
+  <div class="swim-row">
+    <div class="swim-label user"><i></i>役割名</div>
+    <div class="swim-track">
+      <div class="swim-node">開始</div>
+      <div class="swim-arrow"></div>
+      <div class="swim-node decision">判定?</div>
+      <div class="swim-arrow"></div>
+      <div class="swim-branch">
+        <div><div class="swim-branch-label ok">OK</div><div class="swim-node hot" style="margin-top:4px">到達点</div></div>
+        <div><div class="swim-branch-label ng">NG</div><div class="swim-node error" style="margin-top:4px">エラー時の動き</div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ============ 役割つき縦フロー（.pflow: 図の下の「詳細」に。番号丸=役割色の輪郭・注記は左罫） ============ -->
+<div class="pflow">
+  <div class="pflow-step">
+    <div class="pflow-dot user">1</div>
+    <div class="pflow-body">
+      <div class="pflow-actor user">役割名</div>
+      <div class="pflow-text">やること</div>
+      <div class="pflow-note">補足・条件分岐など</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ フェーズ帯 / 縦フロー（分岐） ============ -->
+<div class="phases">
+  <div class="phase done"><span class="pn">Phase 1</span><span class="pt">完了した工程</span><span class="ps">完了（7月）</span></div>
+  <div class="phase now"><span class="pn">Phase 2</span><span class="pt">今の工程</span><span class="ps">進行中</span></div>
+  <div class="phase"><span class="pn">Phase 3</span><span class="pt">次の工程</span><span class="ps">予定</span></div>
+</div>
+<div style="display: flex; flex-direction: column;">
+  <div class="fbox">作業する</div>
+  <div class="farr">↓</div>
+  <div class="fbox q">確認は通った？</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 6px;">
+    <div><div class="farr" style="color: var(--ok);">はい ↓</div><div class="fbox yes">次へ進む</div></div>
+    <div><div class="farr" style="color: var(--danger);">いいえ ↓</div><div class="fbox no">見直す</div></div>
+  </div>
+</div>
+
+<!-- ============ スライド（16:9・共通下枠=左ブランド/右ページ番号。1枚1メッセージ・表は5行まで） ============ -->
+<div class="slide" style="max-width: 960px; font-size: 16px;">
+  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1em; padding: 0 10%; text-align: center;">
+    <div class="kicker">結論</div>
+    <div style="font-family: var(--serif); font-size: 2.2em; line-height: 1.7; color: var(--ink);">1枚に言いたいことは1つ</div>
+    <div style="width: 48px; height: 1px; background: var(--ink);"></div>
+    <div style="font-size: .8em; color: var(--sub);">根拠の一言</div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span>06 / 12</span></div>
+</div>
+<!-- 章とびら: <div class="ghost" style="font-size: 8em;">02</div> を左に置き、右にCHAPTERキッカー+明朝章名 -->
+<!-- ビッグナンバー: .stat の特大版（明朝96px+出典小） / 締め: 宿題表（やること・担当・期日の3列） -->
+
+<!-- ============ footer ============ -->
+<footer>正本: path/to/source.md（md更新時はこのHTMLも同期すること）</footer>
+
+<!-- ============ 演出スクリプト（</body>直前・読み進みバー+ふわっと表示+章ナビ現在地） ============ -->
+<script>
+(function(){
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // 章ナビの現在地（読み位置より上の最後の章を点灯。最上部では消灯）
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var updateCur = function(){
+      var line = window.innerHeight * 0.3;
+      var cur = null;
+      map.forEach(function(m){ if (m[1].getBoundingClientRect().top <= line) cur = m; });
+      links.forEach(function(l){ l.classList.remove('cur'); });
+      if (cur) cur[0].classList.add('cur');
+    };
+    addEventListener('scroll', updateCur, {passive:true}); updateCur();
+  }
+})();
+</script>
+
+<!-- ============ タブ切替スクリプト（タブページのみ・</body>直前） ============ -->
+<script>
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  function openTab(id){
+    tabBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.id === id); });
+    window.scrollTo({top: 0});
+  }
+  tabBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      openTab(b.dataset.target);
+      history.replaceState(null, '', '#' + b.dataset.target);
+    });
+  });
+  if (location.hash && document.getElementById(location.hash.slice(1))) openTab(location.hash.slice(1));
+</script>

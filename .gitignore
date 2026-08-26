@@ -25,7 +25,11 @@ Thumbs.db
 ~$*
 
 # Claude Code
-.claude/
+# .claudeは基本無視。デザインスキル（html-doc-design）だけチーム共有のため追跡する
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/html-doc-design/
 
 # Bubbleエクスポート（SendGrid/Pay.JPのAPIキー等を含むためコミット禁止・別マシンへは手動転送）
 documents/rincle.bubble

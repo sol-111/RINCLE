@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>html-doc-design 使い方ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* HTML資料デザインシステム CSSテンプレート — 誌面エディトリアル版（2026-08-21全面改定）
+   正本の見た目: デザインシステムキャンバス（RINCLE デザインシステム）
+   ※Webフォント必須: <head>にShippori Mincho+Noto Sans JPのlinkを入れる（snippets.html冒頭参照）
+   ※カラートークンはRINCLE値。案件ごとに --accent 系をブランドから導出して差し替える
+     （原色をそのまま使わず、彩度を落とした「焦がしトーン」にするのがこの様式の鍵。RINCLE: #F95320 → #B8532F） */
+
+:root{
+  --paper:#FBF9F5;          /* 紙: ページ背景 */
+  --ink:#26221E;            /* 墨: 見出し・強い罫線 */
+  --text:#57504A;           /* 本文 */
+  --sub:#8B8279;            /* 弱い文字・注記 */
+  --accent:#B8532F;         /* 焦がしブランド色（差し色） */
+  --accent-deep:#8F3E20;    /* ホバー等の濃い側 */
+  --accent-soft:#F3E6DC;    /* 淡いブランド面（選択・ホバー） */
+  --accent-faint:#F7F1EA;   /* さらに淡い面（行ホバー・現在地） */
+  --line:#DCD3C8;           /* 罫線（強） */
+  --line-soft:#E5DDD2;      /* 罫線（弱） */
+  --surface:#FFFFFF;        /* 白面 */
+  --ok:#3E6B4F;   --ok-soft:#EDF4EE;   --ok-line:#C6DCCB;   --ok-text:#2C5138;
+  --danger:#A8323E; --danger-soft:#F9EDEE; --danger-line:#E8C9CD; --danger-text:#7E2630;
+  --info:#3B5B84;  --info-soft:#EEF2F7;  --info-line:#CBD7E5;  --info-text:#2E4869;
+  --gold:#C99A2E;  --gold-text:#8F5A0A;  --gold-soft:#F7EFDF;
+  --code-bg:#221B16;
+  --serif:'Shippori Mincho',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans JP',-apple-system,BlinkMacSystemFont,'Hiragino Sans',Meiryo,sans-serif;background:var(--paper);color:var(--text);line-height:2;-webkit-font-smoothing:antialiased;font-feature-settings:'palt' 1}
+table{font-variant-numeric:tabular-nums}
+strong{color:var(--ink)}
+a{color:var(--accent);text-underline-offset:4px}
+a:hover{color:var(--accent-deep)}
+
+/* ---------- ヒーロー（全幅・罫線で締める） ---------- */
+.hero{background:var(--paper);border-bottom:1px solid var(--line);padding:56px 40px 92px}
+.hero-inner{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:0}
+.hero-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ink);padding-bottom:14px}
+.hero-brand{display:flex;align-items:center;gap:12px}
+.hero-logo{width:30px;height:30px;border-radius:8px}
+.hero-kicker{font-size:12px;letter-spacing:.22em;color:#6E675F}
+.hero-no{font-family:var(--serif);font-size:13px;letter-spacing:.18em;color:var(--accent)}
+.hero h1{font-family:var(--serif);font-size:52px;font-weight:600;line-height:1.4;color:var(--ink);letter-spacing:.02em;margin-top:52px}
+.hero p.lead{font-size:15px;line-height:2.1;color:var(--text);margin-top:20px}
+.hero .hero-meta{font-size:12px;color:var(--sub);margin-top:14px}
+
+/* ---------- 章ナビ（ヒーロー下・全ページ必須） ---------- */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);margin:-64px auto 48px;position:relative;z-index:2;max-width:1080px;background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:4px;overflow:hidden}
+.flow a{display:flex;flex-direction:column;gap:5px;text-decoration:none;color:inherit;padding:20px 22px;border-left:1px solid var(--line-soft);transition:background .15s}
+.flow a:nth-child(4n+1){border-left:none}
+.flow a:nth-child(n+5){border-top:1px solid var(--line-soft)}
+.flow a:hover{background:var(--accent-faint)}
+.flow a.cur{background:var(--accent-faint)}
+.flow .fnum{font-family:var(--serif);font-size:20px;color:var(--text)}
+.flow a.cur .fnum{color:var(--accent)}
+.flow .ft{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.5}
+.flow .fd{font-size:11px;color:var(--sub);line-height:1.6}
+
+/* 章ナビの最終行に空きマスがある時（項目数が4の倍数でない時）も罫線を通す:
+   残り幅いっぱいの埋めマスを::afterで作る。2段以上ある時だけ上罫線もつける */
+.flow:has(> a:nth-child(4n+1):last-child)::after,
+.flow-tabs:has(> .tab-btn:nth-child(4n+1):last-child)::after{content:"";grid-column:span 3/-1;border-left:1px solid var(--line-soft)}
+.flow:has(> a:nth-child(4n+2):last-child)::after,
+.flow-tabs:has(> .tab-btn:nth-child(4n+2):last-child)::after{content:"";grid-column:span 2/-1;border-left:1px solid var(--line-soft)}
+.flow:has(> a:nth-child(4n+3):last-child)::after,
+.flow-tabs:has(> .tab-btn:nth-child(4n+3):last-child)::after{content:"";grid-column:span 1/-1;border-left:1px solid var(--line-soft)}
+.flow:has(> a:nth-child(5))::after,
+.flow-tabs:has(> .tab-btn:nth-child(5))::after{border-top:1px solid var(--line-soft)}
+
+/* 章ナビ型タブ（見た目は.flowと同一・クリックでパネル切替） */
+.flow-tabs{display:grid;grid-template-columns:repeat(4,1fr);margin:-64px auto 48px;position:relative;z-index:2;max-width:1080px;background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:4px;overflow:hidden}
+.tab-btn{display:flex;flex-direction:column;gap:5px;text-align:left;background:var(--surface);border:none;border-left:1px solid var(--line-soft);padding:20px 22px;cursor:pointer;font-family:inherit;color:inherit;transition:background .15s}
+.tab-btn:nth-child(4n+1){border-left:none}
+.tab-btn:nth-child(n+5){border-top:1px solid var(--line-soft)}
+.tab-btn:hover{background:var(--accent-faint)}
+.tab-btn .fnum{font-family:var(--serif);font-size:20px;color:var(--text)}
+.tab-btn .ft{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.5}
+.tab-btn .fd{font-size:11px;color:var(--sub);line-height:1.6}
+.tab-btn.active{background:var(--accent-faint)}
+.tab-btn.active .fnum{color:var(--accent)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+.container{max-width:1080px;margin:0 auto;padding:36px 28px 80px}
+
+/* ---------- セクション（薄い大番号+明朝見出し） ---------- */
+.section{margin-bottom:0;padding:56px 0 40px;scroll-margin-top:20px}
+.container > .section:nth-of-type(odd),
+.tab-panel > .section:nth-of-type(odd){background:var(--surface);box-shadow:0 0 0 100vmax var(--surface);clip-path:inset(0 -100vmax)}
+.section > p{margin:22px 0}
+.section-header{display:flex;align-items:flex-end;gap:24px;margin-bottom:40px}
+.section-num{font-family:var(--serif);font-size:88px;line-height:.9;font-weight:700;color:rgba(38,34,30,.08);flex-shrink:0}
+.section-header .sh-body{display:flex;flex-direction:column;gap:6px;padding-bottom:6px}
+.section-header h2{font-family:var(--serif);font-size:30px;font-weight:600;color:var(--ink);line-height:1.5}
+.section-header .sh-sub{font-size:12.5px;letter-spacing:.08em;color:var(--accent)}
+h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);margin:44px 0 18px}
+h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin:26px 0 12px;line-height:1.6}
+
+/* ---------- カード（白面+罫線。影は浮遊部品のみ） ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:24px 26px;margin:28px 0}
+.card.sel{border-color:var(--accent)}
+.kicker{font-size:10.5px;letter-spacing:.16em;color:var(--accent);font-weight:700}
+
+/* ---------- 用語解説 ---------- */
+.term{border-left:2px solid var(--accent);background:var(--surface);border-top:1px solid var(--line-soft);border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);padding:18px 24px;margin:28px 0;display:flex;flex-direction:column;gap:6px}
+.term .term-name{font-family:var(--serif);font-size:16px;color:var(--ink)}
+.term .term-tag{font-size:11px;color:var(--sub)}
+.term .t-body{font-size:13.5px;line-height:2;color:var(--text)}
+
+/* ---------- アラート（補足=藍/確認=緑/警告=紅） ---------- */
+.alert{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line-soft);border-left-width:2px;padding:15px 18px;margin:28px 0;font-size:13.5px;line-height:1.9}
+.alert .a-icon{flex-shrink:0;margin-top:4px;width:17px;height:17px}
+.alert-blue{border-left-color:var(--info);color:var(--info-text)}
+.alert-green{border-left-color:var(--ok);color:var(--ok-text)}
+.alert-red{border-left-color:var(--danger);color:var(--danger-text)}
+
+/* ---------- ×○対比 ---------- */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:28px 0}
+.compare-box{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;display:flex;flex-direction:column;gap:8px} /* 素でも枠あり（変種は色を変えるだけ） */
+.compare-box.bad{border-color:var(--danger-line)}
+.compare-box.good{border-color:var(--ok-line)}
+.compare-box.asis .cb-head{color:var(--sub)}
+.compare-box.tobe{border-color:var(--accent)}
+.compare-box.tobe .cb-head{color:var(--accent)}
+.cb-head{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
+.compare-box.bad .cb-head{color:var(--danger-text)}
+.compare-box.good .cb-head{color:var(--ok-text)}
+.cb-mark{width:22px;height:22px;border-radius:50%;color:var(--paper);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.bad .cb-mark{background:var(--danger)}
+.good .cb-mark{background:var(--ok)}
+.compare-box p{font-size:12.5px;line-height:1.9;color:var(--text)}
+/* ---------- 小見出し分節（.sub-item: 章の中のテーマを「焦がしキッカー+明朝見出し」の2段で分ける。
+   章見出し（section-header）と同じ文法のミニ版。キッカー（.kick）は省略可。
+   箱にはしない — 白面カードだと用語解説と紛れ、箱が並んでうるさくなる（2026-08-26決定・案A採用） ---------- */
+.sub-item{margin:56px 0 0} /* テーマ境界はテーマ内の間隔（24〜28px）より明確に大きく */
+.sub-item .kick{font-size:10.5px;font-weight:700;letter-spacing:.2em;color:var(--accent);margin-bottom:6px}
+.sub-item h4{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);line-height:1.6;margin:0 0 14px}
+.sub-item p{font-size:13.5px;margin-bottom:8px}
+
+/* ---------- 表（上罫は墨2px・項目名は明朝） ---------- */
+.table-wrap{overflow-x:auto;margin:28px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{border-bottom:2px solid var(--ink);padding:0 16px 12px 0;text-align:left;font-size:11px;letter-spacing:.18em;font-weight:500;color:var(--sub);white-space:nowrap}
+td{padding:18px 16px 18px 0;border-bottom:1px solid var(--line-soft);vertical-align:baseline}
+tbody tr:hover td{background:var(--accent-faint)}
+td.label{font-family:var(--serif);font-size:17px;color:var(--ink);white-space:nowrap}
+td.num{font-family:var(--serif);font-size:15px;color:var(--accent);text-align:right;white-space:nowrap}
+th.num{text-align:right} /* 数値列は見出しも右揃えにして値と縦を揃える */
+/* ---------- 前月比較表（.table-mom: 当月=主役の墨・前月=脇役のグレー・前月比=意味色・グループ見出し行） ---------- */
+.table-mom td{padding:12px 16px 12px 0}
+.table-mom td.label{font-size:15px}
+.table-mom td.num{color:var(--ink)}
+.table-mom td.prev{color:var(--sub)}
+.table-mom td.up{color:var(--ok)}
+.table-mom td.down{color:var(--danger)}
+.table-mom tr.tgroup td{padding:26px 0 8px;border-bottom:1px solid var(--line);font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--accent)}
+.table-mom tbody tr:first-child.tgroup td{padding-top:8px}
+.table-mom tr.tgroup:hover td{background:none}
+.pri{display:flex;align-items:center;gap:14px}
+.pri .bar{height:7px;border-radius:99px;background:var(--accent);flex-shrink:0}
+.pri .pv{font-family:var(--serif);font-size:14px;color:var(--ink)}
+
+/* ---------- バッジ・タグ ---------- */
+.badge{display:inline-block;padding:4px 12px;border-radius:3px;font-size:12px;font-weight:700;white-space:nowrap}
+.badge.ink{background:var(--ink);color:var(--paper)}
+.badge.brand{background:var(--accent);color:var(--paper)}
+.badge.good{background:var(--ok-soft);border:1px solid var(--ok-line);color:var(--ok-text)}
+.badge.bad{background:var(--danger-soft);border:1px solid var(--danger-line);color:var(--danger-text)}
+.badge.plain{border:1px solid var(--line);color:var(--text)}
+
+/* ---------- コード・URL構造図（唯一のダーク面） ---------- */
+code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:3px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:var(--accent-deep)}
+.codeblock{background:var(--code-bg);color:#EDE6DF;border-radius:5px;padding:18px 22px;margin:28px 0;overflow-x:auto}
+.codeblock pre{font-size:12.5px;line-height:1.9;white-space:pre;font-family:'SFMono-Regular',Menlo,Consolas,monospace}
+.codeblock .cm{color:#A89A8E}
+.codeblock .hl{color:#F0B08E}
+.codeblock .hl2{color:#9FC5EA}
+
+/* ---------- 番号つき手順（丸+縦罫線） ---------- */
+ol.steps{list-style:none;counter-reset:st;font-size:13.5px}
+ol.steps li{counter-increment:st;position:relative;padding:0 0 30px 48px;line-height:1.9}
+ol.steps li:last-child{padding-bottom:0}
+ol.steps li::before{content:counter(st);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:13px;display:flex;align-items:center;justify-content:center}
+ol.steps li:not(:last-child)::after{content:"";position:absolute;left:14.5px;top:34px;bottom:2px;width:1px;background:var(--line)}
+
+/* ---------- 注意リスト（※印） ---------- */
+ul.notes{list-style:none;font-size:13px;color:var(--text)}
+ul.notes li{position:relative;padding:6px 0 6px 26px;line-height:1.9}
+ul.notes li::before{content:"※";position:absolute;left:0;top:6px;color:var(--accent);font-weight:700}
+
+/* ---------- まとめ帯（ページ内で唯一の濃い塗り） ---------- */
+.recap{background:var(--ink);color:var(--paper);border-radius:4px;padding:26px 30px;margin-top:8px;display:flex;flex-direction:column;gap:14px}
+.recap h2{font-family:var(--serif);font-size:17px;font-weight:600}
+.recap .r-flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:12.5px}
+.recap .r-chip{border:1px solid rgba(251,249,245,.4);border-radius:999px;padding:5px 14px}
+.recap .r-chip.hot{border-color:var(--accent);background:rgba(184,83,47,.25)}
+.recap .r-arr{opacity:.5}
+.recap p{font-size:11.5px;opacity:.7}
+
+/* ---------- チャート（線は細く・中央は数字だけ・出典は凡例側） ---------- */
+.chart{display:flex;gap:40px;align-items:center;flex-wrap:wrap}
+.chart svg{width:150px;height:150px;flex-shrink:0}
+.chart text.big{font-family:var(--serif);font-size:10px;fill:#26221E;dominant-baseline:central}
+.chart .cl{display:flex;flex-direction:column;min-width:280px;font-size:13.5px}
+.chart .cl > div{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line-soft);padding:10px 0}
+.chart .cl > div:last-of-type{border-bottom:none}
+.chart .cl i{width:10px;height:10px;border-radius:2px;display:inline-block;flex-shrink:0}
+.chart .cl strong{margin-left:auto;font-family:var(--serif);font-weight:500}
+.chart .src{font-size:10.5px;color:var(--sub);padding-top:8px}
+.hbar{display:grid;grid-template-columns:190px 1fr 56px;align-items:center;gap:14px;margin:8px 0}
+.hbar .track{height:16px;background:#EAE2D6;border-radius:2px}
+.hbar .fill{height:16px;background:var(--accent);border-radius:2px}
+.hbar .val{font-family:var(--serif);font-size:15px;text-align:right}
+.stat{display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--ink);padding-left:24px}
+.stat .n{font-family:var(--serif);font-size:60px;line-height:1;color:var(--ink)}
+.stat .n.hot{color:var(--accent)}
+.stat .l{font-size:10.5px;color:var(--sub)}
+/* ---------- 統計カードの列+前月比（.stat-row > .stat / .d=前月比） ---------- */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin:28px 0 12px}
+.stat .n small{font-size:20px;color:var(--sub);margin-left:4px;font-weight:400}
+.stat .d{font-size:12px;font-family:var(--serif)}
+.stat .d.up{color:var(--ok)}
+.stat .d.down{color:var(--danger)}
+
+/* ---------- 横棒ペア（当月×前月の比較チャート。当月=焦がし/前月=下地） ---------- */
+.bars{display:flex;flex-direction:column;gap:16px;margin:24px 0}
+.bars .brow{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center}
+.bars .bl{font-size:12.5px;color:var(--text);line-height:1.6}
+.bars .bpair{display:flex;flex-direction:column;gap:5px}
+.bars .bline{display:flex;align-items:center}
+.bars .b{height:15px;min-width:2px;flex-shrink:0}
+.bars .b.cur{background:var(--accent)}
+.bars .b.prev{background:#EAE2D6}
+.bars .bv{font-family:var(--serif);font-size:12.5px;margin-left:8px;white-space:nowrap;color:var(--ink)}
+.bars .bv small{color:var(--sub);font-family:var(--sans);font-size:10.5px;margin-left:4px}
+.bars-legend{display:flex;gap:22px;font-size:11px;color:var(--sub);margin-top:-6px}
+.bars-legend i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px;vertical-align:-1px}
+
+/* ---------- スイムレーン（横=フェーズ/縦=役割・例外列=紅破線・お金=琥珀） ---------- */
+.lane-wrap{border:1px solid var(--line);border-radius:6px;overflow-x:auto;background:var(--surface);margin:28px 0}
+.lanes{display:grid;font-size:12px;min-width:900px}
+.lane-corner{background:#F3EFE8;border-bottom:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:var(--sub)}
+.lane-head{background:#F3EFE8;font-weight:700;font-size:11.5px;text-align:center;padding:10px 8px;line-height:1.5;border-left:1px solid var(--line-soft);border-bottom:2px solid var(--accent);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.lane-head .sub{font-weight:500;font-size:10px;color:var(--sub)}
+.lane-head.ex{background:#F5E7EA;color:var(--danger)}
+.lane-head.ex .sub{color:#B76A76}
+.lane-label{display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;font-weight:700;text-align:center;padding:10px 6px;border-top:1px solid var(--line-soft);background:var(--paper);line-height:1.4}
+.lane-label i{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.lane-label.user{color:var(--info)} .lane-label.user i{background:var(--info)}
+.lane-label.shop{color:var(--ok)} .lane-label.shop i{background:var(--ok)}
+.lane-label.sys{color:var(--accent)} .lane-label.sys i{background:var(--accent)}
+.lane-label.money{color:var(--gold-text)} .lane-label.money i{background:var(--gold)}
+.lane-label.ext{color:var(--danger)} .lane-label.ext i{background:var(--danger)}
+.lane-cell{padding:10px;border-top:1px solid var(--line-soft);border-left:1px solid #F0EBE4;font-size:11.5px;line-height:1.7;background:var(--surface);display:flex;flex-direction:column;gap:4px}
+.lane-cell.ex{background:#FBF3F4;border-left:2px dashed #E0AAB4}
+.lane-cell.empty{color:#C9BFB4;text-align:center;justify-content:center}
+.lane-cell.money{background:var(--gold-soft);font-weight:700;color:var(--gold-text);text-align:center;justify-content:center;font-size:12px}
+.lane-cell.money small{display:block;font-weight:500;font-size:10px;color:#A9720F}
+.legend{display:flex;align-items:center;gap:24px;flex-wrap:wrap;font-size:12.5px;margin:12px 0}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* ---------- 横フロー（.swim: 行=役割・箱矢印の流れ。分岐・判定・強調・エラー対応） ---------- */
+.swim{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin:28px 0 0;overflow-x:auto}
+.swim-inner{min-width:600px;padding:16px 24px}
+.swim-row{display:flex;align-items:center;gap:10px;padding:14px 0;min-height:56px}
+.swim-row + .swim-row{border-top:1px solid var(--line-soft)}
+.swim-label{width:92px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;gap:6px;font-size:11px;font-weight:700;text-align:right;padding-right:12px;line-height:1.4}
+.swim-label i{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.swim-label.user{color:var(--info)} .swim-label.user i{background:var(--info)}
+.swim-label.store{color:var(--ok)} .swim-label.store i{background:var(--ok)}
+.swim-label.admin{color:var(--accent)} .swim-label.admin i{background:var(--accent)}
+.swim-label.gold{color:var(--gold-text)} .swim-label.gold i{background:var(--gold)}
+.swim-label.ext{color:var(--danger)} .swim-label.ext i{background:var(--danger)}
+.swim-track{display:flex;align-items:center;gap:0;flex:1;flex-wrap:wrap;row-gap:10px}
+/* ノードはニュートラルなピル型チップ（役割は行ラベルが示すので、ノードには色を付けない） */
+.swim-node{display:inline-flex;align-items:center;padding:8px 16px;border-radius:999px;font-size:11.5px;font-weight:500;white-space:nowrap;background:var(--surface);border:1px solid var(--line);color:var(--ink);line-height:1.5}
+.swim-node.decision{border-color:var(--ink);font-weight:700}
+.swim-node.error{border:1px dashed var(--danger-line);color:var(--danger-text)}
+.swim-node.hot{border-color:var(--accent);background:var(--accent-faint);color:var(--accent-deep);font-weight:700}
+.swim-arrow{flex-shrink:0;width:22px;height:1px;background:var(--line);position:relative;margin:0 4px;font-size:0;align-self:center}
+.swim-arrow::after{content:"";position:absolute;right:-1px;top:-3px;border-left:6px solid var(--line);border-top:3.5px solid transparent;border-bottom:3.5px solid transparent}
+.swim-arrow.hot{background:var(--accent)}
+.swim-arrow.hot::after{border-left-color:var(--accent)}
+.swim-branch{display:flex;flex-direction:column;gap:12px;align-items:flex-start;border-left:1px solid var(--line);padding:2px 0 2px 16px;margin-left:2px}
+.swim-branch-label{font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--sub)}
+.swim-branch-label.ok{color:var(--ok)}
+.swim-branch-label.ng{color:var(--danger)}
+/* ---------- 役割つき縦フロー（.pflow: 番号丸=役割色の輪郭+明朝数字・役割キッカー・本文・注記） ---------- */
+.pflow{margin:12px 0 0}
+.pflow-step{display:flex;gap:16px;position:relative;padding-bottom:8px}
+.pflow-step:not(:last-child){padding-bottom:22px}
+.pflow-step:not(:last-child)::after{content:'';position:absolute;left:17px;top:40px;bottom:2px;width:1px;background:var(--line)}
+.pflow-dot{width:34px;height:34px;border-radius:50%;background:var(--surface);border:1.5px solid;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:13px;flex-shrink:0;position:relative;z-index:1}
+.pflow-dot.user{color:var(--info);border-color:var(--info)}
+.pflow-dot.store{color:var(--ok);border-color:var(--ok)}
+.pflow-dot.admin,.pflow-dot.system,.pflow-dot.brand{color:var(--accent);border-color:var(--accent)}
+.pflow-dot.notify{color:var(--gold-text);border-color:var(--gold)}
+.pflow-dot.external{color:var(--danger);border-color:var(--danger)}
+.pflow-body{flex:1;padding-top:3px}
+.pflow-actor{font-size:10.5px;font-weight:700;letter-spacing:.16em;margin-bottom:2px}
+.pflow-actor.user{color:var(--info)}
+.pflow-actor.store{color:var(--ok)}
+.pflow-actor.admin,.pflow-actor.system{color:var(--accent)}
+.pflow-actor.notify{color:var(--gold-text)}
+.pflow-actor.external{color:var(--danger)}
+.pflow-text{font-size:14px;color:var(--text);line-height:1.9}
+.pflow-note{font-size:12.5px;color:var(--sub);margin-top:4px;padding-left:12px;border-left:1px solid var(--line-soft);line-height:1.9}
+
+/* ---------- ファネル（.funnel: 段階ごとの絞り込み。棒の幅=構成比・段間に転換率） ---------- */
+.funnel{display:flex;flex-direction:column;gap:4px;margin:24px 0}
+.funnel .frow{display:flex;align-items:center;gap:12px}
+.funnel .fbar{height:34px;min-width:44px;background:var(--accent);border-radius:4px;flex-shrink:0;display:flex;align-items:center;padding:0 14px;color:#fff;font-size:12px;white-space:nowrap}
+/* 段の濃さは明示クラスで（nth-of-typeは転換率の行が挟まるとズレるため使わない） */
+.funnel .fbar.f2{opacity:.72}
+.funnel .fbar.f3{opacity:.5}
+.funnel .fbar.f4{opacity:.35}
+.funnel .fv{font-family:var(--serif);font-size:15px;color:var(--ink);white-space:nowrap}
+.funnel .fl{font-size:12px;color:var(--sub);white-space:nowrap}
+.funnel .fconv{display:flex;align-items:center;gap:8px;padding:2px 0 2px 14px;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--sub)}
+.funnel .fconv::before{content:"↓";color:var(--line)}
+
+/* ---------- フェーズ帯（現在だけブランド色） ---------- */
+.phases{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;margin:28px 0}
+.phase{border-top:3px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:4px}
+.phase .pn{font-family:var(--serif);font-size:15px;color:var(--sub)}
+.phase .pt{font-size:12px;font-weight:700;color:var(--text)}
+.phase .ps{font-size:10.5px;color:var(--sub)}
+.phase.done{border-top-color:var(--ink)} .phase.done .pn{color:var(--ink)}
+.phase.now{border-top-color:var(--accent)} .phase.now .pn,.phase.now .pt{color:var(--accent)}
+
+/* ---------- 縦フロー（分岐つき） ---------- */
+.fbox{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:12px 18px;font-size:12.5px;font-weight:700;text-align:center}
+.fbox.q{border-color:var(--accent);color:var(--accent)}
+.fbox.yes{background:var(--ok-soft);border-color:var(--ok-line);color:var(--ok-text)}
+.fbox.no{background:var(--danger-soft);border-color:var(--danger-line);color:var(--danger-text)}
+.farr{display:flex;justify-content:center;color:var(--accent);font-size:15px;line-height:1;padding:4px 0}
+
+/* ---------- スライド（16:9・定例でそのまま映す型） ---------- */
+.slide{width:100%;aspect-ratio:16/9;background:#FDFCFA;border:1px solid var(--line);border-radius:4px;box-shadow:0 10px 30px -16px rgba(38,34,30,.3);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.slide-ft{position:absolute;left:5%;right:5%;bottom:3%;display:flex;justify-content:space-between;align-items:center;font-size:.6em;letter-spacing:.14em;color:#A9A199}
+.slide .ghost{font-family:var(--serif);font-weight:700;line-height:1;color:rgba(184,83,47,.14)}
+
+/* ---------- 読み進みバー・演出 ---------- */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}
+.progress i{display:block;height:100%;width:0;background:var(--accent)}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.rv-in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ---------- SVGアイコン（線幅1.5・スプライト参照） ---------- */
+.icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
+
+footer{text-align:center;padding:36px 0;color:var(--sub);font-size:12px;border-top:1px solid var(--line);max-width:1080px;margin:0 auto}
+
+@media (max-width:760px){
+  .hero{padding:44px 24px 84px}
+  .hero h1{font-size:32px;margin-top:36px}
+  .flow,.flow-tabs{grid-template-columns:1fr 1fr;margin-top:-40px}
+  .flow a,.tab-btn{border-top:1px solid var(--line-soft)}
+  .flow::after,.flow-tabs::after{display:none}
+  .flow:has(> a:nth-child(2n+1):last-child)::after,
+  .flow-tabs:has(> .tab-btn:nth-child(2n+1):last-child)::after{content:"";display:block;grid-column:span 1/-1;border-left:1px solid var(--line-soft);border-top:1px solid var(--line-soft)}
+  .compare{grid-template-columns:1fr}
+  .container{padding:28px 18px 60px}
+  .section-num{font-size:56px}
+  .stat-row{grid-template-columns:1fr;gap:20px}
+  .bars .brow{grid-template-columns:1fr;gap:6px}
+}
+
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"><i></i></div>
+
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+</defs></svg>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-brand">
+        <span class="hero-kicker">DESIGN SYSTEM — 説明書</span>
+      </div>
+      <span class="hero-no">GUIDE</span>
+    </div>
+    <h1>html-doc-design 使い方ガイド</h1>
+    <p class="lead">クライアント向けHTML資料を「誌面エディトリアル様式」で作るClaude Codeスキルの説明書。中身がどうなっているか、どう使うか、社内にどう配るか。</p>
+    <div class="hero-meta">最終更新 2026-08-21 ／ このページ自体が本スキルの様式で組まれています</div>
+  </div>
+</div>
+
+<nav class="flow">
+  <a href="#s1"><span class="fnum">1</span><span class="ft">そもそもスキルとは</span><span class="fd">ただのファイルの束が動く仕組み</span></a>
+  <a href="#s2"><span class="fnum">2</span><span class="ft">中身のファイルと役割</span><span class="fd">3ファイル+説明書の分担</span></a>
+  <a href="#s3"><span class="fnum">3</span><span class="ft">使い方</span><span class="fd">頼み方・色替え・更新の流れ</span></a>
+  <a href="#s4"><span class="fnum">4</span><span class="ft">社内展開</span><span class="fd">チームへの配り方</span></a>
+</nav>
+
+<div class="container">
+
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="sh-body"><h2>そもそもスキルとは</h2><div class="sh-sub">サーバー登録も設定画面もない</div></div>
+    </div>
+    <div class="term">
+      <div class="term-name">スキル <span class="term-tag">— 用語</span></div>
+      <div class="t-body">Claude Codeに「この種の仕事はこう進めて」と教える指示書ファイルの束。フォルダを置くだけで登録される。</div>
+    </div>
+    <p style="font-size: 14px;">動く仕組みは3段階。普段は説明文1行分しか場所を取らず、必要な時だけ全部が読み込まれる省エネ構造になっている。</p>
+    <ol class="steps" style="margin-top: 18px;">
+      <li><strong>SKILL.mdの説明文（description）だけは常に見えている</strong> — どの案件でClaudeを開いても、名刺のように1行だけ提示されている</li>
+      <li><strong>該当する依頼が来ると本文が読み込まれる</strong> — 「HTML資料を作って」「デザインを統一して」でClaudeが自分でスキルを開く</li>
+      <li><strong>残りのファイルは必要な時だけ</strong> — 本文に「template.cssとsnippets.htmlを読め」と書いてあるので、作業に入った時だけ読まれる</li>
+    </ol>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>確実に発動させたい時:</strong> チャットで <code>/html-doc-design</code> と打ってから頼む。</span></div>
+  </div>
+
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="sh-body"><h2>中身のファイルと役割</h2><div class="sh-sub">何を守るか・どう見えるか・どう書くか</div></div>
+    </div>
+    <div class="codeblock"><pre>~/.claude/skills/html-doc-design/
+├── SKILL.md       <span class="cm"># ルールブック（原則11箇条+ページ構造+スライド規格）</span>
+├── template.css   <span class="cm"># 全部品のCSS（コピーして使う）</span>
+├── snippets.html  <span class="cm"># 各部品のHTML雛形集（コピーして使う）</span>
+└── README.md      <span class="cm"># 人間用の説明書（このページの正本）</span></pre></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ファイル</th><th>役割</th><th>ひとこと</th></tr></thead>
+        <tbody>
+          <tr><td class="label">SKILL.md</td><td>何を守るか</td><td>明朝見出し・罫線と余白・数字には出典 などのルール</td></tr>
+          <tr><td class="label">template.css</td><td>どう見えるか</td><td>色を差し替えるのは先頭の<code>:root</code>トークンだけ</td></tr>
+          <tr><td class="label">snippets.html</td><td>どう書くか</td><td>部品ごとのコピペ用HTML+演出スクリプト</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>見た目の正本</strong>はClaude Designのキャンバス「RINCLE デザインシステム」（全10シート）。ビジュアルで確認・手で微調整できる。</span></div>
+  </div>
+
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="sh-body"><h2>使い方</h2><div class="sh-sub">頼み方・ブランド色の差し替え・更新の流れ</div></div>
+    </div>
+    <h3>ふだんの頼み方</h3>
+    <ul class="notes">
+      <li>「この調査結果を、いつものデザインでHTML資料にして」</li>
+      <li>「このページをデザインシステムに合わせて刷新して」</li>
+    </ul>
+    <h3>新しい案件で使う時 — ブランド色の差し替え</h3>
+    <p style="font-size: 14px;">その案件のロゴかファビコンをClaudeに渡して「このロゴの色でこの様式を使って」と言うだけ。鍵は<strong>原色をそのまま使わないこと</strong>。</p>
+    <div class="compare">
+      <div class="compare-box bad"><div class="cb-head"><span class="cb-mark">×</span>原色をそのまま差し色に</div><p>ロゴの原色（例: <code>#F95320</code>）は画面で強すぎて、誌面の静けさが壊れる。</p></div>
+      <div class="compare-box good"><div class="cb-head"><span class="cb-mark">○</span>焦がしトーンに落とす</div><p>彩度を落とし暗めに寄せた色（例: <code>#B8532F</code>）を<code>--accent</code>に。役割色も同じく低彩度で揃える。</p></div>
+    </div>
+    <h3>デザインを変えたくなった時 — 更新の流れ</h3>
+    <div class="phases">
+      <div class="phase done"><span class="pn">1</span><span class="pt">キャンバスで検討</span><span class="ps">「デザインキャンバスで見たい」と頼む</span></div>
+      <div class="phase now"><span class="pn">2</span><span class="pt">スキルに反映</span><span class="ps">「スキルに反映して」で3ファイル更新</span></div>
+      <div class="phase"><span class="pn">3</span><span class="pt">ページに移植</span><span class="ps">「全ページに反映して」で既存資料へ</span></div>
+    </div>
+    <ul class="notes">
+      <li>キャンバス（アーティファクト）をスクレイピングする必要はない。元データは作業ファイルとして手元にあり、そこから抽出して3ファイルを書き換えるだけ</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="sh-body"><h2>社内展開</h2><div class="sh-sub">配る=フォルダをコピーする</div></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>置き場所</th><th>効く範囲</th><th>向いている使い方</th></tr></thead>
+        <tbody>
+          <tr><td class="label" style="font-size: 14px; font-family: 'SFMono-Regular',Menlo,monospace;">~/.claude/skills/</td><td>その人の全案件</td><td>個人の標準装備にする</td></tr>
+          <tr><td class="label" style="font-size: 14px; font-family: 'SFMono-Regular',Menlo,monospace;">リポジトリ/.claude/skills/</td><td>そのリポジトリを開いた人全員</td><td><strong>チーム展開はこちら。</strong>gitで共有され、pullした人に自動で配られる</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="codeblock"><pre><span class="cm"># チーム展開の手順（例: RINCLEリポジトリ）</span>
+mkdir -p .claude/skills
+cp -r ~/.claude/skills/html-doc-design .claude/skills/
+git add .claude/skills
+git commit -m <span class="hl">"docs: HTML資料デザインシステムをスキルとして同梱"</span></pre></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span>個人版とリポジトリ版が両方ある場合、そのリポジトリ内では<strong>リポジトリ版が優先</strong>される。</span></div>
+  </div>
+
+</div>
+
+<footer>正本: README.md（同フォルダ・md更新時はこのHTMLも同期すること）</footer>
+
+<script>
+(function(){
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var updateCur = function(){
+      var line = window.innerHeight * 0.3;
+      var cur = null;
+      map.forEach(function(m){ if (m[1].getBoundingClientRect().top <= line) cur = m; });
+      links.forEach(function(l){ l.classList.remove('cur'); });
+      if (cur) cur[0].classList.add('cur');
+    };
+    addEventListener('scroll', updateCur, {passive:true}); updateCur();
+  }
+})();
+</script>
+</body>
+</html>

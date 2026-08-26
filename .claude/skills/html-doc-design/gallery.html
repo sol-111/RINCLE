@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI部品ギャラリー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="template.css">
+<link rel="stylesheet" href="parts.css">
+<style>
+/* このページ専用の最小CSS — 左が部品名+説明、右が実物の2カラム（元データの .blk 相当） */
+.g-blk{border-top:1px solid var(--line);padding:26px 0;display:grid;grid-template-columns:230px minmax(0,1fr);gap:36px}
+.section-header + .g-blk{border-top:none}
+.g-blk.g-full{grid-template-columns:1fr}
+.g-meta{display:flex;flex-direction:column;gap:6px}
+.g-no{font-size:10.5px;letter-spacing:.18em;color:var(--accent);font-weight:700}
+.g-no.is-add{color:var(--sub)}
+.g-nm{font-family:var(--serif);font-size:20px;color:var(--ink)}
+.g-ds{font-size:11.5px;line-height:1.8;color:var(--sub)}
+.g-demo{display:flex;flex-direction:column;gap:16px;min-width:0}
+.g-row{display:flex;align-items:center;gap:36px;flex-wrap:wrap}
+.g-st{font-size:10.5px;color:var(--sub)}
+.g-frame{border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--surface);max-width:560px}
+.g-lines{display:flex;flex-direction:column;gap:6px;font-size:12.5px;line-height:1.9}
+@media (max-width:760px){.g-blk,.g-blk.g-full{grid-template-columns:1fr;gap:14px}}
+  .container{padding-top:18px}
+  .intro{display:flex;flex-direction:column;gap:12px;padding:12px 0 32px;margin-bottom:24px;border-bottom:1px solid var(--line-soft)}
+  .intro p{font-size:15.5px;line-height:2.1;color:var(--text);margin:0}
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"><i></i></div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-brand">
+        <span class="hero-kicker">HTML資料 — 誌面エディトリアル様式</span>
+      </div>
+      <span class="hero-no">DESIGN SYSTEM</span>
+    </div>
+    <h1>デザインシステム</h1>
+    <p class="lead">左が部品名と使い方、右が実物。</p>
+    <div class="hero-meta">核部品は <code>template.css</code> ／ 拡張部品は <code>parts.css</code> ／ 最終更新 2026-08-21（元データは同フォルダの _source/）</div>
+  </div>
+</div>
+
+<nav class="flow">
+  <a href="#s1"><span class="fnum">01</span><span class="ft">基礎</span><span class="fd">色・書体・グリッド・アイコン</span></a>
+  <a href="#s2"><span class="fnum">02</span><span class="ft">入力と操作</span><span class="fd">ボタン・チェック・トグル等</span></a>
+  <a href="#s3"><span class="fnum">03</span><span class="ft">ナビゲーション</span><span class="fd">タブ・パンくず・ページャ等</span></a>
+  <a href="#s4"><span class="fnum">04</span><span class="ft">入れ物と画面</span><span class="fd">カード・モーダル・ウィンドウ等</span></a>
+  <a href="#s5"><span class="fnum">05</span><span class="ft">フィードバック</span><span class="fd">トースト・進捗・アラート等</span></a>
+  <a href="#s6"><span class="fnum">06</span><span class="ft">データ表示</span><span class="fd">表・カンバン・ガント等</span></a>
+  <a href="#s7"><span class="fnum">07</span><span class="ft">チャート</span><span class="fd">ドーナツ・横棒・優先度バー・統計数字</span></a>
+  <a href="#s8"><span class="fnum">08</span><span class="ft">資料部品</span><span class="fd">章ナビ・用語解説・まとめ帯等</span></a>
+  <a href="#s9"><span class="fnum">09</span><span class="ft">図解</span><span class="fd">スイムレーン・フロー・フェーズ帯</span></a>
+  <a href="#s10"><span class="fnum">10</span><span class="ft">スライド部品</span><span class="fd">定例でそのまま映す16:9の型</span></a>
+</nav>
+
+<div class="container">
+
+  <aside class="intro">
+    <span class="kicker">この見本の使い方</span>
+    <p>「UI部品の由来図鑑」の47部品をこの様式で作り直し、チャート類・資料部品・図解・スライド部品を加えた全10章。部品名の脇の番号（NO. 01〜47）は由来図鑑の通し番号。<strong>案件ごとに差し替えるのは色（<code>--accent</code> 系）だけ</strong>で、部品の構造と組み方は共通。</p>
+  </aside>
+
+
+  <!-- ======================= 01 基礎 ======================= -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="sh-body"><h2>基礎</h2><div class="sh-sub">色・書体・グリッド・アイコン</div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 47 — パレット</div>
+        <div class="g-nm">色</div>
+        <div class="g-ds">紙と墨を土台に、焦がしオレンジを差し色に。役割色は彩度を落とした editorial トーン。</div>
+      </div>
+      <div class="g-demo" style="gap:20px">
+        <div class="sw-grid">
+          <div class="sw"><div class="sw-chip is-pale" style="background:var(--paper)"></div><div class="sw-name">紙</div><div class="sw-hex">#FBF9F5</div></div>
+          <div class="sw"><div class="sw-chip" style="background:var(--ink)"></div><div class="sw-name">墨</div><div class="sw-hex">#26221E</div></div>
+          <div class="sw"><div class="sw-chip" style="background:var(--text)"></div><div class="sw-name">本文</div><div class="sw-hex">#57504A</div></div>
+          <div class="sw"><div class="sw-chip" style="background:var(--sub)"></div><div class="sw-name">弱い文字</div><div class="sw-hex">#8B8279</div></div>
+          <div class="sw"><div class="sw-chip" style="background:var(--accent)"></div><div class="sw-name">焦がしオレンジ</div><div class="sw-hex">#B8532F</div></div>
+        </div>
+        <div class="sw-grid">
+          <div class="sw"><div class="sw-chip-sm is-pale" style="background:var(--surface)"></div><div class="sw-name">面（白）</div><div class="sw-hex">#FFFFFF</div></div>
+          <div class="sw"><div class="sw-chip-sm" style="background:var(--accent-soft)"></div><div class="sw-name">淡オレンジ</div><div class="sw-hex">#F3E6DC</div></div>
+          <div class="sw"><div class="sw-chip-sm" style="background:var(--ok)"></div><div class="sw-name">承認の緑</div><div class="sw-hex">#3E6B4F</div></div>
+          <div class="sw"><div class="sw-chip-sm" style="background:var(--danger)"></div><div class="sw-name">警告の紅</div><div class="sw-hex">#A8323E</div></div>
+          <div class="sw"><div class="sw-chip-sm" style="background:var(--info)"></div><div class="sw-name">補足の藍</div><div class="sw-hex">#3B5B84</div></div>
+        </div>
+        <div class="sw-note"><span>罫線（強）#DCD3C8</span><span>罫線（弱）#E5DDD2</span><span>コード面 #221B16</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 27 — フォントと書体</div>
+        <div class="g-nm">書体</div>
+        <div class="g-ds">見出しはしっぽり明朝、本文はNoto Sans JP。数字の見せ場は明朝で組む。</div>
+      </div>
+      <div class="g-demo" style="gap:18px">
+        <div class="spec-row is-ruled"><span style="font-family:var(--serif);font-size:44px;line-height:1.3;color:var(--ink)">見出し 大</span><span class="spec-note">Shippori Mincho 600 / 44px</span></div>
+        <div class="spec-row is-ruled"><span style="font-family:var(--serif);font-size:26px;color:var(--ink)">見出し 中 — 章のタイトル</span><span class="spec-note">Shippori Mincho 600 / 26px</span></div>
+        <div class="spec-row is-ruled"><span style="font-size:15px;line-height:2;color:var(--text)">本文 — 資料の地の文はこの調子で組む。行間はゆったり2.0。</span><span class="spec-note">Noto Sans JP 400 / 15px</span></div>
+        <div class="spec-row"><span style="font-size:11px;letter-spacing:.18em;color:var(--accent);font-weight:700">キッカー — 小さな見出しラベル</span><span class="spec-note">Noto Sans JP 700 / 11px / 字間0.18em</span></div>
+        <div class="spec-row"><span style="font-family:var(--serif);font-size:56px;line-height:1;color:var(--ink)">433</span><span style="font-family:var(--serif);font-size:24px;color:var(--accent)">1.0 / 0.8 / 0.2</span><span class="spec-note">数字の見せ場は明朝</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 25 — カラムとガター</div>
+        <div class="g-nm">グリッド</div>
+        <div class="g-ds">12カラム・ガター24px・左右余白84px。表+サイドの2段組は 1.6 : 1。</div>
+      </div>
+      <div class="g-demo" style="gap:12px">
+        <div class="gridguide">
+          <div class="gridcol"></div><div class="gridcol"></div><div class="gridcol"></div><div class="gridcol"></div>
+          <div class="gridcol"></div><div class="gridcol"></div><div class="gridcol"></div><div class="gridcol"></div>
+          <div class="gridcol"></div><div class="gridcol"></div><div class="gridcol"></div><div class="gridcol"></div>
+        </div>
+        <div class="gridnote"><span>12 columns</span><span>gutter 24px</span><span>margin 84px</span><span>本文幅の上限 680px</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 30〜35 / 45 / 46 — 記号として残ったもの</div>
+        <div class="g-nm">アイコン</div>
+        <div class="g-ds">線画・角丸・線幅1.5。絵文字は使わない。保存(31) 電話(32) ホーム(33) ピン(34) ブックマーク(35) カーソル(45) ズーム(46) を含む標準セット。</div>
+      </div>
+      <div class="icon-grid">
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5"></path><path d="M6 9.5V20h12V9.5"></path></svg><span class="icon-name">ホーム 33</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2Z"></path></svg><span class="icon-name">電話 32</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M5 4h12l3 3v13H5z"></path><path d="M8 4v5h7V4"></path><rect x="8" y="14" width="8" height="6"></rect></svg><span class="icon-name">保存 31</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M12 21v-6"></path><path d="M8 4h8l-1.5 6.5L17 13H7l2.5-2.5Z"></path></svg><span class="icon-name">ピン留め 34</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M7 3h10v18l-5-4-5 4Z"></path></svg><span class="icon-name">ブックマーク 35</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M5 7h14"></path><path d="M9 7V5h6v2"></path><path d="M7 7l1 13h8l1-13"></path></svg><span class="icon-name">ごみ箱 10</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M3 6h6l2 2h10v11H3z"></path></svg><span class="icon-name">フォルダ 04</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"></path><path d="M14 2v4h4"></path></svg><span class="icon-name">ファイル</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l5 5"></path></svg><span class="icon-name">検索</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l5 5"></path><path d="M8.5 11h5M11 8.5v5"></path></svg><span class="icon-name">ズーム 46</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M6 3l12 9-5.5 0.8L15 19l-2.6 1-2.4-6L6 17Z"></path></svg><span class="icon-name">カーソル 45</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M3 7l9 6 9-6"></path><rect x="3" y="5" width="18" height="14" rx="1"></rect></svg><span class="icon-name">メール</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="1"></rect><path d="M4 10h16M9 3v4M15 3v4"></path></svg><span class="icon-name">カレンダー</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M4 20V9M10 20V4M16 20v-8M22 20H2"></path></svg><span class="icon-name">チャート</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16v.5"></path></svg><span class="icon-name">注意</span></div>
+        <div class="icon-cell"><svg class="ic" viewBox="0 0 24 24"><path d="M4 12.5 10 18.5 20 6.5"></path></svg><span class="icon-name">確認</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 26 — キャレット</div>
+        <div class="g-nm">キャレットと選択</div>
+        <div class="g-ds">文字の挿入位置は墨の縦線。選択範囲は淡オレンジ。</div>
+      </div>
+      <div class="g-row">
+        <div class="input is-focus" style="width:320px">sitemap.xml 作成手<span class="caret"></span>順</div>
+        <div class="input" style="width:320px">sitemap.xml <span class="text-sel">作成手順</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 02 入力と操作 ======================= -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="sh-body"><h2>入力と操作</h2><div class="sh-sub">ボタン・チェック・トグル等</div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 図鑑になし</div>
+        <div class="g-nm">ボタン</div>
+        <div class="g-ds">主ボタンは墨、強い誘導だけ焦がしオレンジ。角丸3px・高さ44px。</div>
+      </div>
+      <div class="g-demo">
+        <div class="g-row" style="gap:16px">
+          <button class="btn btn-main">主要な操作</button>
+          <button class="btn btn-cta">強い誘導</button>
+          <button class="btn btn-next">次の操作</button>
+          <button class="btn btn-link">文字リンク</button>
+          <button class="btn btn-off">無効</button>
+        </div>
+        <div class="g-st">主要 / 強い誘導 / 次点 / 文字リンク / 無効</div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 図鑑になし</div>
+        <div class="g-nm">入力欄と検索</div>
+        <div class="g-ds">枠は罫線1px。フォーカスで墨、エラーで紅に。ラベルはキッカー様式。</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px">
+        <div class="field">
+          <div class="field-label">店舗名</div>
+          <div class="input is-ph">例: スペシャライズド京都</div>
+          <div class="g-st">通常</div>
+        </div>
+        <div class="field">
+          <div class="field-label">店舗名</div>
+          <div class="input is-focus">スペシャライズド京<span class="caret" style="height:17px"></span></div>
+          <div class="g-st">入力中（フォーカス）</div>
+        </div>
+        <div class="field">
+          <div class="field-label is-bad">メールアドレス</div>
+          <div class="input is-bad">info@example</div>
+          <div class="field-err">形式が正しくありません</div>
+        </div>
+        <div class="field" style="grid-column:span 2">
+          <div class="field-label">検索</div>
+          <div class="search">
+            <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l5 5"></path></svg>
+            資料・部品を検索
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 03 — チェックボックス</div>
+        <div class="g-nm">チェックボックス</div>
+        <div class="g-ds">四角・墨塗りに白チェック。中間状態は横棒。</div>
+      </div>
+      <div class="g-row">
+        <label class="chk"><span class="chk-box"></span>未選択</label>
+        <label class="chk"><span class="chk-box is-on"><svg class="chk-mark" viewBox="0 0 24 24"><path d="M4 12.5 10 18.5 20 6.5"></path></svg></span>選択</label>
+        <label class="chk"><span class="chk-box is-on"><span class="chk-part"></span></span>一部選択</label>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 06 — ラジオボタン</div>
+        <div class="g-nm">ラジオボタン</div>
+        <div class="g-ds">丸・どれかひとつ。選択は焦がしオレンジの点。</div>
+      </div>
+      <div class="g-row">
+        <label class="radio"><span class="radio-box"></span>サブドメイン</label>
+        <label class="radio is-on"><span class="radio-box is-on"><span class="radio-dot"></span></span>サブディレクトリ</label>
+        <label class="radio is-off"><span class="radio-box"></span>無効</label>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 07 — トグルスイッチ</div>
+        <div class="g-nm">トグルスイッチ</div>
+        <div class="g-ds">オンは焦がしオレンジ。設定の即時反映にだけ使う。</div>
+      </div>
+      <div class="g-row">
+        <label class="switch"><span class="switch-track"><span class="switch-knob"></span></span>オフ</label>
+        <label class="switch is-on"><span class="switch-track is-on"><span class="switch-knob"></span></span>Data APIを公開</label>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 08 — スライダー</div>
+        <div class="g-nm">スライダー</div>
+        <div class="g-ds">連続量の調整。値は明朝で添える。</div>
+      </div>
+      <div class="slider" style="max-width:520px">
+        <div class="slider-rail">
+          <div class="slider-done" style="width:65%"></div>
+          <div class="slider-knob" style="left:65%"></div>
+        </div>
+        <div class="slider-val">0.65</div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 09 — スピナー</div>
+        <div class="g-nm">数値スピナー</div>
+        <div class="g-ds">上下の段付きで数を送る。由来は機械のダイヤル。</div>
+      </div>
+      <div class="g-row" style="gap:24px">
+        <div class="spin">
+          <button class="spin-btn">−</button>
+          <div class="spin-val">56</div>
+          <button class="spin-btn">＋</button>
+        </div>
+        <span class="g-st">店舗数の入力など、少しずつ送る数に</span>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 05 — 切り取りと貼り付け</div>
+        <div class="g-nm">右クリックメニュー</div>
+        <div class="g-ds">編集操作の定番3つ+ショートカット表記。</div>
+      </div>
+      <div class="g-row" style="align-items:flex-start;gap:24px">
+        <div class="menu">
+          <div class="menu-item"><span>切り取り</span><span class="menu-key">⌘X</span></div>
+          <div class="menu-item is-on"><span>コピー</span><span class="menu-key">⌘C</span></div>
+          <div class="menu-item"><span>貼り付け</span><span class="menu-key">⌘V</span></div>
+          <div class="menu-sep"></div>
+          <div class="menu-item is-danger"><span>削除</span><span class="menu-key">⌫</span></div>
+        </div>
+        <span class="g-st">選択中の行は淡オレンジ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 03 ナビゲーション ======================= -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="sh-body"><h2>ナビゲーション</h2><div class="sh-sub">タブ・パンくず・ページャ等</div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 01 — タブ</div>
+        <div class="g-nm">タブ</div>
+        <div class="g-ds">見出しの並び+選択中は焦がしオレンジの下線。索引タブが由来。</div>
+      </div>
+      <div class="tabs">
+        <div class="tabs-item is-on">結論</div>
+        <div class="tabs-item">取得データ</div>
+        <div class="tabs-item">含意</div>
+        <div class="tabs-item">次のアクション</div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 13 — メニューとドロップダウン</div>
+        <div class="g-nm">ドロップダウン</div>
+        <div class="g-ds">閉じた状態と開いた状態。選択行は淡オレンジ。</div>
+      </div>
+      <div class="g-row" style="align-items:flex-start;gap:28px">
+        <div class="dd-head">京都府<svg class="dd-caret" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></div>
+        <div class="dd">
+          <div class="dd-head is-open">京都府<svg class="dd-caret" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"></path></svg></div>
+          <div class="dd-list">
+            <div class="dd-item">大阪府</div>
+            <div class="dd-item is-on">京都府</div>
+            <div class="dd-item">兵庫県</div>
+            <div class="dd-item">奈良県</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 14 — パンくずリスト</div>
+        <div class="g-nm">パンくず</div>
+        <div class="g-ds">現在地までの道のり。現在地だけ墨の太字。</div>
+      </div>
+      <div class="crumbs">
+        <a style="text-decoration:none">提案資料</a>
+        <span class="crumbs-sep">／</span>
+        <a style="text-decoration:none">SEO設定</a>
+        <span class="crumbs-sep">／</span>
+        <span class="crumbs-cur">sitemap.xml 作成手順</span>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 15 — ウィザード</div>
+        <div class="g-nm">段階ナビ（章ナビの親）</div>
+        <div class="g-ds">番号の丸+罫線でつなぐ。現在は焦がしオレンジ、完了は墨。</div>
+      </div>
+      <div class="wiz">
+        <div class="wiz-step is-done"><span class="wiz-num is-done">1</span><span class="wiz-label">用意</span></div>
+        <div class="wiz-line is-done"></div>
+        <div class="wiz-step is-now"><span class="wiz-num is-now">2</span><span class="wiz-label">設定</span></div>
+        <div class="wiz-line"></div>
+        <div class="wiz-step"><span class="wiz-num">3</span><span class="wiz-label">生成</span></div>
+        <div class="wiz-line"></div>
+        <div class="wiz-step"><span class="wiz-num">4</span><span class="wiz-label">公開</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 22 — ハンバーガーボタン</div>
+        <div class="g-nm">ハンバーガー</div>
+        <div class="g-ds">三本線。押すとドロワー（11）が開く。</div>
+      </div>
+      <div class="g-row" style="gap:20px">
+        <button class="btn btn-sq"><svg class="btn-ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+        <button class="btn btn-sq is-open"><svg class="btn-ico" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"></path></svg></button>
+        <span class="g-st">閉じている / 開いている（×）</span>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 11 — ドロワー</div>
+        <div class="g-nm">ドロワー</div>
+        <div class="g-ds">画面の端から引き出す目次。資料SPAのサイドバーはこれ。</div>
+      </div>
+      <div class="drawer-demo">
+        <div class="drawer-veil"></div>
+        <div class="drawer">
+          <div class="drawer-kicker">CONTENTS</div>
+          <div class="drawer-item is-on">SEO設定</div>
+          <div class="drawer-item">決済連携</div>
+          <div class="drawer-item">業務フロー</div>
+          <div class="drawer-item">マーケ</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 23 — ページとページャ</div>
+        <div class="g-nm">ページャ</div>
+        <div class="g-ds">現在ページは墨の塗り。前後は文字リンク。</div>
+      </div>
+      <div class="pager">
+        <a class="pager-link">← 前へ</a>
+        <span class="pager-num">1</span>
+        <span class="pager-num">2</span>
+        <span class="pager-num is-on">3</span>
+        <span class="pager-num">4</span>
+        <span class="pager-gap">…</span>
+        <span class="pager-num">8</span>
+        <a class="pager-link">次へ →</a>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 24 — ヘッダーとフッター</div>
+        <div class="g-nm">ヘッダー / フッター</div>
+        <div class="g-ds">上下の定位置。ロゴ+キッカーの帯と、正本表記の帯。</div>
+      </div>
+      <div class="g-demo">
+        <div class="doc-head">
+          <span class="hero-kicker" style="font-size:11px">BRAND — カテゴリ</span>
+          <span class="hero-no" style="font-size:12px">資料 07</span>
+        </div>
+        <div class="doc-foot">
+          <span>BRAND</span><span>正本: sitemap-creation-guide.md</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 44 — スクロールバー</div>
+        <div class="g-nm">スクロールバー</div>
+        <div class="g-ds">細く・薄く。つまみは罫線色、ホバーで弱い文字色。</div>
+      </div>
+      <div class="g-row" style="gap:24px">
+        <div class="scrollbox">
+          長い本文がここに続く。読み進みは右端の細いつまみで示す……
+          <div class="scrollbox-thumb"></div>
+        </div>
+        <span class="g-st">幅5px・角丸。目立たせず、読む邪魔をしない</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 04 入れ物と画面 ======================= -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="sh-body"><h2>入れ物と画面</h2><div class="sh-sub">カード・モーダル・ウィンドウ等</div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 02 — カード</div>
+        <div class="g-nm">カード</div>
+        <div class="g-ds">白面+罫線1px。影は使わず罫線と余白で区切る（影は浮かぶ部品 — メニュー・モーダル・トーストだけ）。</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:640px">
+        <div class="card" style="margin:0;display:flex;flex-direction:column;gap:8px">
+          <div class="kicker">STEP 2</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--ink)">Data APIの設定</div>
+          <div style="font-size:12.5px;line-height:1.9">店舗・自転車のID一覧をプログラムから取れるようにする。</div>
+        </div>
+        <div class="card sel" style="margin:0;display:flex;flex-direction:column;gap:8px">
+          <div class="kicker">選択中</div>
+          <div style="font-family:var(--serif);font-size:17px;color:var(--ink)">sitemap.xmlを生成</div>
+          <div style="font-size:12.5px;line-height:1.9">選択・強調は罫線を焦がしオレンジに替えるだけ。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 12 — ウィンドウ</div>
+        <div class="g-nm">ウィンドウ</div>
+        <div class="g-ds">タイトルバー+閉じる。資料内でアプリ画面を見せる時の額縁。</div>
+      </div>
+      <div class="win">
+        <div class="win-bar">
+          <span class="win-dot"></span><span class="win-dot"></span><span class="win-dot"></span>
+          <span class="win-title">rincle.co.jp — 検索</span>
+        </div>
+        <div class="win-body">画面の中身（スクリーンショットやモック）</div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 16 — モーダルとダイアログ</div>
+        <div class="g-nm">確認ダイアログ</div>
+        <div class="g-ds">壊れる操作の前に一度だけ立ち止まらせる。破壊ボタンは紅。</div>
+      </div>
+      <div class="veil" style="width:560px;max-width:100%">
+        <div class="dialog">
+          <div class="dialog-title">受注 #10482 を削除しますか？</div>
+          <div class="dialog-body">この操作は取り消せません。関連する予約データも削除されます。</div>
+          <div class="dialog-acts">
+            <button class="btn btn-sm btn-quiet">取り消し</button>
+            <button class="btn btn-sm btn-danger">削除する</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 18 — アコーディオン</div>
+        <div class="g-nm">アコーディオン</div>
+        <div class="g-ds">開閉で畳む。開いている行だけ + が − になる。</div>
+      </div>
+      <div class="acc" style="max-width:560px">
+        <div class="acc-row">
+          <div class="acc-head is-open"><span>なぜ手作業で作るのか</span><span class="acc-mark">−</span></div>
+          <div class="acc-body">新サイトはURLの後ろにIDを付ける方式のため、Bubbleの自動生成では店舗・自転車の1件1件のURLが載らない。</div>
+        </div>
+        <div class="acc-row"><div class="acc-head"><span>Data APIは安全か</span><span class="acc-mark">＋</span></div></div>
+        <div class="acc-row"><div class="acc-head"><span>再生成の頻度</span><span class="acc-mark">＋</span></div></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 19 — カルーセル</div>
+        <div class="g-nm">カルーセル</div>
+        <div class="g-ds">横送りの回覧。現在位置は点で示す。</div>
+      </div>
+      <div class="carousel" style="max-width:560px">
+        <div class="carousel-row">
+          <button class="btn btn-circle"><svg class="btn-ico" style="width:14px;height:14px;stroke-width:1.5" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"></path></svg></button>
+          <div class="carousel-stage"><span class="carousel-tag">写真 2 / 5</span></div>
+          <button class="btn btn-circle"><svg class="btn-ico" style="width:14px;height:14px;stroke-width:1.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
+        </div>
+        <div class="carousel-dots">
+          <span class="carousel-dot"></span>
+          <span class="carousel-dot is-on"></span>
+          <span class="carousel-dot"></span>
+          <span class="carousel-dot"></span>
+          <span class="carousel-dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 04 / 10 / 39 — 机まわり</div>
+        <div class="g-nm">フォルダ・ごみ箱・アーカイブ</div>
+        <div class="g-ds">置き場の比喩3点。行アクションとして並べて使う。</div>
+      </div>
+      <div class="g-row" style="gap:16px">
+        <div class="fchip">
+          <svg class="ic ic-md" viewBox="0 0 24 24"><path d="M3 6h6l2 2h10v11H3z"></path></svg>
+          <span class="fchip-name">07_release</span><span class="fchip-meta">26ファイル</span>
+        </div>
+        <button class="btn btn-row btn-quiet">
+          <svg class="ic ic-sm" viewBox="0 0 24 24"><path d="M3 5h18v4H3z"></path><path d="M5 9v10h14V9"></path><path d="M10 13h4"></path></svg>アーカイブ
+        </button>
+        <button class="btn btn-row btn-del">
+          <svg class="btn-ico" style="width:16px;height:16px;stroke-width:1.5" viewBox="0 0 24 24"><path d="M5 7h14"></path><path d="M9 7V5h6v2"></path><path d="M7 7l1 13h8l1-13"></path></svg>削除
+        </button>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 17 — アバター</div>
+        <div class="g-nm">アバター</div>
+        <div class="g-ds">頭文字+淡い面。写真は使わず文字で。</div>
+      </div>
+      <div class="g-row" style="gap:20px">
+        <span class="ava ava-ink ava-lg">増</span>
+        <span class="ava">清</span>
+        <span class="ava ava-soft ava-sm">山</span>
+        <div class="ava-stack">
+          <span class="ava ava-ink ava-sm">増</span>
+          <span class="ava ava-sm">清</span>
+          <span class="ava ava-soft ava-sm ava-num">+3</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 28 — ヒーロー画像</div>
+        <div class="g-nm">ヒーロー</div>
+        <div class="g-ds">資料の顔。画像に頼らず、キッカー+明朝の大見出し+罫線で組む。</div>
+      </div>
+      <div class="card" style="margin:0;padding:36px 40px;display:flex;flex-direction:column;gap:14px">
+        <span class="hero-kicker" style="font-size:11px">BRAND — カテゴリ</span>
+        <div class="hdemo-title">sitemap.xml 作成手順</div>
+        <div class="hdemo-lead">全ページの一覧をGoogleに知らせるファイルを、Data APIで作って登録するまで。</div>
+        <div class="hdemo-rule"></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 29 — テンプレート</div>
+        <div class="g-nm">テンプレート</div>
+        <div class="g-ds">ページの雛形3種。表紙型・二段組型・スライド型。</div>
+      </div>
+      <div class="wires">
+        <div class="wire">
+          <div class="wire-box">
+            <div class="wire-hot" style="height:5px;width:40%"></div>
+            <div class="wire-ink" style="height:12px;width:85%;margin-top:12px"></div>
+            <div class="wire-ink" style="height:12px;width:60%"></div>
+            <div class="wire-soft" style="height:4px;width:90%;margin-top:10px"></div>
+            <div class="wire-soft" style="height:4px;width:80%"></div>
+          </div>
+          <span class="wire-label">表紙</span>
+        </div>
+        <div class="wire">
+          <div class="wire-box" style="gap:8px">
+            <div class="wire-ink" style="height:9px;width:70%"></div>
+            <div class="wire-cols">
+              <div style="flex:1.6;display:flex;flex-direction:column;gap:4px">
+                <div class="wire-soft" style="height:4px"></div>
+                <div class="wire-soft" style="height:4px"></div>
+                <div class="wire-soft" style="height:4px;width:80%"></div>
+                <div class="wire-soft" style="height:4px"></div>
+                <div class="wire-soft" style="height:4px;width:70%"></div>
+              </div>
+              <div class="wire-side">
+                <div class="wire-face" style="height:26px"></div>
+                <div class="wire-soft" style="height:4px"></div>
+                <div class="wire-soft" style="height:4px;width:70%"></div>
+              </div>
+            </div>
+          </div>
+          <span class="wire-label">二段組</span>
+        </div>
+        <div class="wire">
+          <div class="wire-box" style="gap:8px;justify-content:center">
+            <div class="wire-ink" style="height:16px;width:85%"></div>
+            <div class="wire-hot" style="height:6px;width:40%"></div>
+            <div class="wire-soft" style="height:4px;width:90%;margin-top:10px"></div>
+          </div>
+          <span class="wire-label">スライド</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 05 フィードバック ======================= -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="sh-body"><h2>フィードバック</h2><div class="sh-sub">トースト・進捗・アラート等</div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 20 — トースト</div>
+        <div class="g-nm">トースト</div>
+        <div class="g-ds">画面の隅にぽんと出て消える通知。成功は墨、失敗は紅。</div>
+      </div>
+      <div class="g-demo" style="gap:12px;max-width:420px">
+        <div class="toast">
+          <svg class="toast-icon" viewBox="0 0 24 24"><path d="M4 12.5 10 18.5 20 6.5"></path></svg>
+          <span>sitemap.xml を保存しました</span>
+        </div>
+        <div class="toast toast-bad">
+          <svg class="toast-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16v.5"></path></svg>
+          <span>保存に失敗しました — もう一度お試しください</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 21 — ツールチップ</div>
+        <div class="g-nm">ツールチップ</div>
+        <div class="g-ds">点線の下線に重ねると出る小さな説明。用語解説の軽量版。</div>
+      </div>
+      <div style="display:flex;align-items:flex-end;gap:6px;padding-top:24px">
+        <div class="tip-wrap">
+          <div class="tip">画面を開かなくても、プログラムからデータベースの中身を一覧でもらえる窓口</div>
+          <span class="tip-term">Data API</span>
+        </div>
+        <span style="font-size:14.5px">で店舗・自転車のID一覧を取る。</span>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 43 — プログレスバー</div>
+        <div class="g-nm">進捗バー</div>
+        <div class="g-ds">残量が分かる作業に。値は明朝で右に添える。</div>
+      </div>
+      <div class="g-demo" style="gap:18px;max-width:520px">
+        <div class="pbar">
+          <div class="pbar-track"><div class="pbar-fill" style="width:68%"></div></div>
+          <span class="pbar-val">68%</span>
+        </div>
+        <div class="pbar">
+          <div class="pbar-track"><div class="pbar-fill is-done" style="width:100%"></div></div>
+          <span class="pbar-val is-done">完了</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 図鑑になし</div>
+        <div class="g-nm">読み進みバー</div>
+        <div class="g-ds">ページ最上部の3pxの線。どこまで読んだかを示す。</div>
+      </div>
+      <div class="g-frame">
+        <div class="pbar-thin"><i style="width:42%"></i></div>
+        <div style="padding:16px 20px;font-size:12px;color:var(--sub)">ページ上端に固定。スクロールに合わせて右へ伸びる。</div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 図鑑になし</div>
+        <div class="g-nm">ローディング</div>
+        <div class="g-ds">待ち時間が読めない時は回る輪+一言。</div>
+      </div>
+      <div class="spinner-row">
+        <svg class="spinner" viewBox="0 0 42 42">
+          <circle class="spinner-ring" cx="21" cy="21" r="16"></circle>
+          <circle class="spinner-arc" cx="21" cy="21" r="16" stroke-dasharray="28 73" stroke-dashoffset="25"></circle>
+        </svg>
+        <span>Data APIから取得しています…</span>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 資料の定番</div>
+        <div class="g-nm">アラート 3種</div>
+        <div class="g-ds">補足=藍・確認=緑・警告=紅。白面+左の役割色罫線（用語解説と同じ構文）。</div>
+      </div>
+      <div class="g-demo" style="gap:12px">
+        <div class="alert alert-blue" style="margin:0">
+          <svg class="a-icon icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 7.5v.5"></path></svg>
+          <span><strong>補足:</strong> 本番反映前に動きを試したい時は --dev を付けると開発版で動きます。</span>
+        </div>
+        <div class="alert alert-green" style="margin:0">
+          <svg class="a-icon icon" viewBox="0 0 24 24"><path d="M4 12.5 10 18.5 20 6.5"></path></svg>
+          <span><strong>確認ポイント:</strong> 出力された店舗数・自転車数が本番の実数と合っているか見る。</span>
+        </div>
+        <div class="alert alert-red" style="margin:0">
+          <svg class="a-icon icon" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"></path><path d="M12 9.5V14M12 16.8v.2"></path></svg>
+          <span><strong>警告:</strong> User型・予約型は絶対に公開にチェックしないこと。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 図鑑になし</div>
+        <div class="g-nm">空の状態</div>
+        <div class="g-ds">何もない時こそ丁寧に。理由と次の一歩を添える。</div>
+      </div>
+      <div class="empty-state" style="max-width:480px">
+        <svg class="empty-state-icon" viewBox="0 0 24 24"><path d="M3 13h5l2 3h4l2-3h5"></path><path d="M5 4h14l2 9v7H3v-7Z"></path></svg>
+        <div class="empty-state-title">まだ資料がありません</div>
+        <div class="empty-state-note">左の目次から資料を選ぶか、新しく作成してください。</div>
+        <a style="font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:4px">資料を作成する</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 06 データ表示 ======================= -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="sh-body"><h2>データ表示</h2><div class="sh-sub">表・カンバン・ガント等</div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 37 — テーブルとグリッド</div>
+        <div class="g-nm">表</div>
+        <div class="g-ds">上罫は墨2px、行は淡い罫線。見出しは字間を空けた小サンセリフ、項目名は明朝。</div>
+      </div>
+      <div class="g-demo" style="gap:10px;max-width:640px">
+        <div class="table-wrap" style="margin:0">
+          <table>
+            <thead><tr><th>ページ</th><th>URL</th><th style="text-align:right">優先度</th></tr></thead>
+            <tbody>
+              <tr><td class="label">トップ</td><td>/</td><td class="num">1.0</td></tr>
+              <tr style="background:var(--accent-faint)"><td class="label">検索</td><td>/search（素のURL）</td><td class="num">0.9</td></tr>
+              <tr><td class="label">店舗詳細</td><td>/shop_detail?shop=ID × 店舗数</td><td class="num">0.8</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="g-st">2行目はホバー時の面（ごく淡いオレンジ #F7F1EA）</div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 38 — ラベルとタグ</div>
+        <div class="g-nm">ラベルとタグ</div>
+        <div class="g-ds">状態は塗り、分類は罫線。角丸は控えめの3px。</div>
+      </div>
+      <div class="g-row" style="gap:12px">
+        <span class="badge ink">決定済み</span>
+        <span class="badge brand">最重要</span>
+        <span class="badge good">実測済み</span>
+        <span class="badge bad">要確認</span>
+        <span class="badge plain" style="font-weight:400">SEO</span>
+        <span class="badge plain" style="font-weight:400">決済</span>
+        <span class="badge plain" style="font-weight:400">タグ<span class="tag-x">×</span></span>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 36 — 受信トレイ</div>
+        <div class="g-nm">リスト（受信箱）</div>
+        <div class="g-ds">未読は墨の点+太字。時刻は右端の弱い文字。</div>
+      </div>
+      <div class="inbox" style="max-width:560px">
+        <div class="inbox-row is-unread"><span class="inbox-dot"></span><span class="inbox-title">7/4定例の議事録を共有しました</span><span class="inbox-time">10:24</span></div>
+        <div class="inbox-row is-unread"><span class="inbox-dot"></span><span class="inbox-title">sitemap.xml の生成が完了しました</span><span class="inbox-time">09:51</span></div>
+        <div class="inbox-row"><span class="inbox-dot"></span><span class="inbox-title">Search Console の所有権を確認してください</span><span class="inbox-time">昨日</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 40 — カンバン</div>
+        <div class="g-nm">カンバン</div>
+        <div class="g-ds">列=状態。列名はキッカー+件数、カードは白面+罫線。</div>
+      </div>
+      <div class="kanban">
+        <div class="kanban-col">
+          <div class="kanban-head"><span class="kanban-name">未着手</span><span class="kanban-count">2</span></div>
+          <div class="kanban-card">GA4の本番設置<div class="kanban-tag">#21-22</div></div>
+          <div class="kanban-card">Search Console登録</div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-head is-now"><span class="kanban-name">進行中</span><span class="kanban-count">1</span></div>
+          <div class="kanban-card is-now">sitemap.xml 生成<div class="kanban-meta">担当: 清野</div></div>
+        </div>
+        <div class="kanban-col">
+          <div class="kanban-head"><span class="kanban-name">完了</span><span class="kanban-count">2</span></div>
+          <div class="kanban-card is-done">Data APIの公開設定</div>
+          <div class="kanban-card is-done">DB再構築リリース</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 41 — ガントチャート</div>
+        <div class="g-nm">ガント</div>
+        <div class="g-ds">帯は塗りすぎない。進行中だけ焦がしオレンジ、予定は罫線枠。</div>
+      </div>
+      <div class="gantt" style="max-width:640px">
+        <div class="gantt-head"><div></div><div>7月</div><div>8月</div><div>9月</div><div>10月</div></div>
+        <div class="gantt-row">
+          <div class="gantt-name">DB再構築</div>
+          <div class="gantt-bar" style="grid-column:2 / span 1;margin-right:30%"></div>
+        </div>
+        <div class="gantt-row">
+          <div class="gantt-name">SEO設定一式</div>
+          <div class="gantt-bar is-now" style="grid-column:3 / span 1"></div>
+        </div>
+        <div class="gantt-row">
+          <div class="gantt-name">Stripe移行</div>
+          <div class="gantt-bar is-plan" style="grid-column:3 / span 2"></div>
+        </div>
+        <div class="gantt-legend">
+          <span><span class="gantt-key"></span> 完了</span>
+          <span><span class="gantt-key is-now"></span> 進行中</span>
+          <span><span class="gantt-key is-plan"></span> 予定</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no">NO. 42 — ダッシュボード</div>
+        <div class="g-nm">統計カードの並び</div>
+        <div class="g-ds">数字は明朝の大きめ、注は日付つき。カードは罫線のみ。</div>
+      </div>
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-label">パートナー店舗</div>
+          <div class="kpi-val"><span class="kpi-num">56</span><span class="kpi-unit">店</span></div>
+          <div class="kpi-note">2026-08-20 本番実測</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">自転車</div>
+          <div class="kpi-val"><span class="kpi-num">374</span><span class="kpi-unit">台</span></div>
+          <div class="kpi-note">2026-08-20 本番実測</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">予約CVR</div>
+          <div class="kpi-val"><span class="kpi-num">約4</span><span class="kpi-unit">%</span></div>
+          <div class="kpi-note">アクセスログ実測（2026-06-11）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 07 チャート ======================= -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="sh-body"><h2>チャート</h2><div class="sh-sub">図鑑に無かったため新設</div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 資料で使用中</div>
+        <div class="g-nm">ドーナツチャート</div>
+        <div class="g-ds">線は細く2.4。中央は大きな数字だけ（補足文言は入れない）。単位・出典は凡例側に。データ色は焦がしオレンジ→墨→罫線色の順。</div>
+      </div>
+      <div class="chart">
+        <svg viewBox="0 0 42 42" style="width:170px;height:170px" role="img" aria-label="URL構成比">
+          <circle class="ct-ring ct-rest-line" cx="21" cy="21" r="15.9155"></circle>
+          <circle class="ct-ring ct-a" cx="21" cy="21" r="15.9155" stroke-dasharray="86.4 13.6" stroke-dashoffset="25"></circle>
+          <circle class="ct-ring ct-b" cx="21" cy="21" r="15.9155" stroke-dasharray="12.9 87.1" stroke-dashoffset="-61.4"></circle>
+          <text class="big" x="21" y="21" text-anchor="middle">433</text>
+        </svg>
+        <div class="cl" style="min-width:300px">
+          <div><i style="background:var(--accent)"></i>自転車詳細<strong>374</strong></div>
+          <div><i style="background:var(--ink)"></i>店舗詳細<strong>56</strong></div>
+          <div style="border-bottom:none"><i class="ct-rest"></i>静的ページ<strong>3</strong></div>
+          <div class="src">単位: URL ／ 出典: 2026-08-20 本番実測</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 資料で使用中</div>
+        <div class="g-nm">横棒グラフ</div>
+        <div class="g-ds">2〜5項目の比較に。負けた側は罫線色で塗る。</div>
+      </div>
+      <div class="g-demo" style="gap:16px;max-width:560px">
+        <div class="hbar" style="margin:0">
+          <div style="font-size:13px;font-weight:700;color:var(--ink)">ロードバイク レンタル</div>
+          <div class="track"><div class="fill" style="width:100%"></div></div>
+          <div class="val">10件</div>
+        </div>
+        <div class="hbar" style="margin:0">
+          <div style="font-size:13px">スポーツバイク レンタル</div>
+          <div class="track"><div class="fill ct-lose" style="width:40%"></div></div>
+          <div class="val" style="color:var(--sub)">4件</div>
+        </div>
+        <div class="g-st">Googleサジェスト実測（2026-06-12）</div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 資料で使用中</div>
+        <div class="g-nm">優先度バー</div>
+        <div class="g-ds">0.0〜1.0の目安を長さで。数字は明朝で右に。</div>
+      </div>
+      <div class="g-demo" style="gap:14px;max-width:400px">
+        <div class="pri"><span class="bar" style="width:220px"></span><span class="pv">1.0</span></div>
+        <div class="pri"><span class="bar" style="width:176px"></span><span class="pv">0.8</span></div>
+        <div class="pri"><span class="bar" style="width:44px"></span><span class="pv">0.2</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 資料で使用中</div>
+        <div class="g-nm">統計数字</div>
+        <div class="g-ds">数字が主役の時は明朝の特大+罫線+日付つき出典。</div>
+      </div>
+      <div class="g-row" style="align-items:flex-start;gap:56px">
+        <div class="stat">
+          <div style="display:flex;align-items:baseline;gap:8px"><span class="n">433</span><span style="font-size:13px;color:var(--sub)">URL</span></div>
+          <div class="l">sitemapに登録する合計（2026-08-20 実測）</div>
+        </div>
+        <div class="stat">
+          <div style="display:flex;align-items:baseline;gap:8px"><span class="n hot">56</span><span style="font-size:13px;color:var(--sub)">店</span></div>
+          <div class="l">パートナー店舗（2026-08-20 実測）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 月次レポートで使用中（2026-08-25）</div>
+        <div class="g-nm">統計カード列（前月比つき）</div>
+        <div class="g-ds">KPIの見せ場。.stat-rowで3列に並べ、**ラベル→明朝特大→前月比**の順（ラベルが上だと見出しとして効く）。前月比は .d.up（緑）/.d.down（紅）で色分け、単位は&lt;small&gt;で小さく。</div>
+      </div>
+      <div class="stat-row" style="max-width:760px">
+        <div class="stat"><span class="l">成立予約件数</span><span class="n hot">11<small>件</small></span><span class="d up">+83.3%（前月比）</span></div>
+        <div class="stat"><span class="l">売上（予約合計）</span><span class="n">¥75,443</span><span class="d down">-39.8%（前月比）</span></div>
+        <div class="stat"><span class="l">新規会員数</span><span class="n">41<small>人</small></span><span class="d up">+310.0%（前月比）</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 月次レポートで使用中（2026-08-25）</div>
+        <div class="g-nm">横棒ペア（当月×前月）</div>
+        <div class="g-ds">同じ指標の2時点比較に。当月=焦がし・前月=下地。棒の長さはペア内の最大値を100%に。値は明朝で棒の右、凡例を下に。</div>
+      </div>
+      <div style="max-width:640px">
+        <div class="bars">
+          <div class="brow"><span class="bl">成立予約件数</span><div class="bpair">
+            <div class="bline"><div class="b cur" style="width:100%"></div><span class="bv">11件</span></div>
+            <div class="bline"><div class="b prev" style="width:55%"></div><span class="bv">6件<small>前月</small></span></div>
+          </div></div>
+          <div class="brow"><span class="bl">売上（予約合計）</span><div class="bpair">
+            <div class="bline"><div class="b cur" style="width:60%"></div><span class="bv">¥75,443</span></div>
+            <div class="bline"><div class="b prev" style="width:100%"></div><span class="bv">¥125,300<small>前月</small></span></div>
+          </div></div>
+        </div>
+        <div class="bars-legend"><span><i style="background:var(--accent)"></i>当月</span><span><i style="background:#EAE2D6"></i>前月</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 月次レポートで使用中（2026-08-25）</div>
+        <div class="g-nm">前月比較表</div>
+        <div class="g-ds">当月/前月/増減の表。グループ見出し行（.tgroup）で束ね、当月=墨（主役）・前月=グレー（脇役）・増減=緑/紅の意味色。増えたら悪い指標（キャンセル等）は色を反転。長いフラット表は読めないので必ず分節する。</div>
+      </div>
+      <div class="table-wrap" style="max-width:720px">
+        <table class="table-mom">
+          <thead><tr><th>指標</th><th class="num">当月</th><th class="num">前月</th><th class="num">前月比</th></tr></thead>
+          <tbody>
+            <tr class="tgroup"><td colspan="4">予約</td></tr>
+            <tr><td class="label">成立予約件数</td><td class="num">11</td><td class="num prev">6</td><td class="num up">+83.3%</td></tr>
+            <tr><td class="label">キャンセル件数</td><td class="num">6</td><td class="num prev">3</td><td class="num down">+100.0%</td></tr>
+            <tr class="tgroup"><td colspan="4">売上</td></tr>
+            <tr><td class="label">売上（予約合計）</td><td class="num">¥75,443</td><td class="num prev">¥125,300</td><td class="num down">-39.8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — チャートの約束事</div>
+        <div class="g-nm">チャートの原則</div>
+        <div class="g-ds">数字には必ず出典。飾りのチャートは作らない。</div>
+      </div>
+      <div class="numnote" style="max-width:620px">
+        <div class="numnote-row"><span class="numnote-n">1</span><span>出典のある数字だけを使う。凡例か脚注に日付つきで書く。</span></div>
+        <div class="numnote-row"><span class="numnote-n">2</span><span>1ページに1〜2個まで。ドーナツの中央は大きな数字だけ。</span></div>
+        <div class="numnote-row"><span class="numnote-n">3</span><span>データ色は焦がしオレンジ→墨→罫線色の3段。それ以上増やさない。</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 08 資料部品 ======================= -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="sh-body"><h2>資料部品</h2><div class="sh-sub">資料に固有の部品</div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 全ページ必須</div>
+        <div class="g-nm">章ナビ</div>
+        <div class="g-ds">ヒーロー直下の索引。番号+章名+一言。現在地は焦がしオレンジ。</div>
+      </div>
+      <nav class="flow" style="margin:0;max-width:none">
+        <a class="cur"><span class="fnum">1</span><span class="ft">bubbleファイルの用意</span><span class="fd">ページの種類を洗い出す</span></a>
+        <a><span class="fnum">2</span><span class="ft">Data APIの設定</span><span class="fd">ID一覧を取る</span></a>
+        <a><span class="fnum">3</span><span class="ft">sitemap.xmlを生成</span><span class="fd">スクリプトで組み立てる</span></a>
+        <a><span class="fnum">4</span><span class="ft">公開とGoogle登録</span><span class="fd">Search Consoleへ</span></a>
+      </nav>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 手順書の分節に</div>
+        <div class="g-nm">小見出し分節</div>
+        <div class="g-ds">章の中に複数のテーマが並ぶ時、h4の平坦な連なりは境界が見えず読みにくい。焦がしキッカー（役割や番号の一言）+明朝19px見出しの2段で分ける — 章見出しと同じ文法のミニ版。キッカーは省略可。白面カードで囲うのは不可（用語解説と紛れ、箱が並んでうるさくなる・2026-08-26）。</div>
+      </div>
+      <div class="sub-item" style="max-width:640px">
+        <div class="kick">STEP 3-3 — GOOGLEに知らせる</div>
+        <h4>sitemapの送信</h4>
+        <p><strong>なぜ:</strong> 置いただけだとGoogleが気づくのを待つことになる。送信すれば直接知らせられ、読み込み結果も画面で見える。</p>
+        <ol class="steps" style="margin-top:12px">
+          <li>左メニュー「サイトマップ」を開く</li>
+          <li>URLを入力して「送信」</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 平易な日本語の要</div>
+        <div class="g-nm">用語解説</div>
+        <div class="g-ds">専門用語は本文の脇でその場で開く。明朝の用語名+短い説明。</div>
+      </div>
+      <div class="term" style="margin:0;max-width:620px">
+        <div class="term-name">Data API <span class="term-tag">— 用語</span></div>
+        <div class="t-body">画面を開かなくても、プログラムからデータベースの中身を一覧でもらえる窓口。これを使うと店舗・自転車の全IDが数回の通信で取れる。</div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 意思決定の見せ場</div>
+        <div class="g-nm">×○対比</div>
+        <div class="g-ds">ダメな案と採用案を必ず並べて、理由まで書く。</div>
+      </div>
+      <div class="compare" style="margin:0">
+        <div class="compare-box bad">
+          <div class="cb-head"><span class="cb-mark">×</span>Bubbleの自動生成</div>
+          <p>新サイトはURLの後ろにIDを付ける方式のため、店舗・自転車の1件1件のURLが載らない。</p>
+        </div>
+        <div class="compare-box good">
+          <div class="cb-head"><span class="cb-mark">○</span>手動で組み立てる（採用）</div>
+          <p>ID一覧を自分たちで集めてsitemap.xmlを組み立てる。材料はページ一覧とID一覧の2つ。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 手順の定番</div>
+        <div class="g-nm">番号つき手順</div>
+        <div class="g-ds">番号の丸を罫線でつなぐ。1行1操作。</div>
+      </div>
+      <ol class="steps" style="max-width:560px">
+        <li>Bubbleエディタ → Settings &gt; API タブを開く</li>
+        <li>データ種類の一覧で <strong>shop と Bicycle の2つだけ</strong>にチェック</li>
+        <li>本番に反映（デプロイ）する</li>
+      </ol>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 細かな注意書き</div>
+        <div class="g-nm">注意リスト</div>
+        <div class="g-ds">※印の箇条書き。アラートにするほどではない注記に。</div>
+      </div>
+      <ul class="notes" style="max-width:620px">
+        <li>ファイルはバージョンごとの扱い。本番で見えない場合はアップ先を確認</li>
+        <li>ファイル名はアプリのページ名と重複してはいけない</li>
+      </ul>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — ページの締め</div>
+        <div class="g-nm">まとめ帯</div>
+        <div class="g-ds">ページ内で唯一の濃い塗り。墨の帯+明朝+チップの流れ。</div>
+      </div>
+      <div class="recap" style="margin:0">
+        <h2>運用のまとめ — 店舗・自転車が増えたら</h2>
+        <div class="r-flow">
+          <span class="r-chip">手順3 再生成</span>
+          <span class="r-arr">→</span>
+          <span class="r-chip">手順4 再アップロード</span>
+          <span class="r-arr">→</span>
+          <span class="r-chip hot">Googleが自動で再読込</span>
+        </div>
+        <p>頻度（月1回など）は増永さんと相談して決める。</p>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 技術資料用</div>
+        <div class="g-nm">コードブロック / URL構造図</div>
+        <div class="g-ds">唯一のダーク面。等幅・コメントは弱く、強調は淡オレンジ。</div>
+      </div>
+      <div class="g-demo" style="gap:14px;max-width:640px">
+        <div class="codeblock" style="margin:0"><pre><span class="cm"># 店舗一覧（1回につき最大100件）</span>
+curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"</pre></div>
+        <div class="urlmap">
+          <div class="urlmap-line"><span class="u-dim">https://rincle.co.jp</span><span class="u-path">/shop_detail</span><span class="u-dim">?shop=</span><span class="u-id">&lt;店舗ID&gt;</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 09 図解 ======================= -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <div class="sh-body"><h2>図解</h2><div class="sh-sub">スイムレーン・フロー・フェーズ帯</div></div>
+    </div>
+
+    <div class="g-blk g-full">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 資料で使用中（決済フロー資料の様式を踏襲）</div>
+        <div class="g-nm">スイムレーン</div>
+        <div class="g-ds">横=時系列のフェーズ、縦=登場人物のレーン。例外の列はピンク+破線で「本流ではない」ことを示し、お金の行は琥珀でいくら動くかだけを追えるようにする。役割色: ユーザー=藍 / 販売店=緑 / システム=焦がしオレンジ / お金=琥珀。</div>
+      </div>
+      <div class="lane-wrap" style="margin:0">
+        <div class="lanes" style="grid-template-columns:96px repeat(5,minmax(0,1fr))">
+          <div class="lane-corner">レーン</div>
+          <div class="lane-head">1 予約時<span class="sub">数日〜数週間前</span></div>
+          <div class="lane-head ex">例外: キャンセル時<span class="sub">発生した場合のみ</span></div>
+          <div class="lane-head">2 当日: 来店・受付<span class="sub">店頭</span></div>
+          <div class="lane-head ex">例外: 決済失敗時<span class="sub">失敗した場合のみ</span></div>
+          <div class="lane-head">3 返却時<span class="sub">店頭</span></div>
+
+          <div class="lane-label user"><i></i>ユーザー</div>
+          <div class="lane-cell">予約を確定（カードを登録）</div>
+          <div class="lane-cell ex">前日23:59までオンラインで取消</div>
+          <div class="lane-cell">来店して受付</div>
+          <div class="lane-cell ex">別のカードで再決済</div>
+          <div class="lane-cell">自転車を返す</div>
+
+          <div class="lane-label shop"><i></i>販売店</div>
+          <div class="lane-cell empty">—</div>
+          <div class="lane-cell ex empty">—</div>
+          <div class="lane-cell">貸出前の点検・受付処理</div>
+          <div class="lane-cell ex">店頭で案内</div>
+          <div class="lane-cell">状態確認・追加分の精算</div>
+
+          <div class="lane-label sys"><i></i>システム</div>
+          <div class="lane-cell">予約を登録。<strong>決済はしない</strong></div>
+          <div class="lane-cell ex">予約を取消。<strong>返金処理は不要</strong></div>
+          <div class="lane-cell"><strong>全額を決済</strong>・レシート送付</div>
+          <div class="lane-cell ex">エラー通知 → 再決済へ</div>
+          <div class="lane-cell">追加分があれば決済</div>
+
+          <div class="lane-label money"><i></i>お金の動き</div>
+          <div class="lane-cell money">¥0</div>
+          <div class="lane-cell ex money" style="background:var(--gold-soft)">¥0</div>
+          <div class="lane-cell money">全額<small>貸出開始時</small></div>
+          <div class="lane-cell ex empty">—</div>
+          <div class="lane-cell money">追加分のみ</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 業務フロー図で使用中（2026-08-25改良）</div>
+        <div class="g-nm">横フロー（箱矢印・分岐つき）</div>
+        <div class="g-ds">行=役割・チップの流れで手順を追う図。ノードはニュートラルなピル型チップ（役割は行ラベルが示すので色を付けない）、判定は墨罫+太字、強調は焦がし輪郭+薄い面。矢印は文字でなく線+矢じりを描く（高さが常に揃う）。分岐は左レールで束ね、枝のラベルは色つきキッカー（OK=緑/NG=紅）。</div>
+      </div>
+      <div class="swim"><div class="swim-inner">
+        <div class="swim-row">
+          <div class="swim-label user"><i></i>ユーザー</div>
+          <div class="swim-track">
+            <div class="swim-node user">開始</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node user decision">新規?</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-branch">
+              <div>
+                <div class="swim-branch-label ok">既存ユーザー</div>
+                <div style="display:flex;align-items:center;margin-top:4px">
+                  <div class="swim-node user">ログイン</div>
+                  <div class="swim-arrow"></div>
+                  <div class="swim-node hot">マイページ</div>
+                </div>
+              </div>
+              <div>
+                <div class="swim-branch-label ng">認証エラー</div>
+                <div style="display:flex;align-items:center;margin-top:4px">
+                  <div class="swim-node error">再入力を案内</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="swim-row">
+          <div class="swim-label gold"><i></i>通知</div>
+          <div class="swim-track">
+            <div class="swim-node notify">確認メール送信</div>
+            <div class="swim-arrow hot"></div>
+            <div class="swim-node admin">管理画面に記録</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 業務フロー図で使用中</div>
+        <div class="g-nm">役割つき縦フロー</div>
+        <div class="g-ds">手順を詳しく語る時の縦フロー。番号丸は役割色の輪郭+明朝数字、役割はキッカーで明示、補足は左罫の注記に。図（レーン格子・横フロー）の下に「詳細」として添える使い方が定番。</div>
+      </div>
+      <div class="pflow" style="max-width:640px">
+        <div class="pflow-step">
+          <div class="pflow-dot user">1</div>
+          <div class="pflow-body">
+            <div class="pflow-actor user">ユーザー</div>
+            <div class="pflow-text">予約を確定する</div>
+            <div class="pflow-note">この時点ではお金は動かない（与信枠の確保のみ）</div>
+          </div>
+        </div>
+        <div class="pflow-step">
+          <div class="pflow-dot external">2</div>
+          <div class="pflow-body">
+            <div class="pflow-actor external">外部サービス</div>
+            <div class="pflow-text">決済を確定し、結果を返す</div>
+          </div>
+        </div>
+        <div class="pflow-step">
+          <div class="pflow-dot store">3</div>
+          <div class="pflow-body">
+            <div class="pflow-actor store">店舗</div>
+            <div class="pflow-text">結果を確認して貸し出す</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-08-25新設</div>
+        <div class="g-nm">ファネル</div>
+        <div class="g-ds">段階ごとの絞り込みを見せる図。棒の幅=構成比（先頭を100%に）、段が下がるほど薄く。段間に転換率のキッカー。予約フローの離脱分析など「どこで減ったか」を語る時に。</div>
+      </div>
+      <div class="funnel" style="max-width:620px">
+        <div class="frow"><div class="fbar" style="width:100%">予約フローに進んだ人</div><span class="fv">51</span></div>
+        <div class="fconv">完了率 22%</div>
+        <div class="frow"><div class="fbar f2" style="width:22%"></div><span class="fv">11</span><span class="fl">成立予約（2026-07 実測）</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 組み方の定石</div>
+        <div class="g-nm">状態遷移図（横フローの応用）</div>
+        <div class="g-ds">ステータスの流れは横フロー（.swim）で組む: 状態=ピルチップ・現在の状態や到達点=強調（hot）・離脱先（キャンセル等）は例外の枝に。専用CSSは不要。</div>
+      </div>
+      <div class="swim" style="max-width:820px"><div class="swim-inner">
+        <div class="swim-row">
+          <div class="swim-label user"><i></i>予約の状態</div>
+          <div class="swim-track">
+            <div class="swim-node">仮情報</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node">来客待ち</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node">貸出中</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-branch">
+              <div>
+                <div class="swim-branch-label ok">通常</div>
+                <div class="swim-node hot" style="margin-top:4px">返却済み</div>
+              </div>
+              <div>
+                <div class="swim-branch-label ng">離脱</div>
+                <div class="swim-node error" style="margin-top:4px">キャンセル</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 図解の基本形</div>
+        <div class="g-nm">縦フロー（分岐つき）</div>
+        <div class="g-ds">上から下へ。分岐は菱形ではなく問いの箱+2択で平易に。</div>
+      </div>
+      <div style="max-width:420px;display:flex;flex-direction:column">
+        <div class="fbox">sitemap.xml を生成する</div>
+        <div class="farr">↓</div>
+        <div class="fbox q">店舗数・自転車数は実数と合っている？</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:6px">
+          <div style="display:flex;flex-direction:column">
+            <div class="farr" style="color:var(--ok)">はい ↓</div>
+            <div class="fbox yes">Bubbleへアップロード</div>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <div class="farr" style="color:var(--danger)">いいえ ↓</div>
+            <div class="fbox no">除外条件を見直す</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 期間の図解</div>
+        <div class="g-nm">フェーズ帯</div>
+        <div class="g-ds">工程を帯でつなぐ。現在のフェーズだけ焦がしオレンジ。</div>
+      </div>
+      <div class="phases" style="margin:0">
+        <div class="phase done"><span class="pn">Phase 1</span><span class="pt">DB再構築</span><span class="ps">完了（7月）</span></div>
+        <div class="phase now"><span class="pn">Phase 2</span><span class="pt">SEO設定一式</span><span class="ps">進行中</span></div>
+        <div class="phase"><span class="pn">Phase 3</span><span class="pt">Stripe移行</span><span class="ps">予定</span></div>
+        <div class="phase"><span class="pn">Phase 4</span><span class="pt">グロース施策</span><span class="ps">予定</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 図解の約束事</div>
+        <div class="g-nm">役割色の凡例</div>
+        <div class="g-ds">図解全体で色の意味を固定する。凡例は図の直下に必ず置く。</div>
+      </div>
+      <div class="legend" style="margin:0">
+        <span><i style="background:var(--info)"></i>ユーザー操作</span>
+        <span><i style="background:var(--ok)"></i>店舗操作</span>
+        <span><i style="background:var(--accent)"></i>システム・自動処理</span>
+        <span><i style="background:var(--gold)"></i>お金の動き</span>
+        <span><i style="background:var(--danger)"></i>例外・異常系</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= 10 スライド部品 ======================= -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <div class="sh-body"><h2>スライド部品</h2><div class="sh-sub">定例でそのまま映す16:9</div></div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 01</div>
+        <div class="g-nm">表紙</div>
+        <div class="g-ds">明朝の大題+罫線+資料番号。共通の下枠（左=ブランド名・右=ページ番号）は全スライドに入る。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-cover">
+          <div class="sd-cover-top">
+            <span class="hero-kicker" style="font-size:9px">BRAND — カテゴリ</span>
+            <span class="hero-no" style="font-size:10px;letter-spacing:.16em">資料 07</span>
+          </div>
+          <div class="sd-cover-body">
+            <div class="sd-title">sitemap.xml 作成手順</div>
+            <div class="sd-rule"></div>
+            <div class="sd-lead">全ページの一覧をGoogleに知らせるファイルを、Data APIで作って登録するまで。</div>
+          </div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>2026-08-21</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 02</div>
+        <div class="g-nm">章とびら</div>
+        <div class="g-ds">薄い大きな番号+章名だけ。話の切り替えを1枚挟む。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-chapter">
+          <div class="ghost" style="font-size:110px">02</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="sd-eyebrow">CHAPTER</div>
+            <div class="sd-ch-name">Data APIの設定</div>
+            <div class="sd-ch-sub">店舗・自転車のID一覧を取る</div>
+          </div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>05 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 03</div>
+        <div class="g-nm">1メッセージ</div>
+        <div class="g-ds">1枚に言いたいことは1つ。中央に明朝で大きく。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-center">
+          <div class="sd-eyebrow">結論</div>
+          <div class="sd-msg">sitemapは自動生成ではなく、<br>手動で組み立てる</div>
+          <div class="sd-hair"></div>
+          <div class="sd-note">新サイトのURL構成では、自動生成に店舗・自転車のURLが載らないため</div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>06 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 04</div>
+        <div class="g-nm">ビッグナンバー</div>
+        <div class="g-ds">数字が主役の1枚。出典を必ず小さく添える。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-nums">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+            <div class="sd-bignum">433</div>
+            <div class="sd-bignum-label">登録するURL</div>
+          </div>
+          <div class="sd-vline"></div>
+          <div class="sd-mini">
+            <div class="sd-mini-row"><span>自転車詳細</span><strong>374</strong></div>
+            <div class="sd-mini-row"><span>店舗詳細</span><strong>56</strong></div>
+            <div class="sd-mini-row" style="border-bottom:none"><span>静的ページ</span><strong>3</strong></div>
+            <div class="sd-src">2026-08-20 本番実測</div>
+          </div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>07 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 05</div>
+        <div class="g-nm">2分割（主張+根拠）</div>
+        <div class="g-ds">左に言いたいこと、右に表や図。読み上げず、見せて話す。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-split">
+          <div class="sd-claim">
+            <div class="sd-eyebrow">載せるページ</div>
+            <div class="sd-claim-title">載せるのは<br>5種類だけ</div>
+            <div class="sd-claim-note">ログイン・予約などの機能ページは載せない。</div>
+          </div>
+          <div class="sd-tbl">
+            <div class="sd-tbl-head"><span>ページ</span><span style="text-align:right">優先度</span></div>
+            <div class="sd-tbl-row"><span>トップ</span><span class="sd-tbl-num">1.0</span></div>
+            <div class="sd-tbl-row"><span>検索</span><span class="sd-tbl-num">0.9</span></div>
+            <div class="sd-tbl-row"><span>店舗詳細</span><span class="sd-tbl-num">0.8</span></div>
+            <div class="sd-tbl-row"><span>自転車詳細</span><span class="sd-tbl-num">0.7</span></div>
+          </div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>08 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 06</div>
+        <div class="g-nm">×○比較</div>
+        <div class="g-ds">意思決定のスライド。ダメな案にも一言の理由を。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-pane">
+          <div class="sd-pane-title">作り方の比較</div>
+          <div class="sd-vs">
+            <div class="sd-vs-box is-bad">
+              <div class="sd-vs-head"><span class="sd-vs-mark">×</span><span class="sd-vs-name">自動生成</span></div>
+              <div class="sd-vs-note">店舗・自転車の個別URLが載らない</div>
+            </div>
+            <div class="sd-vs-box is-good">
+              <div class="sd-vs-head"><span class="sd-vs-mark">○</span><span class="sd-vs-name">手動で組み立て（採用）</span></div>
+              <div class="sd-vs-note">Data APIでID一覧を集めて全URLを網羅</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>09 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 07</div>
+        <div class="g-nm">締め（次のアクション）</div>
+        <div class="g-ds">最後は宿題の1枚。担当と期日をセットで。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-pane">
+          <div class="sd-pane-title">次のアクション</div>
+          <div class="sd-todo">
+            <div class="sd-todo-row"><span>本番デプロイ（Data API公開）</span><span class="sd-todo-who">山本さん</span><span class="sd-todo-when">8月中</span></div>
+            <div class="sd-todo-row"><span>sitemap生成→アップロード</span><span class="sd-todo-who">清野さん</span><span class="sd-todo-when">デプロイ後</span></div>
+            <div class="sd-todo-row"><span>再生成の頻度を決める</span><span class="sd-todo-who">増永さん</span><span class="sd-todo-when">次回定例</span></div>
+          </div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>12 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">共通規格</div>
+        <div class="g-nm">スライドの約束事</div>
+        <div class="g-ds">全スライド共通のルール。</div>
+      </div>
+      <div class="numnote" style="max-width:640px">
+        <div class="numnote-row"><span class="numnote-n">1</span><span>16:9・余白は上下30px/左右44px以上。1枚に言いたいことは1つ。</span></div>
+        <div class="numnote-row"><span class="numnote-n">2</span><span>下枠に左=ブランド名・右=ページ番号（表紙だけ日付）。進捗ドットは使わずページ番号で示す。</span></div>
+        <div class="numnote-row"><span class="numnote-n">3</span><span>本文の最小サイズは投影で読める18px相当。表は5行まで、超えるなら分割。</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>正本: _source/ の .dc.html 群（Claude Designキャンバスの元データ・全10シート+canvas.json）</footer>
+
+<script>
+(function(){
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var updateCur = function(){
+      var line = window.innerHeight * 0.3;
+      var cur = null;
+      map.forEach(function(m){ if (m[1].getBoundingClientRect().top <= line) cur = m; });
+      links.forEach(function(l){ l.classList.remove('cur'); });
+      if (cur) cur[0].classList.add('cur');
+    };
+    addEventListener('scroll', updateCur, {passive:true}); updateCur();
+  }
+})();
+</script>
+</body>
+</html>
