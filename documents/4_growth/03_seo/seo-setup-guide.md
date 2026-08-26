@@ -47,33 +47,6 @@ CVR約4%というのは「サイトに来てもらえさえすれば、ちゃん
 
 ---
 
-## なぜこうなっているのか（2026-06-11実測で更新）
-
-RINCLEはBubble.io（ノーコードツール）で作られている。Bubble.ioで作ったサイトは「中身（本文）がJavaScriptで後から読み込まれる」構造になっている。
-
-2026-06-11に実際のHTMLを取得して確認した結果:
-
-```
-意外と設定されていたもの（サーバー側でHTMLに出力済み）:
-  → titleタグ（店舗詳細では店舗名入りの動的タイトルまで生成されている）
-  → meta description / OGP一式
-
-問題が残っているもの:
-  → 本文がHTMLにほぼ無い: トップの可視テキストは「Rincle」の6文字だけ。
-    店舗詳細でも31文字（タイトルの重複のみ）。料金・車種・住所・営業時間はゼロ
-  → 初期HTMLにh1/h2が一切ない
-  → ページ間の<a>リンクが初期HTMLに無い（リンクはJS生成のみ）
-  → sitemap.xmlが404 / robots.txtにSitemap行なし
-  → canonicalなし → 検索条件付きのゴミURLが「正式なページ」としてインデックスされる実害が発生中
-  → meta descriptionは全ページ同一文面、og:imageはアイコン画像の流用（品質課題）
-```
-
-**重要な補足: 「Bubble（JSレンダリング）だからインデックスされない」は正確ではない。** Vercel×MERJの大規模調査（Googlebotのフェッチ10万件以上を分析）では、GoogleはCSRページを含むHTML 200ページの100%をフルレンダリングしており、レンダリング待ちも中央値10秒程度だった（出典: https://vercel.com/blog/how-google-handles-javascript-throughout-the-indexing-process / Google公式のJavaScript SEO解説: https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics ）。
-
-RINCLEのインデックスが2〜3ページに留まっている主因は、**sitemapが無い+内部リンクがJS生成のみ→Googleがページを発見できない「ディスカバリーの問題」**である可能性が高い。つまり、このガイドのStep 1〜3（メタ情報・sitemap・Search Console）という基本の整備だけでも大きく改善する余地がある。
-
----
-
 ## やるべきことの全体像
 
 ```

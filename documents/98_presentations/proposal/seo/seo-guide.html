@@ -185,51 +185,6 @@ tr.hl td{background:var(--accent-faint);font-weight:700}
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- なぜこうなっているのか -->
-  <!-- ============================================================ -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num">02</div>
-      <div class="sh-body"><h2>なぜこうなっているのか（2026-06-11実測で更新）</h2><div class="sh-sub">実際のHTMLを取得して確認した結果</div></div>
-    </div>
-
-    <p>RINCLEは<strong>Bubble.io</strong>（ノーコードツール）で作られています。Bubble.ioで作ったサイトは「中身（本文）がJavaScriptで後から読み込まれる」構造になっています。<br>
-    2026-06-11に<strong>実際のHTMLを取得して確認した</strong>結果は以下のとおりです。</p>
-
-    <div class="compare">
-      <div class="compare-box good">
-        <div class="cb-head"><span class="cb-mark">O</span>意外と設定されていたもの</div>
-        <p>
-          サーバー側でHTMLに出力済み:<br>
-          ・<strong>titleタグ</strong>（店舗詳細では店舗名入りの動的タイトルまで生成されている）<br>
-          ・<strong>meta description / OGP一式</strong>
-        </p>
-      </div>
-      <div class="compare-box bad">
-        <div class="cb-head"><span class="cb-mark">X</span>問題が残っているもの</div>
-        <p>
-          ・<strong>本文がHTMLにほぼ無い</strong>: トップの可視テキストは「Rincle」の6文字だけ。店舗詳細でも31文字（タイトルの重複のみ）。料金・車種・住所・営業時間はゼロ<br>
-          ・初期HTMLに<strong>h1/h2が一切ない</strong><br>
-          ・ページ間の<strong>&lt;a&gt;リンクが初期HTMLに無い</strong>（リンクはJS生成のみ）<br>
-          ・<strong>sitemap.xmlが404</strong> / robots.txtにSitemap行なし<br>
-          ・<strong>canonicalなし</strong> → 検索条件付きのゴミURLが「正式なページ」としてインデックスされる実害が発生中<br>
-          ・meta descriptionは全ページ同一文面、og:imageはアイコン画像の流用（品質課題）
-        </p>
-      </div>
-    </div>
-
-    <div class="alert alert-blue">
-      <svg class="a-icon icon"><use href="#i-info"/></svg>
-      <span><strong>重要な補足: 「Bubble（JSレンダリング）だからインデックスされない」は正確ではありません。</strong> Vercel×MERJの大規模調査（Googlebotのフェッチ10万件以上を分析）では、GoogleはCSRページを含むHTML 200ページの<strong>100%をフルレンダリング</strong>しており、レンダリング待ちも中央値10秒程度でした（出典: <a href="https://vercel.com/blog/how-google-handles-javascript-throughout-the-indexing-process" target="_blank">Vercel調査</a> / <a href="https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics" target="_blank">Google公式 JavaScript SEO解説</a>）。</span>
-    </div>
-
-    <div class="alert alert-green">
-      <svg class="a-icon icon"><use href="#i-check"/></svg>
-      <span>RINCLEのインデックスが2〜3ページに留まっている主因は、<strong>sitemapが無い + 内部リンクがJS生成のみ → Googleがページを発見できない「ディスカバリーの問題」</strong>である可能性が高い。つまり、このガイドのStep 1〜3（メタ情報・sitemap・Search Console）という<strong>基本の整備だけでも大きく改善する余地</strong>があります。</span>
-    </div>
-  </div>
-
 </div><!-- /panel-intro -->
 
 <div class="tab-panel" id="panel-step1">
