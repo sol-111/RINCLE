@@ -18,7 +18,7 @@
 .card li:last-child{margin-bottom:0}
 .card p + p{margin-top:10px}
 
-/* 表の評価記号（◎○＝緑 / △＝琥珀 / ✕＝紅。塗らず文字色だけ） */
+/* 表の評価記号（◎○＝緑 / △＝琥珀 / ×＝紅。塗らず文字色だけ） */
 td.center{text-align:center;white-space:nowrap}
 .o{color:var(--ok);font-weight:700}
 .x{color:var(--danger);font-weight:700}
@@ -221,7 +221,7 @@ td.center{text-align:center;white-space:nowrap}
         <thead><tr><th>SEO要素</th><th>WordPress</th><th>BubbleのCMS記事</th></tr></thead>
         <tbody>
           <tr><td class="label">title / description（可変）</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="o">○</span> 手動だが可能</td></tr>
-          <tr><td class="label">表示速度（Core Web Vitals）</td><td class="center"><span class="o">○〜◎</span></td><td><span class="x">✕</span> <strong>Bubble本体はLCP49秒の実測</strong>・記事も遅い</td></tr>
+          <tr><td class="label">表示速度（Core Web Vitals）</td><td class="center"><span class="o">○〜◎</span></td><td><span class="x">×</span> <strong>Bubble本体はLCP49秒の実測</strong>・記事も遅い</td></tr>
           <tr><td class="label">本文・見出し(h1/h2)の構造</td><td class="center"><span class="o">◎</span></td><td><span class="t">△</span> JSレンダリングで初期HTMLに乗りにくい</td></tr>
           <tr><td class="label">JS依存のインデックス</td><td class="center"><span class="o">◎</span> HTML即提供</td><td><span class="t">△</span> 描画はされるが遅延・取りこぼし</td></tr>
           <tr><td class="label">構造化データ / canonical / sitemap</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="t">△</span> 弱い・手動</td></tr>
@@ -296,7 +296,7 @@ td.center{text-align:center;white-space:nowrap}
         <tbody>
           <tr><td class="label">SEO</td><td><span class="o">◎</span> rincle.co.jp本体にドメイン評価を集約できる</td><td><span class="t">△</span> 評価はサブドメイン側に貯まる（本体への波及は限定的）</td></tr>
           <tr><td class="label">実現方式</td><td><strong>リバースプロキシが必須</strong>（Cloudflare WorkerでURLごとにWordPress/Bubbleへ出し分け）</td><td>DNSにレコードを1本足すだけ。本体と完全に独立</td></tr>
-          <tr><td class="label">リスク</td><td><span class="x">✕</span> <strong>落ちるとブログもアプリ本体も全滅</strong>（単一障害点）。弊社にBubble×WordPressでの運用実績がなく、障害時の原因切り分けも難しい</td><td><span class="o">○</span> 本体に影響なし（LP側が落ちてもアプリは無事）</td></tr>
+          <tr><td class="label">リスク</td><td><span class="x">×</span> <strong>落ちるとブログもアプリ本体も全滅</strong>（単一障害点）。弊社にBubble×WordPressでの運用実績がなく、障害時の原因切り分けも難しい</td><td><span class="o">○</span> 本体に影響なし（LP側が落ちてもアプリは無事）</td></tr>
         </tbody>
       </table>
     </div>

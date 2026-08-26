@@ -186,17 +186,17 @@
           <div class="mini"><b><span class="n">2</span>カード有効性を自動チェック</b>¥0で検証・保存（本人認証込み）。無効カードはこの場で弾く</div>
         </div>
         <div class="lane-cell ex">
-          <div class="mini"><b>キャンセル料を登録カードへ請求 <span class="star">★1</span></b>ポリシーに沿って自動計算</div>
+          <div class="mini"><b>キャンセル料を登録カードへ請求 <span class="star">注1</span></b>ポリシーに沿って自動計算</div>
         </div>
         <div class="lane-cell empty"></div>
         <div class="lane-cell">
-          <div class="mini"><b><span class="n">7</span>登録カードへ本決済 — ここで分岐</b><span class="ok">✔ 成功</span> → 「貸出中」へ変更・領収書メール自動送信 → ⑧へ<br><span class="ng">✖ 失敗</span> → 一回限りの支払いQRを発行して右の列へ</div>
+          <div class="mini"><b><span class="n">7</span>登録カードへ本決済 — ここで分岐</b><span class="ok">○ 成功</span> → 「貸出中」へ変更・領収書メール自動送信 → ⑧へ<br><span class="ng">× 失敗</span> → 一回限りの支払いQRを発行して右の列へ</div>
         </div>
         <div class="lane-cell ex">
-          <div class="mini"><b>再決済の結果で分岐</b><span class="ok">✔ 成功</span> → 「貸出中」へ変更（⑧に合流）<br><span class="ng">✖ 失敗</span> → 貸出不可 or 管理者対応</div>
+          <div class="mini"><b>再決済の結果で分岐</b><span class="ok">○ 成功</span> → 「貸出中」へ変更（⑧に合流）<br><span class="ng">× 失敗</span> → 貸出不可 or 管理者対応</div>
         </div>
         <div class="lane-cell">
-          <div class="mini"><b><span class="n">11</span>追加分があれば追加決済</b>延長・紛失分のみ。破損は後日請求 <span class="star">★2</span></div>
+          <div class="mini"><b><span class="n">11</span>追加分があれば追加決済</b>延長・紛失分のみ。破損は後日請求 <span class="star">注2</span></div>
         </div>
 
         <!-- お金行 -->
@@ -218,16 +218,16 @@
 
     <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>予約時・来店時に請求は発生しません。</strong>「予約はタダで気軽に、支払いは自転車を受け取るとき」という分かりやすいお金の流れです（ホテルのチェックイン精算に近い形）。決済が失敗しても<strong>本人が目の前にいるのでその場で支払い直せる</strong>のがこのフローの強みです。</div></div>
 
-    <h3>★ 例外時の分岐（詳細）</h3>
+    <h3>例外時の分岐（詳細）</h3>
     <div class="branch red">
-      <h5>★1 キャンセル料の請求が失敗したら</h5>
+      <h5>注1 キャンセル料の請求が失敗したら</h5>
       <ol>
         <li>ユーザーに別カードでの支払いを案内</li>
         <li>それも不可なら請求書払い → 管理者対応（回収しきれない分は貸倒れとして許容 — 提案3-1）</li>
       </ol>
     </div>
     <div class="branch">
-      <h5 class="brand">★2 破損・高額請求が発生したら <span class="badge ours">弊社提案</span></h5>
+      <h5 class="brand">注2 破損・高額請求が発生したら <span class="badge ours">弊社提案</span></h5>
       <p>車体破損など<strong>金額が大きい・揉めやすい請求は、その場で決済せず「管理者確認 → 後日請求」を標準ルートに</strong>する（詳細は提案3-2）。店頭での言い合いを避け、金額の妥当性を運営が確認してから請求できる。</p>
     </div>
   </div>
