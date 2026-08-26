@@ -130,7 +130,7 @@ h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);marg
 /* ---------- 小見出し分節（.sub-item: 章の中のテーマを「焦がしキッカー+明朝見出し」の2段で分ける。
    章見出し（section-header）と同じ文法のミニ版。キッカー（.kick）は省略可。
    箱にはしない — 白面カードだと用語解説と紛れ、箱が並んでうるさくなる（2026-08-26決定・案A採用） ---------- */
-.sub-item{margin:38px 0 0}
+.sub-item{margin:56px 0 0} /* テーマ境界はテーマ内の間隔（24〜28px）より明確に大きく */
 .sub-item .kick{font-size:10.5px;font-weight:700;letter-spacing:.2em;color:var(--accent);margin-bottom:6px}
 .sub-item h4{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);line-height:1.6;margin:0 0 14px}
 .sub-item p{font-size:13.5px;margin-bottom:8px}
