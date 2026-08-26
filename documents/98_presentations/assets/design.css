@@ -127,6 +127,11 @@ h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);marg
 .bad .cb-mark{background:var(--danger)}
 .good .cb-mark{background:var(--ok)}
 .compare-box p{font-size:12.5px;line-height:1.9;color:var(--text)}
+/* ---------- 小見出しカード（.sub-item: 章の中のテーマを1枚ずつ囲う。h4+本文/表/手順を入れる） ---------- */
+.sub-item{background:var(--surface);border:1px solid var(--line-soft);border-left:2px solid var(--accent);border-radius:4px;padding:20px 24px;margin:20px 0}
+.sub-item h4{margin-top:0}
+.sub-item p{font-size:13.5px;margin-bottom:8px}
+.sub-item.ok{border-left-color:var(--ok)}
 
 /* ---------- 表（上罫は墨2px・項目名は明朝） ---------- */
 .table-wrap{overflow-x:auto;margin:28px 0}
