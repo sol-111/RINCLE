@@ -111,7 +111,7 @@ node documents/4_growth/03_seo/sitemap/generate_sitemap.js
 ▼ Search Console
 Googleが無料で提供している「自分のサイトがGoogleにどう見えているか」の管理画面
 検索結果に何ページ登録されたか・どんな検索語で表示されたか・エラーがないかが見られる
-RINCLEはまだ導入していない（導入は別タスク#21-22。サイトの所有者確認などの初期設定が必要）
+RINCLEは導入済み（ドメインプロパティ `rincle.co.jp`・所有者確認済み。清野は権限付与ユーザーとしてアクセス可能 — 2026-08-26確認）
 
 ▼ なぜ「送信」するのか
 sitemap.xmlをサイトに置いただけだと、Googleが自分で気づくのを待つことになる

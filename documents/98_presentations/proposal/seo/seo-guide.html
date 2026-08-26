@@ -474,12 +474,15 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
         <h3>Google Search Console 登録</h3>
         <p><strong>Google Search Console（サーチコンソール）</strong>は、Googleが提供する無料ツールです。サイトがGoogleにどう見えているかを確認・管理できます。</p>
 
+        <div class="alert alert-blue">
+          <svg class="a-icon icon"><use href="#i-info"/></svg>
+          <span><strong>2026-08-26更新: プロパティは既に存在していました。</strong><code>rincle.co.jp</code> のドメインプロパティが登録・所有者確認済み（所有者は増永さん側のアカウントと思われる —「設定 &gt; ユーザーと権限」で確認できる）。弊社は権限を付与されたユーザーとしてアクセス可能なため、<strong>プロパティ作成と所有権確認の作業は不要</strong>です。</span>
+        </div>
+
         <ol class="steps">
-          <li><a href="https://search.google.com/search-console" target="_blank">Search Console</a>にGoogleアカウントでログイン</li>
-          <li>「プロパティを追加」から「URLプレフィックス」を選び、<code>https://rincle.co.jp</code>を入力</li>
-          <li>所有権の確認方法で「HTMLタグ」を選択し、表示されたmetaタグをコピー</li>
-          <li>Bubble.io Settings &rarr; SEO / metatags &rarr;「Script in header」にmetaタグを貼り付けて保存</li>
-          <li>Search Consoleに戻り「確認」ボタンをクリック。「所有権を確認しました」が出ればOK</li>
+          <li><a href="https://search.google.com/search-console" target="_blank">Search Console</a>にGoogleアカウントでログインし、プロパティ <code>rincle.co.jp</code> を開く</li>
+          <li>設定 →「ユーザーと権限」で自分の権限を確認（「フル」ならsitemap送信・URL検査まで一通りできる。「制限付き」なら閲覧のみのため、所有者にフルへの変更を依頼）</li>
+          <li>月次レポート自動化用のロボット（サービスアカウント）の追加は<strong>所有者のみ可能</strong> → 所有者に「制限付きで追加」を依頼する</li>
           <li>「URL検査」でトップ・検索ページ・主要な店舗詳細の<strong>インデックス登録をリクエスト</strong></li>
         </ol>
 
