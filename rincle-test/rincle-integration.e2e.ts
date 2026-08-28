@@ -16,7 +16,7 @@ dotenv.config();
 // バグ修正前は①④とも fail する（正検出）。日時ヘルパー等は rincle.e2e.ts と同方式。
 // ============================================================================
 
-const BASE_URL = "https://rincle.co.jp/version-43erq";
+const BASE_URL = process.env.RINCLE_BASE_URL || "https://rincle.co.jp/version-43erq";
 const EMAIL    = process.env.RINCLE_EMAIL!;
 const PASSWORD = process.env.RINCLE_PASSWORD!;
 const STORE_EMAIL    = process.env.STORE_EMAIL!;

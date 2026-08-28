@@ -16,7 +16,7 @@ dotenv.config();
 // 読み取り専用（表示確認のみ）。データは一切変更しない。
 // ============================================================================
 
-const BASE_URL = "https://rincle.co.jp/version-43erq";
+const BASE_URL = process.env.RINCLE_BASE_URL || "https://rincle.co.jp/version-43erq";
 const ADMIN_EMAIL    = process.env.ADMIN_EMAIL!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 

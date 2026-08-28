@@ -18,7 +18,7 @@ dotenv.config();
 // 共有開発環境のため、データを変更するテストは必ず finally で復元する。
 // ============================================================================
 
-const BASE_URL = "https://rincle.co.jp/version-43erq";
+const BASE_URL = process.env.RINCLE_BASE_URL || "https://rincle.co.jp/version-43erq";
 const STORE_EMAIL    = process.env.STORE_EMAIL!;
 const STORE_PASSWORD = process.env.STORE_PASSWORD!;
 // 統合テスト（非表示⇄ユーザー検索）用: 店舗所在地の都道府県コード（栃木=9）
