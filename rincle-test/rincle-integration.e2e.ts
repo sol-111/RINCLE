@@ -24,8 +24,10 @@ const STORE_PASSWORD = process.env.STORE_PASSWORD!;
 const AREA     = (process.env.RINCLE_AREA || "").replace(/"/g, "");
 const START_DATETIME = process.env.RINCLE_DATE || "";
 const END_DATETIME   = process.env.RINCLE_TIME || "";
-// テスト店舗の自転車（SEINO自転車のFALD - ERX2）。作り直した場合は .env の TEST_BIKE_ID で上書き
-const TEST_BIKE_URL = `${BASE_URL}/bicycle_detail?bicycle=${process.env.TEST_BIKE_ID || "1783597035177x490785382439820740"}`;
+// テスト店舗の自転車（「ちゃんとしたロードバイク」）。作り直した場合は .env の TEST_BIKE_ID で上書き
+// 【2026-08実測】テスト店舗のフィクスチャは7/16-17に再作成された（店舗名は SEINO自転車 →
+// 「RINCLE 千葉柏店/オンザロード柏店」・栃木県→千葉県）。旧IDの自転車は読み込み不能。
+const TEST_BIKE_URL = `${BASE_URL}/bicycle_detail?bicycle=${process.env.TEST_BIKE_ID || "1784370816467x497983313811946050"}`;
 
 function parseDatetime(s: string) {
   const m = s.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}:\d{2})/);
@@ -92,36 +94,81 @@ async function openReservationList(page: Page) {
   await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
   await freshenIfStale(page);
   await page.getByRole("button", { name: "予約の確認・キャンセル" }).first().click();
-  await page.waitForURL(/\/user_reservation_list/, { timeout: 20000 });
+  // 【2026-08 UI刷新】予約一覧は /user_reservation_list から /mypage 配下に移動（見出し「予約状況一覧」は同じ）
+  await page.waitForURL(/\/(user_reservation_list|mypage)/, { timeout: 20000 });
   await page.waitForTimeout(3000);
   await expect(page.getByText("予約状況一覧")).toBeVisible({ timeout: 10000 });
 }
 
-// 予約一覧から「予約番号 → カード全文」を収集
-async function collectReservationCards(page: Page): Promise<{ no: string; text: string }[]> {
+// 【2026-08 UI刷新】予約一覧はアコーディオン式になった: 一覧には見出し（予約番号・XXXX）だけが
+// 並び、見出しをクリックするとそのカード1件だけが展開されて詳細（店舗・日時・キャンセルボタン）が
+// 表示される（別の見出しを開くと前のカードは閉じる）。
+
+// 見出し（h6）の素クリックでは展開しない【実測】: .clickable-element祖先のjQueryハンドラを直接叩く
+async function clickReservationHeading(page: Page, index: number): Promise<void> {
+  await page.evaluate((idx) => {
+    const hs = Array.from(document.querySelectorAll("h6")).filter(h => (h.textContent || "").includes("予約番号"));
+    const h = hs[idx] as HTMLElement | undefined;
+    if (!h) return;
+    h.scrollIntoView({ behavior: "instant", block: "center" });
+    let el: HTMLElement | null = h;
+    for (let k = 0; k < 8 && el; k++) {
+      if (el.classList?.contains("clickable-element")) break;
+      el = el.parentElement;
+    }
+    const target = (el && el.classList.contains("clickable-element")) ? el : h;
+    const events = (window as any).jQuery?._data?.(target, "events");
+    const handler = events?.click?.[0]?.handler;
+    if (handler) {
+      const e = (window as any).jQuery.Event("click");
+      e.target = h; e.currentTarget = target;
+      handler.call(target, e);
+    } else (target as HTMLElement).click();
+  }, index);
+}
+
+// 展開中のカード（「予約番号」ちょうど1回+詳細「店舗」を含む最小ブロック）を1件読む
+async function readExpandedCard(page: Page): Promise<{ no: string; text: string } | null> {
   return page.evaluate(() => {
-    const cards: { no: string; text: string }[] = [];
-    const seen = new Set<HTMLElement>();
+    let best: { no: string; text: string } | null = null;
     for (const el of Array.from(document.querySelectorAll<HTMLElement>("*"))) {
       const t = el.innerText || "";
-      // 「予約番号」をちょうど1回含む最小ブロックをカードとみなす
-      if ((t.match(/予約番号/g) || []).length === 1 && t.includes("店舗") && t.length < 2000) {
-        let dup = false;
-        for (const s of seen) if (s.contains(el) || el.contains(s)) { dup = el.contains(s); if (!dup) { dup = true; } break; }
+      if ((t.match(/予約番号/g) || []).length === 1 && t.includes("店舗") && t.length < 2500) {
         const no = t.match(/予約番号[^0-9]*([0-9]{6,})/)?.[1];
-        if (no && !cards.some(c => c.no === no && c.text === t)) cards.push({ no, text: t });
-        seen.add(el);
+        if (no && (!best || t.length < best.text.length)) best = { no, text: t };
       }
     }
-    // 同一予約番号・同一内容の重複（入れ子DOM由来）を除去し、番号ごとに最短テキストを採用
-    const byKey = new Map<string, { no: string; text: string }>();
-    for (const c of cards) {
-      const key = c.no + "::" + c.text.substring(0, 80);
-      const cur = byKey.get(key);
-      if (!cur || c.text.length < cur.text.length) byKey.set(key, c);
-    }
-    return Array.from(byKey.values());
+    return best;
   });
+}
+
+// 指定の貸出日を含む「有効な（キャンセル済みでない）」カードを探して展開し、{ no, text } を返す。
+// キャンセル済みの予約も一覧に「キャンセル済み」ラベル付きで残り続けるため除外する【実測】
+async function expandReservationCardByDate(page: Page, dateJp: string): Promise<{ no: string; text: string } | null> {
+  const headings = page.locator("h6", { hasText: "予約番号" });
+  const n = await headings.count();
+  for (let i = 0; i < n; i++) {
+    await clickReservationHeading(page, i);
+    await page.waitForTimeout(2000);
+    const card = await readExpandedCard(page);
+    if (card && card.text.includes(dateJp) && !card.text.includes("キャンセル済み")) return card;
+  }
+  return null;
+}
+
+// 予約一覧の全カードを順に展開して「予約番号 → カード全文」を収集
+async function collectReservationCards(page: Page): Promise<{ no: string; text: string }[]> {
+  const headings = page.locator("h6", { hasText: "予約番号" });
+  const n = await headings.count();
+  const cards: { no: string; text: string }[] = [];
+  for (let i = 0; i < n; i++) {
+    await clickReservationHeading(page, i);
+    await page.waitForTimeout(1500);
+    const card = await readExpandedCard(page);
+    // 同じ番号のカードが複数あっても収集する（回帰④の重複検出対象）が、同一展開の重複読みは除く
+    if (card && !cards.some(c => c.text === card.text)) cards.push(card);
+  }
+  return cards;
 }
 
 // 店舗管理ログイン（統合テスト用・rincle-store.e2e.ts と同方式）
@@ -148,21 +195,24 @@ async function storeLogin(page: Page) {
   throw new Error("店舗ログインに失敗しました");
 }
 
-// 予約番号を指定してキャンセル（後始末用）
+// 予約番号を指定してキャンセル（後始末用）。アコーディオン式のため対象カードを展開してから押す
 async function cancelReservationByNo(page: Page, no: string): Promise<boolean> {
   await openReservationList(page);
-  const target = await page.evaluate((noStr) => {
-    const btns = Array.from(document.querySelectorAll("button"))
-      .filter(b => (b.textContent || "").trim() === "予約をキャンセルする");
-    for (let i = 0; i < btns.length; i++) {
-      let card: HTMLElement | null = btns[i].parentElement;
-      while (card && !(card.textContent || "").includes("予約番号")) card = card.parentElement;
-      if ((card?.textContent || "").includes(noStr)) return i;
-    }
-    return -1;
-  }, no);
-  if (target < 0) return false;
-  await page.getByRole("button", { name: "予約をキャンセルする" }).nth(target).click();
+  const headings = page.locator("h6", { hasText: "予約番号" });
+  const n = await headings.count();
+  let expanded = false;
+  for (let i = 0; i < n; i++) {
+    if (!(await headings.nth(i).textContent() || "").includes(no)) continue;
+    await clickReservationHeading(page, i);
+    await page.waitForTimeout(2000);
+    const card = await readExpandedCard(page);
+    if (card && card.no === no && !card.text.includes("キャンセル済み")) { expanded = true; break; }
+  }
+  if (!expanded) return false;
+  // 展開中カードのキャンセルボタン（アコーディオンにより可視は1件のみ）
+  const btn = page.getByRole("button", { name: "予約をキャンセルする" }).locator("visible=true").first();
+  await btn.waitFor({ state: "visible", timeout: 10000 });
+  await btn.click();
   const confirmBtn = page.locator('[class*="Popup"] button', { hasText: "キャンセルする" }).first();
   await confirmBtn.waitFor({ state: "visible", timeout: 10000 });
   await confirmBtn.click();
@@ -243,21 +293,13 @@ test.describe("RINCLE 統合・回帰E2E", () => {
 
     // 予約番号を取得
     await page.getByRole("button", { name: "予約履歴を確認" }).click();
-    await page.waitForURL(/\/user_reservation_list/, { timeout: 20000 });
+    await page.waitForURL(/\/(user_reservation_list|mypage)/, { timeout: 20000 });
     await page.waitForTimeout(3000);
     const startJp = toJpDate(start);
-    const reservationNo = await page.evaluate((dateStr) => {
-      const btns = Array.from(document.querySelectorAll("button"))
-        .filter(b => (b.textContent || "").trim() === "予約をキャンセルする");
-      for (const b of btns) {
-        let card: HTMLElement | null = b.parentElement;
-        while (card && !(card.textContent || "").includes("予約番号")) card = card.parentElement;
-        const t = card?.textContent || "";
-        if (t.includes(dateStr)) return t.match(/予約番号[^0-9]*([0-9]{6,})/)?.[1] ?? null;
-      }
-      return null;
-    }, startJp);
-    expect(reservationNo, "作成した予約が一覧に見つかりません").toBeTruthy();
+    // アコーディオン式のため、カードを展開して貸出日と予約番号を確認する
+    const createdCard = await expandReservationCardByDate(page, startJp);
+    expect(createdCard, "作成した予約が一覧に見つかりません").toBeTruthy();
+    const reservationNo = createdCard!.no;
     console.log(`✅ 店頭決済で予約作成: 予約番号 ${reservationNo}`);
 
     // 【7/14形式変更】予約番号は年月日時分秒（yyyymmddHHMMSS・14桁）ベースの新形式であること
@@ -270,9 +312,7 @@ test.describe("RINCLE 統合・回帰E2E", () => {
     try {
       // 【本題】カードの支払い方法表示が「店頭決済」であること
       // バグ①（WF action4が無条件でクレジットに上書き）が未修正なら fail する（正検出）
-      const cards = await collectReservationCards(page);
-      const card = cards.find(c => c.no === reservationNo);
-      expect(card, `予約番号 ${reservationNo} のカードをパースできません`).toBeTruthy();
+      const card = createdCard; // 上で展開済みのカード（詳細に支払い方法を含む）
       // 「支払い方法」単独行の次行が値（「料金・支払い方法」セクション見出しと区別する）
       const lines = card!.text.split("\n").map(s => s.trim());
       const i = lines.findIndex(l => l === "支払い方法");
@@ -317,7 +357,7 @@ test.describe("RINCLE 統合・回帰E2E", () => {
   // 【統合】休業日設定の整合: 店舗の営業カレンダー（日別）とユーザー側の
   // 貸出可能日程カレンダーで、当月の休業日が一致すること（読み取りのみ・データ変更なし）
   // --------------------------------------------------------------------------
-  test("休業日設定のユーザー側反映（統合）", async ({ page }) => {
+  test("休業日設定のユーザー側反映（統合）", async ({ page, browser }) => {
     test.setTimeout(120000);
     const now = new Date();
     const thisMonth = now.getMonth() + 1;
@@ -336,9 +376,13 @@ test.describe("RINCLE 統合・回帰E2E", () => {
     expect(storeClosed.size, "店舗側に休業日が1日もありません（テスト店舗は週2休の想定）").toBeGreaterThan(0);
 
     // ユーザー側: 貸出可能日程カレンダーの「休業日」表示
-    await page.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
-    await page.waitForTimeout(10000);
-    const userClosed: Set<number> = new Set(await page.evaluate(() => {
+    // 【2026-08実測】店舗ログイン中のセッションでユーザー向けページを開くと
+    // カレンダー等が描画されないため、未ログインの別コンテキストで開く
+    const userCtx = await browser.newContext();
+    const userPage = await userCtx.newPage();
+    await userPage.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
+    await userPage.waitForTimeout(10000);
+    const userClosed: Set<number> = new Set(await userPage.evaluate(() => {
       const days: number[] = [];
       for (const el of Array.from(document.querySelectorAll<HTMLElement>("*"))) {
         const t = (el.innerText || "").trim();
@@ -347,6 +391,7 @@ test.describe("RINCLE 統合・回帰E2E", () => {
       }
       return [...new Set(days)];
     }));
+    await userCtx.close();
     console.log(`ユーザー側の当月休業日表示: ${[...userClosed].sort((a, b) => a - b).join(", ")}`);
 
     const onlyStore = [...storeClosed].filter(d => !userClosed.has(d));

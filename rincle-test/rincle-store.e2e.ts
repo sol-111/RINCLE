@@ -14,17 +14,19 @@ dotenv.config();
 //   - 自転車一覧の各行: 「ユーザー表示/非表示」ドロップダウン（bicycle.rental_status に
 //     auto-binding・即時保存）+「在庫設定」ボタン
 //
-// テストアカウントの店舗: SEINO自転車（栃木県足利市・.env の STORE_EMAIL）
+// テストアカウントの店舗: RINCLE 千葉柏店/オンザロード柏店（.env の STORE_EMAIL・旧SEINO自転車）
 // 共有開発環境のため、データを変更するテストは必ず finally で復元する。
 // ============================================================================
 
 const BASE_URL = process.env.RINCLE_BASE_URL || "https://rincle.co.jp/version-43erq";
 const STORE_EMAIL    = process.env.STORE_EMAIL!;
 const STORE_PASSWORD = process.env.STORE_PASSWORD!;
-// 統合テスト（非表示⇄ユーザー検索）用: 店舗所在地の都道府県コード（栃木=9）
-const SHOP_PREF_CODE = process.env.STORE_PREF_CODE || "9";
-// テスト店舗の自転車（SEINO自転車のFALD - ERX2）。作り直した場合は .env の TEST_BIKE_ID で上書き
-const TEST_BIKE_URL = `${BASE_URL}/bicycle_detail?bicycle=${process.env.TEST_BIKE_ID || "1783597035177x490785382439820740"}`;
+// 統合テスト（非表示⇄ユーザー検索）用: 店舗所在地の都道府県コード
+// 【2026-08実測】テスト店舗のフィクスチャは7/16-17に再作成された（店舗名は SEINO自転車 →
+// 「RINCLE 千葉柏店/オンザロード柏店」・栃木県→千葉県）。都道府県コードは千葉=12。
+const SHOP_PREF_CODE = process.env.STORE_PREF_CODE || "12";
+// テスト店舗の自転車（「ちゃんとしたロードバイク」）。作り直した場合は .env の TEST_BIKE_ID で上書き
+const TEST_BIKE_URL = `${BASE_URL}/bicycle_detail?bicycle=${process.env.TEST_BIKE_ID || "1784370816467x497983313811946050"}`;
 
 async function freshenIfStale(page: Page): Promise<boolean> {
   const stale = await page.getByText("アプリが更新されました").first().isVisible().catch(() => false);
@@ -85,19 +87,17 @@ async function firstBikeRow(page: Page): Promise<{ name: string; status: string 
 }
 
 // ユーザー側の検索一覧で自転車名が見えるかを判定
+// 【2026-08 UI刷新】検索結果はタブ切替式になり mode=bicycle で自転車一覧を直接開ける
+// （旧「貸出可能な自転車をすべて見る」ボタンは廃止）
 async function bikeVisibleInUserSearch(page: Page, bikeName: string): Promise<boolean> {
-  await page.goto(`${BASE_URL}/search?pref=${SHOP_PREF_CODE}&start=&end=&type=&e-bike=&free=&shop=`,
+  await page.goto(`${BASE_URL}/search?pref=${SHOP_PREF_CODE}&init=yes&mode=bicycle`,
     { waitUntil: "domcontentloaded" });
   await page.waitForTimeout(8000);
   let text = await page.evaluate(() => document.body.innerText);
   if (!text.includes(bikeName)) {
-    // 店舗カードが折りたたまれている場合は「すべて見る」を展開して再判定
-    const buttons = page.getByRole("button", { name: "貸出可能な自転車をすべて見る" });
-    const n = await buttons.count();
-    for (let i = 0; i < n; i++) {
-      await buttons.nth(0).click().catch(() => {});
-      await page.waitForTimeout(3000);
-    }
+    // まだ店舗一覧モードの場合は「自転車一覧」タブへ切替えて再判定
+    await page.getByText("自転車一覧", { exact: true }).first().click().catch(() => {});
+    await page.waitForTimeout(3000);
     text = await page.evaluate(() => document.body.innerText);
   }
   return text.includes(bikeName);
@@ -142,16 +142,26 @@ test.describe("RINCLE 店舗管理E2E", () => {
   //  （E2E_STATUS_20260713.md「増永さん報告バグの切り分け」参照）。
   // 修正されるまでこのテストは fail する（正検出）。データは finally で必ず復元。
   // --------------------------------------------------------------------------
-  test("非表示切替のユーザー反映（統合・回帰）", async ({ page }) => {
+  test("非表示切替のユーザー反映（統合・回帰）", async ({ page, browser }) => {
     test.setTimeout(180000);
     await storeLogin(page);
     await gotoSection(page, "bicycle");
-    const row = await firstBikeRow(page);
+    // 【2026-08実測】一覧行の描画・selectの値バインドが遅れることがある
+    // → 先頭行のステータスがプレースホルダ（ユーザー表示/非表示）でなくなるまで待つ
+    let row = await firstBikeRow(page);
+    for (let i = 0; i < 8 && !(row.name && row.status && row.status !== "ユーザー表示/非表示"); i++) {
+      await page.waitForTimeout(3000);
+      row = await firstBikeRow(page);
+    }
     expect(row.name, "対象自転車が見つかりません").toBeTruthy();
     expect(row.status, "前提: テスト開始時はユーザー表示であること").toBe("ユーザー表示");
 
+    // 【2026-08実測】店舗ログイン中のセッションでユーザー向けページを開くと描画が変わるため、
+    // ユーザー側の確認は未ログインの別コンテキストで行う（テスト終了時に自動で閉じる）
+    const userPage = await (await browser.newContext()).newPage();
+
     // 事前確認: 表示状態ではユーザー検索に出ている
-    const visibleBefore = await bikeVisibleInUserSearch(page, row.name);
+    const visibleBefore = await bikeVisibleInUserSearch(userPage, row.name);
     expect(visibleBefore, `前提: ユーザー表示状態の「${row.name}」が検索に出ていません`).toBe(true);
 
     try {
@@ -166,7 +176,7 @@ test.describe("RINCLE 店舗管理E2E", () => {
       console.log("✅ 店舗管理側: ユーザー非表示への切替・保存を確認");
 
       // ユーザー側検索から消えること（現状バグ②で fail する想定＝正検出）
-      const visibleAfter = await bikeVisibleInUserSearch(page, row.name);
+      const visibleAfter = await bikeVisibleInUserSearch(userPage, row.name);
       expect(visibleAfter,
         `「${row.name}」を非表示にしたのにユーザー検索に表示されています（バグ②: searchページのSearchにrental_status制約がない）`
       ).toBe(false);
@@ -200,10 +210,13 @@ test.describe("RINCLE 店舗管理E2E", () => {
   // 在庫の減算/復元（予約が必要）は rincle-integration.e2e.ts 側の予約系と別掛かりのため、
   // ここでは予約を作らない範囲（作成〜表示〜アーカイブ）を検証する。
   // --------------------------------------------------------------------------
-  test("オプションライフサイクル（作成→ユーザー表示→アーカイブ）", async ({ page }) => {
+  test("オプションライフサイクル（作成→ユーザー表示→アーカイブ）", async ({ page, browser }) => {
     test.setTimeout(240000);
     const optName = `E2E自動テスト用オプション_${Date.now()}`;
     let created = false;
+    // 【2026-08実測】店舗ログイン中のセッションでユーザー向けページを開くと描画が変わるため、
+    // ユーザー側の確認は未ログインの別コンテキストで行う（テスト終了時に自動で閉じる）
+    const userPage = await (await browser.newContext()).newPage();
 
     await storeLogin(page);
     try {
@@ -230,9 +243,9 @@ test.describe("RINCLE 店舗管理E2E", () => {
       console.log(`✅ オプション作成完了: ${optName}`);
 
       // --- ユーザー側の自転車詳細に表示されること（未ログインで閲覧可） ---
-      await page.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
-      await page.waitForTimeout(10000);
-      const userSide = await page.evaluate(() => document.body.innerText);
+      await userPage.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
+      await userPage.waitForTimeout(10000);
+      const userSide = await userPage.evaluate(() => document.body.innerText);
       expect(userSide.includes(optName),
         "作成したオプションがユーザー側の自転車詳細（オプションを選択）に表示されません").toBe(true);
       console.log("✅ ユーザー側の自転車詳細にオプション表示を確認");
@@ -254,9 +267,9 @@ test.describe("RINCLE 店舗管理E2E", () => {
                          : `⚠️ アーカイブ失敗: 「${optName}」を手動で削除してください`);
         if (gone) {
           // ユーザー側からも消えていること
-          await page.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
-          await page.waitForTimeout(10000);
-          const stillShown = (await page.evaluate(() => document.body.innerText)).includes(optName);
+          await userPage.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
+          await userPage.waitForTimeout(10000);
+          const stillShown = (await userPage.evaluate(() => document.body.innerText)).includes(optName);
           expect(stillShown, "アーカイブしたオプションがユーザー側にまだ表示されています").toBe(false);
           console.log("✅ アーカイブ後、ユーザー側からも消えたことを確認");
         }

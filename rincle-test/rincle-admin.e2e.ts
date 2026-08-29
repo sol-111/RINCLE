@@ -84,10 +84,17 @@ test.describe("RINCLE 管理者E2E", () => {
     await adminLogin(page);
     await gotoNav(page, "加盟店一覧");
     const text = await page.evaluate(() => document.body.innerText);
-    expect(/加盟店一覧/.test(text), "加盟店一覧の見出しがありません").toBe(true);
-    // テスト店舗（SEINO自転車 or 株式会社SEINO）が載っていること
-    expect(/SEINO/.test(text), "加盟店一覧にテスト店舗（SEINO）が見つかりません").toBe(true);
-    console.log("✅ 加盟店一覧表示確認完了（テスト店舗の掲載確認）");
+    expect(/加盟店一覧（\d+）/.test(text), "加盟店一覧の見出し（件数付き）がありません").toBe(true);
+    // 【2026-08実測】一覧は100件超・新着順表示になり、テスト店舗（2026-07-16登録・
+    // 旧SEINO自転車 → 現「RINCLE 千葉柏店/オンザロード柏店」）は先頭ページに出ない。
+    // 「古い順」に並び替えると最古＝テスト店舗が先頭に来ることで確認する
+    await page.locator("select").filter({ hasText: "新着順" }).first().selectOption({ label: "古い順" });
+    await page.waitForTimeout(4000);
+    const sorted = await page.evaluate(() => document.body.innerText);
+    const shopName = process.env.TEST_SHOP_NAME || "オンザロード柏店";
+    expect(sorted.includes(shopName),
+      `加盟店一覧（古い順）にテスト店舗（${shopName}）が見つかりません`).toBe(true);
+    console.log("✅ 加盟店一覧表示確認完了（並び替え動作+テスト店舗の掲載確認）");
   });
 
   test("予約一覧（管理者）", async ({ page }) => {

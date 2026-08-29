@@ -8,9 +8,11 @@ const PASSWORD = process.env.RINCLE_PASSWORD!;
 const AREA     = process.env.RINCLE_AREA!;
 const START_DATETIME = process.env.RINCLE_DATE!;
 const END_DATETIME   = process.env.RINCLE_TIME!;
-// ネガティブ系テスト（18-20）用の固定対象: テスト店舗「SEINO自転車」（栃木・水金休業）の
-// FALD - ERX2。店舗・自転車を作り直した場合は TEST_BIKE_ID を .env で上書きする
-const TEST_BIKE_URL = `${BASE_URL}/bicycle_detail?bicycle=${process.env.TEST_BIKE_ID || "1783597035177x490785382439820740"}`;
+// ネガティブ系テスト（18-20）用の固定対象: テスト店舗の「ちゃんとしたロードバイク」。
+// 【2026-08実測】テスト店舗のフィクスチャは7/16-17に再作成された（店舗名は SEINO自転車 →
+// 「RINCLE 千葉柏店/オンザロード柏店」・栃木県→千葉県・休業日は土日中心）。
+// 店舗・自転車を作り直した場合は TEST_BIKE_ID を .env で上書きする
+const TEST_BIKE_URL = `${BASE_URL}/bicycle_detail?bicycle=${process.env.TEST_BIKE_ID || "1784370816467x497983313811946050"}`;
 
 // "2026/04/05 11:00" → { month: 4, day: 5, year: 2026, time: "11:00" }
 function parseDatetime(raw: string) {
@@ -156,6 +158,58 @@ async function clickClickableElementByText(page: Page, text: string): Promise<bo
   }, text);
 }
 
+// 【2026-08 UI刷新】予約一覧はアコーディオン式になった: 一覧には見出し（予約番号・XXXX）だけが
+// 並び、見出しをクリックするとそのカード1件だけが展開されて詳細（店舗・日時・支払い方法・
+// キャンセルボタン）が表示される（別の見出しを開くと前のカードは閉じる）。
+// 見出し（h6）の素クリックでは展開しない【実測】: .clickable-element祖先のjQueryハンドラを直接叩く
+async function clickReservationHeading(page: Page, index: number): Promise<void> {
+  await page.evaluate((idx) => {
+    const hs = Array.from(document.querySelectorAll("h6")).filter(h => (h.textContent || "").includes("予約番号"));
+    const h = hs[idx] as HTMLElement | undefined;
+    if (!h) return;
+    h.scrollIntoView({ behavior: "instant", block: "center" });
+    let el: HTMLElement | null = h;
+    for (let k = 0; k < 8 && el; k++) {
+      if (el.classList?.contains("clickable-element")) break;
+      el = el.parentElement;
+    }
+    const target = (el && el.classList.contains("clickable-element")) ? el : h;
+    const events = (window as any).jQuery?._data?.(target, "events");
+    const handler = events?.click?.[0]?.handler;
+    if (handler) {
+      const e = (window as any).jQuery.Event("click");
+      e.target = h; e.currentTarget = target;
+      handler.call(target, e);
+    } else (target as HTMLElement).click();
+  }, index);
+}
+
+// 指定の貸出日を含む「有効な（キャンセル済みでない）」カードを探して展開し、{ no, text } を返す。
+// キャンセル済みの予約も一覧に「キャンセル済み」ラベル付きで残り続けるため除外する【実測】
+async function expandReservationCardByDate(page: Page, dateJp: string): Promise<{ no: string; text: string } | null> {
+  const headings = page.locator("h6", { hasText: "予約番号" });
+  const n = await headings.count();
+  for (let i = 0; i < n; i++) {
+    await clickReservationHeading(page, i);
+    await page.waitForTimeout(2000);
+    const found = await page.evaluate((dateStr) => {
+      // 展開中のカード = 「予約番号」をちょうど1回含み、詳細（店舗）と対象日付を含む最小ブロック
+      let best: { no: string; text: string } | null = null;
+      for (const el of Array.from(document.querySelectorAll<HTMLElement>("*"))) {
+        const t = el.innerText || "";
+        if ((t.match(/予約番号/g) || []).length === 1 && t.includes("店舗")
+            && t.includes(dateStr) && !t.includes("キャンセル済み") && t.length < 2500) {
+          const no = t.match(/予約番号[^0-9]*([0-9]{6,})/)?.[1];
+          if (no && (!best || t.length < best.text.length)) best = { no, text: t };
+        }
+      }
+      return best;
+    }, dateJp);
+    if (found) return found;
+  }
+  return null;
+}
+
 // -------------------------------------------------------------------
 
 test.describe("RINCLE E2E", () => {
@@ -282,12 +336,13 @@ test.describe("RINCLE E2E", () => {
     await page.getByRole("button", { name: "検索する" }).click();
     await page.waitForLoadState("networkidle");
 
-    // 「貸出可能な自転車をすべて見る」ボタンが表示されること
-    const allBikesBtn = page.getByRole("button", { name: "貸出可能な自転車をすべて見る" }).first();
-    await expect(allBikesBtn).toBeVisible({ timeout: 10000 });
-
-    await allBikesBtn.click();
-    await page.waitForLoadState("networkidle");
+    // 【2026-08 UI刷新】検索結果は /search の「店舗一覧」モードで開き、
+    // 旧「貸出可能な自転車をすべて見る」ボタンは廃止 →「自転車一覧」タブで切り替える
+    await expect(page.getByText("自転車一覧", { exact: true }).first(),
+      "検索結果に「自転車一覧」タブがありません").toBeVisible({ timeout: 10000 });
+    expect(await clickClickableElementByText(page, "自転車一覧"),
+      "「自転車一覧」タブをクリックできません").toBe(true);
+    await page.waitForTimeout(3000);
 
     // 「詳細を見る」ボタンが1件以上表示されること
     const detailBtn = page.getByRole("button", { name: "詳細を見る" }).first();
@@ -307,8 +362,10 @@ test.describe("RINCLE E2E", () => {
     await page.locator('input[type="checkbox"]').nth(1).check();
     await page.getByRole("button", { name: "検索する" }).click();
     await page.waitForLoadState("networkidle");
-    await page.getByRole("button", { name: "貸出可能な自転車をすべて見る" }).first().click();
-    await page.waitForLoadState("networkidle");
+    // 【2026-08 UI刷新】「自転車一覧」タブに切替えてから「詳細を見る」
+    await page.getByText("自転車一覧", { exact: true }).first().waitFor({ state: "visible", timeout: 10000 });
+    await clickClickableElementByText(page, "自転車一覧");
+    await page.waitForTimeout(3000);
     await page.getByRole("button", { name: "詳細を見る" }).first().click();
     await page.waitForLoadState("networkidle");
     await page.evaluate(() => window.scrollBy(0, 500));
@@ -349,8 +406,10 @@ test.describe("RINCLE E2E", () => {
     await page.locator('input[type="checkbox"]').nth(1).check();
     await page.getByRole("button", { name: "検索する" }).click();
     await page.waitForLoadState("networkidle");
-    await page.getByRole("button", { name: "貸出可能な自転車をすべて見る" }).first().click();
-    await page.waitForLoadState("networkidle");
+    // 【2026-08 UI刷新】「自転車一覧」タブに切替えてから「詳細を見る」
+    await page.getByText("自転車一覧", { exact: true }).first().waitFor({ state: "visible", timeout: 10000 });
+    await clickClickableElementByText(page, "自転車一覧");
+    await page.waitForTimeout(3000);
     await page.getByRole("button", { name: "詳細を見る" }).first().click();
     await page.waitForLoadState("networkidle");
     await expect(page).toHaveURL(/\/bicycle_detail/);
@@ -468,22 +527,14 @@ test.describe("RINCLE E2E", () => {
 
     // 予約一覧へ遷移し、今回の貸出日の予約カードが実在することまで確認 + 予約番号を取得
     await page.getByRole("button", { name: "予約履歴を確認" }).click();
-    await page.waitForURL(/\/user_reservation_list/, { timeout: 20000 });
+    // 【2026-08 UI刷新】予約一覧は /user_reservation_list から /mypage 配下に移動（見出し「予約状況一覧」は同じ）
+    await page.waitForURL(/\/(user_reservation_list|mypage)/, { timeout: 20000 });
     await page.waitForTimeout(3000);
     const startJp = toJpDate(start); // 例: "2026年07月20日"
-    await expect(page.getByText(startJp).first(), `予約一覧に貸出日 ${startJp} のカードが見つかりません`).toBeVisible({ timeout: 15000 });
-    const reservationNo = await page.evaluate((dateStr) => {
-      const btns = Array.from(document.querySelectorAll("button"))
-        .filter(b => (b.textContent || "").trim() === "予約をキャンセルする");
-      for (const b of btns) {
-        let card: HTMLElement | null = b.parentElement;
-        while (card && !(card.textContent || "").includes("予約番号")) card = card.parentElement;
-        const t = card?.textContent || "";
-        if (t.includes(dateStr)) return t.match(/予約番号[^0-9]*([0-9]{6,})/)?.[1] ?? null;
-      }
-      return null;
-    }, startJp);
-    expect(reservationNo, "予約一覧から予約番号を取得できませんでした").toBeTruthy();
+    // アコーディオン式のため、カードを展開して貸出日と予約番号を確認する
+    const card = await expandReservationCardByDate(page, startJp);
+    expect(card, `予約一覧に貸出日 ${startJp} のカードが見つかりません`).toBeTruthy();
+    const reservationNo = card!.no;
     console.log(`✅ 予約一覧に反映を確認 — 予約番号: ${reservationNo} / 貸出日: ${startJp}（テスト9でキャンセルして後始末する）`);
   });
 
@@ -495,11 +546,12 @@ test.describe("RINCLE E2E", () => {
 
     // 新アプリでは /user_reservation_list へ直接遷移するとトップにバウンスするため、
     // トップの「予約の確認・キャンセル」ボタン経由で開く（Bubbleの状態が必要）
+    // 【2026-08 UI刷新】遷移先は /mypage 配下に移動（見出し「予約状況一覧」は同じ）
     await page.goto(BASE_URL, { waitUntil: "networkidle" });
     await page.getByRole("button", { name: "予約の確認・キャンセル" }).first().click();
     await page.waitForLoadState("networkidle");
     await page.waitForTimeout(2000);
-    await expect(page).toHaveURL(/\/user_reservation_list/);
+    await expect(page).toHaveURL(/\/(user_reservation_list|mypage)/);
 
     // 予約一覧ページが表示されること
     await expect(page.getByText("予約状況一覧")).toBeVisible({ timeout: 10000 });
@@ -530,28 +582,14 @@ test.describe("RINCLE E2E", () => {
     await page.goto(BASE_URL, { waitUntil: "networkidle" });
     await freshenIfStale(page);
     await page.getByRole("button", { name: "予約の確認・キャンセル" }).first().click();
-    await page.waitForURL(/\/user_reservation_list/, { timeout: 20000 });
+    await page.waitForURL(/\/(user_reservation_list|mypage)/, { timeout: 20000 });
     await page.waitForTimeout(3000);
     await expect(page.getByText("予約状況一覧")).toBeVisible({ timeout: 10000 });
 
-    // テスト7が作成した予約（貸出日 = RINCLE_DATE の日付）のキャンセルボタンを日付で特定する。
-    // 【重要・実測】一覧には過去出発の古い予約も並び、それらのキャンセルボタンは
-    //   淡色（キャンセル期限切れ＝出発日前日23:59超過）で押しても何も起きない。
-    //   そのため「先頭をクリック」ではなく、対象カードの日付でボタンindexを特定する。
-    const findTargetIndex = () => page.evaluate((dateStr) => {
-      const btns = Array.from(document.querySelectorAll("button"))
-        .filter(b => (b.textContent || "").trim() === "予約をキャンセルする");
-      for (let i = 0; i < btns.length; i++) {
-        let card: HTMLElement | null = btns[i].parentElement;
-        while (card && !(card.textContent || "").includes("予約番号")) card = card.parentElement;
-        if ((card?.textContent || "").includes(dateStr)) {
-          return { index: i, no: (card!.textContent || "").match(/予約番号[^0-9]*([0-9]{6,})/)?.[1] ?? "?" };
-        }
-      }
-      return null;
-    }, startJp);
-
-    let target = await findTargetIndex();
+    // テスト7が作成した予約（貸出日 = RINCLE_DATE の日付）を日付で特定する。
+    // 【2026-08 UI刷新】一覧はアコーディオン式のため、対象カードを展開すると
+    // そのカードのキャンセルボタンだけが表示される（indexでの特定は不要になった）
+    let target = await expandReservationCardByDate(page, startJp);
     if (!target) {
       // テスト7が予約を作れていない場合のみ正当なスキップ（後始末対象も存在しない）
       console.log(`⚠️ 貸出日 ${startJp} の予約が一覧にありません（テスト7で予約が作成されていない）— スキップ`);
@@ -562,7 +600,8 @@ test.describe("RINCLE E2E", () => {
     let cancelled = 0;
     for (let i = 0; i < 5 && target; i++) {
       console.log(`✅ キャンセル対象: 予約番号 ${target.no}（貸出日 ${startJp}）`);
-      await page.getByRole("button", { name: "予約をキャンセルする" }).nth(target.index).click();
+      // 展開中カードのキャンセルボタン（アコーディオンにより可視は1件のみ）
+      await page.getByRole("button", { name: "予約をキャンセルする" }).locator("visible=true").first().click();
 
       // 確認ポップアップ（「本当にキャンセルしますか」系）の「キャンセルする」を押す
       const confirmBtn = page.locator('[class*="Popup"] button', { hasText: "キャンセルする" }).first();
@@ -573,7 +612,7 @@ test.describe("RINCLE E2E", () => {
 
       await page.waitForLoadState("networkidle", { timeout: 10000 }).catch(() => {});
       await page.waitForTimeout(1500);
-      target = await findTargetIndex();
+      target = await expandReservationCardByDate(page, startJp);
     }
 
     // 【厳格な後始末確認】テストが作成した貸出日の予約カードが一覧から消えていること
@@ -666,11 +705,23 @@ test.describe("RINCLE E2E", () => {
     await page.evaluate(() => window.scrollTo(0, 1300));
     await page.waitForTimeout(1000);
 
+    // 【2026-08変更】トピックの中身は運営が随時入れ替えるため、固定文言でなく
+    // TOPICSセクションの最初のトピック見出し（10文字以上の行）を動的に選ぶ
+    const topicTitle = await page.evaluate(() => {
+      const t = document.body.innerText;
+      const i = t.indexOf("TOPICS");
+      if (i < 0) return null;
+      const lines = t.substring(i, i + 400).split("\n").map(s => s.trim()).filter(Boolean);
+      return lines.slice(1).find(l => l.length >= 10) ?? null;
+    });
+    expect(topicTitle, "トップのTOPICSセクションにトピックが1件もありません").toBeTruthy();
+    console.log(`対象トピック: ${topicTitle}`);
+
     // TOPICSの1件目をBubble jQuery handler経由でクリック
-    await page.evaluate(() => {
+    await page.evaluate((title) => {
       const el = Array.from(document.querySelectorAll(".clickable-element")).find(el => {
         const r = el.getBoundingClientRect();
-        return r.width > 0 && r.height > 0 && el.textContent?.includes("加盟店おすすめライドコース");
+        return r.width > 0 && r.height > 0 && el.textContent?.includes(title);
       }) as HTMLElement | null;
       if (!el) return;
       const events = (window as any).jQuery?._data?.(el, "events");
@@ -682,7 +733,7 @@ test.describe("RINCLE E2E", () => {
       } else {
         el.click();
       }
-    });
+    }, topicTitle!);
 
     // topics_detail ページに遷移したことを確認（新アプリでも /index/topics_detail?banner=<id> のまま）
     await page.waitForURL(/\/index\/topics_detail/, { timeout: 10000 });
@@ -847,18 +898,15 @@ test.describe("RINCLE E2E", () => {
     // 検索条件表示にも「ロードバイク」のみが表示されていること
     await expect(page.getByText("自転車のタイプ")).toBeVisible({ timeout: 8000 });
 
-    // 検索結果（貸出可能な自転車をすべて見る／詳細を見る）が表示されること。
-    // 「検索中...」の非同期ロードが終わるまで待つ必要があるためポーリングする
-    await expect(async () => {
-      const hasResults = await page.evaluate(() => {
-        const els = Array.from(document.querySelectorAll(".clickable-element")).filter(el => {
-          const r = el.getBoundingClientRect();
-          return r.width > 0 && r.height > 0;
-        });
-        return els.some(el => el.textContent?.includes("貸出可能") || el.textContent?.includes("詳細"));
-      });
-      expect(hasResults).toBe(true);
-    }).toPass({ timeout: 15000 });
+    // 検索結果が表示されること。
+    // 【2026-08 UI刷新】結果はタブ切替式のため「自転車一覧」タブに切り替えて
+    // 自転車カードの「詳細を見る」が1件以上出ることを確認する
+    await expect(page.getByText("自転車一覧", { exact: true }).first(),
+      "検索結果に「自転車一覧」タブがありません").toBeVisible({ timeout: 10000 });
+    await clickClickableElementByText(page, "自転車一覧");
+    await page.waitForTimeout(3000);
+    await expect(page.getByRole("button", { name: "詳細を見る" }).first(),
+      "ロードバイク絞り込みの検索結果に自転車が1台も表示されません").toBeVisible({ timeout: 15000 });
     console.log(`✅ ロードバイクフィルタ検索完了 (url: ${url})`);
   });
 
@@ -890,7 +938,7 @@ test.describe("RINCLE E2E", () => {
 
   // ----------------------------------------------------------------
   // 19. 過去日・当日は貸出日として選択不可 — ネガティブ系
-  //     （予約は前日23:59まで。テスト店舗=SEINO自転車のFALD - ERX2 を使用）
+  //     （予約は前日23:59まで。テスト店舗の「ちゃんとしたロードバイク」を使用）
   // ----------------------------------------------------------------
   test("過去日・当日の貸出日選択不可", async ({ page }) => {
     await page.goto(TEST_BIKE_URL, { waitUntil: "domcontentloaded" });
@@ -918,7 +966,7 @@ test.describe("RINCLE E2E", () => {
   // ----------------------------------------------------------------
   // 20. 休業日を返却日に選ぶとエラー表示 — ネガティブ系
   //     貸出可能日程カレンダーの「休業日」表示から対象日を動的に特定する
-  //     （SEINO自転車は水・金休業のため、直近数日以内に必ず存在する）
+  //     （テスト店舗は土日休業のため、直近数日以内に必ず存在する）
   // ----------------------------------------------------------------
   test("休業日を返却日に選ぶとエラー表示", async ({ page }) => {
     test.setTimeout(120000);
@@ -973,14 +1021,17 @@ test.describe("RINCLE E2E", () => {
   //     URLパラメータ直指定で、該当タイプのみ表示されることを確認
   // ----------------------------------------------------------------
   test("タイプフィルタ絞り込み精度（クロスバイク）", async ({ page }) => {
-    await page.goto(`${BASE_URL}/search?pref=9&start=&end=&type=クロスバイク&e-bike=&free=&shop=`,
+    // 【2026-08実測】テスト店舗は千葉県（pref=12）。検索はタブ切替式のため mode=bicycle を直指定
+    const crossBike = process.env.TEST_CROSS_BIKE_NAME || "金曜日例外日";       // テスト店舗のクロスバイク
+    const roadBike  = process.env.TEST_ROAD_BIKE_NAME || "ちゃんとしたロードバイク"; // 同・ロードバイク
+    await page.goto(`${BASE_URL}/search?pref=12&init=yes&mode=bicycle&type=クロスバイク`,
       { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(10000);
     const text = await page.evaluate(() => document.body.innerText);
-    // テスト店舗（SEINO自転車）のクロスバイク FALD - ERX2 は表示される
-    expect(text.includes("FALD"), "クロスバイク指定でテスト店舗のクロスバイク（FALD - ERX2）が表示されません").toBe(true);
-    // ロードバイク（株式会社SEINOのTREK FX3 DISC）は表示されない
-    expect(text.includes("FX3"), "クロスバイク指定なのにロードバイク（FX3 DISC）が表示されています（絞り込み漏れ）").toBe(false);
+    expect(text.includes(crossBike),
+      `クロスバイク指定でテスト店舗のクロスバイク（${crossBike}）が表示されません`).toBe(true);
+    expect(text.includes(roadBike),
+      `クロスバイク指定なのにロードバイク（${roadBike}）が表示されています（絞り込み漏れ）`).toBe(false);
     console.log("✅ タイプフィルタの絞り込み精度確認完了（クロスバイクのみ表示）");
   });
 });
