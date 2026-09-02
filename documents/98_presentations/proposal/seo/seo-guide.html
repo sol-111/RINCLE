@@ -168,9 +168,9 @@ tr.hl td{background:var(--accent-faint);font-weight:700}
         <div class="l">平均予約単価 ¥10,200 × 手数料15%</div>
       </div>
       <div class="stat">
-        <div class="l">検索流入 +100人/月なら</div>
-        <div class="n hot">+¥6,100/月</div>
-        <div class="l">予約 +4件/月。広告費ゼロで設定すれば効き続ける</div>
+        <div class="l">検索流入 +100人 / 月なら</div>
+        <div class="n hot">+¥6,100 / 月</div>
+        <div class="l">予約 +4件 / 月。広告費ゼロで設定すれば効き続ける</div>
       </div>
     </div>
 
@@ -227,7 +227,7 @@ tr.hl td{background:var(--accent-faint);font-weight:700}
           <h4>meta description（メタ ディスクリプション）</h4>
           <p><strong>何？</strong> Google検索結果でタイトルの下に表示される<strong>グレーの説明文</strong>です。</p>
           <p><strong>文字数:</strong> 70〜120文字が目安。</p>
-          <p><strong>ポイント:</strong> そのページに何が書いてあるかを具体的に書き、「全国54店舗」「プロショップ」等の差別化ポイントと行動を促す言葉（「簡単予約」等）を入れる（店舗数は2026-06-11時点のDB実数。対外表記は「全国100店舗以上」で決め打ちする方向で協議中〈6/19・#33〉→ 確定後に全ページの文言を差し替える）。</p>
+          <p><strong>ポイント:</strong> そのページに何が書いてあるかを具体的に書き、「全国54店舗」「プロショップ」等の差別化ポイントと行動を促す言葉（「簡単予約」等）を入れる（店舗数は2026-06-11時点のDB実数。対外表記は「全国100店舗以上」で決め打ちする方向で協議中〈6月19日・#33〉→ 確定後に全ページの文言を差し替える）。</p>
           <p><strong>RINCLEの現状（2026-06-11実測）:</strong> 設定済み。ただし<span class="warn-val"><strong>全ページ同一文面</strong></span>（店舗詳細ページもトップと同じ説明文）。ページごとに固有の文面へ差し替えるのが課題。</p>
           <div class="table-wrap">
             <table>
@@ -259,7 +259,7 @@ tr.hl td{background:var(--accent-faint);font-weight:700}
             <li><code>og:site_name</code> -- RINCLE</li>
           </ul>
           <p><strong>Bubble.ioでの設定方法:</strong><br>
-            対象ページの「Appearance」設定内の<strong>「SEO / metatags」</strong>セクションで設定します。または Settings &gt; SEO/metatags &gt; Script/meta tags in header にHTMLで直接記述します。
+            対象ページの「Appearance」設定内の<strong>「SEO / metatags」</strong>セクションで設定します。または Settings &gt; SEO / metatags &gt; Script / meta tags in header にHTMLで直接記述します。
           </p>
         </div>
 
@@ -267,7 +267,7 @@ tr.hl td{background:var(--accent-faint);font-weight:700}
         <div class="sub-item">
           <h4>h1タグ（大見出し）</h4>
           <p><strong>何？</strong> そのページで一番大きな見出し。Googleは「このページは何について書かれているか」をh1タグから判断します。</p>
-          <p><strong>RINCLEの現状（2026-06-11実測）:</strong> <span class="warn-val">初期HTMLにh1/h2が一切ない</span>（Googleがページのテーマを判断できない）。</p>
+          <p><strong>RINCLEの現状（2026-06-11実測）:</strong> <span class="warn-val">初期HTMLにh1 / h2が一切ない</span>（Googleがページのテーマを判断できない）。</p>
           <p><strong>ポイント:</strong> 各ページに1つだけ設定する。ページのメインテーマを表し、検索キーワードを自然に含める。</p>
           <p><strong>Bubble.ioでの設定方法:</strong><br>
             テキスト要素を選択 &rarr; 「Appearance」 &rarr; <strong>「HTML tag」</strong>を<strong>「H1」</strong>に変更します。各ページに1つだけH1を設定してください。
@@ -292,7 +292,7 @@ tr.hl td{background:var(--accent-faint);font-weight:700}
           <p><strong>例:</strong> <code>https://rincle.co.jp/shop_detail?shop=12345</code> と <code>https://rincle.co.jp/shop_detail?shop=12345&amp;ref=top</code> が同じ内容なら、前者をcanonicalに指定。</p>
           <p><strong>RINCLEの現状（2026-06-11実測）:</strong> canonicalが無いため、<span class="warn-val"><strong>日付・検索条件のクエリパラメータが付いたままのURLが「店舗ページの正式な姿」としてインデックスされている実害</strong></span>が確認済み。早急に設定すべき。</p>
           <p><strong>Bubble.ioでの設定方法（2026-06-11更新: ネイティブ機能で対応可能）:</strong><br>
-            Bubbleには標準でcanonical出力機能があり、手書きHTMLは不要です。Settings &gt; SEO/metatags の<strong>「Enable canonical url」</strong>のチェックボックスをONにします（説明文に "Check this box to enable a Bubble-defined canonical url tag." とある。2026-06-11にBubble公式マニュアルで名称を確認済み。参考: <a href="https://manual.bubble.io/core-resources/application-settings/seo-metatags" target="_blank">Bubble公式マニュアル</a>）。
+            Bubbleには標準でcanonical出力機能があり、手書きHTMLは不要です。Settings &gt; SEO / metatags の<strong>「Enable canonical url」</strong>のチェックボックスをONにします（説明文に "Check this box to enable a Bubble-defined canonical url tag." とある。2026-06-11にBubble公式マニュアルで名称を確認済み。参考: <a href="https://manual.bubble.io/core-resources/application-settings/seo-metatags" target="_blank">Bubble公式マニュアル</a>）。
           </p>
         </div>
 
@@ -308,7 +308,7 @@ tr.hl td{background:var(--accent-faint);font-weight:700}
           </p>
           <div class="alert alert-red">
             <svg class="a-icon icon"><use href="#i-alert"/></svg>
-            <span><strong>注意:</strong> Settings &gt; SEO/metatags &gt; Script/meta tags in header（GA4スニペットを貼った場所）には絶対に貼らないでください。あちらは<strong>全ページ共通</strong>のヘッダーなので、noindexを書くとサイト全体がGoogleから消えます。noindexは必ず<strong>ページごと</strong>のPage HTML Headerに設定します。</span>
+            <span><strong>注意:</strong> Settings &gt; SEO / metatags &gt; Script / meta tags in header（GA4スニペットを貼った場所）には絶対に貼らないでください。あちらは<strong>全ページ共通</strong>のヘッダーなので、noindexを書くとサイト全体がGoogleから消えます。noindexは必ず<strong>ページごと</strong>のPage HTML Headerに設定します。</span>
           </div>
           <p><strong>あわせて確認（2026-06-11更新）:</strong> 以前のBubbleには「Allow search engines to index this app」というアプリ全体のインデックス許可チェックがありましたが、<strong>現在の公式マニュアルにはこの項目の記載がなく、画面に表示されないという報告もあります</strong>。見当たらなくても探し回らなくてOK（本番アプリは標準でインデックス許可されます）。代わりに次の2点を確認: （1）公開ページのソースに意図しない<code>noindex</code>が入っていないか（2）robots.txtでサイト全体をブロックしていないか（現状のrobots.txtは<code>/version-test/</code>のみDisallowなので問題なし）。</p>
           <p><strong>確認方法:</strong> 公開ページで右クリック &rarr;「ページのソースを表示」で、noindex対象ページに<strong>だけ</strong>タグが入っていればOK。Search Console導入済みなら「URL検査」で「インデックス登録: 許可されていません（noindex）」と表示されます。なお、noindexにするページはsitemapには載せません（「登録して」と「登録しないで」が矛盾するため）。
@@ -407,7 +407,7 @@ Disallow: /version-test/</code></pre></div>
 Disallow: /version-test/
 Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
         <p><strong>Bubble.ioでの設定方法（2026-06-11更新）:</strong><br>
-          Settings &gt; SEO/metatags の<strong>「Customize robots.txt (advanced)」</strong>のチェックボックスをONにし、表示された編集欄に上記を入力します。
+          Settings &gt; SEO / metatags の<strong>「Customize robots.txt （advanced）」</strong>のチェックボックスをONにし、表示された編集欄に上記を入力します。
         </p>
       </div>
 
@@ -455,7 +455,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
             <table class="table-mom">
               <thead><tr><th>種類</th><th>カバー範囲</th><th>所有権の確認方法</th></tr></thead>
               <tbody>
-                <tr><td class="label">ドメイン</td><td>サブドメイン・http/https を丸ごと（例: <code>rincle.co.jp</code> 全体）</td><td><strong>DNSのTXTレコードのみ</strong>（ドメインのDNS設定を触れる人の作業）</td></tr>
+                <tr><td class="label">ドメイン</td><td>サブドメイン・http / https を丸ごと（例: <code>rincle.co.jp</code> 全体）</td><td><strong>DNSのTXTレコードのみ</strong>（ドメインのDNS設定を触れる人の作業）</td></tr>
                 <tr><td class="label">URLプレフィックス</td><td>そのURL配下だけ（例: <code>https://rincle.co.jp/</code>）</td><td>HTMLタグ・HTMLファイル・GA4連携など<strong>選択肢が多い</strong>。Bubbleなら下の手順が簡単</td></tr>
               </tbody>
             </table>
@@ -464,7 +464,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
           <ol class="steps">
             <li><a href="https://search.google.com/search-console" target="_blank">Search Console</a>にログイン →「プロパティを追加」→「URLプレフィックス」を選び <code>https://rincle.co.jp/</code> を入力</li>
             <li>確認方法で「HTMLタグ」を選択し、表示されたmetaタグ（<code>&lt;meta name="google-site-verification" ...&gt;</code>）をコピー</li>
-            <li>Bubble.io Settings → SEO / metatags →「Script/meta tags in header」に貼り付けて保存 → 本番デプロイ</li>
+            <li>Bubble.io Settings → SEO / metatags →「Script / meta tags in header」に貼り付けて保存 → 本番デプロイ</li>
             <li>Search Consoleに戻り「確認」をクリック。「所有権を確認しました」が出ればOK</li>
           </ol>
           <ul class="notes">
@@ -570,7 +570,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
 
         <div class="alert alert-green">
           <svg class="a-icon icon"><use href="#i-check"/></svg>
-          <span><strong>進捗（2026-07-02追記）:</strong> GA4アカウントは増永さん側で作成済み（計測資産はクライアント所有・弊社も招待済み）。6/29の確認で<strong>開発版URL（/version-xxx/）が本番と別ページとして二重カウントされている</strong>ことが分かったため、GAタグの読み込みを本番（live）バージョンのみに限定する対応を行います（タスク#44）。</span>
+          <span><strong>進捗（2026-07-02追記）:</strong> GA4アカウントは増永さん側で作成済み（計測資産はクライアント所有・弊社も招待済み）。6月29日の確認で<strong>開発版URL（/version-xxx/）が本番と別ページとして二重カウントされている</strong>ことが分かったため、GAタグの読み込みを本番（live）バージョンのみに限定する対応を行います（タスク#44）。</span>
         </div>
 
         <h4>導入手順</h4>
@@ -607,8 +607,8 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
               <tr><td>スクロール</td><td class="on">ON</td><td>ページの90%までスクロールしたか</td></tr>
               <tr><td>離脱クリック</td><td class="on">ON</td><td>サイト外へのリンクをクリックしたか</td></tr>
               <tr><td>サイト内検索</td><td class="on">ON</td><td>サイト内検索で何を入力したか</td></tr>
-              <tr class="hl"><td>フォーム操作</td><td class="off">OFF → ONにする</td><td>フォームの入力開始/送信。予約フォームの離脱が分かる</td></tr>
-              <tr><td>動画エンゲージメント</td><td class="on">ON</td><td>YouTube埋め込み動画の再生/完了</td></tr>
+              <tr class="hl"><td>フォーム操作</td><td class="off">OFF → ONにする</td><td>フォームの入力開始 / 送信。予約フォームの離脱が分かる</td></tr>
+              <tr><td>動画エンゲージメント</td><td class="on">ON</td><td>YouTube埋め込み動画の再生 / 完了</td></tr>
               <tr><td>ファイルダウンロード</td><td class="on">ON</td><td>PDFなどのダウンロード</td></tr>
             </tbody>
           </table>
@@ -695,7 +695,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
             <strong>1. アカウント作成</strong><br>
             <a href="https://clarity.microsoft.com/" target="_blank">https://clarity.microsoft.com/</a> にアクセス → Microsoft/Google/Facebookアカウントでログイン → New project → URL: <code>https://rincle.co.jp</code><br><br>
             <strong>2. Bubble.ioに設置</strong><br>
-            表示されるスニペットをコピーし、Bubble.io の Settings &gt; SEO/metatags &gt; Script/meta tags in header に貼り付け（GA4スニペットの下に追加）<br><br>
+            表示されるスニペットをコピーし、Bubble.io の Settings &gt; SEO / metatags &gt; Script / meta tags in header に貼り付け（GA4スニペットの下に追加）<br><br>
             <strong>3. 動作確認</strong><br>
             別ブラウザでrincle.co.jpにアクセスして操作 → 数分後にクラリティのダッシュボードに録画が表示されればOK
           </p>
@@ -769,7 +769,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
           </table>
         </div>
         <ul class="notes">
-          <li>これは低速回線を模したラボ値で、実際のWiFi/4Gでの体感はもっと短い。とはいえ総重量9.2MB（JSバンドルだけで圧縮前8.5MB）という構造上、どんな回線でもLCP 2.5秒合格はほぼ不可能な水準。</li>
+          <li>これは低速回線を模したラボ値で、実際のWiFi / 4Gでの体感はもっと短い。とはいえ総重量9.2MB（JSバンドルだけで圧縮前8.5MB）という構造上、どんな回線でもLCP 2.5秒合格はほぼ不可能な水準。</li>
         </ul>
         <div class="alert alert-blue">
           <svg class="a-icon icon"><use href="#i-info"/></svg>
@@ -793,7 +793,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
         <ul>
           <li><strong>方式:</strong> Cloudflare Workerをドメインのフロントに置き、ボットのリクエストだけPrerenderへルーティングする公式手順がある（人間のアクセスは従来どおりBubbleへ）</li>
           <li><strong>所要時間:</strong> 30〜45分。Cloudflare無料プランで可。<strong>Bubble側のプラン変更は不要</strong>（「Bubbleの上位プランが必要」という古いフォーラム情報は過去のもの）</li>
-          <li><strong>料金（2025年10月改定 / 2026-06-11に公式料金ページで再確認済み）:</strong> <strong>無料プランは2025年10月15日に廃止</strong>。現在はStarter $49/月（25,000レンダー）〜、Growth $149/月（100,000レンダー）。30日間の無料トライアルあり</li>
+          <li><strong>料金（2025年10月改定 / 2026-06-11に公式料金ページで再確認済み）:</strong> <strong>無料プランは2025年10月15日に廃止</strong>。現在はStarter $49 / 月（25,000レンダー）〜、Growth $149 / 月（100,000レンダー）。30日間の無料トライアルあり</li>
           <li><strong>注意:</strong> 改善するのはクローラーから見えるHTMLだけで、<strong>人間のユーザーの表示速度は1ミリ秒も変わらない</strong></li>
         </ul>
         <ul class="notes">
@@ -822,7 +822,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
       <ul>
         <li>sitemap手動生成→Bubbleにアップロード（Step 2・自動生成は使わない）+ robots.txtにSitemap行</li>
         <li>canonical有効化 ← クエリパラメータ付きURLのインデックス汚染を止める（実害確認済み）</li>
-        <li>ページ別title/meta description（店舗詳細はDB差し込みで店舗固有の文面に）</li>
+        <li>ページ別title / meta description（店舗詳細はDB差し込みで店舗固有の文面に）</li>
         <li>og:imageを1200×630の専用画像に差し替え</li>
         <li>h1設定、noindex設定、構造化データ</li>
         <li>Search Console登録 → インデックス数を実測</li>
@@ -835,7 +835,7 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
     </div>
 
     <div class="sub-item gold">
-      <h4>Phase 2（必要なら・$49/月〜）: Cloudflareをフロントに導入 + Prerender.io</h4>
+      <h4>Phase 2（必要なら・$49 / 月〜）: Cloudflareをフロントに導入 + Prerender.io</h4>
       <ul>
         <li>ボットに完全レンダリング済みHTMLを配信 → 本文・内部リンクの可視化</li>
         <li>副産物: Cloudflareがフロントに入ることでPhase 3の土台が完成</li>
@@ -843,16 +843,16 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
     </div>
 
     <div class="sub-item">
-      <h4>Phase 3（中期）: SEOコンテンツを自社ドメイン配下で配信（6/30定例で方式を更新）</h4>
+      <h4>Phase 3（中期）: SEOコンテンツを自社ドメイン配下で配信（6月30日定例で方式を更新）</h4>
       <ul>
-        <li>まず増永さん側がClaude Codeで作り込んだ静的LP（HTML/CSS）を<strong>サブドメインで量産して様子見</strong>（WordPress構築は保留）</li>
+        <li>まず増永さん側がClaude Codeで作り込んだ静的LP（HTML / CSS）を<strong>サブドメインで量産して様子見</strong>（WordPress構築は保留）</li>
         <li>地域×コース記事 + 初心者ガイド記事</li>
-        <li>予約導線・店舗/エリアページはBubble本体（メタ情報設定でSEO最適化）へリンク</li>
+        <li>予約導線・店舗 / エリアページはBubble本体（メタ情報設定でSEO最適化）へリンク</li>
       </ul>
     </div>
 
     <ul class="notes">
-      <li>Phase 3の方式は6/30定例で更新: 当初はサブディレクトリ（rincle.co.jp/blog/）+WordPressを推奨していたが、サブディレクトリ同居に必要なリバースプロキシは<strong>落ちるとブログもアプリも全滅する単一障害点</strong>になり、弊社にBubble×WordPressでの運用実績がなく障害切り分けも難しいため、<strong>当面は安全なサブドメイン配信で開始</strong>。サブディレクトリとのSEO差は弊社が改めて洗い出して再判断する（詳細:「ブログSEOの方針」§6）。</li>
+      <li>Phase 3の方式は6月30日定例で更新: 当初はサブディレクトリ（rincle.co.jp/blog/）+WordPressを推奨していたが、サブディレクトリ同居に必要なリバースプロキシは<strong>落ちるとブログもアプリも全滅する単一障害点</strong>になり、弊社にBubble×WordPressでの運用実績がなく障害切り分けも難しいため、<strong>当面は安全なサブドメイン配信で開始</strong>。サブディレクトリとのSEO差は弊社が改めて洗い出して再判断する（詳細:「ブログSEOの方針」§6）。</li>
     </ul>
   </div>
 
@@ -948,12 +948,12 @@ Sitemap: https://rincle.co.jp/sitemap.xml</code></pre></div>
           <tr><td>canonical URL</td><td>複数URLで同じ内容がある場合に「正式なURL」を指定するタグ。</td></tr>
           <tr><td>noindex</td><td>「このページは検索結果に載せないで」とGoogleに伝えるタグ。マイページ等の検索に出すべきでないページに設定する。</td></tr>
           <tr><td>sitemap</td><td>サイト内の全ページURLをまとめたXMLファイル。Googleにページの存在を知らせる。</td></tr>
-          <tr><td>robots.txt</td><td>クローラーに対して「見てよい/見ないでほしい」ページを指示するファイル。</td></tr>
+          <tr><td>robots.txt</td><td>クローラーに対して「見てよい / 見ないでほしい」ページを指示するファイル。</td></tr>
           <tr><td>Search Console</td><td>Google提供の無料ツール。検索結果での見え方やエラーを確認・管理できる。</td></tr>
           <tr><td>GA4</td><td>Google Analytics 4。サイト訪問者の行動を計測する無料のアクセス解析ツール。</td></tr>
           <tr><td>Microsoft Clarity</td><td>Microsoftが無料で提供するユーザー行動分析ツール。セッション録画やヒートマップで「なぜ離脱するか」を映像で確認できる。</td></tr>
           <tr><td>セッション録画</td><td>ユーザーがサイト上でどう操作したかを動画として記録・再生する機能。</td></tr>
-          <tr><td>ヒートマップ</td><td>ページのどこがよくクリックされているか、どこまでスクロールされているかを色（赤=多い/青=少ない）で可視化したもの。</td></tr>
+          <tr><td>ヒートマップ</td><td>ページのどこがよくクリックされているか、どこまでスクロールされているかを色（赤=多い / 青=少ない）で可視化したもの。</td></tr>
           <tr><td>デッドクリック</td><td>ユーザーがクリックしたけど何も反応しなかった箇所。UIが分かりにくい証拠。</td></tr>
           <tr><td>LCP</td><td>Largest Contentful Paint。ページの一番大きな要素が表示されるまでの時間。</td></tr>
           <tr><td>CVR</td><td>Conversion Rate。サイトに来た人のうち、予約まで完了した人の割合。</td></tr>

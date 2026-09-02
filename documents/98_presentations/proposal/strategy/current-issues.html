@@ -153,8 +153,8 @@
         <span class="problem-number">2</span>
         <h4 class="c-title">初回ロードは想定よりさらに遅い（Lighthouse実測）</h4>
       </div>
-      <p class="body">旧記述「LCP 3〜5秒」は過小評価だった。Lighthouse実測（モバイル・2026-06-11・旧サイト）: <strong>スコア25/100、FCP 20.3秒、LCP 49.3秒、総重量9.2MB</strong>。<br>
-      ラボ値のため実回線の体感はこれより短いが、この重量ではどの回線でもLCP 2.5秒合格（Core Web Vitals）はほぼ不可能。モバイルユーザーの<strong>53%は3秒以上で離脱</strong>する（Google/SOASTA調査）。※検索速度改善込みの新サイトが2026年7月にリリース済みのため要再計測。</p>
+      <p class="body">旧記述「LCP 3〜5秒」は過小評価だった。Lighthouse実測（モバイル・2026-06-11・旧サイト）: <strong>スコア25 / 100、FCP 20.3秒、LCP 49.3秒、総重量9.2MB</strong>。<br>
+      ラボ値のため実回線の体感はこれより短いが、この重量ではどの回線でもLCP 2.5秒合格（Core Web Vitals）はほぼ不可能。モバイルユーザーの<strong>53%は3秒以上で離脱</strong>する（Google / SOASTA調査）。※検索速度改善込みの新サイトが2026年7月にリリース済みのため要再計測。</p>
     </div>
 
     <div class="card">
@@ -167,7 +167,7 @@
         </svg>
         <div class="cl">
           <div><i style="background:var(--accent);"></i>読み込みに3秒以上かかると離脱するモバイルユーザー <strong>53%</strong></div>
-          <div class="src" style="border-bottom:none;">単位: %（中央の数字＝53%）／ 出典: Google/SOASTA調査。旧サイト実測はFCP 20.3秒・LCP 49.3秒（Lighthouse・モバイル）</div>
+          <div class="src" style="border-bottom:none;">単位: %（中央の数字＝53%）/ 出典: Google / SOASTA調査。旧サイト実測はFCP 20.3秒・LCP 49.3秒（Lighthouse・モバイル）</div>
         </div>
       </div>
     </div>
@@ -181,9 +181,9 @@
     </div>
 
     <div class="card edge-green">
-      <h4 class="c-title">対策: 段階導入（いきなりSSR/SSG別建てに飛ばない）</h4>
+      <h4 class="c-title">対策: 段階導入（いきなりSSR / SSG別建てに飛ばない）</h4>
       <p class="body" style="margin-bottom:8px;"><strong style="color:var(--ok);">Phase 1（無料・即日〜数日）:</strong> Bubbleネイティブ設定の完遂 — sitemap.xml設置（<strong>2026-08-20更新: 手動生成方式に決定</strong>。Bubble標準の自動生成は新URL構成では店舗・自転車の個別URLが載らないため撤回。手順: <code>documents/4_growth/03_seo/sitemap/sitemap-creation-guide.md</code>）/ canonical有効化 / ページ別title・meta / Search Console登録。真因がディスカバリー問題である以上、これだけで大きく改善する可能性が十分ある。インデックス数を2〜4週間実測してから次の投資判断。</p>
-      <p class="body" style="margin-bottom:8px;"><strong style="color:var(--ok);">Phase 2（$49/月〜）:</strong> Prerender.io + Cloudflare Worker — ボットにのみレンダリング済みHTMLを配信（公式統合手順あり、所要30〜45分。人間の表示速度は改善しない点に注意）。</p>
+      <p class="body" style="margin-bottom:8px;"><strong style="color:var(--ok);">Phase 2（$49 / 月〜）:</strong> Prerender.io + Cloudflare Worker — ボットにのみレンダリング済みHTMLを配信（公式統合手順あり、所要30〜45分。人間の表示速度は改善しない点に注意）。</p>
       <p class="body"><strong style="color:var(--ok);">Phase 3:</strong> SSG（Astro等）でSEOランディングページを別建て — 店舗×車種カテゴリページをサブディレクトリ配信。予約フローはBubbleのまま誘導。Bubble.ioを捨てる必要はない。</p>
     </div>
   </div>
@@ -201,7 +201,7 @@
         <span>改善施策</span>
       </div>
 
-      <p class="funnel-phase-label">Acquisition (集客)</p>
+      <p class="funnel-phase-label">Acquisition （集客）</p>
 
       <div class="funnel-step">
         <div class="step-label red">Step 0<br>認知</div>
@@ -223,7 +223,7 @@
         </div>
         <div class="step-solution">
           <strong>施策</strong>
-          ファーストビュー最適化（ヘッドライン+検索バー+信頼指標。星評価はレビューが溜まってから） / スケルトンUIで白画面回避 / ファーストビューだけ静的HTML/CSSで即時表示
+          ファーストビュー最適化（ヘッドライン+検索バー+信頼指標。星評価はレビューが溜まってから） / スケルトンUIで白画面回避 / ファーストビューだけ静的HTML / CSSで即時表示
         </div>
       </div>
 
@@ -231,7 +231,7 @@
 
       <hr class="funnel-divider">
 
-      <p class="funnel-phase-label">Engagement (探索・比較)</p>
+      <p class="funnel-phase-label">Engagement （探索・比較）</p>
 
       <div class="funnel-step">
         <div class="step-label red">Step 2<br>検索・探索</div>
@@ -273,7 +273,7 @@
 
       <hr class="funnel-divider">
 
-      <p class="funnel-phase-label">Conversion (予約・決済)</p>
+      <p class="funnel-phase-label">Conversion （予約・決済）</p>
 
       <div class="funnel-step">
         <div class="step-label yellow">Step 4<br>予約・決済</div>
@@ -283,13 +283,13 @@
         </div>
         <div class="step-solution">
           <strong>施策</strong>
-          フォームは<strong>合計8項目以下</strong>に（9項目以上はCVR約1/4: 4.2% vs 1項目18.2%・Baymard） / ゲスト予約OK（登録強制の撤廃でCVR 20〜30%向上） / カート放棄メール（放棄者の46%は24時間以内に再検索 → 1時間以内+翌朝の2通）
+          フォームは<strong>合計8項目以下</strong>に（9項目以上はCVR約4分の1: 4.2% vs 1項目18.2%・Baymard） / ゲスト予約OK（登録強制の撤廃でCVR 20〜30%向上） / カート放棄メール（放棄者の46%は24時間以内に再検索 → 1時間以内+翌朝の2通）
         </div>
       </div>
 
       <hr class="funnel-divider">
 
-      <p class="funnel-phase-label">Retention (利用・リピート)</p>
+      <p class="funnel-phase-label">Retention （利用・リピート）</p>
 
       <div class="funnel-step">
         <div class="step-label green">Step 5<br>予約後〜当日</div>
@@ -342,7 +342,7 @@
             </div>
             <div style="flex:1; min-width:110px; background:var(--paper); border:1px solid var(--line); border-radius:3px; padding:10px 12px;">
               <div style="font-size:10px; color:var(--sub);">日付</div>
-              <div style="font-size:13px; color:var(--text); font-weight:600;">5/24 (土)</div>
+              <div style="font-size:13px; color:var(--text); font-weight:600;">5月24日 （土）</div>
             </div>
             <div style="flex:1; min-width:110px; background:var(--paper); border:1px solid var(--line); border-radius:3px; padding:10px 12px;">
               <div style="font-size:10px; color:var(--sub);">車種</div>
@@ -397,7 +397,7 @@
       <div class="mock-head t1">
         <span class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="mh-title">T1-3. 料金シミュレーター</span>
-        <span class="mh-tag">競合: PK/RINCLE自身</span>
+        <span class="mh-tag">競合: PK / RINCLE自身</span>
       </div>
       <div class="mock-weak t1"><strong>弱点:</strong> 料金がWebに載っていない/不明確（PK/RINCLE自身）→ 「いくらか分からない→離脱」</div>
       <div class="mock-body">
@@ -467,7 +467,7 @@
       </div>
       <div class="mock-weak t2"><strong>弱点:</strong> 複数店舗の空きを比較できない（全社、特にジャイアント12店舗）→ 「1店舗ずつ見に行くしかない」</div>
       <div class="mock-body">
-        <div style="font-size:13px; color:var(--sub); margin-bottom:4px;">5/24 (土) / ロードバイク / 関西エリア</div>
+        <div style="font-size:13px; color:var(--sub); margin-bottom:4px;">5月24日 （土） / ロードバイク / 関西エリア</div>
         <div style="font-size:11px; color:var(--sub); margin-bottom:14px;">3店舗で空きが見つかりました</div>
         <div style="overflow-x:auto;">
           <table style="width:100%; border-collapse:collapse; font-size:12px;">
@@ -475,7 +475,7 @@
               <tr>
                 <th style="background:var(--paper); padding:10px; text-align:left; border-bottom:2px solid var(--line); color:var(--sub);">店舗</th>
                 <th style="background:var(--paper); padding:10px; text-align:left; border-bottom:2px solid var(--line); color:var(--sub);">車種</th>
-                <th style="background:var(--paper); padding:10px; text-align:center; border-bottom:2px solid var(--line); color:var(--sub);">料金/日</th>
+                <th style="background:var(--paper); padding:10px; text-align:center; border-bottom:2px solid var(--line); color:var(--sub);">料金 / 日</th>
                 <th style="background:var(--paper); padding:10px; text-align:center; border-bottom:2px solid var(--line); color:var(--sub);">レビュー</th>
                 <th style="background:var(--paper); padding:10px; text-align:center; border-bottom:2px solid var(--line); color:var(--sub);">空き</th>
                 <th style="background:var(--paper); padding:10px; text-align:center; border-bottom:2px solid var(--line); color:var(--sub);"></th>
@@ -532,8 +532,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr><td style="padding:8px 10px; border-bottom:1px solid var(--line-soft); color:var(--sub);">料金/日</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft); font-weight:700; color:var(--accent-deep);">¥6,000</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft); font-weight:700; color:var(--accent-deep);">¥5,500</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft); font-weight:700; color:var(--accent-deep);">¥5,800</td></tr>
-            <tr><td style="padding:8px 10px; border-bottom:1px solid var(--line-soft); color:var(--sub);">フレーム</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">アルミ (E5)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">アルミ (Alpha)</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">アルミ (CAAD)</td></tr>
+            <tr><td style="padding:8px 10px; border-bottom:1px solid var(--line-soft); color:var(--sub);">料金 / 日</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft); font-weight:700; color:var(--accent-deep);">¥6,000</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft); font-weight:700; color:var(--accent-deep);">¥5,500</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft); font-weight:700; color:var(--accent-deep);">¥5,800</td></tr>
+            <tr><td style="padding:8px 10px; border-bottom:1px solid var(--line-soft); color:var(--sub);">フレーム</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">アルミ （E5）</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">アルミ （Alpha）</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">アルミ （CAAD）</td></tr>
             <tr><td style="padding:8px 10px; border-bottom:1px solid var(--line-soft); color:var(--sub);">コンポ</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">Sora 2x9</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">Claris 2x8</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">Sora 2x9</td></tr>
             <tr><td style="padding:8px 10px; border-bottom:1px solid var(--line-soft); color:var(--sub);">重量</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">9.2kg</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">9.8kg</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft);">9.5kg</td></tr>
             <tr><td style="padding:8px 10px; border-bottom:1px solid var(--line-soft); color:var(--sub);">レビュー</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft); color:var(--gold-text);">4.9 <small>/5</small>（12件）</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft); color:var(--gold-text);">4.7 <small>/5</small>（8件）</td><td style="padding:8px 10px; text-align:center; border-bottom:1px solid var(--line-soft); color:var(--gold-text);">4.6 <small>/5</small>（5件）</td></tr>
@@ -594,7 +594,7 @@
     <div class="mock-card">
       <div class="mock-head t2">
         <span class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="mh-title">T2-4. おすすめ診断 + 初心者/経験者モード</span>
+        <span class="mh-title">T2-4. おすすめ診断 + 初心者 / 経験者モード</span>
         <span class="mh-tag">競合: 全社できていない</span>
       </div>
       <div class="mock-weak t2"><strong>弱点:</strong> 初心者が何を借りればいいか分からない → 車種一覧を見ても「ロードとクロスどっち？」に答えがない → 離脱</div>
@@ -763,7 +763,7 @@
     <div class="card edge-green">
       <h4 class="c-title">本命収益源は物販送客（try-before-buy）</h4>
       <p class="body" style="margin-bottom:8px;">米Trekは<strong>「レンタル料の100%を購入代金に充当」</strong>を標準特典化。国内スポーツバイクでは未確立の差別化余地。レンティオ公表値では、レンタル機会の提供で<strong>購入数が4倍以上</strong>になるケースもある（購入転換率3%の商品でも）。</p>
-      <p class="body">購入成約への送客フィー（例: 車体価格の3〜5%）なら30万円の完成車で<strong>9,000〜15,000円/台</strong> — レンタル手数料の数倍。「レンタル料の購入充当」をRINCLE標準特典として全店共通化し、Step 7の「試乗履歴つき購入相談予約」と接続する。</p>
+      <p class="body">購入成約への送客フィー（例: 車体価格の3〜5%）なら30万円の完成車で<strong>9,000〜15,000円 / 台</strong> — レンタル手数料の数倍。「レンタル料の購入充当」をRINCLE標準特典として全店共通化し、Step 7の「試乗履歴つき購入相談予約」と接続する。</p>
     </div>
 
     <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>KPIに<strong>「テイクレート」「GMV」「レンタル→購入相談率・購入転換率」</strong>を追加する。</div></div>

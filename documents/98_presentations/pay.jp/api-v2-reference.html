@@ -68,7 +68,7 @@ td code{font-size:12px;white-space:nowrap}
     <h1>PAY.JP API v2 リファレンス（日本語まとめ）</h1>
     <p class="lead">2026年2月12日提供開始の新世代API。PaymentFlow中心の状態機械モデルで、カードに加えPayPay・Apple Payを一元管理。v1とは別体系（v1は継続提供・APIキー共通）。</p>
     <div class="hero-meta">
-      <span>出典: docs.pay.jp/v2 公開OpenAPI（2.0.0）</span>
+      <span>出典: docs.pay.jp / v2 公開OpenAPI（2.0.0）</span>
       <span>作成: 2026-06-12（#20再調査の派生）</span>
     </div>
   </div>
@@ -95,10 +95,10 @@ td code{font-size:12px;white-space:nowrap}
         <thead><tr><th>項目</th><th>内容</th></tr></thead>
         <tbody>
           <tr><td class="label">パス</td><td><code>/v2/...</code>（v1の <code>/v1/...</code> と並存。<strong>v1は継続提供</strong>）</td></tr>
-          <tr><td class="label">認証</td><td>Basic認証（シークレットキー）+ <strong>Bearer</strong>対応。<strong>APIキーはv1/v2共通</strong></td></tr>
+          <tr><td class="label">認証</td><td>Basic認証（シークレットキー）+ <strong>Bearer</strong>対応。<strong>APIキーはv1 / v2共通</strong></td></tr>
           <tr><td class="label">対応決済手段</td><td><code>card</code> / <code>paypay</code> / <code>apple_pay</code>（v1はカード+Apple Payのみ）</td></tr>
           <tr><td class="label">通貨</td><td><code>jpy</code> のみ</td></tr>
-          <tr><td class="label">モバイルSDK</td><td><strong>v2は非対応</strong>（iOS/Android等のSDKはv1のみ）。v2はWeb中心</td></tr>
+          <tr><td class="label">モバイルSDK</td><td><strong>v2は非対応</strong>（iOS / Android等のSDKはv1のみ）。v2はWeb中心</td></tr>
         </tbody>
       </table>
     </div>
@@ -113,7 +113,7 @@ td code{font-size:12px;white-space:nowrap}
         <tbody>
           <tr><td class="label">Charge（支払い）</td><td><strong>PaymentFlow</strong></td><td>別システム扱い。既存のv1 Chargeはv1 APIで操作し続ける（返金期限180日など）</td></tr>
           <tr><td class="label">Token / Card</td><td><strong>PaymentMethod</strong></td><td>v1の登録済みCardは<strong>v2のPaymentMethodに自動マッピング</strong>（逆方向は不可）</td></tr>
-          <tr><td class="label">Customer</td><td>Customer</td><td><strong>IDはv1/v2で共通</strong></td></tr>
+          <tr><td class="label">Customer</td><td>Customer</td><td><strong>IDはv1 / v2で共通</strong></td></tr>
           <tr><td class="label"><code>default_card</code></td><td><code>default_payment_method</code></td><td>フィールド名変更</td></tr>
           <tr><td class="label"><code>cvc_check</code> / <code>address_zip_check</code></td><td><strong>廃止</strong></td><td>カードオブジェクトから削除</td></tr>
           <tr><td class="label">Plan / Subscription</td><td><strong>未提供</strong></td><td>2026年中に提供予定。それまで定期課金はv1を使用</td></tr>

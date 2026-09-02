@@ -112,13 +112,13 @@
 
 <div class="container">
 
-  <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>その後の更新（2026-08-20時点）:</strong> 決済サービスは<strong>6/19定例でStripeに決定</strong>（実装はタスク#35）。決済フローは<strong>7/3定例で「当日決済のみ」に決定</strong>し、本資料§6.1の旧設計は別資料「予約・決済・貸出・返却フロー」（payment-flow.html）に置き換え済み。<strong>デポジットは今回スコープ外で確定（6/30）</strong>。DB再構築は完了し、新サイトは7月上旬に本番リリース済み。</div></div>
+  <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>その後の更新（2026-08-20時点）:</strong> 決済サービスは<strong>6月19日定例でStripeに決定</strong>（実装はタスク#35）。決済フローは<strong>7月3日定例で「当日決済のみ」に決定</strong>し、本資料§6.1の旧設計は別資料「予約・決済・貸出・返却フロー」（payment-flow.html）に置き換え済み。<strong>デポジットは今回スコープ外で確定（6月30日）</strong>。DB再構築は完了し、新サイトは7月上旬に本番リリース済み。</div></div>
 
   <!-- 0 -->
   <div class="section" id="s0">
     <div class="section-header"><div class="section-num">00</div><div class="sh-body"><h2>結論サマリー</h2><div class="sh-sub">再調査（2026-06）の結論と判断根拠</div></div></div>
 
-    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>結論: Stripeに載せ替える。</strong> タイミングは今ではなく、DB再構築完了後に決済全体設計（キャンセルポリシー・振込オペ・月額課金）を固めてから、<strong>集約モデルの実装と同時に</strong>。オーソリの先行実装（80h）はやらない（6/12合意「急がない・二度手間回避」のとおり）。例外は「夏シーズン中の保険」として50円オーソリだけ先に買う場合のみ（経営判断）。以下が判断根拠。</div></div>
+    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>結論: Stripeに載せ替える。</strong> タイミングは今ではなく、DB再構築完了後に決済全体設計（キャンセルポリシー・振込オペ・月額課金）を固めてから、<strong>集約モデルの実装と同時に</strong>。オーソリの先行実装（80h）はやらない（6月12日合意「急がない・二度手間回避」のとおり）。例外は「夏シーズン中の保険」として50円オーソリだけ先に買う場合のみ（経営判断）。以下が判断根拠。</div></div>
 
     <p style="font-size:14px;color:var(--sub)">比較した3ルート:</p>
     <div class="routes-grid">
@@ -138,7 +138,7 @@
         <span class="route-chip c">C</span>
         <h4>Stripeへ載せ替え+集約モデル化</h4>
         <p>公式プラグイン+PaymentIntentで最終形を直接つくる</p>
-        <div class="route-verdict yes">結論: これ（6/19決定）</div>
+        <div class="route-verdict yes">結論: これ（6月19日決定）</div>
       </div>
     </div>
 
@@ -160,7 +160,7 @@
         </tbody>
       </table>
     </div>
-    <p style="font-size:14px">→ 短期だけ見れば<strong>Pay.jp続行が速い</strong>。ただし6/12に「今の件数なら急がない」で合意済みのため、<strong>どちらも着手せずオーソリ先行は見送り</strong>が現実解。</p>
+    <p style="font-size:14px">→ 短期だけ見れば<strong>Pay.jp続行が速い</strong>。ただし6月12日に「今の件数なら急がない」で合意済みのため、<strong>どちらも着手せずオーソリ先行は見送り</strong>が現実解。</p>
 
     <h3>中長期（集約モデル・月額課金・全体実装後の世界）</h3>
     <div class="table-wrap">
@@ -168,9 +168,9 @@
         <thead><tr><th style="width:200px"></th><th class="merit">メリット</th><th class="demerit">デメリット</th></tr></thead>
         <tbody>
           <tr>
-            <td class="label"><span class="route-chip b">B</span>Pay.jp<br>（集約化・v1/v2）</td>
+            <td class="label"><span class="route-chip b">B</span>Pay.jp<br>（集約化・v1 / v2）</td>
             <td class="merit"><strong>手数料が安い</strong>（3.3% vs 3.6%。月商1,000万なら月3万円差・ビジネスプラン移行なら月6万円差）。カード再登録不要の可能性（v2は自動マッピング）。3DSも対応済み</td>
-            <td class="demerit"><strong>CVC検証が仕様上不可</strong>（決済失敗の温床が残る）。<strong>デポジットを安全に実装できない</strong>（デビット判別不可・v1/v2とも）。Bubbleプラグインなし。v2は未成熟（サブスク未提供）</td>
+            <td class="demerit"><strong>CVC検証が仕様上不可</strong>（決済失敗の温床が残る）。<strong>デポジットを安全に実装できない</strong>（デビット判別不可・v1 / v2とも）。Bubbleプラグインなし。v2は未成熟（サブスク未提供）</td>
           </tr>
           <tr>
             <td class="label"><span class="route-chip c">C</span>Stripe</td>
@@ -241,15 +241,15 @@
           </tbody>
         </table>
       </div>
-      <p style="font-size:12px;color:var(--sub)">推計の仮定: レンタル料の即時決済1〜2.5万円（実測平均¥10,200・ロード上位/E-Bikeで2〜3万）が同時に枠に乗る。判定されるのは「限度額」ではなく「空き枠（限度額−利用残高）」。高級車を借りる層はゴールド保有率が相対的に高い可能性はある（未検証）。</p>
+      <p style="font-size:12px;color:var(--sub)">推計の仮定: レンタル料の即時決済1〜2.5万円（実測平均¥10,200・ロード上位 / E-Bikeで2〜3万）が同時に枠に乗る。判定されるのは「限度額」ではなく「空き枠（限度額−利用残高）」。高級車を借りる層はゴールド保有率が相対的に高い可能性はある（未検証）。</p>
     </div>
-    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>リスク: デビット/プリペイドの即時引き落とし</strong> — オーソリでも<strong>即時に口座から実額が引き落とされ</strong>、返金まで数日〜2週間（案内上は最大20日程度）。30万円なら「30万円引かれた！」という重大クレームに直結。クレジットカードでも解放後の枠復活に数日かかる場合があり、「枠が戻らない」問い合わせ運用は必須。</div></div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>リスク: デビット / プリペイドの即時引き落とし</strong> — オーソリでも<strong>即時に口座から実額が引き落とされ</strong>、返金まで数日〜2週間（案内上は最大20日程度）。30万円なら「30万円引かれた！」という重大クレームに直結。クレジットカードでも解放後の枠復活に数日かかる場合があり、「枠が戻らない」問い合わせ運用は必須。</div></div>
     <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>Pay.jpとStripeの差（上記リスクを防ぐ制御手段）:</strong> <strong>Stripeなら「デポジットはクレジットのみ」と制御できる</strong>（PaymentMethodの<code>funding</code>で種別判定・Radarでブロック可）。<strong>Pay.jpはv1・v2ともカード情報に種別フィールドがなく安全に実装できない</strong>（v2のOpenAPI定義にもfunding/debit/prepaidの概念が存在しない・2026-06確認）— デポジット導入の可否自体が決済サービス選定の材料になる。</div></div>
   </div>
 
   <!-- 2 -->
   <div class="section" id="s2">
-    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>手数料比較（2026-06の公式料金で更新）</h2><div class="sh-sub">前回資料の「Pay.jp 3.0%/3.6%」は旧体系。現行は以下</div></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>手数料比較（2026-06の公式料金で更新）</h2><div class="sh-sub">前回資料の「Pay.jp 3.0% / 3.6%」は旧体系。現行は以下</div></div></div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -260,7 +260,7 @@
           <tr><td class="label">決済手数料<br>（国内発行カード）</td><td><strong>3.3%</strong>（ブランド共通）</td><td class="dim">2.78%</td><td><strong>3.6%</strong></td></tr>
           <tr><td class="label">決済手数料<br>（海外発行カード）</td><td>3.3%（公表料金に国内外の区別なし）</td><td class="dim">2.78%（同左）</td><td>3.6%（円建て請求なら同率）+ <strong>通貨換算時2%</strong></td></tr>
           <tr><td class="label">返金手数料</td><td>無料</td><td class="dim">無料</td><td>無料（元の決済手数料は戻らない）</td></tr>
-          <tr><td class="label">振込手数料</td><td>250円/回</td><td class="dim">250円/回</td><td>無料</td></tr>
+          <tr><td class="label">振込手数料</td><td>250円 / 回</td><td class="dim">250円 / 回</td><td>無料</td></tr>
         </tbody>
       </table>
     </div>
@@ -293,12 +293,12 @@
         <tbody>
           <tr>
             <td class="label">3DS対応の手間</td>
-            <td><span class="badge warn">自前で組み込み（中規模）</span><br>API Connector+リダイレクト/iframeを自分で組む。機能自体はPay.jpが提供している</td>
+            <td><span class="badge warn">自前で組み込み（中規模）</span><br>API Connector+リダイレクト / iframeを自分で組む。機能自体はPay.jpが提供している</td>
             <td><span class="badge good">ほぼ自動</span><br>公式プラグイン+PaymentIntentに標準で組み込まれている</td>
           </tr>
           <tr>
             <td class="label">カード登録時のCVCチェック</td>
-            <td><span class="badge bad">できない</span><br>仕様上、誤ったCVCでも登録できてしまう。5/15に確認した決済失敗の温床が<strong>残り続ける</strong></td>
+            <td><span class="badge bad">できない</span><br>仕様上、誤ったCVCでも登録できてしまう。5月15日に確認した決済失敗の温床が<strong>残り続ける</strong></td>
             <td><span class="badge good">できる</span><br>登録時に検証し、間違いはその場で弾ける</td>
           </tr>
         </tbody>
@@ -317,7 +317,7 @@
         <tbody>
           <tr><td class="label">カード保存・再利用</td><td>○</td><td>○</td><td></td></tr>
           <tr><td class="label">部分返金</td><td>○</td><td>○</td><td>キャンセルポリシーで必要</td></tr>
-          <tr><td class="label">サブスク（店舗月額課金）</td><td>○（plan/subscription）</td><td>○（Billing・高機能）</td><td>6/12の月額課金構想に関わる</td></tr>
+          <tr><td class="label">サブスク（店舗月額課金）</td><td>○（plan / subscription）</td><td>○（Billing・高機能）</td><td>6月12日の月額課金構想に関わる</td></tr>
           <tr class="hl"><td class="label">領収書の自動送信（重要）</td><td><span class="badge bad">×</span> 自前で作るか手動運用</td><td><span class="badge good">○</span> receipt_email指定で自動送信</td><td><strong>集約モデルでは発行元がPEDALSTANDARDになる見込み = 全決済分の発行オペが発生</strong>。自動化の可否が運用コストに直結</td></tr>
           <tr><td class="label">Apple Pay / PayPay等</td><td>×（v1）/ ○（<strong>v2</strong>はApple Pay・PayPay等を一元管理）</td><td>○（Apple Pay / Google Pay）</td><td>Pay.jpで将来機能を取るならv1→v2移行が前提</td></tr>
           <tr><td class="label">Bubble連携</td><td>△（API Connector手動）</td><td>○（公式プラグイン）</td><td></td></tr>
@@ -352,7 +352,7 @@
     <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>決定後の移行計画（旧「Stripe移行方針」を統合・2026-06更新）</h2><div class="sh-sub">4/21・5/1合意の実行計画。Stripeを選んだ場合のフロー設計と移行ステップ。Pay.jp集約化（ルートB）でも決済フローの構造は同じ</div></div></div>
 
     <h3>6.1 決済フロー設計</h3>
-    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>この6.1の旧設計は置き換え済みです。</strong>増永さんの構想（6/30受領）を受けた<strong>7/3定例の決定（当日決済のみ・オーソリなし）</strong>により、決済フローは別資料「予約・決済・貸出・返却フロー」（payment-flow.html）が最新です。以下は当時の設計として残しています。</div></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>この6.1の旧設計は置き換え済みです。</strong>増永さんの構想（6月30日受領）を受けた<strong>7月3日定例の決定（当日決済のみ・オーソリなし）</strong>により、決済フローは別資料「予約・決済・貸出・返却フロー」（payment-flow.html）が最新です。以下は当時の設計として残しています。</div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>シーン</th><th>フロー</th><th>要点</th></tr></thead>
@@ -361,7 +361,7 @@
           <tr><td class="label">キャンセル</td><td>キャンセル操作 → Refund（全額 or 一部） → 在庫開放</td><td>即時決済のため<strong>返金</strong>で処理。キャンセルポリシー（#28）が前提</td></tr>
           <tr><td class="label">延長</td><td>店舗が延長操作 → 登録済みカードで追加PaymentIntent</td><td>元の予約とは別決済。延長手数料の取りこぼし（#19）も解消</td></tr>
           <tr><td class="label">店頭オプション</td><td>店舗が選択 → 登録済みカードで追加決済</td><td>現在システム外の売上を捕捉できるようになる</td></tr>
-          <tr><td class="label">高級車デポジット</td><td>通常料金は即時決済 + 貸出日にデポジット分をオーソリ（manual・数日間）</td><td>返却時に解放 or 損傷等あればキャプチャ。#25調査済み（3〜5万+クレジット限定が現実解・§1.5）→ その後、<strong>今回スコープ外で確定（6/30）</strong>・将来追加できる設計にする（7/3）</td></tr>
+          <tr><td class="label">高級車デポジット</td><td>通常料金は即時決済 + 貸出日にデポジット分をオーソリ（manual・数日間）</td><td>返却時に解放 or 損傷等あればキャプチャ。#25調査済み（3〜5万+クレジット限定が現実解・§1.5）→ その後、<strong>今回スコープ外で確定（6月30日）</strong>・将来追加できる設計にする（7月3日）</td></tr>
         </tbody>
       </table>
     </div>
@@ -381,13 +381,13 @@
         <thead><tr><th>Phase</th><th>内容</th><th>状態</th></tr></thead>
         <tbody>
           <tr><td class="label">0: 現行の緊急修正</td><td>手数料10%→15% / 延長決済不備・カード選択不具合・DBセキュリティ</td><td>手数料15%は<span class="badge good">完了</span>。残りはDB再構築（#4）に統合済み（DB再構築は完了・新サイトは7月上旬に本番リリース済み）</td></tr>
-          <tr class="hl"><td class="label">1: 方針確定・設計</td><td>決済サービス最終決定（#20）/ 弁護士回答 / キャンセルポリシー確定（#28）/ 詳細設計</td><td>調査（#20・#25）は<span class="badge good">完了</span> → <strong>6/19定例でStripeに決定</strong>（実装は#35）。キャンセルポリシー（#28）は設計中・弁護士回答は待ちのまま</td></tr>
-          <tr><td class="label">2: 実装</td><td>予約時決済・返金・延長/オプション決済・管理画面・（デポジット）</td><td><span class="badge neutral">未着手</span> DB再構築は完了（7月上旬リリース済み）。全体設計を固めてからまとめて実装（6/12合意・二度手間回避）</td></tr>
+          <tr class="hl"><td class="label">1: 方針確定・設計</td><td>決済サービス最終決定（#20）/ 弁護士回答 / キャンセルポリシー確定（#28）/ 詳細設計</td><td>調査（#20・#25）は<span class="badge good">完了</span> → <strong>6月19日定例でStripeに決定</strong>（実装は#35）。キャンセルポリシー（#28）は設計中・弁護士回答は待ちのまま</td></tr>
+          <tr><td class="label">2: 実装</td><td>予約時決済・返金・延長 / オプション決済・管理画面・（デポジット）</td><td><span class="badge neutral">未着手</span> DB再構築は完了（7月上旬リリース済み）。全体設計を固めてからまとめて実装（6月12日合意・二度手間回避）</td></tr>
           <tr><td class="label">3: 切替</td><td>E2E検証 / カード再登録案内（88人） / 本番切替 / Pay.jpテナント廃止 / 振込運用開始</td><td><span class="badge neutral">未着手</span> Phase 2の後</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>旧計画の日付（5/8決定・5/11実装開始）は、DB再構築優先への方針変更（5月）により失効。決済サービスは<strong>6/19にStripeへ決定済み</strong>。実装スケジュールは<strong>キャンセルポリシー確定後の詳細見積で引き直す</strong>（payment-flow.html参照）。</div></div>
+    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>旧計画の日付（5/8決定・5/11実装開始）は、DB再構築優先への方針変更（5月）により失効。決済サービスは<strong>6月19日にStripeへ決定済み</strong>。実装スケジュールは<strong>キャンセルポリシー確定後の詳細見積で引き直す</strong>（payment-flow.html参照）。</div></div>
     <p style="font-size:12px;color:var(--sub)">出典: Pay.jp料金プラン / Pay.jpオーソリ仕様（authcapture）/ 海外カード制限告知（2026-03-03）/ Pay.jp 3DSガイドライン / Stripe料金 / Stripe Place a hold — 詳細URLは正本md（payjp-vs-stripe-comparison.md）の参考資料欄を参照</p>
   </div>
 
@@ -396,9 +396,9 @@
     <h2>この資料のその後 — 決定までの流れ</h2>
     <div class="r-flow">
       <span class="r-chip">再調査（#20・#25）完了</span><span class="r-arr">→</span>
-      <span class="r-chip">6/19 Stripeに決定（実装#35）</span><span class="r-arr">→</span>
-      <span class="r-chip">6/30 デポジットはスコープ外で確定</span><span class="r-arr">→</span>
-      <span class="r-chip hot">7/3 当日決済フローに決定</span>
+      <span class="r-chip">6月19日 Stripeに決定（実装#35）</span><span class="r-arr">→</span>
+      <span class="r-chip">6月30日 デポジットはスコープ外で確定</span><span class="r-arr">→</span>
+      <span class="r-chip hot">7月3日 当日決済フローに決定</span>
     </div>
     <p>決済フローの最新版は payment-flow.html、領収書・インボイスの調査は receipt-invoice.html を参照。実装（#35）の詳細見積はキャンセルポリシー（#28）の確定後。</p>
   </div>

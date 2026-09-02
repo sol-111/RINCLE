@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UI/UX リファレンス — 参考サービス集</title>
+<title>UI / UX リファレンス — 参考サービス集</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -189,6 +189,8 @@
   .rincle-vision{grid-template-columns:1fr;justify-items:center}
   .feature-card{padding:24px 20px}
 }
+/* 画面UIの見本カード（浮かぶUIの描写なので影を持つ） */
+.ui-float{box-shadow:0 2px 8px rgba(38,34,30,.1)}
 </style>
 </head>
 <body>
@@ -216,11 +218,11 @@
     <div class="hero-top">
       <div class="hero-brand">
         <img class="hero-logo" src="../../assets/rincle-favicon.png" alt="RINCLE">
-        <span class="hero-kicker">戦略 — UI/UXリファレンス</span>
+        <span class="hero-kicker">戦略 — UI / UXリファレンス</span>
       </div>
       <span class="hero-no">STRATEGY</span>
     </div>
-    <h1>UI/UX リファレンス</h1>
+    <h1>UI / UX リファレンス</h1>
     <p class="lead">RINCLE 開発のための参考サービス集 — 各社の「学ぶべきUIパターン」をモックで体感できます。</p>
     <div class="hero-meta">最終更新: 2026-06-11（予約体験ディープダイブ調査をマージ）</div>
   </div>
@@ -268,7 +270,7 @@
         <div class="mockup">
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">UIイメージ: 予約フローのプログレスバー</div>
-          <div style="background:var(--surface); border-radius:10px; padding:16px 14px; box-shadow:0 2px 8px rgba(38,34,30,.1);">
+          <div class="ui-float" style="background:var(--surface); border-radius:10px; padding:16px 14px;">
             <div class="ui-steps">
               <div class="st done">&#10003;</div><div class="st-line done"></div>
               <div class="st done">&#10003;</div><div class="st-line done"></div>
@@ -320,7 +322,7 @@
           <div class="ui-searchbar" style="font-size:.72rem;">
             <div class="sb-field"><small>国</small>日本</div>
             <div class="sb-field"><small>都市</small>神戸</div>
-            <div class="sb-field"><small>日時</small>6/20〜21</div>
+            <div class="sb-field"><small>日時</small>6月20日〜21</div>
             <div class="sb-field"><small>タイプ</small>ロード</div>
             <div class="sb-btn">検索</div>
           </div>
@@ -351,7 +353,7 @@
           </div>
           <span class="starbadge">4.0 <small>/5</small></span>
         </div>
-        <p class="card-sub">「CSR + 静的SEOページ別建て」の生きた先行例 — 欧州中心のC2C/B2C自転車レンタル（8万台以上・1,000ロケーション以上）</p>
+        <p class="card-sub">「CSR + 静的SEOページ別建て」の生きた先行例 — 欧州中心のC2C / B2C自転車レンタル（8万台以上・1,000ロケーション以上）</p>
         <a class="card-url" href="https://www.listnride.com/" target="_blank" rel="noopener">https://www.listnride.com/</a>
 
         <div class="mockup">
@@ -367,7 +369,7 @@
               <div class="ba-label good">&#10003; RINCLEは「全車プロショップ整備済み」<br>を信頼指標の筆頭に</div>
             </div>
           </div>
-          <div style="background:var(--surface); border-radius:8px; padding:8px 12px; margin-top:10px; box-shadow:0 2px 8px rgba(38,34,30,.1); font-size:.72rem; color:var(--text);">
+          <div class="ui-float" style="background:var(--surface); border-radius:8px; padding:8px 12px; margin-top:10px; font-size:.72rem; color:var(--text);">
             <b style="color:var(--ink);">静的SEOページの実例:</b> <code>/mallorca/road</code> のような「都市×車種」LPを大量生成し、重いCSR本体とは別にインデックスさせて検索流入を確保
           </div>
         </div>
@@ -557,7 +559,7 @@
         <div class="mockup">
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">UIイメージ: QRバウチャー</div>
-          <div style="display:flex; gap:12px; align-items:center; background:var(--surface); border-radius:10px; padding:12px 14px; box-shadow:0 2px 8px rgba(38,34,30,.1);">
+          <div class="ui-float" style="display:flex; gap:12px; align-items:center; background:var(--surface); border-radius:10px; padding:12px 14px;">
             <div style="width:54px; height:54px; min-width:54px; border-radius:8px; background:
               repeating-linear-gradient(0deg, var(--ink) 0 4px, #fff 4px 8px),
               repeating-linear-gradient(90deg, var(--ink) 0 4px, #fff 4px 8px); background-blend-mode:screen; border:4px solid #fff; outline:1px solid var(--line);"></div>
@@ -592,7 +594,7 @@
         <div class="mockup">
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">UIイメージ: 閲覧履歴の再訪導線</div>
-          <div style="background:var(--surface); border-radius:10px; padding:12px 14px; box-shadow:0 2px 8px rgba(38,34,30,.1);">
+          <div class="ui-float" style="background:var(--surface); border-radius:10px; padding:12px 14px;">
             <div style="font-size:.72rem; font-weight:700; color:var(--sub); margin-bottom:8px;">&#128336; 最近見たバイク</div>
             <div style="display:flex; gap:8px;">
               <div style="flex:1; font-size:.62rem; text-align:center; color:var(--sub);">
@@ -644,7 +646,7 @@
               <div class="ba-label good">&#10003; ガイドライン準拠の撮影</div>
             </div>
           </div>
-          <p style="font-size:.72rem; color:var(--sub); margin-top:8px;">パートナー店舗（2026-08-20実測で56店）の写真品質がバラバラだと一覧の見栄えが崩れる → 撮影ガイドライン/テンプレートをショップに配布</p>
+          <p style="font-size:.72rem; color:var(--sub); margin-top:8px;">パートナー店舗（2026-08-20実測で56店）の写真品質がバラバラだと一覧の見栄えが崩れる → 撮影ガイドライン / テンプレートをショップに配布</p>
         </div>
 
         <div class="learn-points">
@@ -781,7 +783,7 @@
         <div class="mockup">
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">UIイメージ: 代表者1人で仮押さえ</div>
-          <div style="background:var(--surface); border-radius:10px; padding:12px 14px; box-shadow:0 2px 8px rgba(38,34,30,.1); font-size:.75rem; color:var(--text);">
+          <div class="ui-float" style="background:var(--surface); border-radius:10px; padding:12px 14px; font-size:.75rem; color:var(--text);">
             <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--line-soft);">
               <span>代表者</span><span style="font-weight:700; color:var(--ink);">山田 太郎</span>
             </div>
@@ -796,7 +798,7 @@
           <div class="lp-head">学ぶべきポイント</div>
           <ul class="notes">
             <li><b>「同伴者未定でも予約可」</b>→ 放棄理由21%「同行者への確認が必要」への対策。グループライド需要に直結</li>
-            <li>楽天IDで入力スキップ → RINCLEではLINE/Googleログインが代替（入力スキップ + 通知チャネル獲得）</li>
+            <li>楽天IDで入力スキップ → RINCLEではLINE / Googleログインが代替（入力スキップ + 通知チャネル獲得）</li>
             <li>カレンダーで時間帯ごとの空き枠と料金を同時表示。「初心者歓迎」等のタグでセグメント</li>
           </ul>
         </div>
@@ -817,7 +819,7 @@
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">UIイメージ: 日時 + 場所の2要素 → コミコミ総額で比較</div>
           <div class="ui-searchbar" style="font-size:.74rem;">
-            <div class="sb-field"><small>日時</small>6/20 10:00</div>
+            <div class="sb-field"><small>日時</small>6月20日 10:00</div>
             <div class="sb-field"><small>場所</small>三ノ宮駅</div>
             <div class="sb-btn">検索</div>
           </div>
@@ -855,7 +857,7 @@
     <div class="stat-grid">
       <div class="stat-card">
         <div class="stat-num">8項目<small>以下</small></div>
-        <div class="stat-label">フォーム項目数の上限基準。<b>9項目以上でCVRは約1/4に低下</b>（1項目18.2% → 9項目以上4.2%）。ECチェックアウトも実際に必要なのは8項目</div>
+        <div class="stat-label">フォーム項目数の上限基準。<b>9項目以上でCVRは約4分の1に低下</b>（1項目18.2% → 9項目以上4.2%）。ECチェックアウトも実際に必要なのは8項目</div>
         <div class="stat-src">出典: Baymard / NeilPatel</div>
       </div>
       <div class="stat-card">
@@ -888,14 +890,14 @@
         <div class="mockup">
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">RINCLEの現実解: 3分割（本人確認・免責同意が必要なため完全ゲストは不可）</div>
-          <div style="background:var(--surface); border-radius:10px; padding:16px 14px; box-shadow:0 2px 8px rgba(38,34,30,.1);">
+          <div class="ui-float" style="background:var(--surface); border-radius:10px; padding:16px 14px;">
             <div class="ui-steps">
               <div class="st now">1</div><div class="st-line"></div>
               <div class="st">2</div><div class="st-line"></div>
               <div class="st">3</div>
             </div>
             <div class="ui-steps-labels">
-              <span><b style="color:var(--accent-deep);">予約時は最小限</b><br>メール+氏名+電話<br>（+身長/サイズ）</span><span>来店前の<br>事前チェックイン<br>に後送り</span><span>完了画面で<br>会員化を提案<br>「パスワード設定だけ」</span>
+              <span><b style="color:var(--accent-deep);">予約時は最小限</b><br>メール+氏名+電話<br>（+身長 / サイズ）</span><span>来店前の<br>事前チェックイン<br>に後送り</span><span>完了画面で<br>会員化を提案<br>「パスワード設定だけ」</span>
             </div>
           </div>
         </div>
@@ -921,7 +923,7 @@
         <div class="mockup">
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">回収メールの定石: 2通構成</div>
-          <div style="background:var(--surface); border-radius:10px; padding:12px 14px; box-shadow:0 2px 8px rgba(38,34,30,.1); font-size:.76rem; color:var(--text);">
+          <div class="ui-float" style="background:var(--surface); border-radius:10px; padding:12px 14px; font-size:.76rem; color:var(--text);">
             <div style="display:flex; gap:10px; align-items:flex-start; padding:6px 0; border-bottom:1px solid var(--line-soft);">
               <span class="b b-score">1通目</span>
               <span><b>放棄1時間以内</b> — 予約内容の保存リンク + 空き残数</span>
@@ -979,7 +981,7 @@
           <div class="st done">&#10003;</div>
         </div>
         <div class="ui-steps-labels" style="font-size:.74rem;">
-          <span><b style="color:var(--ink);">① 返却時</b><br>店頭QR/タブレットで<br>その場依頼<br><small>（記憶・感情のピーク）</small></span>
+          <span><b style="color:var(--ink);">① 返却時</b><br>店頭QR / タブレットで<br>その場依頼<br><small>（記憶・感情のピーク）</small></span>
           <span><b style="color:var(--ink);">② 翌朝メール</b><br>短文 + 投稿ボタン1つ</span>
           <span><b style="color:var(--ink);">③ 5〜7日後</b><br>リマインドを1回だけ</span>
         </div>
@@ -1008,7 +1010,7 @@
             <span class="marker" style="position:absolute; top:-7px; left:-4px; z-index:2;">1</span>
             <div class="ui-searchbar">
               <div class="sb-field"><small>エリア</small>神戸</div>
-              <div class="sb-field"><small>日付</small>6/20(土)</div>
+              <div class="sb-field"><small>日付</small>6月20日（土）</div>
               <div class="sb-field"><small>車種</small>ロード</div>
               <div class="sb-btn">検索</div>
             </div>
@@ -1030,7 +1032,7 @@
               <div class="ui-body">
                 <div class="ui-row">
                   <span class="ui-title">Specialized Allez</span>
-                  <span class="b b-score">&#9733; 4.9 (12)</span>
+                  <span class="b b-score">&#9733; 4.9 （12）</span>
                 </div>
                 <div class="ui-meta">アルミ / Sora・スペシャライズド神戸・駅徒歩3分</div>
                 <div class="ui-row">
@@ -1048,7 +1050,7 @@
               <div class="ui-body">
                 <div class="ui-row">
                   <span class="ui-title">S-Works Tarmac SL8</span>
-                  <span class="b b-score">&#9733; 5.0 (8)</span>
+                  <span class="b b-score">&#9733; 5.0 （8）</span>
                 </div>
                 <div class="ui-meta">カーボン / Ultegra・スペシャライズド神戸</div>
                 <div class="ui-row">
@@ -1085,7 +1087,7 @@
         <h3>この1画面に参考各社のエッセンスが入っている</h3>
 
         <div class="vision-note"><span class="vn-num">1</span><div><b>エリア + 日付 + 車種の3要素検索</b> — Honda GO / たびらい<br><small>競合は全社「横断検索」ができない。これだけで差別化になる</small></div></div>
-        <div class="vision-note"><span class="vn-num">2</span><div><b>シーン別カテゴリ・初心者導線</b> — アソビュー / Airbnb<br><small>「はじめての方」タブで専門用語を出さない表示に切替（初心者/経験者モード）</small></div></div>
+        <div class="vision-note"><span class="vn-num">2</span><div><b>シーン別カテゴリ・初心者導線</b> — アソビュー / Airbnb<br><small>「はじめての方」タブで専門用語を出さない表示に切替（初心者 / 経験者モード）</small></div></div>
         <div class="vision-note"><span class="vn-num">3</span><div><b>写真ファースト + コミコミ総額 + 無料キャンセル</b> — Airbnb / たびらい / 楽天トラベル / Booking.com<br><small>最大の離脱点は「総額が表示された瞬間」→ コミコミ総額を検索結果カードまで前倒しして先回り解消</small></div></div>
         <div class="vision-note"><span class="vn-num">4</span><div><b>「残り1台」のスカーシティ表示</b> — Booking.com<br><small>リアルタイム在庫があるRINCLEだから出せる表示。「後で予約しよう」を防ぐ</small></div></div>
         <div class="vision-note"><span class="vn-num">5</span><div><b>おすすめ診断への導線</b> — アソビュー<br><small>「何を借りればいいか分からない」初心者の離脱を防ぐ。競合ゼロの機能</small></div></div>
@@ -1099,16 +1101,16 @@
               <tr><th></th><th>Specialized Allez</th><th>TREK Domane AL2</th></tr>
             </thead>
             <tbody>
-              <tr><td>料金/日</td><td>¥6,000</td><td class="win">¥5,500</td></tr>
-              <tr><td>フレーム</td><td>アルミ (E5)</td><td>アルミ (Alpha)</td></tr>
+              <tr><td>料金 / 日</td><td>¥6,000</td><td class="win">¥5,500</td></tr>
+              <tr><td>フレーム</td><td>アルミ （E5）</td><td>アルミ （Alpha）</td></tr>
               <tr><td>コンポ</td><td class="win">Sora 2x9</td><td>Claris 2x8</td></tr>
               <tr><td>重量</td><td class="win">9.2kg</td><td>9.8kg</td></tr>
-              <tr><td>レビュー</td><td class="win">&#9733;4.9 (12件)</td><td>&#9733;4.7 (8件)</td></tr>
+              <tr><td>レビュー</td><td class="win">&#9733;4.9 （12件）</td><td>&#9733;4.7 （8件）</td></tr>
               <tr><td>空き</td><td>&#128994; 3台</td><td>&#128994; 5台</td></tr>
               <tr><td></td><td><div class="cmp-btn">予約する</div></td><td><div class="cmp-btn">予約する</div></td></tr>
             </tbody>
           </table>
-          <div class="compare-hint">走りの軽さ重視なら「Allez」／ 価格重視なら「Domane」（¥500/日 安い）</div>
+          <div class="compare-hint">走りの軽さ重視なら「Allez」/ 価格重視なら「Domane」（¥500 / 日 安い）</div>
         </div>
 
         <p class="disclaimer">※ 画面・数値はすべてイメージです。レビュー件数・評価は機能実装後に蓄積される将来の想定（現状はレビュー0件のため、ローンチ時は「全車プロショップ整備済み・保険込み総額・予約車種保証」等の信頼指標で代替します）。</p>
@@ -1157,7 +1159,7 @@
           <tr>
             <td>地図検索</td>
             <td><span class="b b-info">&#9675; 可能</span></td>
-            <td>Google Maps/Mapboxプラグイン。車両単位でなく店舗単位ピンに限定</td>
+            <td>Google Maps / Mapboxプラグイン。車両単位でなく店舗単位ピンに限定</td>
           </tr>
           <tr>
             <td>レビュー（実利用者のみ投稿）</td>
@@ -1264,7 +1266,7 @@
           <tr>
             <td>予約フロー</td>
             <td>Honda GO / Klook</td>
-            <td>5ステップ以内・プログレスバー明示。<b>合計8項目以下</b>（9項目以上でCVR約1/4）</td>
+            <td>5ステップ以内・プログレスバー明示。<b>合計8項目以下</b>（9項目以上でCVR約4分の1）</td>
             <td>
               <a href="https://hondago-bikerental.jp/beginner/reserve" target="_blank" rel="noopener">Honda GO 予約ガイド</a><br>
               <a href="https://www.klook.com/ja/blog/whatis-klook-howto-klook/" target="_blank" rel="noopener">Klook 使い方</a>
@@ -1298,7 +1300,7 @@
           <tr>
             <td>放棄回収メール</td>
             <td>定量ベンチマーク参照</td>
-            <td>放棄1時間以内+翌朝の2通構成。お気に入り/条件保存が前提インフラ</td>
+            <td>放棄1時間以内+翌朝の2通構成。お気に入り / 条件保存が前提インフラ</td>
             <td>
               <a href="https://econsultancy.com/why-do-people-abandon-online-travel-bookings/" target="_blank" rel="noopener">Econsultancy</a><br>
               <a href="https://diggintravel.com/shopping-cart-abandonment-emails-travel/" target="_blank" rel="noopener">diggintravel</a>
@@ -1332,7 +1334,7 @@
             </td>
           </tr>
           <tr>
-            <td>初心者/経験者モード</td>
+            <td>初心者 / 経験者モード</td>
             <td>Airbnb</td>
             <td>感情的カテゴリ（初心者向け）vs スペック表示（経験者向け）</td>
             <td>
@@ -1420,7 +1422,7 @@
 
 </div>
 
-<footer>RINCLE UI/UX Reference Collection — Internal Use Only<br>正本: documents/4_growth/01_strategy/ui-ux-reference-catalog.md（md更新時はこのHTMLも同期すること）</footer>
+<footer>RINCLE UI / UX Reference Collection — Internal Use Only<br>正本: documents/4_growth/01_strategy/ui-ux-reference-catalog.md（md更新時はこのHTMLも同期すること）</footer>
 
 <script>
   var tabBtns = document.querySelectorAll('.tab-btn');

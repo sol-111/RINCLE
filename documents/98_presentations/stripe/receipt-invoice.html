@@ -93,7 +93,7 @@
       <span class="hero-no">STRIPE</span>
     </div>
     <h1>領収書・インボイスの扱い（Stripe集約モデル）</h1>
-    <p class="lead">7/3定例の宿題への回答資料。RINCLEを「PEDALSTANDARDの単一Stripeアカウントに全決済を集約するモデル」に載せ替える前提で、Stripe領収書メールの発行元・インボイス制度の当てはめ・段階対応を整理しました。<strong>本資料は制度・技術の調査であり、最終判断は税理士・弁護士の確認が必要です。</strong></p>
+    <p class="lead">7月3日定例の宿題への回答資料。RINCLEを「PEDALSTANDARDの単一Stripeアカウントに全決済を集約するモデル」に載せ替える前提で、Stripe領収書メールの発行元・インボイス制度の当てはめ・段階対応を整理しました。<strong>本資料は制度・技術の調査であり、最終判断は税理士・弁護士の確認が必要です。</strong></p>
   </div>
 </div>
 
@@ -113,7 +113,7 @@
 
   <!-- 0 -->
   <div class="section" id="s0">
-    <div class="section-header"><div class="section-num">00</div><div class="sh-body"><h2>結論サマリー（3つの質問への回答）</h2><div class="sh-sub">7/3にいただいた3つの質問に、まず3行で答えます</div></div></div>
+    <div class="section-header"><div class="section-num">00</div><div class="sh-body"><h2>結論サマリー（3つの質問への回答）</h2><div class="sh-sub">7月3日にいただいた3つの質問に、まず3行で答えます</div></div></div>
 
     <div class="table-wrap">
       <table>
@@ -141,9 +141,9 @@
   <div class="section" id="s1">
     <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>お金の流れの整理 — 集約モデルでは支払先はPEDALSTANDARD</h2><div class="sh-sub">まず「誰から誰へお金が動くのか」を整理します。ここがすべての前提になります</div></div></div>
 
-    <div class="flow-diagram">ユーザー ──(カード決済・全額)──▶ <span class="em">PEDALSTANDARD の Stripeアカウント</span>
+    <div class="flow-diagram">ユーザー ──（カード決済・全額）──▶ <span class="em">PEDALSTANDARD の Stripeアカウント</span>
                                         │
-                                        └─(月次・手数料15%＋カード手数料を差引)─▶ <span class="em">販売店</span></div>
+                                        └─（月次・手数料15%＋カード手数料を差引）─▶ <span class="em">販売店</span></div>
 
     <div class="card">
       <ul>
@@ -286,7 +286,7 @@
       </div>
     </div>
 
-    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-check"/></svg><div>この二段構えは、7/3決定の決済フロー（「領収書は全決済で自動送信」）とも整合します。まず自動領収書で走り出し、需要を見てインボイス対応を足す、という順序です。</div></div>
+    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-check"/></svg><div>この二段構えは、7月3日決定の決済フロー（「領収書は全決済で自動送信」）とも整合します。まず自動領収書で走り出し、需要を見てインボイス対応を足す、という順序です。</div></div>
   </div>
 
   <!-- 6 -->
@@ -307,7 +307,7 @@
       <ul class="checklist">
         <li>レンタサイクルの店頭取引が<strong>適格簡易請求書（宛名不要）の対象業種</strong>にあたるか。</li>
         <li>集約モデルでの<strong>媒介者交付特例の適用可否</strong>と、精算書（写し交付の代替）の記載要件。</li>
-        <li>適格請求書の<strong>6つの必須記載事項</strong>の最終確認と、Stripeレシート/Invoicingでの充足範囲。</li>
+        <li>適格請求書の<strong>6つの必須記載事項</strong>の最終確認と、Stripeレシート / Invoicingでの充足範囲。</li>
       </ul>
     </div>
 
@@ -332,7 +332,7 @@
     <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>出典一覧（確認日: 2026-07-03）</h2></div></div>
     <p class="status-legend">
       ステータス凡例:
-      <span class="badge good">一次確認済み</span> ＝本調査でWebFetch/PDFにより一次ソースを直接確認 /
+      <span class="badge good">一次確認済み</span> ＝本調査でWebFetch / PDFにより一次ソースを直接確認 /
       <span class="badge now">検証済み</span> ＝deep-research で3票検証済み /
       <span class="badge warn">要再確認</span> ＝一次ソースの引用はあるがレート制限等で本調査では未確認
     </p>
@@ -362,7 +362,7 @@
           </tr>
           <tr>
             <td>4</td>
-            <td>税の明細が載るのはサブスク/Invoicing経由の領収書（通常決済レシートに登録番号等が載るとの記載なし）</td>
+            <td>税の明細が載るのはサブスク / Invoicing経由の領収書（通常決済レシートに登録番号等が載るとの記載なし）</td>
             <td>Stripe Docs: Receipts<br><code>https://docs.stripe.com/receipts</code></td>
             <td><span class="badge now">検証済み</span></td>
           </tr>
@@ -392,7 +392,7 @@
           </tr>
           <tr>
             <td>9</td>
-            <td>媒介者交付特例の2要件（双方が適格請求書発行事業者・取引前の登録通知）。集金/請求書発行事務のみの委託にも適用可。受託者に写し保存・交付義務</td>
+            <td>媒介者交付特例の2要件（双方が適格請求書発行事業者・取引前の登録通知）。集金 / 請求書発行事務のみの委託にも適用可。受託者に写し保存・交付義務</td>
             <td>国税庁 問48<br><code>https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/pdf/qa/48.pdf</code><br>問49<br><code>https://www.nta.go.jp/taxes/shiraberu/zeimokubetsu/shohi/keigenzeiritsu/pdf/qa/49.pdf</code><br>（根拠: 消令70の12①）</td>
             <td><span class="badge good">一次確認済み</span></td>
           </tr>
@@ -418,7 +418,7 @@
 
 <footer>
   &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です<br>
-  関連: payment-flow.html（7/3決定の決済フロー） ／ payjp-vs-stripe.html（決済基盤の方針）
+  関連: payment-flow.html（7月3日決定の決済フロー） / payjp-vs-stripe.html（決済基盤の方針）
 </footer>
 
 <script>

@@ -1,7 +1,7 @@
 /* HTML資料デザインシステム CSSテンプレート — 誌面エディトリアル版（2026-08-21全面改定）
-   正本の見た目: デザインシステムキャンバス（RINCLE デザインシステム）
+   見た目の正本: 同フォルダの gallery.html（全部品の見本。本CSSをlink参照しており自動で追随）
    ※Webフォント必須: <head>にShippori Mincho+Noto Sans JPのlinkを入れる（snippets.html冒頭参照）
-   ※カラートークンはRINCLE値。案件ごとに --accent 系をブランドから導出して差し替える
+   ※カラートークンは例としてRINCLE値。案件ごとに --accent 系をブランドから導出して差し替える
      （原色をそのまま使わず、彩度を落とした「焦がしトーン」にするのがこの様式の鍵。RINCLE: #F95320 → #B8532F） */
 
 :root{
@@ -145,6 +145,14 @@ tbody tr:hover td{background:var(--accent-faint)}
 td.label{font-family:var(--serif);font-size:17px;color:var(--ink);white-space:nowrap}
 td.num{font-family:var(--serif);font-size:15px;color:var(--accent);text-align:right;white-space:nowrap}
 th.num{text-align:right} /* 数値列は見出しも右揃えにして値と縦を揃える */
+td.label.wrap{white-space:normal;font-size:15px;line-height:1.8} /* 長い項目名は折り返す（既定のtd.labelはnowrap） */
+td.label.ind{padding-left:22px;font-size:14.5px;color:var(--text)} /* 直前の行の変種をぶら下げる（「うち延長料金」「同（60分）」等）。
+   字下げは全角空白を項目名に直書きせず、必ずこのクラスで持つ — 空白を文字で入れると検索・コピーに混ざり、
+   折り返した時に2行目の字下げが消える（2026-09-01にSEOレポートの全角空白方式から統一） */
+td .td-sub{display:block;font-family:'Noto Sans JP',sans-serif;font-size:11.5px;font-weight:400;color:var(--sub);line-height:1.8;white-space:normal;margin-top:2px} /* 項目名の下の1行補足。例示や条件を注記に逃がさず行内で完結させる（2行を超えるなら.termへ） */
+th.std,td.std{background:var(--accent-faint)} /* 選択肢が横に並ぶ表の推奨・標準列を薄い面で示す。面を着せるのは1列だけ */
+td.num.cnt{color:var(--ink)} /* 金額でない数（回数等）は墨 — 差し色は「答えの金額」の列だけに残す */
+td.num.calc{color:var(--sub);font-size:13px} /* 計算の途中経過（内訳の式）は脇役のグレー */
 /* ---------- 前月比較表（.table-mom: 当月=主役の墨・前月=脇役のグレー・前月比=意味色・グループ見出し行） ---------- */
 .table-mom td{padding:12px 16px 12px 0}
 .table-mom td.label{font-size:15px}
@@ -222,6 +230,7 @@ ol.steps + ul.notes{margin-top:26px}
 .stat .d{font-size:12px;font-family:var(--serif)}
 .stat .d.up{color:var(--ok)}
 .stat .d.down{color:var(--danger)}
+.stat .n.md{font-size:30px} /* 単価・内訳など「答えでない数字」の中サイズ。月額と同じ特大にすると固定料金と誤読される（2026-09-01 料金提案の教訓） */
 
 /* ---------- 横棒ペア（当月×前月の比較チャート。当月=焦がし/前月=下地） ---------- */
 .bars{display:flex;flex-direction:column;gap:16px;margin:24px 0}
@@ -252,6 +261,7 @@ ol.steps + ul.notes{margin-top:26px}
 .lane-label.sys{color:var(--accent)} .lane-label.sys i{background:var(--accent)}
 .lane-label.money{color:var(--gold-text)} .lane-label.money i{background:var(--gold)}
 .lane-label.ext{color:var(--danger)} .lane-label.ext i{background:var(--danger)}
+.lane-label.other{color:var(--ink)} .lane-label.other i{background:var(--ink)}
 .lane-cell{padding:10px;border-top:1px solid var(--line-soft);border-left:1px solid #F0EBE4;font-size:11.5px;line-height:1.7;background:var(--surface);display:flex;flex-direction:column;gap:4px}
 .lane-cell.ex{background:#FBF3F4;border-left:2px dashed #E0AAB4}
 .lane-cell.empty{color:#C9BFB4;text-align:center;justify-content:center}
@@ -273,6 +283,7 @@ ol.steps + ul.notes{margin-top:26px}
 .swim-label.admin{color:var(--accent)} .swim-label.admin i{background:var(--accent)}
 .swim-label.gold{color:var(--gold-text)} .swim-label.gold i{background:var(--gold)}
 .swim-label.ext{color:var(--danger)} .swim-label.ext i{background:var(--danger)}
+.swim-label.other{color:var(--ink)} .swim-label.other i{background:var(--ink)}
 .swim-track{display:flex;align-items:center;gap:0;flex:1;flex-wrap:wrap;row-gap:10px}
 /* ノードはニュートラルなピル型チップ（役割は行ラベルが示すので、ノードには色を付けない） */
 .swim-node{display:inline-flex;align-items:center;padding:8px 16px;border-radius:999px;font-size:11.5px;font-weight:500;white-space:nowrap;background:var(--surface);border:1px solid var(--line);color:var(--ink);line-height:1.5}
@@ -298,6 +309,7 @@ ol.steps + ul.notes{margin-top:26px}
 .pflow-dot.admin,.pflow-dot.system,.pflow-dot.brand{color:var(--accent);border-color:var(--accent)}
 .pflow-dot.notify{color:var(--gold-text);border-color:var(--gold)}
 .pflow-dot.external{color:var(--danger);border-color:var(--danger)}
+.pflow-dot.other{color:var(--ink);border-color:var(--ink)}
 .pflow-body{flex:1;padding-top:3px}
 .pflow-actor{font-size:10.5px;font-weight:700;letter-spacing:.16em;margin-bottom:2px}
 .pflow-actor.user{color:var(--info)}
@@ -305,6 +317,7 @@ ol.steps + ul.notes{margin-top:26px}
 .pflow-actor.admin,.pflow-actor.system{color:var(--accent)}
 .pflow-actor.notify{color:var(--gold-text)}
 .pflow-actor.external{color:var(--danger)}
+.pflow-actor.other{color:var(--ink)}
 .pflow-text{font-size:14px;color:var(--text);line-height:1.9}
 .pflow-note{font-size:12.5px;color:var(--sub);margin-top:4px;padding-left:12px;border-left:1px solid var(--line-soft);line-height:1.9}
 
