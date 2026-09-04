@@ -19,7 +19,7 @@
   --ok:#3E6B4F;   --ok-soft:#EDF4EE;   --ok-line:#C6DCCB;   --ok-text:#2C5138;
   --danger:#A8323E; --danger-soft:#F9EDEE; --danger-line:#E8C9CD; --danger-text:#7E2630;
   --info:#3B5B84;  --info-soft:#EEF2F7;  --info-line:#CBD7E5;  --info-text:#2E4869;
-  --gold:#C99A2E;  --gold-text:#8F5A0A;  --gold-soft:#F7EFDF;
+  --gold:#C99A2E;  --gold-text:#8F5A0A;  --gold-soft:#F7EFDF;  --gold-line:#EAD9AE;
   --code-bg:#221B16;
   --serif:'Shippori Mincho',serif;
 }
@@ -81,6 +81,18 @@ a:hover{color:var(--accent-deep)}
 .tab-panel.active{display:block}
 
 .container{max-width:1080px;margin:0 auto;padding:36px 28px 80px}
+/* 章ナビの直後は、ナビの下余白48pxとコンテナの上余白36pxが足し算になって空白が広すぎるため詰める */
+.flow + .container, .flow-tabs + .container{padding-top:0}
+
+/* ---------- 結論は「01章」として置く（2026-09-04改定）
+   そのページの答えは、章の外の箱でなく最初の章そのものにする。
+   章ナビの1番目に「1 結論」、本文の最初の .section（id="conclusion"）の h2 を「結論」にし、
+   薄い大数字01+明朝見出しという章の文法で見せる。
+   専用の箱（旧 aside.conclusion / .conclusion-box）とアラートの流用は廃止した。
+   中身は答えの性格で選ぶ: 数字が答え=.stat-row / 判断を求める資料=table.qa（問い→答え）/
+   一言で足りる=本文1段落。補足（あわせて読む資料・この資料の読み方・進み具合）は
+   その章の中の ul.notes に※で1〜2行だけ添える ---------- */
+table.qa td.label{width:32%} /* 問い→答えの表: 左=問い（td.label.wrapで折り返す）・右=答え（1文目を<strong>で言い切る） */
 
 /* ---------- セクション（薄い大番号+明朝見出し） ---------- */
 .section{margin-bottom:0;padding:56px 0 40px;scroll-margin-top:20px}
@@ -101,12 +113,20 @@ h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);marg
 .kicker{font-size:10.5px;letter-spacing:.16em;color:var(--accent);font-weight:700}
 
 /* ---------- 用語解説 ---------- */
+/* 用語が2〜3個セットの時は.term-rowで横並び（termは中でflex:1） */
+.term-row{display:flex;gap:24px;flex-wrap:wrap}
+.term-row .term{flex:1;min-width:280px}
 .term{border-left:2px solid var(--accent);background:var(--surface);border-top:1px solid var(--line-soft);border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);padding:18px 24px;margin:28px 0;display:flex;flex-direction:column;gap:6px}
 .term .term-name{font-family:var(--serif);font-size:16px;color:var(--ink)}
 .term .term-tag{font-size:11px;color:var(--sub)}
 .term .t-body{font-size:13.5px;line-height:2;color:var(--text)}
 
-/* ---------- アラート（補足=藍/確認=緑/警告=紅） ---------- */
+/* ---------- アラート（色が意味を運ぶ。この3色以外を作らない — 2026-09-04決定）
+   緑 .alert-green  = 結論・決定（ページの答え・決まったこと）
+   藍 .alert-blue   = 読み方・補足（図の読み方ボックスもこれ）
+   紅 .alert-red    = リスク・注意（これから起こりうる悪いこと）
+   琥珀（--gold）のalertは作らない — 琥珀は「お金」の役割色で、意味が二重になる。
+   「課題・やり残し」は ul.notes の※ か .compare-box.bad に置く ---------- */
 .alert{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line-soft);border-left-width:2px;padding:15px 18px;margin:28px 0;font-size:13.5px;line-height:1.9}
 .alert .a-icon{flex-shrink:0;margin-top:4px;width:17px;height:17px}
 .alert-blue{border-left-color:var(--info);color:var(--info-text)}
@@ -128,6 +148,25 @@ h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);marg
 .bad .cb-mark{background:var(--danger)}
 .good .cb-mark{background:var(--ok)}
 .compare-box p{font-size:12.5px;line-height:1.9;color:var(--text)}
+
+/* ---------- 選択肢と採否（.options / .option: 検討した案を横に並べ、採ったものを立たせ、捨てたものを沈める。
+   「決定の記録」の部品で、2択の良し悪しは .compare-box、3案以上の採否はこちら）。
+   3状態: 素=中立 / .chosen=採用（焦がしの枠）/ .dim=不採用（文字と罫線をグレーに落として沈める）。
+   沈めるのに opacity は使わない — 面ごと薄くなって紙の白が濁る（tr.muted と同じ思想）。
+   中身は 記号丸 .num-chip → 明朝の見出し h4 → 1〜2文 → 結論バッジ .badge の順。
+   結論バッジは既存の語彙で表す: 採用=.badge.good / 対抗案=.badge.plain / 不採用=.badge.muted（新しい色を作らない）。
+   記号丸に案ごとの色は付けない — 藍・緑は図解の役割色（ユーザー・店舗）で意味が二重になる。
+   採否は「枠」と「バッジ」の2つが示す。列数は案の数だけ自動で並び、狭い幅では1列に折り返す ---------- */
+.options{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin:28px 0 8px}
+.option{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.option h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);line-height:1.6;margin:0}
+.option p{font-size:12.5px;color:var(--text);line-height:1.9;flex:1;margin:0}
+.option .badge{align-self:flex-start}
+.option.chosen{border-color:var(--accent)}
+.option.dim{border-color:var(--line-soft)}
+.option.dim h4,.option.dim p{color:var(--sub)}
+.option.dim .num-chip{border-color:var(--line);color:var(--sub)}
+
 /* ---------- 小見出し分節（.sub-item: 章の中のテーマを「焦がしキッカー+明朝見出し」の2段で分ける。
    章見出し（section-header）と同じ文法のミニ版。キッカー（.kick）は省略可。
    箱にはしない — 白面カードだと用語解説と紛れ、箱が並んでうるさくなる（2026-08-26決定・案A採用） ---------- */
@@ -145,10 +184,19 @@ tbody tr:hover td{background:var(--accent-faint)}
 td.label{font-family:var(--serif);font-size:17px;color:var(--ink);white-space:nowrap}
 td.num{font-family:var(--serif);font-size:15px;color:var(--accent);text-align:right;white-space:nowrap}
 th.num{text-align:right} /* 数値列は見出しも右揃えにして値と縦を揃える */
+/* 2段ヘッダー（列グループ）: 1行目に th[rowspan]（グループ外の列）と th.th-grp[colspan]（グループ名）、
+   2行目にグループ内の列見出し。グループ名とサブ見出しの間は弱い罫・本文との境は通常どおり墨2px */
+thead th[rowspan]{vertical-align:bottom}
+thead th.th-grp{text-align:center;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:8px}
+thead tr+tr th{padding-top:10px}
+/* 停止中・対象外の行を沈める（例: 動いていない案件の行） */
+tbody tr.muted td{color:var(--sub)}
+tbody tr.muted td.label,tbody tr.muted td.num{color:var(--sub)}
 td.label.wrap{white-space:normal;font-size:15px;line-height:1.8} /* 長い項目名は折り返す（既定のtd.labelはnowrap） */
 td.label.ind{padding-left:22px;font-size:14.5px;color:var(--text)} /* 直前の行の変種をぶら下げる（「うち延長料金」「同（60分）」等）。
    字下げは全角空白を項目名に直書きせず、必ずこのクラスで持つ — 空白を文字で入れると検索・コピーに混ざり、
    折り返した時に2行目の字下げが消える（2026-09-01にSEOレポートの全角空白方式から統一） */
+td .label-sub{font-size:11px;color:var(--sub);margin-left:6px;font-weight:400} /* 主ラベルの後ろに原語・補足を薄く添える（例: 他サイト経由 <span class="label-sub">Referral</span>） */
 td .td-sub{display:block;font-family:'Noto Sans JP',sans-serif;font-size:11.5px;font-weight:400;color:var(--sub);line-height:1.8;white-space:normal;margin-top:2px} /* 項目名の下の1行補足。例示や条件を注記に逃がさず行内で完結させる（2行を超えるなら.termへ） */
 th.std,td.std{background:var(--accent-faint)} /* 選択肢が横に並ぶ表の推奨・標準列を薄い面で示す。面を着せるのは1列だけ */
 td.num.cnt{color:var(--ink)} /* 金額でない数（回数等）は墨 — 差し色は「答えの金額」の列だけに残す */
@@ -174,6 +222,10 @@ td.num.calc{color:var(--sub);font-size:13px} /* 計算の途中経過（内訳�
 .badge.good{background:var(--ok-soft);border:1px solid var(--ok-line);color:var(--ok-text)}
 .badge.bad{background:var(--danger-soft);border:1px solid var(--danger-line);color:var(--danger-text)}
 .badge.plain{border:1px solid var(--line);color:var(--text)}
+.badge.muted{border:1px solid var(--line-soft);color:var(--sub);font-weight:400} /* 効力を失ったもの（旧設計）を沈める */
+/* 変更点バッジの語彙は4語で固定（2026-09-04決定。英字のCHANGED/NEW等は使わない）:
+   「決定済み」=.badge.good（緑）/「弊社提案」=.badge.brand（焦がし）/
+   「変更点」=.badge.brand（焦がし）/「旧設計」=.badge.muted（グレー） */
 
 /* ---------- コード・URL構造図（唯一のダーク面） ---------- */
 code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:3px;padding:1px 7px;font-size:.88em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;color:var(--accent-deep)}
@@ -183,12 +235,50 @@ code{background:#F6EFE9;border:1px solid #E8DCD2;border-radius:3px;padding:1px 7
 .codeblock .hl{color:#F0B08E}
 .codeblock .hl2{color:#9FC5EA}
 
+
+/* ---------- APIメソッドバッジ（.method: APIリファレンスの GET / POST / DELETE / PUT）。
+   等幅フォント・小さめ・白面+役割色の輪郭。緑=取得 / 藍=作成・更新 / 紅=削除 / 琥珀=置き換え。
+   クラスはドット記法で統一する（.method.get。ハイフン記法 .method-get は作らない） ---------- */
+.method{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10.5px;font-weight:700;letter-spacing:.06em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;min-width:52px;text-align:center;background:var(--surface);border:1px solid var(--line);color:var(--text)}
+.method.get{border-color:var(--ok-line);color:var(--ok-text)}
+.method.post{border-color:var(--info-line);color:var(--info-text)}
+.method.delete{border-color:var(--danger-line);color:var(--danger-text)}
+.method.put{border-color:var(--gold-line);color:var(--gold-text)}
+
+/* ---------- 開発者向け詳細（.dev-detail: 非エンジニア向けの本文と、開発者向けの詳細〈コード・API名・内部仕様〉を
+   同じ場所で分ける折りたたみ。<details>/<summary> で組む。summary=紙地・三角マークは焦がしで、開くと90度回る）。
+   中身は .dd-body で包む（上罫+余白）。.dd-body の中の小見出しは h5 — 本文の見出しの階段（4段）には数えない ---------- */
+.dev-detail{margin:18px 0;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.dev-detail summary{padding:11px 16px;font-size:12.5px;font-weight:700;color:var(--ink);background:var(--paper);cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;user-select:none}
+.dev-detail summary::-webkit-details-marker{display:none}
+.dev-detail summary::before{content:"";width:0;height:0;border-left:5px solid var(--accent);border-top:4px solid transparent;border-bottom:4px solid transparent;transition:transform .2s}
+.dev-detail[open] summary::before{transform:rotate(90deg)}
+.dd-body{padding:16px 20px;font-size:13px;color:var(--text);line-height:1.9;border-top:1px solid var(--line)}
+.dd-body > :first-child{margin-top:0}
+.dd-body p{margin:8px 0}
+.dd-body h5{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--ink);margin:20px 0 6px}
+.dd-body h5:first-child{margin-top:0}
+.dd-body table{font-size:13px}
+.dd-body td{padding:10px 14px 10px 0}
+.dd-body .table-wrap{margin:12px 0}
+.dd-body ul{padding-left:20px}
+.dd-body ul li{margin-bottom:4px}
+
 /* ---------- 番号つき手順（丸+縦罫線） ---------- */
 ol.steps{list-style:none;counter-reset:st;font-size:13.5px}
 ol.steps > li{counter-increment:st;position:relative;padding:0 0 30px 48px;line-height:1.9}
 ol.steps > li:last-child{padding-bottom:0}
 ol.steps > li::before{content:counter(st);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:13px;display:flex;align-items:center;justify-content:center}
 ol.steps > li:not(:last-child)::after{content:"";position:absolute;left:14.5px;top:34px;bottom:2px;width:1px;background:var(--line)}
+
+
+/* ---------- 記号丸（.num-chip: 番号や記号〈1・2・A・B〉を丸で示す。明朝の文字・白面・1.5px輪郭。
+   ol.steps > li::before / .pflow-dot と同じ型を、手順やフロー以外の場所（案の記号・ペルソナの記号）で使うための部品。
+   色の変種は .brand（焦がし輪郭）だけ — 藍・緑は図解の役割色（ユーザー・店舗）なので流用しない。
+   既定は墨の輪郭。表のセル内で使う小サイズは .sm（24px） ---------- */
+.num-chip{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1.5px solid var(--ink);color:var(--ink);font-family:var(--serif);font-size:13px;line-height:1;flex-shrink:0}
+.num-chip.brand{border-color:var(--accent);color:var(--accent)}
+.num-chip.sm{width:24px;height:24px;font-size:12px;margin-right:6px;vertical-align:-6px}
 
 /* ---------- 注意リスト（※印） ---------- */
 ul.notes{list-style:none;font-size:13px;color:var(--text)}
@@ -216,10 +306,46 @@ ol.steps + ul.notes{margin-top:26px}
 .chart .cl i{width:10px;height:10px;border-radius:2px;display:inline-block;flex-shrink:0}
 .chart .cl strong{margin-left:auto;font-family:var(--serif);font-weight:500}
 .chart .src{font-size:10.5px;color:var(--sub);padding-top:8px}
+/* 半分幅の置き場（2カラムの片側等）用: リングを小さく・凡例は折り返さず右に */
+.chart.compact{flex-wrap:nowrap;gap:24px}
+.chart.compact svg{width:130px;height:130px}
+.chart.compact .cl{min-width:0;flex:1}
 .hbar{display:grid;grid-template-columns:190px 1fr 56px;align-items:center;gap:14px;margin:8px 0}
 .hbar .track{height:16px;background:#EAE2D6;border-radius:2px}
 .hbar .fill{height:16px;background:var(--accent);border-radius:2px}
 .hbar .val{font-family:var(--serif);font-size:15px;text-align:right}
+.hbar .fill.dim{background:#C9BFB4} /* 主役でない棒を沈める（ヒストグラムで攻めどころだけ焦がしにする等） */
+/* 100%積み上げ構成バー: 1本の帯を構成比で塗り分ける（「全体の中身の内訳」を1行で見せる）。
+   色は s1=焦がし・s2=墨・s3=下地・s4=罫線色 の順に「主役→脇役」で割り当てる（データ色3段+残り）。
+   帯の中に%を書けるのは広いセグメントだけ（狭ければ凡例に逃がす） */
+.stackbar{margin:18px 0}
+.stackbar .sb-title{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;letter-spacing:.08em;color:var(--sub);margin-bottom:6px}
+.stackbar .sb-title .sb-total{font-family:var(--serif);font-size:15px;color:var(--ink);letter-spacing:0}
+.stackbar .sb-track{display:flex;height:24px;border-radius:2px;overflow:hidden}
+.stackbar .sb-seg{min-width:2px;display:flex;align-items:center;justify-content:center;font-size:11px;white-space:nowrap;overflow:hidden}
+.stackbar .sb-seg.s1{background:var(--accent);color:#fff}
+.stackbar .sb-seg.s2{background:var(--ink);color:#fff}
+.stackbar .sb-seg.s3{background:#EAE2D6;color:var(--sub)}
+.stackbar .sb-seg.s4{background:#DCD3C8;color:var(--sub)}
+.sb-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:11.5px;color:var(--sub);margin-top:8px}
+.sb-legend span{display:flex;align-items:center;gap:6px}
+.sb-legend i{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+/* ---------- 地域タイルマップ（.tilemap: 都道府県を正方形タイルで日本列島の形に並べ、色の濃さ=量で塗る）。
+   面の広がりを見せる図。正確な大小比較は読めないので、上位の横棒（.hbar）を右に併置する。
+   47タイルの配置は snippets.html の雛形をコピーする（grid-column/rowで位置指定）。
+   値ラベル（.tv）は上位10県程度だけ・色は6段階（b5=焦がし最濃→b0=下地）。凡例は .map-legend ---------- */
+.tilemap{display:grid;grid-template-columns:repeat(14,42px);grid-auto-rows:42px;gap:4px;justify-content:start}
+.tile{border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1.2}
+.tile .tn{font-size:9.5px;letter-spacing:.02em}
+.tile .tv{font-family:var(--serif);font-size:11px}
+.tile.b0{background:#F0EBE3;color:#B4AA9C}
+.tile.b1{background:#F3DDD1;color:var(--text)}
+.tile.b2{background:#EBC0A9;color:var(--text)}
+.tile.b3{background:#DE9873;color:#fff}
+.tile.b4{background:#CB6F44;color:#fff}
+.tile.b5{background:var(--accent);color:#fff}
+.map-legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--sub);margin-top:14px}
+.map-legend i{width:14px;height:14px;border-radius:3px;display:inline-block;vertical-align:-2px;margin-right:5px}
 .stat{display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--ink);padding-left:24px}
 .stat .n{font-family:var(--serif);font-size:60px;line-height:1;color:var(--ink)}
 .stat .n.hot{color:var(--accent)}
@@ -245,6 +371,14 @@ ol.steps + ul.notes{margin-top:26px}
 .bars .bv small{color:var(--sub);font-family:var(--sans);font-size:10.5px;margin-left:4px}
 .bars-legend{display:flex;gap:22px;font-size:11px;color:var(--sub);margin-top:-6px}
 .bars-legend i{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px;vertical-align:-1px}
+
+/* ---------- 図の外枠 .fig（原則11: 図には主張を書く）
+   図の部品は <figure class="fig" aria-label="この図が言っていること"> で包む。
+   aria-label は見た目の説明でなく「読者に持ち帰ってほしい結論」を1文で。
+   1文で書けない図は置く理由がない — 書く段階で気づくための仕掛け ---------- */
+figure.fig{margin:22px 0 8px}
+figure.fig > :first-child{margin-top:0}
+figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-top:10px}
 
 /* ---------- スイムレーン（横=フェーズ/縦=役割・例外列=紅破線・お金=琥珀） ---------- */
 .lane-wrap{border:1px solid var(--line);border-radius:6px;overflow-x:auto;background:var(--surface);margin:28px 0}
@@ -333,6 +467,15 @@ ol.steps + ul.notes{margin-top:26px}
 .funnel .fl{font-size:12px;color:var(--sub);white-space:nowrap}
 .funnel .fconv{display:flex;align-items:center;gap:8px;padding:2px 0 2px 14px;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--sub)}
 .funnel .fconv::before{content:"↓";color:var(--line)}
+.funnel .fconv span{font-weight:400;color:var(--text)} /* 率に添える「（前月 n%）」等 */
+/* 前月比較: 当月バーの真下に前月の量を淡色の細バーで敷く（濃=当月/淡=前月は.barsと同じ時間の色） */
+.funnel .fghost{height:9px;min-width:2px;background:#EAE2D6;flex-shrink:0}
+.funnel .frow.ghost{margin-top:-2px}
+.funnel .frow.ghost .fl{font-size:12px;color:var(--text)}
+/* ラベル列型（.funnel.labeled）: 段名を左の固定列に出す。段名が長くバーに収まらない資料向け。
+   各frowの先頭に <span class="fname">段名</span> を置く（ゴースト行は空の<span class="fname"></span>で桁を合わせる） */
+.funnel.labeled .fname{flex:0 0 150px;font-size:12.5px;color:var(--text);line-height:1.5;white-space:normal}
+.funnel.labeled .fconv{padding-left:162px}
 
 /* ---------- フェーズ帯（現在だけブランド色） ---------- */
 .phases{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;margin:28px 0}
@@ -365,7 +508,15 @@ ol.steps + ul.notes{margin-top:26px}
 /* ---------- SVGアイコン（線幅1.5・スプライト参照） ---------- */
 .icon{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em}
 
+/* footerに書くのは「正本: <mdパス>」だけ（2026-09-04改定）。
+   「md更新時はこのHTMLも同期すること」等の保守者向け指示は読者に不要なので <!-- --> コメントへ */
 footer{text-align:center;padding:36px 0;color:var(--sub);font-size:12px;border-top:1px solid var(--line);max-width:1080px;margin:0 auto}
+
+/* SPAシェルのiframe内（本文幅が約1020pxになる）でH1が2行に折れるため、H1だけ落とす。
+   見出しの階段4段（52/30/19/16）はここでも壊さない — 落とすのはH1のページ題だけ（2026-09-04追加） */
+@media (max-width:1100px){
+  .hero h1{font-size:44px}
+}
 
 @media (max-width:760px){
   .hero{padding:44px 24px 84px}

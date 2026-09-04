@@ -11,16 +11,9 @@
 <style>
 /* ページ固有CSS — 競合調査レポート（共通部品は ../../assets/design.css を参照） */
 
-/* 市場統計カード（.stat型: 左1px墨罫+明朝数字+日付つき出典） */
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin:28px 0}
+/* 市場統計は共通部品の .stat-row / .stat（2枚だけの並びは .grid2 に入れる） */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0}
 .grid2 .full{grid-column:1/3}
-.stat-card{display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--ink);padding-left:22px}
-.stat-card .st-label{font-size:10.5px;letter-spacing:.08em;font-weight:700;color:var(--sub)}
-.stat-card .st-value{font-family:var(--serif);font-size:26px;line-height:1.5;color:var(--ink)}
-.stat-card .st-value.brand{color:var(--accent)}
-.stat-card .st-body{font-size:12.5px;line-height:1.9;color:var(--text)}
-.stat-card .st-src{font-size:10.5px;color:var(--sub)}
 
 /* 競合カード（白面+1px罫線・角丸4px・影なし。番号は薄い明朝数字を右上に） */
 .comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:28px 0}
@@ -33,8 +26,6 @@
 .comp-card .comp-links{margin-top:auto;padding-top:12px;border-top:1px solid var(--line-soft);display:flex;gap:16px;flex-wrap:wrap}
 .comp-card .comp-links a{font-size:12px;font-weight:700}
 .comp-card.rincle{border-color:var(--accent)}
-.comp-card.threat-high{border-top:3px solid var(--danger)}
-.comp-card.threat-mid{border-top:3px solid var(--gold)}
 
 /* ビジネスモデル図（白面+罫線。役割色は原則11: ユーザー=藍/店舗=緑/システム=焦がし/お金=琥珀） */
 .model-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0}
@@ -68,9 +59,8 @@
 .mini-node{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:8px 14px;text-align:center;font-size:11px;color:var(--text)}
 .mini-node .mn-icon{display:block}
 .mini-node .mn-icon .icon{width:16px;height:16px}
-.mini-node.grey .mn-icon{color:var(--info)}
-.mini-node.amber .mn-icon{color:var(--ok)}
-.mini-node.blue .mn-icon{color:var(--ok)}
+.mini-node.user .mn-icon{color:var(--info)}
+.mini-node.shop .mn-icon{color:var(--ok)}
 .mini-arrow{font-size:14px;color:var(--sub)}
 
 /* 1対1比較カード */
@@ -105,28 +95,18 @@
 .swot-card.o li::before{background:var(--info)}
 .swot-card.t li::before{background:var(--gold)}
 
-/* アクション・ペルソナ（.num-chip=白面+輪郭+明朝数字） */
-.num-chip{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:13px;margin-bottom:10px}
-.num-chip.ink{border-color:var(--ink);color:var(--ink)}
-.num-chip.grey{border-color:var(--sub);color:var(--sub)}
-.num-chip.blue{border-color:var(--info);color:var(--info)}
-.num-chip.violet{border-color:#7C3AED;color:#7C3AED}
-.num-chip.green{border-color:var(--ok);color:var(--ok)}
-.num-chip.amber{border-color:var(--gold);color:var(--gold-text)}
+/* 記号丸は共通部品の .num-chip（カード内では見出しとの間を空ける） */
+.card > .num-chip{margin-bottom:10px}
 .grid2 h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin:0 0 6px;line-height:1.6}
 .grid2 .p-attr{font-size:12px;color:var(--sub);margin-bottom:10px}
 .grid2 p.body{font-size:13px;color:var(--text);line-height:1.9}
-.card.star{border-color:var(--accent)}
-.badge.warn{background:var(--gold-soft);border:1px solid #EAD9AE;color:var(--gold-text)}
-.alert-amber{border-left-color:var(--gold);color:var(--gold-text)}
 
-/* 表の補足（項目名=明朝・RINCLE行のハイライト） */
+/* 表の補足（項目名=明朝。RINCLEの行は面を着せず焦がしの太字で示す） */
 .table-wrap td:first-child{font-family:var(--serif);font-size:15px;color:var(--ink)}
-tr.highlight td{background:var(--accent-faint);font-weight:700}
-tr.highlight td:first-child{color:var(--accent-deep)}
+td.hot{color:var(--accent-deep);font-weight:700}
 
 @media (max-width:860px){
-  .stat-grid,.model-grid,.grid2,.swot-grid,.vs-grid{grid-template-columns:1fr}
+  .stat-row,.model-grid,.grid2,.swot-grid,.vs-grid{grid-template-columns:1fr}
   .comp-grid{grid-template-columns:1fr 1fr}
   .model-grid .full,.grid2 .full{grid-column:auto}
 }
@@ -170,73 +150,85 @@ tr.highlight td:first-child{color:var(--accent-deep)}
     </div>
     <h1>RINCLE 競合調査レポート</h1>
     <p class="lead">スポーツバイクレンタル市場でRINCLEと競合する事業者を、市場データ・ビジネスモデル・料金・SWOTの観点から整理した調査レポートです。</p>
-    <div class="hero-meta">作成日: 2026-05-19 / 最終更新: 2026-06-11（深掘り調査の結果を反映）</div>
+    <div class="hero-meta">作成日: 2026年5月19日 / 最終更新: 2026年6月11日 — 店舗数・エリアは2026年5〜6月の調査時点の公表値です（本番サイトの実測〈2026年8月20日〉では、RINCLE掲載は店舗56・自転車374台に拡大。対外向けの店舗数表記は別途調整中）</div>
   </div>
 </div>
 
 <nav class="flow-tabs">
-  <button class="tab-btn active" data-target="panel-market"><span class="fnum">1</span><div class="ft">市場概況</div><div class="fd">サイクルツーリズム・E-Bike市場の現在地</div></button>
-  <button class="tab-btn" data-target="panel-players"><span class="fnum">2</span><div class="ft">RINCLE+競合5社</div><div class="fd">主要プレイヤーのプロフィール整理</div></button>
-  <button class="tab-btn" data-target="panel-model"><span class="fnum">3</span><div class="ft">モデル・料金比較</div><div class="fd">収益構造と料金水準の横並び比較</div></button>
-  <button class="tab-btn" data-target="panel-vs"><span class="fnum">4</span><div class="ft">1対1比較・SWOT</div><div class="fd">主要競合との直接比較と強み・弱み</div></button>
-  <button class="tab-btn" data-target="panel-additional"><span class="fnum">5</span><div class="ft">追加競合カテゴリ</div><div class="fd">シェアサイクルなど周辺サービスの整理</div></button>
-  <button class="tab-btn" data-target="panel-action"><span class="fnum">6</span><div class="ft">アクション・ペルソナ</div><div class="fd">調査から導く打ち手と狙う顧客像</div></button>
+  <button class="tab-btn active" data-target="panel-conclusion"><span class="fnum">1</span><div class="ft">結論</div><div class="fd">RINCLEの唯一性の核と競争の3正面</div></button>
+  <button class="tab-btn" data-target="panel-market"><span class="fnum">2</span><div class="ft">市場概況</div><div class="fd">サイクルツーリズム・E-Bike市場の現在地</div></button>
+  <button class="tab-btn" data-target="panel-players"><span class="fnum">3</span><div class="ft">RINCLE+競合5社</div><div class="fd">主要プレイヤーのプロフィール整理</div></button>
+  <button class="tab-btn" data-target="panel-model"><span class="fnum">4</span><div class="ft">モデル・料金比較</div><div class="fd">収益構造と料金水準の横並び比較</div></button>
+  <button class="tab-btn" data-target="panel-vs"><span class="fnum">5</span><div class="ft">1対1比較・SWOT</div><div class="fd">主要競合との直接比較と強み・弱み</div></button>
+  <button class="tab-btn" data-target="panel-additional"><span class="fnum">6</span><div class="ft">追加競合カテゴリ</div><div class="fd">シェアサイクルなど周辺サービスの整理</div></button>
+  <button class="tab-btn" data-target="panel-action"><span class="fnum">7</span><div class="ft">アクション・ペルソナ</div><div class="fd">調査から導く打ち手と狙う顧客像</div></button>
 </nav>
 
 <div class="container">
 
-<!-- ============ 市場概況 ============ -->
-<div class="tab-panel active" id="panel-market">
-  <div class="section">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>市場概況</h2><div class="sh-sub">サイクルツーリズム・E-Bike・国内レンタル市場の現在地</div></div></div>
+<!-- ============ 結論 ============ -->
+<div class="tab-panel active" id="panel-conclusion">
+  <div class="section" id="conclusion">
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">どの陣営も持たない「横断 × 統一予約 × 即時反映」が唯一性の核</div></div></div>
+    <p>直接競合はすべて自社で車両を保有する型で、規模を伸ばしにくい構造です。<strong>「マルチブランド横断 × 統一Web予約 × 在庫の即時反映」はどの陣営も持っておらず、ここがRINCLEの唯一性の核</strong>です（メーカーは自社ブランドしか並べられないため、構造的に真似できません）。</p>
+    <p>年10%以上成長する市場に大手プラットフォーマーは依然として不在です。ただし競争は次の3正面に広がっています（2026年6月更新）。</p>
+    <div class="term-row">
+      <div class="term"><div class="term-name">メーカー直営・供給網</div><div class="term-tag">正面 1</div><div class="t-body">Trek / Specialized / MERIDA / ヤマハ。詳細はタブ6をご覧ください。</div></div>
+      <div class="term"><div class="term-name">インバウンド特化系</div><div class="term-tag">正面 2</div><div class="t-body">Livelo等。訪日旅行者に的をしぼった事業者です。</div></div>
+      <div class="term"><div class="term-name">シェアサイクル / OTA</div><div class="term-tag">正面 3</div><div class="t-body">顧客との接点を押さえる形での競合です。</div></div>
+    </div>
+  </div>
+</div>
 
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="st-label">サイクルツーリズム市場（日本）</div>
-        <div class="st-value">CAGR 11.4%</div>
-        <div class="st-body">2024年 約63.4億ドル → 2033年 164億ドル<br>国内一次データ: 年間約1,315億円（1人1回あたり消費額 31,024円→37,356円に上昇）</div>
-        <div class="st-src">出典: Mordor Intelligence / GVR / サイクリスト国勢調査2021　※両者は市場定義が異なる</div>
+<!-- ============ 市場概況 ============ -->
+<div class="tab-panel" id="panel-market">
+  <div class="section">
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>市場概況</h2><div class="sh-sub">サイクルツーリズム・E-Bike・国内レンタル市場の現在地</div></div></div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <span class="l">サイクルツーリズム市場（日本）の年平均成長率 — 出典: Mordor Intelligence / GVR / サイクリスト国勢調査2021（両者は市場定義が異なる）</span>
+        <span class="n md">+11.4<small>% / 年</small></span>
+        <span class="d">2024年 約63.4億ドル → 2033年 164億ドル。国内の一次データでは年間約1,315億円（1人1回あたりの消費額は 31,024円 → 37,356円に上昇）</span>
       </div>
-      <div class="stat-card">
-        <div class="st-label">E-Bike市場（グローバル）</div>
-        <div class="st-value">CAGR 14.4%</div>
-        <div class="st-body">2025年 575億ドル → 2034年 1,932億ドル</div>
-        <div class="st-src">出典: Fortune Business Insights</div>
+      <div class="stat">
+        <span class="l">E-Bike市場（グローバル）の年平均成長率 — 出典: Fortune Business Insights</span>
+        <span class="n md">+14.4<small>% / 年</small></span>
+        <span class="d">2025年 575億ドル → 2034年 1,932億ドル</span>
       </div>
-      <div class="stat-card">
-        <div class="st-label">国内レンタル市場</div>
-        <div class="st-value brand">PF不在</div>
-        <div class="st-body">大手プラットフォーマー不在は今も事実（直接競合は最大でも300台 / 3店舗）。ただし<strong>メーカー直営・供給網レンタルが既に本格稼働</strong>（2026-06更新）</div>
+      <div class="stat">
+        <span class="l">国内レンタル市場の直接競合（最大手の規模）</span>
+        <span class="n md">300<small>台 / 3店舗</small></span>
+        <span class="d">大手プラットフォーマーの不在は今も事実です。ただし<strong>メーカー直営・供給網レンタルはすでに本格稼働しています</strong>（2026年6月更新）</span>
       </div>
+    </div>
+
+    <div class="term">
+      <div class="term-name">年平均成長率（CAGR）</div>
+      <div class="term-tag">上の「年 +11.4%」等の読み方</div>
+      <div class="t-body">複数年の成長を1年あたりの平均に均した率です。「年 +11.4%」は、その率で毎年伸び続ける想定を表します。</div>
     </div>
 
     <div class="grid2">
-      <div class="stat-card edge-brand">
-        <div class="st-label">しまなみジャパン 2025年度実績（過去最多）</div>
-        <div class="st-value brand">貸出 79,502件 / 訪日 +70%</div>
-        <div class="st-body">貸出台数173,279台。国内+8%に対し訪日旅行者は前年度比<strong>+70%</strong>。成長要因は2023年10月からの<strong>予約・貸出のデジタル化（アプリ導入）</strong> — 「予約のデジタル化がレンタル実績を押し上げる」国内最大級の実例</div>
-        <div class="st-src">出典: トラベルボイス 2026-04-30 / しまなみジャパン市場調査</div>
+      <div class="stat">
+        <span class="l">しまなみジャパン 2025年度の貸出件数（過去最多）— 出典: トラベルボイス 2026-04-30 / しまなみジャパン市場調査</span>
+        <span class="n md hot">79,502<small>件</small></span>
+        <span class="d">貸出台数173,279台。国内+8%に対し訪日旅行者は前年度比<strong>+70%</strong>。成長の要因は2023年10月からの<strong>予約・貸出のデジタル化（アプリ導入）</strong>で、「予約のデジタル化がレンタル実績を押し上げる」国内最大級の実例です</span>
       </div>
-      <div class="stat-card edge-ink">
-        <div class="st-label">ナショナルサイクルルート（NCR）第3次指定</div>
-        <div class="st-value">2026年夏 指定想定</div>
-        <div class="st-body">候補7ルート（ふくしま浜通り178km・鳥取うみなみロード・フジイチ163km等）が審査入り。指定要件に<strong>「ゲートウェイでのレンタサイクル整備」「約20kmごとのサイクルステーション」</strong>が含まれ、指定を目指す自治体はレンタサイクル事業者を必要としている → RINCLEパートナー網との連携余地大</div>
-        <div class="st-src">出典: 国交省 NCR制度資料 / Bicycle Club</div>
+      <div class="stat">
+        <span class="l">ナショナルサイクルルート（NCR）第3次指定 — 出典: 国交省 NCR制度資料 / Bicycle Club</span>
+        <span class="n md">2026<small>年夏 指定想定</small></span>
+        <span class="d">候補7ルート（ふくしま浜通り178km・鳥取うみなみロード・フジイチ163km等）が審査に入りました。指定の要件に<strong>「ゲートウェイでのレンタサイクル整備」「約20kmごとのサイクルステーション」</strong>が含まれ、指定を目指す自治体はレンタサイクル事業者を必要としています。RINCLEのパートナー網との連携余地は大きいです</span>
       </div>
     </div>
-
-    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>
-      <strong>RINCLEにとっての意味（2026-06更新）:</strong> 年10%以上成長する市場に大手プラットフォーマーは依然不在、直接競合は全て自社保有型でスケーラビリティに限界。ただし競争は3正面に拡大 — （1） メーカー直営・供給網（Trek/Specialized/MERIDA/ヤマハ）、（2） インバウンド特化系（Livelo等）、（3） シェアサイクル / OTAの顧客接点独占。<strong>「マルチブランド横断 × 統一Web予約 × リアルタイム在庫」はどの陣営も持っていない。</strong>メーカーは自社ブランドしか並べられないため構造的に真似できず、ここがRINCLE唯一性の核。
-    </div></div>
   </div>
 </div>
 
 <!-- ============ RINCLE + 競合5社 ============ -->
 <div class="tab-panel" id="panel-players">
   <div class="section">
-    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>RINCLE + 競合 5社</h2><div class="sh-sub">調査対象のプロフィール</div></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>RINCLE + 競合 5社</h2><div class="sh-sub">調査対象のプロフィール</div></div></div>
 
-    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>本レポートの店舗数・エリアは<strong>2026年5〜6月の調査時点の公表値</strong>です。本番サイトの実測（2026-08-20）ではRINCLE掲載は<strong>店舗56・自転車374台</strong>に拡大しています（対外向けの店舗数表記は別途調整中）。</div></div>
 
     <div class="comp-grid">
 
@@ -337,7 +329,11 @@ tr.highlight td:first-child{color:var(--accent-deep)}
 <!-- ============ モデル・料金比較 ============ -->
 <div class="tab-panel" id="panel-model">
   <div class="section">
-    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>ビジネスモデル比較</h2><div class="sh-sub">各社の型と規模（2026-05〜06調査時点）</div></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>モデル・料金比較</h2><div class="sh-sub">収益構造と料金水準の横並び比較（2026年5〜6月の調査時点）</div></div></div>
+
+    <div class="sub-item">
+      <div class="kick">規模の横並び</div>
+      <h4>各社のビジネスモデルの型と規模</h4>
     <div class="table-wrap">
       <table>
         <thead>
@@ -350,8 +346,8 @@ tr.highlight td:first-child{color:var(--accent-deep)}
           </tr>
         </thead>
         <tbody>
-          <tr class="highlight">
-            <td>RINCLE</td>
+          <tr>
+            <td class="hot">RINCLE</td>
             <td>プロショップネットワーク型PF</td>
             <td>—（店舗依存）</td>
             <td>24店舗</td>
@@ -402,12 +398,12 @@ tr.highlight td:first-child{color:var(--accent-deep)}
         </tbody>
       </table>
     </div>
-    <p style="font-size:12px;color:var(--sub)">※ RINCLEの店舗数は2026-05調査時点の公表値。本番サイト実測（2026-08-20）では店舗56・自転車374台。</p>
-  </div>
+    </div>
 
-  <div class="section">
-    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>ビジネスモデルの仕組み</h2><div class="sh-sub">各社の「どうやって収益を得ているか」を図解</div></div></div>
-
+    <div class="sub-item">
+      <div class="kick">収益の仕組み</div>
+      <h4>各社が「どうやって収益を得ているか」の図解</h4>
+      
     <div class="model-grid">
 
       <div class="model-card rincle-model full">
@@ -446,9 +442,9 @@ tr.highlight td:first-child{color:var(--accent-deep)}
         <div class="mc-head">CycleTrip BASE — 自社保有 + CtoC + サブスク</div>
         <div class="mc-body">
           <div class="mini-nodes">
-            <div class="mini-node grey"><div class="mn-icon"><svg class="icon"><use href="#i-user"/></svg></div>ユーザー</div>
+            <div class="mini-node user"><div class="mn-icon"><svg class="icon"><use href="#i-user"/></svg></div>ユーザー</div>
             <div class="mini-arrow">→</div>
-            <div class="mini-node amber"><div class="mn-icon"><svg class="icon"><use href="#i-building"/></svg></div>CycleTrip</div>
+            <div class="mini-node shop"><div class="mn-icon"><svg class="icon"><use href="#i-building"/></svg></div>CycleTrip</div>
           </div>
           <div class="model-note">
             <strong>3本柱:</strong><br>
@@ -464,9 +460,9 @@ tr.highlight td:first-child{color:var(--accent-deep)}
         <div class="mc-head">ジャイアントストア — メーカー直営</div>
         <div class="mc-body">
           <div class="mini-nodes">
-            <div class="mini-node grey"><div class="mn-icon"><svg class="icon"><use href="#i-user"/></svg></div>ユーザー</div>
+            <div class="mini-node user"><div class="mn-icon"><svg class="icon"><use href="#i-user"/></svg></div>ユーザー</div>
             <div class="mini-arrow">→</div>
-            <div class="mini-node blue"><div class="mn-icon"><svg class="icon"><use href="#i-building"/></svg></div>Giant直営店</div>
+            <div class="mini-node shop"><div class="mn-icon"><svg class="icon"><use href="#i-building"/></svg></div>Giant直営店</div>
           </div>
           <div class="model-note">
             <strong>収益の本質:</strong> レンタルは<strong>マーケティングチャネル</strong>。試乗→GIANT製品の購入が本来の目的。レンタル収益はおまけ。
@@ -509,10 +505,17 @@ tr.highlight td:first-child{color:var(--accent-deep)}
       </div>
 
     </div>
-  </div>
+<div class="legend">
+        <span><i style="background:var(--info)"></i>利用者</span>
+        <span><i style="background:var(--ok)"></i>店舗（相手方）</span>
+        <span><i style="background:var(--accent)"></i>プラットフォーム（システム）</span>
+      </div>
 
-  <div class="section">
-    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>料金比較（ロードバイク 1日あたり）</h2><div class="sh-sub">エントリー〜ハイエンドの価格帯</div></div></div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">1日料金</div>
+      <h4>料金比較（ロードバイク 1日あたり）— エントリーからハイエンドまで</h4>
     <div class="table-wrap">
       <table>
         <thead>
@@ -524,8 +527,8 @@ tr.highlight td:first-child{color:var(--accent-deep)}
           </tr>
         </thead>
         <tbody>
-          <tr class="highlight">
-            <td>RINCLE</td>
+          <tr>
+            <td class="hot">RINCLE</td>
             <td colspan="3" style="text-align:center;">店舗により異なる（参考: 2,500円〜 / 6,000円〜 / 13,200円〜）</td>
           </tr>
           <tr>
@@ -561,13 +564,18 @@ tr.highlight td:first-child{color:var(--accent-deep)}
         </tbody>
       </table>
     </div>
+    </div>
   </div>
 </div>
 
 <!-- ============ 1対1比較・SWOT ============ -->
 <div class="tab-panel" id="panel-vs">
   <div class="section">
-    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>RINCLE vs 各社（1対1比較）</h2><div class="sh-sub">どこで勝ちどこで負けているか</div></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>1対1比較・SWOT</h2><div class="sh-sub">主要競合との直接比較と、強み・弱みの整理</div></div></div>
+
+    <div class="sub-item">
+      <div class="kick">1対1比較</div>
+      <h4>RINCLE vs 各社 — どこで勝ち、どこで負けているか</h4>
     <div class="vs-grid">
 
       <div class="vs-card">
@@ -680,10 +688,11 @@ tr.highlight td:first-child{color:var(--accent-deep)}
       </div>
 
     </div>
-  </div>
+    </div>
 
-  <div class="section">
-    <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>SWOT 分析</h2><div class="sh-sub">強み・弱み・機会・脅威（2026-06調査反映）</div></div></div>
+    <div class="sub-item">
+      <div class="kick">SWOT分析</div>
+      <h4>強み・弱み・機会・脅威（2026年6月の調査を反映）</h4>
     <div class="swot-grid">
 
       <div class="swot-card s">
@@ -746,58 +755,53 @@ tr.highlight td:first-child{color:var(--accent-deep)}
       </div>
 
     </div>
+    </div>
   </div>
 </div>
 
 <!-- ============ 追加競合カテゴリ ============ -->
 <div class="tab-panel" id="panel-additional">
   <div class="section">
-    <div class="section-header"><div class="section-num">08</div><div class="sh-body"><h2>追加競合カテゴリ</h2><div class="sh-sub">2026-06 深掘り調査で大幅更新</div></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>追加競合カテゴリ</h2><div class="sh-sub">シェアサイクルなど周辺サービスの整理（2026年6月の深掘り調査で大幅更新）</div></div></div>
 
     <h3>A.【最重要】メーカー直営・メーカー供給網レンタル — 「脅威（仮定）」が現実に</h3>
     <p style="font-size:13px;color:var(--sub);margin-bottom:16px">RINCLEと同じ「プロショップ品質 × 試乗→購入導線」を、メーカーが直営店で既に実装している。</p>
     <div class="comp-grid" style="grid-template-columns:repeat(2,1fr);">
-      <div class="comp-card threat-high">
-        <span class="comp-num">!</span>
-        <h4>Trek 直営店レンタル</h4>
+      <div class="comp-card">
+        <h4>Trek 直営店レンタル <span class="badge bad">脅威度 高</span></h4>
         <p class="comp-company">TREK Bicycle 東京青山 / 福岡天神（直営2店）</p>
         <div class="comp-detail"><span class="label">料金</span><span>¥5,000〜¥10,000/日（カーボンロード/E-Bikeまで）・最長10日</span></div>
         <div class="comp-detail"><span class="label">導線</span><span><strong>レンタル後1ヶ月以内の購入でレンタル料金分を車両代から割引</strong> — RINCLEの「試乗→購入」と完全に同じ訴求</span></div>
-        <div class="comp-detail"><span class="label">脅威度</span><span style="color:var(--danger);font-weight:700;">高</span></div>
         <div class="comp-links">
           <a href="https://www.trekbikes.com/jp/ja_JP/jblog/rental-bike-25/" target="_blank">公式案内</a>
         </div>
       </div>
-      <div class="comp-card threat-high">
-        <span class="comp-num">!</span>
-        <h4>Specialized 直営レンタル</h4>
+      <div class="comp-card">
+        <h4>Specialized 直営レンタル <span class="badge bad">脅威度 高</span></h4>
         <p class="comp-company">名城 / 北海道ボールパークFビレッジ（直営2拠点）</p>
         <div class="comp-detail"><span class="label">導線</span><span><strong>「Try and Buy プログラム」</strong>: レンタル後3ヶ月以内の購入でレンタル料金分を割引。レンタル車＝試乗車と同車種</span></div>
         <div class="comp-detail"><span class="label">留意</span><span>RINCLEパートナーに「スペシャライズド神戸」が含まれるため、直営拡大方針との関係（競合化 / 共存）は要ヒアリング</span></div>
-        <div class="comp-detail"><span class="label">脅威度</span><span style="color:var(--danger);font-weight:700;">高</span></div>
         <div class="comp-links">
           <a href="https://specialized-store.jp/meijo/rental/" target="_blank">名城</a>
           <a href="https://specialized-store.jp/hokkaido-experience-center/rental/" target="_blank">北海道</a>
         </div>
       </div>
-      <div class="comp-card threat-high">
-        <span class="comp-num">!</span>
-        <h4>MERIDA「FEEL. E-BIKE」</h4>
+      <div class="comp-card">
+        <h4>MERIDA「FEEL. E-BIKE」 <span class="badge bad">脅威度 高</span></h4>
         <p class="comp-company">MIYATA×MERIDA供給・現地施設運営（規模で既存競合を上回る）</p>
         <div class="comp-detail"><span class="label">規模</span><span><strong>全国50拠点以上</strong>（北海道〜沖縄。長野約15・静岡約8など観光地に厚い）</span></div>
         <div class="comp-detail"><span class="label">構造</span><span>「メーカーが車両供給し現地施設が貸す」分散ネットワーク型 — RINCLEのモデルに最も近い。ただし<strong>統一予約・決済・リアルタイム在庫は持たない</strong>（公式は検索のみ）</span></div>
-        <div class="comp-detail"><span class="label">脅威度</span><span style="color:var(--danger);font-weight:700;">高（規模）/ RINCLEの優位: 統一Web予約・マルチブランド</span></div>
+        <div class="comp-detail"><span class="label">RINCLEの優位</span><span>規模では上回られる。ただし統一Web予約とマルチブランドは持たない</span></div>
         <div class="comp-links">
           <a href="https://www.merida.jp/feel/rental/" target="_blank">レンタル検索</a>
         </div>
       </div>
-      <div class="comp-card threat-mid">
-        <span class="comp-num">!</span>
-        <h4>ヤマハ YPJ / モンベル</h4>
+      <div class="comp-card">
+        <h4>ヤマハ YPJ / モンベル <span class="badge plain">脅威度 中</span></h4>
         <p class="comp-company">メーカー組織化網・アウトドア大手</p>
         <div class="comp-detail"><span class="label">ヤマハ</span><span>スポーツ電動アシスト「YPJ」レンタルショップ網を公式に組織化・掲載</span></div>
         <div class="comp-detail"><span class="label">モンベル</span><span>レンタル対応6店舗（自社ブランドSCHEIDEGG）。館山市の観光施設にE-MTB供給など「自治体への車両供給元」の顔も</span></div>
-        <div class="comp-detail"><span class="label">脅威度</span><span style="color:var(--gold-text);font-weight:700;">中 — ブランド力と店舗網で将来的に競合化リスク</span></div>
+        <div class="comp-detail"><span class="label">留意</span><span>ブランド力と店舗網により、将来的に競合になるリスクがある</span></div>
         <div class="comp-links">
           <a href="https://www.yamaha-motor.co.jp/pas/ypj/rentalshop/" target="_blank">YPJ一覧</a>
           <a href="https://www.montbell.jp/generalpage/disp.php?id=545" target="_blank">モンベル</a>
@@ -840,7 +844,7 @@ tr.highlight td:first-child{color:var(--accent-deep)}
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>訪日メディアは「日本のシェアサイクルは日本の電話番号が必要・英語アプリが弱い」点を障壁として指摘 → <strong>英語対応するだけで差別化になる余地</strong>（出典: Japan Guide）</div></div>
+    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>訪日メディアは「日本のシェアサイクルは日本の電話番号が必要・英語アプリが弱い」点を障壁として指摘 → <strong>英語対応するだけで差別化になる余地</strong>（出典: Japan Guide）</div></div>
 
     <h3>C / D. 隣接領域の再定義 — シェアサイクルは「顧客接点の独占」、OTAは「取るべき棚」</h3>
     <div class="grid2">
@@ -864,39 +868,24 @@ tr.highlight td:first-child{color:var(--accent-deep)}
 <!-- ============ アクション・ペルソナ ============ -->
 <div class="tab-panel" id="panel-action">
   <div class="section">
-    <div class="section-header"><div class="section-num">09</div><div class="sh-body"><h2>2026-06調査による優先アクション候補</h2><div class="sh-sub">優先度順の5テーマ</div></div></div>
-    <div class="grid2">
-      <div class="card" style="border-left:2px solid var(--accent);margin:0;">
-        <div class="num-chip">1</div>
-        <h4>多言語対応（最低限英語）の前倒し</h4>
-        <p class="body">しまなみの訪日利用+70%とLivelo等の存在が論拠。英語予約ページ＋Klook / アソビュー掲載で最小コスト検証が可能。</p>
-      </div>
-      <div class="card" style="border-left:2px solid var(--accent);margin:0;">
-        <div class="num-chip">2</div>
-        <h4>NCR第3次指定に合わせた自治体営業</h4>
-        <p class="body">2026年夏の指定前後に候補ルート沿線の自治体 / DMOへパッケージ提案。しまなみの「デジタル化で過去最多」事例を根拠に。</p>
-      </div>
-      <div class="card" style="border-left:2px solid var(--ink);margin:0;">
-        <div class="num-chip ink">3</div>
-        <h4>OTA掲載戦略の策定</h4>
-        <p class="body">アソビュー/じゃらん/Klookへの掲載可否・手数料・在庫連携を整理（競合は掲載済み）。</p>
-      </div>
-      <div class="card" style="border-left:2px solid var(--ink);margin:0;">
-        <div class="num-chip ink">4</div>
-        <h4>メーカーとの関係整理</h4>
-        <p class="body">パートナーが扱うブランドの直営レンタル拡大方針をヒアリングし、競合化リスクと「メーカー公認レンタルプラットフォーム」化の交渉余地を見極める。</p>
-      </div>
-      <div class="card full" style="border-left:2px solid var(--sub);margin:0;">
-        <div class="num-chip grey">5</div>
-        <h4>CycleTrip BASE 羽田モデルの監視</h4>
-        <p class="body">交通ハブ×無人×割引の成果（4店舗目の有無）を四半期ごとにウォッチ。</p>
-      </div>
-    </div>
-  </div>
+    <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>アクション・ペルソナ</h2><div class="sh-sub">調査から導く打ち手と、狙う顧客像</div></div></div>
 
-  <div class="section">
-    <div class="section-header"><div class="section-num">10</div><div class="sh-body"><h2>ターゲットペルソナ（A〜F）</h2><div class="sh-sub">2026-06-12更新: 運営ヒアリングを受けて再編（シニア層を削除し、訪日旅行者・イベント参加者を追加）</div></div></div>
-    <p style="font-size:13px;color:var(--sub);margin-bottom:8px">獲得チャネル・刺さるメッセージ・検証状況の詳細は <code>documents/4_growth/02_marketing/marketing-personas.md</code> を参照。</p>
+    <div class="sub-item">
+      <div class="kick">優先アクション候補</div>
+      <h4>2026年6月の調査による、優先度順の5テーマ</h4>
+    <ol class="steps">
+      <li><strong>多言語対応（最低限は英語）の前倒し</strong><br>しまなみの訪日利用+70%とLivelo等の存在が論拠です。英語の予約ページ+Klook / アソビュー掲載なら、最小のコストで検証できます。</li>
+      <li><strong>NCR第3次指定に合わせた自治体営業</strong><br>2026年夏の指定の前後に、候補ルート沿線の自治体 / DMOへパッケージで提案します。しまなみの「デジタル化で過去最多」の事例が根拠です。</li>
+      <li><strong>OTA掲載戦略の策定</strong><br>アソビュー / じゃらん / Klookへの掲載可否・手数料・在庫連携を整理します（競合はすでに掲載済みです）。</li>
+      <li><strong>メーカーとの関係整理</strong><br>パートナーが扱うブランドの直営レンタル拡大の方針をうかがい、競合になるリスクと「メーカー公認レンタルプラットフォーム」化の交渉余地を見極めます。</li>
+      <li><strong>CycleTrip BASE 羽田モデルの監視</strong><br>交通ハブ×無人×割引の成果（4店舗目の有無）を四半期ごとに追いかけます。</li>
+    </ol>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">ターゲットペルソナ</div>
+      <h4>狙う顧客像 A〜F</h4>
+      <p>2026年6月12日に運営ヒアリングを受けて再編したものです（シニア層を削除。訪日旅行者とイベント参加者を追加）。獲得チャネル・刺さるメッセージ・検証状況の詳細は<a href="../marketing/marketing-personas.html">マーケティングペルソナ</a>にまとめています。</p>
     <div class="grid2">
       <div class="card" style="margin:0;">
         <div class="num-chip">A</div>
@@ -905,42 +894,44 @@ tr.highlight td:first-child{color:var(--accent-deep)}
         <p class="body">「ロードバイクに興味あるけど、いきなり30万円は出せない。まず試してみたい」<br>→ プロショップスタッフの対面サポート + 気に入ったらその場で購入相談</p>
       </div>
       <div class="card" style="margin:0;">
-        <div class="num-chip blue">B</div>
+        <div class="num-chip">B</div>
         <h4>旅先でサイクリングを楽しみたい旅行者</h4>
         <p class="p-attr">40代夫婦・観光旅行中</p>
-        <p class="body">「しまなみ海道をサイクリングしたい。でも自転車を持っていくのは面倒」<br>→ 全国のパートナー店舗網（2026-08-20実測で56店舗） + ショップスタッフ監修のルート情報</p>
+        <p class="body">「しまなみ海道をサイクリングしたい。でも自転車を持っていくのは面倒」<br>→ 全国のパートナー店舗網 + ショップスタッフ監修のルート情報</p>
       </div>
       <div class="card" style="margin:0;">
-        <div class="num-chip violet">C</div>
+        <div class="num-chip">C</div>
         <h4>購入前にいろいろ試したい経験者</h4>
         <p class="p-attr">20〜30代男性・クロスバイク所有</p>
         <p class="body">「次はロードバイクが欲しいけど、ブランドやモデルが多すぎて決められない。実際に乗ってから選びたい」<br>→ マルチブランド対応 + プロショップでそのまま購入相談 + レンタル料金割引</p>
       </div>
-      <div class="card star" style="margin:0;">
-        <div class="num-chip">D</div>
+      <div class="card" style="margin:0;">
+        <div class="num-chip brand">D</div>
         <h4>プロショップの既存顧客 <span class="badge brand">獲得コスト最低の最重要ペルソナ</span></h4>
         <p class="p-attr">全年代（男性が多い）・ショップ近隣在住・スポーツバイク所有者</p>
         <p class="body">「友達や家族にもサイクリングを体験させたい」「別ブランドのバイクにも乗ってみたい」<br>→ ショップ店頭からの直接導線。すでにショップとの接点があるため獲得コストが最も低い</p>
       </div>
       <div class="card" style="margin:0;">
-        <div class="num-chip green">E</div>
-        <h4>訪日旅行者 <span class="badge warn">素案・2026-06-11追加</span></h4>
+        <div class="num-chip">E</div>
+        <h4>訪日旅行者 <span class="badge plain">素案（2026年6月11日追加）</span></h4>
         <p class="p-attr">30〜40代・台湾/香港/欧米豪の個人手配旅行者・サイクリング経験あり</p>
         <p class="body">「日本でサイクリングしたい。英語で予約できる整備済みのバイクを探している」<br>→ 多言語未対応なのに来店実績あり（6月12日運営ヒアリング:「対応したらめっちゃ来るイメージ」）。英語予約ページ+海外OTA掲載での最小コスト検証が先決</p>
       </div>
       <div class="card" style="margin:0;">
-        <div class="num-chip amber">F</div>
-        <h4>イベント参加者 <span class="badge warn">素案・2026-06-12追加</span></h4>
+        <div class="num-chip">F</div>
+        <h4>イベント参加者 <span class="badge plain">素案（2026年6月12日追加）</span></h4>
         <p class="p-attr">トライアスロン・ロングライドイベントの出走者・機材を持っていない / 遠征に持って行けない</p>
         <p class="body">「〇〇大会に出たいが自転車がない」。日付・場所が確定しており検索意図が極めて明確。<strong>来店の約2割を占める</strong>（6月12日運営ヒアリング）。大阪城トライアスロンで他社レンタル満車→RINCLEへ流入した実例あり<br>→ 大会会場近くの店舗網 × カーボンロード等の競技機材 × プロ整備</p>
       </div>
+    </div>
     </div>
   </div>
 </div>
 
 </div>
 
-<footer>正本: documents/4_growth/01_strategy/competitive-analysis.md（md更新時はこのHTMLも同期すること）</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/4_growth/01_strategy/competitive-analysis.md） -->
+<footer>正本: documents/4_growth/01_strategy/competitive-analysis.md</footer>
 
 <script>
   var tabBtns = document.querySelectorAll('.tab-btn');

@@ -21,8 +21,6 @@
 .callout li+li{margin-top:12px}
 
 /* 琥珀のアラート（お金・注意喚起） */
-.alert-amber{border-left-color:var(--gold);color:var(--gold-text)}
-.badge.warn{background:var(--gold-soft);border:1px solid #EAD9AE;color:var(--gold-text)}
 
 /* ×○対比の中の箇条書き（記号ではなく役割色の丸） */
 .compare-box ul{list-style:none;padding:0}
@@ -68,36 +66,45 @@ ul.todo li::before{content:'';position:absolute;left:3px;top:17px;width:13px;hei
       <span class="hero-no">STRATEGY</span>
     </div>
     <h1>RINCLE 差別化戦略</h1>
-    <p class="lead">将来の競合参入に備えて「それでもRINCLEを使う理由」をつくる。候補を「真似されにくさ × 効果」で整理し、優先順位を決めるためのたたき台です。</p>
-    <div class="hero-meta">原案・協議用たたき台（2026-06-12作成）</div>
+    <p class="lead">将来の競合参入に備えて「それでもRINCLEを使う理由」をつくる。候補を「真似されにくさ × 効果」で整理して優先順位を決めるためのたたき台です。</p>
+    <div class="hero-meta">原案・協議用たたき台（2026年6月12日作成）/ 店舗数・台数はDB実数（54店・369台＝2026年6月11日実測）。2026年8月20日の本番サイト実測では店舗56・自転車374台</div>
   </div>
 </div>
 
 <nav class="flow">
-  <a href="#why"><span class="fnum">1</span><span class="ft">なぜ今整理するか</span><span class="fd">先行逃げ切りの中身を決める</span></a>
-  <a href="#premise"><span class="fnum">2</span><span class="ft">前提: CycleTrip</span><span class="fd">最有力競合の強みと弱みの要約</span></a>
-  <a href="#candidates"><span class="fnum">3</span><span class="ft">差別化候補の一覧</span><span class="fd">真似されにくさ×効果で整理</span></a>
-  <a href="#point"><span class="fnum">4</span><span class="ft">ポイント機能の深掘り</span><span class="fd">効く理由と懸念、変形案</span></a>
-  <a href="#priority"><span class="fnum">5</span><span class="ft">優先順位</span><span class="fd">競合参入前に何を実績にするか</span></a>
-  <a href="#homework"><span class="fnum">6</span><span class="ft">宿題・次のアクション</span><span class="fd">協議して決めること</span></a>
+  <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">店舗ロックインを最優先にする4段の順</span></a>
+  <a href="#why"><span class="fnum">2</span><span class="ft">なぜ今整理するか</span><span class="fd">先行逃げ切りの中身を決める</span></a>
+  <a href="#premise"><span class="fnum">3</span><span class="ft">前提: CycleTrip</span><span class="fd">最有力競合の強みと弱みの要約</span></a>
+  <a href="#candidates"><span class="fnum">4</span><span class="ft">差別化候補の一覧</span><span class="fd">真似されにくさ×効果で整理</span></a>
+  <a href="#point"><span class="fnum">5</span><span class="ft">ポイント機能の深掘り</span><span class="fd">効く理由と懸念、変形案</span></a>
+  <a href="#priority"><span class="fnum">6</span><span class="ft">優先順位</span><span class="fd">競合参入前に何を実績にするか</span></a>
+  <a href="#homework"><span class="fnum">7</span><span class="ft">宿題・次のアクション</span><span class="fd">協議して決めること</span></a>
 </nav>
 
 <div class="container">
 
-  <div class="alert alert-amber"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div>関連資料: 競合調査レポート / アクションプラン（Tier番号はそちら参照）/ revenue-model.xlsx（数字の出典）。<br>※店舗数・台数の対外表記は協議中のため、本資料はDB実数（54店・369台＝2026-06-11実測）を使用。<strong>2026-08-20の本番サイト実測では店舗56・自転車374台</strong>。</div></div>
-
   <!-- 1 -->
-  <div class="section" id="why">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>なぜ今整理するか</h2><div class="sh-sub">先行逃げ切りの中身を決める</div></div></div>
-    <div class="card">
-      <p>スポーツバイクレンタル市場の成長にともない、<strong>近い将来、資本力のある事業者が同種のプラットフォーム型サービスで参入してくる可能性は高い</strong>と見ています。方針は「<strong>先行逃げ切り</strong>」、勝ち筋は「デザインで負けてもUX（使いやすさ）と店舗数・台数で勝つ」で一致済みです。</p>
-      <p>競合がローンチした日に必要なのは、<strong>利用者が「それでもRINCLEで予約する理由」</strong>と、<strong>店舗が「それでもRINCLEに在庫を出し続ける理由」</strong>の両方です。本資料はその候補を「真似されにくさ × 効果」で整理し、優先順位を決めるためのたたき台です。</p>
-    </div>
+  <div class="section" id="conclusion">
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">優先順位のたたき台は店舗ロックイン → SEOの先行 → リピート特典 → 予約体験と購入導線</div></div></div>
+    <p>優先順位のたたき台は ①店舗ロックイン（送客レポートと精算のUX）②SEOの先行 ③リピート特典 ④予約体験のUXと購入導線 の順です。根拠は<a href="#priority">06 優先順位</a>にまとめています。</p>
+    <ul class="notes">
+      <li>あわせて読む資料: <a href="competitive-analysis.html">競合調査レポート</a>（競合各社の詳細）/ <a href="action-plan.html">アクションプラン</a>（Tier番号の定義）/ 収益モデル（数字の出典）。</li>
+      <li>店舗数・台数の対外表記は協議中です。</li>
+    </ul>
   </div>
 
   <!-- 2 -->
+  <div class="section" id="why">
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>なぜ今整理するか</h2><div class="sh-sub">先行逃げ切りの中身を決める</div></div></div>
+    <div class="card">
+      <p>スポーツバイクレンタル市場の成長にともない、<strong>近い将来、資本力のある事業者が同種のプラットフォーム型サービスで参入してくる可能性は高い</strong>と見ています。方針は「<strong>先行逃げ切り</strong>」、勝ち筋は「デザインで負けてもUX（使いやすさ）と店舗数・台数で勝つ」で一致済みです。</p>
+      <p>競合がローンチした日に必要なのは、<strong>利用者が「それでもRINCLEで予約する理由」</strong>と、<strong>店舗が「それでもRINCLEに在庫を出し続ける理由」</strong>の両方です。本資料はその候補を「真似されにくさ × 効果」で整理して優先順位を決めるためのたたき台です。</p>
+    </div>
+  </div>
+
+  <!-- 3 -->
   <div class="section" id="premise">
-    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>前提: 最有力の競合候補（CycleTrip）の強みと弱み</h2><div class="sh-sub">差別化の観点での要約</div></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>前提: 最有力の競合候補（CycleTrip）の強みと弱み</h2><div class="sh-sub">差別化の観点での要約</div></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th style="width:90px;"></th><th>内容</th><th>RINCLEへの含意</th></tr></thead>
@@ -115,47 +122,47 @@ ul.todo li::before{content:'';position:absolute;left:3px;top:17px;width:13px;hei
         </tbody>
       </table>
     </div>
-    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>注意すべきシナリオ:</strong> 仮に彼らがプラットフォーム化した場合、「自社在庫＋加盟店在庫」のハイブリッドになり、保険自動付帯・無人レンタルをそのまま加盟店に配れる。<strong>「台数が多い」だけの優位は1年で消えうる</strong>。残るのは、先に押さえた店舗との関係と、利用者側の習慣・データ。</div></div>
-  </div>
+    <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>注意すべきシナリオ:</strong> 仮に彼らがプラットフォーム化した場合、「自社在庫＋加盟店在庫」のハイブリッドになる。保険自動付帯・無人レンタルをそのまま加盟店に配れる。<strong>「台数が多い」だけの優位は1年で消えうる</strong>。残るのは、先に押さえた店舗との関係と、利用者側の習慣・データ。</div></div>
 
-  <!-- 2-2 -->
-  <div class="section">
-    <div class="section-header"><div class="section-num">2-2</div><div class="sh-body"><h2>長期レンタル / サブスクへの向き合い方（やらない判断）</h2><div class="sh-sub">料金プランで揺さぶられたとき用の結論</div></div></div>
-    <div class="card">
+    <div class="sub-item">
+      <div class="kick">料金プランで揺さぶられたとき用の結論</div>
+      <h4>長期レンタル / サブスクへの向き合い方（やらない判断）</h4>
       <p>CycleTripの強みのひとつが<strong>料金プランの多様性</strong>（日/週/月/年/法人/撮影、サブスク月額2,300〜6,980円・1年契約。ただし解約ペナルティは6日前以降で6ヶ月分と重い）。「RINCLEも月貸し・サブスクをやるべきでは」という議論が出たとき用の結論を先に置く。</p>
-    </div>
-    <div class="callout">
+      <div class="callout">
       <ul>
-        <li><strong>コモディティなサブスク（所有の代わりの安い月額）には乗らない。</strong> サブスク・月貸しは「特定の1台を1人に長期間預ける」モデルで、<strong>自社在庫を持つCycleTripの構造的な強み</strong>。在庫を持たないRINCLEが正面からやると、①ショップの在庫を低単価で長期塩漬けにして本業（販売・短期試乗）とぶつかる、②最重要導線「試乗→購入」（ペルソナC / D）と逆を向く、③メーカー（ブリヂストン「エシクル」等）まで参入済みの価格競争に巻き込まれる。<strong>相手の土俵で殴り合う形になるので避ける。</strong></li>
+        <li><strong>コモディティなサブスク（所有の代わりの安い月額）には乗らない。</strong> サブスク・月貸しは「特定の1台を1人に長期間預ける」モデルで、自社在庫を持つCycleTripの構造的な強みです。在庫を持たないRINCLEが正面からやると、①ショップの在庫を低単価で長期塩漬けにして本業（販売・短期試乗）とぶつかる、②最重要導線「試乗→購入」（ペルソナC / D）と逆を向く、③メーカー（ブリヂストン「エシクル」等）まで参入済みの価格競争に巻き込まれる。相手の土俵で殴り合う形になるため避けます。</li>
         <li><strong>ただし長期需要自体は実在する。</strong> Googleサジェストで「ロードバイク レンタル 1ヶ月」「クロスバイク レンタル 1ヶ月」が出る（keyword-research）。問題は"出し方"。</li>
-        <li><strong>RINCLEの強みに乗る唯一の形＝「購入前提の長期試乗」</strong>（1ヶ月じっくり乗って、合えばそのまま購入）。これなら①ショップ視点では塩漬けでなく購入見込み客への試乗＝本業と一致、②ペルソナC（買う前に試したい経験者）に直撃で、§3-Dの試乗→購入導線・§4の購入充当（Trek型）と一体化できる。<strong>「所有代替サブスク」ではなく「長い試乗」</strong>として出すなら差別化になる。</li>
+        <li><strong>RINCLEの強みに乗る唯一の形＝「購入前提の長期試乗」</strong>（1ヶ月じっくり乗って合えばそのまま購入）。これなら①ショップ視点では塩漬けでなく購入見込み客への試乗＝本業と一致、②ペルソナC（買う前に試したい経験者）に直撃で、§3-Dの試乗→購入導線・§4の購入充当（Trek型）と一体化できます。「所有代替サブスク」ではなく「長い試乗」として出すなら差別化になります。</li>
         <li><strong>優先度は低い（将来商品）。</strong> DB再構築（2026年7月に本番リリース済み）に続く基本機能（Tier 1）が固まってから。今やる必要はない。</li>
-      </ul>
+        </ul>
+      </div>
     </div>
   </div>
 
-  <!-- 3 -->
+  <!-- 4 -->
   <div class="section" id="candidates">
-    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>差別化候補の一覧</h2><div class="sh-sub">真似されにくさ × 効果で整理</div></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>差別化候補の一覧</h2><div class="sh-sub">真似されにくさ × 効果で整理</div></div></div>
     <div class="card">
       <p>マーケットプレイスの防御は両面あります。<strong>利用者向け（デマンド側）より、店舗向け（サプライ側）のロックインの方が真似されにくく、効果が持続します</strong> — 店舗が離れなければ、競合は在庫ゼロからのスタートになるためです。</p>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>#</th><th>候補</th><th>対象</th><th>真似されにくさ</th><th>状態</th></tr></thead>
+        <!-- 真似されにくさは3段階固定: ◎高=badge.brand / ○中=badge.ink / △低=badge.plain -->
+        <thead><tr><th style="width:40px">#</th><th>候補</th><th style="width:80px">対象</th><th style="width:230px">真似されにくさ</th><th>状態</th></tr></thead>
         <tbody>
-          <tr><td class="label">A</td><td><strong>店舗ネットワークと地方カバレッジ</strong>（54店・全国、しまなみ等の観光地）</td><td>両面</td><td><span class="badge good">◎ 最も強い</span> 関係資産は一朝一夕に作れない</td><td>既にある。維持が課題（42店は当月予約ゼロ）</td></tr>
-          <tr><td class="label">B</td><td><strong>店舗向け精算・レポートのUX</strong> — 月次送客レポート、「請求される」でなく「振り込まれる」精算、カード1本化で店舗の事務ゼロ</td><td>店舗</td><td><span class="badge brand">○ 持続的</span> 仕組みは真似できるが、稼働実績と信頼は先行者に積み上がる</td><td>設計中</td></tr>
-          <tr><td class="label">C</td><td><strong>ポイント / リピート特典</strong> — RINCLEから予約する方がお得</td><td>利用者</td><td><span class="badge warn">△ 機能は真似可</span> ただし貯まった残高がスイッチングコストになる</td><td>§4で深掘り</td></tr>
-          <tr><td class="label">D</td><td><strong>試乗 → 購入導線</strong> — 試乗履歴つき購入相談予約。借りた車種・サイズ・感想を店舗に引き継ぐ</td><td>両面</td><td><span class="badge brand">○ 構造的優位</span> 全国の販売店ネットワークが前提。自社店3つのCycleTripには難しい</td><td>構想あり・未着手</td></tr>
-          <tr><td class="label">E</td><td><strong>予約体験のUX</strong> — 検索バー・空き表示・料金明示（Tier 1）</td><td>利用者</td><td><span class="badge warn">△ いずれ追いつかれる</span> ただし「先に使いやすい」の習慣は残る</td><td>7〜8月に着手予定</td></tr>
-          <tr><td class="label">F</td><td><strong>SEO・地域コンテンツの先行</strong> — 「ロードバイク レンタル 地域名」「観光ルート名×レンタサイクル」の検索地位</td><td>利用者</td><td><span class="badge brand">○ 時間の関数</span> ドメインの歴史と被リンクは後発が1年で逆転しにくい</td><td>7月設置開始予定だった（#21。2026-08-20時点でsitemap・Search Console設置はまだ）</td></tr>
+          <tr><td class="label">A</td><td><strong>店舗ネットワークと地方カバレッジ</strong>（54店・全国、しまなみ等の観光地）</td><td>両面</td><td><span class="badge brand">◎ 高</span><div class="td-sub">関係資産は一朝一夕に作れない</div></td><td>既にある。維持が課題（42店は当月予約ゼロ）</td></tr>
+          <tr><td class="label">B</td><td><strong>店舗向け精算・レポートのUX</strong> — 月次送客レポート、「請求される」でなく「振り込まれる」精算、カード1本化で店舗の事務ゼロ</td><td>店舗</td><td><span class="badge ink">○ 中</span><div class="td-sub">仕組みは真似できる。稼働実績と信頼は先行者に積み上がる</div></td><td>設計中</td></tr>
+          <tr><td class="label">C</td><td><strong>ポイント / リピート特典</strong> — RINCLEから予約する方がお得</td><td>利用者</td><td><span class="badge plain">△ 低</span><div class="td-sub">機能は真似できる。ただし貯まった残高が乗り換えの障壁になる</div></td><td>§4で深掘り</td></tr>
+          <tr><td class="label">D</td><td><strong>試乗 → 購入導線</strong> — 試乗履歴つき購入相談予約。借りた車種・サイズ・感想を店舗に引き継ぐ</td><td>両面</td><td><span class="badge ink">○ 中</span><div class="td-sub">全国の販売店ネットワークが前提。自社店3つのCycleTripには難しい</div></td><td>構想あり・未着手</td></tr>
+          <tr><td class="label">E</td><td><strong>予約体験のUX</strong> — 検索バー・空き表示・料金明示（Tier 1）</td><td>利用者</td><td><span class="badge plain">△ 低</span><div class="td-sub">いずれ追いつかれる。ただし「先に使いやすい」という習慣は残る</div></td><td>7〜8月に着手予定</td></tr>
+          <tr><td class="label">F</td><td><strong>SEO・地域コンテンツの先行</strong> — 「ロードバイク レンタル 地域名」「観光ルート名×レンタサイクル」の検索地位</td><td>利用者</td><td><span class="badge ink">○ 中</span><div class="td-sub">ドメインの歴史と被リンクは後発が1年で逆転しにくい</div></td><td>7月に設置開始の予定。2026年8月20日時点でsitemap・Search Consoleの設置はまだ<!-- task_list #21 --></td></tr>
         </tbody>
       </table>
     </div>
     <div class="card">
+      <figure class="fig" aria-label="54店を抱えていても当月に予約が入ったのは12店で、残る42店は離脱予備軍になっている">
       <div class="chart">
-        <svg viewBox="0 0 42 42" role="img" aria-label="54店のうち当月予約ゼロの店舗の割合">
+        <svg viewBox="0 0 42 42" aria-hidden="true">
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"/>
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4"
                   stroke-dasharray="77.8 22.2" stroke-dashoffset="25"/>
@@ -166,16 +173,17 @@ ul.todo li::before{content:'';position:absolute;left:3px;top:17px;width:13px;hei
         <div class="cl">
           <div><i style="background:var(--accent);"></i>当月予約ゼロ（約78%）<strong>42店</strong></div>
           <div><i style="background:var(--ink);"></i>当月予約あり（約22%）<strong>12店</strong></div>
-          <div style="font-size:12.5px;color:var(--text);">候補Aの「維持が課題」の実態。優先順位1（店舗ロックイン）では「離脱予備軍」と位置づけ</div>
           <div class="src" style="border-bottom:none;">単位: 店舗（中央の数字＝合計54店）/ 出典: 2026-06-11 DB実測</div>
         </div>
       </div>
+      </figure>
+      <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>この図の読み方:</strong> 候補Aの「維持が課題」の実態です。優先順位1（店舗ロックイン）では、予約ゼロの42店を「離脱予備軍」と位置づけています。</div></div>
     </div>
   </div>
 
-  <!-- 4 -->
+  <!-- 5 -->
   <div class="section" id="point">
-    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>深掘り: ポイント機能（リピート特典）</h2><div class="sh-sub">効く理由と懸念、台帳を持たない変形案</div></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>深掘り: ポイント機能（リピート特典）</h2><div class="sh-sub">効く理由と懸念、台帳を持たない変形案</div></div></div>
     <div class="card">
       <p><strong>狙い:</strong> 「RINCLEから予約する方がお得」という需要側のスイッチングコスト。最重要ペルソナD（既存顧客）のリピート促進に直結します。</p>
     </div>
@@ -202,7 +210,7 @@ ul.todo li::before{content:'';position:absolute;left:3px;top:17px;width:13px;hei
         <thead><tr><th>変形案</th><th>内容</th><th>利点</th></tr></thead>
         <tbody>
           <tr><td class="label">次回クーポン</td><td>返却後フォローで「次回◯円引き」を発行</td><td>台帳不要で実装が軽い。低頻度でも「次の1回」に直結</td></tr>
-          <tr><td class="label">購入充当（Trek型）</td><td>「レンタル料を同店舗での購入代金に充当」。Trekは標準特典として実施</td><td>原資を店舗側の物販粗利と分担できる。物販送客（第2収益源）と一体化し、<strong>店舗にも「RINCLEにいるメリット」になる = 両面に効く</strong></td></tr>
+          <tr><td class="label">購入充当（Trek型）</td><td>「レンタル料を同店舗での購入代金に充当」。Trekは標準特典として実施</td><td>原資を店舗側の物販粗利と分担できる。物販送客（第2収益源）と一体化して<strong>店舗にも「RINCLEにいるメリット」になる = 両面に効く</strong></td></tr>
           <tr><td class="label">会員ランク</td><td>使うほど特典（ペナルティなし設計）</td><td>ポイントより軽く「常連の優遇」を表現できる</td></tr>
         </tbody>
       </table>
@@ -212,9 +220,9 @@ ul.todo li::before{content:'';position:absolute;left:3px;top:17px;width:13px;hei
     </div>
   </div>
 
-  <!-- 5 -->
+  <!-- 6 -->
   <div class="section" id="priority">
-    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>優先順位（たたき台）</h2><div class="sh-sub">競合ローンチ前に何を稼働実績にするか</div></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>優先順位（たたき台）</h2><div class="sh-sub">競合ローンチ前に何を稼働実績にするか</div></div></div>
     <div class="card">
       <ol class="steps">
         <li><strong>店舗ロックイン（A+B）が本丸</strong> — 競合のプラットフォーム化が脅威になるのは店舗を引き抜かれたとき。月次送客レポートと「振り込まれる」精算を、競合ローンチ前に稼働実績にしておく。42店の予約ゼロ問題は、この文脈では「離脱予備軍」でもある</li>
@@ -225,9 +233,9 @@ ul.todo li::before{content:'';position:absolute;left:3px;top:17px;width:13px;hei
     </div>
   </div>
 
-  <!-- 6 -->
+  <!-- 7 -->
   <div class="section" id="homework">
-    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>宿題・次のアクション</h2><div class="sh-sub">協議して決めること</div></div></div>
+    <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>宿題・次のアクション</h2><div class="sh-sub">協議して決めること</div></div></div>
     <div class="card">
       <ul class="todo">
         <li>協議: ポイント / クーポンの原資の考え方（手数料内で負担 vs 店舗と分担 vs 物販粗利から）</li>
@@ -240,7 +248,8 @@ ul.todo li::before{content:'';position:absolute;left:3px;top:17px;width:13px;hei
 
 </div>
 
-<footer>正本: documents/4_growth/01_strategy/differentiation-strategy.md（md更新時はこのHTMLも同期すること）</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/4_growth/01_strategy/differentiation-strategy.md） -->
+<footer>正本: documents/4_growth/01_strategy/differentiation-strategy.md</footer>
 
 <script>
 (function(){

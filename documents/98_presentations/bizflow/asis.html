@@ -12,32 +12,9 @@
   /* ===== ページ固有: 業務フロー図（§3-A仕様） ===== */
   .section-desc{color:var(--sub);font-size:14px}
   .card h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin-bottom:14px}
-  .alert-amber{border-left-color:var(--gold);color:var(--gold-text)}
 
-  /* 登場人物カード（白面+罫線・アイコンは役割色の輪郭丸） */
-  .roles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:0 0 28px}
-  .role-card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:18px 20px;display:flex;align-items:center;gap:14px}
-  .role-icon{width:40px;height:40px;border-radius:50%;border:1.5px solid;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-  .role-icon .icon{width:18px;height:18px}
-  .role-icon.user{color:var(--info);border-color:var(--info)}
-  .role-icon.store{color:var(--ok);border-color:var(--ok)}
-  .role-icon.admin{color:var(--accent);border-color:var(--accent)}
-  .role-card h3{font-family:inherit;font-size:10.5px;letter-spacing:.16em;font-weight:700;color:var(--sub);margin:0 0 2px}
-  .role-card p{font-size:13px;font-weight:500;color:var(--ink);line-height:1.7}
-
-  /* フェーズ目次（.phases型・役割ドットつき） */
-  .phase .ps i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}
-  .phase .ps i.user{background:var(--info)}
-  .phase .ps i.store{background:var(--ok)}
-  .phase .ps i.admin{background:var(--accent)}
-
-  /* スイムレーン（横型。ノード=白面+1px罫線・レーンラベル=役割色文字+丸ドット） */
   /* As-Is / To-Be 対比（白面+罫線・To-Be側だけ罫線を焦がしに） */
   .compare-box .highlight{font-weight:700;color:var(--ink)}
-
-  @media (max-width:760px){
-    .roles{grid-template-columns:1fr}
-  }
 </style>
 </head>
 <body>
@@ -74,58 +51,79 @@
       <span class="hero-no">AS-IS（現行）</span>
     </div>
     <h1>Rincle 業務フロー図（現行）</h1>
-    <p class="lead">自転車レンタルサービス「Rincle」の現行業務フローです。ユーザー・店舗・管理者の3つの視点で、予約から返却・キャンセルまでの全体像を示します。</p>
+    <p class="lead">自転車レンタルサービス「Rincle」の現行業務フローです。ユーザー（自転車を検索・予約・利用するお客さま）・店舗（自転車を提供する加盟店。56店舗・2026-08-20時点）・管理者（PEDALSTANDARD の運営チーム）の3つの視点で、予約から返却・キャンセルまでの全体像を示します。</p>
   </div>
 </div>
 
 <!-- 章ナビ -->
 <nav class="flow">
-  <a href="#phase1"><span class="fnum">1</span><span class="ft">アカウント・認証</span><span class="fd">ユーザーのログイン・新規登録の流れ</span></a>
-  <a href="#phase2"><span class="fnum">2</span><span class="ft">店舗準備・承認</span><span class="fd">出店から自転車登録・予約受付まで</span></a>
-  <a href="#phase3"><span class="fnum">3</span><span class="ft">自転車検索・閲覧</span><span class="fd">エリアと日時で利用可能な車両を探す</span></a>
-  <a href="#phase4"><span class="fnum">4</span><span class="ft">予約申込（未決済）</span><span class="fd">この時点ではカード引き落としなし</span></a>
-  <a href="#phase5"><span class="fnum">5</span><span class="ft">来店・貸出・決済</span><span class="fd">貸出のタイミングで店舗が決済を実行</span></a>
-  <a href="#phase6"><span class="fnum">6</span><span class="ft">返却・完了</span><span class="fd">返却からレンタル完了までの流れ</span></a>
-  <a href="#phase7"><span class="fnum">7</span><span class="ft">キャンセル・返金</span><span class="fd">返金は管理者が手動で処理</span></a>
-  <a href="#compare"><span class="fnum">vs</span><span class="ft">As-IsとTo-Beの違い</span><span class="fd">現行と目標フローの主な差分</span></a>
+  <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">現行フローの弱点3つと目標フローとの対比</span></a>
+  <a href="#phase1"><span class="fnum">2</span><span class="ft">アカウント・認証</span><span class="fd">ユーザーのログイン・新規登録の流れ</span></a>
+  <a href="#phase2"><span class="fnum">3</span><span class="ft">店舗準備・承認</span><span class="fd">出店から自転車登録・予約受付まで</span></a>
+  <a href="#phase3"><span class="fnum">4</span><span class="ft">自転車検索・閲覧</span><span class="fd">エリアと日時で利用可能な車両を探す</span></a>
+  <a href="#phase4"><span class="fnum">5</span><span class="ft">予約申込（未決済）</span><span class="fd">この時点ではカード引き落としなし</span></a>
+  <a href="#phase5"><span class="fnum">6</span><span class="ft">来店・貸出・決済</span><span class="fd">貸出のタイミングで店舗が決済を実行</span></a>
+  <a href="#phase6"><span class="fnum">7</span><span class="ft">返却・完了</span><span class="fd">返却からレンタル完了までの流れ</span></a>
+  <a href="#phase7"><span class="fnum">8</span><span class="ft">キャンセル・返金</span><span class="fd">返金は管理者が手動で処理</span></a>
 </nav>
 
 <div class="container">
 
-  <!-- 登場人物サマリー -->
-  <div class="roles">
-    <div class="role-card">
-      <div class="role-icon user"><svg class="icon"><use href="#i-user"/></svg></div>
-      <div>
-        <h3>ユーザー</h3>
-        <p>自転車を検索・予約・利用するお客さん</p>
-      </div>
+  <!-- ================================================================ -->
+  <!-- 01 結論（旧8章「As-IsとTo-Beの主な違い」の対比カードをここに統合・2026-09-04） -->
+  <!-- ================================================================ -->
+  <div class="section" id="conclusion">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="sh-body"><h2>結論</h2><div class="sh-sub">現行フローの弱点は3つ — 貸出時に課金・失敗したら現金・返金は手作業</div></div>
     </div>
-    <div class="role-card">
-      <div class="role-icon store"><svg class="icon"><use href="#i-bike"/></svg></div>
-      <div>
-        <h3>店舗</h3>
-        <p>自転車を提供する加盟店（56店舗・2026-08-20時点）</p>
-      </div>
-    </div>
-    <div class="role-card">
-      <div class="role-icon admin"><svg class="icon"><use href="#i-tool"/></svg></div>
-      <div>
-        <h3>管理者</h3>
-        <p>PEDALSTANDARD の運営チーム</p>
-      </div>
-    </div>
-  </div>
+    <p>現行フローの弱点は3つです。①予約の時点では決済せず、店舗が「貸出開始」を押した時に初めてカードに課金する。②その場で決済に失敗したら現地払い（現金）に切り替えるため、売上の管理が複雑になる。③キャンセル返金は期限の自動判定がなく、すべて管理者の手作業です。現行と目標フローの対比は次のとおりです。</p>
 
-  <!-- フェーズ一覧（目次） -->
-  <div class="phases">
-    <div class="phase"><span class="pn">Phase 1</span><span class="pt">アカウント・認証</span><span class="ps"><i class="user"></i></span></div>
-    <div class="phase"><span class="pn">Phase 2</span><span class="pt">店舗準備・承認</span><span class="ps"><i class="store"></i><i class="admin"></i></span></div>
-    <div class="phase"><span class="pn">Phase 3</span><span class="pt">自転車検索</span><span class="ps"><i class="user"></i></span></div>
-    <div class="phase"><span class="pn">Phase 4</span><span class="pt">予約申込（未決済）</span><span class="ps"><i class="user"></i><i class="store"></i></span></div>
-    <div class="phase"><span class="pn">Phase 5</span><span class="pt">来店・貸出・決済</span><span class="ps"><i class="store"></i><i class="admin"></i></span></div>
-    <div class="phase"><span class="pn">Phase 6</span><span class="pt">返却・完了</span><span class="ps"><i class="store"></i><i class="admin"></i></span></div>
-    <div class="phase"><span class="pn">Phase 7</span><span class="pt">キャンセル・返金</span><span class="ps"><i class="user"></i><i class="store"></i><i class="admin"></i></span></div>
+    <div class="compare">
+      <div class="compare-box asis">
+        <div class="cb-head">As-Is（現行）決済タイミング</div>
+        <p>予約時は<span class="highlight">未決済</span>。店舗が「貸出開始」ボタンを押した時点でカード課金</p>
+      </div>
+      <div class="compare-box tobe">
+        <div class="cb-head">To-Be（目標）決済タイミング</div>
+        <p>予約確定時に<span class="highlight">即時決済</span>。決済サービス（Stripeへ載せ替え決定済み）でカード課金が完了してから予約が確定する</p>
+      </div>
+    </div>
+    <div class="compare">
+      <div class="compare-box asis">
+        <div class="cb-head">As-Is（現行）決済失敗時</div>
+        <p>店舗で<span class="highlight">現地払い（現金）に切り替え</span>て貸出を続行</p>
+      </div>
+      <div class="compare-box tobe">
+        <div class="cb-head">To-Be（目標）決済失敗時</div>
+        <p><span class="highlight">3回までリトライ可能</span>。上限超過で予約中断、失敗通知メール送信</p>
+      </div>
+    </div>
+    <div class="compare">
+      <div class="compare-box asis">
+        <div class="cb-head">As-Is（現行）キャンセル返金</div>
+        <p>管理者が<span class="highlight">手動で</span>返金処理を実行（期限判定なし）</p>
+      </div>
+      <div class="compare-box tobe">
+        <div class="cb-head">To-Be（目標）キャンセル返金</div>
+        <p>キャンセル期限を<span class="highlight">自動判定</span>。期限内は全額返金、期限外は返金なし</p>
+      </div>
+    </div>
+    <div class="compare">
+      <div class="compare-box asis">
+        <div class="cb-head">As-Is（現行）貸出 / 返却</div>
+        <p>店舗が「貸出開始」「返却確認」を<span class="highlight">手動で操作</span>する物理フローが存在</p>
+      </div>
+      <div class="compare-box tobe">
+        <div class="cb-head">To-Be（目標）貸出 / 返却</div>
+        <p>予約確定時に決済完了のため、<span class="highlight">貸出 / 返却の業務フローは簡略化</span></p>
+      </div>
+    </div>
+
+    <!-- 実装タスク#35。この記述は2026-08-20時点 -->
+    <ul class="notes">
+      <li>決済基盤についての補足: 決済はStripeへの載せ替えが決定しています（6月19日決定）。このページのPay.JPは「現行システムの説明」としては正しい内容です。ただし、To-Be側の決済はStripeで実装されます。</li>
+    </ul>
   </div>
 
   <!-- ================================================================ -->
@@ -133,11 +131,12 @@
   <!-- ================================================================ -->
   <div class="section" id="phase1">
     <div class="section-header">
-      <div class="section-num">01</div>
+      <div class="section-num">02</div>
       <div class="sh-body"><h2>アカウント・認証</h2></div>
     </div>
     <p class="section-desc">ユーザーがサービスを利用するための認証フローです。カード登録は予約フローの「支払い方法」ステップで行います。</p>
 
+    <figure class="fig" aria-label="カード登録は認証の中ではなく、予約フローの支払い方法ステップで行う">
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
         <div class="swim-label user"><i></i>ユーザー</div>
@@ -147,35 +146,31 @@
           <div class="swim-node user decision">新規?</div>
           <div class="swim-arrow">&rarr;</div>
           <div class="swim-branch">
-            <div class="swim-branch-label">既存ユーザー</div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <div class="swim-node user">ログイン</div>
-              <div class="swim-arrow">&rarr;</div>
-              <div class="swim-node user decision">認証OK?</div>
-              <div class="swim-arrow">&rarr;</div>
-              <div class="swim-node user">マイページ</div>
+            <div>
+              <div class="swim-branch-label ok">既存ユーザー</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                <div class="swim-node user">ログイン</div>
+                <div class="swim-arrow">&rarr;</div>
+                <div class="swim-node user decision">認証OK?</div>
+                <div class="swim-arrow">&rarr;</div>
+                <div class="swim-node hot">マイページ</div>
+              </div>
+            </div>
+            <div>
+              <div class="swim-branch-label">新規ユーザー</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                <div class="swim-node user">新規登録</div>
+                <div class="swim-arrow">&rarr;</div>
+                <div class="swim-node notify">確認メール</div>
+                <div class="swim-arrow">&rarr;</div>
+                <div class="swim-node user">本人確認</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div class="swim-row">
-        <div class="swim-label"></div>
-        <div class="swim-track">
-          <div class="swim-arrow">&rarr;</div>
-          <div class="swim-branch">
-            <div class="swim-branch-label">新規ユーザー</div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <div class="swim-node user">新規登録</div>
-              <div class="swim-arrow">&rarr;</div>
-              <div class="swim-node notify">確認メール</div>
-              <div class="swim-arrow">&rarr;</div>
-              <div class="swim-node user">本人確認</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="swim-row">
-        <div class="swim-label gold"><i></i>補足</div>
+        <div class="swim-label admin"><i></i>カード登録</div>
         <div class="swim-track">
           <div class="swim-node user" style="border-style:dashed">予約フロー</div>
           <div class="swim-arrow">&rarr;</div>
@@ -184,52 +179,19 @@
         </div>
       </div>
     </div></div>
+    </figure>
     <div class="legend">
-      <span class="kicker">凡例（色の意味）</span>
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者操作</span>
-      <span><i style="background:var(--gold)"></i>自動通知</span>
-      <span><i style="background:var(--danger)"></i>外部サービス</span>
-      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+      <span><i style="background:var(--ink)"></i>管理者（PEDALSTANDARD）</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Pay.JP）</span>
+      <span><i style="background:var(--gold)"></i>お金の動き・自動通知</span>
+      <span><i style="background:var(--danger)"></i>例外・異常系</span>
     </div>
-
-    <div class="card">
-      <h4>認証フロー詳細</h4>
-      <div class="pflow">
-        <div class="pflow-step">
-          <div class="pflow-dot user">1</div>
-          <div class="pflow-body">
-            <div class="pflow-actor user">ユーザー</div>
-            <div class="pflow-text">トップページからログインまたは新規登録を選択</div>
-          </div>
-        </div>
-        <div class="pflow-step">
-          <div class="pflow-dot user">2</div>
-          <div class="pflow-body">
-            <div class="pflow-actor user">ユーザー（既存）</div>
-            <div class="pflow-text">メールアドレスとパスワードでログイン</div>
-            <div class="pflow-note">認証失敗 &rarr; エラー表示、パスワード忘れ &rarr; リセット申請フロー</div>
-          </div>
-        </div>
-        <div class="pflow-step">
-          <div class="pflow-dot user">3</div>
-          <div class="pflow-body">
-            <div class="pflow-actor user">ユーザー（新規）</div>
-            <div class="pflow-text">新規登録フォームに情報を入力</div>
-            <div class="pflow-note">確認メール送信 &rarr; メール内リンクで本人確認完了</div>
-          </div>
-        </div>
-        <div class="pflow-step">
-          <div class="pflow-dot user">4</div>
-          <div class="pflow-body">
-            <div class="pflow-actor user">ユーザー</div>
-            <div class="pflow-text">予約フローの「支払い方法」ステップでカード情報を登録する</div>
-            <div class="pflow-note">Pay.JPのCheckout.jsフォームが表示される。カード番号はRincleに保存されない（トークン方式）</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ul class="notes">
+      <li>カード番号はRincleには保存されません。Pay.JPのフォームが直接預かります（トークン方式）。</li>
+      <li>ログインに失敗した場合はエラーを表示します。パスワードを忘れた場合はリセット申請のフローに進みます。</li>
+    </ul>
 
     <div class="alert alert-blue">
       <svg class="a-icon icon"><use href="#i-info"/></svg>
@@ -242,11 +204,12 @@
   <!-- ================================================================ -->
   <div class="section" id="phase2">
     <div class="section-header">
-      <div class="section-num">02</div>
-      <div class="sh-body"><h2>店舗準備・承認 / マスタ管理</h2></div>
+      <div class="section-num">03</div>
+      <div class="sh-body"><h2>店舗準備・承認</h2><div class="sh-sub">マスタ管理を含む</div></div>
     </div>
-    <p class="section-desc">加盟店がRincleに出店し、自転車を登録して予約を受けられるようになるまでの流れです。</p>
+    <p class="section-desc">加盟店がRincleに出店してから、自転車を登録して予約を受けられるようになるまでの流れです。</p>
 
+    <figure class="fig" aria-label="店舗は管理者の承認を得るまで自転車を登録できず、開店準備はすべて承認後になる">
     <div class="lane-wrap">
       <div class="lanes" style="grid-template-columns: 96px 1fr 1.2fr 1fr 1.4fr;">
         <div class="lane-corner">時系列 →</div>
@@ -261,7 +224,7 @@
         <div class="lane-cell ex"></div>
         <div class="lane-cell">アカウント有効化 → ログイン → <strong>自転車登録・料金プラン設定・カレンダー設定</strong><small>以後は在庫ステータスを随時管理</small></div>
 
-        <div class="lane-label sys"><i></i>管理者</div>
+        <div class="lane-label other"><i></i>管理者</div>
         <div class="lane-cell"></div>
         <div class="lane-cell">申請通知 → ダッシュボードで<strong>店舗審査</strong> → 承認</div>
         <div class="lane-cell ex">却下</div>
@@ -274,16 +237,19 @@
         <div class="lane-cell"></div>
       </div>
     </div>
+    </figure>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者・システム</span>
-      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
-      <span><i style="background:var(--danger)"></i>外部サービス（Pay.JP）・例外</span>
+      <span><i style="background:var(--ink)"></i>管理者（PEDALSTANDARD）</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Pay.JP）</span>
+      <span><i style="background:var(--gold)"></i>お金の動き・自動通知</span>
+      <span><i style="background:var(--danger)"></i>例外・異常系</span>
     </div>
 
     <div class="card">
       <h4>店舗登録から出店準備まで</h4>
+      <figure class="fig" aria-label="開店準備の入力は店舗任せで、自転車1台あたり29項目の登録と料金区分ごとの設定が必要になる">
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot store">1</div>
@@ -300,10 +266,10 @@
           </div>
         </div>
         <div class="pflow-step">
-          <div class="pflow-dot admin">3</div>
+          <div class="pflow-dot other">3</div>
           <div class="pflow-body">
-            <div class="pflow-actor admin">管理者</div>
-            <div class="pflow-text">店舗情報を審査し、承認または却下を判断</div>
+            <div class="pflow-actor other">管理者</div>
+            <div class="pflow-text">店舗情報を審査して承認または却下を判断</div>
             <div class="pflow-note">承認 &rarr; 店舗に承認メール送信、アカウント有効化<br>却下 &rarr; 店舗に却下通知メール送信</div>
           </div>
         </div>
@@ -323,6 +289,7 @@
           </div>
         </div>
       </div>
+      </figure>
     </div>
 
     <div class="alert alert-blue">
@@ -336,11 +303,12 @@
   <!-- ================================================================ -->
   <div class="section" id="phase3">
     <div class="section-header">
-      <div class="section-num">03</div>
+      <div class="section-num">04</div>
       <div class="sh-body"><h2>自転車検索・閲覧</h2></div>
     </div>
     <p class="section-desc">ユーザーがエリアや日時を指定して利用可能な自転車を探すフローです。</p>
 
+    <figure class="fig" aria-label="空車が見つからない場合は条件を変えてもらうしかなく、そこで検索が行き止まりになる">
     <div class="swim"><div class="swim-inner">
       <div class="swim-row">
         <div class="swim-label user"><i></i>ユーザー</div>
@@ -368,17 +336,19 @@
         </div>
       </div>
     </div></div>
+    </figure>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者操作</span>
-      <span><i style="background:var(--gold)"></i>自動通知</span>
-      <span><i style="background:var(--danger)"></i>外部サービス</span>
-      <span><i style="background:transparent;border:1.5px dashed var(--danger)"></i>エラー・異常系</span>
+      <span><i style="background:var(--ink)"></i>管理者（PEDALSTANDARD）</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Pay.JP）</span>
+      <span><i style="background:var(--gold)"></i>お金の動き・自動通知</span>
+      <span><i style="background:var(--danger)"></i>例外・異常系</span>
     </div>
 
     <div class="card">
       <h4>検索フロー詳細</h4>
+      <figure class="fig" aria-label="検索から自転車を選ぶまでの3手順にはユーザーとシステムしか登場せず、店舗や管理者の手は要らない">
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot user">1</div>
@@ -399,10 +369,11 @@
           <div class="pflow-dot user">3</div>
           <div class="pflow-body">
             <div class="pflow-actor user">ユーザー</div>
-            <div class="pflow-text">一覧から自転車を選択し、詳細ページで写真・スペック・料金を確認</div>
+            <div class="pflow-text">一覧から自転車を選択。詳細ページで写真・スペック・料金を確認</div>
           </div>
         </div>
       </div>
+      </figure>
     </div>
   </div>
 
@@ -411,11 +382,12 @@
   <!-- ================================================================ -->
   <div class="section" id="phase4">
     <div class="section-header">
-      <div class="section-num">04</div>
+      <div class="section-num">05</div>
       <div class="sh-body"><h2>予約申込（未決済）</h2></div>
     </div>
     <p class="section-desc">ユーザーが自転車を予約するフローです。<strong>この時点ではカード引き落としは行われません。</strong></p>
 
+    <figure class="fig" aria-label="予約が確定してもお金は1円も動かず、ステータスは「来客待ち」のままになる">
     <div class="lane-wrap">
       <div class="lanes" style="grid-template-columns: 96px 1.2fr 1fr 1.4fr;">
         <div class="lane-corner">時系列 →</div>
@@ -444,16 +416,19 @@
         <div class="lane-cell money">¥0<small>決済はPhase 5の貸出開始時</small></div>
       </div>
     </div>
+    </figure>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者・システム</span>
-      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
-      <span><i style="background:var(--danger)"></i>外部サービス（Pay.JP）・例外</span>
+      <span><i style="background:var(--ink)"></i>管理者（PEDALSTANDARD）</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Pay.JP）</span>
+      <span><i style="background:var(--gold)"></i>お金の動き・自動通知</span>
+      <span><i style="background:var(--danger)"></i>例外・異常系</span>
     </div>
 
     <div class="card">
       <h4>予約4ステップ</h4>
+      <figure class="fig" aria-label="支払方法はStep3で選ぶだけで、予約を確定した時点ではまだカード引き落としが起きない">
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot system">1</div>
@@ -474,7 +449,7 @@
           <div class="pflow-dot user">3</div>
           <div class="pflow-body">
             <div class="pflow-actor user">ユーザー</div>
-            <div class="pflow-text">Step3: 予約内容を確認し、支払方法（クレジットカード or 現地払い）を選択</div>
+            <div class="pflow-text">Step3: 予約内容を確認。支払方法（クレジットカード or 現地払い）を選択</div>
           </div>
         </div>
         <div class="pflow-step">
@@ -496,15 +471,16 @@
           <div class="pflow-dot store">6</div>
           <div class="pflow-body">
             <div class="pflow-actor store">店舗</div>
-            <div class="pflow-text">店舗管理画面で予約詳細を確認し、自転車の準備に入る</div>
+            <div class="pflow-text">店舗管理画面で予約詳細を確認して自転車の準備に入る</div>
           </div>
         </div>
       </div>
+      </figure>
     </div>
 
-    <div class="alert alert-amber">
-      <svg class="a-icon icon"><use href="#i-alert"/></svg>
-      <div><strong>現行の重要ポイント：</strong>予約確定時に決済は行われません。カード引き落としは Phase 5 の「貸出開始」時に店舗が実行します。これは To-Be では予約確定時に即時決済に変更される予定です。</div>
+    <div class="alert alert-blue">
+      <svg class="a-icon icon"><use href="#i-info"/></svg>
+      <div><strong>この章の読みどころ:</strong> 予約確定の時点では決済は行われません。カード引き落としは6章「貸出開始」の時に店舗が実行します。To-Beでは予約確定時の即時決済に変わる予定です。</div>
     </div>
   </div>
 
@@ -513,11 +489,12 @@
   <!-- ================================================================ -->
   <div class="section" id="phase5">
     <div class="section-header">
-      <div class="section-num">05</div>
+      <div class="section-num">06</div>
       <div class="sh-body"><h2>来店・貸出・決済</h2></div>
     </div>
-    <p class="section-desc">ユーザーが来店し、店舗が自転車を貸し出すフローです。<strong>決済はこのタイミングで店舗が実行します。</strong></p>
+    <p class="section-desc">ユーザーが来店してから店舗が自転車を貸し出すまでのフローです。<strong>決済はこのタイミングで店舗が実行します。</strong></p>
 
+    <figure class="fig" aria-label="お金が動くのは店舗が「貸出開始」を押した瞬間だけで、ここで決済が失敗すると現金での回収に切り替わる">
     <div class="lane-wrap">
       <div class="lanes" style="grid-template-columns: 96px 1fr 1fr 1.1fr 1.3fr 1fr;">
         <div class="lane-corner">時系列 →</div>
@@ -534,14 +511,14 @@
         <div class="lane-cell ex">現地払い（現金）に切り替えて貸出</div>
         <div class="lane-cell"><strong>貸出中</strong></div>
 
-        <div class="lane-label ext"><i></i>Pay.JP</div>
+        <div class="lane-label sys"><i></i>Pay.JP</div>
         <div class="lane-cell"></div>
         <div class="lane-cell"></div>
         <div class="lane-cell"><strong>決済処理</strong><small>登録済みカードに課金（charge作成）</small></div>
         <div class="lane-cell ex">失敗を返却 → 店舗へ</div>
         <div class="lane-cell"></div>
 
-        <div class="lane-label sys"><i></i>管理者</div>
+        <div class="lane-label other"><i></i>管理者</div>
         <div class="lane-cell"></div>
         <div class="lane-cell"></div>
         <div class="lane-cell"></div>
@@ -556,16 +533,19 @@
         <div class="lane-cell money">決済済み</div>
       </div>
     </div>
+    </figure>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者・システム</span>
-      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
-      <span><i style="background:var(--danger)"></i>外部サービス（Pay.JP）・例外</span>
+      <span><i style="background:var(--ink)"></i>管理者（PEDALSTANDARD）</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Pay.JP）</span>
+      <span><i style="background:var(--gold)"></i>お金の動き・自動通知</span>
+      <span><i style="background:var(--danger)"></i>例外・異常系</span>
     </div>
 
     <div class="card">
       <h4>来店から貸出まで</h4>
+      <figure class="fig" aria-label="カードが使えるかどうかは店頭で初めて分かるため、失敗すると店舗と管理者に手作業の対応が発生する">
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot store">1</div>
@@ -583,9 +563,9 @@
           </div>
         </div>
         <div class="pflow-step">
-          <div class="pflow-dot external">3</div>
+          <div class="pflow-dot brand">3</div>
           <div class="pflow-body">
-            <div class="pflow-actor external">Pay.JP</div>
+            <div class="pflow-actor system">Pay.JP</div>
             <div class="pflow-text">登録済みカードに対して利用料金を課金（charge 作成）</div>
             <div class="pflow-note">charge_id が予約レコードに保存される</div>
           </div>
@@ -594,18 +574,19 @@
           <div class="pflow-dot store">4</div>
           <div class="pflow-body">
             <div class="pflow-actor store">店舗</div>
-            <div class="pflow-text">決済結果を確認し、自転車を貸し出す</div>
+            <div class="pflow-text">決済結果を確認して自転車を貸し出す</div>
             <div class="pflow-note">決済成功 &rarr; 予約ステータスを「貸出中」に更新<br>決済失敗 &rarr; 現地払い（現金）に切り替えて貸出</div>
           </div>
         </div>
         <div class="pflow-step">
-          <div class="pflow-dot admin">5</div>
+          <div class="pflow-dot other">5</div>
           <div class="pflow-body">
-            <div class="pflow-actor admin">管理者（決済エラー時のみ）</div>
+            <div class="pflow-actor other">管理者（決済エラー時のみ）</div>
             <div class="pflow-text">決済エラーが発生した場合、管理者が状況を確認して対応</div>
           </div>
         </div>
       </div>
+      </figure>
     </div>
 
     <div class="alert alert-red">
@@ -619,11 +600,12 @@
   <!-- ================================================================ -->
   <div class="section" id="phase6">
     <div class="section-header">
-      <div class="section-num">06</div>
+      <div class="section-num">07</div>
       <div class="sh-body"><h2>返却・完了</h2></div>
     </div>
-    <p class="section-desc">ユーザーが自転車を返却し、レンタルが完了するまでの流れです。</p>
+    <p class="section-desc">ユーザーが自転車を返却してからレンタルが完了するまでの流れです。</p>
 
+    <figure class="fig" aria-label="返却でお金は動かず、店舗の確認と完了処理だけでレンタルが終わる">
     <div class="lane-wrap">
       <div class="lanes" style="grid-template-columns: 96px repeat(2, minmax(0,1fr));">
         <div class="lane-corner">時系列 →</div>
@@ -634,21 +616,24 @@
         <div class="lane-cell">貸出中 → 返却確認<small>車体の状態をチェック</small></div>
         <div class="lane-cell"><strong>完了処理</strong><small>予約を完了にする</small></div>
 
-        <div class="lane-label sys"><i></i>管理者</div>
+        <div class="lane-label other"><i></i>管理者</div>
         <div class="lane-cell">予約モニタリング</div>
         <div class="lane-cell">売上レポート確認</div>
       </div>
     </div>
+    </figure>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者・システム</span>
-      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
-      <span><i style="background:var(--danger)"></i>外部サービス（Pay.JP）・例外</span>
+      <span><i style="background:var(--ink)"></i>管理者（PEDALSTANDARD）</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Pay.JP）</span>
+      <span><i style="background:var(--gold)"></i>お金の動き・自動通知</span>
+      <span><i style="background:var(--danger)"></i>例外・異常系</span>
     </div>
 
     <div class="card">
       <h4>返却フロー詳細</h4>
+      <figure class="fig" aria-label="手数料はPay.JPが自動で差し引くため請求作業は要らない一方、設定は10%のままで契約の15%と5%分ずれている">
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot store">1</div>
@@ -661,19 +646,20 @@
           <div class="pflow-dot store">2</div>
           <div class="pflow-body">
             <div class="pflow-actor store">店舗</div>
-            <div class="pflow-text">店舗管理画面で返却処理を実行し、予約を完了にする</div>
+            <div class="pflow-text">店舗管理画面で返却処理を実行して予約を完了にする</div>
             <div class="pflow-note">延長がある場合は追加料金の決済が別途発生（現行は部分的に実装）</div>
           </div>
         </div>
         <div class="pflow-step">
-          <div class="pflow-dot admin">3</div>
+          <div class="pflow-dot other">3</div>
           <div class="pflow-body">
-            <div class="pflow-actor admin">管理者</div>
-            <div class="pflow-text">予約状況をモニタリングし、売上レポートで実績を確認</div>
+            <div class="pflow-actor other">管理者</div>
+            <div class="pflow-text">予約状況をモニタリング。売上レポートで実績を確認</div>
             <div class="pflow-note">プラットフォーム手数料（10%）は Pay.JP が自動で差し引いて Rincle に分配（手動請求ではない）<br>※ 契約上の取り分は15%だが、現在のシステムでは10%に設定されている（5%分の差額あり）</div>
           </div>
         </div>
       </div>
+      </figure>
     </div>
   </div>
 
@@ -682,11 +668,12 @@
   <!-- ================================================================ -->
   <div class="section" id="phase7">
     <div class="section-header">
-      <div class="section-num">07</div>
+      <div class="section-num">08</div>
       <div class="sh-body"><h2>キャンセル・返金</h2></div>
     </div>
     <p class="section-desc">ユーザーが予約をキャンセルする場合のフローです。<strong>返金は管理者が手動で処理します。</strong></p>
 
+    <figure class="fig" aria-label="キャンセルは通知まで自動で進む一方、返金だけは管理者の手作業で止まる">
     <div class="lane-wrap">
       <div class="lanes" style="grid-template-columns: 96px 1.2fr 1.3fr 1.3fr;">
         <div class="lane-corner">時系列 →</div>
@@ -709,7 +696,7 @@
         <div class="lane-cell">キャンセル確認・対応<small>在庫を戻す</small></div>
         <div class="lane-cell ex"></div>
 
-        <div class="lane-label sys"><i></i>管理者</div>
+        <div class="lane-label other"><i></i>管理者</div>
         <div class="lane-cell"></div>
         <div class="lane-cell"></div>
         <div class="lane-cell ex"><strong>返金処理（手動）</strong> → 料金シミュレーション</div>
@@ -720,22 +707,25 @@
         <div class="lane-cell ex money">決済済み額から<strong>返金</strong></div>
       </div>
     </div>
+    </figure>
     <div class="legend">
       <span><i style="background:var(--info)"></i>ユーザー操作</span>
       <span><i style="background:var(--ok)"></i>店舗操作</span>
-      <span><i style="background:var(--accent)"></i>管理者・システム</span>
-      <span><i style="background:var(--gold)"></i>自動通知・お金の動き</span>
-      <span><i style="background:var(--danger)"></i>外部サービス（Pay.JP）・例外</span>
+      <span><i style="background:var(--ink)"></i>管理者（PEDALSTANDARD）</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Pay.JP）</span>
+      <span><i style="background:var(--gold)"></i>お金の動き・自動通知</span>
+      <span><i style="background:var(--danger)"></i>例外・異常系</span>
     </div>
 
     <div class="card">
       <h4>キャンセルフロー詳細</h4>
+      <figure class="fig" aria-label="返金は金額の計算も実行も管理者の手作業なので、キャンセルが増えるほど管理者の負担が増える">
       <div class="pflow">
         <div class="pflow-step">
           <div class="pflow-dot user">1</div>
           <div class="pflow-body">
             <div class="pflow-actor user">ユーザー</div>
-            <div class="pflow-text">予約一覧からキャンセルしたい予約を選択し、キャンセルを実行</div>
+            <div class="pflow-text">予約一覧からキャンセルしたい予約を選択してキャンセルを実行</div>
           </div>
         </div>
         <div class="pflow-step">
@@ -749,88 +739,31 @@
           <div class="pflow-dot store">3</div>
           <div class="pflow-body">
             <div class="pflow-actor store">店舗</div>
-            <div class="pflow-text">キャンセル通知を確認し、自転車の在庫を戻すなど対応</div>
+            <div class="pflow-text">キャンセル通知を確認して自転車の在庫を戻すなど対応</div>
           </div>
         </div>
         <div class="pflow-step">
-          <div class="pflow-dot admin">4</div>
+          <div class="pflow-dot other">4</div>
           <div class="pflow-body">
-            <div class="pflow-actor admin">管理者</div>
+            <div class="pflow-actor other">管理者</div>
             <div class="pflow-text">返金が必要な場合、管理者が手動で Pay.JP の返金処理を実行</div>
             <div class="pflow-note">返金額は料金シミュレーション機能で計算可能<br>charge_id を使って Pay.JP の Refund API を呼び出す</div>
           </div>
         </div>
       </div>
+      </figure>
     </div>
 
-    <div class="alert alert-amber">
+    <div class="alert alert-red">
       <svg class="a-icon icon"><use href="#i-alert"/></svg>
-      <div><strong>現行の課題：</strong>キャンセル期限の自動判定がなく、返金処理はすべて管理者の手動対応です。To-Be では「キャンセル期限内なら自動全額返金、期限外なら返金なし」のロジックが導入される予定です。</div>
-    </div>
-  </div>
-
-  <!-- ================================================================ -->
-  <!-- COMPARISON -->
-  <!-- ================================================================ -->
-  <div class="section" id="compare">
-    <div class="section-header">
-      <div class="section-num">vs</div>
-      <div class="sh-body"><h2>As-Is と To-Be の主な違い</h2></div>
-    </div>
-
-    <div class="alert alert-blue">
-      <svg class="a-icon icon"><use href="#i-info"/></svg>
-      <div><strong>決済基盤についての注記（2026-08-20時点）：</strong>決済はStripeへの載せ替えが決定しています（2026-06-19決定・実装タスク#35）。このページのPay.JPは「現行システムの説明」としては正しいですが、To-Be側の決済はStripeで実装されます。</div>
-    </div>
-
-    <div class="compare">
-      <div class="compare-box asis">
-        <div class="cb-head">As-Is（現行）決済タイミング</div>
-        <p>予約時は<span class="highlight">未決済</span>。店舗が「貸出開始」ボタンを押した時点でカード課金</p>
-      </div>
-      <div class="compare-box tobe">
-        <div class="cb-head">To-Be（目標）決済タイミング</div>
-        <p>予約確定時に<span class="highlight">即時決済</span>。決済サービス（Stripeへ載せ替え決定済み）でカード課金が完了してから予約が確定する</p>
-      </div>
-    </div>
-
-    <div class="compare">
-      <div class="compare-box asis">
-        <div class="cb-head">As-Is（現行）決済失敗時</div>
-        <p>店舗で<span class="highlight">現地払い（現金）に切り替え</span>て貸出を続行</p>
-      </div>
-      <div class="compare-box tobe">
-        <div class="cb-head">To-Be（目標）決済失敗時</div>
-        <p><span class="highlight">3回までリトライ可能</span>。上限超過で予約中断、失敗通知メール送信</p>
-      </div>
-    </div>
-
-    <div class="compare">
-      <div class="compare-box asis">
-        <div class="cb-head">As-Is（現行）キャンセル返金</div>
-        <p>管理者が<span class="highlight">手動で</span>返金処理を実行（期限判定なし）</p>
-      </div>
-      <div class="compare-box tobe">
-        <div class="cb-head">To-Be（目標）キャンセル返金</div>
-        <p>キャンセル期限を<span class="highlight">自動判定</span>。期限内は全額返金、期限外は返金なし</p>
-      </div>
-    </div>
-
-    <div class="compare">
-      <div class="compare-box asis">
-        <div class="cb-head">As-Is（現行）貸出 / 返却</div>
-        <p>店舗が「貸出開始」「返却確認」を<span class="highlight">手動で操作</span>する物理フローが存在</p>
-      </div>
-      <div class="compare-box tobe">
-        <div class="cb-head">To-Be（目標）貸出 / 返却</div>
-        <p>予約確定時に決済完了のため、<span class="highlight">貸出 / 返却の業務フローは簡略化</span></p>
-      </div>
+      <div><strong>現行の課題:</strong> キャンセル期限の自動判定がなく、返金処理はすべて管理者の手動対応です。To-Beでは「キャンセル期限内なら自動で全額返金、期限外は返金なし」の判定が入る予定です。</div>
     </div>
   </div>
 
 </div>
 
-<footer>Rincle 業務フロー図（As-Is / 現行） &mdash; PEDALSTANDARD<br>対応データ: documents/2_requirements/02_flow/bizflow-asis.json（フロー図データ・md正本なし）</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/2_requirements/02_flow/bizflow-asis.json。md正本はなくフロー図データが正本） -->
+<footer>正本: documents/2_requirements/02_flow/bizflow-asis.json</footer>
 
 <script>
 (function(){

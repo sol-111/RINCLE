@@ -17,27 +17,9 @@
 .flow a:first-child{border-left:none}
 .flow a:nth-child(n+5){border-top:none}
 
-/* HTTPメソッドのラベル（白面+役割色の輪郭。塗らない） */
-.method{display:inline-block;padding:1px 8px;border-radius:3px;font-size:10.5px;font-weight:700;letter-spacing:.08em;font-family:'SFMono-Regular',Menlo,Consolas,monospace;min-width:52px;text-align:center;background:var(--surface);border:1px solid var(--line)}
-.method-get{border-color:var(--ok-line);color:var(--ok-text)}
-.method-post{border-color:var(--info-line);color:var(--info-text)}
-.method-delete{border-color:var(--danger-line);color:var(--danger-text)}
-
 /* エンドポイント表記（inline codeと同じ面） */
 .endpoint{font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:12.5px;color:var(--text);background:#F6EFE9;border:1px solid #E8DCD2;padding:2px 8px;border-radius:3px;white-space:nowrap}
 .endpoint .param{color:var(--accent-deep);font-weight:700}
-
-/* 全体像の要点（.stat型: 左1px墨罫+項目名+値） */
-.kv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:28px 0}
-.kv{border-left:1px solid var(--ink);padding-left:20px}
-.kv h3{font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--accent);margin:0 0 6px;font-family:inherit}
-.kv p{font-size:13.5px;color:var(--text);line-height:1.8}
-
-/* Webhookイベント一覧（罫線リスト型） */
-.event-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:28px 0}
-.event-item{display:flex;gap:10px;align-items:baseline;padding:9px 14px;background:var(--surface);border:1px solid var(--line-soft);border-radius:3px;font-size:13px}
-.event-type{font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:12px;color:var(--accent-deep);font-weight:700;white-space:nowrap}
-.event-desc{color:var(--sub);font-size:12px}
 
 /* 参考リンク（白面+1px罫線・URLは弱い文字） */
 .link-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:28px 0}
@@ -51,13 +33,10 @@ h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);marg
 .card p{font-size:14px;line-height:1.9}
 td{vertical-align:top}
 
-@media (max-width:860px){
-  .kv-grid{grid-template-columns:1fr 1fr}
-}
 @media (max-width:760px){
   .flow{grid-template-columns:1fr 1fr}
   .flow a{border-left:1px solid var(--line-soft)}
-  .event-grid,.link-grid{grid-template-columns:1fr}
+  .link-grid{grid-template-columns:1fr}
   .endpoint{font-size:11px}
 }
 </style>
@@ -92,7 +71,7 @@ td{vertical-align:top}
       <span class="hero-no">PAY.JP</span>
     </div>
     <h1>PAY.JP API v1 リファレンス</h1>
-    <p class="lead">PAY.JP REST API （v1） の全リソース・エンドポイントを日本語で整理したリファレンスです。移行・設計のたたき台としてご利用ください。</p>
+    <p class="lead">PAY.JP REST API（v1）の全リソース・エンドポイントを日本語で整理した、開発者向けの参照資料です。移行・設計のたたき台としてご利用ください。</p>
   </div>
 </div>
 
@@ -108,19 +87,12 @@ td{vertical-align:top}
 
 <div class="container">
 
-  <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>今後の決済はStripeへの載せ替えが決定しています（2026-06-19定例・実装タスク#35）。</strong>Pay.JPは現行本番で稼働中のため、本リファレンスは現行連携の保守・移行検討用の資料です。</div></div>
-
-
-  <!-- 1 全体像 -->
+  <!-- 01 全体像（この資料の読み方を冒頭段落に。結論を持たない参照資料なので「結論」の章は作らない・2026-09-04） -->
   <div class="section" id="s1">
-    <div class="section-header"><div class="section-num">1</div><div class="sh-body"><h2>全体像</h2><div class="sh-sub">認証・プロトコル・レスポンスの基本</div></div></div>
-
-    <div class="kv-grid">
-      <div class="kv"><h3>Base URL</h3><p><code>https://api.pay.jp/v1/</code></p></div>
-      <div class="kv"><h3>Protocol</h3><p>HTTPS のみ</p></div>
-      <div class="kv"><h3>Authentication</h3><p>Basic認証 （<code>sk_...</code>）</p></div>
-      <div class="kv"><h3>Response</h3><p>JSON （UTF-8）</p></div>
-    </div>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>全体像</h2><div class="sh-sub">認証・プロトコル・レスポンスの基本</div></div></div>
+    <p>この資料は開発者向けの参照資料です。v1の全リソースは<a href="#s3">3章</a>に一覧があります。RINCLEが実際に使っているのは、テナント・顧客・カード・トークン・課金・返金の6種類です（<a href="#s5">5章</a>）。</p>
+    <!-- 6月19日定例で決定・実装タスク#35 -->
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>今後の決済はStripeへの載せ替えが決定しています（6月19日決定）。</strong>Pay.JPは現行本番で稼働中のため、本リファレンスは現行連携の保守・移行検討用の資料です。</div></div>
 
     <div class="table-wrap">
       <table>
@@ -130,7 +102,7 @@ td{vertical-align:top}
           <tr><td class="label">プロトコル</td><td><strong>HTTPS のみ</strong></td></tr>
           <tr><td class="label">認証</td><td><strong>Basic 認証</strong> — ユーザー名に<strong>シークレットキー</strong>（<code>sk_...</code>）、パスワードは空</td></tr>
           <tr><td class="label">パブリックキー</td><td><code>pk_...</code> — 主にブラウザ側でカードを<strong>トークン化</strong>するときに使用</td></tr>
-          <tr><td class="label">メソッド</td><td><span class="method method-get">GET</span> <span class="method method-post">POST</span> <span class="method method-delete">DELETE</span></td></tr>
+          <tr><td class="label">メソッド</td><td><span class="method get">GET</span> <span class="method post">POST</span> <span class="method delete">DELETE</span></td></tr>
           <tr><td class="label">POST のボディ</td><td><code>Content-Type: application/x-www-form-urlencoded</code></td></tr>
           <tr><td class="label">レスポンス</td><td>JSON（UTF-8）</td></tr>
         </tbody>
@@ -142,7 +114,7 @@ td{vertical-align:top}
 
   <!-- 2 共通機能 -->
   <div class="section" id="s2">
-    <div class="section-header"><div class="section-num">2</div><div class="sh-body"><h2>共通機能（リソース以外）</h2><div class="sh-sub">エラー・レートリミット・一覧取得・メタデータ・Webhook</div></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>共通機能（リソース以外）</h2><div class="sh-sub">エラー・レートリミット・一覧取得・メタデータ・Webhook</div></div></div>
 
     <div class="table-wrap">
       <table>
@@ -158,51 +130,56 @@ td{vertical-align:top}
     </div>
 
     <h3>Webhook / イベント type 一覧</h3>
-    <div class="event-grid">
-      <div class="event-item"><span class="event-type">charge.succeeded</span><span class="event-desc">支払いの成功</span></div>
-      <div class="event-item"><span class="event-type">charge.failed</span><span class="event-desc">支払いの失敗</span></div>
-      <div class="event-item"><span class="event-type">charge.updated</span><span class="event-desc">支払いの更新</span></div>
-      <div class="event-item"><span class="event-type">charge.refunded</span><span class="event-desc">支払いの返金</span></div>
-      <div class="event-item"><span class="event-type">charge.captured</span><span class="event-desc">支払いの確定</span></div>
-      <div class="event-item"><span class="event-type">dispute.created</span><span class="event-desc">チャージバック発生</span></div>
-      <div class="event-item"><span class="event-type">token.created</span><span class="event-desc">トークン作成</span></div>
-      <div class="event-item"><span class="event-type">customer.created</span><span class="event-desc">顧客の作成</span></div>
-      <div class="event-item"><span class="event-type">customer.updated</span><span class="event-desc">顧客の更新</span></div>
-      <div class="event-item"><span class="event-type">customer.deleted</span><span class="event-desc">顧客の削除</span></div>
-      <div class="event-item"><span class="event-type">customer.card.created</span><span class="event-desc">カードの作成</span></div>
-      <div class="event-item"><span class="event-type">customer.card.updated</span><span class="event-desc">カードの更新</span></div>
-      <div class="event-item"><span class="event-type">customer.card.deleted</span><span class="event-desc">カードの削除</span></div>
-      <div class="event-item"><span class="event-type">plan.created</span><span class="event-desc">プランの作成</span></div>
-      <div class="event-item"><span class="event-type">plan.updated</span><span class="event-desc">プランの更新</span></div>
-      <div class="event-item"><span class="event-type">plan.deleted</span><span class="event-desc">プランの削除</span></div>
-      <div class="event-item"><span class="event-type">subscription.*</span><span class="event-desc">定期課金の各種操作</span></div>
-      <div class="event-item"><span class="event-type">transfer.succeeded</span><span class="event-desc">入金内容の確定</span></div>
-      <div class="event-item"><span class="event-type">tenant.*</span><span class="event-desc">Platform テナント操作</span></div>
-      <div class="event-item"><span class="event-type">tenant_transfer.succeeded</span><span class="event-desc">テナント入金の確定</span></div>
-      <div class="event-item"><span class="event-type">term.created</span><span class="event-desc">集計区間の作成</span></div>
-      <div class="event-item"><span class="event-type">term.closed</span><span class="event-desc">集計区間の締め完了</span></div>
-      <div class="event-item"><span class="event-type">statement.created</span><span class="event-desc">取引明細の作成</span></div>
-      <div class="event-item"><span class="event-type">balance.*</span><span class="event-desc">残高の各種操作</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:150px">リソース</th><th style="width:270px">イベント type</th><th>意味</th></tr></thead>
+        <tbody>
+          <tr><td class="label" rowspan="5">支払い（charge）</td><td><code>charge.succeeded</code></td><td>支払いの成功</td></tr>
+          <tr><td><code>charge.failed</code></td><td>支払いの失敗</td></tr>
+          <tr><td><code>charge.updated</code></td><td>支払いの更新</td></tr>
+          <tr><td><code>charge.refunded</code></td><td>支払いの返金</td></tr>
+          <tr><td><code>charge.captured</code></td><td>支払いの確定</td></tr>
+          <tr><td class="label">チャージバック（dispute）</td><td><code>dispute.created</code></td><td>チャージバック発生</td></tr>
+          <tr><td class="label">トークン（token）</td><td><code>token.created</code></td><td>トークン作成</td></tr>
+          <tr><td class="label" rowspan="6">顧客・カード（customer）</td><td><code>customer.created</code></td><td>顧客の作成</td></tr>
+          <tr><td><code>customer.updated</code></td><td>顧客の更新</td></tr>
+          <tr><td><code>customer.deleted</code></td><td>顧客の削除</td></tr>
+          <tr><td><code>customer.card.created</code></td><td>カードの作成</td></tr>
+          <tr><td><code>customer.card.updated</code></td><td>カードの更新</td></tr>
+          <tr><td><code>customer.card.deleted</code></td><td>カードの削除</td></tr>
+          <tr><td class="label" rowspan="3">プラン（plan）</td><td><code>plan.created</code></td><td>プランの作成</td></tr>
+          <tr><td><code>plan.updated</code></td><td>プランの更新</td></tr>
+          <tr><td><code>plan.deleted</code></td><td>プランの削除</td></tr>
+          <tr><td class="label">定期課金（subscription）</td><td><code>subscription.*</code></td><td>定期課金の各種操作</td></tr>
+          <tr><td class="label">入金（transfer）</td><td><code>transfer.succeeded</code></td><td>入金内容の確定</td></tr>
+          <tr><td class="label" rowspan="2">テナント（tenant）</td><td><code>tenant.*</code></td><td>Platform テナント操作</td></tr>
+          <tr><td><code>tenant_transfer.succeeded</code></td><td>テナント入金の確定</td></tr>
+          <tr><td class="label" rowspan="3">集計・明細</td><td><code>term.created</code></td><td>集計区間の作成</td></tr>
+          <tr><td><code>term.closed</code></td><td>集計区間の締め完了</td></tr>
+          <tr><td><code>statement.created</code></td><td>取引明細の作成</td></tr>
+          <tr><td class="label">残高（balance）</td><td><code>balance.*</code></td><td>残高の各種操作</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
   <!-- 3 標準API -->
   <div class="section" id="s3">
-    <div class="section-header"><div class="section-num">3</div><div class="sh-body"><h2>標準 API — リソース別エンドポイント</h2><div class="sh-sub">詳細パラメータ・制約は必ず公式ドキュメントを参照</div></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>標準 API — リソース別エンドポイント</h2><div class="sh-sub">詳細パラメータ・制約は必ず公式ドキュメントを参照</div></div></div>
 
     <h3>Charge（支払い）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/charges</span></td><td>支払いを作成</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span></span></td><td>支払いを取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span></span></td><td>支払いを更新</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/charges</span></td><td>支払い一覧</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span>/capture</span></td><td>支払いを確定（オーソリの確定）</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span>/refund</span></td><td>返金</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span>/reauth</span></td><td>再度与信枠確保</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span>/tds_finish</span></td><td>3D セキュアフロー完了</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/charges</span></td><td>支払いを作成</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span></span></td><td>支払いを取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span></span></td><td>支払いを更新</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/charges</span></td><td>支払い一覧</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span>/capture</span></td><td>支払いを確定（オーソリの確定）</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span>/refund</span></td><td>返金</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span>/reauth</span></td><td>再度与信枠確保</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/charges/<span class="param">:id</span>/tds_finish</span></td><td>3D セキュアフロー完了</td></tr>
         </tbody>
       </table>
     </div>
@@ -210,13 +187,13 @@ td{vertical-align:top}
     <h3>Customer（顧客）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/customers</span></td><td>顧客を作成</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span></span></td><td>顧客を取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span></span></td><td>顧客を更新</td></tr>
-          <tr><td><span class="method method-delete">DELETE</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span></span></td><td>顧客を削除</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/customers</span></td><td>顧客一覧</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/customers</span></td><td>顧客を作成</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span></span></td><td>顧客を取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span></span></td><td>顧客を更新</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span></span></td><td>顧客を削除</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/customers</span></td><td>顧客一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -224,13 +201,13 @@ td{vertical-align:top}
     <h3>Customer に紐づく Card（カード）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards</span></td><td>顧客のカードを追加</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards/<span class="param">:card_id</span></span></td><td>特定カードを取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards/<span class="param">:card_id</span></span></td><td>カード情報を更新</td></tr>
-          <tr><td><span class="method method-delete">DELETE</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards/<span class="param">:card_id</span></span></td><td>カードを削除</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards</span></td><td>カード一覧</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards</span></td><td>顧客のカードを追加</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards/<span class="param">:card_id</span></span></td><td>特定カードを取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards/<span class="param">:card_id</span></span></td><td>カード情報を更新</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards/<span class="param">:card_id</span></span></td><td>カードを削除</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/cards</span></td><td>カード一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -238,10 +215,10 @@ td{vertical-align:top}
     <h3>Customer に紐づく Subscription（定期課金の参照）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/subscriptions/<span class="param">:subscription_id</span></span></td><td>特定の定期課金を取得</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/subscriptions</span></td><td>定期課金一覧</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/subscriptions/<span class="param">:subscription_id</span></span></td><td>特定の定期課金を取得</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/customers/<span class="param">:id</span>/subscriptions</span></td><td>定期課金一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -249,13 +226,13 @@ td{vertical-align:top}
     <h3>Plan（プラン）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/plans</span></td><td>プラン作成</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/plans/<span class="param">:id</span></span></td><td>プラン取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/plans/<span class="param">:id</span></span></td><td>プラン更新</td></tr>
-          <tr><td><span class="method method-delete">DELETE</span></td><td><span class="endpoint">/v1/plans/<span class="param">:id</span></span></td><td>プラン削除</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/plans</span></td><td>プラン一覧</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/plans</span></td><td>プラン作成</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/plans/<span class="param">:id</span></span></td><td>プラン取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/plans/<span class="param">:id</span></span></td><td>プラン更新</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td><span class="endpoint">/v1/plans/<span class="param">:id</span></span></td><td>プラン削除</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/plans</span></td><td>プラン一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -263,16 +240,16 @@ td{vertical-align:top}
     <h3>Subscription（定期課金）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/subscriptions</span></td><td>定期課金を作成</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span></span></td><td>取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span></span></td><td>更新</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span>/pause</span></td><td>一時停止</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span>/resume</span></td><td>再開</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span>/cancel</span></td><td>キャンセル</td></tr>
-          <tr><td><span class="method method-delete">DELETE</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span></span></td><td>削除</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/subscriptions</span></td><td>一覧</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/subscriptions</span></td><td>定期課金を作成</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span></span></td><td>取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span></span></td><td>更新</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span>/pause</span></td><td>一時停止</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span>/resume</span></td><td>再開</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span>/cancel</span></td><td>キャンセル</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td><span class="endpoint">/v1/subscriptions/<span class="param">:id</span></span></td><td>削除</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/subscriptions</span></td><td>一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -281,11 +258,11 @@ td{vertical-align:top}
     <p class="note-p">カード番号等を<strong>トークン化</strong>したオブジェクト。サーバーは原則<strong>生のカードデータを扱わず</strong>トークンで Charge 等に渡す。</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/tokens</span></td><td>トークン作成</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/tokens/<span class="param">:id</span></span></td><td>トークン取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/tokens/<span class="param">:id</span>/tds_finish</span></td><td>3D セキュア完了</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/tokens</span></td><td>トークン作成</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/tokens/<span class="param">:id</span></span></td><td>トークン取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/tokens/<span class="param">:id</span>/tds_finish</span></td><td>3D セキュア完了</td></tr>
         </tbody>
       </table>
     </div>
@@ -293,11 +270,11 @@ td{vertical-align:top}
     <h3>Transfer（入金）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/transfers/<span class="param">:id</span></span></td><td>入金情報を取得</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/transfers</span></td><td>入金一覧</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/transfers/<span class="param">:id</span>/charges</span></td><td>その入金に含まれる支払い一覧</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/transfers/<span class="param">:id</span></span></td><td>入金情報を取得</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/transfers</span></td><td>入金一覧</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/transfers/<span class="param">:id</span>/charges</span></td><td>その入金に含まれる支払い一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -305,11 +282,11 @@ td{vertical-align:top}
     <h3>Statement（取引明細）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/statements/<span class="param">:id</span></span></td><td>取引明細を取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/statements/<span class="param">:id</span>/statement_urls</span></td><td>明細 URL 関連の操作</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/statements</span></td><td>取引明細一覧</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/statements/<span class="param">:id</span></span></td><td>取引明細を取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/statements/<span class="param">:id</span>/statement_urls</span></td><td>明細 URL 関連の操作</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/statements</span></td><td>取引明細一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -317,10 +294,10 @@ td{vertical-align:top}
     <h3>Term（集計区間）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/terms/<span class="param">:id</span></span></td><td>区間を取得</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/terms</span></td><td>区間一覧</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/terms/<span class="param">:id</span></span></td><td>区間を取得</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/terms</span></td><td>区間一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -328,11 +305,11 @@ td{vertical-align:top}
     <h3>Balance（残高）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/balances/<span class="param">:id</span></span></td><td>残高を取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/balances/<span class="param">:id</span>/statement_urls</span></td><td>明細 URL 関連</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/balances</span></td><td>残高一覧</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/balances/<span class="param">:id</span></span></td><td>残高を取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/balances/<span class="param">:id</span>/statement_urls</span></td><td>明細 URL 関連</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/balances</span></td><td>残高一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -340,10 +317,10 @@ td{vertical-align:top}
     <h3>Event（イベント）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/events/<span class="param">:id</span></span></td><td>イベント 1 件取得</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/events</span></td><td>イベント一覧</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/events/<span class="param">:id</span></span></td><td>イベント 1 件取得</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/events</span></td><td>イベント一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -351,11 +328,11 @@ td{vertical-align:top}
     <h3>ThreeDSecureRequest（3D セキュアリクエスト）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/three_d_secure_requests</span></td><td>3DS リクエスト作成</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/three_d_secure_requests/<span class="param">:id</span></span></td><td>取得</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/three_d_secure_requests/</span></td><td>一覧</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/three_d_secure_requests</span></td><td>3DS リクエスト作成</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/three_d_secure_requests/<span class="param">:id</span></span></td><td>取得</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/three_d_secure_requests/</span></td><td>一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -363,9 +340,9 @@ td{vertical-align:top}
     <h3>Account（アカウント）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/accounts</span></td><td>自アカウント情報取得（<code>account</code> / 内包の <code>merchant</code> 等）</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/accounts</span></td><td>自アカウント情報取得（<code>account</code> / 内包の <code>merchant</code> 等）</td></tr>
         </tbody>
       </table>
     </div>
@@ -373,9 +350,9 @@ td{vertical-align:top}
     <h3>3-D Secure（開始 URL）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/tds/<span class="param">:resource_id</span>/start</span></td><td>3D セキュア認証画面への開始（戻り先 URL 等は公式参照）</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/tds/<span class="param">:resource_id</span>/start</span></td><td>3D セキュア認証画面への開始（戻り先 URL 等は公式参照）</td></tr>
         </tbody>
       </table>
     </div>
@@ -383,7 +360,7 @@ td{vertical-align:top}
 
   <!-- 4 Platform API -->
   <div class="section" id="s4">
-    <div class="section-header"><div class="section-num">4</div><div class="sh-body"><h2>Platform API <span class="badge brand">BETA</span></h2><div class="sh-sub">マーケットプレイス型・Payouts 型アカウント向け。テナントごとに売上分配・入金・プラットフォーム手数料などを扱う</div></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>Platform API <span class="badge brand">BETA</span></h2><div class="sh-sub">マーケットプレイス型・Payouts 型アカウント向け。テナントごとに売上分配・入金・プラットフォーム手数料などを扱う</div></div></div>
 
     <div class="card">
       <h4>Platform API の特徴</h4>
@@ -397,14 +374,14 @@ td{vertical-align:top}
     <h3>Tenant（テナント）<span class="badge brand">Platform</span></h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/tenants</span></td><td>テナント作成</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/tenants/<span class="param">:id</span></span></td><td>取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/tenants/<span class="param">:id</span></span></td><td>更新</td></tr>
-          <tr><td><span class="method method-delete">DELETE</span></td><td><span class="endpoint">/v1/tenants/<span class="param">:id</span></span></td><td>削除</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/tenants</span></td><td>一覧</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/tenants/<span class="param">:id</span>/application_urls</span></td><td>本番申請用 URL 等（承認フロー向け）</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/tenants</span></td><td>テナント作成</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/tenants/<span class="param">:id</span></span></td><td>取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/tenants/<span class="param">:id</span></span></td><td>更新</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td><span class="endpoint">/v1/tenants/<span class="param">:id</span></span></td><td>削除</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/tenants</span></td><td>一覧</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/tenants/<span class="param">:id</span>/application_urls</span></td><td>本番申請用 URL 等（承認フロー向け）</td></tr>
         </tbody>
       </table>
     </div>
@@ -412,12 +389,12 @@ td{vertical-align:top}
     <h3>Tenant Transfer（テナント入金）<span class="badge brand">Platform</span></h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:80px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
+        <thead><tr><th style="width:80px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/tenant_transfers/<span class="param">:tenant_transfer_id</span></span></td><td>テナント入金を取得</td></tr>
-          <tr><td><span class="method method-post">POST</span></td><td><span class="endpoint">/v1/tenant_transfers/<span class="param">:tenant_transfer_id</span>/statement_urls</span></td><td>明細 URL 関連</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/tenant_transfers</span></td><td>一覧</td></tr>
-          <tr><td><span class="method method-get">GET</span></td><td><span class="endpoint">/v1/tenant_transfers/<span class="param">:tenant_transfer_id</span>/charges</span></td><td>紐づく支払い一覧</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/tenant_transfers/<span class="param">:tenant_transfer_id</span></span></td><td>テナント入金を取得</td></tr>
+          <tr><td><span class="method post">POST</span></td><td><span class="endpoint">/v1/tenant_transfers/<span class="param">:tenant_transfer_id</span>/statement_urls</span></td><td>明細 URL 関連</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/tenant_transfers</span></td><td>一覧</td></tr>
+          <tr><td><span class="method get">GET</span></td><td><span class="endpoint">/v1/tenant_transfers/<span class="param">:tenant_transfer_id</span>/charges</span></td><td>紐づく支払い一覧</td></tr>
         </tbody>
       </table>
     </div>
@@ -436,7 +413,7 @@ td{vertical-align:top}
 
   <!-- 5 Rincleでの利用状況 -->
   <div class="section" id="s5">
-    <div class="section-header"><div class="section-num">5</div><div class="sh-body"><h2>Rincle（Bubble）での利用状況</h2><div class="sh-sub">現行本番のBubbleアプリでどう使われているか</div></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>Rincle（Bubble）での利用状況</h2><div class="sh-sub">現行本番のBubbleアプリでどう使われているか</div></div></div>
 
     <div class="card">
       <h4>API Connector / Webhook 定義</h4>
@@ -444,12 +421,13 @@ td{vertical-align:top}
       <p style="margin-top:8px">Webhook では <code>payjp_webhook_charge_captured</code> 等の <strong>API Event</strong> が pay.jp フォルダにあります。</p>
     </div>
 
-    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-file"/></svg><div>一覧の正本（コネクタ全件・参照回数・Webhook WF 等）は <strong>payjp-rincle-bubble-usage.md</strong>（<code>scripts/generate_bubble_docs.py</code> が rincle.bubble から生成）を参照してください。</div></div>
+    <!-- 一覧の正本: documents/2_requirements/04_integration/pay.jp/payjp-rincle-bubble-usage.md（scripts/generate_bubble_docs.py が rincle.bubble から生成） -->
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-file"/></svg><div><strong>補足:</strong> コネクタ全件・参照回数・Webhookのワークフローまで含む一覧は、別途の自動生成資料にまとめています。</div></div>
   </div>
 
   <!-- 6 参考リンク -->
   <div class="section" id="s6">
-    <div class="section-header"><div class="section-num">6</div><div class="sh-body"><h2>参考リンク</h2><div class="sh-sub">公式ドキュメント</div></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>参考リンク</h2><div class="sh-sub">公式ドキュメント</div></div></div>
 
     <div class="link-grid">
       <a class="link-card" href="https://pay.jp/docs/api/" target="_blank" rel="noopener">
@@ -469,7 +447,8 @@ td{vertical-align:top}
 
 </div>
 
-<footer>正本: documents/2_requirements/04_integration/pay.jp/payjp-api-v1-summary-ja.md（md更新時はこのHTMLも同期すること）</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/2_requirements/04_integration/pay.jp/payjp-api-v1-summary-ja.md） -->
+<footer>正本: documents/2_requirements/04_integration/pay.jp/payjp-api-v1-summary-ja.md</footer>
 
 <script>
 (function(){

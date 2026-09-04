@@ -36,12 +36,16 @@
 .takeaway-box{border-top:1px solid var(--line-soft);padding-top:16px;margin-top:4px}
 .lp-head{font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--accent);margin-bottom:4px}
 .learn-points ul.notes li,.takeaway-box ul.notes li{font-size:13px}
+/* 「学ぶべきポイント」は但し書きではなく要点なので、※ではなく点の箇条書きにする */
+.lp-list{list-style:none;font-size:13px;color:var(--text)}
+.lp-list li{position:relative;padding:5px 0 5px 18px;line-height:1.9}
+.lp-list li::before{content:'';position:absolute;left:2px;top:15px;width:7px;height:1px;background:var(--accent)}
 
 /* ---------- 参考サービスカード（白面+1px罫線・影なし・番号は明朝の丸） ---------- */
-.ref-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:28px 0}
+.ref-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:28px 0;align-items:start}
 .ref-card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:24px 26px;display:flex;flex-direction:column}
 .ref-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
-.ref-card .card-number{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;min-width:30px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:13px;margin-right:12px}
+.ref-card-header .num-chip{margin-right:12px}
 .ref-card h3{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--ink);margin:0;line-height:1.5}
 .ref-card .card-sub{font-size:13px;color:var(--text);line-height:1.9;margin-bottom:8px}
 .ref-card .card-url{display:inline-block;font-size:11.5px;color:var(--sub);word-break:break-all;margin-bottom:2px}
@@ -49,20 +53,14 @@
 .starbadge{font-family:var(--serif);font-size:20px;line-height:1.3;color:var(--accent);white-space:nowrap}
 .starbadge small{font-size:11px;color:var(--sub)}
 
-/* ---------- 定量ベンチマークの統計（.stat型: 左1px墨罫+明朝の数字+出典） ---------- */
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin:28px 0}
-.stat-card{display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--ink);padding-left:20px}
-.stat-card .stat-num{font-family:var(--serif);font-size:34px;line-height:1.25;color:var(--accent)}
-.stat-card .stat-num small{font-size:14px}
-.stat-card .stat-label{font-size:12.5px;line-height:1.9;color:var(--text)}
-.stat-card .stat-label b{color:var(--accent-deep)}
-.stat-card .stat-src{font-size:10.5px;color:var(--sub)}
+/* ---------- 定量ベンチマークの統計は共通部品の .stat-row / .stat（4つ並ぶので4列に詰める） ---------- */
+.stat-row{grid-template-columns:repeat(4,1fr);gap:28px;margin:28px 0}
 
 /* ---------- RINCLEに落とし込むと（スマホモック+解説） ---------- */
 .rincle-vision{display:grid;grid-template-columns:360px 1fr;gap:36px;align-items:start;margin:28px 0}
 .vision-notes h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);margin:0 0 16px}
 .vision-note{display:flex;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:13px 16px;margin-bottom:10px;font-size:13px;line-height:1.9}
-.vision-note .vn-num{width:26px;height:26px;min-width:26px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);font-family:var(--serif);font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:4px}
+.vision-note .num-chip{margin-top:4px}
 .vision-note b{color:var(--ink)}
 .vision-note small{color:var(--sub);display:block;font-size:11.5px}
 
@@ -97,10 +95,10 @@
 /* 結果カード */
 .ui-card{background:var(--surface);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(38,34,30,.1)}
 .ui-card + .ui-card{margin-top:10px}
-.ui-photo{height:86px;background:linear-gradient(120deg,#a8c8e8 0%,#6f9fce 55%,#41618f 100%);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative}
-.ui-photo.photo-orange{background:linear-gradient(120deg,#ffd9a8 0%,#f5a55f 55%,#c96f2f 100%)}
-.ui-photo.photo-green{background:linear-gradient(120deg,#b9e3c6 0%,#74b98c 55%,#3d7a55 100%)}
-.ui-photo .ui-heart{position:absolute;top:8px;right:10px;font-size:1rem;background:rgba(255,255,255,.9);border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center}
+/* 写真の位置は絵文字でなく「灰色の面+文字ラベル」で示す（原則8: 絵文字は使わない） */
+.ui-photo{height:86px;background:#EAE2D6;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:.66rem;letter-spacing:.14em;color:var(--sub);position:relative}
+.ui-photo .ui-heart{position:absolute;top:8px;right:10px;font-size:.58rem;letter-spacing:.06em;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--sub)}
+.wire-box{background:#EAE2D6;border:1px solid var(--line);color:var(--sub);display:flex;align-items:center;justify-content:center;font-size:.6rem;letter-spacing:.12em}
 .ui-body{padding:10px 12px;line-height:1.7}
 .ui-title{font-size:.85rem;font-weight:700;color:var(--ink)}
 .ui-meta{font-size:.72rem;color:var(--sub);margin:2px 0 6px}
@@ -153,16 +151,16 @@
 /* Before/After */
 .ui-ba{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .ui-ba .ba-cell{border-radius:8px;overflow:hidden;background:var(--surface);border:1px solid var(--line-soft);text-align:center}
-.ui-ba .ba-photo{height:70px;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
-.ui-ba .ba-photo.bad{background:#c9c9c9;filter:blur(.6px);opacity:.75}
-.ui-ba .ba-photo.good{background:linear-gradient(120deg,#a8c8e8,#41618f)}
+.ui-ba .ba-photo{height:70px;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.5;font-size:.62rem;letter-spacing:.08em;padding:0 8px}
+.ui-ba .ba-photo.bad{background:#D8D2CA;color:var(--sub)}
+.ui-ba .ba-photo.good{background:#EAE2D6;color:var(--text)}
 .ui-ba .ba-label{font-size:.68rem;font-weight:700;padding:6px 5px;line-height:1.6}
 .ui-ba .ba-label.bad{color:var(--danger)}
 .ui-ba .ba-label.good{color:var(--ok-text)}
 
 /* レビュー */
 .ui-review{background:var(--surface);border-radius:10px;padding:12px 14px;box-shadow:0 2px 8px rgba(38,34,30,.1);font-size:.75rem;line-height:1.8}
-.ui-review .stars{color:#D9A227;font-size:.85rem;letter-spacing:1px}
+.ui-review .stars{font-family:var(--serif);font-size:.9rem;color:var(--ink)}
 .ui-review .rv-photos{display:flex;gap:6px;margin:8px 0}
 .ui-review .rv-photos span{width:44px;height:34px;border-radius:6px;background:linear-gradient(120deg,#a8c8e8,#41618f);display:flex;align-items:center;justify-content:center;font-size:.9rem}
 
@@ -182,10 +180,10 @@
 .marker{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font-size:.62rem;font-weight:800;vertical-align:middle}
 
 @media (max-width:1080px){
-  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-row{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:880px){
-  .ref-grid,.feature-mocks,.stat-grid{grid-template-columns:1fr}
+  .ref-grid,.feature-mocks,.stat-row{grid-template-columns:1fr}
   .rincle-vision{grid-template-columns:1fr;justify-items:center}
   .feature-card{padding:24px 20px}
 }
@@ -229,20 +227,36 @@
 </div>
 
 <nav class="flow-tabs">
-  <button class="tab-btn active" data-target="panel-hondago"><span class="fnum">1</span><div class="ft">Honda GO・海外先行例</div><div class="fd">同型サービスと海外2社に学ぶ</div></button>
-  <button class="tab-btn" data-target="panel-refs"><span class="fnum">2</span><div class="ft">参考サービス12社</div><div class="fd">学ぶべきUIパターンをモックで体感</div></button>
-  <button class="tab-btn" data-target="panel-bench"><span class="fnum">3</span><div class="ft">定量ベンチマーク・レビューUX</div><div class="fd">フォーム項目数の基準とレビュー収集</div></button>
-  <button class="tab-btn" data-target="panel-vision"><span class="fnum">4</span><div class="ft">RINCLEに落とし込むと</div><div class="fd">各社のパターンを1画面に統合した理想形</div></button>
-  <button class="tab-btn" data-target="panel-bubble"><span class="fnum">5</span><div class="ft">Bubble実装・機能マッピング</div><div class="fd">実装可能性と「どこから真似るか」対応表</div></button>
+  <button class="tab-btn active" data-target="panel-conclusion"><span class="fnum">1</span><div class="ft">結論</div><div class="fd">統合した理想形と実装のしやすさの所在</div></button>
+  <button class="tab-btn" data-target="panel-hondago"><span class="fnum">2</span><div class="ft">Honda GO・海外先行例</div><div class="fd">同型サービスと海外2社に学ぶ</div></button>
+  <button class="tab-btn" data-target="panel-refs"><span class="fnum">3</span><div class="ft">参考サービス12社</div><div class="fd">学ぶべきUIパターンをモックで体感</div></button>
+  <button class="tab-btn" data-target="panel-bench"><span class="fnum">4</span><div class="ft">定量ベンチマーク・レビューUX</div><div class="fd">フォーム項目数の基準とレビュー収集</div></button>
+  <button class="tab-btn" data-target="panel-vision"><span class="fnum">5</span><div class="ft">RINCLEに落とし込むと</div><div class="fd">各社のパターンを1画面に統合した理想形</div></button>
+  <button class="tab-btn" data-target="panel-bubble"><span class="fnum">6</span><div class="ft">Bubble実装・機能マッピング</div><div class="fd">実装可能性と「どこから真似るか」対応表</div></button>
 </nav>
 
 <div class="container">
 
+<!-- ============ 結論 ============ -->
+<div class="tab-panel active" id="panel-conclusion">
+  <div class="section" id="conclusion">
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">参考各社のUIパターンを1画面に統合した理想形と、Bubbleでの実装のしやすさ</div></div></div>
+    <p>参考各社のUIパターンを1画面に統合した理想形は<strong>タブ5「RINCLEに落とし込むと、こうなる」</strong>にまとめています。Bubbleでの実装のしやすさはタブ6をご覧ください。</p>
+    <ul class="notes">
+      <li>各社に付けた評点の読み方: RINCLEに取り込む価値を5点満点で表しています（5=そのまま採用したい / 1=参考程度）。</li>
+    </ul>
+  </div>
+</div>
+
 <!-- ============ Honda GO + 海外先行例 ============ -->
-<div class="tab-panel active" id="panel-hondago">
+<div class="tab-panel" id="panel-hondago">
 
   <div class="section">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>クライアント指定: Honda GO Bike Rental</h2><div class="sh-sub">RINCLEと同じ「店舗ネットワーク型レンタル」</div></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>Honda GO・海外先行例</h2><div class="sh-sub">同型サービスと、海外2社に学ぶ</div></div></div>
+
+    <div class="sub-item">
+      <div class="kick">クライアント指定</div>
+      <h4>Honda GO Bike Rental — RINCLEと同じ「店舗ネットワーク型レンタル」</h4>
 
     <div class="feature-card">
       <h3>Honda GO Bike Rental</h3>
@@ -272,8 +286,8 @@
           <div class="mock-label">UIイメージ: 予約フローのプログレスバー</div>
           <div class="ui-float" style="background:var(--surface); border-radius:10px; padding:16px 14px;">
             <div class="ui-steps">
-              <div class="st done">&#10003;</div><div class="st-line done"></div>
-              <div class="st done">&#10003;</div><div class="st-line done"></div>
+              <div class="st done"><svg class="icon"><use href="#i-check"/></svg></div><div class="st-line done"></div>
+              <div class="st done"><svg class="icon"><use href="#i-check"/></svg></div><div class="st-line done"></div>
               <div class="st now">3</div><div class="st-line"></div>
               <div class="st">4</div><div class="st-line"></div>
               <div class="st">5</div>
@@ -297,10 +311,11 @@
         </ul>
       </div>
     </div>
-  </div>
+    </div>
 
-  <div class="section">
-    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>海外バイクレンタルの先行例</h2><div class="sh-sub">商材が同じ「横断検索・比較・予約」を先にやっている2社</div></div></div>
+    <div class="sub-item">
+      <div class="kick">海外の先行例</div>
+      <h4>商材が同じ「横断検索・比較・予約」を先にやっている2社</h4>
     <p class="section-lead">商材が同じ「バイクレンタルの横断検索・比較・予約」を先にやっている海外サービス。RINCLEの直接参考になる2社。</p>
 
     <div class="ref-grid">
@@ -308,7 +323,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">A</span>
+            <span class="num-chip brand">A</span>
             <h3>BikesBooking.com</h3>
           </div>
           <span class="starbadge">4.0 <small>/5</small></span>
@@ -327,17 +342,17 @@
             <div class="sb-btn">検索</div>
           </div>
           <div class="ui-row" style="margin-top:10px; gap:6px;">
-            <span class="b b-ok">&#10003; ベストプライス保証</span>
-            <span class="b b-ok">&#10003; 保険 全車標準付帯</span>
-            <span class="b b-ok">&#10003; キャンセル無料</span>
-            <span class="b b-ok">&#10003; 検証済みレビュー</span>
+            <span class="b b-ok">ベストプライス保証</span>
+            <span class="b b-ok">保険 全車標準付帯</span>
+            <span class="b b-ok">キャンセル無料</span>
+            <span class="b b-ok">検証済みレビュー</span>
           </div>
           <p style="font-size:.72rem; color:var(--sub); margin-top:8px;">信頼指標をファーストビューに並べて「ここで予約して大丈夫」を先に伝える</p>
         </div>
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>検索フォームは国→都市→日時→車両タイプの<b>4項目のみ</b>。「①比較して見つける→②オンライン予約→③受け取るだけ」の3ステップ提示</li>
             <li>信頼指標の多層配置をファーストビューに</li>
             <li><b>「予約した車種そのものが用意される」保証</b>（レンタカーの「クラス指定」と違う）→ 車種指名性が高いスポーツバイクで特に効く</li>
@@ -348,7 +363,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">B</span>
+            <span class="num-chip brand">B</span>
             <h3>listnride</h3>
           </div>
           <span class="starbadge">4.0 <small>/5</small></span>
@@ -361,22 +376,22 @@
           <div class="mock-label">UIイメージ: 弱点の裏返しがRINCLEの訴求になる</div>
           <div class="ui-ba">
             <div class="ba-cell">
-              <div class="ba-photo bad">&#128296;</div>
-              <div class="ba-label bad">&#10007; 個人オーナー車両の整備品質ばらつき<br>（Trustpilotに不満が実在）</div>
+              <div class="ba-photo bad">個人オーナーの車両</div>
+              <div class="ba-label bad">× 個人オーナー車両の整備品質ばらつき<br>（Trustpilotに不満が実在）</div>
             </div>
             <div class="ba-cell">
-              <div class="ba-photo good">&#128737;&#65039;</div>
-              <div class="ba-label good">&#10003; RINCLEは「全車プロショップ整備済み」<br>を信頼指標の筆頭に</div>
+              <div class="ba-photo good">プロショップ整備済み</div>
+              <div class="ba-label good">○ RINCLEは「全車プロショップ整備済み」<br>を信頼指標の筆頭に</div>
             </div>
           </div>
           <div class="ui-float" style="background:var(--surface); border-radius:8px; padding:8px 12px; margin-top:10px; font-size:.72rem; color:var(--text);">
-            <b style="color:var(--ink);">静的SEOページの実例:</b> <code>/mallorca/road</code> のような「都市×車種」LPを大量生成し、重いCSR本体とは別にインデックスさせて検索流入を確保
+            <b style="color:var(--ink);">静的SEOページの実例:</b> <code>/mallorca/road</code> のような「都市×車種」LPを大量生成。重いCSR本体とは別にインデックスさせて検索流入を確保
           </div>
         </div>
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li><b>「Bubble + 静的LP別建て」戦略の実例</b>（アソビューも同じ構図）</li>
             <li>整備不良不満の裏返し =「全車プロショップ整備済み」が差別化軸</li>
             <li>リクエスト承認型は摩擦が大きい → 在庫を自社DBで持つRINCLEは<b>即時確定予約</b>で優位（Anycaのクイック予約と同じ訴求）</li>
@@ -384,6 +399,7 @@
         </div>
       </div>
 
+    </div>
     </div>
   </div>
 </div>
@@ -398,7 +414,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">1</span>
+            <span class="num-chip brand">1</span>
             <h3>たびらいレンタカー</h3>
           </div>
           <span class="starbadge">5.0 <small>/5</small></span>
@@ -420,7 +436,7 @@
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>コミコミ価格表示 →「隠れたコストがない」安心感</li>
             <li>シンプル検索（出発地 + 日時だけ）</li>
             <li>LINE連携でリピーター育成</li>
@@ -431,7 +447,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">2</span>
+            <span class="num-chip brand">2</span>
             <h3>Booking.com</h3>
           </div>
           <span class="starbadge">4.0 <small>/5</small></span>
@@ -446,22 +462,22 @@
             <div class="ui-body">
               <div class="ui-row" style="margin-bottom:4px;">
                 <span class="ui-title">S-Works Tarmac SL8</span>
-                <span class="b b-score">&#9733; 5.0</span>
+                <span class="b b-score">評価 5.0</span>
               </div>
               <div class="ui-meta">カーボン / Ultegra Di2・スペシャライズド神戸</div>
               <div class="ui-row">
-                <span class="b b-stock">&#128293; 残り1台</span>
+                <span class="b b-stock">残り1台</span>
                 <span class="b b-ok">無料キャンセル可</span>
                 <span class="ui-price">¥13,200<small>/日</small></span>
               </div>
-              <div style="font-size:.68rem; color:var(--danger); margin-top:6px;">&#128065; 3人がこのバイクを見ています</div>
+              <div style="font-size:.68rem; color:var(--danger); margin-top:6px;">3人がこのバイクを見ています</div>
             </div>
           </div>
         </div>
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>「残り○台」表示で緊急性を演出（スカーシティ）</li>
             <li>「無料キャンセル」表示で予約ハードルを下げる</li>
             <li>レビュースコアをカード上部に配置して比較を助ける</li>
@@ -472,7 +488,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">3</span>
+            <span class="num-chip brand">3</span>
             <h3>Airbnb</h3>
           </div>
           <span class="starbadge">4.0 <small>/5</small></span>
@@ -484,17 +500,17 @@
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">UIイメージ: 写真ファースト + 感情カテゴリ</div>
           <div class="ui-chips" style="margin-bottom:10px;">
-            <span class="ui-chip badge ink">&#127939; 街乗りデビュー</span>
-            <span class="ui-chip badge plain">&#9968; 坂道ラクラク</span>
-            <span class="ui-chip badge plain">&#128247; 絶景ライド</span>
+            <span class="ui-chip badge ink">街乗りデビュー</span>
+            <span class="ui-chip badge plain">坂道ラクラク</span>
+            <span class="ui-chip badge plain">絶景ライド</span>
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
             <div class="ui-card" style="margin:0;">
-              <div class="ui-photo">&#128692;<span class="ui-heart">&#129293;</span></div>
+              <div class="ui-photo">写真<span class="ui-heart">保存</span></div>
               <div class="ui-body"><div class="ui-title" style="font-size:.78rem;">はじめてのロード</div><div class="ui-meta">初心者に人気</div></div>
             </div>
             <div class="ui-card" style="margin:0;">
-              <div class="ui-photo photo-green">&#9889;<span class="ui-heart">&#10084;&#65039;</span></div>
+              <div class="ui-photo">写真<span class="ui-heart">保存</span></div>
               <div class="ui-body"><div class="ui-title" style="font-size:.78rem;">E-Bikeで楽々</div><div class="ui-meta">体力に自信がなくても</div></div>
             </div>
           </div>
@@ -502,7 +518,7 @@
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>写真ファーストの大きなカードUI</li>
             <li>感情的カテゴリ →「どんな体験がしたいか」で探せる</li>
             <li>フローティングCTA + 下部メニューバー</li>
@@ -514,7 +530,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">4</span>
+            <span class="num-chip brand">4</span>
             <h3>アソビュー</h3>
           </div>
           <span class="starbadge">4.0 <small>/5</small></span>
@@ -526,18 +542,18 @@
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">UIイメージ: シーン別カテゴリ</div>
           <div class="ui-chips">
-            <span class="ui-chip badge plain">&#128106; 家族で楽しむ</span>
-            <span class="ui-chip badge plain">&#128149; デートに</span>
-            <span class="ui-chip badge plain">&#129358; 旅先で1日</span>
-            <span class="ui-chip badge plain">&#127891; 買う前に試乗</span>
-            <span class="ui-chip badge plain">&#9728;&#65039; 今週末空きあり</span>
+            <span class="ui-chip badge plain">家族で楽しむ</span>
+            <span class="ui-chip badge plain">デートに</span>
+            <span class="ui-chip badge plain">旅先で1日</span>
+            <span class="ui-chip badge plain">買う前に試乗</span>
+            <span class="ui-chip badge plain">今週末空きあり</span>
           </div>
           <p style="font-size:.72rem; color:var(--sub); margin-top:10px;">機能（車種）ではなく利用シーンで入口を作る。検索結果はカルーセルでなく縦並び（3件目以降タップされないというデータドリブン判断）</p>
         </div>
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>カルーセルより縦並びリスト</li>
             <li>シーン別カテゴリ分け</li>
             <li>マップ検索の統合</li>
@@ -548,7 +564,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">5</span>
+            <span class="num-chip brand">5</span>
             <h3>Klook</h3>
           </div>
           <span class="starbadge">4.0 <small>/5</small></span>
@@ -572,7 +588,7 @@
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>2つの検索導線（やりたいこと起点 + 場所起点）</li>
             <li>ウィッシュリスト機能</li>
             <li>QRバウチャーで現地スムーズ → 競合で課題の「受付待ち」を解消</li>
@@ -583,7 +599,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">6</span>
+            <span class="num-chip brand">6</span>
             <h3>じゃらんnet</h3>
           </div>
           <span class="starbadge">3.0 <small>/5</small></span>
@@ -595,18 +611,18 @@
           <div class="mock-bar" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="mock-label">UIイメージ: 閲覧履歴の再訪導線</div>
           <div class="ui-float" style="background:var(--surface); border-radius:10px; padding:12px 14px;">
-            <div style="font-size:.72rem; font-weight:700; color:var(--sub); margin-bottom:8px;">&#128336; 最近見たバイク</div>
+            <div style="font-size:.72rem; font-weight:700; color:var(--sub); margin-bottom:8px;">最近見たバイク</div>
             <div style="display:flex; gap:8px;">
               <div style="flex:1; font-size:.62rem; text-align:center; color:var(--sub);">
-                <div style="height:44px; border-radius:6px; background:linear-gradient(120deg,#a8c8e8,#41618f); display:flex; align-items:center; justify-content:center; font-size:1.1rem;">&#128692;</div>
+                <div class="wire-box" style="height:44px; border-radius:6px;">写真</div>
                 Allez ¥6,000
               </div>
               <div style="flex:1; font-size:.62rem; text-align:center; color:var(--sub);">
-                <div style="height:44px; border-radius:6px; background:linear-gradient(120deg,#ffd9a8,#c96f2f); display:flex; align-items:center; justify-content:center; font-size:1.1rem;">&#128692;</div>
+                <div class="wire-box" style="height:44px; border-radius:6px;">写真</div>
                 Domane ¥5,500
               </div>
               <div style="flex:1; font-size:.62rem; text-align:center; color:var(--sub);">
-                <div style="height:44px; border-radius:6px; background:linear-gradient(120deg,#b9e3c6,#3d7a55); display:flex; align-items:center; justify-content:center; font-size:1.1rem;">&#9889;</div>
+                <div class="wire-box" style="height:44px; border-radius:6px;">写真</div>
                 E-Bike ¥7,000
               </div>
             </div>
@@ -615,7 +631,7 @@
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>目的別ショートカット導線（「なんとなく探したい」人向け）</li>
             <li>閲覧履歴の活用 → 再訪・比較検討の促進</li>
           </ul>
@@ -625,7 +641,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">7</span>
+            <span class="num-chip brand">7</span>
             <h3>Anyca</h3>
           </div>
           <span class="starbadge">3.0 <small>/5</small></span>
@@ -638,12 +654,12 @@
           <div class="mock-label">UIイメージ: 写真品質が予約率を変える</div>
           <div class="ui-ba">
             <div class="ba-cell">
-              <div class="ba-photo bad">&#128247;</div>
-              <div class="ba-label bad">&#10007; スマホで暗い1枚だけ</div>
+              <div class="ba-photo bad">スマホで暗い1枚</div>
+              <div class="ba-label bad">× スマホで暗い1枚だけ</div>
             </div>
             <div class="ba-cell">
-              <div class="ba-photo good">&#128692;</div>
-              <div class="ba-label good">&#10003; ガイドライン準拠の撮影</div>
+              <div class="ba-photo good">ガイドライン準拠の撮影</div>
+              <div class="ba-label good">○ ガイドライン準拠の撮影</div>
             </div>
           </div>
           <p style="font-size:.72rem; color:var(--sub); margin-top:8px;">パートナー店舗（2026-08-20実測で56店）の写真品質がバラバラだと一覧の見栄えが崩れる → 撮影ガイドライン / テンプレートをショップに配布</p>
@@ -651,7 +667,7 @@
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>プロ撮影支援の仕組み（オーナー向け無料撮影会）</li>
             <li>クイック予約（即時確定）と通常予約の2モード</li>
           </ul>
@@ -661,7 +677,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">8</span>
+            <span class="num-chip brand">8</span>
             <h3>VELTRA</h3>
           </div>
           <span class="starbadge">3.0 <small>/5</small></span>
@@ -674,18 +690,18 @@
           <div class="mock-label">UIイメージ: 写真付きレビュー + 投稿インセンティブ</div>
           <div class="ui-review">
             <div class="ui-row">
-              <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+              <span class="stars">5.0 <small style="font-size:.62rem;color:var(--sub);">/5</small></span>
               <span style="color:var(--sub); font-size:.7rem;">30代男性・初ロードバイク</span>
             </div>
-            <div class="rv-photos"><span>&#128692;</span><span>&#127748;</span><span>&#9728;&#65039;</span></div>
+            <div class="rv-photos"><span class="wire-box">写真</span><span class="wire-box">写真</span><span class="wire-box">写真</span></div>
             「一人で行きましたがスタッフさんが乗り方から教えてくれて安心でした」
-            <div style="margin-top:8px;"><span class="b b-pt">&#127873; 写真付き投稿で100ptプレゼント</span></div>
+            <div style="margin-top:8px;"><span class="b b-pt">写真付き投稿で100ptプレゼント</span></div>
           </div>
         </div>
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>写真投稿ポイント還元で口コミ促進 → レビューゼロ問題の突破口</li>
             <li>高評価も低評価も透明に掲載して信頼を獲得</li>
           </ul>
@@ -695,7 +711,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">9</span>
+            <span class="num-chip brand">9</span>
             <h3>LUUP</h3>
           </div>
           <span class="starbadge">3.0 <small>/5</small></span>
@@ -711,8 +727,7 @@
             <div class="ui-pin" style="top:52px; left:150px;"><span>1</span></div>
             <div class="ui-pin small" style="top:30px; left:230px;"><span>0</span></div>
             <div class="map-card">
-              <span style="font-size:1.1rem;">&#128692;</span>
-              <span><b>スペシャライズド神戸</b><br>現在地から650m・空き3台</span>
+                            <span><b>スペシャライズド神戸</b><br>現在地から650m・空き3台</span>
               <span class="b b-score" style="margin-left:auto;">予約 &rarr;</span>
             </div>
           </div>
@@ -720,7 +735,7 @@
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>マップ中心のUI設計（起動直後に「近くで借りられる」が分かる）</li>
             <li>ピンタップ → ボトムシートで詳細 → そのまま予約</li>
             <li>片手操作前提のUX設計</li>
@@ -731,7 +746,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">10</span>
+            <span class="num-chip brand">10</span>
             <h3>HELLO CYCLING</h3>
           </div>
           <span class="starbadge">3.0 <small>/5</small></span>
@@ -748,21 +763,21 @@
                 <div class="ui-pin small" style="top:24px; left:30px;"><span>&nbsp;</span></div>
                 <div class="ui-pin small" style="top:48px; left:90px;"><span>&nbsp;</span></div>
               </div>
-              <div style="font-size:.68rem; color:var(--danger); text-align:center; margin-top:4px;">&#10007; 小さくて埋もれる</div>
+              <div style="font-size:.68rem; color:var(--danger); text-align:center; margin-top:4px;">× 小さくて埋もれる</div>
             </div>
             <div>
               <div class="ui-map" style="height:90px;">
                 <div class="ui-pin" style="top:18px; left:36px;"><span>5</span></div>
                 <div class="ui-pin" style="top:44px; left:110px;"><span>2</span></div>
               </div>
-              <div style="font-size:.68rem; color:var(--ok-text); text-align:center; margin-top:4px;">&#10003; 大きい + 台数表示</div>
+              <div style="font-size:.68rem; color:var(--ok-text); text-align:center; margin-top:4px;">大きい + 台数表示</div>
             </div>
           </div>
         </div>
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li>大きなマップピン + 空き台数の数字で視認性確保</li>
             <li>16サービス統合 = 複数ショップ統合の設計思想</li>
           </ul>
@@ -772,7 +787,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">11</span>
+            <span class="num-chip brand">11</span>
             <h3>楽天GORA</h3>
           </div>
           <span class="starbadge">4.0 <small>/5</small></span>
@@ -790,13 +805,13 @@
             <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0;">
               <span>同伴者（2名）</span><span class="b b-info">あとで決めてOK</span>
             </div>
-            <div style="margin-top:8px;"><span class="b b-ok">&#10003; 代表者1人の情報だけで予約完了</span></div>
+            <div style="margin-top:8px;"><span class="b b-ok">代表者1人の情報だけで予約完了</span></div>
           </div>
         </div>
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li><b>「同伴者未定でも予約可」</b>→ 放棄理由21%「同行者への確認が必要」への対策。グループライド需要に直結</li>
             <li>楽天IDで入力スキップ → RINCLEではLINE / Googleログインが代替（入力スキップ + 通知チャネル獲得）</li>
             <li>カレンダーで時間帯ごとの空き枠と料金を同時表示。「初心者歓迎」等のタグでセグメント</li>
@@ -807,7 +822,7 @@
       <div class="ref-card">
         <div class="ref-card-header">
           <div style="display:flex;align-items:center;">
-            <span class="card-number">12</span>
+            <span class="num-chip brand">12</span>
             <h3>楽天トラベル / じゃらんレンタカー</h3>
           </div>
           <span class="starbadge">4.0 <small>/5</small></span>
@@ -837,7 +852,7 @@
 
         <div class="learn-points">
           <div class="lp-head">学ぶべきポイント</div>
-          <ul class="notes">
+          <ul class="lp-list">
             <li><b>「日時 + 場所の2要素で検索開始 → 総額で横断比較」</b>が国内レンタル系の確立した勝ちパターン（たびらいと同じ構図）</li>
             <li><b>コミコミ総額を検索結果カードの段階で出す</b>ことが選択の決定打</li>
           </ul>
@@ -851,29 +866,33 @@
 <!-- ============ 定量ベンチマーク・レビューUX ============ -->
 <div class="tab-panel" id="panel-bench">
   <div class="section">
-    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>予約フォーム・予約フローの定量ベンチマーク</h2><div class="sh-sub">CVRを決めるのは「ステップ数」ではなく「フォーム項目数」</div></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>定量ベンチマーク・レビューUX</h2><div class="sh-sub">フォーム項目数の基準と、レビューの集め方</div></div></div>
+
+    <div class="sub-item">
+      <div class="kick">予約フォームの基準</div>
+      <h4>予約転換率を決めるのは「ステップ数」ではなく「フォーム項目数」</h4>
     <p class="section-lead">数字で押さえるべき4つの基準。</p>
 
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-num">8項目<small>以下</small></div>
-        <div class="stat-label">フォーム項目数の上限基準。<b>9項目以上でCVRは約4分の1に低下</b>（1項目18.2% → 9項目以上4.2%）。ECチェックアウトも実際に必要なのは8項目</div>
-        <div class="stat-src">出典: Baymard / NeilPatel</div>
+    <div class="stat-row">
+      <div class="stat">
+        <span class="l">フォーム項目数の上限基準（出典: Baymard / NeilPatel）</span>
+        <span class="n md">8<small>項目以下</small></span>
+        <span class="d"><strong>9項目以上でCVRは約4分の1に低下</strong>します（1項目18.2% → 9項目以上4.2%）。ECのチェックアウトも実際に必要なのは8項目です</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">23〜26<small>%</small></div>
-        <div class="stat-label">「アカウント作成の強制」が占めるカゴ落ち理由の割合。撤廃でCVR <b>20〜30%向上</b> → ゲストチェックアウトが基本</div>
-        <div class="stat-src">出典: Baymard</div>
+      <div class="stat">
+        <span class="l">カゴ落ち理由に占める「アカウント作成の強制」（出典: Baymard）</span>
+        <span class="n md">23〜26<small>%</small></span>
+        <span class="d">撤廃するとCVRは<strong>20〜30%向上</strong>します。ゲストチェックアウトが基本です</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">46<small>%</small></div>
-        <div class="stat-label">予約放棄者が<b>24時間以内に再検索</b>する割合（再検索意向は87%）→ 放棄1時間以内 + 翌朝の2通で回収</div>
-        <div class="stat-src">出典: Econsultancy</div>
+      <div class="stat">
+        <span class="l">予約放棄者が24時間以内に再検索する割合（出典: Econsultancy）</span>
+        <span class="n md">46<small>%</small></span>
+        <span class="d">再検索の意向は87%あります。放棄の1時間以内と翌朝の2通で回収します</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">2.7<small>%</small></div>
-        <div class="stat-label">旅行・ホスピタリティの平均CVR。KPI目安は「訪問→予約完了2%台」「予約開始→完了25〜30%」が現実的な比較基準</div>
-        <div class="stat-src">モバイルはデスクトップの半分以下が業界標準</div>
+      <div class="stat">
+        <span class="l">旅行・ホスピタリティの平均CVR</span>
+        <span class="n md">2.7<small>%</small></span>
+        <span class="d">KPIの目安は「訪問→予約完了2%台」「予約開始→完了25〜30%」が現実的な比較基準です。モバイルはデスクトップの半分以下が業界標準です</span>
       </div>
     </div>
 
@@ -945,30 +964,32 @@
       </div>
 
     </div>
-  </div>
+    </div>
 
-  <div class="section">
-    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>レビュー収集UXのベストプラクティス</h2><div class="sh-sub">コールドスタート目標「各店5件・計120件」の達成手段として最重要。「待ち」では集まらない</div></div></div>
+    <div class="sub-item">
+      <div class="kick">レビューの集め方</div>
+      <h4>コールドスタートの目標「各店5件・計120件」の達成手段 — 「待ち」では集まらない</h4>
 
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-num">約70<small>%</small></div>
-        <div class="stat-label">投稿レビューのうち<b>依頼メール経由</b>の割合 →「待ち」では集まらない</div>
+    <div class="stat-row">
+      <div class="stat">
+        <span class="l">投稿レビューのうち依頼メール経由の割合</span>
+        <span class="n md">約70<small>%</small></span>
+        <span class="d">「待ち」では集まりません</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">24〜48<small>時間後</small></div>
-        <div class="stat-label">体験型サービスの依頼最適タイミング（商品ECの「7〜14日後」とは異なる）</div>
-        <div class="stat-src">出典: ExpertReputation</div>
+      <div class="stat">
+        <span class="l">体験型サービスの依頼の最適タイミング（出典: ExpertReputation）</span>
+        <span class="n md">24〜48<small>時間後</small></span>
+        <span class="d">商品ECの「7〜14日後」とは異なります</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">+26<small>% / 12倍</small></div>
-        <div class="stat-label">写真付きレビューのCVR向上 / UGC画像の信頼性（企業画像比）</div>
-        <div class="stat-src">出典: NaviPlus</div>
+      <div class="stat">
+        <span class="l">写真付きレビューのCVR向上 / UGC画像の信頼性（企業画像比・出典: NaviPlus）</span>
+        <span class="n md">+26<small>% / 12倍</small></span>
+        <span class="d">写真が付くだけでCVRが+26%、UGC画像は企業の画像の12倍信頼されます</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">1回<small>まで</small></div>
-        <div class="stat-label">リマインドは5〜7日後に1回まで。<b>2通超は逆効果</b>。依頼文は100〜150字以内が最も回答率が高い</div>
-        <div class="stat-src">出典: WiserReview</div>
+      <div class="stat">
+        <span class="l">レビュー依頼のリマインド回数（出典: WiserReview）</span>
+        <span class="n md">1<small>回まで</small></span>
+        <span class="d">5〜7日後に1回まで。<strong>2通を超えると逆効果</strong>です。依頼文は100〜150字以内が最も回答率が高いです</span>
       </div>
     </div>
 
@@ -976,9 +997,9 @@
       <h4>RINCLE推奨の3点セット</h4>
       <div style="padding:8px 4px 0;">
         <div class="ui-steps">
-          <div class="st done">&#10003;</div><div class="st-line done"></div>
-          <div class="st done">&#10003;</div><div class="st-line done"></div>
-          <div class="st done">&#10003;</div>
+          <div class="st done"><svg class="icon"><use href="#i-check"/></svg></div><div class="st-line done"></div>
+          <div class="st done"><svg class="icon"><use href="#i-check"/></svg></div><div class="st-line done"></div>
+          <div class="st done"><svg class="icon"><use href="#i-check"/></svg></div>
         </div>
         <div class="ui-steps-labels" style="font-size:.74rem;">
           <span><b style="color:var(--ink);">① 返却時</b><br>店頭QR / タブレットで<br>その場依頼<br><small>（記憶・感情のピーク）</small></span>
@@ -991,19 +1012,20 @@
       </div>
       <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><b>ステマ規制・規約に注意:</b> 「高評価を条件にした特典」は景表法・規約違反。インセンティブは<b>投稿行為そのもの</b>に付与する。Googleレビューへのインセンティブは規約で全面禁止（自社サイト内レビューのみ可）。</span></div>
     </div>
+    </div>
   </div>
 </div>
 
 <!-- ============ RINCLEに落とし込むと ============ -->
 <div class="tab-panel" id="panel-vision">
   <div class="section">
-    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>RINCLEに落とし込むと、こうなる</h2><div class="sh-sub">参考各社のパターンを1画面に統合した検索結果のイメージ。番号は右の解説と対応</div></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>RINCLEに落とし込むと、こうなる</h2><div class="sh-sub">参考各社のパターンを1画面に統合した検索結果のイメージ。番号は右の解説と対応</div></div></div>
 
     <div class="rincle-vision">
 
       <!-- スマホモック -->
       <div class="phone">
-        <div class="app-header">RINCLE　<span style="font-weight:400; font-size:.7rem; opacity:.7;">全国のプロショップでレンタル</span></div>
+        <div class="app-header">RINCLE　<span style="font-weight:400; font-size:.7rem; color:var(--accent-soft);">全国のプロショップでレンタル</span></div>
         <div class="app-body">
 
           <div style="position:relative;">
@@ -1019,24 +1041,24 @@
           <div style="position:relative; margin-top:10px;">
             <span class="marker" style="position:absolute; top:-7px; left:-4px; z-index:2;">2</span>
             <div class="ui-chips" style="flex-wrap:nowrap; overflow:hidden;">
-              <span class="ui-chip badge ink" style="font-size:.66rem; padding:4px 10px;">&#127891; はじめての方</span>
-              <span class="ui-chip badge plain" style="font-size:.66rem; padding:4px 10px;">&#9889; E-Bike</span>
-              <span class="ui-chip badge plain" style="font-size:.66rem; padding:4px 10px;">&#128176; 予算順</span>
+              <span class="ui-chip badge ink" style="font-size:.66rem; padding:4px 10px;">はじめての方</span>
+              <span class="ui-chip badge plain" style="font-size:.66rem; padding:4px 10px;">E-Bike</span>
+              <span class="ui-chip badge plain" style="font-size:.66rem; padding:4px 10px;">予算順</span>
             </div>
           </div>
 
           <div style="position:relative; margin-top:12px;">
             <span class="marker" style="position:absolute; top:-7px; left:-4px; z-index:3;">3</span>
             <div class="ui-card">
-              <div class="ui-photo">&#128692;<span class="ui-heart">&#129293;</span></div>
+              <div class="ui-photo">写真<span class="ui-heart">保存</span></div>
               <div class="ui-body">
                 <div class="ui-row">
                   <span class="ui-title">Specialized Allez</span>
-                  <span class="b b-score">&#9733; 4.9 （12）</span>
+                  <span class="b b-score">評価 4.9 （12）</span>
                 </div>
                 <div class="ui-meta">アルミ / Sora・スペシャライズド神戸・駅徒歩3分</div>
                 <div class="ui-row">
-                  <span class="b b-ok">&#9729;&#65039; 悪天候時 無料キャンセル</span>
+                  <span class="b b-ok">悪天候時 無料キャンセル</span>
                   <span class="ui-price">¥6,000<small>/日 コミコミ</small></span>
                 </div>
               </div>
@@ -1046,15 +1068,15 @@
           <div style="position:relative; margin-top:10px;">
             <span class="marker" style="position:absolute; top:-7px; left:-4px; z-index:3;">4</span>
             <div class="ui-card">
-              <div class="ui-photo photo-orange">&#128692;<span class="ui-heart">&#129293;</span></div>
+              <div class="ui-photo">写真<span class="ui-heart">保存</span></div>
               <div class="ui-body">
                 <div class="ui-row">
                   <span class="ui-title">S-Works Tarmac SL8</span>
-                  <span class="b b-score">&#9733; 5.0 （8）</span>
+                  <span class="b b-score">評価 5.0 （8）</span>
                 </div>
                 <div class="ui-meta">カーボン / Ultegra・スペシャライズド神戸</div>
                 <div class="ui-row">
-                  <span class="b b-stock">&#128293; 残り1台</span>
+                  <span class="b b-stock">残り1台</span>
                   <span class="ui-price">¥13,200<small>/日 コミコミ</small></span>
                 </div>
               </div>
@@ -1064,7 +1086,7 @@
           <div style="position:relative; margin-top:12px;">
             <span class="marker" style="position:absolute; top:-7px; left:-4px; z-index:2;">5</span>
             <div style="background:var(--gold-soft); border:1px solid #EAD9AE; border-radius:10px; padding:10px 12px; font-size:.72rem; color:var(--gold-text);">
-              &#128161; どれがいいか迷ったら → <b>3問でおすすめ診断</b>
+              どれがいいか迷ったら → <b>3問でおすすめ診断</b>
             </div>
           </div>
 
@@ -1074,10 +1096,10 @@
         <div style="position:relative;">
           <span class="marker" style="position:absolute; top:-7px; left:6px; z-index:2;">7</span>
           <div class="ui-bottomnav">
-            <div class="nav-item active"><span class="nico">&#128269;</span>探す</div>
-            <div class="nav-item"><span class="nico">&#128506;&#65039;</span>マップ</div>
-            <div class="nav-item"><span class="nico">&#129293;</span>お気に入り</div>
-            <div class="nav-item"><span class="nico">&#128100;</span>マイページ</div>
+            <div class="nav-item active"><span class="nico"><svg class="icon"><use href="#i-search"/></svg></span>探す</div>
+            <div class="nav-item"><span class="nico"><svg class="icon"><use href="#i-map"/></svg></span>マップ</div>
+            <div class="nav-item">お気に入り</div>
+            <div class="nav-item">マイページ</div>
           </div>
         </div>
       </div>
@@ -1086,13 +1108,13 @@
       <div class="vision-notes">
         <h3>この1画面に参考各社のエッセンスが入っている</h3>
 
-        <div class="vision-note"><span class="vn-num">1</span><div><b>エリア + 日付 + 車種の3要素検索</b> — Honda GO / たびらい<br><small>競合は全社「横断検索」ができない。これだけで差別化になる</small></div></div>
-        <div class="vision-note"><span class="vn-num">2</span><div><b>シーン別カテゴリ・初心者導線</b> — アソビュー / Airbnb<br><small>「はじめての方」タブで専門用語を出さない表示に切替（初心者 / 経験者モード）</small></div></div>
-        <div class="vision-note"><span class="vn-num">3</span><div><b>写真ファースト + コミコミ総額 + 無料キャンセル</b> — Airbnb / たびらい / 楽天トラベル / Booking.com<br><small>最大の離脱点は「総額が表示された瞬間」→ コミコミ総額を検索結果カードまで前倒しして先回り解消</small></div></div>
-        <div class="vision-note"><span class="vn-num">4</span><div><b>「残り1台」のスカーシティ表示</b> — Booking.com<br><small>リアルタイム在庫があるRINCLEだから出せる表示。「後で予約しよう」を防ぐ</small></div></div>
-        <div class="vision-note"><span class="vn-num">5</span><div><b>おすすめ診断への導線</b> — アソビュー<br><small>「何を借りればいいか分からない」初心者の離脱を防ぐ。競合ゼロの機能</small></div></div>
-        <div class="vision-note"><span class="vn-num">6</span><div><b>フローティングCTA（比較）</b> — Airbnb / たびらい<br><small>スクロールしても常に次のアクションが見えている</small></div></div>
-        <div class="vision-note"><span class="vn-num">7</span><div><b>下部ナビ + マップ + お気に入り</b> — LUUP / HELLO CYCLING / Klook<br><small>片手操作前提。マップタブで「近くで借りられる」体験へ</small></div></div>
+        <div class="vision-note"><span class="num-chip brand sm">1</span><div><b>エリア + 日付 + 車種の3要素検索</b> — Honda GO / たびらい<br><small>競合は全社「横断検索」ができない。これだけで差別化になる</small></div></div>
+        <div class="vision-note"><span class="num-chip brand sm">2</span><div><b>シーン別カテゴリ・初心者導線</b> — アソビュー / Airbnb<br><small>「はじめての方」タブで専門用語を出さない表示に切替（初心者 / 経験者モード）</small></div></div>
+        <div class="vision-note"><span class="num-chip brand sm">3</span><div><b>写真ファースト + コミコミ総額 + 無料キャンセル</b> — Airbnb / たびらい / 楽天トラベル / Booking.com<br><small>最大の離脱点は「総額が表示された瞬間」→ コミコミ総額を検索結果カードまで前倒しして先回り解消</small></div></div>
+        <div class="vision-note"><span class="num-chip brand sm">4</span><div><b>「残り1台」のスカーシティ表示</b> — Booking.com<br><small>リアルタイム在庫があるRINCLEだから出せる表示。「後で予約しよう」を防ぐ</small></div></div>
+        <div class="vision-note"><span class="num-chip brand sm">5</span><div><b>おすすめ診断への導線</b> — アソビュー<br><small>「何を借りればいいか分からない」初心者の離脱を防ぐ。競合ゼロの機能</small></div></div>
+        <div class="vision-note"><span class="num-chip brand sm">6</span><div><b>フローティングCTA（比較）</b> — Airbnb / たびらい<br><small>スクロールしても常に次のアクションが見えている</small></div></div>
+        <div class="vision-note"><span class="num-chip brand sm">7</span><div><b>下部ナビ + マップ + お気に入り</b> — LUUP / HELLO CYCLING / Klook<br><small>片手操作前提。マップタブで「近くで借りられる」体験へ</small></div></div>
 
         <div class="compare-mock">
           <h4>比較機能のイメージ（価格.com型・競合に存在しない機能）</h4>
@@ -1105,8 +1127,8 @@
               <tr><td>フレーム</td><td>アルミ （E5）</td><td>アルミ （Alpha）</td></tr>
               <tr><td>コンポ</td><td class="win">Sora 2x9</td><td>Claris 2x8</td></tr>
               <tr><td>重量</td><td class="win">9.2kg</td><td>9.8kg</td></tr>
-              <tr><td>レビュー</td><td class="win">&#9733;4.9 （12件）</td><td>&#9733;4.7 （8件）</td></tr>
-              <tr><td>空き</td><td>&#128994; 3台</td><td>&#128994; 5台</td></tr>
+              <tr><td>レビュー</td><td class="win">4.9 / 5（12件）</td><td>4.7 / 5（8件）</td></tr>
+              <tr><td>空き</td><td>3台</td><td>5台</td></tr>
               <tr><td></td><td><div class="cmp-btn">予約する</div></td><td><div class="cmp-btn">予約する</div></td></tr>
             </tbody>
           </table>
@@ -1123,7 +1145,11 @@
 <!-- ============ Bubble実装・機能マッピング ============ -->
 <div class="tab-panel" id="panel-bubble">
   <div class="section">
-    <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>Bubble.ioでの実装可能性</h2><div class="sh-sub">在庫データを自社DBで完結して持てるため難易度は低い。SEOのみ構造的弱点</div></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>Bubble実装・機能マッピング</h2><div class="sh-sub">実装のしやすさと、「どこから真似るか」の対応表</div></div></div>
+
+    <div class="sub-item">
+      <div class="kick">実装可能性</div>
+      <h4>Bubble.ioでの実装可能性 — 在庫データを自社DBで完結して持てるため難易度は低い</h4>
     <p class="section-lead">RINCLEはOTAと違い<b>在庫データを自社DBで完結して持てる</b>（外部カレンダー同期が不要）ため、Bubble実装の難易度は低い。SEOのみ構造的弱点。</p>
 
     <div class="table-wrap">
@@ -1138,58 +1164,59 @@
         <tbody>
           <tr>
             <td>検索バー（エリア×日付×車種）</td>
-            <td><span class="b b-ok">&#9678; ネイティブ</span></td>
-            <td>DB検索+制約。24店舗（2026-08-20実測では56店舗）・数百台規模なら標準機能で十分</td>
+            <td><span class="badge brand">◎ そのまま可</span></td>
+            <td>Bubbleの標準機能。DB検索+制約で、24店舗（作成当時の値）・数百台の規模なら十分</td>
           </tr>
           <tr>
             <td>カレンダー空き表示（残数つき）</td>
-            <td><span class="b b-ok">&#9678; プラグインで定番</span></td>
-            <td>Availabilityレコード+カレンダーUI（Booking Slots等）</td>
+            <td><span class="badge brand">◎ そのまま可</span></td>
+            <td>プラグインで定番の作り。Availabilityレコード+カレンダーUI（Booking Slots等）</td>
           </tr>
           <tr>
             <td>空き状況の一覧横断比較</td>
-            <td><span class="b b-info">&#9675; 可能だが要設計</span></td>
-            <td>「予約済みレコードを除外」方式</td>
+            <td><span class="badge ink">○ 設計が要る</span></td>
+            <td>「予約済みレコードを除外」する方式で組む</td>
           </tr>
           <tr>
             <td>自転車比較（2〜3台横並び）</td>
-            <td><span class="b b-ok">&#9678; ネイティブ</span></td>
-            <td>カスタムステート+リピーティンググループ。プラグイン不要</td>
+            <td><span class="badge brand">◎ そのまま可</span></td>
+            <td>Bubbleの標準機能。カスタムステート+リピーティンググループでプラグイン不要</td>
           </tr>
           <tr>
             <td>地図検索</td>
-            <td><span class="b b-info">&#9675; 可能</span></td>
-            <td>Google Maps / Mapboxプラグイン。車両単位でなく店舗単位ピンに限定</td>
+            <td><span class="badge ink">○ 設計が要る</span></td>
+            <td>Google Maps / Mapboxのプラグイン。車両単位ではなく店舗単位のピンに限定する</td>
           </tr>
           <tr>
             <td>レビュー（実利用者のみ投稿）</td>
-            <td><span class="b b-ok">&#9678; ネイティブ</span></td>
-            <td>予約レコード紐づけで担保</td>
+            <td><span class="badge brand">◎ そのまま可</span></td>
+            <td>Bubbleの標準機能。予約レコードとの紐づけで担保する</td>
           </tr>
           <tr>
             <td>放棄回収メール / ゲスト予約</td>
-            <td><span class="b b-info">&#9675; 可能</span></td>
-            <td>Backend Workflowでスケジュール送信 / メールのみの一時レコード</td>
+            <td><span class="badge ink">○ 設計が要る</span></td>
+            <td>Backend Workflowでのスケジュール送信 / メールだけの一時レコード</td>
           </tr>
           <tr>
             <td>決済（与信→キャプチャ、店舗送金分配）</td>
-            <td><span class="b b-ok">&#9678; 可能</span></td>
+            <td><span class="badge brand">◎ そのまま可</span></td>
             <td>Stripe / Stripe Connect</td>
           </tr>
           <tr>
             <td>SEO・初回表示速度</td>
-            <td><span class="b b-pt">&#10005; 構造的に弱い</span></td>
-            <td>静的LPの別建て（既存提案どおり）。listnrideが先行例</td>
+            <td><span class="badge plain">× 弱い</span></td>
+            <td>構造的に弱いため、静的LPを別建てにする（既存の提案どおり）。listnrideが先行例</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><b>最大の地雷は「日付範囲をまたぐ空き検索」のDB設計。</b> 「5/24〜5/25に空いている全車両」の検索は、データ構造を誤ると後で作り直しになる。推奨は「予約済みレコードを除外する」方式だが、<code>:filtered (advanced)</code> はクライアントサイド処理のため件数増に弱い。<b>Tier 1の検索バー実装前に、DB再構築後の新設計（2026年7月に本番リリース済み）と整合を取りつつDB設計をレビューすること。</b></span></div>
-  </div>
+    </div>
 
-  <div class="section">
-    <div class="section-header"><div class="section-num">08</div><div class="sh-body"><h2>機能マッピングテーブル</h2><div class="sh-sub">RINCLEの機能ごとに「どのサービスの何を真似るか」</div></div></div>
+    <div class="sub-item">
+      <div class="kick">機能マッピング</div>
+      <h4>RINCLEの機能ごとに「どのサービスの何を真似るか」</h4>
 
     <div class="table-wrap">
       <table>
@@ -1417,12 +1444,14 @@
         </tbody>
       </table>
     </div>
+    </div>
   </div>
 </div>
 
 </div>
 
-<footer>RINCLE UI / UX Reference Collection — Internal Use Only<br>正本: documents/4_growth/01_strategy/ui-ux-reference-catalog.md（md更新時はこのHTMLも同期すること）</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/4_growth/01_strategy/ui-ux-reference-catalog.md） -->
+<footer>正本: documents/4_growth/01_strategy/ui-ux-reference-catalog.md</footer>
 
 <script>
   var tabBtns = document.querySelectorAll('.tab-btn');

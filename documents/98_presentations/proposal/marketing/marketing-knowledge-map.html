@@ -19,8 +19,6 @@
 
 /* 章見出し（俯瞰2章は数字ではなく薄い大アイコン） */
 .section-header{margin-bottom:16px}
-.section-num.mark{display:flex;align-items:flex-end;line-height:1}
-.section-num.mark .icon{width:76px;height:76px;stroke:rgba(38,34,30,.16);stroke-width:1}
 .section-lead{font-size:13.5px;line-height:1.9;color:var(--text);margin:0 0 26px}
 
 /* カテゴリ俯瞰グリッド（白面+1px罫線・影なし） */
@@ -29,6 +27,7 @@
 .cat-card:hover{background:var(--accent-faint);border-color:var(--accent)}
 .cat-card .cat-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--surface);border:1px solid var(--accent);color:var(--accent);border-radius:50%;font-family:var(--serif);font-size:12px;margin-bottom:10px}
 .cat-card h3{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);line-height:1.5;margin:0 0 6px}
+.cat-card h3::after{content:" →";color:var(--accent);font-size:12px}
 .cat-card p{font-size:11px;color:var(--sub);line-height:1.7}
 
 /* 全手法サマリー表（地図） */
@@ -44,8 +43,11 @@
 .map-table tbody tr.cat-row:hover td{background:var(--accent-faint)}
 
 /* 相性の評価（星記号をやめ明朝数字+「/5」に） */
-.score{font-family:var(--serif);font-size:17px;color:var(--accent);white-space:nowrap}
-.score small{font-size:10.5px;color:var(--sub);margin-left:1px}
+/* 表のセル内に置く小さな量比べバー（5点満点を長さで読ませる。5点だけ焦がし） */
+.hbar.cell{grid-template-columns:1fr 40px;gap:8px;margin:0;min-width:92px}
+.hbar.cell .track,.hbar.cell .fill{height:8px}
+.hbar.cell .val{font-size:13px}
+.hbar.cell .val small{font-size:10px;color:var(--sub);margin-left:1px}
 
 /* レベルバッジ（即効性/持続性） */
 .lv{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:3px;white-space:nowrap}
@@ -54,7 +56,7 @@
 .lv-low{background:var(--paper);color:var(--sub);border:1px solid var(--line)}
 
 /* 手法カード（白面+1px罫線・影なし・見出しは明朝） */
-.m-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:8px 0 28px}
+.m-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:8px 0 28px;align-items:start}
 .m-card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:22px 24px;display:flex;flex-direction:column}
 .m-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
 .m-head .m-num{display:inline-flex;align-items:center;justify-content:center;min-width:46px;height:26px;padding:0 10px;background:var(--surface);border:1px solid var(--accent);color:var(--accent);border-radius:3px;font-family:var(--serif);font-size:12px}
@@ -82,8 +84,7 @@
   .flow{grid-template-columns:1fr 1fr}
   .flow a:nth-child(3n+1){border-left:1px solid var(--line-soft)}
   .flow a:nth-child(2n+1){border-left:none}
-  .section-num.mark .icon{width:52px;height:52px}
-}
+  }
 </style>
 </head>
 <body>
@@ -125,7 +126,7 @@
 <nav class="flow">
   <a href="#overview"><span class="fnum">1</span><span class="ft">10カテゴリの俯瞰</span><span class="fd">「誰の力で届くか」で分類</span></a>
   <a href="#map"><span class="fnum">2</span><span class="ft">全手法サマリー（地図表）</span><span class="fd">37手法をコスト・即効性で一覧</span></a>
-  <a href="#cat1"><span class="fnum">3</span><span class="ft">カテゴリ詳細</span><span class="fd">検索系〜パートナーシップ系まで10章</span></a>
+  <a href="#cat1"><span class="fnum">3</span><span class="ft">カテゴリ詳細</span><span class="fd">03〜12 検索系からパートナーシップ系まで</span></a>
 </nav>
 
 <div class="container">
@@ -133,9 +134,10 @@
   <!-- ==================== カテゴリ俯瞰 ==================== -->
   <div class="section" id="overview">
     <div class="section-header">
-      <div class="section-num mark"><svg class="icon"><use href="#i-list"/></svg></div>
+      <div class="section-num">01</div>
       <div class="sh-body"><h2>10カテゴリの俯瞰</h2><div class="sh-sub">「誰の力で・どうやってユーザーに届くか」で分類</div></div>
     </div>
+    <p class="section-lead">この資料はRINCLEに限らず使える汎用の教科書です。<strong>RINCLEでどれをやるかの採否は<a href="marketing-channels.html">チャネル戦略</a>にまとめています</strong>。この資料は、そこで挙げた手法の背景を確かめるための地図としてお使いください。</p>
     <p class="section-lead">toCの集客手法は「誰の力で・どうやってユーザーに届くか」で10カテゴリに分けられます。カードをクリックすると各カテゴリの詳細へ。</p>
 
     <div class="cat-grid">
@@ -155,7 +157,7 @@
   <!-- ==================== 全手法サマリー（地図） ==================== -->
   <div class="section" id="map">
     <div class="section-header">
-      <div class="section-num mark"><svg class="icon"><use href="#i-map"/></svg></div>
+      <div class="section-num">02</div>
       <div class="sh-body"><h2>全手法サマリー — この資料の「地図」</h2><div class="sh-sub">コスト・即効性・持続性・toCとの相性で一覧化</div></div>
     </div>
     <p class="section-lead">全37手法をコスト・即効性・持続性・toCとの相性で一覧化。手法名から各カテゴリの詳細に飛べます。</p>
@@ -169,61 +171,61 @@
         </thead>
         <tbody>
           <tr class="cat-row"><td colspan="6"><a href="#cat1">1. 検索系 — ユーザーが能動的に探しに来る</a></td></tr>
-          <tr><td class="m-id">1-1</td><td class="m-name"><a href="#cat1">SEO</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">1-2</td><td class="m-name"><a href="#cat1">MEO</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">1-3</td><td class="m-name"><a href="#cat1">ASO</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">1-1</td><td class="m-name"><a href="#cat1">SEO</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">1-2</td><td class="m-name"><a href="#cat1">MEO</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">1-3</td><td class="m-name"><a href="#cat1">ASO</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat2">2. SNS系 — 認知・興味を作る</a></td></tr>
-          <tr><td class="m-id">2-1</td><td class="m-name"><a href="#cat2">Instagram</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">2-2</td><td class="m-name"><a href="#cat2">X（Twitter）</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">4<small>/5</small></span></td></tr>
-          <tr><td class="m-id">2-3</td><td class="m-name"><a href="#cat2">ショート動画（TikTok等）</a></td><td>無料〜低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">4<small>/5</small></span></td></tr>
-          <tr><td class="m-id">2-4</td><td class="m-name"><a href="#cat2">YouTube</a></td><td>中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">4<small>/5</small></span></td></tr>
-          <tr><td class="m-id">2-5</td><td class="m-name"><a href="#cat2">LINE公式</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">2-1</td><td class="m-name"><a href="#cat2">Instagram</a></td><td>無料〜低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">2-2</td><td class="m-name"><a href="#cat2">X（Twitter）</a></td><td>無料</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:80%"></span></span><span class="val">4<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">2-3</td><td class="m-name"><a href="#cat2">ショート動画（TikTok等）</a></td><td>無料〜低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:80%"></span></span><span class="val">4<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">2-4</td><td class="m-name"><a href="#cat2">YouTube</a></td><td>中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:80%"></span></span><span class="val">4<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">2-5</td><td class="m-name"><a href="#cat2">LINE公式</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat3">3. 広告系 — お金を払ってリーチする</a></td></tr>
-          <tr><td class="m-id">3-1</td><td class="m-name"><a href="#cat3">リスティング広告</a></td><td>中〜高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">3-2</td><td class="m-name"><a href="#cat3">ディスプレイ広告</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">3<small>/5</small></span></td></tr>
-          <tr><td class="m-id">3-3</td><td class="m-name"><a href="#cat3">SNS広告</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">3-4</td><td class="m-name"><a href="#cat3">YouTube広告</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">3<small>/5</small></span></td></tr>
-          <tr><td class="m-id">3-5</td><td class="m-name"><a href="#cat3">アフィリエイト</a> <span class="b-pr">景表法注意</span></td><td>成果報酬</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
-          <tr><td class="m-id">3-6</td><td class="m-name"><a href="#cat3">インフルエンサー</a> <span class="b-pr">ステマ規制</span></td><td>高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">4<small>/5</small></span></td></tr>
+          <tr><td class="m-id">3-1</td><td class="m-name"><a href="#cat3">リスティング広告</a></td><td>中〜高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">3-2</td><td class="m-name"><a href="#cat3">ディスプレイ広告</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">3-3</td><td class="m-name"><a href="#cat3">SNS広告</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">3-4</td><td class="m-name"><a href="#cat3">YouTube広告</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">3-5</td><td class="m-name"><a href="#cat3">アフィリエイト</a> <span class="b-pr">景表法注意</span></td><td>成果報酬</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">3-6</td><td class="m-name"><a href="#cat3">インフルエンサー</a> <span class="b-pr">ステマ規制</span></td><td>高</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:80%"></span></span><span class="val">4<small>/5</small></span></div></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat4">4. コンテンツ系 — 情報で引き寄せる</a></td></tr>
-          <tr><td class="m-id">4-1</td><td class="m-name"><a href="#cat4">ブログ</a></td><td>低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">4<small>/5</small></span></td></tr>
-          <tr><td class="m-id">4-2</td><td class="m-name"><a href="#cat4">メルマガ</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
-          <tr><td class="m-id">4-3</td><td class="m-name"><a href="#cat4">ホワイトペーパー</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">1<small>/5</small></span></td></tr>
-          <tr><td class="m-id">4-4</td><td class="m-name"><a href="#cat4">ウェビナー</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">2<small>/5</small></span></td></tr>
+          <tr><td class="m-id">4-1</td><td class="m-name"><a href="#cat4">ブログ</a></td><td>低</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:80%"></span></span><span class="val">4<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">4-2</td><td class="m-name"><a href="#cat4">メルマガ</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">4-3</td><td class="m-name"><a href="#cat4">ホワイトペーパー</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:20%"></span></span><span class="val">1<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">4-4</td><td class="m-name"><a href="#cat4">ウェビナー</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:40%"></span></span><span class="val">2<small>/5</small></span></div></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat5">5. CRM / リテンション系 — 既存顧客を育てる</a></td></tr>
-          <tr><td class="m-id">5-1</td><td class="m-name"><a href="#cat5">CRM</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">4<small>/5</small></span></td></tr>
-          <tr><td class="m-id">5-2</td><td class="m-name"><a href="#cat5">リターゲティング</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">5-3</td><td class="m-name"><a href="#cat5">プッシュ通知</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
-          <tr><td class="m-id">5-4</td><td class="m-name"><a href="#cat5">ロイヤルティPG</a></td><td>低〜中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">4<small>/5</small></span></td></tr>
+          <tr><td class="m-id">5-1</td><td class="m-name"><a href="#cat5">CRM</a></td><td>中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:80%"></span></span><span class="val">4<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">5-2</td><td class="m-name"><a href="#cat5">リターゲティング</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">5-3</td><td class="m-name"><a href="#cat5">プッシュ通知</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">5-4</td><td class="m-name"><a href="#cat5">ロイヤルティPG</a></td><td>低〜中</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:80%"></span></span><span class="val">4<small>/5</small></span></div></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat6">6. 口コミ / 紹介系 — ユーザーが広めてくれる（要ステマ規制注意）</a></td></tr>
-          <tr><td class="m-id">6-1</td><td class="m-name"><a href="#cat6">紹介プログラム</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">6-2</td><td class="m-name"><a href="#cat6">UGC促進</a> <span class="b-pr">ステマ規制</span></td><td>無料〜低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">6-3</td><td class="m-name"><a href="#cat6">口コミ管理</a> <span class="b-pr">ステマ規制</span></td><td>無料</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">6-1</td><td class="m-name"><a href="#cat6">紹介プログラム</a></td><td>低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">6-2</td><td class="m-name"><a href="#cat6">UGC促進</a> <span class="b-pr">ステマ規制</span></td><td>無料〜低</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">6-3</td><td class="m-name"><a href="#cat6">口コミ管理</a> <span class="b-pr">ステマ規制</span></td><td>無料</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat7">7. プラットフォーム / マーケットプレイス系 — 他人の集客力を借りる</a></td></tr>
-          <tr><td class="m-id">7-1</td><td class="m-name"><a href="#cat7">体験PF掲載</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">7-2</td><td class="m-name"><a href="#cat7">ECモール</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">7-1</td><td class="m-name"><a href="#cat7">体験PF掲載</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">7-2</td><td class="m-name"><a href="#cat7">ECモール</a></td><td>手数料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat8">8. オフライン系 — リアルで接点を作る</a></td></tr>
-          <tr><td class="m-id">8-1</td><td class="m-name"><a href="#cat8">イベント出展</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">3<small>/5</small></span></td></tr>
-          <tr><td class="m-id">8-2</td><td class="m-name"><a href="#cat8">チラシ / ポスティング</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">2<small>/5</small></span></td></tr>
-          <tr><td class="m-id">8-3</td><td class="m-name"><a href="#cat8">店頭POP</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">4<small>/5</small></span></td></tr>
-          <tr><td class="m-id">8-4</td><td class="m-name"><a href="#cat8">無料体験</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">5<small>/5</small></span></td></tr>
+          <tr><td class="m-id">8-1</td><td class="m-name"><a href="#cat8">イベント出展</a></td><td>高</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">8-2</td><td class="m-name"><a href="#cat8">チラシ / ポスティング</a></td><td>低〜中</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:40%"></span></span><span class="val">2<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">8-3</td><td class="m-name"><a href="#cat8">店頭POP</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:80%"></span></span><span class="val">4<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">8-4</td><td class="m-name"><a href="#cat8">無料体験</a></td><td>中</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat9">9. PR / ブランディング系 — メディアに取り上げてもらう</a></td></tr>
-          <tr><td class="m-id">9-1</td><td class="m-name"><a href="#cat9">プレスリリース</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">3<small>/5</small></span></td></tr>
-          <tr><td class="m-id">9-2</td><td class="m-name"><a href="#cat9">メディアリレーション</a></td><td>無料〜高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">3<small>/5</small></span></td></tr>
-          <tr><td class="m-id">9-3</td><td class="m-name"><a href="#cat9">スポンサーシップ</a></td><td>高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><span class="score">2<small>/5</small></span></td></tr>
+          <tr><td class="m-id">9-1</td><td class="m-name"><a href="#cat9">プレスリリース</a></td><td>低</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">9-2</td><td class="m-name"><a href="#cat9">メディアリレーション</a></td><td>無料〜高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">9-3</td><td class="m-name"><a href="#cat9">スポンサーシップ</a></td><td>高</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-mid">中</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:40%"></span></span><span class="val">2<small>/5</small></span></div></td></tr>
 
           <tr class="cat-row"><td colspan="6"><a href="#cat10">10. パートナーシップ系 — 他社と組む</a></td></tr>
-          <tr><td class="m-id">10-1</td><td class="m-name"><a href="#cat10">コラボ / 共同キャンペーン</a></td><td>案件次第</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><span class="score">4<small>/5</small></span></td></tr>
-          <tr><td class="m-id">10-2</td><td class="m-name"><a href="#cat10">パートナーチャネル</a></td><td>無料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">5<small>/5</small></span></td></tr>
-          <tr><td class="m-id">10-3</td><td class="m-name"><a href="#cat10">API連携 / ウィジェット</a></td><td>中（開発費）</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><span class="score">3<small>/5</small></span></td></tr>
+          <tr><td class="m-id">10-1</td><td class="m-name"><a href="#cat10">コラボ / 共同キャンペーン</a></td><td>案件次第</td><td><span class="lv lv-mid">中</span></td><td><span class="lv lv-low">低</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:80%"></span></span><span class="val">4<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">10-2</td><td class="m-name"><a href="#cat10">パートナーチャネル</a></td><td>無料</td><td><span class="lv lv-high">高</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill" style="width:100%"></span></span><span class="val">5<small>/5</small></span></div></td></tr>
+          <tr><td class="m-id">10-3</td><td class="m-name"><a href="#cat10">API連携 / ウィジェット</a></td><td>中（開発費）</td><td><span class="lv lv-low">低</span></td><td><span class="lv lv-high">高</span></td><td><div class="hbar cell"><span class="track"><span class="fill dim" style="width:60%"></span></span><span class="val">3<small>/5</small></span></div></td></tr>
         </tbody>
       </table>
     </div>
@@ -232,7 +234,7 @@
   <!-- ==================== 1. 検索系 ==================== -->
   <div class="section" id="cat1">
     <div class="section-header">
-      <div class="section-num">01</div>
+      <div class="section-num">03</div>
       <div class="sh-body"><h2>検索系</h2><div class="sh-sub">ユーザーが能動的に探しに来る</div></div>
     </div>
     <p class="section-lead">ユーザーが「探しに来る」。購買意欲が高いのが特徴。</p>
@@ -273,15 +275,15 @@
   <!-- ==================== 2. SNS系 ==================== -->
   <div class="section" id="cat2">
     <div class="section-header">
-      <div class="section-num">02</div>
+      <div class="section-num">04</div>
       <div class="sh-body"><h2>SNS系</h2><div class="sh-sub">認知・興味を作る</div></div>
     </div>
-    <p class="section-lead">認知を広げ、興味を作り、ファンを育てる。</p>
+    <p class="section-lead">認知を広げ、興味を作ってファンを育てる。</p>
 
     <div class="m-grid">
       <div class="m-card">
         <div class="m-head"><span class="m-num">2-1</span><h3>Instagram運用</h3></div>
-        <p class="m-desc">写真/動画/リールで視覚的にブランドを発信。UGCが生まれやすくショッピング機能もあるが、継続的な工数がかかり、リンク導線が弱い（プロフィールのみ）。</p>
+        <p class="m-desc">写真/動画/リールで視覚的にブランドを発信。UGCが生まれやすくショッピング機能もある。ただし継続的な工数がかかる。リンク導線も弱い（プロフィールのみ）。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（内製）〜 月10〜30万円（外注 / 運用代行）</span></div>
           <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>3〜6ヶ月</b></span></div>
@@ -334,14 +336,14 @@
   <!-- ==================== 3. 広告系 ==================== -->
   <div class="section" id="cat3">
     <div class="section-header">
-      <div class="section-num">03</div>
+      <div class="section-num">05</div>
       <div class="sh-body"><h2>広告系</h2><div class="sh-sub">お金を払ってリーチする</div></div>
     </div>
     <p class="section-lead">お金を払って即座にリーチする。</p>
 
     <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>
       <b>ステマ規制（景品表示法・2023年10月施行）に注意</b><br>
-      インフルエンサーへの依頼投稿（商品提供のみの<b>ギフティングを含む</b>）には「#PR」等の広告表示が<b>必須</b>。アフィリエイトでも広告主に景表法上の表示管理責任があり、アフィリエイターの誇大表現も広告主の責任になる。化粧品 / 健康食品等は薬機法の表現規制にも注意。
+      インフルエンサーへの依頼投稿（商品提供のみの<b>ギフティングを含む</b>）には「#PR」等の広告表示が<b>必須</b>。アフィリエイトでも広告主に景表法上の表示管理責任がある。アフィリエイターの誇大表現も広告主の責任になる。化粧品 / 健康食品等は薬機法の表現規制にも注意。
     </div></div>
 
     <div class="m-grid">
@@ -393,12 +395,12 @@
           <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>1〜3ヶ月</b></span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">明確なコンバージョンがあるサービス（申込 / 購入）</span></div>
         </div>
-        <div class="m-note"><b>広告主には景表法上の表示管理責任</b>があり、アフィリエイターの誇大表現も広告主の責任になる。</div>
+        <div class="m-note"><b>広告主には景表法上の表示管理責任</b>がある。アフィリエイターの誇大表現も広告主の責任になる。</div>
       </div>
 
       <div class="m-card">
         <div class="m-head"><span class="m-num">3-6</span><h3>インフルエンサーマーケティング</h3><span class="b-pr"><svg class="icon"><use href="#i-alert"/></svg>ステマ規制</span></div>
-        <p class="m-desc">SNS/YouTubeのインフルエンサーに商品/サービスを体験・紹介してもらう。商品提供のみで依頼する「ギフティング」も低コスト手法として定番。フォロワーからの信頼度が高くUGCも生まれるが、効果測定が難しい。</p>
+        <p class="m-desc">SNS/YouTubeのインフルエンサーに商品/サービスを体験・紹介してもらう。商品提供のみで依頼する「ギフティング」も低コスト手法として定番。フォロワーからの信頼度が高くUGCも生まれる。ただし効果測定が難しい。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1件5〜100万円+（フォロワー数による）</span></div>
           <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>投稿後すぐ</b>（ただし一過性）</span></div>
@@ -412,15 +414,15 @@
   <!-- ==================== 4. コンテンツ系 ==================== -->
   <div class="section" id="cat4">
     <div class="section-header">
-      <div class="section-num">04</div>
+      <div class="section-num">06</div>
       <div class="sh-body"><h2>コンテンツ系</h2><div class="sh-sub">情報で引き寄せる</div></div>
     </div>
-    <p class="section-lead">有益な情報を提供して、ユーザーを引き寄せる。</p>
+    <p class="section-lead">有益な情報を提供してユーザーを引き寄せる。</p>
 
     <div class="m-grid">
       <div class="m-card">
         <div class="m-head"><span class="m-num">4-1</span><h3>ブログ / オウンドメディア</h3></div>
-        <p class="m-desc">自社サイト内でブログ記事を定期的に公開。SEO効果と専門性のアピールがあり、記事は資産として残るストック型。質の高い記事の継続的な制作が必要。</p>
+        <p class="m-desc">自社サイト内でブログ記事を定期的に公開。SEO効果と専門性のアピールがある。記事は資産として残るストック型。質の高い記事の継続的な制作が必要。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（内製）〜 1記事3〜10万円（外注）</span></div>
           <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>3〜6ヶ月</b></span></div>
@@ -440,7 +442,7 @@
 
       <div class="m-card">
         <div class="m-head"><span class="m-num">4-3</span><h3>ホワイトペーパー / ebook</h3></div>
-        <p class="m-desc">PDF等の資料を無料ダウンロードさせ、リード（見込み客）を獲得。リード獲得に直結し専門性をアピールできるが、toC向けには向きにくい（主にBtoB）。</p>
+        <p class="m-desc">PDF等の資料を無料ダウンロードさせ、リード（見込み客）を獲得。リード獲得に直結し専門性をアピールできる。ただしtoC向けには向きにくい（主にBtoB）。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1本10〜50万円</span></div>
           <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>公開後すぐ</b></span></div>
@@ -463,7 +465,7 @@
   <!-- ==================== 5. CRM/リテンション系 ==================== -->
   <div class="section" id="cat5">
     <div class="section-header">
-      <div class="section-num">05</div>
+      <div class="section-num">07</div>
       <div class="sh-body"><h2>CRM / リテンション系</h2><div class="sh-sub">既存顧客を育てる</div></div>
     </div>
     <p class="section-lead">一度来た顧客を逃さず、リピートさせる。</p>
@@ -471,9 +473,10 @@
     <div class="m-grid">
       <div class="m-card">
         <div class="m-head"><span class="m-num">5-1</span><h3>CRM（顧客関係管理）</h3></div>
-        <p class="m-desc">顧客データを一元管理し、セグメント別にアプローチする。配信の自動化はMA（マーケティングオートメーション）ツールで実現（ステップ配信 / シナリオ配信等）。LTVの最大化とパーソナライズが狙い。</p>
+        <p class="m-desc">顧客データを一元管理してセグメント別にアプローチする。配信の自動化はMA（マーケティングオートメーション）ツールで実現（ステップ配信 / シナリオ配信等）。LTVの最大化とパーソナライズが狙い。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月0〜数万円（HubSpot無料〜、Salesforce等は高額）</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">顧客数が一定以上あるサービス</span></div>
         </div>
       </div>
@@ -483,6 +486,7 @@
         <p class="m-desc">一度サイトに来たが離脱したユーザーに、他のサイトやSNSで広告を再表示。すでに興味を持っている人への再アプローチでCVRが高い。しつこいと逆効果。Cookie制限の影響あり。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月3〜30万円</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">検討期間が長いサービス</span></div>
         </div>
       </div>
@@ -492,6 +496,7 @@
         <p class="m-desc">スマホやブラウザにプッシュ通知を送信。開封率が高くリアルタイムに届くが、ウザがられてオフにされるリスクがある。アプリ or PWAが必要。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">低</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">アプリを持つサービス。リピート型サービス</span></div>
         </div>
       </div>
@@ -501,6 +506,7 @@
         <p class="m-desc">利用回数や金額に応じてポイント付与や会員ランクUP。リピート率の向上と競合への流出防止に効く。ポイント原資のコストと複雑な制度設計が課題。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">売上の1〜5%程度</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">リピート型サービス全般</span></div>
         </div>
       </div>
@@ -510,7 +516,7 @@
   <!-- ==================== 6. 口コミ/紹介系 ==================== -->
   <div class="section" id="cat6">
     <div class="section-header">
-      <div class="section-num">06</div>
+      <div class="section-num">08</div>
       <div class="sh-body"><h2>口コミ / 紹介系</h2><div class="sh-sub">ユーザーが広めてくれる</div></div>
     </div>
     <p class="section-lead">ユーザーが自発的に広めてくれる。最もCAC（顧客獲得コスト）が低い。</p>
@@ -527,15 +533,17 @@
         <p class="m-desc">既存ユーザーが友人を紹介すると、双方に特典を付与。獲得コストが非常に低く、紹介された人は信頼度が高くCVRも高い。既存ユーザーがいないと機能せず、特典の設計が重要。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">特典コスト（1件500〜2,000円程度）</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">既存顧客の満足度が高いサービス</span></div>
         </div>
       </div>
 
       <div class="m-card">
         <div class="m-head"><span class="m-num">6-2</span><h3>UGC（ユーザー生成コンテンツ）の促進</h3><span class="b-pr"><svg class="icon"><use href="#i-alert"/></svg>ステマ規制</span></div>
-        <p class="m-desc">ユーザーにSNS投稿やレビューを促し、それをマーケティングに活用。広告費ゼロで、第三者の声は広告より信頼される。コントロールが難しくネガティブなUGCも出る。</p>
+        <p class="m-desc">ユーザーにSNS投稿やレビューを促してそれをマーケティングに活用。広告費ゼロで、第三者の声は広告より信頼される。コントロールが難しくネガティブなUGCも出る。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料〜低（投稿キャンペーンの特典費用）</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">体験型サービス。写真映えするサービス</span></div>
         </div>
         <div class="m-note"><b>特典と引き換えの投稿依頼はステマ規制の対象</b>（#PR等の明示が必要）。</div>
@@ -546,6 +554,7 @@
         <p class="m-desc">Google口コミ、食べログ、じゃらん等のレビューサイトでの評価を管理。購買決定に大きな影響を持ち、SEO効果もある。ネガティブレビューへの対応が必要。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">全てのサービス</span></div>
         </div>
         <div class="m-note"><b>自作自演・対価と引き換えの高評価依頼</b>はプラットフォーム規約違反に加え、ステマ規制（景表法）違反。</div>
@@ -556,7 +565,7 @@
   <!-- ==================== 7. プラットフォーム系 ==================== -->
   <div class="section" id="cat7">
     <div class="section-header">
-      <div class="section-num">07</div>
+      <div class="section-num">09</div>
       <div class="sh-body"><h2>プラットフォーム / マーケットプレイス系</h2><div class="sh-sub">他人の集客力を借りる</div></div>
     </div>
     <p class="section-lead">他人の集客力を借りる。</p>
@@ -577,6 +586,7 @@
         <p class="m-desc">大手ECモールに出店して商品を販売。圧倒的な集客力と整った決済・配送インフラが魅力。手数料が高く価格競争になりやすい。顧客データが取れない。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">月額費用 + 手数料（5〜15%）</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">物販系</span></div>
         </div>
       </div>
@@ -586,7 +596,7 @@
   <!-- ==================== 8. オフライン系 ==================== -->
   <div class="section" id="cat8">
     <div class="section-header">
-      <div class="section-num">08</div>
+      <div class="section-num">10</div>
       <div class="sh-body"><h2>オフライン系</h2><div class="sh-sub">リアルで接点を作る</div></div>
     </div>
     <p class="section-lead">リアルでの接点を作る。</p>
@@ -594,9 +604,10 @@
     <div class="m-grid">
       <div class="m-card">
         <div class="m-head"><span class="m-num">8-1</span><h3>イベント出展</h3></div>
-        <p class="m-desc">業界イベントや展示会にブースを出して認知拡大・リード獲得。対面で信頼構築でき体験してもらえる。メディア露出も狙えるが、出展費用と準備工数が大きい。</p>
+        <p class="m-desc">業界イベントや展示会にブースを出して認知拡大・リード獲得。対面で信頼構築でき体験してもらえる。メディア露出も狙える。ただし出展費用と準備工数が大きい。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1回10〜100万円+</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">体験型サービス。BtoBの商談目的</span></div>
         </div>
       </div>
@@ -606,6 +617,7 @@
         <p class="m-desc">紙のチラシを配布。地域密着の訴求ができ、デジタルを使わない層にもリーチできる。ただし反応率は非常に低い（0.01〜0.3%）。環境負荷も。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1枚5〜20円 &times; 配布数</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">地域密着型ビジネス</span></div>
         </div>
       </div>
@@ -615,6 +627,7 @@
         <p class="m-desc">店舗内にPOP広告やデジタルサイネージを設置。来店している人に直接訴求でき、クロスセル / アップセルに有効。来店客にしかリーチできない。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">低（POP印刷代程度）</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">店舗があるビジネス</span></div>
         </div>
       </div>
@@ -624,6 +637,7 @@
         <p class="m-desc">商品サンプルや無料体験を提供して試してもらう。「体験は最強のマーケティング」で口コミも生まれやすい。コストがかかりターゲティングが難しい。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">商品 / サービス原価 &times; 配布数</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">体験型サービス。食品 / コスメ等</span></div>
         </div>
       </div>
@@ -633,7 +647,7 @@
   <!-- ==================== 9. PR/ブランディング系 ==================== -->
   <div class="section" id="cat9">
     <div class="section-header">
-      <div class="section-num">09</div>
+      <div class="section-num">11</div>
       <div class="sh-body"><h2>PR / ブランディング系</h2><div class="sh-sub">メディアに取り上げてもらう</div></div>
     </div>
     <p class="section-lead">メディアに取り上げてもらい、信頼と認知を獲得する。</p>
@@ -641,7 +655,7 @@
     <div class="m-grid">
       <div class="m-card">
         <div class="m-head"><span class="m-num">9-1</span><h3>プレスリリース</h3></div>
-        <p class="m-desc">PR TIMES等でニュースを配信し、メディアに取り上げてもらう。1回の配信で多数のメディアにリーチでき、SEO被リンク効果もある。取り上げられるかはメディア次第でニュースバリューが必要。</p>
+        <p class="m-desc">PR TIMES等でニュースを配信してメディアに取り上げてもらう。1回の配信で多数のメディアにリーチでき、SEO被リンク効果もある。取り上げられるかはメディア次第でニュースバリューが必要。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1回3万円（PR TIMES）</span></div>
           <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val"><b>配信後1〜3日</b></span></div>
@@ -654,15 +668,17 @@
         <p class="m-desc">新聞/雑誌/TV/Webメディアに取材してもらう。第三者メディアの信頼性で、広告では得られない深い訴求ができる。内容はコントロールできず、記者との関係構築が必要。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料（自力）〜 月20〜100万円（PR会社）</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ストーリーがあるサービス</span></div>
         </div>
       </div>
 
       <div class="m-card">
         <div class="m-head"><span class="m-num">9-3</span><h3>スポンサーシップ</h3></div>
-        <p class="m-desc">イベントやコンテンツのスポンサーになり、ブランド露出を得る。ブランドイメージの向上と特定コミュニティへのリーチが狙い。費用が高く効果測定が難しい。</p>
+        <p class="m-desc">イベントやコンテンツのスポンサーになってブランド露出を得る。ブランドイメージの向上と特定コミュニティへのリーチが狙い。費用が高く効果測定が難しい。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">1件10〜500万円+</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ブランド認知フェーズのサービス</span></div>
         </div>
       </div>
@@ -672,7 +688,7 @@
   <!-- ==================== 10. パートナーシップ系 ==================== -->
   <div class="section" id="cat10">
     <div class="section-header">
-      <div class="section-num">10</div>
+      <div class="section-num">12</div>
       <div class="sh-body"><h2>パートナーシップ系</h2><div class="sh-sub">他社と組む</div></div>
     </div>
     <p class="section-lead">他社と組んで、互いの顧客にリーチする。</p>
@@ -683,6 +699,7 @@
         <p class="m-desc">他社と共同でキャンペーンや商品を展開。互いの顧客基盤にリーチでき新鮮さがある。相手企業との調整が必要で、ブランドイメージの一致が重要。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">案件次第</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">ターゲットが重なる異業種とのコラボ</span></div>
         </div>
       </div>
@@ -692,6 +709,7 @@
         <p class="m-desc">販売パートナーやフランチャイズの既存チャネル（店舗/SNS/顧客リスト）を活用。コストゼロで既存のリーチを借りられ、温かいリードが得られる。パートナーに動いてもらう必要がある。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">無料〜低</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">パートナーネットワークを持つサービス</span></div>
         </div>
       </div>
@@ -701,6 +719,7 @@
         <p class="m-desc">他社サイトやアプリに自社サービスの検索 / 予約ウィジェットを埋め込む。他社のトラフィックを自社の予約に変換できる。開発コストと連携先の開拓が必要。</p>
         <div class="m-specs">
           <div class="spec"><span class="spec-label">コスト</span><span class="spec-val">開発コスト + レベニューシェア</span></div>
+          <div class="spec"><span class="spec-label">効果が出るまで</span><span class="spec-val">—</span></div>
           <div class="spec"><span class="spec-label">向いている</span><span class="spec-val">プラットフォーム型サービス。予約系サービス</span></div>
         </div>
       </div>
@@ -709,7 +728,8 @@
 
 </div>
 
-<footer>toC Marketing Knowledge Map &mdash; Internal Use Only（RINCLEに限らず使える汎用知識資料）<br>正本: documents/4_growth/02_marketing/marketing-knowledge-map.md（md更新時はこのHTMLも同期すること）</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/4_growth/02_marketing/marketing-knowledge-map.md） -->
+<footer>正本: documents/4_growth/02_marketing/marketing-knowledge-map.md</footer>
 
 <script>
 (function(){

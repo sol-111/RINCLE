@@ -14,17 +14,11 @@
 /* ヒーローのメタ行（出典・作成日を横並び） */
 .hero .hero-meta{display:flex;gap:24px;flex-wrap:wrap}
 
-/* 章ナビ5列 */
-.flow{grid-template-columns:repeat(5,1fr)}
+/* 章ナビ6列 */
+.flow{grid-template-columns:repeat(6,1fr)}
 .flow a:nth-child(4n+1){border-left:1px solid var(--line-soft)}
 .flow a:first-child{border-left:none}
 .flow a:nth-child(n+5){border-top:none}
-
-/* HTTPメソッドのラベル（白面+役割色の輪郭。塗らない） */
-.method{display:inline-block;padding:1px 8px;border-radius:3px;font-size:10.5px;font-weight:700;letter-spacing:.08em;background:var(--surface);border:1px solid var(--line)}
-.method.get{border-color:var(--ok-line);color:var(--ok-text)}
-.method.post{border-color:var(--info-line);color:var(--info-text)}
-.method.delete{border-color:var(--danger-line);color:var(--danger-text)}
 
 /* エンドポイント表（パスが長いので上揃え） */
 td{vertical-align:top}
@@ -65,31 +59,41 @@ td code{font-size:12px;white-space:nowrap}
       </div>
       <span class="hero-no">PAY.JP</span>
     </div>
-    <h1>PAY.JP API v2 リファレンス（日本語まとめ）</h1>
+    <h1>PAY.JP API v2 リファレンス</h1>
     <p class="lead">2026年2月12日提供開始の新世代API。PaymentFlow中心の状態機械モデルで、カードに加えPayPay・Apple Payを一元管理。v1とは別体系（v1は継続提供・APIキー共通）。</p>
+    <!-- #20再調査の派生 -->
     <div class="hero-meta">
       <span>出典: docs.pay.jp / v2 公開OpenAPI（2.0.0）</span>
-      <span>作成: 2026-06-12（#20再調査の派生）</span>
+      <span>公式ドキュメントの日本語まとめ</span>
+      <span>作成: 2026-06-12</span>
     </div>
   </div>
 </div>
 
 <nav class="flow">
-  <a href="#s1"><span class="fnum">1</span><span class="ft">全体像</span><span class="fd">認証・決済手段・通貨</span></a>
-  <a href="#s2"><span class="fnum">2</span><span class="ft">v1との対応関係</span><span class="fd">移行ガイドの要点</span></a>
-  <a href="#s3"><span class="fnum">3</span><span class="ft">PaymentFlow</span><span class="fd">決済の中心概念</span></a>
-  <a href="#s4"><span class="fnum">4</span><span class="ft">エンドポイント</span><span class="fd">リソース別の一覧</span></a>
-  <a href="#s5"><span class="fnum">5</span><span class="ft">RINCLEにとっての意味</span><span class="fd">2026-06時点の評価</span></a>
+  <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">v2移行は実質書き直し・テナント型に移行先なし</span></a>
+  <a href="#s1"><span class="fnum">2</span><span class="ft">全体像</span><span class="fd">認証・決済手段・通貨</span></a>
+  <a href="#s2"><span class="fnum">3</span><span class="ft">v1との対応関係</span><span class="fd">移行ガイドの要点</span></a>
+  <a href="#s3"><span class="fnum">4</span><span class="ft">PaymentFlow</span><span class="fd">決済の中心概念</span></a>
+  <a href="#s4"><span class="fnum">5</span><span class="ft">エンドポイント</span><span class="fd">リソース別の一覧</span></a>
+  <a href="#s5"><span class="fnum">6</span><span class="ft">RINCLEにとっての意味</span><span class="fd">2026-06時点の評価</span></a>
 </nav>
 
 <div class="container">
 
-  <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>今後の決済はStripeへの載せ替えが決定しています（2026-06-19定例・実装タスク#35）。</strong>本ページは、その判断材料となったPay.JP v2の調査まとめです（現行本番はPay.JP v1で稼働中）。</div></div>
+  <!-- 01 結論 -->
+  <div class="section" id="conclusion">
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">v2への移行は実質書き直し。現行のテナント型には移行先がない</div></div></div>
+    <p>v2はv1の延長ではなく別体系で、移ると実質書き直しになります。しかも店舗の月額課金は未提供（2026年中の予定）、テナント型のPlatform APIは2027年予定で、現行のテナント型には移行先がありません。判断材料の詳細は<a href="#s5">6章</a>にあります。</p>
+    <!-- 6月19日定例で決定・実装タスク#35 -->
+    <ul class="notes">
+      <li>今後の決済はStripeへの載せ替えが決定しています（6月19日決定）。本ページは、その判断材料となったPay.JP v2の調査まとめです（現行本番はPay.JP v1で稼働中）。</li>
+    </ul>
+  </div>
 
-
-  <!-- 1 -->
+  <!-- 02 -->
   <div class="section" id="s1">
-    <div class="section-header"><div class="section-num">1</div><div class="sh-body"><h2>全体像</h2><div class="sh-sub">v1と並存する新世代API</div></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>全体像</h2><div class="sh-sub">v1と並存する新世代API</div></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>項目</th><th>内容</th></tr></thead>
@@ -106,7 +110,7 @@ td code{font-size:12px;white-space:nowrap}
 
   <!-- 2 -->
   <div class="section" id="s2">
-    <div class="section-header"><div class="section-num">2</div><div class="sh-body"><h2>v1との対応関係（移行ガイドの要点）</h2><div class="sh-sub">概念の対応と非互換ポイント</div></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>v1との対応関係（移行ガイドの要点）</h2><div class="sh-sub">概念の対応と非互換ポイント</div></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>v1</th><th>v2</th><th>備考</th></tr></thead>
@@ -131,16 +135,52 @@ td code{font-size:12px;white-space:nowrap}
 
   <!-- 3 -->
   <div class="section" id="s3">
-    <div class="section-header"><div class="section-num">3</div><div class="sh-body"><h2>決済の中心概念: PaymentFlow</h2><div class="sh-sub">支払い1件のライフサイクルを状態機械で管理するオブジェクト（v1のChargeの後継）</div></div></div>
-    <div class="codeblock"><pre>requires_payment_method → requires_confirmation → (requires_action: 3DS等)
-  → processing → succeeded
-                ↘ requires_capture（capture_method=manual のとき）→ capture → succeeded
-いつでも → canceled</pre></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>決済の中心概念: PaymentFlow</h2><div class="sh-sub">支払い1件のライフサイクルを状態機械で管理するオブジェクト（v1のChargeの後継）</div></div></div>
+    <figure class="fig" aria-label="支払い1件は決まった順に状態が進んだうえで即時確定と後から確定の2本に分かれ、取消だけはどの状態からでもできる">
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label ext"><i></i>例外: 取消</div>
+        <div class="swim-track"><div class="swim-node error">canceled（どの状態からでも）</div></div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label admin"><i></i>支払いの状態</div>
+        <div class="swim-track">
+          <div class="swim-node">requires_payment_method</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">requires_confirmation</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">requires_action（3DS等）</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">processing</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-branch">
+            <div>
+              <div class="swim-branch-label ok">即時確定（capture_method=automatic）</div>
+              <div class="swim-node hot" style="margin-top:4px">succeeded</div>
+            </div>
+            <div>
+              <div class="swim-branch-label">オーソリ（capture_method=manual）</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                <div class="swim-node">requires_capture</div>
+                <div class="swim-arrow"></div>
+                <div class="swim-node">capture</div>
+                <div class="swim-arrow"></div>
+                <div class="swim-node hot">succeeded</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--accent)"></i>到達点（決済の完了）</span>
+      <span><i style="background:var(--danger)"></i>例外・異常系</span>
+    </div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>項目</th><th>値</th></tr></thead>
         <tbody>
-          <tr><td class="label">ステータス</td><td><code>requires_payment_method</code> / <code>requires_confirmation</code> / <code>requires_action</code> / <code>processing</code> / <code>requires_capture</code> / <code>succeeded</code> / <code>canceled</code></td></tr>
           <tr><td class="label">capture_method</td><td><code>automatic</code>（即時確定）/ <code>manual</code>（オーソリ→確定。<strong>v2のオーソリ期間は最大30日</strong> — v1の60日より短い）</td></tr>
           <tr><td class="label">操作</td><td><code>confirm</code>（確定実行）/ <code>capture</code>（売上確定）/ <code>cancel</code>（取消・オーソリ解放）</td></tr>
         </tbody>
@@ -151,12 +191,12 @@ td code{font-size:12px;white-space:nowrap}
 
   <!-- 4 -->
   <div class="section" id="s4">
-    <div class="section-header"><div class="section-num">4</div><div class="sh-body"><h2>リソース別エンドポイント</h2><div class="sh-sub">OpenAPI 2.0.0 / 44パス</div></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>リソース別エンドポイント</h2><div class="sh-sub">OpenAPI 2.0.0 / 44パス</div></div></div>
 
     <h3>PaymentFlow（支払い）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:90px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:90px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
           <tr><td><span class="method post">POST</span></td><td><code>/v2/payment_flows</code></td><td>支払いフロー作成</td></tr>
           <tr><td><span class="method get">GET</span></td><td><code>/v2/payment_flows</code> / <code>/v2/payment_flows/:id</code></td><td>一覧 / 取得</td></tr>
@@ -172,7 +212,7 @@ td code{font-size:12px;white-space:nowrap}
     <h3>PaymentMethod（支払い手段）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:90px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:90px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
           <tr><td><span class="method post">POST</span></td><td><code>/v2/payment_methods</code></td><td>作成（card / paypay / apple_pay）</td></tr>
           <tr><td><span class="method get">GET</span></td><td><code>/v2/payment_methods</code> / <code>:id</code></td><td>一覧 / 取得</td></tr>
@@ -186,7 +226,7 @@ td code{font-size:12px;white-space:nowrap}
     <h3>Customer（顧客）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:130px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
           <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v2/customers</code></td><td>作成 / 一覧</td></tr>
           <tr><td><span class="method get">GET</span> <span class="method post">POST</span> <span class="method delete">DEL</span></td><td><code>/v2/customers/:id</code></td><td>取得 / 更新 / 削除</td></tr>
@@ -198,7 +238,7 @@ td code{font-size:12px;white-space:nowrap}
     <h3>SetupFlow（カード等の保存・有効性確認）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:130px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
           <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v2/setup_flows</code></td><td>作成 / 一覧</td></tr>
           <tr><td><span class="method get">GET</span> <span class="method post">POST</span></td><td><code>/v2/setup_flows/:id</code></td><td>取得 / 更新</td></tr>
@@ -210,7 +250,7 @@ td code{font-size:12px;white-space:nowrap}
     <h3>Checkout Session（ホスト型決済ページ）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:130px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
           <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v2/checkout/sessions</code></td><td>作成 / 一覧（mode: <code>payment</code> / <code>setup</code>）</td></tr>
           <tr><td><span class="method get">GET</span> <span class="method post">POST</span></td><td><code>/v2/checkout/sessions/:id</code></td><td>取得 / 更新</td></tr>
@@ -222,7 +262,7 @@ td code{font-size:12px;white-space:nowrap}
     <h3>Product / Price / TaxRate（商品・価格・税率）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:130px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
           <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v2/products</code>・<code>/v2/prices</code>・<code>/v2/tax_rates</code></td><td>作成 / 一覧</td></tr>
           <tr><td><span class="method get">GET</span> <span class="method post">POST</span></td><td><code>/v2/products/:id</code> 等</td><td>取得 / 更新</td></tr>
@@ -234,7 +274,7 @@ td code{font-size:12px;white-space:nowrap}
     <h3>PaymentRefund（返金）/ PaymentDispute（チャージバック）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:130px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
           <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v2/payment_refunds</code></td><td>返金作成 / 一覧（reason: duplicate / fraudulent / requested_by_customer）</td></tr>
           <tr><td><span class="method get">GET</span> <span class="method post">POST</span></td><td><code>/v2/payment_refunds/:id</code></td><td>取得 / 更新</td></tr>
@@ -246,7 +286,7 @@ td code{font-size:12px;white-space:nowrap}
     <h3>入金・会計系 / その他</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:130px">メソッド</th><th style="width:45%">パス</th><th>説明</th></tr></thead>
         <tbody>
           <tr><td><span class="method get">GET</span></td><td><code>/v2/payment_transactions</code> / <code>:id</code></td><td>決済トランザクション（v1 Transferに相当する入金把握の起点）</td></tr>
           <tr><td><span class="method get">GET</span> <span class="method post">POST</span></td><td><code>/v2/statements</code>・<code>/v2/balances</code>・<code>/v2/terms</code></td><td>取引明細 / 残高 / 集計区間</td></tr>
@@ -259,7 +299,7 @@ td code{font-size:12px;white-space:nowrap}
 
   <!-- 5 -->
   <div class="section" id="s5">
-    <div class="section-header"><div class="section-num">5</div><div class="sh-body"><h2>RINCLEにとっての意味（2026-06時点）</h2><div class="sh-sub">Stripe載せ替え判断の材料</div></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>RINCLEにとっての意味（2026-06時点）</h2><div class="sh-sub">Stripe載せ替え判断の材料</div></div></div>
     <div class="card">
       <ol class="steps">
         <li><strong>v2移行 = 実質書き直し。</strong>PaymentFlow中心の概念体系はv1のChargeとは別物（むしろStripeとほぼ同型）。「Pay.jpに残れば実装を流用できる」はv1に留まる場合のみ成立</li>
@@ -273,7 +313,8 @@ td code{font-size:12px;white-space:nowrap}
 
 </div>
 
-<footer>正本: documents/2_requirements/04_integration/pay.jp/payjp-api-v2-summary-ja.md（md更新時はこのHTMLも同期すること）</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/2_requirements/04_integration/pay.jp/payjp-api-v2-summary-ja.md） -->
+<footer>正本: documents/2_requirements/04_integration/pay.jp/payjp-api-v2-summary-ja.md</footer>
 
 <script>
 (function(){

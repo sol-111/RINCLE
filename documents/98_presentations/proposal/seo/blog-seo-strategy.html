@@ -63,12 +63,12 @@ td.center{text-align:center;white-space:nowrap}
     </div>
     <h1>ブログSEOの方針 <span class="sub">どこに・どの形式・何のツールで書くか</span></h1>
     <p class="lead">「地域ごとのサイクリングコースで集客したい」構想（6月12日定例）の実現方式を、置き場所・形式・ツールの3軸で整理した報告です。</p>
-    <div class="hero-meta">タスク#24 ｜ 2026-06-12調査・06-24統合 ｜ <strong>06-30定例で実現方式を更新</strong> ｜ <strong>07-02 SEO差の洗い出しを追記（§6）</strong></div>
+    <!-- タスク#24。2026-06-12調査・06-24統合・06-30定例で実現方式を更新・07-02 SEO差の洗い出しを追記（§6） -->
+    <div class="hero-meta">2026-07-02更新 ｜ PEDALSTANDARD社向け ｜ 弊社（清野・山本）</div>
   </div>
 </div>
 
 <nav class="flow">
-  <a href="#update"><span class="fnum">0</span><span class="ft">6月30日定例での更新</span><span class="fd">実現方式が3点変わった</span></a>
   <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">3軸＋用途振り分けのまとめ</span></a>
   <a href="#where"><span class="fnum">2</span><span class="ft">どこに書くか</span><span class="fd">自社ドメインとnoteの分業</span></a>
   <a href="#format"><span class="fnum">3</span><span class="ft">どの形式で</span><span class="fd">記事＋本体エリアページの2段構え</span></a>
@@ -79,36 +79,20 @@ td.center{text-align:center;white-space:nowrap}
 
 <div class="container">
 
-  <!-- 0 6/30更新 -->
-  <div class="section" id="update">
-    <div class="section-header">
-      <div class="section-num">00</div>
-      <div class="sh-body"><h2>2026-06-30定例での更新（現在の方針はこちらが正）</h2><div class="sh-sub">実現方式が3点変わった</div></div>
-    </div>
-    <p>6/19報告→6/30定例の協議で、§2〜5の考え方（自社ドメインに書く・note併用・記事+エリアページ・用途で振り分け）はそのまま、<strong>実現方式が3点変わりました</strong>。</p>
-    <div class="card">
-      <ol>
-        <li><strong>サブディレクトリ（rincle.co.jp/blog/）は当面見送り → サブドメインで開始。</strong>サブディレクトリ同居に必要なリバースプロキシは、落ちるとブログもアプリ本体も全滅する<strong>単一障害点</strong>になるうえ、弊社にBubble×WordPressでの運用実績がなく障害切り分けも難しい。安全側のサブドメインで始め、<strong>サブディレクトリとのSEO差は弊社が改めて洗い出して再判断</strong>（宿題 → <strong>7月2日調査完了: 差は小さくサブドメイン継続を推奨</strong>・§6）</li>
-        <li><strong>WordPressは保留 → まず増永さん側がClaude Codeで作り込んだ静的LP（HTML / CSS）を量産して様子見。</strong>WordPress構築・保守の開発コストを先送りでき、増永さんがClaude Codeで自走できる。§3の通り「ペラ1枚の売り込みLP」はNGで、<strong>記事と遜色ない作り込み型を量産する</strong>のが条件。AIで量産した記事は<strong>公開前に運営の手直しが必須</strong>（AI文章のままだと検索順位が上がりにくい）</li>
-        <li><strong>加盟店のお知らせ記事はBubbleのCMSで実装する方向で合意</strong>（§5の整理どおり。ニッチKWならBubbleのSEOで足りる）</li>
-      </ol>
-    </div>
-  </div>
-
   <!-- 1 結論 -->
   <div class="section" id="conclusion">
     <div class="section-header">
       <div class="section-num">01</div>
-      <div class="sh-body"><h2>結論（6月30日更新後）</h2><div class="sh-sub">3軸＋用途振り分けのまとめ</div></div>
+      <div class="sh-body"><h2>結論</h2><div class="sh-sub">3軸＋用途振り分けのまとめ</div></div>
     </div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>観点</th><th>結論</th><th>ひとこと</th></tr></thead>
         <tbody>
-          <tr><td class="label">どこに書くか</td><td>SEO資産＝<strong>自社ドメイン配下</strong>（<strong>サブドメイン</strong>継続 — SEO差は小さいと7/2調査で確認・§6）/拡散＝<strong>note（無料）</strong></td><td>noteの検索評価は後から自社に移せない → 最初から自社ドメインに書く</td></tr>
+          <tr><td class="label">どこに書くか</td><td>SEO資産＝<strong>自社ドメイン配下</strong>（<strong>サブドメイン</strong>継続 — SEO差は小さいと2026-07-02の調査で確認・§6） / 拡散＝<strong>note（無料）</strong></td><td>noteの検索評価は後から自社に移せない → 最初から自社ドメインに書く</td></tr>
           <tr><td class="label">どの形式で</td><td><strong>ブログ記事 ＋ 本体エリアページ</strong>（狭義の1枚LPは作らない。作り込み型LPは記事と同等）</td><td>情報収集層は売り込みLPで拾えない。記事で集客→エリアページで予約</td></tr>
           <tr><td class="label">何のツールで</td><td>当面<strong>Claude Code製の静的LP（HTML / CSS）</strong>で自走（WordPressは保留・本格化時に再検討）</td><td>WordPress構築コストを先送り。増永さん側がClaude Codeで量産→手直しして公開</td></tr>
-          <tr><td class="label">用途で振り分け</td><td>SEO上位狙い＝静的LP記事/お知らせ＝BubbleのCMS（6/30合意）/拡散＝note</td><td>「全部WordPress」でも「全部Bubble」でもない</td></tr>
+          <tr><td class="label">用途で振り分け</td><td>SEO上位狙い＝静的LP記事 / お知らせ＝BubbleのCMS / 拡散＝note</td><td>「全部WordPress」でも「全部Bubble」でもない</td></tr>
         </tbody>
       </table>
     </div>
@@ -132,7 +116,7 @@ td.center{text-align:center;white-space:nowrap}
       <table>
         <thead><tr><th>役割</th><th>置き場所</th><th>理由</th></tr></thead>
         <tbody>
-          <tr><td class="label">SEO資産<br><span style="font-family: inherit; font-size: 12px; color: var(--sub);">地域×コース記事</span></td><td><strong>初日から自社ドメイン配下</strong><br>（当面サブドメイン・6月30日更新）</td><td>検索評価を自社ドメイン配下に蓄積。後から移せない以上、最初からここに書く</td></tr>
+          <tr><td class="label">SEO資産<br><span style="font-family: inherit; font-size: 12px; color: var(--sub);">地域×コース記事</span></td><td><strong>初日から自社ドメイン配下</strong><br>（当面サブドメイン）</td><td>検索評価を自社ドメイン配下に蓄積。後から移せない以上、最初からここに書く</td></tr>
           <tr><td class="label">拡散・ブランド用<br><span style="font-family: inherit; font-size: 12px; color: var(--sub);">運営の想い・店舗ストーリー・イベントレポ</span></td><td><strong>note（無料版）</strong></td><td>note.comの集客力・SNS拡散に乗る。検索資産にする必要がないもの</td></tr>
         </tbody>
       </table>
@@ -141,8 +125,8 @@ td.center{text-align:center;white-space:nowrap}
     <div class="card">
       <ul>
         <li><strong>強み</strong>：ドメイン評価が高く公開直後でも検索流入が得やすい（会員777万人・2024時点）</li>
-        <li><strong>限界</strong>：HTMLタグ・構造化データのカスタマイズ不可。<strong>検索評価はすべてnote社に帰属</strong>（無料版は独自ドメイン不可）。<strong>noteのリンクは全てnofollow</strong>＝rincle.co.jpへの評価受け渡しは限定的</li>
-        <li><strong>note pro の独自ドメインは月8万円（税抜）</strong>＝予約52件 / 月分に相当し、現段階では割に合わない</li>
+        <li><strong>限界</strong>：HTMLタグ・構造化データのカスタマイズ不可。検索評価はすべてnote社に帰属する（無料版は独自ドメイン不可）。noteのリンクは全てnofollowで、rincle.co.jpへの評価受け渡しは限定的</li>
+        <li><strong>費用</strong>：note pro の独自ドメインは月8万円（税抜）＝予約52件 / 月分に相当する。現段階では割に合わない</li>
         <li><strong>併用の定石</strong>：内容とターゲットを分ければカニバリしない。自社ブログ＝検索KW狙い / note＝初動露出・ファン形成</li>
       </ul>
       <p class="src">出典: noteヘルプ / LeadGrid / 東京SEOメーカー / mesut（nofollow検証）/ 301リダイレクト解説 — 詳細URLは正本md</p>
@@ -169,35 +153,58 @@ td.center{text-align:center;white-space:nowrap}
       <table>
         <thead><tr><th></th><th>① ブログ記事</th><th>② 本体エリアページ</th></tr></thead>
         <tbody>
-          <tr><td class="label">置き場所</td><td>自社ブログ基盤（新設・当面サブドメインの静的LP。6月30日更新）</td><td><code>rincle.co.jp</code> 予約サイト側（既存・Bubble）</td></tr>
+          <tr><td class="label">置き場所</td><td>自社ブログ基盤（新設・当面サブドメインの静的LP）</td><td><code>rincle.co.jp</code> 予約サイト側（既存・Bubble）</td></tr>
           <tr><td class="label">例</td><td>「神戸の海沿いサイクリングコース完全ガイド」</td><td>「神戸 ロードバイクレンタル（店舗一覧・予約）」</td></tr>
           <tr><td class="label">見ている人</td><td>情報収集段階（まだ借りると決めてない）</td><td>もう借りる気で探している（取引型）</td></tr>
           <tr><td class="label">役割</td><td><strong>集客</strong>（検索で広く拾う）→ 記事内リンクで②へ</td><td><strong>予約の刈り取り</strong>（ここでCV）</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="codeblock"><pre><span class="cm">導線のイメージ</span>
-
-検索「神戸 サイクリングコース」（どこ走ろう）
-  → ① ブログ記事「神戸の海沿いコースガイド」      ← 集客（網を広げる）
-    → 記事内リンク「このコースを走るなら →」
-      → ② 本体エリアページ「神戸 ロードバイクレンタル」 ← 予約（刈り取り）
-
-検索「ロードバイク レンタル 神戸」（もう借りたい）
-  → ② 本体エリアページに直接着地 → 予約</pre></div>
+    <h3>導線のイメージ</h3>
+    <figure class="fig" aria-label="ブログ記事は情報収集の段階の人を拾って本体のエリアページへ送る役で、予約はどちらの道でもエリアページで起きる">
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label user"><i></i>情報収集の人</div>
+        <div class="swim-track">
+          <div class="swim-node">検索「神戸 サイクリングコース」</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">① ブログ記事（集客）</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">② 本体エリアページ（刈り取り）</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node hot">予約</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label user"><i></i>もう借りたい人</div>
+        <div class="swim-track">
+          <div class="swim-node">検索「ロードバイク レンタル 神戸」</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">② 本体エリアページに直接</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node hot">予約</div>
+        </div>
+      </div>
+    </div></div>
+    </figure>
+    <div class="legend">
+      <span><i style="background: var(--info);"></i>ユーザーの動き</span>
+      <span><i style="background: var(--accent);"></i>予約（このページで刈り取る）</span>
+    </div>
+    <p>①から②へは記事内リンク（「このコースを走るなら」）でつなぎます。</p>
   </div>
 
   <!-- 4 ツール -->
   <div class="section" id="tool">
     <div class="section-header">
       <div class="section-num">04</div>
-      <div class="sh-body"><h2>何のツールで — WordPress vs Bubble vs note</h2><div class="sh-sub">6月19日時点の比較として保存（WordPressは保留中）</div></div>
+      <div class="sh-body"><h2>何のツールで — WordPress vs Bubble vs note</h2><div class="sh-sub">6月19日時点の比較（WordPressは保留中）</div></div>
     </div>
     <div class="alert alert-blue">
       <svg class="a-icon icon"><use href="#i-info"/></svg>
-      <span><strong>6月30日更新</strong>: WordPressは保留し、当面はClaude Code製の静的LPで自走することになりました（§0）。本節は6月19日時点の比較として残します — WordPress vs BubbleのSEO比較は引き続き有効で、WordPressは記事運用が本格化した時（量産が回り始めた・代行に切り替える等）の選択肢です。</span>
+      <span><strong>この章の読み方:</strong> WordPressは保留です。当面はClaude Code製の静的LPで自走します（§1）。本章は6月19日時点の比較です。WordPress vs BubbleのSEO比較は引き続き有効で、WordPressは記事運用が本格化した時（量産が回り始めた・代行に切り替える等）の選択肢になります。</span>
     </div>
-    <h3>CMSはWordPress（→ 6月30日より保留・本格化時の選択肢）</h3>
+    <h3>CMSはWordPress（現在は保留・本格化時の選択肢）</h3>
     <p>先方（増永さん側）が自分で記事を書く方針のため、<strong>最も馴染みやすい管理画面（WYSIWYG・見たまま編集）と自走しやすさ</strong>を優先（IT知識が浅い・非エンジニアでも書ける / 詰まっても日本語の解説・情報量が最多）。</p>
     <div class="table-wrap">
       <table>
@@ -205,7 +212,7 @@ td.center{text-align:center;white-space:nowrap}
         <tbody>
           <tr><td class="label">月額</td><td>レンタルサーバー <strong>600〜1,100円程度</strong>（エックスサーバー693円〜・ConoHa WING 660円〜）</td></tr>
           <tr><td class="label">初期費用</td><td>ほぼゼロ（有料テーマを買う場合のみ1〜2.5万円）</td></tr>
-          <tr><td class="label">保守</td><td><span class="badge plain">中</span> 更新・バックアップ・セキュリティ対応が継続発生 → <strong>弊社が準委任で対応</strong>（先方の負担なし）</td></tr>
+          <tr><td class="label">保守負担</td><td><span class="badge plain">中</span> 更新・バックアップ・セキュリティ対応が継続発生 → <strong>弊社が準委任で対応</strong>（先方の負担なし）</td></tr>
           <tr><td class="label">表示速度</td><td>動的生成のため素のままだと重め → キャッシュ等で実用域に上げる</td></tr>
         </tbody>
       </table>
@@ -244,42 +251,46 @@ td.center{text-align:center;white-space:nowrap}
       <table>
         <thead><tr><th>コンテンツ</th><th>置き場所</th><th>理由</th></tr></thead>
         <tbody>
-          <tr><td class="label">本命のSEO資産<br>（主要都市・観光ルートのコース記事）</td><td><strong>作り込んだ静的LP記事</strong>（自社サブドメイン・6月30日更新。本格化時はWordPress）</td><td>上位を取りに行く＝速度・構造が要る（静的HTMLは両方満たす）</td></tr>
+          <tr><td class="label">本命のSEO資産<br>（主要都市・観光ルートのコース記事）</td><td><strong>作り込んだ静的LP記事</strong>（自社サブドメイン。本格化時はWordPress）</td><td>上位を取りに行く＝速度・構造が要る（静的HTMLは両方満たす）</td></tr>
           <tr><td class="label">店舗の地点 × レンタル（取引型KW）</td><td><strong>Bubble本体の店舗 / エリアページをSEO最適化</strong></td><td>§3の通り受け皿は本体ページ。記事を作るまでもない</td></tr>
-          <tr><td class="label">加盟店の「お知らせレベル」発信<br>（6月19日要望→<strong>6月30日この方向で合意</strong>）</td><td><strong>BubbleのCMS</strong>（Bubble内にCMSを実装）</td><td>SEOは二の次・手軽さ優先。ニッチKWならBubbleのSEOでも足りる</td></tr>
+          <tr><td class="label">加盟店の「お知らせレベル」発信<br>（6月19日要望 → 6月30日に<strong>この方向で合意</strong>）</td><td><strong>BubbleのCMS</strong>（Bubble内にCMSを実装）</td><td>SEOは二の次・手軽さ優先。ニッチKWならBubbleのSEOでも足りる</td></tr>
           <tr><td class="label">運営の想い・ストーリー・拡散</td><td><strong>note（無料）</strong></td><td>検索資産にする必要がないもの</td></tr>
         </tbody>
       </table>
     </div>
 
-    <h3>「低競合」とは（具体例）</h3>
-    <div class="card">
+    <div class="sub-item">
+      <div class="kick">競合の少ない検索語</div>
+      <h4>「低競合」とは（具体例）</h4>
       <ul>
         <li><strong>指名・ブランド系</strong>：「RINCLE ◯◯店」「リンクル レンタル ◯◯」</li>
         <li><strong>超ローカル×ニッチ</strong>：「△△駅 ロードバイク レンタル」「◯◯川サイクリングロード レンタル 初心者」</li>
         <li><strong>絞り込みロングテール</strong>：「ロードバイク レンタル 1日 手ぶら ◯◯」</li>
       </ul>
-      <p style="font-size: 14px; margin-top: 12px;">逆に<strong>高競合（＝WordPressで本気を出す主戦場）</strong>：「ロードバイク レンタル 東京 / 大阪 / 名古屋」「しまなみ海道 レンタサイクル」。</p>
+      <p>逆に<strong>高競合（＝WordPressで本気を出す主戦場）</strong>は「ロードバイク レンタル 東京 / 大阪 / 名古屋」「しまなみ海道 レンタサイクル」。</p>
     </div>
 
-    <h3>イベント発信は低競合？ → 2種類に分かれる</h3>
-    <p>競合だけでなく<strong>"検索需要"も見る</strong>のがポイント。</p>
-    <div class="card">
-      <p><strong>① 自店の小さいイベント告知</strong>（「◯◯店 ナイトライド 6月30日」）→ 低競合だが<strong>低需要・時限的</strong>。SEO資産にならない＝<strong>Bubbleのお知らせで十分</strong></p>
-      <p><strong>② 大型イベント便乗</strong>（「大阪城トライアスロン レンタル」＝6月19日で実際に流入）→ <strong>中需要</strong>。イベント名に検索需要があるので拾える＝<strong>記事 or 広告＋LPで取りに行く</strong></p>
+    <div class="sub-item">
+      <div class="kick">競合だけでなく検索需要も見る</div>
+      <h4>イベント発信は低競合？ → 2種類に分かれる</h4>
+      <p><strong>① 自店の小さいイベント告知</strong>（「◯◯店 ナイトライド 6月30日」）→ 低競合だが低需要・時限的。SEO資産にならないため、Bubbleのお知らせで十分。</p>
+      <p><strong>② 大型イベント便乗</strong>（「大阪城トライアスロン レンタル」＝6月19日で実際に流入）→ 中需要。イベント名に検索需要があるので拾える。記事 or 広告＋LPで取りに行く。</p>
     </div>
 
-    <h3>地名の粒度で取り方が変わる</h3>
-    <p>細かい地名（店舗のある地点）＝低競合＝Bubbleでも最悪上位は取れる。ただし注意3つ：①競合と一緒に<strong>検索需要も下がる</strong>（取れても流入わずか）②<strong>速度ハンデは常にある</strong>（"勝てるだけ"で理想ではない）③<strong>分散すると内部リンク・クラスタの相乗効果が切れる</strong>（増えるならWordPressに集約）。</p>
+    <div class="sub-item">
+      <div class="kick">地名の粒度</div>
+      <h4>地名の粒度で取り方が変わる</h4>
+      <p>細かい地名（店舗のある地点）＝低競合＝Bubbleでも最悪上位は取れる。ただし注意3つ：①競合と一緒に<strong>検索需要も下がる</strong>（取れても流入わずか）②速度ハンデは常にある（「勝てるだけ」で理想ではない）③分散すると内部リンク・クラスタの相乗効果が切れる（増えるならWordPressに集約）。</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>KWの粒度</th><th>競合</th><th>取り方</th></tr></thead>
         <tbody>
-          <tr><td class="label">主要都市・観光大型KW（情報型）</td><td class="center">高</td><td><strong>静的LP記事</strong>（本命・6月30日更新。本格化時はWordPress）</td></tr>
+          <tr><td class="label">主要都市・観光大型KW（情報型）</td><td class="center">高</td><td><strong>静的LP記事</strong>（本命。本格化時はWordPress）</td></tr>
           <tr><td class="label">店舗の地点 × レンタル（取引型）</td><td class="center">低</td><td><strong>Bubble本体ページをSEO最適化</strong>。記事を作るまでもない</td></tr>
           <tr><td class="label">細かい地点 × コース情報（需要あれば）</td><td class="center">低</td><td>数が少なければBubble可。増えるなら静的LP / WordPress側に集約</td></tr>
         </tbody>
       </table>
+    </div>
     </div>
   </div>
 
@@ -287,48 +298,55 @@ td.center{text-align:center;white-space:nowrap}
   <div class="section" id="implementation">
     <div class="section-header">
       <div class="section-num">06</div>
-      <div class="sh-body"><h2>実現方式・始め方（6月30日更新）</h2><div class="sh-sub">サブディレクトリ vs サブドメイン・SEO差の洗い出し結果</div></div>
+      <div class="sh-body"><h2>実現方式・始め方</h2><div class="sh-sub">サブディレクトリ vs サブドメイン・SEO差の洗い出し結果</div></div>
     </div>
     <h3 style="margin-top: 0;">サブディレクトリ vs サブドメイン — 当面はサブドメインで開始</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th></th><th>サブディレクトリ（rincle.co.jp/blog/）</th><th>サブドメイン（例: lp.rincle.co.jp）</th></tr></thead>
+        <thead><tr><th></th><th>サブディレクトリ（rincle.co.jp/blog/）</th><th class="std">サブドメイン（例: lp.rincle.co.jp・推奨）</th></tr></thead>
         <tbody>
-          <tr><td class="label">SEO</td><td><span class="o">◎</span> rincle.co.jp本体にドメイン評価を集約できる</td><td><span class="t">△</span> 評価はサブドメイン側に貯まる（本体への波及は限定的）</td></tr>
-          <tr><td class="label">実現方式</td><td><strong>リバースプロキシが必須</strong>（Cloudflare WorkerでURLごとにWordPress / Bubbleへ出し分け）</td><td>DNSにレコードを1本足すだけ。本体と完全に独立</td></tr>
-          <tr><td class="label">リスク</td><td><span class="x">×</span> <strong>落ちるとブログもアプリ本体も全滅</strong>（単一障害点）。弊社にBubble×WordPressでの運用実績がなく、障害時の原因切り分けも難しい</td><td><span class="o">○</span> 本体に影響なし（LP側が落ちてもアプリは無事）</td></tr>
+          <tr><td class="label">SEO</td><td><span class="o">◎</span> rincle.co.jp本体にドメイン評価を集約できる</td><td class="std"><span class="t">△</span> 評価はサブドメイン側に貯まる（本体への波及は限定的）</td></tr>
+          <tr><td class="label">実現方式</td><td><strong>リバースプロキシが必須</strong>（Cloudflare WorkerでURLごとにWordPress / Bubbleへ出し分け）</td><td class="std">DNSにレコードを1本足すだけ。本体と完全に独立</td></tr>
+          <tr><td class="label">リスク</td><td><span class="x">×</span> <strong>落ちるとブログもアプリ本体も全滅</strong>（単一障害点）。弊社にBubble×WordPressでの運用実績がなく、障害時の原因切り分けも難しい</td><td class="std"><span class="o">○</span> 本体に影響なし（LP側が落ちてもアプリは無事）</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="card">
+    <p><strong>安全側のサブドメインで開始します。</strong>どうしても本体のドメインパワーを上げたい場合は、リスクを承知のうえでサブディレクトリ対応も可能です。</p>
+    <!-- サブディレクトリ採用時の技術詳細をまとめた実装手順書（blog-implementation-guide.md）は2026-08-25に削除。必要になったらgit履歴から復元できる -->
+    <ul class="notes">
+      <li>サブディレクトリを採用する場合は、rincle.co.jpのDNS構成の技術検証が必要。DNSがA / AAAAレコードだとCloudflare Workerがバイパスされる報告がある。</li>
+    </ul>
+
+    <h3>サブディレクトリとのSEO差 — 調査結果</h3>
+    <div class="alert alert-green">
+      <svg class="a-icon icon"><use href="#i-check"/></svg>
+      <span><strong>結論: SEO差はゼロとは言い切れないものの、RINCLEの規模では小さいと判断しました。</strong>後から301リダイレクトで検索評価を引き継いで移行できるため、当面はサブドメインの継続を推奨します。</span>
+    </div>
+    <div class="sub-item">
+      <div class="kick">根拠 1</div>
+      <h4>Google公式は「どちらでも同等」を一貫して明言</h4>
       <ul>
-        <li><strong>6月30日定例の結論: 安全側のサブドメインで開始</strong>。どうしても本体のドメインパワーを上げたい場合はリスクを承知の上でサブディレクトリ対応も可能、という整理</li>
-        <li><strong>宿題（弊社）は7月2日に調査完了</strong> → 結果は次項。<strong>差は小さく、後から移行もできるため、サブドメイン継続を推奨</strong></li>
-        <li>サブディレクトリを採用する場合の技術詳細をまとめた実装手順書（blog-implementation-guide.md）は2026-08-25に削除（当面サブドメイン方針のため。必要になったらgit履歴から復元できる）。DNSがA / AAAAレコードだとWorkerがバイパスされる報告があるため、採用時はrincle.co.jpのDNS構成の技術検証が必要</li>
+        <li>GoogleのJohn Mueller氏が2016年・2017年・2018年・2021年と繰り返し「サブドメインとサブディレクトリは<strong>本質的に同等</strong>。どちらに置いても構わない」と公式に発言</li>
+        <li>サブドメイン特有の手間は「Googleがクロールの仕方を別途学習する」ことだが、最初の数日で終わるプロセスで順位への影響はない</li>
+        <li>ただし留保が1つ：Googleは「どこまでが1つのサイトか」を自動判定している。サブドメインを本体と<strong>同一サイトとみなす場合と、別サイトとみなす場合の両方がある</strong>。どちらに判定されるかは運営側で確実にはコントロールできない</li>
       </ul>
     </div>
 
-    <h3>SEO差の洗い出し結果（2026-07-02調査・6月30日宿題の回答）</h3>
-    <div class="alert alert-green">
-      <svg class="a-icon icon"><use href="#i-check"/></svg>
-      <span><strong>結論: SEO差は「ゼロとは言い切れないが、RINCLEの規模では小さい」。</strong>しかも後から301リダイレクトで検索評価を引き継いでサブディレクトリへ移行できるため、サブドメインで始めても取り返しがつきます。<strong>当面サブドメイン継続を推奨します。</strong></span>
-    </div>
-    <div class="card">
-      <p><strong>① Google公式は「どちらでも同等」を一貫して明言</strong></p>
-      <ul style="margin: 10px 0 18px;">
-        <li>GoogleのJohn Mueller氏が2016年・2017年・2018年・2021年と繰り返し「サブドメインとサブディレクトリは<strong>本質的に同等</strong>。どちらに置いても構わない」と公式に発言</li>
-        <li>サブドメイン特有の手間は「Googleがクロールの仕方を別途学習する」ことだが、最初の数日で終わるプロセスで順位への影響はない</li>
-        <li>ただし留保が1つ：Googleは「どこまでが1つのサイトか」を自動判定しており、サブドメインを本体と<strong>同一サイトとみなす場合と、別サイトとみなす場合の両方がある</strong>。どちらに判定されるかは運営側で確実にはコントロールできない</li>
-      </ul>
-      <p><strong>② SEO実務家側は「サブディレクトリ優位」を主張（ただし証拠の質は一段落ちる）</strong></p>
-      <ul style="margin: 10px 0 18px;">
+    <div class="sub-item">
+      <div class="kick">根拠 2</div>
+      <h4>SEO実務家側は「サブディレクトリ優位」を主張（ただし証拠の質は一段落ちる）</h4>
+      <ul>
         <li>Moz創業者Rand Fishkin氏らは「サブドメイン→サブディレクトリ移行でトラフィックが増えた」事例（HotPads・Salesforce等）を根拠にサブディレクトリ優位を主張し続けている</li>
         <li>一方で海外SEO情報ブログの鈴木謙一氏は「サブディレクトリ化そのものではなく、<strong>移行に付随した他の変更がプラスに働いたと考えるのが自然</strong>」と指摘 — 移行事例は因果関係が証明されていない</li>
         <li>「正しく運用すればサブドメインで成功している例は多数ある」という実務家の反論や、Google関係者の「<strong>ビジネスと技術リソースの制約で選ぶのが正解</strong>」という見解もある</li>
         <li>RINCLEへの補足：仮に実務家の主張が正しくても、差が効くのは本体とブログが同一サイト評価される場合。rincle.co.jp本体は予約アプリ（Bubble）で記事メディアとは性質が違うため、サブディレクトリに置いても同一サイト評価の恩恵が確実に得られる保証はない</li>
       </ul>
-      <p><strong>③ 後からの移行は可能（＝今サブドメインを選んでも詰まない）</strong></p>
-      <ul style="margin: 10px 0 0;">
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">根拠 3</div>
+      <h4>後からの移行は可能（＝今サブドメインを選んでも詰まない）</h4>
+      <ul>
         <li>Google公式ドキュメントが「<strong>301等の恒久リダイレクトでPageRank（リンク評価）は失われない</strong>」と明言</li>
         <li>移行の反映は中規模サイトで数週間。記事数十本規模ならさらに短い。移行中の順位変動は一時的なもので、時間とともに安定する（Google公式）</li>
         <li>注意：Mueller氏は「長く維持できる構成を選ぶべき」とも発言 — 頻繁な引っ越しはNG。「サブドメインで開始→本格化したら1回だけ移行」までは現実的な範囲</li>
@@ -348,22 +366,19 @@ td.center{text-align:center;white-space:nowrap}
     <p class="src">出典: Google公式Site Movesドキュメント / John Mueller発言（2016・2017・2018・2021）/ 鈴木謙一・海外SEO情報ブログ / Web担当者Forum ほか — 詳細URLは正本md（日英22ソース・主張107件から反証検証を通過した24件に基づく・2026-07-02調査）</p>
 
     <h3>始め方と順序</h3>
-    <div class="card">
-      <ol>
+      <ol class="steps">
         <li><strong>前提</strong>：DB再構築・本番リリースは完了済み（2026年7月上旬）。次はSEO基盤一式（メタ情報・sitemap・Search Console・GA4）の整備で、基盤構築は<strong>準委任で対応</strong></li>
-        <li><strong>記事（静的LP）は増永さん側がClaude Codeで作成して自走</strong>。量産は一瞬でできるが、<strong>AIの文章のまま公開すると検索順位が上がりにくいため公開前の手直しが必須</strong>。弊社はKW選定・ペルソナ選定を支援</li>
-        <li>公開先はサブドメイン（LPが増えることを見越して<code>lp.</code>等の汎用名を推奨）。rincle.co.jp本体とペダルスタンダードHPの両方からリンクを張り、検索流入と併走。noteは即日開始できる</li>
+        <li><strong>記事（静的LP）は増永さん側がClaude Codeで作成して自走</strong>。量産は一瞬でできる。ただし<strong>AIの文章のまま公開すると検索順位が上がりにくいため公開前の手直しが必須</strong>。弊社はKW選定・ペルソナ選定を支援</li>
+        <li>公開先はサブドメイン（LPが増えることを見越して<code>lp.</code>等の汎用名を推奨）。rincle.co.jp本体とペダルスタンダードHPの両方からリンクを張って検索流入と併走。noteは即日開始できる</li>
         <li><strong>優先KW</strong>：最優先「観光ルート名×レンタサイクル」（しまなみ海道・ビワイチ等）、次点「都市名×ロードバイク レンタル」。「スポーツバイク」軸は使わない</li>
         <li>1本目は加盟店が実在し実走できる地域（例: 神戸）から。記事テンプレ1種（コース概要・マップ・立ち寄りスポット・レンタル導線）を設計して量産</li>
       </ol>
-    </div>
   </div>
 
 </div>
 
-<footer>
-  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/blog-seo-strategy.md（出典URL一覧は正本を参照・md更新時はこのHTMLも同期すること）
-</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/4_growth/03_seo/blog-seo-strategy.md。出典URL一覧は正本を参照） -->
+<footer>正本: documents/4_growth/03_seo/blog-seo-strategy.md</footer>
 
 <script>
 (function(){

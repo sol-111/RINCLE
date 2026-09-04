@@ -122,7 +122,6 @@ documents/
 │   │   ├── asis.html               #     As-Is フロー
 │   │   ├── api-v1-reference.html   #     APIリファレンス（v1）
 │   │   ├── api-v2-reference.html   #     APIリファレンス（v2）
-│   │   └── issues.html             #     修正一覧
 │   ├── proposal/                   #   提案資料（4_growthのmd構成とミラー）
 │   │   ├── strategy/               #     戦略（01_strategy対応）
 │   │   │   ├── competitive-analysis.html # 競合調査

@@ -14,12 +14,6 @@
   /* ヒーローのメタ行（項目を横並びに） */
   .hero-meta{display:flex;gap:20px;flex-wrap:wrap}
 
-  /* メソッドチップ（小さな識別札なので塗りのまま・角丸3px） */
-  .method{display:inline-block;padding:2px 8px;border-radius:3px;font-size:10.5px;font-weight:700;color:var(--paper);letter-spacing:.04em}
-  .method.get{background:var(--ok)}
-  .method.post{background:var(--info)}
-  .method.delete{background:var(--danger)}
-
   /* 表の細部（パスのコードは折り返さない） */
   td code{font-size:12px;white-space:nowrap}
   .table-wrap td.label{font-size:15px}
@@ -60,28 +54,37 @@
       <span class="hero-no">STRIPE</span>
     </div>
     <h1>Stripe API リファレンス（日本語まとめ）</h1>
-    <p class="lead">Stripe移行（ルートC・<strong>6月19日定例で決定、実装はタスク#35</strong>）の設計資料。RINCLEの集約モデルで使う範囲に絞って整理。Pay.jp v1 / v2リファレンスの姉妹編。</p>
+    <!-- ルートC。実装はタスク#35 -->
+    <p class="lead">Stripeへの載せ替え（6月19日定例で決定）に向けた、開発者向けの参照資料です。RINCLEの集約モデルで使う範囲に絞って整理しました。Pay.jp v1 / v2リファレンスの姉妹編です。</p>
+    <!-- #20再調査の派生 -->
     <div class="hero-meta">
       <span>出典: docs.stripe.com</span>
-      <span>作成: 2026-06-12（#20再調査の派生）</span>
+      <span>作成: 2026-06-12</span>
     </div>
   </div>
 </div>
 
 <!-- 章ナビ -->
 <nav class="flow">
-  <a href="#s1"><span class="fnum">1</span><span class="ft">全体像</span><span class="fd">認証・バージョン・冪等性</span></a>
-  <a href="#s2"><span class="fnum">2</span><span class="ft">Pay.jpとの対応表</span><span class="fd">載せ替え時の読み替え</span></a>
-  <a href="#s3"><span class="fnum">3</span><span class="ft">PaymentIntent</span><span class="fd">決済の中心概念</span></a>
-  <a href="#s4"><span class="fnum">4</span><span class="ft">エンドポイント一覧</span><span class="fd">RINCLEで使う範囲</span></a>
-  <a href="#s5"><span class="fnum">5</span><span class="ft">RINCLEへの意味</span><span class="fd">移行コストと利点</span></a>
+  <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">アカウント1つで完結・弱点は手数料3.6%だけ</span></a>
+  <a href="#s1"><span class="fnum">2</span><span class="ft">全体像</span><span class="fd">認証・バージョン・冪等性</span></a>
+  <a href="#s2"><span class="fnum">3</span><span class="ft">Pay.jpとの対応表</span><span class="fd">載せ替え時の読み替え</span></a>
+  <a href="#s3"><span class="fnum">4</span><span class="ft">PaymentIntent</span><span class="fd">決済の中心概念</span></a>
+  <a href="#s4"><span class="fnum">5</span><span class="ft">エンドポイント一覧</span><span class="fd">RINCLEで使う範囲</span></a>
+  <a href="#s5"><span class="fnum">6</span><span class="ft">RINCLEへの意味</span><span class="fd">移行コストと利点</span></a>
 </nav>
 
 <div class="container">
 
-  <!-- 1 -->
+  <!-- 01 結論 -->
+  <div class="section" id="conclusion">
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">集約モデルはStripeの素のアカウント1つで完結する。唯一の構造的なデメリットは手数料3.6%</div></div></div>
+    <p>集約モデルはStripeの素のアカウント1つで完結します（Connectは不要で、店舗ごとの決済アカウントと審査が消えます）。カードの有効性チェックは標準機能（SetupIntent）で0円ででき、3Dセキュア・CVC・領収書も標準です。唯一の構造的なデメリットは手数料3.6%で、Pay.jpより高い点です。詳しくは<a href="#s5">6章</a>にあります。</p>
+  </div>
+
+  <!-- 02 -->
   <div class="section" id="s1">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>全体像</h2></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>全体像</h2></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>項目</th><th>内容</th></tr></thead>
@@ -100,7 +103,7 @@
 
   <!-- 2 -->
   <div class="section" id="s2">
-    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>Pay.jpとの対応表（載せ替え時の読み替え）</h2></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>Pay.jpとの対応表（載せ替え時の読み替え）</h2></div></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>Pay.jp v1</th><th>Pay.jp v2</th><th>Stripe</th><th>備考</th></tr></thead>
@@ -120,11 +123,48 @@
 
   <!-- 3 -->
   <div class="section" id="s3">
-    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>決済の中心概念: PaymentIntent</h2></div></div>
-    <div class="codeblock"><pre>requires_payment_method → requires_confirmation → (requires_action: 3DS等)
-  → processing → succeeded
-                ↘ requires_capture（capture_method=manual のとき）→ capture → succeeded
-いつでも → canceled</pre></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>決済の中心概念: PaymentIntent</h2></div></div>
+    <figure class="fig" aria-label="支払い1件は決まった順に状態が進んだうえで即時確定と後から確定の2本に分かれ、取消だけはどの状態からでもできる">
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label ext"><i></i>例外: 取消</div>
+        <div class="swim-track"><div class="swim-node error">canceled（どの状態からでも）</div></div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label admin"><i></i>支払いの状態</div>
+        <div class="swim-track">
+          <div class="swim-node">requires_payment_method</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">requires_confirmation</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">requires_action（3DS等）</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">processing</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-branch">
+            <div>
+              <div class="swim-branch-label ok">即時確定（capture_method=automatic）</div>
+              <div class="swim-node hot" style="margin-top:4px">succeeded</div>
+            </div>
+            <div>
+              <div class="swim-branch-label">オーソリ（capture_method=manual）</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                <div class="swim-node">requires_capture</div>
+                <div class="swim-arrow"></div>
+                <div class="swim-node">capture</div>
+                <div class="swim-arrow"></div>
+                <div class="swim-node hot">succeeded</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--accent)"></i>到達点（決済の完了）</span>
+      <span><i style="background:var(--danger)"></i>例外・異常系</span>
+    </div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>項目</th><th>値</th></tr></thead>
@@ -140,7 +180,7 @@
 
   <!-- 4 -->
   <div class="section" id="s4">
-    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>リソース別エンドポイント（RINCLEで使う範囲）</h2></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>リソース別エンドポイント（RINCLEで使う範囲）</h2></div></div>
 
     <h3>PaymentIntent（支払い）</h3>
     <div class="table-wrap">
@@ -223,7 +263,7 @@
 
   <!-- 5 -->
   <div class="section" id="s5">
-    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>RINCLEにとっての意味（2026-06時点）</h2></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>RINCLEにとっての意味</h2><div class="sh-sub">2026年6月時点の評価</div></div></div>
     <div class="card">
       <ol>
         <li><strong>集約モデルは素のアカウント1つで完結。</strong>Connect不要。店舗の決済アカウント・審査が消える</li>
@@ -231,16 +271,15 @@
         <li><strong>店舗月額課金は今日から作れる</strong>（Billing提供済み。Pay.jp v2は2026年中予定でまだ無い）</li>
         <li><strong>3DS・CVC・領収書が標準。</strong>義務化対応はPaymentIntentに任せられる</li>
         <li><strong>移行コスト:</strong> カード再登録88人（Elements+SetupIntent経由）・既存Pay.jp API定義15本の置き換え</li>
-        <li><strong>手数料は3.6%でPay.jp（3.3%〜2.78%）より高い</strong> — 唯一の構造的デメリット（比較資料§2参照）</li>
+        <li><strong>手数料は3.6%でPay.jp（3.3%〜2.78%）より高い</strong> — 唯一の構造的デメリット（比較資料§3参照）</li>
       </ol>
     </div>
   </div>
 
 </div>
 
-<footer>
-  正本: documents/2_requirements/04_integration/stripe/stripe-api-summary-ja.md（md更新時はこのHTMLも同期すること）
-</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/2_requirements/04_integration/stripe/stripe-api-summary-ja.md） -->
+<footer>正本: documents/2_requirements/04_integration/stripe/stripe-api-summary-ja.md</footer>
 
 <script>
 (function(){

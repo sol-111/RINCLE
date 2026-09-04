@@ -17,19 +17,12 @@
 .card li{margin-bottom:8px;line-height:1.9}
 .card li:last-child{margin-bottom:0}
 
-/* 章ナビ・見出しの記号（番号を持たない章はSVGアイコン） */
-.flow .fnum svg.icon{width:20px;height:20px}
-
-/* 結論の2枚組（.stat型: 左1px罫+明朝特大数字。塗らない） */
-.verdict-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin:28px 0}
-.verdict{display:flex;flex-direction:column;gap:8px;border-left:1px solid var(--ink);padding-left:24px}
-.verdict.win{border-left-color:var(--ok)}
-.verdict.lose{border-left-color:var(--danger)}
-.verdict .kw{font-size:10.5px;letter-spacing:.14em;font-weight:700;color:var(--sub)}
-.verdict .num{font-family:var(--serif);font-size:52px;line-height:1.1;color:var(--ink)}
-.verdict.win .num{color:var(--ok)}
-.verdict.lose .num{color:var(--danger)}
-.verdict .sub{font-size:11.5px;color:var(--sub);line-height:1.9}
+/* 結論の2枚組は共通部品の .stat-row / .stat（2列に詰め、勝ち負けを左罫と数字の色で示す） */
+.stat-row{grid-template-columns:1fr 1fr}
+.stat.win{border-left-color:var(--ok)}
+.stat.win .n{color:var(--ok)}
+.stat.lose{border-left-color:var(--danger)}
+.stat.lose .n{color:var(--danger)}
 
 /* サジェスト語のチップ（罫線基調。緑=地域名 / 琥珀=情報型） */
 .tag{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:2px 9px;font-size:12px;font-weight:500;color:var(--text);margin:2px}
@@ -38,7 +31,7 @@
 
 @media (max-width:760px){
   .hero h1 .sub{font-size:18px}
-  .verdict-grid{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -78,10 +71,10 @@
 </div>
 
 <nav class="flow">
-  <a href="#conclusion"><span class="fnum"><svg class="icon"><use href="#i-alert"/></svg></span><span class="ft">結論</span><span class="fd">ロードバイク10件 vs スポーツバイク4件</span></a>
-  <a href="#data"><span class="fnum">1</span><span class="ft">取得データ</span><span class="fd">7キーワードのサジェスト実測</span></a>
-  <a href="#implication"><span class="fnum">2</span><span class="ft">含意</span><span class="fd">文言統一・記事構成・長期需要</span></a>
-  <a href="#next"><span class="fnum">3</span><span class="ft">次のアクション</span><span class="fd">キーワードプランナーで実数取得</span></a>
+  <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">ロードバイク10件 vs スポーツバイク4件</span></a>
+  <a href="#data"><span class="fnum">2</span><span class="ft">取得データ</span><span class="fd">7キーワードのサジェスト実測</span></a>
+  <a href="#implication"><span class="fnum">3</span><span class="ft">含意</span><span class="fd">文言統一・記事構成・長期需要</span></a>
+  <a href="#next"><span class="fnum">4</span><span class="ft">次のアクション</span><span class="fd">キーワードプランナーで実数取得</span></a>
 </nav>
 
 <div class="container">
@@ -92,38 +85,21 @@
       <div class="section-num">01</div>
       <div class="sh-body"><h2>結論</h2><div class="sh-sub">サジェスト件数で見る検索需要の差</div></div>
     </div>
-    <div class="verdict-grid">
-      <div class="verdict win">
-        <div class="kw">「ロードバイク レンタル」</div>
-        <div class="num">10件</div>
-        <div class="sub">サジェストがフルに出る・うち8件が地域名<br>= 地域×レンタルの検索需要が実在</div>
+    <div class="stat-row">
+      <div class="stat win">
+        <span class="l">「ロードバイク レンタル」のサジェスト（2026-06-12 実測）</span>
+        <span class="n">10<small>件</small></span>
+        <span class="d">サジェストがフルに出る。うち8件が地域名で、地域×レンタルの検索需要が実在する</span>
       </div>
-      <div class="verdict lose">
-        <div class="kw">「スポーツバイク レンタル」</div>
-        <div class="num">4件</div>
-        <div class="sub">サジェストが4件しか出ない<br>= 「スポーツバイクでは誰も調べない」の定量的な証拠</div>
+      <div class="stat lose">
+        <span class="l">「スポーツバイク レンタル」のサジェスト（2026-06-12 実測）</span>
+        <span class="n">4<small>件</small></span>
+        <span class="d">サジェストが4件しか出ない。「スポーツバイクでは誰も調べない」の定量的な証拠</span>
       </div>
     </div>
     <div class="alert alert-green">
       <svg class="a-icon icon"><use href="#i-check"/></svg>
       <span><strong>6月12日の現場感覚（「調べ方はほとんど、ロードバイクレンタル+地域名」）はデータで裏付けられました。</strong> 加えて「eバイク レンタル」も地域名でフルに埋まり（「しまなみ」まで出現）、E-Bike需要の顕在化も確認。</span>
-    </div>
-    <div class="card">
-      <div class="chart">
-        <svg viewBox="0 0 42 42" role="img" aria-label="「ロードバイク レンタル」サジェスト10件の内訳">
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4"
-                  stroke-dasharray="80 20" stroke-dashoffset="25"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="2.4"
-                  stroke-dasharray="20 80" stroke-dashoffset="-55"/>
-          <text x="21" y="21" text-anchor="middle" class="big">10</text>
-        </svg>
-        <div class="cl">
-          <div><i style="background: var(--accent);"></i>地域名（東京・八王子・多摩川 など）（80%）<strong>8件</strong></div>
-          <div><i style="background: var(--ink);"></i>その他（安い・1ヶ月）（20%）<strong>2件</strong></div>
-          <div class="src" style="border-bottom: none;">単位: 件 / 「ロードバイク レンタル」のサジェスト10件の内訳。検索の主戦場は「地域名×レンタル」</div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -131,7 +107,12 @@
   <div class="section" id="data">
     <div class="section-header">
       <div class="section-num">02</div>
-      <div class="sh-body"><h2>取得データ（Googleサジェスト・2026-06-12）</h2><div class="sh-sub">緑=地域名 / 黄=情報型（記事ネタ）</div></div>
+      <div class="sh-body"><h2>取得データ（Googleサジェスト・2026-06-12）</h2><div class="sh-sub">7つの検索語で実測したサジェスト</div></div>
+    </div>
+    <div class="legend">
+      <span><i style="background: var(--ok);"></i>地域名</span>
+      <span><i style="background: var(--gold);"></i>情報型（記事ネタになる語）</span>
+      <span><i style="background: var(--surface); border: 1px solid var(--line);"></i>その他の修飾語</span>
     </div>
     <div class="table-wrap">
       <table>
@@ -176,7 +157,7 @@
       </table>
     </div>
     <ul class="notes">
-      <li>サジェストは取得環境（地域・時期）の影響を受けるため、厳密な順位ではなく傾向として扱う。緑=地域名 / 黄=情報型（記事ネタ）</li>
+      <li>サジェストは取得環境（地域・時期）の影響を受けるため、厳密な順位ではなく傾向として扱う</li>
     </ul>
   </div>
 
@@ -201,17 +182,20 @@
       <div class="section-num">04</div>
       <div class="sh-body"><h2>次のアクション</h2><div class="sh-sub">正確な検索数を無料で取る</div></div>
     </div>
-    <div class="alert alert-blue">
-      <svg class="a-icon icon"><use href="#i-info"/></svg>
-      <span><strong>正確な月間検索数はキーワードプランナーで取得します</strong>（Google広告アカウントの開設だけで無料・出稿は不要）。GA4設置（#22）と同じタイミングで広告アカウントも開設すれば、広告出稿フェーズを待たずに実数が取れ、記事の優先順位づけに使えます。取得対象: 「ロードバイク レンタル×主要都市」「観光ルート名×レンタサイクル」「eバイク レンタル×地域」。</span>
-    </div>
+    <p>正確な月間検索数は、Googleのキーワードプランナーで取得します。Google広告アカウントの開設だけで無料で使えます。広告の出稿は不要です。</p>
+    <!-- GA4設置はタスク#22 -->
+    <ol class="steps">
+      <li><strong>Google広告アカウントを開設する</strong> — GA4の設置と同じタイミングで開設すれば、広告出稿の段階を待たずに実数が取れます</li>
+      <li><strong>キーワードプランナーで月間検索数を取得する</strong> — 取れた実数を記事の優先順位づけに使います</li>
+    </ol>
+    <p>取得対象の検索語:</p>
+    <p><span class="tag">ロードバイク レンタル × 主要都市</span><span class="tag">観光ルート名 × レンタサイクル</span><span class="tag">eバイク レンタル × 地域</span></p>
   </div>
 
 </div>
 
-<footer>
-  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/keyword-research.md（md更新時はこのHTMLも同期すること）
-</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/4_growth/03_seo/keyword-research.md） -->
+<footer>正本: documents/4_growth/03_seo/keyword-research.md</footer>
 
 <script>
 (function(){

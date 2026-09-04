@@ -11,9 +11,9 @@
 <style>
   /* ページ固有CSS — 領収書・インボイスの扱い（共通部品は ../assets/design.css を参照） */
 
-  /* アラートの追加2色（琥珀=注意・焦がし=結論）と段落・箇条書き */
-  .alert-amber{border-left-color:var(--gold);color:var(--gold-text)}
-  .alert-brand{border-left-color:var(--accent);color:var(--accent-deep)}
+  /* ヒーローのメタ行（項目を横並びに） */
+  .hero-meta{display:flex;gap:20px;flex-wrap:wrap}
+
   .alert p + p{margin-top:10px}
   .alert ol{padding-left:22px;margin-top:10px}
   .alert ol li{margin-bottom:8px;line-height:1.9}
@@ -25,10 +25,6 @@
   .card ul,.card ol{padding-left:20px;font-size:13.5px}
   .card li{margin-bottom:8px;line-height:1.95}
   .card li:last-child{margin-bottom:0}
-
-  /* お金の流れ図（唯一のダーク面=コード面と同じ地色） */
-  .flow-diagram{background:var(--code-bg);color:#EDE6DF;border-radius:5px;padding:20px 24px;font-family:'SFMono-Regular',Menlo,Consolas,monospace;font-size:12.5px;line-height:1.9;overflow-x:auto;margin:28px 0;white-space:pre}
-  .flow-diagram .em{color:#F0B08E;font-weight:700}
 
   /* 段階対応カード（白面+1px罫線・上3px罫線だけ役割色。フェーズ1=藍/フェーズ2=焦がし） */
   .phase-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:28px 0}
@@ -42,17 +38,8 @@
   .phase-card p{font-size:13px;line-height:1.95}
   .phase-card p + p{margin-top:10px}
 
-  /* チェックリスト（文字記号ではなく罫線の四角） */
-  .checklist{list-style:none;padding-left:0 !important}
-  .checklist li{position:relative;padding-left:28px;margin-bottom:12px;font-size:13.5px;line-height:1.95}
-  .checklist li::before{content:'';position:absolute;left:0;top:11px;width:12px;height:12px;border:1px solid var(--accent);border-radius:2px}
-
   .status-legend{font-size:12.5px;color:var(--sub);margin:28px 0 16px;line-height:2.2}
   .status-legend .badge{margin:0 2px}
-
-  /* バッジの追加色 */
-  .badge.warn{border:1px solid #EAD9AE;background:var(--gold-soft);color:var(--gold-text)}
-  .badge.now{border:1px solid var(--info-line);background:var(--info-soft);color:var(--info-text)}
 
   /* 表の細部 */
   td.label{white-space:normal}
@@ -92,58 +79,80 @@
       </div>
       <span class="hero-no">STRIPE</span>
     </div>
-    <h1>領収書・インボイスの扱い（Stripe集約モデル）</h1>
-    <p class="lead">7月3日定例の宿題への回答資料。RINCLEを「PEDALSTANDARDの単一Stripeアカウントに全決済を集約するモデル」に載せ替える前提で、Stripe領収書メールの発行元・インボイス制度の当てはめ・段階対応を整理しました。<strong>本資料は制度・技術の調査であり、最終判断は税理士・弁護士の確認が必要です。</strong></p>
+    <h1>領収書・インボイスの扱い</h1>
+    <p class="lead">7月3日定例の宿題への回答資料です。RINCLEを「PEDALSTANDARDの単一Stripeアカウントに全決済を集約するモデル」に載せ替える前提で、Stripe領収書メールの発行元・インボイス制度の当てはめ・段階対応を整理しました。<strong>本資料は制度・技術の調査です。最終判断は税理士・弁護士の確認が必要です。</strong></p>
+    <div class="hero-meta">
+      <span>前提: Stripe集約モデル</span>
+      <span>確認日: 2026-07-03</span>
+    </div>
   </div>
 </div>
 
 <!-- 章ナビ -->
 <nav class="flow">
-  <a href="#s0"><span class="fnum">0</span><span class="ft">結論サマリー</span><span class="fd">3つの質問にまず3行で回答</span></a>
-  <a href="#s1"><span class="fnum">1</span><span class="ft">お金の流れ</span><span class="fd">支払先はPEDALSTANDARD</span></a>
-  <a href="#s2"><span class="fnum">2</span><span class="ft">領収書メールの仕組み</span><span class="fd">発行元表示はアカウント設定次第</span></a>
-  <a href="#s3"><span class="fnum">3</span><span class="ft">インボイス制度の基礎</span><span class="fd">領収書メールだけでは足りない</span></a>
-  <a href="#s4"><span class="fnum">4</span><span class="ft">発行義務者は誰か</span><span class="fd">原則は販売店・特例で代行可</span></a>
-  <a href="#s5"><span class="fnum">5</span><span class="ft">当てはめと推奨</span><span class="fd">二段構えの段階対応</span></a>
-  <a href="#s6"><span class="fnum">6</span><span class="ft">決めること</span><span class="fd">判断事項と専門家への確認</span></a>
-  <a href="#s7"><span class="fnum">7</span><span class="ft">出典一覧</span><span class="fd">国税庁・Stripe公式の一次資料</span></a>
+  <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">段階対応を推奨・3つの質問への答え</span></a>
+  <a href="#s1"><span class="fnum">2</span><span class="ft">お金の流れ</span><span class="fd">支払先はPEDALSTANDARD</span></a>
+  <a href="#s2"><span class="fnum">3</span><span class="ft">領収書メールの仕組み</span><span class="fd">発行元表示はアカウント設定次第</span></a>
+  <a href="#s3"><span class="fnum">4</span><span class="ft">インボイス制度の基礎</span><span class="fd">領収書メールだけでは足りない</span></a>
+  <a href="#s4"><span class="fnum">5</span><span class="ft">発行義務者は誰か</span><span class="fd">原則は販売店・特例で代行可</span></a>
+  <a href="#s5"><span class="fnum">6</span><span class="ft">当てはめと推奨</span><span class="fd">二段構えの段階対応</span></a>
+  <a href="#s6"><span class="fnum">7</span><span class="ft">決めること</span><span class="fd">判断事項と専門家への確認</span></a>
+  <a href="#s7"><span class="fnum">8</span><span class="ft">出典一覧</span><span class="fd">国税庁・Stripe公式の一次資料</span></a>
 </nav>
 
 <div class="container">
 
-  <!-- 0 -->
-  <div class="section" id="s0">
-    <div class="section-header"><div class="section-num">00</div><div class="sh-body"><h2>結論サマリー（3つの質問への回答）</h2><div class="sh-sub">7月3日にいただいた3つの質問に、まず3行で答えます</div></div></div>
+  <!-- 01 結論（7→8章・2026-09-04） -->
+  <div class="section" id="conclusion">
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">段階対応を推奨 — まずStripeの領収書メールで始め、法人需要が出た段階でインボイス対応を足す</div></div></div>
+    <p>まずは全決済でStripeの領収書メールを自動送信して始めます。法人需要が出てきた段階でインボイス対応（媒介者交付特例＋Stripe Invoicing等）を追加する、という二段構えが現実的です（6章）。</p>
 
     <div class="table-wrap">
-      <table>
+      <table class="qa">
         <tbody>
           <tr>
-            <td class="label" style="width:32%">① 領収書メールの発行元は誰？</td>
+            <td class="label wrap">① 領収書メールの発行元は誰か</td>
             <td><strong>PEDALSTANDARD（運営会社）です。</strong> 集約モデルではStripeアカウントがPEDALSTANDARD名義の1つだけなので、領収書には設定したPEDALSTANDARDの事業名・ロゴが表示され、販売店名は出ません。差出人はデフォルトで <code>stripe.com</code> ドメイン（自社ドメインに変更も可能）。</td>
           </tr>
           <tr>
-            <td class="label">② インボイス制度はどうなる？</td>
+            <td class="label wrap">② インボイス制度はどうなるか</td>
             <td><strong>Stripeの自動領収書メール「だけ」では適格請求書（インボイス）になりません。</strong> ただしRINCLEはBtoC（一般個人）が中心で、そもそもインボイスを求める顧客は限定的です。法人利用者から求められた場合に備える形が現実的で、その際は「媒介者交付特例」でPEDALSTANDARDが自社の登録番号で発行できます。</td>
           </tr>
           <tr>
-            <td class="label">③ お金は販売店とPFのどちら？</td>
-            <td><strong>お金の受け取りはPEDALSTANDARD（プラットフォーマー）</strong>を通ります（全額がPEDALSTANDARDに入金→月次で販売店へ振込）。一方、<strong>消費税法上「レンタルというサービスを提供している＝売上の主体」は原則として販売店</strong>です。この「お金の窓口」と「サービスの主体」のズレが、インボイスの発行義務者を考えるうえでの肝になります（4章）。</td>
+            <td class="label wrap">③ お金は販売店と運営会社のどちらに入るか</td>
+            <td><strong>お金の受け取りはPEDALSTANDARD（プラットフォーマー）</strong>を通ります（全額がPEDALSTANDARDに入金→月次で販売店へ振込）。一方、<strong>消費税法上「レンタルというサービスを提供している＝売上の主体」は原則として販売店</strong>です。この「お金の窓口」と「サービスの主体」のズレが、インボイスの発行義務者を考えるうえでの肝になります（5章）。</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>段階対応を推奨:</strong> まずは全決済でStripeの領収書メールを自動送信して開始し、法人需要が出てきた段階でインボイス対応（媒介者交付特例＋Stripe Invoicing等）を追加する、という二段構えが現実的です（5章）。</div></div>
   </div>
 
-  <!-- 1 -->
+  <!-- 02 -->
   <div class="section" id="s1">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>お金の流れの整理 — 集約モデルでは支払先はPEDALSTANDARD</h2><div class="sh-sub">まず「誰から誰へお金が動くのか」を整理します。ここがすべての前提になります</div></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>お金の流れの整理 — 集約モデルでは支払先はPEDALSTANDARD</h2><div class="sh-sub">まず「誰から誰へお金が動くのか」を整理します。ここがすべての前提になります</div></div></div>
 
-    <div class="flow-diagram">ユーザー ──（カード決済・全額）──▶ <span class="em">PEDALSTANDARD の Stripeアカウント</span>
-                                        │
-                                        └─（月次・手数料15%＋カード手数料を差引）─▶ <span class="em">販売店</span></div>
+    <figure class="fig" aria-label="お金はいったん全額PEDALSTANDARDに集まってから販売店へ回るので、ユーザーの明細や領収書に出る相手は販売店でなくPEDALSTANDARDになる">
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label gold"><i></i>お金の流れ</div>
+        <div class="swim-track">
+          <div class="swim-node">ユーザー</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node hot">PEDALSTANDARD の Stripeアカウント</div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">販売店</div>
+        </div>
+      </div>
+      <div class="swim-row">
+        <div class="swim-label"></div>
+        <div class="swim-track"><span style="font-size:12px;color:var(--sub)">1本目: カード決済で全額 / 2本目: 月次で手数料15%＋カード手数料を差し引いて振込</span></div>
+      </div>
+    </div></div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--gold)"></i>お金の動き</span>
+      <span><i style="background:var(--accent)"></i>お金がいったん集まる先</span>
+    </div>
 
     <div class="card">
       <ul>
@@ -152,14 +161,21 @@
       </ul>
     </div>
 
-    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-help"/></svg><div><strong>用語ひとこと解説:</strong>
-      <p><strong>集約モデル</strong> — 全店舗の売上をプラットフォーマー1社のアカウントで一括して受け取り、後から各店に配分する方式。今回のStripe構成（Connectを使わない単一アカウント）がこれにあたります。</p>
-      <p><strong>収納代行 / 委託販売</strong> — 「お金の回収」や「販売」を他社に代わって行ってもらう関係。集約モデルは、税務・法務的にはこの委託販売や収納代行に近い構造として整理されます（この法的整理自体は弁護士回答待ち）。</p></div></div>
+    <div class="term-row">
+      <div class="term">
+        <div class="term-name">集約モデル <span class="term-tag">— 用語</span></div>
+        <div class="t-body">全店舗の売上を運営会社1社のアカウントで一括して受け取ってから、各店に配分する方式です。今回のStripe構成（Connectを使わない単一アカウント）がこれにあたります。</div>
+      </div>
+      <div class="term">
+        <div class="term-name">収納代行 / 委託販売 <span class="term-tag">— 用語</span></div>
+        <div class="t-body">「お金の回収」や「販売」を他社に代わって行ってもらう関係です。集約モデルは、税務・法務的にはこの委託販売や収納代行に近い構造として整理されます（この法的整理自体は弁護士の回答待ちです）。</div>
+      </div>
+    </div>
   </div>
 
   <!-- 2 -->
   <div class="section" id="s2">
-    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>Stripe領収書メールの仕組み — 発行元表示はアカウント設定次第</h2><div class="sh-sub">質問①「発行元は誰になるのか」への技術的な裏付け</div></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>Stripe領収書メールの仕組み — 発行元表示はアカウント設定次第</h2><div class="sh-sub">質問①「発行元は誰になるのか」への技術的な裏付け</div></div></div>
 
     <div class="card">
       <p style="margin-bottom:16px">Stripeの領収書メール（<code>receipt_email</code> を指定するとキャプチャー時に自動送信される）に表示される情報は、決済を受けたStripeアカウントのダッシュボード設定に由来します。</p>
@@ -177,7 +193,7 @@
       </div>
     </div>
 
-    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>含意:</strong> 集約モデルでは領収書の発行元表示は必ずPEDALSTANDARDになり、販売店名は出ません。Connectを使わない＝アカウントが1つしかないためです。（出典: Stripe Docs「Receipts」「Public details」）</div></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>読み方 — 含意:</strong> 集約モデルでは領収書の発行元表示は必ずPEDALSTANDARDになります。販売店名は出ません。Connectを使わない＝アカウントが1つしかないためです。（出典: Stripe Docs「Receipts」「Public details」）</div></div>
 
     <div class="card">
       <ul>
@@ -186,14 +202,14 @@
       </ul>
     </div>
 
-    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>補足:</strong> Stripeの領収書のうち、税の明細（品目ごとの金額・税率別の内訳）まで細かく載るのは、<strong>サブスクリプションやStripe Invoicing（請求書）経由の支払い</strong>に対する領収書です。通常の1回きりのカード決済（PaymentIntent）の領収書に、日本の登録番号や税率別の消費税額まで自動で載るとは、Stripe公式ドキュメントには書かれていません（＝この点は3章の「そのままでは適格請求書にならない」に直結）。</div></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>補足:</strong> Stripeの領収書のうち、税の明細（品目ごとの金額・税率別の内訳）まで細かく載るのは、<strong>サブスクリプションやStripe Invoicing（請求書）経由の支払い</strong>に対する領収書です。通常の1回きりのカード決済（PaymentIntent）の領収書に、日本の登録番号や税率別の消費税額まで自動で載るとは、Stripe公式ドキュメントには書かれていません（＝この点は4章の「そのままでは適格請求書にならない」に直結）。</div></div>
   </div>
 
   <!-- 3 -->
   <div class="section" id="s3">
-    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>インボイス制度の基礎と「領収書メールだけでは足りない」こと</h2></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>インボイス制度の基礎と「領収書メールだけでは足りない」こと</h2></div></div>
 
-    <h3>3-1. インボイス制度とは（30秒で）</h3>
+    <h3>4-1. インボイス制度とは（30秒で）</h3>
     <div class="card">
       <ul>
         <li><strong>適格請求書（インボイス）</strong>とは、売り手が買い手に発行する、消費税の<strong>登録番号</strong>や<strong>税率ごとの消費税額</strong>などを記載した書類。買い手が事業者の場合、この適格請求書がないと、支払った消費税を自分の納税額から差し引けなくなります（＝取引先が「インボイスをください」と言う理由）。</li>
@@ -202,7 +218,7 @@
       </ul>
     </div>
 
-    <h3>3-2. なぜStripe領収書メール「だけ」では足りないか</h3>
+    <h3>4-2. なぜStripe領収書メール「だけ」では足りないか</h3>
     <div class="card">
       <ul>
         <li>Stripeの<strong>自動領収書メール（1回きりの決済のレシート）は、上記の登録番号や税率別の消費税額を満たすようには作られていません</strong>（Stripe公式ドキュメントに、レシートがこれらを満たすという記載がない）。つまり、そのままでは適格請求書にはなりません。</li>
@@ -216,41 +232,41 @@
 
   <!-- 4 -->
   <div class="section" id="s4">
-    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>集約モデルでの発行義務者は誰か — 原則は販売店、特例でPEDALSTANDARDも可</h2><div class="sh-sub">質問③（お金の窓口とサービスの主体のズレ）に対する制度的な答え。国税庁のインボイスQ&amp;A（問48・問49）を一次資料で確認</div></div></div>
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>集約モデルでの発行義務者は誰か — 原則は販売店、特例でPEDALSTANDARDも可</h2><div class="sh-sub">質問③（お金の窓口とサービスの主体のズレ）に対する制度的な答え。国税庁のインボイスQ&amp;A（問48・問49）を一次資料で確認</div></div></div>
 
-    <h3>4-1. 原則：発行義務者は「サービスを提供した」販売店</h3>
+    <h3>5-1. 原則：発行義務者は「サービスを提供した」販売店</h3>
     <div class="card">
       <ul>
-        <li>委託販売（集約モデルはこれに近い構造）では、<strong>購入者に対して課税資産の譲渡等を行っているのは委託者＝販売店</strong>です。したがって、本来の適格請求書の交付義務者は販売店であって、プラットフォーマー（PEDALSTANDARD）ではありません。（出典: 国税庁インボイスQ&amp;A 問48・確認済み）</li>
+        <li>委託販売（集約モデルはこれに近い構造）では、<strong>購入者に対して課税資産の譲渡等を行っているのは委託者＝販売店</strong>です。したがって、本来の適格請求書の交付義務者は販売店です。プラットフォーマー（PEDALSTANDARD）ではありません。（出典: 国税庁インボイスQ&amp;A 問48・確認済み）</li>
         <li>お金がPEDALSTANDARDを経由しても、「サービスを売ったのは販売店」という消費税上の整理は変わらない、というのがポイントです。</li>
       </ul>
     </div>
 
-    <h3>4-2. 特例：媒介者交付特例で、PEDALSTANDARDが自社の登録番号で発行できる</h3>
+    <h3>5-2. 特例：媒介者交付特例で、PEDALSTANDARDが自社の登録番号で発行できる</h3>
     <div class="card">
       <p><strong>媒介者交付特例</strong>（用語: 販売や集金を「代わりに行う人＝受託者」が、売り手＝委託者に代わってインボイスを発行できる特例）を使えば、<strong>PEDALSTANDARD（受託者）が、自社の氏名・登録番号を記載した適格請求書を、販売店に代わってユーザーに発行できます</strong>。（根拠: 消費税法施行令70条の12①。出典: 国税庁インボイスQ&amp;A 問48・問49・確認済み）これは、集約モデルのRINCLEにとって理想的な仕組みです。PEDALSTANDARDが一括して自社名義でインボイスを出せるため、店舗ごとにバラバラに発行させる必要がありません。</p>
-      <div class="alert alert-brand" style="margin-bottom:0"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>媒介者交付特例の適用要件は次の2つ（両方必要）:</strong>
+      <div class="alert alert-green" style="margin-bottom:0"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>媒介者交付特例の適用要件は次の2つ（両方必要）:</strong>
         <ol>
           <li><strong>委託者（販売店）と受託者（PEDALSTANDARD）の双方が「適格請求書発行事業者」であること。</strong></li>
           <li><strong>委託者（販売店）が、取引の前までに「自分は適格請求書発行事業者として登録している」旨を受託者（PEDALSTANDARD）に通知していること。</strong>（通知は取引の都度でなくてもよく、加盟店との基本契約書に販売店の登録番号を記載する方法でも可）</li>
         </ol></div></div>
     </div>
 
-    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-help"/></svg><div><strong>Q&amp;Aで確認した実務ポイント:</strong>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>補足 — Q&amp;Aで確認した実務ポイント:</strong>
       <p>・この特例は、商品販売の委託だけでなく、<strong>「請求書の発行事務や集金事務だけを委託している場合（＝収納代行・決済代行的な構造）」にも適用できます</strong>（問48）。集約モデルはまさにこれに該当し得ます。</p>
-      <p>・受託者（PEDALSTANDARD）側には、<strong>交付した適格請求書の写しを保存し、販売店にも交付（または精算書等で代替）する義務</strong>があります（問48）。月次の売上明細・精算書の設計に組み込む必要があります。</p>
+      <p>・受託者（PEDALSTANDARD）側には、<strong>交付した適格請求書の写しを保存したうえで販売店にも交付（または精算書等で代替）する義務</strong>があります（問48）。月次の売上明細・精算書の設計に組み込む必要があります。</p>
       <p>・複数の販売店の取引を<strong>1枚のインボイスにまとめて発行することも可能</strong>です（問49）。</p></div></div>
 
-    <h3>4-3. 代替手段：代理交付</h3>
+    <h3>5-3. 代替手段：代理交付</h3>
     <div class="card">
-      <p>媒介者交付特例が使えない場合の代替として、<strong>代理交付</strong>（受託者＝PEDALSTANDARDが、委託者＝販売店の氏名・登録番号を記載した「販売店名義」のインボイスを代わりに交付する方式）も認められています（問48）。ただしこの場合、インボイスに載るのは販売店の登録番号なので、店舗ごとの登録番号管理が必要になります。</p>
+      <p>媒介者交付特例が使えない場合の代替として<strong>代理交付</strong>（受託者＝PEDALSTANDARDが、委託者＝販売店の氏名・登録番号を記載した「販売店名義」のインボイスを代わりに交付する方式）も認められています（問48）。ただしこの場合、インボイスに載るのは販売店の登録番号なので、店舗ごとの登録番号管理が必要になります。</p>
     </div>
 
-    <h3>4-4. 最重要の注意点：販売店が免税事業者だと特例が使えない</h3>
+    <h3>5-4. 最重要の注意点：販売店が免税事業者だと特例が使えない</h3>
     <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>免税事業者の店舗には特例が使えない:</strong> 媒介者交付特例は、要件1のとおり「委託者・受託者の双方が適格請求書発行事業者」であることが必須です。したがって、<strong>販売店（小規模なプロショップ）が免税事業者（＝適格請求書発行事業者に登録していない）だと、その店舗については媒介者交付特例が使えません。</strong></div></div>
     <div class="card">
       <ul>
-        <li>実務上は、加盟店に免税事業者と課税事業者が混在していても、<strong>適格請求書発行事業者の分とそれ以外の分を区分して、登録済みの店舗分だけをインボイスにする</strong>ことは認められています（問49・確認済み）。</li>
+        <li>実務上は、加盟店に免税事業者と課税事業者が混在していても、<strong>適格請求書発行事業者の分とそれ以外の分を区分したうえで登録済みの店舗分だけをインボイスにする</strong>ことは認められています（問49・確認済み）。</li>
         <li><strong>含意: PEDALSTANDARDは、各加盟店が適格請求書発行事業者かどうか（登録番号の有無）を把握・管理する必要があります。</strong> 加盟店オンボーディング時のヒアリング項目・DB項目に「登録番号」を含める検討が要ります。</li>
       </ul>
     </div>
@@ -258,19 +274,19 @@
 
   <!-- 5 -->
   <div class="section" id="s5">
-    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>RINCLEへの当てはめと推奨 — 段階対応</h2></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>RINCLEへの当てはめと推奨 — 段階対応</h2></div></div>
 
-    <h3>5-1. RINCLEの実態：インボイス需要は限定的</h3>
+    <h3>6-1. RINCLEの実態：インボイス需要は限定的</h3>
     <div class="card">
       <ul>
         <li>RINCLEのユーザーは<strong>BtoC（一般個人）が中心</strong>です。個人はそもそも消費税の仕入税額控除をしないため、<strong>適格請求書（インボイス）を必要としません</strong>。多くの場合、Stripeの領収書メールで十分です。</li>
-        <li>インボイスが必要になるのは、<strong>法人・個人事業主が経費でレンタルを利用し、インボイスを求めてきた場合</strong>に限られます。現状の利用実態から見て、この需要は限定的と見込まれます。</li>
+        <li>インボイスが必要になるのは、<strong>法人・個人事業主が経費でレンタルを利用してインボイスを求めてきた場合</strong>に限られます。現状の利用実態から見るとこの需要は限定的と見込まれます。</li>
       </ul>
     </div>
 
-    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>補足（要確認）:</strong> レンタサイクルの店頭取引が「不特定多数を相手にする事業」として、宛名（相手方の氏名）を省略できる<strong>適格簡易請求書</strong>の対象業種にあたるかは、Stripeガイドの例示（小売・飲食・タクシー等）には明示されていません。国税庁Q&amp;Aにはレンタカー事業が対象例として挙がっているとの調査結果があり、レンタサイクルも同様に扱える可能性はありますが、<strong>税理士への確認が必要</strong>です（6章）。</div></div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>要確認:</strong> レンタサイクルの店頭取引が「不特定多数を相手にする事業」として宛名（相手方の氏名）を省略できる<strong>適格簡易請求書</strong>の対象業種にあたるかは、Stripeガイドの例示（小売・飲食・タクシー等）には明示されていません。国税庁Q&amp;Aにはレンタカー事業が対象例として挙がっているとの調査結果があります。レンタサイクルも同様に扱える可能性はあるものの<strong>税理士への確認が必要</strong>です（7章）。</div></div>
 
-    <h3>5-2. 推奨：二段構えの段階対応</h3>
+    <h3>6-2. 推奨：二段構えの段階対応</h3>
     <div class="phase-grid">
       <div class="phase-card p1">
         <div class="phase-label">フェーズ1（開始時）</div>
@@ -286,91 +302,75 @@
       </div>
     </div>
 
-    <div class="alert alert-brand"><svg class="a-icon icon"><use href="#i-check"/></svg><div>この二段構えは、7月3日決定の決済フロー（「領収書は全決済で自動送信」）とも整合します。まず自動領収書で走り出し、需要を見てインボイス対応を足す、という順序です。</div></div>
+    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><div>この二段構えは、7月3日決定の決済フロー（「領収書は全決済で自動送信」）とも整合します。まず自動領収書で走り出す。需要を見てインボイス対応を足す、という順序です。</div></div>
   </div>
 
   <!-- 6 -->
   <div class="section" id="s6">
-    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>決めること・専門家に確認すること</h2></div></div>
+    <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>決めること・専門家に確認すること</h2></div></div>
 
-    <h3>増永さん側で決める / 進めること</h3>
-    <div class="card">
-      <ul class="checklist">
-        <li><strong>PEDALSTANDARDが適格請求書発行事業者として登録済みか</strong>の確認（媒介者交付特例の要件1）。未登録なら登録するか。</li>
-        <li>インボイス対応を<strong>フェーズ2でいつ始めるか</strong>（法人需要の見込み次第）。</li>
-        <li>加盟店の<strong>登録番号を契約・オンボーディングで収集する運用</strong>にするか。</li>
-      </ul>
-    </div>
-
-    <h3>税理士に確認すること</h3>
-    <div class="card">
-      <ul class="checklist">
-        <li>レンタサイクルの店頭取引が<strong>適格簡易請求書（宛名不要）の対象業種</strong>にあたるか。</li>
-        <li>集約モデルでの<strong>媒介者交付特例の適用可否</strong>と、精算書（写し交付の代替）の記載要件。</li>
-        <li>適格請求書の<strong>6つの必須記載事項</strong>の最終確認と、Stripeレシート / Invoicingでの充足範囲。</li>
-      </ul>
-    </div>
-
-    <h3>弁護士に確認すること（決済基盤の方針とセット）</h3>
-    <div class="card">
-      <ul class="checklist">
-        <li><strong>一括回収（集約モデル）の法的整理</strong>（収納代行・会計処理・責任所在）。媒介者交付特例の前提となる「委託関係」の位置づけとも関わる。</li>
-      </ul>
-    </div>
-
-    <h3>弊社で追加確認すること（本調査の積み残し）</h3>
-    <div class="card">
-      <ul class="checklist">
-        <li>Stripeの<strong>レシートを適格簡易請求書として設定する機能</strong>（日本向け設定）の具体的な可否・要件（今回レート制限で未確認）。</li>
-        <li>Stripe Invoicing / Stripe Tax の<strong>日本インボイス対応の具体的な設定</strong>（DB再構築後の実装検証時）。</li>
-      </ul>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:180px">誰が決める・確認する</th><th>内容</th></tr></thead>
+        <tbody>
+          <tr><td class="label" rowspan="3">増永さん側</td><td><strong>PEDALSTANDARDが適格請求書発行事業者として登録済みか</strong>の確認（媒介者交付特例の要件1）。未登録なら登録するかどうか</td></tr>
+          <tr><td>インボイス対応を<strong>フェーズ2でいつ始めるか</strong>（法人需要の見込み次第）</td></tr>
+          <tr><td>加盟店の<strong>登録番号を契約・オンボーディングで収集する運用</strong>にするかどうか</td></tr>
+          <tr><td class="label" rowspan="3">税理士</td><td>レンタサイクルの店頭取引が<strong>適格簡易請求書（宛名不要）の対象業種</strong>にあたるか</td></tr>
+          <tr><td>集約モデルでの<strong>媒介者交付特例の適用可否</strong>と、精算書（写し交付の代替）の記載要件</td></tr>
+          <tr><td>適格請求書の<strong>6つの必須記載事項</strong>の最終確認と、Stripeレシート / Invoicingでの充足範囲</td></tr>
+          <tr><td class="label">弁護士</td><td><strong>一括回収（集約モデル）の法的整理</strong>（収納代行・会計処理・責任所在）。媒介者交付特例の前提となる「委託関係」の位置づけとも関わる（決済基盤の方針とセットで確認）</td></tr>
+          <tr><td class="label" rowspan="2">弊社</td><td>Stripeの<strong>レシートを適格簡易請求書として設定する機能</strong>（日本向け設定）の具体的な可否・要件（今回はレート制限で未確認）</td></tr>
+          <tr><td>Stripe Invoicing / Stripe Tax の<strong>日本インボイス対応の具体的な設定</strong>（DB再構築後の実装検証時）</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
   <!-- 7 -->
   <div class="section" id="s7">
-    <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>出典一覧（確認日: 2026-07-03）</h2></div></div>
+    <div class="section-header"><div class="section-num">08</div><div class="sh-body"><h2>出典一覧（確認日: 2026-07-03）</h2></div></div>
     <p class="status-legend">
       ステータス凡例:
       <span class="badge good">一次確認済み</span> ＝本調査でWebFetch / PDFにより一次ソースを直接確認 /
-      <span class="badge now">検証済み</span> ＝deep-research で3票検証済み /
-      <span class="badge warn">要再確認</span> ＝一次ソースの引用はあるがレート制限等で本調査では未確認
+      <span class="badge plain">検証済み</span> ＝複数の調査で裏取り済み /
+      <span class="badge muted">要再確認</span> ＝一次ソースの引用はあるがレート制限等で本調査では未確認
     </p>
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th style="width:32px">#</th><th>論点</th><th>出典（URL）</th><th>ステータス</th></tr>
+          <tr><th style="width:32px">#</th><th style="width:38%">論点</th><th>出典（URL）</th><th style="width:110px">ステータス</th></tr>
         </thead>
         <tbody>
           <tr>
             <td>1</td>
             <td>領収書の発行元表示＝アカウントの公開情報・ブランディング設定（集約モデルではPEDALSTANDARD）</td>
             <td>Stripe Docs: Receipts<br><code>https://docs.stripe.com/receipts</code><br>Public details<br><code>https://docs.stripe.com/payments/advanced/receipts</code></td>
-            <td><span class="badge now">検証済み</span></td>
+            <td><span class="badge plain">検証済み</span></td>
           </tr>
           <tr>
             <td>2</td>
             <td>領収書等はデフォルトで <code>stripe.com</code> ドメイン発・カスタムドメイン設定で自社ドメイン可</td>
             <td>Stripe Docs: Custom email domain<br><code>https://docs.stripe.com/get-started/account/email-domain</code></td>
-            <td><span class="badge now">検証済み</span></td>
+            <td><span class="badge plain">検証済み</span></td>
           </tr>
           <tr>
             <td>3</td>
             <td><code>receipt_email</code> 指定でキャプチャー時に準拠領収書を自動送信</td>
             <td>Stripe Docs: Terminal receipts<br><code>https://docs.stripe.com/terminal/features/receipts</code></td>
-            <td><span class="badge now">検証済み</span></td>
+            <td><span class="badge plain">検証済み</span></td>
           </tr>
           <tr>
             <td>4</td>
             <td>税の明細が載るのはサブスク / Invoicing経由の領収書（通常決済レシートに登録番号等が載るとの記載なし）</td>
             <td>Stripe Docs: Receipts<br><code>https://docs.stripe.com/receipts</code></td>
-            <td><span class="badge now">検証済み</span></td>
+            <td><span class="badge plain">検証済み</span></td>
           </tr>
           <tr>
             <td>5</td>
             <td>Stripe Invoicing / Billing / Tax が日本のインボイス制度対応の請求書手段。レシートを適格簡易請求書として使う案内リンクあり</td>
             <td>Stripe: 日本のインボイス制度対応ガイド<br><code>https://stripe.com/guides/japan-invoice-system</code></td>
-            <td><span class="badge good">一次確認済み</span><br><span class="badge warn">レシート設定の詳細は要再確認</span></td>
+            <td><span class="badge good">一次確認済み</span><br><span class="badge muted">レシート設定の詳細は要再確認</span></td>
           </tr>
           <tr>
             <td>6</td>
@@ -406,20 +406,18 @@
             <td>11</td>
             <td>適格請求書の6つの必須記載事項</td>
             <td>Stripe: 日本の適格請求書のフォーマット<br><code>https://stripe.com/en-jp/resources/more/qualified-invoices-format-japan</code></td>
-            <td><span class="badge warn">要再確認</span></td>
+            <td><span class="badge muted">要再確認</span></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="alert alert-amber"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>注:</strong> deep-research の反証（refuted）結果により、「1回限りの決済レシートには明細行を一切追加できない」「PaymentIntentでは請求書を生成できない」といった断定は本資料では採用していません（Stripe側の仕様は実装検証時に確認）。</div></div>
+    <!-- deep-research の反証（refuted）結果により、「1回限りの決済レシートには明細行を一切追加できない」「PaymentIntentでは請求書を生成できない」といった断定は本資料では採用していない（Stripe側の仕様は実装検証時に確認） -->
   </div>
 
 </div>
 
-<footer>
-  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です<br>
-  関連: payment-flow.html（7月3日決定の決済フロー） / payjp-vs-stripe.html（決済基盤の方針）
-</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: このHTMLが調査結果の正本。関連: payment-flow.html〈7月3日決定の決済フロー〉/ payjp-vs-stripe.html〈決済基盤の方針〉） -->
+<footer>正本: この資料（7月3日の調査報告）</footer>
 
 <script>
 (function(){

@@ -59,24 +59,41 @@
       <span class="hero-no">SEO</span>
     </div>
     <h1>sitemap.xml 作成手順</h1>
-    <p class="lead">本番サイト（rincle.co.jp）の全ページ一覧をGoogleに知らせるsitemap.xmlを、BubbleのData APIを使って作り、Bubbleのルート直下に置いて登録するまでの手順です。</p>
+    <p class="lead">本番サイト（rincle.co.jp）の全ページ一覧をGoogleに知らせるsitemap.xmlを、BubbleのData APIで作ってBubbleのルート直下に置き、登録するまでの手順です。</p>
+    <div class="hero-meta">2026-08-26更新 ｜ 作業は弊社が実施 ｜ 増永さんは「前提」「載せるページ / 載せないページ」と末尾の「運用のまとめ」をご覧ください</div>
   </div>
 </div>
 
 <!-- 全体フロー（ナビ） -->
 <nav class="flow">
-  <a href="#step1"><span class="fnum">1</span><span class="ft">bubbleファイルの用意</span><span class="fd">設計図からページの種類を洗い出す</span></a>
-  <a href="#step2"><span class="fnum">2</span><span class="ft">Data APIの設定</span><span class="fd">店舗・自転車のID一覧を取る</span></a>
-  <a href="#step3"><span class="fnum">3</span><span class="ft">sitemap.xmlを生成</span><span class="fd">スクリプトが取得〜組み立てまで実行</span></a>
-  <a href="#step4"><span class="fnum">4</span><span class="ft">公開とGoogle登録</span><span class="fd">Bubbleに置いてSearch Consoleへ</span></a>
+  <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">Data APIのID一覧から手作業で組み立てる</span></a>
+  <a href="#why"><span class="fnum">2</span><span class="ft">前提: なぜ手作業で作るのか</span><span class="fd">Bubbleの自動生成が使えない理由</span></a>
+  <a href="#pages"><span class="fnum">3</span><span class="ft">載せるページ / 載せないページ</span><span class="fd">Bubble設定で選定済みの5ページに合わせる</span></a>
+  <a href="#step1"><span class="fnum">4</span><span class="ft">bubbleファイルの用意</span><span class="fd">設計図からページの種類を洗い出す</span></a>
+  <a href="#step2"><span class="fnum">5</span><span class="ft">Data APIの設定</span><span class="fd">店舗・自転車のID一覧を取る</span></a>
+  <a href="#step3"><span class="fnum">6</span><span class="ft">sitemap.xmlを生成</span><span class="fd">スクリプトが取得〜組み立てまで実行</span></a>
+  <a href="#step4"><span class="fnum">7</span><span class="ft">公開とGoogle登録</span><span class="fd">Bubbleに置いてSearch Consoleへ</span></a>
 </nav>
 
 <div class="container">
 
-  <!-- 0 前提 -->
-  <div class="section" id="why">
+  <!-- 1 結論 -->
+  <div class="section" id="conclusion">
     <div class="section-header">
       <div class="section-num">01</div>
+      <div class="sh-body"><h2>結論</h2><div class="sh-sub">Bubbleの自動生成に頼らず、Data APIのID一覧から手作業で組み立てる</div></div>
+    </div>
+    <p>Bubbleの自動生成では店舗・自転車の1件1件のURLが載らないため、Data APIからID一覧を取ってsitemap.xmlを手作業で組み立てます。2026-08-21の初回生成は408 URL（静的3 + 店舗63 + 自転車342）でした。</p>
+    <ul class="notes">
+      <li>店舗・自転車が増えたら、手順3（再生成）→ 手順4（再アップロード）をやり直す。Search Consoleが自動で再読み込みする。手順1・2は最初の1回だけ（ページの種類を増やした時のみ再確認）。</li>
+      <li>再生成の頻度（月1回など）は増永さんと相談して決める。</li>
+    </ul>
+  </div>
+
+  <!-- 2 前提 -->
+  <div class="section" id="why">
+    <div class="section-header">
+      <div class="section-num">02</div>
       <div class="sh-body"><h2>前提: なぜ手作業で作るのか</h2><div class="sh-sub">Bubbleの自動生成が使えない理由</div></div>
     </div>
 
@@ -103,10 +120,10 @@
     </div>
   </div>
 
-  <!-- 1 載せる/載せない -->
+  <!-- 3 載せる / 載せない -->
   <div class="section" id="pages">
     <div class="section-header">
-      <div class="section-num">02</div>
+      <div class="section-num">03</div>
       <div class="sh-body"><h2>sitemapに載せるページ / 載せないページ</h2><div class="sh-sub">Bubble設定（sitemap_pages）で選定済みの5ページに合わせる</div></div>
     </div>
 
@@ -124,24 +141,7 @@
       </table>
     </div>
 
-    <div class="card">
-      <div class="chart">
-        <svg viewBox="0 0 42 42" role="img" aria-label="sitemap登録URLの構成比">
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4"
-                  stroke-dasharray="83.8 16.2" stroke-dashoffset="25"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="2.4"
-                  stroke-dasharray="15.4 84.6" stroke-dashoffset="-58.8"/>
-          <text x="21" y="21" text-anchor="middle" class="big">408</text>
-        </svg>
-        <div class="cl">
-          <div><i style="background: var(--accent);"></i>自転車詳細（約84%）<strong>342</strong></div>
-          <div><i style="background: var(--ink);"></i>店舗詳細（約15%）<strong>63</strong></div>
-          <div><i style="background: #EAE2D6;"></i>静的ページ（約1%）<strong>3</strong></div>
-          <div class="src" style="border-bottom: none;">単位: URL / 2026-08-21に本番Data APIから生成した実数（合計408）。sitemapのほとんどはデータ由来のURLなので、店舗・自転車が増えるほど再生成の価値が上がる</div>
-        </div>
-      </div>
-    </div>
+    <p>sitemapのほとんどはデータ由来のURL（店舗詳細・自転車詳細）です。店舗・自転車が増えるほど、再生成の価値が上がります。</p>
 
     <h3>載せないページ</h3>
     <div class="table-wrap">
@@ -164,7 +164,7 @@
   <!-- 手順1 -->
   <div class="section" id="step1">
     <div class="section-header">
-      <div class="section-num">03</div>
+      <div class="section-num">04</div>
       <div class="sh-body"><h2>手順1. bubbleファイルの用意</h2><div class="sh-sub">ページの種類を洗い出す</div></div>
     </div>
     <div class="term">
@@ -183,17 +183,16 @@
   <!-- 手順2 -->
   <div class="section" id="step2">
     <div class="section-header">
-      <div class="section-num">04</div>
+      <div class="section-num">05</div>
       <div class="sh-body"><h2>手順2. Data APIの設定</h2><div class="sh-sub">店舗・自転車のID一覧を取る</div></div>
     </div>
     <div class="term">
       <div class="term-name">Data API</div>
       <div class="t-body">画面を開かなくても、プログラムからデータベースの中身を一覧でもらえる窓口。これを使うと店舗・自転車の全IDが数回の通信で取れる。</div>
     </div>
-    <div class="term">
-      <div class="term-name">別のやり方: 画面を巡回して集める方法もある</div>
-      <div class="t-body">本番サイトの検索画面を都道府県ごとに自動で開き、表示された店舗・自転車を1件ずつ拾ってIDを集めるやり方。Data APIが使えない状況の予備手段になる。</div>
-    </div>
+    <ul class="notes">
+      <li>予備手段: 本番サイトの検索画面を都道府県ごとに自動で開き、表示された店舗・自転車を1件ずつ拾ってIDを集めるやり方もある。Data APIが使えない時に使う。</li>
+    </ul>
 
     <h3>2-1. Bubble側の設定（1回だけ・要Bubbleエディタ）</h3>
     <p style="font-size: 14px;">入り口のスイッチ（Enable Data API）は既にONになっています。足りないのはデータの種類ごとの公開チェックだけです。</p>
@@ -217,7 +216,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
   <!-- 手順3 -->
   <div class="section" id="step3">
     <div class="section-header">
-      <div class="section-num">05</div>
+      <div class="section-num">06</div>
       <div class="sh-body"><h2>手順3. sitemap.xmlを生成する</h2><div class="sh-sub">スクリプトが取得〜XML組み立てまで全部やる</div></div>
     </div>
     <p style="font-size: 14px;">生成スクリプト <code>generate_sitemap.js</code>（リポジトリの <code>documents/4_growth/03_seo/sitemap/</code>）を実行します。</p>
@@ -226,29 +225,51 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
     <div class="card">
       <ol class="steps">
         <li>Data APIから店舗・自転車の全件を取得（cursorを進めながら）</li>
-        <li>借りられないもの・存在しないものを除外 — 店舗: 削除済み（<code>deleted_at</code>）・審査未通過（<code>brand_status</code> が passed 以外）/ 自転車: 削除済み・アーカイブ済み（<code>__is_archive</code>）・ユーザー非表示（<code>rental_status</code>）・<strong>掲載しない店舗に属するもの</strong>（予約できないため）。<strong>在庫ゼロの店舗は載せる</strong> — 検索は<strong>ページの歴</strong>が効くので、「レンタル車体準備中」の店舗も入荷を待たずにURLを育てておく（2026-08-21 清野さん判断）</li>
+        <li>借りられないもの・存在しないものを除外する（条件は下の表）</li>
         <li>静的3ページ + 店舗 + 自転車のURLを並べたXMLを出力</li>
       </ol>
     </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>対象</th><th>除外するもの</th><th>判定に使う項目</th></tr></thead>
+        <tbody>
+          <tr><td class="label">店舗</td><td>削除済み / 審査未通過</td><td><code>deleted_at</code> / <code>brand_status</code>（passed 以外）</td></tr>
+          <tr><td class="label">自転車</td><td>削除済み / アーカイブ済み / ユーザー非表示 / 掲載しない店舗に属するもの（予約できないため）</td><td><code>deleted_at</code> / <code>__is_archive</code> / <code>rental_status</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 在庫ゼロの店舗を載せる方針は2026-08-21の清野さん判断 -->
+    <ul class="notes">
+      <li>在庫ゼロの店舗は載せる。検索は<strong>ページの歴</strong>が効くため、「レンタル車体準備中」の店舗も入荷を待たずにURLを育てておく。</li>
+    </ul>
     <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span>本番反映前に動きを試したい時は <code>--dev</code> を付けると開発版（version-test）のData APIで動きます。</span></div>
-    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>生成後の確認:</strong> 出力件数を確かめる（2026-08-21の初回生成は 静的3 + 店舗63 + 自転車342 = 408 URL。店舗は全67件中、審査未通過3・辞退1を除外 / 自転車は全440件中、非表示89〈うち削除済み6〉と掲載しない店舗の9台を除外）。店舗はサイトの検索に出る数より多くなるのが正常（在庫ゼロの店舗も載せるため。2026-08-21時点で sitemap 63件 / 検索表示 53件）。自転車はほぼ一致するはずで、大きくズレたら除外条件の判定が実態と合っていないので要調査。</span></div>
+    <h3>生成後の確認</h3>
+    <p>出力件数を確かめます。2026-08-21の初回生成は合計408 URLでした。</p>
+    <div class="stat-row">
+      <div class="stat"><div class="l">静的ページ</div><div class="n md">3</div></div>
+      <div class="stat"><div class="l">店舗詳細</div><div class="n md">63</div></div>
+      <div class="stat"><div class="l">自転車詳細</div><div class="n md">342</div></div>
+    </div>
+    <ul class="notes">
+      <li>店舗は全67件中、審査未通過3・辞退1を除外した数。自転車は全440件中、非表示89（うち削除済み6）と掲載しない店舗の9台を除外した数（2026-08-21）。</li>
+      <li>店舗はサイトの検索に出る数より多くなるのが正常。在庫ゼロの店舗も載せるため（2026-08-21時点で sitemap 63件 / 検索表示 53件）。</li>
+      <li>自転車はサイトの表示数とほぼ一致する。大きくずれた場合は除外条件の判定が実態と合っていないため、要調査。</li>
+    </ul>
   </div>
 
   <!-- 手順4 -->
   <div class="section" id="step4">
     <div class="section-header">
-      <div class="section-num">06</div>
-      <div class="sh-body"><h2>手順4. 公開とGoogleへの登録</h2><div class="sh-sub">Bubbleに置いて、Search Consoleから知らせる</div></div>
+      <div class="section-num">07</div>
+      <div class="sh-body"><h2>手順4. 公開とGoogleへの登録</h2><div class="sh-sub">Bubbleに置いてSearch Consoleから知らせる</div></div>
     </div>
 
     <div class="term">
       <div class="term-name">Search Console</div>
-      <div class="t-body">Googleが無料で提供している「自分のサイトがGoogleにどう見えているか」の管理画面。検索結果に何ページ登録されたか・どんな検索語で表示されたか・エラーがないかが見られる。RINCLEは導入済み（ドメインプロパティ・所有者確認済み。清野は権限付与ユーザーとしてアクセス可能 — 2026-08-26確認）。</div>
+      <div class="t-body">Googleが無料で提供している「自分のサイトがGoogleにどう見えているか」の管理画面。検索結果に何ページ登録されたか・どんな検索語で表示されたか・エラーがないかが見られる。RINCLEは導入済み（ドメインプロパティ・所有者確認済み）。</div>
     </div>
-    <div class="term">
-      <div class="term-name">なぜ「送信」するのか</div>
-      <div class="t-body">sitemap.xmlをサイトに置いただけだと、Googleが自分で気づくのを待つことになる。Search Consoleから送信すると「ここに一覧表を置いたので読みに来て」とGoogleに直接知らせられる（待つより確実で早い）。</div>
-    </div>
+    <!-- Search Consoleは清野が権限付与ユーザーとしてアクセス可能（2026-08-26確認） -->
+    <p>sitemap.xmlをサイトに置いただけだと、Googleが自分で気づくのを待つことになります。Search Consoleから送信すれば「ここに一覧表を置いたので読みに来てほしい」とGoogleに直接知らせられます。待つより確実で早い方法です。</p>
 
     <div class="card">
       <ol class="steps">
@@ -268,20 +289,10 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
     </ul>
   </div>
 
-  <!-- まとめ -->
-  <div class="recap">
-    <h2>運用のまとめ — 店舗・自転車が増えたら</h2>
-    <div class="r-flow">
-      <span class="r-chip">手順3: 再生成</span><span class="r-arr">→</span>
-      <span class="r-chip">手順4: 再アップロード</span><span class="r-arr">→</span>
-      <span class="r-chip hot">Search Consoleが自動で再読み込み</span>
-    </div>
-    <p>手順1・2は最初の1回だけ（ページの種類を増やした時のみ再確認）。再生成の頻度（月1回など）は増永さんと相談して決める。</p>
-  </div>
-
 </div>
 
-<footer>正本: documents/4_growth/03_seo/sitemap/sitemap-creation-guide.md（md更新時はこのHTMLも同期すること）</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/4_growth/03_seo/sitemap/sitemap-creation-guide.md） -->
+<footer>正本: documents/4_growth/03_seo/sitemap/sitemap-creation-guide.md</footer>
 
 <script>
 (function(){

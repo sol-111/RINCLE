@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<!-- ============================================================
+  RINCLE クライアント説明資料 — SPAシェル（サイドバー+iframe）
+  雛形: .claude/skills/html-doc-design/shell.html（雛形を直したら差分をこちらにも取り込む）
+
+  ページを足す時は pages 配列に1行足すだけ。section 名でグループになる。
+  節の開閉と「旧」の目印は script の sectionMeta に書く。
+============================================================ -->
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -13,30 +20,33 @@
 
     :root {
       --sidebar-width: 260px;
-      --color-bg: #FBF9F5;
-      --color-sidebar: #26221E;
-      --color-sidebar-hover: #322C27;
-      --color-sidebar-active: #3E332B;
-      --color-accent: #B8532F;
-      --color-text: #57504A;
-      --color-text-light: #A9A199;
+      /* ▼ ブランド差し替えはここだけ（template.css のトークンと揃える） */
+      --shell-accent: #B8532F;        /* = --accent（焦がしブランド色） */
+      --shell-bg: #FBF9F5;            /* = --paper */
+      --shell-sidebar: #26221E;       /* = --ink（サイドバー地。ブランドの色温度に寄せる） */
+      --shell-sidebar-hover: #322C27;
+      --shell-sidebar-active: #3E332B;
+      --shell-text: #57504A;          /* = --text */
+      --shell-text-light: #A9A199;
+      --shell-line: #E5DDD2;          /* = --line-soft */
     }
 
     body {
       font-family:'Noto Sans JP',-apple-system, BlinkMacSystemFont, 'Hiragino Sans', Meiryo, sans-serif;
       font-feature-settings:'palt' 1;
-      background: var(--color-bg);
-      color: var(--color-text);
+      background: var(--shell-bg);
+      color: var(--shell-text);
       display: flex;
       height: 100vh;
       overflow: hidden;
     }
+    table{font-variant-numeric:tabular-nums}
 
     /* Sidebar */
     .sidebar {
       width: var(--sidebar-width);
       min-width: var(--sidebar-width);
-      background: var(--color-sidebar);
+      background: var(--shell-sidebar);
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -53,11 +63,14 @@
       font-size: 19px;
       font-weight: 600;
       letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .sidebar-header p {
       font-size: 12px;
-      color: var(--color-text-light);
+      color: var(--shell-text-light);
       margin-top: 4px;
     }
 
@@ -75,7 +88,6 @@
       padding: 10px 20px;
       font-size: 12px;
       font-weight: 600;
-      text-transform: uppercase;
       letter-spacing: 0.8px;
       color: #E5DDD2;
       cursor: pointer;
@@ -91,7 +103,7 @@
     .nav-section-arrow {
       font-size: 10px;
       transition: transform 0.25s ease;
-      color: var(--color-text-light);
+      color: var(--shell-text-light);
     }
 
     .nav-section.collapsed .nav-section-arrow {
@@ -101,7 +113,7 @@
     .nav-group {
       overflow: hidden;
       transition: max-height 0.3s ease, opacity 0.25s ease;
-      max-height: 500px;
+      max-height: 2000px; /* アコーディオン開閉アニメ用の上限。項目が多い節でも切れない値に */
       opacity: 1;
     }
 
@@ -122,20 +134,20 @@
     }
 
     .nav-item:hover {
-      background: var(--color-sidebar-hover);
+      background: var(--shell-sidebar-hover);
       color: #fff;
     }
 
     .nav-item.active {
-      background: var(--color-sidebar-active);
+      background: var(--shell-sidebar-active);
       color: #fff;
-      border-left-color: var(--color-accent);
+      border-left-color: var(--shell-accent);
     }
 
     /* Section item count badge */
     .nav-section-count {
       background: rgba(255,255,255,0.1);
-      color: var(--color-text-light);
+      color: var(--shell-text-light);
       font-size: 10px;
       padding: 1px 7px;
       border-radius: 10px;
@@ -151,10 +163,11 @@
       overflow: hidden;
     }
 
+    /* ページ側にヒーローがあるので通常は非表示のまま使う */
     .topbar {
       padding: 16px 32px;
       background: #fff;
-      border-bottom: 1px solid #E5DDD2;
+      border-bottom: 1px solid var(--shell-line);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -164,12 +177,6 @@
     .topbar h2 {
       font-size: 16px;
       font-weight: 600;
-    }
-
-    .topbar-section {
-      font-size: 12px;
-      color: var(--color-text-light);
-      margin-left: 12px;
     }
 
     .content {
@@ -183,42 +190,27 @@
       border: none;
     }
 
-    /* Welcome screen */
-    .welcome {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      text-align: center;
-      color: #A9A199;
-    }
+    /* 件数バッジは閉じている節にだけ出す（開いていれば中身が見えているため） */
+    .nav-section:not(.collapsed) .nav-section-count:not(.tag) { display: none; }
 
-    .welcome h2 {
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--color-text);
-      margin-bottom: 8px;
-    }
-
-    .welcome p {
-      font-size: 14px;
+    /* 役目を終えた節の目印（「旧」） */
+    .nav-section-count.tag {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #E5DDD2;
     }
 
     /* Mobile */
     @media (max-width: 768px) {
       :root { --sidebar-width: 220px; }
     }
-  
-  /* webfont: 和文の約物詰め + 表の等幅数字 */
-  body{font-feature-settings:'palt' 1}
-  table{font-variant-numeric:tabular-nums}
-</style>
+  </style>
 </head>
 <body>
 
 <nav class="sidebar">
   <div class="sidebar-header">
-    <h1 style="display:flex;align-items:center;gap:10px"><img src="assets/rincle-favicon.png" alt="" style="width:26px;height:26px;border-radius:7px">Rincle</h1>
+    <h1><img src="assets/rincle-favicon.png" alt="" style="width:26px;height:26px;border-radius:7px">Rincle</h1>
     <p>説明資料</p>
   </div>
   <div class="sidebar-nav" id="nav">
@@ -231,45 +223,47 @@
     <h2 id="page-title">ホーム</h2>
   </header>
   <div class="content" id="content">
-    <div class="welcome">
-      <div>
-        <h2>資料を選択してください</h2>
-        <p>左のメニューから閲覧したい資料を選んでください。</p>
-      </div>
-    </div>
   </div>
 </main>
 
 <script>
   // ============================================================
   // Page Registry
-  // ここにページを追加していく。section でグループ化。
+  // ここにページを追加していく。section でグループ化（同じ section 名は連続させる）。
   // ============================================================
   const pages = [
-    { section: '業務フロー', id: 'bizflow-asis',  title: 'As-Is フロー',              src: 'bizflow/asis.html' },
-    { section: '業務フロー', id: 'bizflow-tobe',  title: 'To-Be フロー',              src: 'bizflow/tobe.html' },
-    { section: 'Pay.JP 決済連携', id: 'payjp-asis',       title: 'As-Is フロー',              src: 'pay.jp/asis.html' },
-    { section: 'Pay.JP 決済連携', id: 'payjp-api',        title: 'APIリファレンス（v1）',       src: 'pay.jp/api-v1-reference.html' },
-    { section: 'Pay.JP 決済連携', id: 'payjp-api-v2',     title: 'APIリファレンス（v2）',       src: 'pay.jp/api-v2-reference.html' },
-    { section: 'Pay.JP 決済連携', id: 'payjp-issues',     title: '修正一覧',                   src: 'pay.jp/issues.html' },
-    { section: 'Stripe 決済連携',   id: 'payjp-vs-stripe',      title: '決済基盤の方針（比較・移行計画）', src: 'stripe/payjp-vs-stripe.html' },
-    { section: 'Stripe 決済連携',   id: 'stripe-payment-flow',  title: '予約・決済・貸出・返却フロー（決定版）', src: 'stripe/payment-flow.html' },
-    { section: 'Stripe 決済連携',   id: 'stripe-receipt-invoice', title: '領収書・インボイスの扱い', src: 'stripe/receipt-invoice.html' },
-    { section: 'Stripe 決済連携',   id: 'stripe-api',           title: 'Stripe APIリファレンス',      src: 'stripe/api-reference.html' },
-    { section: '提案資料：戦略',   id: 'proposal-competitive', title: '競合調査レポート',           src: 'proposal/strategy/competitive-analysis.html' },
-    { section: '提案資料：戦略',   id: 'proposal-issues',      title: '現状課題と改善策',           src: 'proposal/strategy/current-issues.html' },
-    { section: '提案資料：戦略',   id: 'proposal-action',      title: 'アクションプラン',           src: 'proposal/strategy/action-plan.html' },
-    { section: '提案資料：戦略',   id: 'proposal-ui',          title: 'UI/UXリファレンス',          src: 'proposal/strategy/ui-references.html' },
-    { section: '提案資料：戦略',   id: 'proposal-differentiation', title: '差別化戦略',             src: 'proposal/strategy/differentiation-strategy.html' },
-    { section: '提案資料：マーケ', id: 'marketing-channels',   title: 'マーケチャネル&ROI比較',     src: 'proposal/marketing/marketing-channels.html' },
-    { section: '提案資料：マーケ', id: 'marketing-personas',   title: 'マーケティングペルソナ',     src: 'proposal/marketing/marketing-personas.html' },
-    { section: '提案資料：マーケ', id: 'marketing-knowledge',  title: 'toCマーケ手法 全体マップ',   src: 'proposal/marketing/marketing-knowledge-map.html' },
     { section: '提案資料：SEO',    id: 'proposal-seo-plan',    title: 'SEO支援プラン（記事代行）',  src: 'proposal/seo/seo-support-plan.html' },
     { section: '提案資料：SEO',    id: 'proposal-seo',         title: 'SEO設定ガイド',             src: 'proposal/seo/seo-guide.html' },
     { section: '提案資料：SEO',    id: 'proposal-sitemap',     title: 'sitemap.xml 作成手順',       src: 'proposal/seo/sitemap-creation-guide.html' },
     { section: '提案資料：SEO',    id: 'proposal-blog-strategy', title: 'ブログSEOの方針',          src: 'proposal/seo/blog-seo-strategy.html' },
     { section: '提案資料：SEO',    id: 'proposal-kw-research', title: '検索キーワード調査',         src: 'proposal/seo/keyword-research.html' },
+    { section: 'Stripe 決済連携',   id: 'stripe-payment-flow',  title: '予約・決済・貸出・返却フロー（決定版）', src: 'stripe/payment-flow.html' },
+    { section: 'Stripe 決済連携',   id: 'payjp-vs-stripe',      title: '決済基盤の方針（比較・移行計画）', src: 'stripe/payjp-vs-stripe.html' },
+    { section: 'Stripe 決済連携',   id: 'stripe-receipt-invoice', title: '領収書・インボイスの扱い', src: 'stripe/receipt-invoice.html' },
+    { section: 'Stripe 決済連携',   id: 'stripe-api',           title: 'Stripe APIリファレンス',      src: 'stripe/api-reference.html' },
+    { section: '業務フロー', id: 'bizflow-asis',  title: 'As-Is フロー',              src: 'bizflow/asis.html' },
+    { section: '業務フロー', id: 'bizflow-tobe',  title: 'To-Be フロー',              src: 'bizflow/tobe.html' },
+    { section: '提案資料：戦略',   id: 'proposal-competitive', title: '競合調査レポート',           src: 'proposal/strategy/competitive-analysis.html' },
+    { section: '提案資料：戦略',   id: 'proposal-issues',      title: '現状課題と改善策',           src: 'proposal/strategy/current-issues.html' },
+    { section: '提案資料：戦略',   id: 'proposal-action',      title: 'アクションプラン',           src: 'proposal/strategy/action-plan.html' },
+    { section: '提案資料：戦略',   id: 'proposal-differentiation', title: '差別化戦略',             src: 'proposal/strategy/differentiation-strategy.html' },
+    { section: '提案資料：戦略',   id: 'proposal-ui',          title: 'UI/UXリファレンス',          src: 'proposal/strategy/ui-references.html' },
+    { section: '提案資料：マーケ', id: 'marketing-personas',   title: 'マーケティングペルソナ',     src: 'proposal/marketing/marketing-personas.html' },
+    { section: '提案資料：マーケ', id: 'marketing-channels',   title: 'マーケチャネル&ROI比較',     src: 'proposal/marketing/marketing-channels.html' },
+    { section: '提案資料：マーケ', id: 'marketing-knowledge',  title: 'toCマーケ手法 全体マップ',   src: 'proposal/marketing/marketing-knowledge-map.html' },
+    { section: 'Pay.JP 決済連携', id: 'payjp-asis',       title: 'As-Is フロー',              src: 'pay.jp/asis.html' },
+    { section: 'Pay.JP 決済連携', id: 'payjp-api',        title: 'APIリファレンス（v1）',       src: 'pay.jp/api-v1-reference.html' },
+    { section: 'Pay.JP 決済連携', id: 'payjp-api-v2',     title: 'APIリファレンス（v2）',       src: 'pay.jp/api-v2-reference.html' },
   ];
+  // 節ごとの初期状態と目印（いま進んでいる節だけ開く。役目を終えた節は閉じて「旧」を付ける）
+  const sectionMeta = {
+    '提案資料：SEO':     { open: true },
+    'Stripe 決済連携':   { open: true },
+    '業務フロー':        { open: false },
+    '提案資料：戦略':    { open: false },
+    '提案資料：マーケ':  { open: false },
+    'Pay.JP 決済連携':   { open: false, tag: '旧' },
+  };
 
   // ============================================================
   // Render
@@ -281,13 +275,17 @@
   // Track accordion open/close state per section
   const sectionState = {};
 
+  const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]
+  ));
+
   function render() {
     nav.innerHTML = '';
     let currentSection = null;
     let currentGroup = null;
 
     if (pages.length === 0) {
-      nav.innerHTML = '<div style="padding:20px;color:#A9A199;font-size:13px;">まだ資料がありません。<br>pages 配列にエントリを追加してください。</div>';
+      nav.innerHTML = '<div style="padding:20px;color:var(--shell-text-light);font-size:13px;">まだ資料がありません。<br>pages 配列にエントリを追加してください。</div>';
       return;
     }
 
@@ -300,19 +298,21 @@
     pages.forEach(page => {
       if (page.section !== currentSection) {
         currentSection = page.section;
+        const sectionName = currentSection;
 
-        // Default to open
-        if (sectionState[currentSection] === undefined) {
-          sectionState[currentSection] = true;
+        // 初期状態は sectionMeta に従う（既定は開く）
+        if (sectionState[sectionName] === undefined) {
+          sectionState[sectionName] = (sectionMeta[sectionName] || {}).open !== false;
         }
 
-        const isOpen = sectionState[currentSection];
+        const isOpen = sectionState[sectionName];
 
         // Section header (accordion toggle)
         const sectionEl = document.createElement('div');
         sectionEl.className = 'nav-section' + (isOpen ? '' : ' collapsed');
+        const sectionTag = (sectionMeta[sectionName] || {}).tag;
         sectionEl.innerHTML = `
-          <span>${currentSection}<span class="nav-section-count">${sectionCounts[currentSection]}</span></span>
+          <span>${esc(sectionName)}${sectionTag ? `<span class="nav-section-count tag">${esc(sectionTag)}</span>` : ''}<span class="nav-section-count">${sectionCounts[sectionName]}</span></span>
           <span class="nav-section-arrow">&#x25BC;</span>
         `;
 
@@ -320,12 +320,19 @@
         const groupEl = document.createElement('div');
         groupEl.className = 'nav-group' + (isOpen ? '' : ' collapsed');
 
-        // Click to toggle
+        // Click to toggle（Enter/Spaceでも開閉できるようにする）
+        sectionEl.setAttribute('role', 'button');
+        sectionEl.tabIndex = 0;
         sectionEl.addEventListener('click', () => {
           const willOpen = sectionEl.classList.contains('collapsed');
           sectionEl.classList.toggle('collapsed');
           groupEl.classList.toggle('collapsed');
-          sectionState[currentSection] = willOpen;
+          sectionState[sectionName] = willOpen;
+          sectionEl.setAttribute('aria-expanded', String(willOpen));
+        });
+        sectionEl.setAttribute('aria-expanded', String(isOpen));
+        sectionEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sectionEl.click(); }
         });
 
         nav.appendChild(sectionEl);
@@ -337,10 +344,53 @@
       a.className = 'nav-item';
       a.textContent = page.title;
       a.dataset.id = page.id;
-      a.addEventListener('click', () => loadPage(page));
+      a.href = '#' + page.id; // 直リンクをコピーできる本物のリンクにする
+      a.addEventListener('click', (e) => { e.preventDefault(); loadPage(page); });
       currentGroup.appendChild(a);
     });
+  }
 
+  let currentId = null;
+  const baseTitle = document.title;
+
+  // サイドバーの現在地・見出し・URLハッシュだけを同期する（iframeは触らない）
+  function syncActive(page) {
+    currentId = page.id;
+    document.querySelectorAll('.nav-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.id === page.id);
+    });
+    pageTitle.textContent = page.title;
+    document.title = page.title + ' — ' + baseTitle;
+    history.replaceState(null, '', '#' + page.id);
+  }
+
+  // iframe内リンクの追従（原本からの改良点）:
+  // ページの中の相互リンクで遷移した時も、読み込まれたURLから該当ページを特定して
+  // サイドバーの現在地とハッシュを同期する。section が閉じていたら開き直す。
+  function onFrameLoad(frame) {
+    let path;
+    try {
+      path = frame.contentWindow.location.pathname;
+    } catch (e) {
+      return; // クロスオリジン等で読めない場合は何もしない
+    }
+    const page = pages.find(p => path.endsWith('/' + p.src) || path === p.src);
+    if (!page || page.id === currentId) return;
+    if (!sectionState[page.section]) {
+      sectionState[page.section] = true;
+      render();
+    }
+    syncActive(page);
+  }
+
+  function loadPage(page) {
+    syncActive(page);
+    contentEl.innerHTML = '';
+    const frame = document.createElement('iframe');
+    frame.src = page.src;
+    frame.title = page.title;
+    frame.addEventListener('load', () => onFrameLoad(frame));
+    contentEl.appendChild(frame);
   }
 
   function restoreFromHash() {
@@ -356,31 +406,17 @@
     }
   }
 
-  let lastHash = null;
-  function loadPage(page) {
-    // Prevent re-render loop
-    if (lastHash === page.id) {
-      // Just update active state
-    }
-    lastHash = page.id;
-
-    // Update nav active state
-    document.querySelectorAll('.nav-item').forEach(el => {
-      el.classList.toggle('active', el.dataset.id === page.id);
-    });
-
-    // Update title
-    pageTitle.textContent = page.title;
-
-    // Load iframe
-    contentEl.innerHTML = `<iframe src="${page.src}"></iframe>`;
-
-    // Update hash
-    history.replaceState(null, '', '#' + page.id);
-  }
+  // ハッシュ無しで開いた時に最初のページを開く（ようこそ画面は置かない方針のため true）
+  const AUTO_OPEN_FIRST = true;
 
   render();
   restoreFromHash();
+  if (!currentId && AUTO_OPEN_FIRST && pages.length) loadPage(pages[0]);
+  // 戻る/進むボタンでの直リンク移動にも追従
+  addEventListener('hashchange', () => {
+    const hash = location.hash.slice(1);
+    if (hash && hash !== currentId) restoreFromHash();
+  });
 </script>
 
 </body>

@@ -13,21 +13,11 @@
 
 .hero h1 .sub{font-size:26px;color:var(--text);letter-spacing:0}
 .section p{font-size:14px}
-.card ul{padding-left:20px;font-size:14px;margin:0}
-.card li{margin-bottom:8px;line-height:1.9}
-.card li:last-child{margin-bottom:0}
-
-/* 章ナビは5章構成（design.cssの4列を5列に上書き） */
-.flow{grid-template-columns:repeat(5,1fr)}
-.flow a:nth-child(4n+1){border-left:1px solid var(--line-soft)}
-.flow a:first-child{border-left:none}
-.flow a:nth-child(n+5){border-top:none}
+.card ul,.sub-item ul{padding-left:20px;font-size:14px;margin:16px 0 0}
+.card li,.sub-item li{margin-bottom:8px;line-height:1.9}
+.card li:last-child,.sub-item li:last-child{margin-bottom:0}
 
 td.center{text-align:center}
-.src{font-size:11px;color:var(--sub);margin-top:12px;line-height:1.8}
-.src a{color:var(--sub)}
-.badge.warn{background:var(--gold-soft);border:1px solid #EAD9AE;color:var(--gold-text)}
-.chart text.big{font-size:7px}
 
 /* 記事作成フロー図（矢羽レイアウト・塗りは弱く罫線基調に寄せる） */
 .steps-wrap{overflow-x:auto;padding:6px 2px}
@@ -51,8 +41,6 @@ td.center{text-align:center}
 
 @media (max-width:760px){
   .hero h1 .sub{font-size:18px}
-  .flow{grid-template-columns:1fr 1fr}
-  .flow a{border-top:1px solid var(--line-soft)}
 }
 </style>
 </head>
@@ -85,52 +73,69 @@ td.center{text-align:center}
       </div>
       <span class="hero-no">SEO</span>
     </div>
-    <h1>SEO支援プラン <span class="sub">記事作成代行</span></h1>
+    <h1>SEO支援プラン</h1>
     <p class="lead">検索集客の入口になる「地域×サイクリングコース記事」を、弊社が代行で継続的に作成・運用するプランです。</p>
     <div class="hero-meta">2026-06-19提案 ｜ PEDALSTANDARD社向け ｜ 弊社（清野・山本）</div>
   </div>
 </div>
 
 <nav class="flow">
-  <a href="#why"><span class="fnum">1</span><span class="ft">なぜやるのか</span><span class="fd">リソース不足と競合の空白</span></a>
-  <a href="#what"><span class="fnum">2</span><span class="ft">やりたいこと</span><span class="fd">何を書き・どのKWを取り・どこに置くか</span></a>
-  <a href="#plans"><span class="fnum">3</span><span class="ft">プラン一覧</span><span class="fd">ライト / スタンダード</span></a>
-  <a href="#process"><span class="fnum">4</span><span class="ft">記事作成フロー</span><span class="fd">全工程を弊社が担当</span></a>
-  <a href="#schedule"><span class="fnum">5</span><span class="ft">施策推進イメージ</span><span class="fd">6ヶ月の進め方</span></a>
+  <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">ライトかスタンダードかのご選択</span></a>
+  <a href="#why"><span class="fnum">2</span><span class="ft">なぜやるのか</span><span class="fd">リソース不足と競合の空白</span></a>
+  <a href="#what"><span class="fnum">3</span><span class="ft">やりたいこと</span><span class="fd">何を書き・どのKWを取り・どこに置くか</span></a>
+  <a href="#plans"><span class="fnum">4</span><span class="ft">プラン一覧</span><span class="fd">ライト / スタンダード</span></a>
+  <a href="#process"><span class="fnum">5</span><span class="ft">記事作成フロー</span><span class="fd">全工程を弊社が担当</span></a>
+  <a href="#schedule"><span class="fnum">6</span><span class="ft">施策推進イメージ</span><span class="fd">6ヶ月の進め方</span></a>
 </nav>
 
 <div class="container">
 
-  <!-- 1 なぜやるのか -->
-  <div class="section" id="why">
+  <!-- 1 結論 -->
+  <div class="section" id="conclusion">
     <div class="section-header">
       <div class="section-num">01</div>
+      <div class="sh-body"><h2>結論</h2><div class="sh-sub">決めていただくのはライトかスタンダードかの選択</div></div>
+    </div>
+    <div class="table-wrap">
+      <table class="qa">
+        <tbody>
+          <tr><td class="label wrap">何をする提案か</td><td><strong>地域×サイクリングコース記事の作成・運用を弊社が代行します。</strong>KW選定から公開まで全工程を弊社が担当いたします。貴社はレビュー工程のみ並走していただきます。</td></tr>
+          <tr><td class="label wrap">決めていただくこと</td><td><strong>ライトプラン（月額¥80,000）とスタンダードプラン（月額¥120,000）のどちらで始めるかのご選択です。</strong>プラン差は新規記事の本数と被リンク対策数のみで、運用一式は両プラン共通です。</td></tr>
+          <tr><td class="label wrap">本プランに含まないもの</td><td><strong>記事の公開先となるブログ基盤の構築です。</strong>こちらは準委任契約の範囲で、SEO基盤整備とあわせて対応いたします。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2 なぜやるのか -->
+  <div class="section" id="why">
+    <div class="section-header">
+      <div class="section-num">02</div>
       <div class="sh-body"><h2>なぜやるのか</h2><div class="sh-sub">書き手の不在と、まだ空いている市場</div></div>
     </div>
 
-    <h3 style="margin-top: 0;">① 運営側に記事を書くリソースが足りない</h3>
-    <div class="card">
+    <div class="sub-item">
+      <div class="kick">書き手の不在</div>
+      <h4>運営側に記事を書くリソースが足りない</h4>
       <p>検索集客には記事が要る、というのは分かっている。ただ記事は単発では効かず<strong>毎月積み上げて初めて効く</strong>。一方で運営（増永さん）は店舗ヒアリング・営業で手一杯で、KW設計・継続投稿に割ける人手が無い。書き手が決まらないまま「いつかやる」で止まれば、集客の入口がいつまでも空かない。</p>
-      <div class="alert alert-green" style="margin-bottom: 0;">
-        <svg class="a-icon icon"><use href="#i-check"/></svg>
-        <span><strong>→ ここを弊社が代行すれば、施策が実際に回り始める。</strong></span>
-      </div>
+      <p><strong>ここを弊社が代行すれば、施策が実際に回り始める。</strong></p>
     </div>
 
-    <h3>② 競合がまだ記事で先行していない ── 今のうちに取りに行く</h3>
-    <div class="card">
+    <div class="sub-item">
+      <div class="kick">空いている市場</div>
+      <h4>競合がまだ記事で先行していない — 今のうちに取りに行く</h4>
       <ul>
-        <li>CycleTripは7年で3店舗とペースが遅い/GIANTは都市部に店舗が無い/メーカー系は自社ブランドしか並べられない</li>
+        <li>CycleTripは7年で3店舗とペースが遅い / GIANTは都市部に店舗が無い / メーカー系は自社ブランドしか並べられない</li>
         <li>SEOは時間が効くストック型。<strong>先に書いて評価を積んだ者が逃げ切る</strong></li>
         <li>競合が記事に本腰を入れる前の<strong>今が仕掛けどき</strong></li>
       </ul>
     </div>
   </div>
 
-  <!-- 2 やりたいこと -->
+  <!-- 3 やりたいこと -->
   <div class="section" id="what">
     <div class="section-header">
-      <div class="section-num">02</div>
+      <div class="section-num">03</div>
       <div class="sh-body"><h2>やりたいこと</h2><div class="sh-sub">何を書くか・どの検索語を取るか・どこに置くか</div></div>
     </div>
 
@@ -146,7 +151,7 @@ td.center{text-align:center}
           <tr><td><span class="badge brand">◎ 主軸</span></td><td class="label">ロードバイク レンタル × 地域名</td><td>ロードバイク レンタル 東京 / 八王子 / 多摩川 / 神奈川</td><td>サジェスト10件フル・うち8件が地域名。「人の調べ方の実態」（増永さん）と一致</td></tr>
           <tr><td><span class="badge brand">◎ 主軸</span></td><td class="label">観光ルート名 × レンタサイクル / 自転車</td><td>しまなみ海道 レンタサイクル / ビワイチ レンタサイクル</td><td>所要時間・料金・乗り捨て・荷物…と<strong>情報型クエリの宝庫</strong>。しまなみだけで年17.3万台の実需</td></tr>
           <tr><td><span class="badge good">○ 次段</span></td><td class="label">eバイク レンタル × 地域名</td><td>eバイク レンタル しまなみ / 京都 / 長野県</td><td>サジェスト10件フル。ロードバイクで取り切った後に拡張</td></tr>
-          <tr><td><span class="badge warn">△ 補助</span></td><td class="label">クロスバイク レンタル × 地域名 / 長期</td><td>クロスバイク レンタル 1ヶ月</td><td>サジェストは出るが貸出実績はロードバイク中心。長期需要の入口として様子見</td></tr>
+          <tr><td><span class="badge plain">△ 補助</span></td><td class="label">クロスバイク レンタル × 地域名 / 長期</td><td>クロスバイク レンタル 1ヶ月</td><td>サジェストは出るが貸出実績はロードバイク中心。長期需要の入口として様子見</td></tr>
           <tr><td><span class="badge bad">× 不使用</span></td><td class="label">スポーツバイク レンタル</td><td>—</td><td>サジェスト4件のみ＝<strong>誰も検索しない</strong>。社名・ブランド説明以外で使わない</td></tr>
         </tbody>
       </table>
@@ -158,18 +163,18 @@ td.center{text-align:center}
       <table>
         <thead><tr><th>役割</th><th>置き場所</th><th>何を置く</th><th>理由</th></tr></thead>
         <tbody>
-          <tr><td class="label">SEO資産</td><td><strong>自社ドメイン配下</strong><br>（当面サブドメイン・6月30日更新。サブディレクトリはSEO差を洗い出して再判断）</td><td>「ロードバイク レンタル 地域名」「しまなみ海道 レンタサイクル」を狙う地域×コース記事</td><td>検索評価を自社ドメイン配下に蓄積。<strong>後から移せない以上、最初からここに書く</strong></td></tr>
+          <tr><td class="label">SEO資産</td><td><strong>自社ドメイン配下</strong><br>（当面サブドメイン。サブディレクトリとのSEO差は別資料で検証済み）</td><td>「ロードバイク レンタル 地域名」「しまなみ海道 レンタサイクル」を狙う地域×コース記事</td><td>検索評価を自社ドメイン配下に蓄積。<strong>後から移せない以上、最初からここに書く</strong></td></tr>
           <tr><td class="label">拡散・ブランド</td><td><strong>note（無料版）</strong></td><td>運営の想い・店舗ストーリー・イベントレポ</td><td>note.comの集客力とSNS拡散に乗る。検索資産にする必要がないもの</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="color: var(--sub);">記事（集客）→ 本体のエリア・店舗ページ（予約の刈り取り）へ内部リンクでつなぐ。</p>
+    <p style="color: var(--sub);">記事（集客）→ 本体のエリア・店舗ページ（予約の刈り取り）へ内部リンクでつなぐ。置き場所の詳細は<a href="blog-seo-strategy.html">ブログSEOの方針</a>をご覧ください。</p>
   </div>
 
-  <!-- 3 プラン一覧 -->
+  <!-- 4 プラン一覧 -->
   <div class="section" id="plans">
     <div class="section-header">
-      <div class="section-num">03</div>
+      <div class="section-num">04</div>
       <div class="sh-body"><h2>プラン一覧</h2><div class="sh-sub">毎月の継続プラン・2つの構成</div></div>
     </div>
     <p>毎月の継続プラン。プラン差は<strong>新規記事の本数</strong>と<strong>被リンク対策数</strong>のみ。SEOコンサルティング一式（◯印）は両プラン共通。</p>
@@ -191,43 +196,33 @@ td.center{text-align:center}
     <ul class="notes">
       <li>月額費用＝記事制作費（¥20,000×新規本数）＋固定費¥20,000。固定費にKW選定・被リンク対策・SEO施策立案・月次レポート等の運用一式を含む。</li>
     </ul>
-    <div class="card">
-      <div class="chart">
-        <svg viewBox="0 0 42 42" role="img" aria-label="ライトプラン月額費用の内訳">
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4"
-                  stroke-dasharray="75 25" stroke-dashoffset="25"/>
-          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="2.4"
-                  stroke-dasharray="25 75" stroke-dashoffset="-50"/>
-          <text x="21" y="21" text-anchor="middle" class="big">80,000</text>
-        </svg>
-        <div class="cl">
-          <div><i style="background: var(--accent);"></i>記事制作費（¥20,000×新規3本）（75%）<strong>¥60,000</strong></div>
-          <div><i style="background: var(--ink);"></i>固定費（KW選定・被リンク対策・施策立案・月次レポート）（25%）<strong>¥20,000</strong></div>
-          <div class="src" style="border-bottom: none;">単位: 円（税抜） / スタンダードプランは記事制作費が¥100,000（新規5本）となり月額¥120,000</div>
-        </div>
-      </div>
-    </div>
     <div class="alert alert-blue">
       <svg class="a-icon icon"><use href="#i-info"/></svg>
       <span><strong>本プランに含まないもの — ブログ基盤の構築</strong><br>
-        記事の公開先となる自社ブログ基盤（当面サブドメイン・6月30日更新）の構築は、<strong>準委任契約の範囲でSEO基盤整備とあわせて対応</strong>します。本プラン（月額）は基盤が整っている前提の「記事運用」のサービスです。</span>
+        記事の公開先となる自社ブログ基盤（当面サブドメイン）の構築は、<strong>準委任契約の範囲でSEO基盤整備とあわせて対応</strong>します。本プラン（月額）は基盤が整っている前提の「記事運用」のサービスです。</span>
     </div>
 
     <h3>各項目の中身</h3>
-    <div class="card">
-      <ul>
-        <li><strong>新規記事</strong> — 地域×サイクリングコースの記事を自社ブログ基盤（当面サブドメイン）に公開。KW選定・執筆・SEO設定・公開まで弊社が代行。テンプレ（コース概要・マップ・所要時間・料金・立ち寄りスポット＋レンタル導線）で品質を揃えて量産</li>
-        <li><strong>月次レポート</strong> — GA4 / Search Consoleをもとに、検索流入・表示順位・記事ごとの成果・予約への寄与を月1回報告。次月にどのKW / 地域を狙うかの提案までセット</li>
-        <li><strong>過去記事のリライト</strong> — 公開済み記事から伸び悩んでいる1本を毎月見直して改善（タイトル・見出し・内容の追記）。SEOは「書いて終わり」ではなくリライトで順位が伸びるため、積み上げた記事を育て続ける</li>
-      </ul>
+    <div class="term-row">
+      <div class="term">
+        <div class="term-name">新規記事</div>
+        <div class="t-body">地域×サイクリングコースの記事を自社ブログ基盤（当面サブドメイン）に公開。KW選定・執筆・SEO設定・公開まで弊社が代行。テンプレ（コース概要・マップ・所要時間・料金・立ち寄りスポット＋レンタル導線）で品質を揃えて量産する。</div>
+      </div>
+      <div class="term">
+        <div class="term-name">月次レポート</div>
+        <div class="t-body">GA4 / Search Consoleをもとに、検索流入・表示順位・記事ごとの成果・予約への寄与を月1回報告。次月にどのKW / 地域を狙うかの提案までセット。</div>
+      </div>
+      <div class="term">
+        <div class="term-name">過去記事のリライト</div>
+        <div class="t-body">公開済み記事から伸び悩んでいる1本を毎月見直して改善する（タイトル・見出し・内容の追記）。SEOは「書いて終わり」ではなくリライトで順位が伸びるため、積み上げた記事を育て続ける。</div>
+      </div>
     </div>
   </div>
 
-  <!-- 4 記事作成フロー -->
+  <!-- 5 記事作成フロー -->
   <div class="section" id="process">
     <div class="section-header">
-      <div class="section-num">04</div>
+      <div class="section-num">05</div>
       <div class="sh-body"><h2>記事作成フロー</h2><div class="sh-sub">貴社は「レビュー」のみ並走</div></div>
     </div>
     <p>記事執筆の全工程を弊社が担当させていただきます。</p>
@@ -255,36 +250,40 @@ td.center{text-align:center}
     </div>
   </div>
 
-  <!-- 5 施策推進イメージ -->
+  <!-- 6 施策推進イメージ -->
   <div class="section" id="schedule">
     <div class="section-header">
-      <div class="section-num">05</div>
+      <div class="section-num">06</div>
       <div class="sh-body"><h2>施策推進イメージ</h2><div class="sh-sub">ライトプラン（最小構成）の6ヶ月</div></div>
     </div>
-    <p>ライトプラン（最小構成）の場合の6ヶ月イメージ。</p>
+    <p>ライトプラン（最小構成）の場合の6ヶ月イメージ。月ごとに変わるのは最初の2ヶ月だけで、3ヶ月目からは同じ運転が続きます。</p>
+    <figure class="fig" aria-label="月ごとに変わるのは最初の2ヶ月だけで、3ヶ月目からは新規3本とリライト1本の同じ運転が毎月続く">
+    <div class="phases">
+      <div class="phase"><span class="pn">1ヶ月目</span><span class="pt">立ち上げ</span><span class="ps">KW設計・競合分析・記事テンプレ設計</span></div>
+      <div class="phase"><span class="pn">2ヶ月目</span><span class="pt">通常運転の開始</span><span class="ps">新規3本・月次レポート開始</span></div>
+      <div class="phase"><span class="pn">3ヶ月目以降</span><span class="pt">積み上げと改善</span><span class="ps">新規3本＋リライト1本</span></div>
+    </div>
+    </figure>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>実施内容</th><th>1ヶ月目</th><th>2ヶ月目</th><th>3ヶ月目</th><th>4ヶ月目</th><th>5ヶ月目</th><th>6ヶ月目</th></tr></thead>
+        <thead><tr><th>実施内容</th><th>1ヶ月目</th><th>2ヶ月目</th><th>3ヶ月目以降</th></tr></thead>
         <tbody>
-          <tr><td class="label">弊社（毎月）</td><td>次月の施策立案（狙うKW / 地域の提案）</td><td>月次レポート＋施策立案</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td></tr>
-          <tr><td class="label">弊社（記事制作）</td><td>立ち上げ：KW選定・競合分析・記事テンプレ設計 ＋ <span style="color: var(--accent-deep); font-weight: 700;">新規記事 1本※</span></td><td>新規3本</td><td>新規3本＋リライト1本</td><td>新規3本＋リライト1本</td><td>新規3本＋リライト1本</td><td>新規3本＋リライト1本</td></tr>
-          <tr><td class="label">貴社（増永さん側）</td><td>記事レビュー・店舗のコース情報提供</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td><td class="center">〃</td></tr>
+          <tr><td class="label">弊社（毎月）</td><td>次月の施策立案（狙うKW / 地域の提案）</td><td colspan="2">月次レポート＋施策立案</td></tr>
+          <tr><td class="label">弊社（記事制作）</td><td>立ち上げ：KW選定・競合分析・記事テンプレ設計 ＋ <span style="color: var(--accent-deep); font-weight: 700;">新規記事 1本</span></td><td>新規3本</td><td>新規3本＋リライト1本</td></tr>
+          <tr><td class="label">貴社（増永さん側）</td><td colspan="3">記事レビュー・店舗のコース情報提供</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="src">※ 1ヶ月目は立ち上げ作業（KW設計・テンプレ作り）があるため新規記事は少なめ。2ヶ月目から通常ペース。月次レポートは記事公開後にデータが出る2ヶ月目から、過去記事のリライトは記事が貯まる3ヶ月目から。</p>
-    <div class="alert alert-blue">
-      <svg class="a-icon icon"><use href="#i-info"/></svg>
-      <span><strong>前提</strong>：ブログ基盤（記事の公開先）が整うまでの間も、記事原稿の書き溜めは先行できる（基盤の構築範囲は「プラン一覧」を参照）。<br>
-        <strong>スタンダードプランの場合</strong>：新規記事が3本 / 月→<strong>5本 / 月</strong>になる（月次レポート・リライトは共通）。</span>
-    </div>
+    <ul class="notes">
+      <li>1ヶ月目は立ち上げ作業（KW設計・テンプレ作り）があるため新規記事は少なめ。2ヶ月目から通常ペース。月次レポートは記事公開後にデータが出る2ヶ月目から、過去記事のリライトは記事が貯まる3ヶ月目から。</li>
+      <li>ブログ基盤（記事の公開先）が整うまでの間も、記事原稿の書き溜めは先行できる（基盤の構築範囲は「プラン一覧」を参照）。</li>
+    </ul>
   </div>
 
 </div>
 
-<footer>
-  &copy; 2026 Rincle Inc. ｜ 本資料は社外秘です ｜ 正本: documents/4_growth/03_seo/seo-support-plan.md（md更新時はこのHTMLも同期すること）
-</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/4_growth/03_seo/seo-support-plan.md） -->
+<footer>正本: documents/4_growth/03_seo/seo-support-plan.md</footer>
 
 <script>
 (function(){
