@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP',system-ui,sans-serif; }
+    a { color: #B8532F; } a:hover { color: #8F3E20; }
+  </style>
+</helmet>
+<div style="width: 1080px; height: 840px; box-sizing: border-box; background: #FBF9F5; color: #26221E; padding: 72px 80px 56px; display: flex; flex-direction: column; overflow: hidden;">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #26221E; padding-bottom: 14px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <img src="rincle-favicon.png" alt="RINCLE" style="width: 30px; height: 30px; border-radius: 8px;">
+      <span style="font-size: 12px; letter-spacing: 0.22em; color: #6E675F;">RINCLE — DESIGN SYSTEM</span>
+    </div>
+    <div style="font-family: 'Shippori Mincho',serif; font-size: 13px; letter-spacing: 0.18em; color: #B8532F;">誌面エディトリアル</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 20px; padding: 52px 0 44px;">
+    <div style="font-family: 'Shippori Mincho',serif; font-size: 54px; font-weight: 600; line-height: 1.4; color: #26221E;">RINCLE デザインシステム</div>
+    <div style="font-size: 14px; line-height: 2.1; color: #57504A; max-width: 700px;">クライアント資料で使うUI部品の図鑑。「UI部品の由来図鑑」の47部品すべてをこの様式で作り直し、チャート類・資料部品・図解・スライド部品を加えた全10シート構成です。各部品の（数字）は由来図鑑の通し番号。</div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid #26221E;">
+    <div style="padding: 20px 20px 20px 0; border-right: 1px solid #DCD3C8; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">01</div>
+      <div style="font-size: 14px; font-weight: 700;">基礎</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">色・書体・グリッド・アイコン</div>
+    </div>
+    <div style="padding: 20px; border-right: 1px solid #DCD3C8; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">02</div>
+      <div style="font-size: 14px; font-weight: 700;">入力と操作</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">ボタン・チェック・トグル等</div>
+    </div>
+    <div style="padding: 20px; border-right: 1px solid #DCD3C8; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">03</div>
+      <div style="font-size: 14px; font-weight: 700;">ナビゲーション</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">タブ・パンくず・ページャ等</div>
+    </div>
+    <div style="padding: 20px 0 20px 20px; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">04</div>
+      <div style="font-size: 14px; font-weight: 700;">入れ物と画面</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">カード・モーダル・ウィンドウ等</div>
+    </div>
+    <div style="padding: 20px 20px 20px 0; border-right: 1px solid #DCD3C8; border-top: 1px solid #DCD3C8; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">05</div>
+      <div style="font-size: 14px; font-weight: 700;">フィードバック</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">トースト・進捗・アラート等</div>
+    </div>
+    <div style="padding: 20px; border-right: 1px solid #DCD3C8; border-top: 1px solid #DCD3C8; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">06</div>
+      <div style="font-size: 14px; font-weight: 700;">データ表示</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">表・カンバン・ガント等</div>
+    </div>
+    <div style="padding: 20px; border-right: 1px solid #DCD3C8; border-top: 1px solid #DCD3C8; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">07</div>
+      <div style="font-size: 14px; font-weight: 700;">チャート</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">ドーナツ・横棒・優先度バー・統計数字</div>
+    </div>
+    <div style="padding: 20px 0 20px 20px; border-top: 1px solid #DCD3C8; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">08</div>
+      <div style="font-size: 14px; font-weight: 700;">資料部品</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">章ナビ・用語解説・まとめ帯等</div>
+    </div>
+    <div style="padding: 20px 20px 20px 0; border-right: 1px solid #DCD3C8; border-top: 1px solid #DCD3C8; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">09</div>
+      <div style="font-size: 14px; font-weight: 700;">図解</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">スイムレーン・フロー・フェーズ帯</div>
+    </div>
+    <div style="padding: 20px; border-top: 1px solid #DCD3C8; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 22px; color: #B8532F;">10</div>
+      <div style="font-size: 14px; font-weight: 700;">スライド部品</div>
+      <div style="font-size: 11.5px; line-height: 1.7; color: #8B8279;">定例でそのまま映す16:9の型</div>
+    </div>
+  </div>
+
+  <div style="margin-top: auto; display: flex; justify-content: space-between; border-top: 1px solid #26221E; padding-top: 14px; font-size: 11px; color: #8B8279;">
+    <span>基調はA案（誌面エディトリアル）— 罫線と余白・明朝見出し・焦がしオレンジ</span>
+    <span>2026-08-20</span>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1080,"height":840}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

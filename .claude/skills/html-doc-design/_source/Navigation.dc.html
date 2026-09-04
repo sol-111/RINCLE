@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP',system-ui,sans-serif; color: #26221E; }
+    a { color: #B8532F; } a:hover { color: #8F3E20; }
+    .blk { border-top: 1px solid #DCD3C8; padding: 26px 0; display: grid; grid-template-columns: 230px minmax(0,1fr); gap: 36px; }
+    .no { font-size: 10.5px; letter-spacing: 0.18em; color: #B8532F; font-weight: 700; }
+    .no.add { color: #8B8279; }
+    .nm { font-family: 'Shippori Mincho',serif; font-size: 20px; }
+    .ds { font-size: 11.5px; line-height: 1.8; color: #8B8279; }
+    .st { font-size: 10.5px; color: #8B8279; }
+  </style>
+</helmet>
+<div style="width: 1280px; height: 2240px; box-sizing: border-box; background: #FBF9F5; padding: 64px 84px; display: flex; flex-direction: column; overflow: hidden;">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #26221E; padding-bottom: 12px; margin-bottom: 8px;">
+    <div style="display: flex; align-items: baseline; gap: 16px;">
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px; color: #B8532F;">03</span>
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px;">ナビゲーション</span>
+    </div>
+    <span style="font-size: 11px; letter-spacing: 0.2em; color: #8B8279;">RINCLE DESIGN SYSTEM</span>
+  </div>
+
+  <div class="blk" style="border-top: none;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 01 — タブ</div>
+      <div class="nm">タブ</div>
+      <div class="ds">見出しの並び+選択中は焦がしオレンジの下線。索引タブが由来。</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div style="display: flex; gap: 32px; border-bottom: 1px solid #DCD3C8;">
+        <div style="padding: 8px 2px 12px; font-size: 14.5px; font-weight: 700; border-bottom: 2px solid #B8532F; margin-bottom: -1px; color: #26221E;">結論</div>
+        <div style="padding: 8px 2px 12px; font-size: 14.5px; color: #8B8279;">取得データ</div>
+        <div style="padding: 8px 2px 12px; font-size: 14.5px; color: #8B8279;">含意</div>
+        <div style="padding: 8px 2px 12px; font-size: 14.5px; color: #8B8279;">次のアクション</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 13 — メニューとドロップダウン</div>
+      <div class="nm">ドロップダウン</div>
+      <div class="ds">閉じた状態と開いた状態。選択行は淡オレンジ。</div>
+    </div>
+    <div style="display: flex; align-items: flex-start; gap: 28px;">
+      <div style="background: #FFFFFF; border: 1px solid #DCD3C8; border-radius: 3px; padding: 12px 16px; font-size: 14px; min-width: 220px; display: flex; justify-content: space-between; align-items: center;">京都府<svg style="width: 14px; height: 14px; stroke: #57504A; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></div>
+      <div style="display: flex; flex-direction: column; min-width: 220px;">
+        <div style="background: #FFFFFF; border: 1px solid #26221E; border-radius: 3px 3px 0 0; padding: 12px 16px; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">京都府<svg style="width: 14px; height: 14px; stroke: #26221E; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"></path></svg></div>
+        <div style="background: #FFFFFF; border: 1px solid #DCD3C8; border-top: none; border-radius: 0 0 4px 4px; box-shadow: 0 10px 26px -12px rgba(38,34,30,0.3); padding: 6px 0;">
+          <div style="padding: 9px 16px; font-size: 13.5px;">大阪府</div>
+          <div style="padding: 9px 16px; font-size: 13.5px; background: #F3E6DC; font-weight: 700;">京都府</div>
+          <div style="padding: 9px 16px; font-size: 13.5px;">兵庫県</div>
+          <div style="padding: 9px 16px; font-size: 13.5px;">奈良県</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 14 — パンくずリスト</div>
+      <div class="nm">パンくず</div>
+      <div class="ds">現在地までの道のり。現在地だけ墨の太字。</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px; font-size: 13.5px;">
+      <a style="text-decoration: none;">提案資料</a>
+      <span style="color: #C9BFB4;">／</span>
+      <a style="text-decoration: none;">SEO設定</a>
+      <span style="color: #C9BFB4;">／</span>
+      <span style="font-weight: 700; color: #26221E;">sitemap.xml 作成手順</span>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 15 — ウィザード</div>
+      <div class="nm">段階ナビ（章ナビの親）</div>
+      <div class="ds">番号の丸+罫線でつなぐ。現在は焦がしオレンジ、完了は墨。</div>
+    </div>
+    <div style="display: flex; align-items: center; max-width: 640px;">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <span style="width: 36px; height: 36px; border-radius: 50%; background: #26221E; color: #FBF9F5; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 14px;">1</span>
+        <span style="font-size: 11px; color: #57504A;">用意</span>
+      </div>
+      <div style="flex: 1; height: 1px; background: #26221E; margin: 0 10px 22px;"></div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <span style="width: 36px; height: 36px; border-radius: 50%; background: #B8532F; color: #FBF9F5; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 14px;">2</span>
+        <span style="font-size: 11px; font-weight: 700;">設定</span>
+      </div>
+      <div style="flex: 1; height: 1px; background: #DCD3C8; margin: 0 10px 22px;"></div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <span style="width: 36px; height: 36px; border-radius: 50%; background: #FFFFFF; border: 1px solid #DCD3C8; color: #8B8279; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 14px;">3</span>
+        <span style="font-size: 11px; color: #8B8279;">生成</span>
+      </div>
+      <div style="flex: 1; height: 1px; background: #DCD3C8; margin: 0 10px 22px;"></div>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+        <span style="width: 36px; height: 36px; border-radius: 50%; background: #FFFFFF; border: 1px solid #DCD3C8; color: #8B8279; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 14px;">4</span>
+        <span style="font-size: 11px; color: #8B8279;">公開</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 22 — ハンバーガーボタン</div>
+      <div class="nm">ハンバーガー</div>
+      <div class="ds">三本線。押すとドロワー（11）が開く。</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <button style="width: 44px; height: 44px; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;"><svg style="width: 18px; height: 18px; stroke: #26221E; fill: none; stroke-width: 1.8; stroke-linecap: round;" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+      <button style="width: 44px; height: 44px; border: 1px solid #26221E; border-radius: 3px; background: #26221E; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;"><svg style="width: 16px; height: 16px; stroke: #FBF9F5; fill: none; stroke-width: 1.8; stroke-linecap: round;" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"></path></svg></button>
+      <span class="st">閉じている / 開いている（×）</span>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 11 — ドロワー</div>
+      <div class="nm">ドロワー</div>
+      <div class="ds">画面の端から引き出す目次。資料SPAのサイドバーはこれ。</div>
+    </div>
+    <div style="width: 420px; height: 200px; border: 1px solid #DCD3C8; border-radius: 4px; background: #F3EFE9; position: relative; overflow: hidden;">
+      <div style="position: absolute; inset: 0; background: rgba(38,34,30,0.28);"></div>
+      <div style="position: absolute; top: 0; left: 0; bottom: 0; width: 180px; background: #FBF9F5; border-right: 1px solid #DCD3C8; padding: 16px 14px; display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 10px; letter-spacing: 0.18em; color: #B8532F; font-weight: 700;">CONTENTS</div>
+        <div style="font-size: 12px; font-weight: 700; border-left: 2px solid #B8532F; padding-left: 8px;">SEO設定</div>
+        <div style="font-size: 12px; color: #57504A; padding-left: 10px;">決済連携</div>
+        <div style="font-size: 12px; color: #57504A; padding-left: 10px;">業務フロー</div>
+        <div style="font-size: 12px; color: #57504A; padding-left: 10px;">マーケ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 23 — ページとページャ</div>
+      <div class="nm">ページャ</div>
+      <div class="ds">現在ページは墨の塗り。前後は文字リンク。</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 13.5px;">
+      <a style="text-decoration: none; padding: 8px 12px;">← 前へ</a>
+      <span style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF;">1</span>
+      <span style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF;">2</span>
+      <span style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #26221E; border-radius: 3px; background: #26221E; color: #FBF9F5; font-weight: 700;">3</span>
+      <span style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF;">4</span>
+      <span style="color: #8B8279; padding: 0 4px;">…</span>
+      <span style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF;">8</span>
+      <a style="text-decoration: none; padding: 8px 12px;">次へ →</a>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 24 — ヘッダーとフッター</div>
+      <div class="nm">ヘッダー / フッター</div>
+      <div class="ds">上下の定位置。ロゴ+キッカーの帯と、正本表記の帯。</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="border-bottom: 1px solid #26221E; padding-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;"><img src="rincle-favicon.png" alt="RINCLE" style="width: 24px; height: 24px; border-radius: 7px;"><span style="font-size: 11px; letter-spacing: 0.22em; color: #6E675F;">RINCLE — SEO設定</span></div>
+        <span style="font-family: 'Shippori Mincho',serif; font-size: 12px; letter-spacing: 0.18em; color: #B8532F;">資料 07</span>
+      </div>
+      <div style="border-top: 1px solid #26221E; padding-top: 12px; display: flex; justify-content: space-between; font-size: 11px; color: #8B8279;">
+        <span>RINCLE</span><span>正本: sitemap-creation-guide.md</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 44 — スクロールバー</div>
+      <div class="nm">スクロールバー</div>
+      <div class="ds">細く・薄く。つまみは罫線色、ホバーで弱い文字色。</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 24px;">
+      <div style="width: 320px; height: 120px; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF; position: relative; padding: 14px 24px 14px 16px;">
+        <div style="font-size: 12px; line-height: 1.9; color: #8B8279;">長い本文がここに続く。読み進みは右端の細いつまみで示す……</div>
+        <div style="position: absolute; top: 10px; right: 5px; width: 5px; height: 46px; border-radius: 99px; background: #C9BFB4;"></div>
+      </div>
+      <span class="st">幅5px・角丸。目立たせず、読む邪魔をしない</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1280,"height":2240}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

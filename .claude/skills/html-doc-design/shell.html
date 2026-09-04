@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<!-- ============================================================
+  SPAシェル雛形 — 複数ページの資料を1つのサイトにまとめる外枠
+  （原本: RINCLE documents/98_presentations/index.html を2026-08-28に雛形へ昇格）
+
+  使い方:
+    1. このファイルを案件の資料フォルダに index.html としてコピー
+    2. <title>・sidebar-header・pages 配列を案件の内容に差し替え
+    3. :root のブランドトークン（--shell-accent 等）を案件の焦がしトーンに差し替え
+       （template.css の --accent と同じ値にする）
+    4. favicon・ロゴは任意。無い案件は <link rel="icon"> と <img> を省略してよい
+
+  拡張（2026-09-04・初見レビューより）:
+    - ようこそ画面を「資料集の一言 → まず読む3本 → セクションごとの1行説明」の
+      入口ページにした。文言は script の welcome / sectionNotes に書くだけでよい
+      （タイトルは pages 配列から引くので、資料が増えても書き分けが割れない）
+    - AUTO_OPEN_FIRST の既定を false に変更（先頭ページではなくようこそ画面から始める）
+
+  原本からの改良（2026-08-28）:
+    - iframe内リンクの追従: ページの中の相互リンクで遷移しても、
+      サイドバーの現在地とURLハッシュが同期する（iframe load を監視）
+    - ブランド色を --shell-* トークンに集約（差し替え箇所を1ヶ所に）
+    - ロゴ任意化（ロゴ無し案件はモノグラムを発明せず省略する）
+============================================================ -->
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>案件名 - 資料タイトル</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- favicon（任意。案件にロゴが無ければ行ごと省略） -->
+  <!-- <link rel="icon" type="image/png" href="assets/favicon.png"> -->
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --sidebar-width: 260px;
+      /* ▼ ブランド差し替えはここだけ（template.css のトークンと揃える） */
+      --shell-accent: #B8532F;        /* = --accent（焦がしブランド色） */
+      --shell-bg: #FBF9F5;            /* = --paper */
+      --shell-sidebar: #26221E;       /* = --ink（サイドバー地。ブランドの色温度に寄せる） */
+      --shell-sidebar-hover: #322C27;
+      --shell-sidebar-active: #3E332B;
+      --shell-text: #57504A;          /* = --text */
+      --shell-text-light: #A9A199;
+      --shell-line: #E5DDD2;          /* = --line-soft */
+    }
+
+    body {
+      font-family:'Noto Sans JP',-apple-system, BlinkMacSystemFont, 'Hiragino Sans', Meiryo, sans-serif;
+      font-feature-settings:'palt' 1;
+      background: var(--shell-bg);
+      color: var(--shell-text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    table{font-variant-numeric:tabular-nums}
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-width);
+      min-width: var(--sidebar-width);
+      background: var(--shell-sidebar);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .sidebar-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar-header h1 {
+      font-family:'Shippori Mincho',serif;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-header p {
+      font-size: 12px;
+      color: var(--shell-text-light);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 0;
+    }
+
+    /* Accordion section */
+    .nav-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      color: #E5DDD2;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .nav-section:hover {
+      background: rgba(255,255,255,0.05);
+    }
+
+    .nav-section-arrow {
+      font-size: 10px;
+      transition: transform 0.25s ease;
+      color: var(--shell-text-light);
+    }
+
+    .nav-section.collapsed .nav-section-arrow {
+      transform: rotate(-90deg);
+    }
+
+    .nav-group {
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.25s ease;
+      max-height: 2000px; /* アコーディオン開閉アニメ用の上限。項目が多い節でも切れない値に */
+      opacity: 1;
+    }
+
+    .nav-group.collapsed {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 9px 20px 9px 32px;
+      color: #CFC7BE;
+      text-decoration: none;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: var(--shell-sidebar-hover);
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: var(--shell-sidebar-active);
+      color: #fff;
+      border-left-color: var(--shell-accent);
+    }
+
+    /* Section item count badge */
+    .nav-section-count {
+      background: rgba(255,255,255,0.1);
+      color: var(--shell-text-light);
+      font-size: 10px;
+      padding: 1px 7px;
+      border-radius: 10px;
+      margin-left: 8px;
+      font-weight: 400;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ページ側にヒーローがあるので通常は非表示のまま使う */
+    .topbar {
+      padding: 16px 32px;
+      background: #fff;
+      border-bottom: 1px solid var(--shell-line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 60px;
+    }
+
+    .topbar h2 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .content {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Welcome screen（資料集の入口。文言は script の welcome / sectionNotes に書く） */
+    .welcome {
+      height: 100%;
+      overflow-y: auto;
+      padding: 56px 48px 72px;
+    }
+
+    .w-inner { max-width: 880px; margin: 0 auto; }
+
+    .w-kicker {
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      font-weight: 700;
+      color: var(--shell-accent);
+    }
+
+    .welcome h2 {
+      font-family:'Shippori Mincho',serif;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: #26221E;
+      margin: 10px 0 0;
+    }
+
+    .w-lead {
+      font-size: 14.5px;
+      line-height: 2.1;
+      margin-top: 16px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--shell-line);
+    }
+
+    /* 節の見出し（「まず読む3本」「資料の並び」） */
+    .w-h {
+      font-family:'Shippori Mincho',serif;
+      font-size: 19px;
+      font-weight: 600;
+      color: #26221E;
+      margin: 40px 0 14px;
+    }
+
+    /* まず読む3本 — 章ナビと同じ罫線グリッドの組み */
+    /* 列数は「まず読む◯本」の本数に合わせて JS が指定する（空きマスが白く残らないように） */
+    .w-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: #fff;
+      border: 1px solid #DCD3C8;
+      border-top: 2px solid var(--shell-accent);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .w-card {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 20px 22px;
+      border-left: 1px solid var(--shell-line);
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .w-card:first-child { border-left: none; }
+    .w-card:hover { background: #F7F1EA; }
+
+    .w-no {
+      font-family:'Shippori Mincho',serif;
+      font-size: 20px;
+      color: var(--shell-text);
+    }
+
+    .w-t { font-size: 13.5px; font-weight: 700; color: #26221E; line-height: 1.5; }
+    .w-d { font-size: 11px; color: var(--shell-text-light); line-height: 1.6; }
+
+    /* セクションごとの1行説明（資料の並び） */
+    .w-toc { border-top: 1px solid var(--shell-line); }
+
+    .w-toc-row {
+      display: grid;
+      grid-template-columns: 200px minmax(0, 1fr);
+      gap: 20px;
+      padding: 14px 2px;
+      border-bottom: 1px solid var(--shell-line);
+      align-items: baseline;
+    }
+
+    .w-toc-nm { font-size: 13px; font-weight: 700; color: #26221E; }
+    .w-toc-ct { font-size: 11px; color: var(--shell-text-light); font-weight: 400; margin-left: 8px; }
+    .w-toc-ds { font-size: 12.5px; line-height: 1.9; }
+
+    @media (max-width: 1000px) {
+      .welcome { padding: 36px 24px 56px; }
+      .w-grid { grid-template-columns: 1fr; }
+      .w-card { border-left: none; border-top: 1px solid var(--shell-line); }
+      .w-card:first-child { border-top: none; }
+      .w-toc-row { grid-template-columns: 1fr; gap: 2px; }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      :root { --sidebar-width: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-header">
+    <!-- ロゴが有る案件のみ h1 内に <img src="assets/logo.png" alt="" style="width:26px;height:26px;border-radius:7px"> を置く -->
+    <h1>案件名</h1>
+    <p>資料の説明（例: 説明資料）</p>
+  </div>
+  <div class="sidebar-nav" id="nav">
+    <!-- nav items are rendered by JS from the pages array -->
+  </div>
+</nav>
+
+<main class="main">
+  <header class="topbar" style="display:none;">
+    <h2 id="page-title">ホーム</h2>
+  </header>
+  <div class="content" id="content">
+    <!-- ようこそ画面の中身は renderWelcome() が script の welcome / sectionNotes から組む -->
+    <div class="welcome" id="welcome"></div>
+  </div>
+</main>
+
+<script>
+  // ============================================================
+  // Page Registry
+  // ここにページを追加していく。section でグループ化（同じ section 名は連続させる）。
+  // ============================================================
+  const pages = [
+    { section: 'セクション名', id: 'sample-1', title: 'ページタイトル1', src: 'pages/sample-1.html' },
+    { section: 'セクション名', id: 'sample-2', title: 'ページタイトル2', src: 'pages/sample-2.html' },
+  ];
+
+  // ============================================================
+  // ようこそ画面（資料集の入口）
+  // 「この資料集は何か」「まず何から読むか」「どこに何があるか」の3つだけを置く。
+  // タイトルは pages から引くので、ここに書くのは一言だけでよい。
+  // ============================================================
+  const welcome = {
+    kicker: '案件名 — 資料集',
+    title: '資料集のタイトル',
+    // 資料集の一言: 何をまとめた資料集で、誰が何を決めるためのものかを1〜2文で
+    lead: 'この資料集が何をまとめたものかを1〜2文で書く。読む人が「自分は何を決める立場か」まで分かる書き方にする。',
+    // まず読む3本: pages の id と「なぜ最初に読むか」の一言（3本が目安・多くても4本）
+    starters: [
+      { id: 'sample-1', why: 'なぜ最初に読むかの一言' },
+      { id: 'sample-2', why: 'なぜ次に読むかの一言' },
+    ],
+  };
+
+  // セクションごとの1行説明（キーは pages の section 名と一致させる）
+  const sectionNotes = {
+    'セクション名': 'この節に何があるかの1行説明。',
+  };
+
+  // ============================================================
+  // Render
+  // ============================================================
+  const nav = document.getElementById('nav');
+  const contentEl = document.getElementById('content');
+  const pageTitle = document.getElementById('page-title');
+
+  // Track accordion open/close state per section
+  const sectionState = {};
+
+  const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]
+  ));
+
+  // ようこそ画面を組む（一言 → まず読む3本 → セクションごとの1行説明）
+  function renderWelcome() {
+    const el = document.getElementById('welcome');
+    if (!el) return;
+
+    const starters = (welcome.starters || [])
+      .map((st) => ({ st, page: pages.find((p) => p.id === st.id) }))
+      .filter((x) => x.page);
+
+    const cards = starters.map((x, i) => `
+          <a class="w-card" href="#${esc(x.page.id)}" data-goto="${esc(x.page.id)}">
+            <span class="w-no">${i + 1}</span>
+            <span class="w-t">${esc(x.page.title)}</span>
+            <span class="w-d">${esc(x.st.why || '')}</span>
+          </a>`).join('');
+
+    // セクションは pages の並び順（重複を除く）
+    const sections = [];
+    pages.forEach((p) => { if (!sections.includes(p.section)) sections.push(p.section); });
+    const counts = {};
+    pages.forEach((p) => { counts[p.section] = (counts[p.section] || 0) + 1; });
+
+    const toc = sections.map((name) => `
+          <div class="w-toc-row">
+            <div class="w-toc-nm">${esc(name)}<span class="w-toc-ct">${counts[name]}本</span></div>
+            <div class="w-toc-ds">${esc(sectionNotes[name] || '')}</div>
+          </div>`).join('');
+
+    el.innerHTML = `
+      <div class="w-inner">
+        <span class="w-kicker">${esc(welcome.kicker || '')}</span>
+        <h2>${esc(welcome.title || document.title)}</h2>
+        <p class="w-lead">${esc(welcome.lead || '')}</p>
+        ${cards ? `<div class="w-h">まず読む${starters.length}本</div><div class="w-grid" style="grid-template-columns:repeat(${starters.length},1fr)">${cards}</div>` : ''}
+        ${toc ? `<div class="w-h">資料の並び</div><div class="w-toc">${toc}</div>` : ''}
+      </div>`;
+
+    el.querySelectorAll('[data-goto]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const page = pages.find((p) => p.id === a.dataset.goto);
+        if (page) loadPage(page);
+      });
+    });
+  }
+
+  function render() {
+    nav.innerHTML = '';
+    let currentSection = null;
+    let currentGroup = null;
+
+    if (pages.length === 0) {
+      nav.innerHTML = '<div style="padding:20px;color:var(--shell-text-light);font-size:13px;">まだ資料がありません。<br>pages 配列にエントリを追加してください。</div>';
+      return;
+    }
+
+    // Count items per section
+    const sectionCounts = {};
+    pages.forEach(p => {
+      sectionCounts[p.section] = (sectionCounts[p.section] || 0) + 1;
+    });
+
+    pages.forEach(page => {
+      if (page.section !== currentSection) {
+        currentSection = page.section;
+        const sectionName = currentSection;
+
+        // Default to open
+        if (sectionState[sectionName] === undefined) {
+          sectionState[sectionName] = true;
+        }
+
+        const isOpen = sectionState[sectionName];
+
+        // Section header (accordion toggle)
+        const sectionEl = document.createElement('div');
+        sectionEl.className = 'nav-section' + (isOpen ? '' : ' collapsed');
+        sectionEl.innerHTML = `
+          <span>${sectionName}<span class="nav-section-count">${sectionCounts[sectionName]}</span></span>
+          <span class="nav-section-arrow">&#x25BC;</span>
+        `;
+
+        // Group container for items
+        const groupEl = document.createElement('div');
+        groupEl.className = 'nav-group' + (isOpen ? '' : ' collapsed');
+
+        // Click to toggle（Enter/Spaceでも開閉できるようにする）
+        sectionEl.setAttribute('role', 'button');
+        sectionEl.tabIndex = 0;
+        sectionEl.addEventListener('click', () => {
+          const willOpen = sectionEl.classList.contains('collapsed');
+          sectionEl.classList.toggle('collapsed');
+          groupEl.classList.toggle('collapsed');
+          sectionState[sectionName] = willOpen;
+          sectionEl.setAttribute('aria-expanded', String(willOpen));
+        });
+        sectionEl.setAttribute('aria-expanded', String(isOpen));
+        sectionEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sectionEl.click(); }
+        });
+
+        nav.appendChild(sectionEl);
+        nav.appendChild(groupEl);
+        currentGroup = groupEl;
+      }
+
+      const a = document.createElement('a');
+      a.className = 'nav-item';
+      a.textContent = page.title;
+      a.dataset.id = page.id;
+      a.href = '#' + page.id; // 直リンクをコピーできる本物のリンクにする
+      a.addEventListener('click', (e) => { e.preventDefault(); loadPage(page); });
+      currentGroup.appendChild(a);
+    });
+  }
+
+  let currentId = null;
+  const baseTitle = document.title;
+
+  // サイドバーの現在地・見出し・URLハッシュだけを同期する（iframeは触らない）
+  function syncActive(page) {
+    currentId = page.id;
+    document.querySelectorAll('.nav-item').forEach(el => {
+      el.classList.toggle('active', el.dataset.id === page.id);
+    });
+    pageTitle.textContent = page.title;
+    document.title = page.title + ' — ' + baseTitle;
+    history.replaceState(null, '', '#' + page.id);
+  }
+
+  // iframe内リンクの追従（原本からの改良点）:
+  // ページの中の相互リンクで遷移した時も、読み込まれたURLから該当ページを特定して
+  // サイドバーの現在地とハッシュを同期する。section が閉じていたら開き直す。
+  function onFrameLoad(frame) {
+    let path;
+    try {
+      path = frame.contentWindow.location.pathname;
+    } catch (e) {
+      return; // クロスオリジン等で読めない場合は何もしない
+    }
+    const page = pages.find(p => path.endsWith('/' + p.src) || path === p.src);
+    if (!page || page.id === currentId) return;
+    if (!sectionState[page.section]) {
+      sectionState[page.section] = true;
+      render();
+    }
+    syncActive(page);
+  }
+
+  function loadPage(page) {
+    syncActive(page);
+    contentEl.innerHTML = '';
+    const frame = document.createElement('iframe');
+    frame.src = page.src;
+    frame.title = page.title;
+    frame.addEventListener('load', () => onFrameLoad(frame));
+    contentEl.appendChild(frame);
+  }
+
+  function restoreFromHash() {
+    const hash = location.hash.slice(1);
+    if (!hash) return;
+    const target = pages.find(p => p.id === hash);
+    if (target) {
+      // Make sure the section is open
+      sectionState[target.section] = true;
+      // Re-render nav to reflect opened section, then load page
+      render();
+      loadPage(target);
+    }
+  }
+
+  // ハッシュ無しで開いた時にいきなり最初のページを開くか。
+  // 既定は false = ようこそ画面（資料集の一言・まず読む3本・資料の並び）から始める。
+  // 資料が1〜2本しかなく入口を迷わない資料集だけ true にする
+  const AUTO_OPEN_FIRST = false;
+
+  render();
+  renderWelcome();
+  restoreFromHash();
+  if (!currentId && AUTO_OPEN_FIRST && pages.length) loadPage(pages[0]);
+  // 戻る/進むボタンでの直リンク移動にも追従
+  addEventListener('hashchange', () => {
+    const hash = location.hash.slice(1);
+    if (hash && hash !== currentId) restoreFromHash();
+  });
+</script>
+
+</body>
+</html>

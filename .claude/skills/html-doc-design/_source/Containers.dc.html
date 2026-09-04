@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP',system-ui,sans-serif; color: #26221E; }
+    a { color: #B8532F; } a:hover { color: #8F3E20; }
+    .blk { border-top: 1px solid #DCD3C8; padding: 26px 0; display: grid; grid-template-columns: 230px minmax(0,1fr); gap: 36px; }
+    .no { font-size: 10.5px; letter-spacing: 0.18em; color: #B8532F; font-weight: 700; }
+    .nm { font-family: 'Shippori Mincho',serif; font-size: 20px; }
+    .ds { font-size: 11.5px; line-height: 1.8; color: #8B8279; }
+    .st { font-size: 10.5px; color: #8B8279; }
+    .ic { width: 20px; height: 20px; stroke: #26221E; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+</helmet>
+<div style="width: 1280px; height: 2540px; box-sizing: border-box; background: #FBF9F5; padding: 64px 84px; display: flex; flex-direction: column; overflow: hidden;">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #26221E; padding-bottom: 12px; margin-bottom: 8px;">
+    <div style="display: flex; align-items: baseline; gap: 16px;">
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px; color: #B8532F;">04</span>
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px;">入れ物と画面</span>
+    </div>
+    <span style="font-size: 11px; letter-spacing: 0.2em; color: #8B8279;">RINCLE DESIGN SYSTEM</span>
+  </div>
+
+  <div class="blk" style="border-top: none;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 02 — カード</div>
+      <div class="nm">カード</div>
+      <div class="ds">白面+罫線1px。影は使わず罫線と余白で区切る（影は浮かぶ部品 — メニュー・モーダル・トーストだけ）。</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; max-width: 640px;">
+      <div style="background: #FFFFFF; border: 1px solid #DCD3C8; border-radius: 4px; padding: 22px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 10.5px; letter-spacing: 0.16em; color: #B8532F; font-weight: 700;">STEP 2</div>
+        <div style="font-family: 'Shippori Mincho',serif; font-size: 17px;">Data APIの設定</div>
+        <div style="font-size: 12.5px; line-height: 1.9; color: #57504A;">店舗・自転車のID一覧をプログラムから取れるようにする。</div>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #B8532F; border-radius: 4px; padding: 22px 24px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="font-size: 10.5px; letter-spacing: 0.16em; color: #B8532F; font-weight: 700;">選択中</div>
+        <div style="font-family: 'Shippori Mincho',serif; font-size: 17px;">sitemap.xmlを生成</div>
+        <div style="font-size: 12.5px; line-height: 1.9; color: #57504A;">選択・強調は罫線を焦がしオレンジに替えるだけ。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 12 — ウィンドウ</div>
+      <div class="nm">ウィンドウ</div>
+      <div class="ds">タイトルバー+閉じる。資料内でアプリ画面を見せる時の額縁。</div>
+    </div>
+    <div style="width: 480px; border: 1px solid #DCD3C8; border-radius: 6px; background: #FFFFFF; overflow: hidden;">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid #E5DDD2; background: #F7F3EC;">
+        <span style="width: 10px; height: 10px; border-radius: 50%; background: #C9BFB4; display: inline-block;"></span>
+        <span style="width: 10px; height: 10px; border-radius: 50%; background: #C9BFB4; display: inline-block;"></span>
+        <span style="width: 10px; height: 10px; border-radius: 50%; background: #C9BFB4; display: inline-block;"></span>
+        <span style="margin-left: 8px; font-size: 12px; color: #57504A;">rincle.co.jp — 検索</span>
+      </div>
+      <div style="padding: 20px; font-size: 12.5px; color: #8B8279;">画面の中身（スクリーンショットやモック）</div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 16 — モーダルとダイアログ</div>
+      <div class="nm">確認ダイアログ</div>
+      <div class="ds">壊れる操作の前に一度だけ立ち止まらせる。破壊ボタンは紅。</div>
+    </div>
+    <div style="width: 560px; background: rgba(38,34,30,0.32); border-radius: 6px; padding: 40px; display: flex; justify-content: center;">
+      <div style="background: #FBF9F5; border-radius: 5px; padding: 28px 30px; width: 380px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 24px 60px -20px rgba(38,34,30,0.5);">
+        <div style="font-family: 'Shippori Mincho',serif; font-size: 18px;">受注 #10482 を削除しますか？</div>
+        <div style="font-size: 13px; line-height: 1.9; color: #57504A;">この操作は取り消せません。関連する予約データも削除されます。</div>
+        <div style="display: flex; justify-content: flex-end; gap: 12px; padding-top: 6px;">
+          <button style="height: 40px; padding: 0 20px; background: transparent; border: 1px solid #DCD3C8; border-radius: 3px; font-family: inherit; font-size: 13px; font-weight: 700; color: #57504A; cursor: pointer;">取り消し</button>
+          <button style="height: 40px; padding: 0 20px; background: #A8323E; border: 1px solid #A8323E; border-radius: 3px; font-family: inherit; font-size: 13px; font-weight: 700; color: #FBF9F5; cursor: pointer;">削除する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 18 — アコーディオン</div>
+      <div class="nm">アコーディオン</div>
+      <div class="ds">開閉で畳む。開いている行だけ + が − になる。</div>
+    </div>
+    <div style="max-width: 560px; border-top: 1px solid #26221E;">
+      <div style="border-bottom: 1px solid #DCD3C8;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 4px;">
+          <span style="font-size: 14.5px; font-weight: 700;">なぜ手作業で作るのか</span>
+          <span style="font-family: 'Shippori Mincho',serif; font-size: 18px; color: #B8532F;">−</span>
+        </div>
+        <div style="padding: 0 4px 18px; font-size: 13px; line-height: 2; color: #57504A;">新サイトはURLの後ろにIDを付ける方式のため、Bubbleの自動生成では店舗・自転車の1件1件のURLが載らない。</div>
+      </div>
+      <div style="border-bottom: 1px solid #DCD3C8; display: flex; justify-content: space-between; align-items: center; padding: 16px 4px;">
+        <span style="font-size: 14.5px; color: #57504A;">Data APIは安全か</span>
+        <span style="font-family: 'Shippori Mincho',serif; font-size: 18px; color: #8B8279;">＋</span>
+      </div>
+      <div style="border-bottom: 1px solid #DCD3C8; display: flex; justify-content: space-between; align-items: center; padding: 16px 4px;">
+        <span style="font-size: 14.5px; color: #57504A;">再生成の頻度</span>
+        <span style="font-family: 'Shippori Mincho',serif; font-size: 18px; color: #8B8279;">＋</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 19 — カルーセル</div>
+      <div class="nm">カルーセル</div>
+      <div class="ds">横送りの回覧。現在位置は点で示す。</div>
+    </div>
+    <div style="max-width: 560px; display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button style="width: 36px; height: 36px; border: 1px solid #DCD3C8; border-radius: 50%; background: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;"><svg class="ic" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"></path></svg></button>
+        <div style="flex: 1; height: 150px; border: 1px solid #DCD3C8; border-radius: 4px; background: repeating-linear-gradient(45deg, #F3EFE9 0 10px, #EDE7DE 10px 20px); display: flex; align-items: center; justify-content: center;"><span style="font-size: 11px; letter-spacing: 0.14em; color: #8B8279; background: #FBF9F5; padding: 4px 12px; border: 1px solid #DCD3C8; border-radius: 999px;">写真 2 / 5</span></div>
+        <button style="width: 36px; height: 36px; border: 1px solid #DCD3C8; border-radius: 50%; background: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;"><svg class="ic" style="width: 14px; height: 14px;" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg></button>
+      </div>
+      <div style="display: flex; justify-content: center; gap: 8px;">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #C9BFB4; display: inline-block;"></span>
+        <span style="width: 20px; height: 6px; border-radius: 99px; background: #B8532F; display: inline-block;"></span>
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #C9BFB4; display: inline-block;"></span>
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #C9BFB4; display: inline-block;"></span>
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #C9BFB4; display: inline-block;"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 04 / 10 / 39 — 机まわり</div>
+      <div class="nm">フォルダ・ごみ箱・アーカイブ</div>
+      <div class="ds">置き場の比喩3点。行アクションとして並べて使う。</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 10px; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF; padding: 12px 18px;"><svg class="ic" viewBox="0 0 24 24"><path d="M3 6h6l2 2h10v11H3z"></path></svg><span style="font-size: 13px; font-weight: 700;">07_release</span><span style="font-size: 11px; color: #8B8279;">26ファイル</span></div>
+      <button style="display: inline-flex; align-items: center; gap: 8px; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF; padding: 12px 16px; font-family: inherit; font-size: 13px; color: #57504A; cursor: pointer;"><svg class="ic" style="width: 16px; height: 16px;" viewBox="0 0 24 24"><path d="M3 5h18v4H3z"></path><path d="M5 9v10h14V9"></path><path d="M10 13h4"></path></svg>アーカイブ</button>
+      <button style="display: inline-flex; align-items: center; gap: 8px; border: 1px solid #E8C9CD; border-radius: 3px; background: #FDF3F4; padding: 12px 16px; font-family: inherit; font-size: 13px; color: #A8323E; cursor: pointer;"><svg style="width: 16px; height: 16px; stroke: #A8323E; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M5 7h14"></path><path d="M9 7V5h6v2"></path><path d="M7 7l1 13h8l1-13"></path></svg>削除</button>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 17 — アバター</div>
+      <div class="nm">アバター</div>
+      <div class="ds">頭文字+淡い面。写真は使わず文字で。</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <span style="width: 48px; height: 48px; border-radius: 50%; background: #26221E; color: #FBF9F5; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 19px;">増</span>
+      <span style="width: 40px; height: 40px; border-radius: 50%; background: #B8532F; color: #FBF9F5; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 16px;">清</span>
+      <span style="width: 32px; height: 32px; border-radius: 50%; background: #F3E6DC; color: #B8532F; border: 1px solid #E4CDBB; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 13px;">山</span>
+      <div style="display: flex;">
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #26221E; color: #FBF9F5; border: 2px solid #FBF9F5; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 13px;">増</span>
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #B8532F; color: #FBF9F5; border: 2px solid #FBF9F5; margin-left: -10px; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shippori Mincho',serif; font-size: 13px;">清</span>
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #F3E6DC; color: #B8532F; border: 2px solid #FBF9F5; margin-left: -10px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">+3</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 28 — ヒーロー画像</div>
+      <div class="nm">ヒーロー</div>
+      <div class="ds">資料の顔。画像に頼らず、キッカー+明朝の大見出し+罫線で組む。</div>
+    </div>
+    <div style="border: 1px solid #DCD3C8; border-radius: 4px; background: #FFFFFF; padding: 36px 40px; display: flex; flex-direction: column; gap: 14px;">
+      <div style="font-size: 11px; letter-spacing: 0.22em; color: #6E675F;">RINCLE — SEO設定</div>
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 38px; line-height: 1.4;">sitemap.xml 作成手順</div>
+      <div style="font-size: 13.5px; line-height: 2; color: #57504A; max-width: 560px;">全ページの一覧をGoogleに知らせるファイルを、Data APIで作って登録するまで。</div>
+      <div style="width: 64px; height: 1px; background: #26221E; margin-top: 4px;"></div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 29 — テンプレート</div>
+      <div class="nm">テンプレート</div>
+      <div class="ds">ページの雛形3種。表紙型・二段組型・スライド型。</div>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <div style="width: 130px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="height: 170px; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF; padding: 12px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="height: 5px; width: 40%; background: #B8532F;"></div>
+          <div style="height: 12px; width: 85%; background: #26221E; margin-top: 12px;"></div>
+          <div style="height: 12px; width: 60%; background: #26221E;"></div>
+          <div style="height: 4px; width: 90%; background: #E5DDD2; margin-top: 10px;"></div>
+          <div style="height: 4px; width: 80%; background: #E5DDD2;"></div>
+        </div>
+        <span class="st" style="text-align: center;">表紙</span>
+      </div>
+      <div style="width: 130px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="height: 170px; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="height: 9px; width: 70%; background: #26221E;"></div>
+          <div style="display: flex; gap: 8px; flex: 1;">
+            <div style="flex: 1.6; display: flex; flex-direction: column; gap: 4px;"><div style="height: 4px; background: #E5DDD2;"></div><div style="height: 4px; background: #E5DDD2;"></div><div style="height: 4px; width: 80%; background: #E5DDD2;"></div><div style="height: 4px; background: #E5DDD2;"></div><div style="height: 4px; width: 70%; background: #E5DDD2;"></div></div>
+            <div style="flex: 1; border-left: 1px solid #DCD3C8; padding-left: 8px; display: flex; flex-direction: column; gap: 4px;"><div style="height: 26px; background: #F3E6DC;"></div><div style="height: 4px; background: #E5DDD2;"></div><div style="height: 4px; width: 70%; background: #E5DDD2;"></div></div>
+          </div>
+        </div>
+        <span class="st" style="text-align: center;">二段組</span>
+      </div>
+      <div style="width: 130px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="height: 170px; border: 1px solid #DCD3C8; border-radius: 3px; background: #FFFFFF; padding: 12px; display: flex; flex-direction: column; gap: 8px; justify-content: center;">
+          <div style="height: 16px; width: 85%; background: #26221E;"></div>
+          <div style="height: 6px; width: 40%; background: #B8532F;"></div>
+          <div style="height: 4px; width: 90%; background: #E5DDD2; margin-top: 10px;"></div>
+        </div>
+        <span class="st" style="text-align: center;">スライド</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1280,"height":2540}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

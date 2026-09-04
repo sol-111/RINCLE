@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP',system-ui,sans-serif; color: #26221E; }
+    a { color: #B8532F; } a:hover { color: #8F3E20; }
+    .blk { border-top: 1px solid #DCD3C8; padding: 26px 0; display: grid; grid-template-columns: 230px minmax(0,1fr); gap: 36px; }
+    .no { font-size: 10.5px; letter-spacing: 0.18em; color: #B8532F; font-weight: 700; }
+    .no.add { color: #8B8279; }
+    .nm { font-family: 'Shippori Mincho',serif; font-size: 20px; }
+    .ds { font-size: 11.5px; line-height: 1.8; color: #8B8279; }
+    .st { font-size: 10.5px; color: #8B8279; }
+  </style>
+</helmet>
+<div style="width: 1280px; height: 1860px; box-sizing: border-box; background: #FBF9F5; padding: 64px 84px; display: flex; flex-direction: column; overflow: hidden;">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #26221E; padding-bottom: 12px; margin-bottom: 8px;">
+    <div style="display: flex; align-items: baseline; gap: 16px;">
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px; color: #B8532F;">05</span>
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px;">フィードバック</span>
+    </div>
+    <span style="font-size: 11px; letter-spacing: 0.2em; color: #8B8279;">RINCLE DESIGN SYSTEM</span>
+  </div>
+
+  <div class="blk" style="border-top: none;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 20 — トースト</div>
+      <div class="nm">トースト</div>
+      <div class="ds">画面の隅にぽんと出て消える通知。成功は墨、失敗は紅。</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px; max-width: 420px;">
+      <div style="display: flex; align-items: center; gap: 12px; background: #26221E; color: #FBF9F5; border-radius: 4px; padding: 14px 18px; box-shadow: 0 14px 34px -14px rgba(38,34,30,0.5);">
+        <svg style="width: 17px; height: 17px; stroke: #FBF9F5; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M4 12.5 10 18.5 20 6.5"></path></svg>
+        <span style="font-size: 13.5px;">sitemap.xml を保存しました</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; background: #A8323E; color: #FBF9F5; border-radius: 4px; padding: 14px 18px; box-shadow: 0 14px 34px -14px rgba(38,34,30,0.5);">
+        <svg style="width: 17px; height: 17px; stroke: #FBF9F5; fill: none; stroke-width: 2; stroke-linecap: round;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16v.5"></path></svg>
+        <span style="font-size: 13.5px;">保存に失敗しました — もう一度お試しください</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 21 — ツールチップ</div>
+      <div class="nm">ツールチップ</div>
+      <div class="ds">点線の下線に重ねると出る小さな説明。用語解説の軽量版。</div>
+    </div>
+    <div style="display: flex; align-items: flex-end; gap: 6px; padding-top: 24px;">
+      <div style="position: relative; display: inline-block;">
+        <div style="position: absolute; bottom: 34px; left: 0; background: #26221E; color: #FBF9F5; font-size: 12px; line-height: 1.7; padding: 10px 14px; border-radius: 4px; width: 250px;">画面を開かなくても、プログラムからデータベースの中身を一覧でもらえる窓口</div>
+        <span style="font-size: 14.5px; border-bottom: 1.5px dotted #B8532F; color: #26221E; cursor: help;">Data API</span>
+      </div>
+      <span style="font-size: 14.5px; color: #57504A;">で店舗・自転車のID一覧を取る。</span>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">NO. 43 — プログレスバー</div>
+      <div class="nm">進捗バー</div>
+      <div class="ds">残量が分かる作業に。値は明朝で右に添える。</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 18px; max-width: 520px;">
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <div style="flex: 1; height: 6px; border-radius: 99px; background: #E8E1D7;"><div style="width: 68%; height: 6px; border-radius: 99px; background: #B8532F;"></div></div>
+        <span style="font-family: 'Shippori Mincho',serif; font-size: 15px; min-width: 44px; text-align: right;">68%</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <div style="flex: 1; height: 6px; border-radius: 99px; background: #E8E1D7;"><div style="width: 100%; height: 6px; border-radius: 99px; background: #3E6B4F;"></div></div>
+        <span style="font-family: 'Shippori Mincho',serif; font-size: 15px; min-width: 44px; text-align: right; color: #3E6B4F;">完了</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no add">追加 — 図鑑になし</div>
+      <div class="nm">読み進みバー</div>
+      <div class="ds">ページ最上部の3pxの線。どこまで読んだかを示す。</div>
+    </div>
+    <div style="max-width: 560px; border: 1px solid #DCD3C8; border-radius: 4px; overflow: hidden; background: #FFFFFF;">
+      <div style="height: 3px; background: #E8E1D7;"><div style="width: 42%; height: 3px; background: #B8532F;"></div></div>
+      <div style="padding: 16px 20px; font-size: 12px; color: #8B8279;">ページ上端に固定。スクロールに合わせて右へ伸びる。</div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no add">追加 — 図鑑になし</div>
+      <div class="nm">ローディング</div>
+      <div class="ds">待ち時間が読めない時は回る輪+一言。</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 18px;">
+      <svg style="width: 30px; height: 30px;" viewBox="0 0 42 42">
+        <circle cx="21" cy="21" r="16" fill="none" stroke="#E8E1D7" stroke-width="4"></circle>
+        <circle cx="21" cy="21" r="16" fill="none" stroke="#B8532F" stroke-width="4" stroke-linecap="round" stroke-dasharray="28 73" stroke-dashoffset="25"></circle>
+      </svg>
+      <span style="font-size: 13.5px; color: #57504A;">Data APIから取得しています…</span>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no add">追加 — 資料の定番</div>
+      <div class="nm">アラート 3種</div>
+      <div class="ds">補足=藍・確認=緑・警告=紅。白面+左の役割色罫線（用語解説と同じ構文）。</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px;">
+      <div style="display: flex; gap: 12px; background: #FFFFFF; border: 1px solid #E5DDD2; border-left: 2px solid #3B5B84; padding: 15px 18px; font-size: 13.5px; line-height: 1.9; color: #2E4869;">
+        <svg style="width: 17px; height: 17px; flex-shrink: 0; margin-top: 4px; stroke: #3B5B84; fill: none; stroke-width: 1.8; stroke-linecap: round;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 7.5v.5"></path></svg>
+        <span><strong>補足:</strong> 本番反映前に動きを試したい時は --dev を付けると開発版で動きます。</span>
+      </div>
+      <div style="display: flex; gap: 12px; background: #FFFFFF; border: 1px solid #E5DDD2; border-left: 2px solid #3E6B4F; padding: 15px 18px; font-size: 13.5px; line-height: 1.9; color: #2C5138;">
+        <svg style="width: 17px; height: 17px; flex-shrink: 0; margin-top: 4px; stroke: #3E6B4F; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M4 12.5 10 18.5 20 6.5"></path></svg>
+        <span><strong>確認ポイント:</strong> 出力された店舗数・自転車数が本番の実数と合っているか見る。</span>
+      </div>
+      <div style="display: flex; gap: 12px; background: #FFFFFF; border: 1px solid #E5DDD2; border-left: 2px solid #A8323E; padding: 15px 18px; font-size: 13.5px; line-height: 1.9; color: #7E2630;">
+        <svg style="width: 17px; height: 17px; flex-shrink: 0; margin-top: 4px; stroke: #A8323E; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"></path><path d="M12 9.5V14M12 16.8v.2"></path></svg>
+        <span><strong>警告:</strong> User型・予約型は絶対に公開にチェックしないこと。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no add">追加 — 図鑑になし</div>
+      <div class="nm">空の状態</div>
+      <div class="ds">何もない時こそ丁寧に。理由と次の一歩を添える。</div>
+    </div>
+    <div style="max-width: 480px; border: 1px dashed #C9BFB4; border-radius: 4px; background: #FFFFFF; padding: 40px 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;">
+      <svg style="width: 30px; height: 30px; stroke: #C9BFB4; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;" viewBox="0 0 24 24"><path d="M3 13h5l2 3h4l2-3h5"></path><path d="M5 4h14l2 9v7H3v-7Z"></path></svg>
+      <div style="font-family: 'Shippori Mincho',serif; font-size: 16px;">まだ資料がありません</div>
+      <div style="font-size: 12.5px; line-height: 1.9; color: #8B8279;">左の目次から資料を選ぶか、新しく作成してください。</div>
+      <a style="font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 4px;">資料を作成する</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1280,"height":1860}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

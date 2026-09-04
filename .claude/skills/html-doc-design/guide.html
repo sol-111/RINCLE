@@ -28,14 +28,14 @@
     </div>
     <h1>html-doc-design 使い方ガイド</h1>
     <p class="lead">クライアント向けHTML資料を「誌面エディトリアル様式」で作るClaude Codeスキルの説明書。中身がどうなっているか、どう使うか、社内にどう配るか。</p>
-    <div class="hero-meta">最終更新 2026-08-26 ／ このページ自体が本スキルの様式で組まれています</div>
+    <div class="hero-meta">最終更新 2026-09-02 / このページ自体が本スキルの様式で組まれています</div>
   </div>
 </div>
 
 <nav class="flow">
   <a href="#s1"><span class="fnum">1</span><span class="ft">そもそもスキルとは</span><span class="fd">ただのファイルの束が動く仕組み</span></a>
-  <a href="#s2"><span class="fnum">2</span><span class="ft">中身のファイルと役割</span><span class="fd">7ファイルの分担</span></a>
-  <a href="#s3"><span class="fnum">3</span><span class="ft">使い方</span><span class="fd">頼み方・色替え・更新の流れ</span></a>
+  <a href="#s2"><span class="fnum">2</span><span class="ft">中身のファイルと役割</span><span class="fd">ファイルの分担</span></a>
+  <a href="#s3"><span class="fnum">3</span><span class="ft">使い方</span><span class="fd">頼み方・検査・色替え・更新</span></a>
   <a href="#s4"><span class="fnum">4</span><span class="ft">社内展開</span><span class="fd">チームへの配り方</span></a>
 </nav>
 
@@ -66,12 +66,16 @@
     </div>
     <div class="codeblock"><pre>~/.claude/skills/html-doc-design/
 ├── SKILL.md       <span class="cm"># ルールブック（原則11箇条+ページ構造+スライド規格）</span>
+├── decisions.md   <span class="cm"># 規約を決めた経緯・教訓（普段は読まない。変えたくなった時に）</span>
 ├── template.css   <span class="cm"># 核部品のCSS（コピーして使う。色の差し替えは:rootだけ）</span>
 ├── parts.css      <span class="cm"># 拡張部品42種のCSS（ボタン・モーダル・かんばん等。必要な時だけ）</span>
 ├── snippets.html  <span class="cm"># 各部品のHTML雛形集（コピーして使う）</span>
 ├── gallery.html   <span class="cm"># 全部品の見本（見た目の正本。ブラウザで開いて確認）</span>
+├── shell.html     <span class="cm"># 複数ページをまとめるSPAシェルの雛形（サイドバー+iframe）</span>
+├── lint.py        <span class="cm"># 規約の検査プログラム（書いたら必ずかける。使い方は「3. 使い方」）</span>
 ├── guide.html     <span class="cm"># このページ（人間用の説明書）</span>
-└── README.md      <span class="cm"># 人間用の説明書（テキスト版）</span></pre></div>
+├── README.md      <span class="cm"># 人間用の説明書（テキスト版）</span>
+└── _source/       <span class="cm"># 旧キャンバスの元データ（2026-08-21断面・以後更新されない参考資料）</span></pre></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>ファイル</th><th>役割</th><th>ひとこと</th></tr></thead>
@@ -79,37 +83,73 @@
           <tr><td class="label">SKILL.md</td><td>何を守るか</td><td>明朝見出し・罫線と余白・数字には出典 などのルール</td></tr>
           <tr><td class="label">template.css / parts.css</td><td>どう見えるか</td><td>色を差し替えるのは先頭の<code>:root</code>トークンだけ</td></tr>
           <tr><td class="label">snippets.html</td><td>どう書くか</td><td>部品ごとのコピペ用HTML+演出スクリプト</td></tr>
-          <tr><td class="label">gallery.html</td><td>どう見えるはずか</td><td><strong>見た目の正本</strong>。部品を追加したらここにも見本を足す（3点セット更新の掟）</td></tr>
+          <tr><td class="label">gallery.html</td><td>どう見えるはずか</td><td><strong>見た目の正本</strong>。部品を追加したらここにも見本を足す（5点セット更新の掟）</td></tr>
+          <tr><td class="label">lint.py</td><td>守れているか</td><td>規約の検査プログラム。書いたら必ずかける（詳しくは「3. 使い方」）</td></tr>
+          <tr><td class="label">shell.html</td><td>どうまとめるか</td><td>資料が複数ある案件の入口ページの雛形</td></tr>
+          <tr><td class="label">decisions.md</td><td>なぜそうなったか</td><td>規約の経緯と教訓。ルールを変えたくなった時に読む</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>見た目の正本は gallery.html。</strong>部品を追加・変更したら template.css（実体）・snippets.html（雛形）・gallery.html（見本）の3点セットで更新する — CSSだけ直すのが典型的な漏れ方。</span></div>
+    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>見た目の正本は gallery.html。</strong>部品や規約を追加・変更したら template.css（実体）・snippets.html（雛形）・gallery.html（見本）・SKILL.md（ルール）・lint.py（機械チェックできる規約のみ）の5点セットで更新する — CSSだけ直すのが典型的な漏れ方。</span></div>
   </div>
 
   <div class="section" id="s3">
     <div class="section-header">
       <div class="section-num">03</div>
-      <div class="sh-body"><h2>使い方</h2><div class="sh-sub">頼み方・ブランド色の差し替え・更新の流れ</div></div>
+      <div class="sh-body"><h2>使い方</h2><div class="sh-sub">頼み方・検査・ブランド色の差し替え・更新の流れ</div></div>
     </div>
     <h3>ふだんの頼み方</h3>
     <ul class="notes">
       <li>「この調査結果を、いつものデザインでHTML資料にして」</li>
       <li>「このページをデザインシステムに合わせて刷新して」</li>
     </ul>
+    <h3>書いたら必ず検査 — lint.py</h3>
+    <div class="term">
+      <span class="term-name">lint（リント）</span><span class="term-tag">検査プログラムの通称</span>
+      <div class="t-body">書き上がったHTMLがこの様式の規約を守れているかを、機械的に洗い出す検査プログラム。人が目で見ても気づきにくい違反 — 文体の揺れ・部品の組み間違い・旧様式の残骸 — を数秒で全部挙げる。Claudeがページを書いたら必ず実行する決まり。人が手で動かして確かめることもできる。</div>
+    </div>
+    <div class="codeblock"><pre><span class="cm"># ファイル1つでも、フォルダごと（中のHTML全部）でもかけられる</span>
+python3 ~/.claude/skills/html-doc-design/lint.py <span class="hl">検査したいHTMLかフォルダ</span>
+
+<span class="cm"># 結果の見え方 — 指摘ゼロなら OK、1件でもあれば NG と指摘の一覧が出る</span>
+OK   seo-report-2026-08.html
+NG   proposal.html
+     - 接続助詞「し、」で文をつないでいる(句点で切るか読点を落とす): …
+     - 項目名の字下げに全角空白の直書き(td.label.indを使う): …</pre></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:11rem">検査の種類</th><th>例</th></tr></thead>
+        <tbody>
+          <tr><td class="label">構造</td><td>タグの開閉・タブとパネルの対応が取れているか</td></tr>
+          <tr><td class="label">統一性</td><td>ヒーローの部品・キッカー文言・ロゴの有無が全ページで同じか</td></tr>
+          <tr><td class="label">部品の組み方</td><td>statは「ラベルが上」・注記に※を直書きしない・表の字下げに全角空白を使わない・推奨列の面は1列だけ など</td></tr>
+          <tr><td class="label">文章・敬語</td><td>半角括弧・全角スラッシュ・<code>「〜し、」</code>等の文つなぎ・二重敬語「ご〜される」</td></tr>
+          <tr><td class="label">残骸</td><td>旧様式の色の直書き・絵文字（アイコンはSVGを使う決まり）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="notes">
+      <li>部品カタログ（gallery.html のような見本集）は、冒頭に <code>&lt;!-- lint-mode: specimen --&gt;</code> と書くと文脈依存の検査（章ナビ・まとめ帯の位置）だけ免除されます。</li>
+      <li>固有名詞の絵文字は <code>--allow-emoji "固有名詞の絵文字"</code> で許可できます。資料集でページごとにキッカーが異なる構成は <code>--multi-doc</code>。</li>
+      <li>検査で拾えないもの — 章の背景の交互・図解の役割色と凡例・リンク先の実在 — は目視で確認します。</li>
+    </ul>
+
     <h3>新しい案件で使う時 — ブランド色の差し替え</h3>
     <p style="font-size: 14px;">その案件のロゴかファビコンをClaudeに渡して「このロゴの色でこの様式を使って」と言うだけ。鍵は<strong>原色をそのまま使わないこと</strong>。</p>
     <div class="compare">
-      <div class="compare-box bad"><div class="cb-head"><span class="cb-mark">×</span>原色をそのまま差し色に</div><p>ロゴの原色（例: <code>#F95320</code>）は画面で強すぎて、誌面の静けさが壊れる。</p></div>
+      <div class="compare-box bad"><div class="cb-head"><span class="cb-mark">×</span>原色をそのまま差し色に</div><p>ロゴの原色（例: <code>#F95320</code>）は画面で強すぎて誌面の静けさが壊れる。</p></div>
       <div class="compare-box good"><div class="cb-head"><span class="cb-mark">○</span>焦がしトーンに落とす</div><p>彩度を落とし暗めに寄せた色（例: <code>#B8532F</code>）を<code>--accent</code>に。役割色も同じく低彩度で揃える。</p></div>
     </div>
     <h3>デザインを変えたくなった時 — 更新の流れ</h3>
-    <div class="phases">
-      <div class="phase done"><span class="pn">1</span><span class="pt">キャンバスで検討</span><span class="ps">「デザインキャンバスで見たい」と頼む</span></div>
-      <div class="phase now"><span class="pn">2</span><span class="pt">スキルに反映</span><span class="ps">「スキルに反映して」で3点セット更新</span></div>
-      <div class="phase"><span class="pn">3</span><span class="pt">ページに移植</span><span class="ps">「全ページに反映して」で既存資料へ</span></div>
-    </div>
+    <figure class="fig" aria-label="デザインの変更は、検討・スキルへの反映・既存ページへの移植の3段階で進む。スキルを直してから資料に移すので、様式が割れない">
+      <div class="phases">
+        <div class="phase done"><span class="pn">1</span><span class="pt">キャンバスで検討</span><span class="ps">「デザインキャンバスで見たい」と頼む</span></div>
+        <div class="phase now"><span class="pn">2</span><span class="pt">スキルに反映</span><span class="ps">「スキルに反映して」で5点セット更新</span></div>
+        <div class="phase"><span class="pn">3</span><span class="pt">ページに移植</span><span class="ps">「全ページに反映して」で既存資料へ</span></div>
+      </div>
+    </figure>
     <ul class="notes">
-      <li>更新は template.css（実体）→ snippets.html（雛形）→ gallery.html（見本）の3点セット+SKILL.mdの部品リスト。リポジトリに同梱している案件では、更新後にリポジトリ側へコピーする</li>
+      <li>更新は template.css（実体）→ snippets.html（雛形）→ gallery.html（見本）→ SKILL.md（ルール）→ lint.py（機械チェックできる規約のみ）の5点セット。リポジトリに同梱している案件では、更新後にリポジトリ側へコピーする</li>
     </ul>
   </div>
 
@@ -137,7 +177,8 @@ git commit -m <span class="hl">"docs: HTML資料デザインシステムをス�
 
 </div>
 
-<footer>正本: README.md（同フォルダ・md更新時はこのHTMLも同期すること）</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: 同フォルダの README.md） -->
+<footer>正本: README.md</footer>
 
 <script>
 (function(){

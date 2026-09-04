@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP',system-ui,sans-serif; color: #26221E; }
+    a { color: #B8532F; } a:hover { color: #8F3E20; }
+    .blk { border-top: 1px solid #DCD3C8; padding: 26px 0; display: grid; grid-template-columns: 230px minmax(0,1fr); gap: 36px; }
+    .no { font-size: 10.5px; letter-spacing: 0.18em; color: #8B8279; font-weight: 700; }
+    .nm { font-family: 'Shippori Mincho',serif; font-size: 20px; }
+    .ds { font-size: 11.5px; line-height: 1.8; color: #8B8279; }
+    .st { font-size: 10.5px; color: #8B8279; }
+  </style>
+</helmet>
+<div style="width: 1280px; height: 1800px; box-sizing: border-box; background: #FBF9F5; padding: 64px 84px; display: flex; flex-direction: column; overflow: hidden;">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #26221E; padding-bottom: 12px; margin-bottom: 8px;">
+    <div style="display: flex; align-items: baseline; gap: 16px;">
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px; color: #B8532F;">07</span>
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px;">チャート</span>
+    </div>
+    <span style="font-size: 11px; letter-spacing: 0.2em; color: #8B8279;">図鑑に無かったため新設 — RINCLE DESIGN SYSTEM</span>
+  </div>
+
+  <div class="blk" style="border-top: none;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">追加 — 資料で使用中</div>
+      <div class="nm">ドーナツチャート</div>
+      <div class="ds">線は細く2.4。中央は大きな数字だけ（補足文言は入れない）。単位・出典は凡例側に。データ色は焦がしオレンジ→墨→罫線色の順。</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 48px;">
+      <svg viewBox="0 0 42 42" style="width: 170px; height: 170px;" role="img" aria-label="URL構成比">
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"></circle>
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#B8532F" stroke-width="2.4" stroke-dasharray="86.4 13.6" stroke-dashoffset="25"></circle>
+        <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#26221E" stroke-width="2.4" stroke-dasharray="12.9 87.1" stroke-dashoffset="-61.4"></circle>
+        <text x="21" y="21" text-anchor="middle" style="font-family: 'Shippori Mincho',serif; font-size: 10px; fill: #26221E; dominant-baseline: central;">433</text>
+      </svg>
+      <div style="display: flex; flex-direction: column; gap: 0; min-width: 300px;">
+        <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #E5DDD2; padding: 10px 0; font-size: 13.5px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #B8532F;"></span>自転車詳細<span style="margin-left: auto; font-family: 'Shippori Mincho',serif; font-size: 15px;">374</span></div>
+        <div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #E5DDD2; padding: 10px 0; font-size: 13.5px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #26221E;"></span>店舗詳細<span style="margin-left: auto; font-family: 'Shippori Mincho',serif; font-size: 15px;">56</span></div>
+        <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; font-size: 13.5px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #EAE2D6;"></span>静的ページ<span style="margin-left: auto; font-family: 'Shippori Mincho',serif; font-size: 15px;">3</span></div>
+        <div class="st" style="padding-top: 8px;">単位: URL ／ 出典: 2026-08-20 本番実測</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">追加 — 資料で使用中</div>
+      <div class="nm">横棒グラフ</div>
+      <div class="ds">2〜5項目の比較に。負けた側は罫線色で塗る。</div>
+    </div>
+    <div style="max-width: 560px; display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: grid; grid-template-columns: 190px 1fr 56px; align-items: center; gap: 14px;">
+        <div style="font-size: 13px; font-weight: 700;">ロードバイク レンタル</div>
+        <div style="height: 16px; background: #EAE2D6; border-radius: 2px;"><div style="width: 100%; height: 16px; background: #B8532F; border-radius: 2px;"></div></div>
+        <div style="font-family: 'Shippori Mincho',serif; font-size: 15px; text-align: right;">10件</div>
+      </div>
+      <div style="display: grid; grid-template-columns: 190px 1fr 56px; align-items: center; gap: 14px;">
+        <div style="font-size: 13px; color: #57504A;">スポーツバイク レンタル</div>
+        <div style="height: 16px; background: #EAE2D6; border-radius: 2px;"><div style="width: 40%; height: 16px; background: #C9BFB4; border-radius: 2px;"></div></div>
+        <div style="font-family: 'Shippori Mincho',serif; font-size: 15px; text-align: right; color: #8B8279;">4件</div>
+      </div>
+      <div class="st">Googleサジェスト実測（2026-06-12）</div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">追加 — 資料で使用中</div>
+      <div class="nm">優先度バー</div>
+      <div class="ds">0.0〜1.0の目安を長さで。数字は明朝で右に。</div>
+    </div>
+    <div style="max-width: 400px; display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; align-items: center; gap: 14px;"><span style="height: 7px; width: 100%; max-width: 220px; border-radius: 99px; background: #B8532F;"></span><span style="font-family: 'Shippori Mincho',serif; font-size: 14px;">1.0</span></div>
+      <div style="display: flex; align-items: center; gap: 14px;"><span style="height: 7px; width: 80%; max-width: 176px; border-radius: 99px; background: #B8532F;"></span><span style="font-family: 'Shippori Mincho',serif; font-size: 14px;">0.8</span></div>
+      <div style="display: flex; align-items: center; gap: 14px;"><span style="height: 7px; width: 20%; max-width: 44px; border-radius: 99px; background: #B8532F;"></span><span style="font-family: 'Shippori Mincho',serif; font-size: 14px;">0.2</span></div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">追加 — 資料で使用中</div>
+      <div class="nm">統計数字</div>
+      <div class="ds">数字が主役の時は明朝の特大+罫線+日付つき出典。</div>
+    </div>
+    <div style="display: flex; align-items: flex-start; gap: 56px;">
+      <div style="display: flex; flex-direction: column; gap: 6px; border-left: 1px solid #26221E; padding-left: 24px;">
+        <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-family: 'Shippori Mincho',serif; font-size: 64px; line-height: 1;">433</span><span style="font-size: 13px; color: #8B8279;">URL</span></div>
+        <div class="st">sitemapに登録する合計（2026-08-20 実測）</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; border-left: 1px solid #26221E; padding-left: 24px;">
+        <div style="display: flex; align-items: baseline; gap: 8px;"><span style="font-family: 'Shippori Mincho',serif; font-size: 64px; line-height: 1; color: #B8532F;">56</span><span style="font-size: 13px; color: #8B8279;">店</span></div>
+        <div class="st">パートナー店舗（2026-08-20 実測）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">追加 — チャートの約束事</div>
+      <div class="nm">チャートの原則</div>
+      <div class="ds">数字には必ず出典。飾りのチャートは作らない。</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.9; color: #57504A; max-width: 620px;">
+      <div style="display: flex; gap: 12px;"><span style="font-family: 'Shippori Mincho',serif; color: #B8532F;">1</span><span>出典のある数字だけを使う。凡例か脚注に日付つきで書く。</span></div>
+      <div style="display: flex; gap: 12px;"><span style="font-family: 'Shippori Mincho',serif; color: #B8532F;">2</span><span>1ページに1〜2個まで。ドーナツの中央は大きな数字だけ。</span></div>
+      <div style="display: flex; gap: 12px;"><span style="font-family: 'Shippori Mincho',serif; color: #B8532F;">3</span><span>データ色は焦がしオレンジ→墨→罫線色の3段。それ以上増やさない。</span></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1280,"height":1800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

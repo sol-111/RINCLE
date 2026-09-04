@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP',system-ui,sans-serif; color: #26221E; }
+    a { color: #B8532F; } a:hover { color: #8F3E20; }
+    .row { border-top: 1px solid #DCD3C8; padding: 26px 0; display: grid; grid-template-columns: 230px minmax(0,1fr); gap: 36px; }
+    .no { font-size: 10.5px; letter-spacing: 0.18em; color: #8B8279; font-weight: 700; }
+    .nm { font-family: 'Shippori Mincho',serif; font-size: 20px; }
+    .ds { font-size: 11.5px; line-height: 1.8; color: #8B8279; }
+    .sl { width: 100%; max-width: 560px; aspect-ratio: 16 / 9; background: #FDFCFA; border: 1px solid #DCD3C8; border-radius: 4px; box-shadow: 0 10px 30px -16px rgba(38,34,30,0.3); box-sizing: border-box; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+    .slft { position: absolute; left: 28px; right: 28px; bottom: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 9px; letter-spacing: 0.14em; color: #A9A199; }
+  </style>
+</helmet>
+<div style="width: 1280px; height: 3060px; box-sizing: border-box; background: #FBF9F5; padding: 64px 84px; display: flex; flex-direction: column; overflow: hidden;">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #26221E; padding-bottom: 12px; margin-bottom: 8px;">
+    <div style="display: flex; align-items: baseline; gap: 16px;">
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px; color: #B8532F;">10</span>
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px;">スライド部品</span>
+    </div>
+    <span style="font-size: 11px; letter-spacing: 0.2em; color: #8B8279;">定例でそのまま映す16:9 — RINCLE DESIGN SYSTEM</span>
+  </div>
+
+  <div class="row" style="border-top: none;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">スライド 01</div>
+      <div class="nm">表紙</div>
+      <div class="ds">明朝の大題+罫線+資料番号。共通の下枠（左=RINCLE・右=ページ番号）は全スライドに入る。</div>
+    </div>
+    <div class="sl">
+      <div style="padding: 40px 44px 0; display: flex; flex-direction: column; gap: 12px; flex: 1;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #26221E; padding-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px;"><img src="rincle-favicon.png" alt="RINCLE" style="width: 20px; height: 20px; border-radius: 6px;"><span style="font-size: 9px; letter-spacing: 0.2em; color: #6E675F;">RINCLE — SEO設定</span></div>
+          <span style="font-family: 'Shippori Mincho',serif; font-size: 10px; letter-spacing: 0.16em; color: #B8532F;">資料 07</span>
+        </div>
+        <div style="margin-top: 26px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="font-family: 'Shippori Mincho',serif; font-size: 34px; line-height: 1.4;">sitemap.xml 作成手順</div>
+          <div style="width: 48px; height: 2px; background: #B8532F;"></div>
+          <div style="font-size: 11.5px; line-height: 1.9; color: #57504A; max-width: 360px;">全ページの一覧をGoogleに知らせるファイルを、Data APIで作って登録するまで。</div>
+        </div>
+      </div>
+      <div class="slft"><span>RINCLE</span><span>2026-08-21</span></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">スライド 02</div>
+      <div class="nm">章とびら</div>
+      <div class="ds">薄い大きな番号+章名だけ。話の切り替えを1枚挟む。</div>
+    </div>
+    <div class="sl">
+      <div style="flex: 1; display: flex; align-items: center; padding: 0 44px; gap: 24px;">
+        <div style="font-family: 'Shippori Mincho',serif; font-size: 110px; line-height: 1; color: rgba(184,83,47,0.14); font-weight: 700;">02</div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 9.5px; letter-spacing: 0.2em; color: #B8532F; font-weight: 700;">CHAPTER</div>
+          <div style="font-family: 'Shippori Mincho',serif; font-size: 28px;">Data APIの設定</div>
+          <div style="font-size: 11px; color: #8B8279;">店舗・自転車のID一覧を取る</div>
+        </div>
+      </div>
+      <div class="slft"><span>RINCLE</span><span>05 / 12</span></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">スライド 03</div>
+      <div class="nm">1メッセージ</div>
+      <div class="ds">1枚に言いたいことは1つ。中央に明朝で大きく。</div>
+    </div>
+    <div class="sl">
+      <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 0 56px; text-align: center;">
+        <div style="font-size: 9.5px; letter-spacing: 0.2em; color: #B8532F; font-weight: 700;">結論</div>
+        <div style="font-family: 'Shippori Mincho',serif; font-size: 26px; line-height: 1.7;">sitemapは自動生成ではなく、<br>手動で組み立てる</div>
+        <div style="width: 48px; height: 1px; background: #26221E;"></div>
+        <div style="font-size: 11px; color: #8B8279;">新サイトのURL構成では、自動生成に店舗・自転車のURLが載らないため</div>
+      </div>
+      <div class="slft"><span>RINCLE</span><span>06 / 12</span></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">スライド 04</div>
+      <div class="nm">ビッグナンバー</div>
+      <div class="ds">数字が主役の1枚。出典を必ず小さく添える。</div>
+    </div>
+    <div class="sl">
+      <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 48px; padding: 0 44px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+          <div style="font-family: 'Shippori Mincho',serif; font-size: 96px; line-height: 1; color: #B8532F;">433</div>
+          <div style="font-size: 11px; letter-spacing: 0.14em; color: #57504A;">登録するURL</div>
+        </div>
+        <div style="width: 1px; height: 110px; background: #DCD3C8;"></div>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px; color: #57504A;">
+          <div style="display: flex; justify-content: space-between; gap: 24px; border-bottom: 1px solid #E5DDD2; padding-bottom: 6px;"><span>自転車詳細</span><strong style="font-family: 'Shippori Mincho',serif;">374</strong></div>
+          <div style="display: flex; justify-content: space-between; gap: 24px; border-bottom: 1px solid #E5DDD2; padding-bottom: 6px;"><span>店舗詳細</span><strong style="font-family: 'Shippori Mincho',serif;">56</strong></div>
+          <div style="display: flex; justify-content: space-between; gap: 24px;"><span>静的ページ</span><strong style="font-family: 'Shippori Mincho',serif;">3</strong></div>
+          <div style="font-size: 9.5px; color: #A9A199;">2026-08-20 本番実測</div>
+        </div>
+      </div>
+      <div class="slft"><span>RINCLE</span><span>07 / 12</span></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">スライド 05</div>
+      <div class="nm">2分割（主張+根拠）</div>
+      <div class="ds">左に言いたいこと、右に表や図。読み上げず、見せて話す。</div>
+    </div>
+    <div class="sl">
+      <div style="flex: 1; display: grid; grid-template-columns: 1fr 1.1fr; gap: 28px; padding: 34px 44px 30px;">
+        <div style="display: flex; flex-direction: column; gap: 10px; justify-content: center;">
+          <div style="font-size: 9.5px; letter-spacing: 0.2em; color: #B8532F; font-weight: 700;">載せるページ</div>
+          <div style="font-family: 'Shippori Mincho',serif; font-size: 21px; line-height: 1.6;">載せるのは<br>5種類だけ</div>
+          <div style="font-size: 10.5px; line-height: 1.8; color: #57504A;">ログイン・予約などの機能ページは載せない。</div>
+        </div>
+        <div style="display: flex; flex-direction: column; justify-content: center; font-size: 10.5px;">
+          <div style="display: grid; grid-template-columns: 1fr 0.5fr; border-bottom: 1.5px solid #26221E; padding-bottom: 5px; letter-spacing: 0.12em; color: #8B8279; font-size: 8.5px;"><span>ページ</span><span style="text-align: right;">優先度</span></div>
+          <div style="display: grid; grid-template-columns: 1fr 0.5fr; border-bottom: 1px solid #E5DDD2; padding: 7px 0;"><span style="font-weight: 700;">トップ</span><span style="text-align: right; font-family: 'Shippori Mincho',serif; color: #B8532F;">1.0</span></div>
+          <div style="display: grid; grid-template-columns: 1fr 0.5fr; border-bottom: 1px solid #E5DDD2; padding: 7px 0;"><span style="font-weight: 700;">検索</span><span style="text-align: right; font-family: 'Shippori Mincho',serif; color: #B8532F;">0.9</span></div>
+          <div style="display: grid; grid-template-columns: 1fr 0.5fr; border-bottom: 1px solid #E5DDD2; padding: 7px 0;"><span style="font-weight: 700;">店舗詳細</span><span style="text-align: right; font-family: 'Shippori Mincho',serif; color: #B8532F;">0.8</span></div>
+          <div style="display: grid; grid-template-columns: 1fr 0.5fr; padding: 7px 0;"><span style="font-weight: 700;">自転車詳細</span><span style="text-align: right; font-family: 'Shippori Mincho',serif; color: #B8532F;">0.7</span></div>
+        </div>
+      </div>
+      <div class="slft"><span>RINCLE</span><span>08 / 12</span></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">スライド 06</div>
+      <div class="nm">×○比較</div>
+      <div class="ds">意思決定のスライド。ダメな案にも一言の理由を。</div>
+    </div>
+    <div class="sl">
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 30px 44px;">
+        <div style="font-family: 'Shippori Mincho',serif; font-size: 17px;">作り方の比較</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1;">
+          <div style="border: 1px solid #E8C9CD; border-radius: 4px; background: #FDFAF9; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="width: 18px; height: 18px; border-radius: 50%; background: #A8323E; color: #FBF9F5; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700;">×</span><span style="font-size: 12px; font-weight: 700; color: #7E2630;">自動生成</span></div>
+            <div style="font-size: 10.5px; line-height: 1.8; color: #57504A;">店舗・自転車の個別URLが載らない</div>
+          </div>
+          <div style="border: 1px solid #C6DCCB; border-radius: 4px; background: #FBFDFB; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="width: 18px; height: 18px; border-radius: 50%; background: #3E6B4F; color: #FBF9F5; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700;">○</span><span style="font-size: 12px; font-weight: 700; color: #2C5138;">手動で組み立て（採用）</span></div>
+            <div style="font-size: 10.5px; line-height: 1.8; color: #57504A;">Data APIでID一覧を集めて全URLを網羅</div>
+          </div>
+        </div>
+      </div>
+      <div class="slft"><span>RINCLE</span><span>09 / 12</span></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">スライド 07</div>
+      <div class="nm">締め（次のアクション）</div>
+      <div class="ds">最後は宿題の1枚。担当と期日をセットで。</div>
+    </div>
+    <div class="sl">
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 30px 44px;">
+        <div style="font-family: 'Shippori Mincho',serif; font-size: 17px;">次のアクション</div>
+        <div style="display: flex; flex-direction: column; border-top: 1.5px solid #26221E;">
+          <div style="display: grid; grid-template-columns: 1fr 100px 90px; gap: 12px; padding: 11px 0; border-bottom: 1px solid #E5DDD2; font-size: 11px; align-items: center;"><span style="font-weight: 700;">本番デプロイ（Data API公開）</span><span style="color: #57504A;">山本さん</span><span style="text-align: right; font-family: 'Shippori Mincho',serif; color: #B8532F;">8月中</span></div>
+          <div style="display: grid; grid-template-columns: 1fr 100px 90px; gap: 12px; padding: 11px 0; border-bottom: 1px solid #E5DDD2; font-size: 11px; align-items: center;"><span style="font-weight: 700;">sitemap生成→アップロード</span><span style="color: #57504A;">清野さん</span><span style="text-align: right; font-family: 'Shippori Mincho',serif; color: #B8532F;">デプロイ後</span></div>
+          <div style="display: grid; grid-template-columns: 1fr 100px 90px; gap: 12px; padding: 11px 0; font-size: 11px; align-items: center;"><span style="font-weight: 700;">再生成の頻度を決める</span><span style="color: #57504A;">増永さん</span><span style="text-align: right; font-family: 'Shippori Mincho',serif; color: #B8532F;">次回定例</span></div>
+        </div>
+      </div>
+      <div class="slft"><span>RINCLE</span><span>12 / 12</span></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">共通規格</div>
+      <div class="nm">スライドの約束事</div>
+      <div class="ds">全スライド共通のルール。</div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; line-height: 1.9; color: #57504A; max-width: 640px;">
+      <div style="display: flex; gap: 12px;"><span style="font-family: 'Shippori Mincho',serif; color: #B8532F;">1</span><span>16:9・余白は上下30px/左右44px以上。1枚に言いたいことは1つ。</span></div>
+      <div style="display: flex; gap: 12px;"><span style="font-family: 'Shippori Mincho',serif; color: #B8532F;">2</span><span>下枠に左=RINCLE・右=ページ番号（表紙だけ日付）。進捗ドットは使わずページ番号で示す。</span></div>
+      <div style="display: flex; gap: 12px;"><span style="font-family: 'Shippori Mincho',serif; color: #B8532F;">3</span><span>本文の最小サイズは投影で読める18px相当。表は5行まで、超えるなら分割。</span></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1280,"height":3060}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

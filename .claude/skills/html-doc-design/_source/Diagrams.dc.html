@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP',system-ui,sans-serif; color: #26221E; }
+    a { color: #B8532F; } a:hover { color: #8F3E20; }
+    .blk { border-top: 1px solid #DCD3C8; padding: 26px 0; display: grid; grid-template-columns: 230px minmax(0,1fr); gap: 36px; }
+    .no { font-size: 10.5px; letter-spacing: 0.18em; color: #8B8279; font-weight: 700; }
+    .nm { font-family: 'Shippori Mincho',serif; font-size: 20px; }
+    .ds { font-size: 11.5px; line-height: 1.8; color: #8B8279; }
+    .st { font-size: 10.5px; color: #8B8279; }
+    .lh { background: #F3EFE8; font-weight: 700; font-size: 11.5px; text-align: center; padding: 10px 8px; line-height: 1.5; border-left: 1px solid #E5DDD2; border-bottom: 2px solid #B8532F; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+    .lh .sub { font-weight: 500; font-size: 10px; color: #8B8279; }
+    .lh.ex { background: #F5E7EA; color: #A8323E; }
+    .lh.ex .sub { color: #B76A76; }
+    .lb { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; font-weight: 700; text-align: center; padding: 10px 6px; border-top: 1px solid #E5DDD2; background: #FBF9F5; line-height: 1.4; }
+    .lb i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .lc { padding: 10px; border-top: 1px solid #E5DDD2; border-left: 1px solid #F0EBE4; font-size: 11.5px; line-height: 1.7; background: #FFFFFF; display: flex; flex-direction: column; gap: 4px; justify-content: flex-start; }
+    .lc.ex { background: #FBF3F4; border-left: 2px dashed #E0AAB4; }
+    .lc.em { color: #C9BFB4; text-align: center; justify-content: center; }
+    .lc.money { background: #F7EFDF; font-weight: 700; color: #8F5A0A; text-align: center; justify-content: center; font-size: 12px; }
+    .lc.money small { display: block; font-weight: 500; font-size: 10px; color: #A9720F; }
+    .fbox { background: #FFFFFF; border: 1px solid #DCD3C8; border-radius: 4px; padding: 12px 18px; font-size: 12.5px; font-weight: 700; text-align: center; }
+    .farr { display: flex; justify-content: center; color: #B8532F; font-size: 15px; line-height: 1; padding: 4px 0; }
+  </style>
+</helmet>
+<div style="width: 1280px; height: 2080px; box-sizing: border-box; background: #FBF9F5; padding: 64px 84px; display: flex; flex-direction: column; overflow: hidden;">
+  <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #26221E; padding-bottom: 12px; margin-bottom: 8px;">
+    <div style="display: flex; align-items: baseline; gap: 16px;">
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px; color: #B8532F;">09</span>
+      <span style="font-family: 'Shippori Mincho',serif; font-size: 30px;">図解</span>
+    </div>
+    <span style="font-size: 11px; letter-spacing: 0.2em; color: #8B8279;">RINCLE DESIGN SYSTEM</span>
+  </div>
+
+  <div class="blk" style="border-top: none; grid-template-columns: 1fr;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">追加 — 資料で使用中（決済フロー資料の様式を踏襲）</div>
+      <div class="nm">スイムレーン</div>
+      <div class="ds">横=時系列のフェーズ、縦=登場人物のレーン。例外の列はピンク+破線で「本流ではない」ことを示し、お金の行は琥珀でいくら動くかだけを追えるようにする。役割色: ユーザー=藍 / 販売店=緑 / システム=焦がしオレンジ / お金=琥珀。</div>
+    </div>
+    <div style="border: 1px solid #DCD3C8; border-radius: 6px; overflow: hidden; background: #FFFFFF;">
+      <div style="display: grid; grid-template-columns: 96px repeat(5, minmax(0,1fr)); font-size: 12px;">
+        <div style="background: #F3EFE8; border-bottom: 2px solid #B8532F; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 700; color: #8B8279;">レーン</div>
+        <div class="lh">1 予約時<span class="sub">数日〜数週間前</span></div>
+        <div class="lh ex">例外: キャンセル時<span class="sub">発生した場合のみ</span></div>
+        <div class="lh">2 当日: 来店・受付<span class="sub">店頭</span></div>
+        <div class="lh ex">例外: 決済失敗時<span class="sub">失敗した場合のみ</span></div>
+        <div class="lh">3 返却時<span class="sub">店頭</span></div>
+
+        <div class="lb" style="color: #3B5B84;"><i style="background: #3B5B84;"></i>ユーザー</div>
+        <div class="lc">予約を確定（カードを登録）</div>
+        <div class="lc ex">前日23:59までオンラインで取消</div>
+        <div class="lc">来店して受付</div>
+        <div class="lc ex">別のカードで再決済</div>
+        <div class="lc">自転車を返す</div>
+
+        <div class="lb" style="color: #3E6B4F;"><i style="background: #3E6B4F;"></i>販売店</div>
+        <div class="lc em">—</div>
+        <div class="lc ex em">—</div>
+        <div class="lc">貸出前の点検・受付処理</div>
+        <div class="lc ex">店頭で案内</div>
+        <div class="lc">状態確認・追加分の精算</div>
+
+        <div class="lb" style="color: #B8532F;"><i style="background: #B8532F;"></i>システム</div>
+        <div class="lc">予約を登録。<strong>決済はしない</strong></div>
+        <div class="lc ex">予約を取消。<strong>返金処理は不要</strong></div>
+        <div class="lc"><strong>全額を決済</strong>・レシート送付</div>
+        <div class="lc ex">エラー通知 → 再決済へ</div>
+        <div class="lc">追加分があれば決済</div>
+
+        <div class="lb" style="color: #8F5A0A;"><i style="background: #C99A2E;"></i>お金の動き</div>
+        <div class="lc money">¥0</div>
+        <div class="lc ex money" style="background: #F7EFDF;">¥0</div>
+        <div class="lc money">全額<small>貸出開始時</small></div>
+        <div class="lc ex em">—</div>
+        <div class="lc money">追加分のみ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">追加 — 図解の基本形</div>
+      <div class="nm">縦フロー（分岐つき）</div>
+      <div class="ds">上から下へ。分岐は菱形ではなく問いの箱+2択で平易に。</div>
+    </div>
+    <div style="max-width: 420px; display: flex; flex-direction: column;">
+      <div class="fbox">sitemap.xml を生成する</div>
+      <div class="farr">↓</div>
+      <div class="fbox" style="border-color: #B8532F; color: #B8532F;">店舗数・自転車数は実数と合っている？</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 6px;">
+        <div style="display: flex; flex-direction: column;">
+          <div class="farr" style="color: #3E6B4F;">はい ↓</div>
+          <div class="fbox" style="background: #EDF4EE; border-color: #C6DCCB; color: #2C5138;">Bubbleへアップロード</div>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+          <div class="farr" style="color: #A8323E;">いいえ ↓</div>
+          <div class="fbox" style="background: #F9EDEE; border-color: #E8C9CD; color: #7E2630;">除外条件を見直す</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">追加 — 期間の図解</div>
+      <div class="nm">フェーズ帯</div>
+      <div class="ds">工程を帯でつなぐ。現在のフェーズだけ焦がしオレンジ。</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+      <div style="border-top: 3px solid #26221E; padding-top: 10px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-family: 'Shippori Mincho',serif; font-size: 15px; color: #26221E;">Phase 1</span>
+        <span style="font-size: 12px; font-weight: 700;">DB再構築</span>
+        <span class="st">完了（7月）</span>
+      </div>
+      <div style="border-top: 3px solid #B8532F; padding-top: 10px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-family: 'Shippori Mincho',serif; font-size: 15px; color: #B8532F;">Phase 2</span>
+        <span style="font-size: 12px; font-weight: 700; color: #B8532F;">SEO設定一式</span>
+        <span class="st">進行中</span>
+      </div>
+      <div style="border-top: 3px solid #DCD3C8; padding-top: 10px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-family: 'Shippori Mincho',serif; font-size: 15px; color: #8B8279;">Phase 3</span>
+        <span style="font-size: 12px; font-weight: 700; color: #57504A;">Stripe移行</span>
+        <span class="st">予定</span>
+      </div>
+      <div style="border-top: 3px solid #DCD3C8; padding-top: 10px; display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-family: 'Shippori Mincho',serif; font-size: 15px; color: #8B8279;">Phase 4</span>
+        <span style="font-size: 12px; font-weight: 700; color: #57504A;">グロース施策</span>
+        <span class="st">予定</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="no">追加 — 図解の約束事</div>
+      <div class="nm">役割色の凡例</div>
+      <div class="ds">図解全体で色の意味を固定する。凡例は図の直下に必ず置く。</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 24px; flex-wrap: wrap; font-size: 12.5px;">
+      <span style="display: inline-flex; align-items: center; gap: 8px;"><i style="width: 10px; height: 10px; border-radius: 50%; background: #3B5B84; display: inline-block;"></i>ユーザー操作</span>
+      <span style="display: inline-flex; align-items: center; gap: 8px;"><i style="width: 10px; height: 10px; border-radius: 50%; background: #3E6B4F; display: inline-block;"></i>店舗操作</span>
+      <span style="display: inline-flex; align-items: center; gap: 8px;"><i style="width: 10px; height: 10px; border-radius: 50%; background: #B8532F; display: inline-block;"></i>システム・自動処理</span>
+      <span style="display: inline-flex; align-items: center; gap: 8px;"><i style="width: 10px; height: 10px; border-radius: 50%; background: #C99A2E; display: inline-block;"></i>お金の動き</span>
+      <span style="display: inline-flex; align-items: center; gap: 8px;"><i style="width: 10px; height: 10px; border-radius: 50%; background: #A8323E; display: inline-block;"></i>例外・異常系</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1280,"height":2080}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -31,6 +31,7 @@
 </style>
 </head>
 <body>
+<!-- lint-mode: specimen -->
 <div class="progress" aria-hidden="true"><i></i></div>
 
 <div class="hero">
@@ -43,7 +44,7 @@
     </div>
     <h1>デザインシステム</h1>
     <p class="lead">左が部品名と使い方、右が実物。</p>
-    <div class="hero-meta">核部品は <code>template.css</code> ／ 拡張部品は <code>parts.css</code> ／ 最終更新 2026-08-21（元データは同フォルダの _source/）</div>
+    <div class="hero-meta">核部品は <code>template.css</code> / 拡張部品は <code>parts.css</code> / 最終更新 2026-08-21（元データは同フォルダの _source/）</div>
   </div>
 </div>
 
@@ -104,7 +105,7 @@
       <div class="g-meta">
         <div class="g-no">NO. 27 — フォントと書体</div>
         <div class="g-nm">書体</div>
-        <div class="g-ds">見出しはしっぽり明朝、本文はNoto Sans JP。数字の見せ場は明朝で組む。</div>
+        <div class="g-ds">見出しはしっぽり明朝、本文はNoto Sans JP。数字の見せ場は明朝で組む。見出しの階段は52 / 30 / 19 / 16pxの4段で固定。ページ題（H1・52px）だけは画面幅1100px以下で44pxに落ちる（SPAシェルのiframe内で2行に折れるため。CSSが持つのでHTML側の直書きは不要・2026-09-04）。</div>
       </div>
       <div class="g-demo" style="gap:18px">
         <div class="spec-row is-ruled"><span style="font-family:var(--serif);font-size:44px;line-height:1.3;color:var(--ink)">見出し 大</span><span class="spec-note">Shippori Mincho 600 / 44px</span></div>
@@ -364,9 +365,9 @@
       </div>
       <div class="crumbs">
         <a style="text-decoration:none">提案資料</a>
-        <span class="crumbs-sep">／</span>
+        <span class="crumbs-sep">/</span>
         <a style="text-decoration:none">SEO設定</a>
-        <span class="crumbs-sep">／</span>
+        <span class="crumbs-sep">/</span>
         <span class="crumbs-cur">sitemap.xml 作成手順</span>
       </div>
     </div>
@@ -520,7 +521,7 @@
       <div class="win">
         <div class="win-bar">
           <span class="win-dot"></span><span class="win-dot"></span><span class="win-dot"></span>
-          <span class="win-title">rincle.co.jp — 検索</span>
+          <span class="win-title">example.co.jp — 検索</span>
         </div>
         <div class="win-body">画面の中身（スクリーンショットやモック）</div>
       </div>
@@ -772,20 +773,20 @@
       <div class="g-meta">
         <div class="g-no is-add">追加 — 資料の定番</div>
         <div class="g-nm">アラート 3種</div>
-        <div class="g-ds">補足=藍・確認=緑・警告=紅。白面+左の役割色罫線（用語解説と同じ構文）。</div>
+        <div class="g-ds">色が意味を運ぶ。<strong>緑=結論・決定 / 藍=読み方・補足 / 紅=リスク・注意</strong>の3色で固定し、これ以外は作らない（2026-09-04）。琥珀（黄）のアラートは作らない — 琥珀は「お金」の役割色で意味が二重になる。「課題・やり残し」は注意リストの※か×側の対比ボックスへ。</div>
       </div>
       <div class="g-demo" style="gap:12px">
+        <div class="alert alert-green" style="margin:0">
+          <svg class="a-icon icon" viewBox="0 0 24 24"><path d="M4 12.5 10 18.5 20 6.5"></path></svg>
+          <span><strong>結論:</strong> 決済はStripeに載せ替えます。予約の流れは変えず、受け取り当日に本決済へ切り替えます。</span>
+        </div>
         <div class="alert alert-blue" style="margin:0">
           <svg class="a-icon icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 7.5v.5"></path></svg>
           <span><strong>補足:</strong> 本番反映前に動きを試したい時は --dev を付けると開発版で動きます。</span>
         </div>
-        <div class="alert alert-green" style="margin:0">
-          <svg class="a-icon icon" viewBox="0 0 24 24"><path d="M4 12.5 10 18.5 20 6.5"></path></svg>
-          <span><strong>確認ポイント:</strong> 出力された店舗数・自転車数が本番の実数と合っているか見る。</span>
-        </div>
         <div class="alert alert-red" style="margin:0">
           <svg class="a-icon icon" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"></path><path d="M12 9.5V14M12 16.8v.2"></path></svg>
-          <span><strong>警告:</strong> User型・予約型は絶対に公開にチェックしないこと。</span>
+          <span><strong>リスク:</strong> 公開範囲の設定を誤ると、利用者の個人情報がそのまま外から読めます。</span>
         </div>
       </div>
     </div>
@@ -837,16 +838,17 @@
       <div class="g-meta">
         <div class="g-no">NO. 38 — ラベルとタグ</div>
         <div class="g-nm">ラベルとタグ</div>
-        <div class="g-ds">状態は塗り、分類は罫線。角丸は控えめの3px。</div>
+        <div class="g-ds">状態は塗り、分類は罫線。角丸は控えめの3px。効力を失ったもの（旧設計・対象外）は <code>muted</code> で沈める。</div>
       </div>
       <div class="g-row" style="gap:12px">
-        <span class="badge ink">決定済み</span>
+        <span class="badge ink">再検討</span>
         <span class="badge brand">最重要</span>
         <span class="badge good">実測済み</span>
         <span class="badge bad">要確認</span>
         <span class="badge plain" style="font-weight:400">SEO</span>
         <span class="badge plain" style="font-weight:400">決済</span>
         <span class="badge plain" style="font-weight:400">タグ<span class="tag-x">×</span></span>
+        <span class="badge muted">対象外</span>
       </div>
     </div>
 
@@ -952,8 +954,9 @@
       <div class="g-meta">
         <div class="g-no is-add">追加 — 資料で使用中</div>
         <div class="g-nm">ドーナツチャート</div>
-        <div class="g-ds">線は細く2.4。中央は大きな数字だけ（補足文言は入れない）。単位・出典は凡例側に。データ色は焦がしオレンジ→墨→罫線色の順。</div>
+        <div class="g-ds">線は細く2.4。中央は大きな数字だけ（補足文言は入れない）。単位・出典は凡例側に。データ色は焦がしオレンジ→墨→罫線色の順。2カラムの片側など半分幅に置く時は .chart.compact（リング130px・凡例は右）</div>
       </div>
+      <div class="g-demo">
       <div class="chart">
         <svg viewBox="0 0 42 42" style="width:170px;height:170px" role="img" aria-label="URL構成比">
           <circle class="ct-ring ct-rest-line" cx="21" cy="21" r="15.9155"></circle>
@@ -965,8 +968,22 @@
           <div><i style="background:var(--accent)"></i>自転車詳細<strong>374</strong></div>
           <div><i style="background:var(--ink)"></i>店舗詳細<strong>56</strong></div>
           <div style="border-bottom:none"><i class="ct-rest"></i>静的ページ<strong>3</strong></div>
-          <div class="src">単位: URL ／ 出典: 2026-08-20 本番実測</div>
+          <div class="src">単位: URL / 出典: 2026-08-20 本番実測</div>
         </div>
+      </div>
+      <div class="chart compact" style="max-width:520px">
+        <svg viewBox="0 0 42 42" role="img" aria-label="構成比（半分幅用）">
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"></circle>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="70 30" stroke-dashoffset="25"></circle>
+          <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-dasharray="28 72" stroke-dashoffset="-45"></circle>
+          <text x="21" y="21" text-anchor="middle" class="big">70%</text>
+        </svg>
+        <div class="cl">
+          <div><i style="background:var(--accent)"></i>スマートフォン<strong>70%</strong></div>
+          <div><i style="background:var(--ink)"></i>パソコン<strong>28%</strong></div>
+          <div class="src" style="border-bottom:none">半分幅の置き場用 .chart.compact（リング130px・凡例は右で折り返さない）</div>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -984,14 +1001,115 @@
         </div>
         <div class="hbar" style="margin:0">
           <div style="font-size:13px">スポーツバイク レンタル</div>
-          <div class="track"><div class="fill ct-lose" style="width:40%"></div></div>
+          <div class="track"><div class="fill dim" style="width:40%"></div></div>
           <div class="val" style="color:var(--sub)">4件</div>
         </div>
         <div class="g-st">Googleサジェスト実測（2026-06-12）</div>
       </div>
     </div>
 
+        <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-02新設</div>
+        <div class="g-nm">100%積み上げ構成バー（.stackbar）</div>
+        <div class="g-ds">全体の中身の内訳を1本の帯で見せる。色は s1=焦がし（主役）→ s2=墨 → s3=下地 → s4=罫線色。2本並べると「表示の中身」対「クリックの中身」のような対比が語れる。狭いセグメントの%は凡例へ。</div>
+      </div>
+      <div class="g-demo">
+        <div class="stackbar" style="margin:0">
+          <div class="sb-title"><span>検索表示回数の中身</span><span class="sb-total">30,352回</span></div>
+          <div class="sb-track">
+            <div class="sb-seg s3" style="width:75%">ノイズ 75%</div>
+            <div class="sb-seg s2" style="width:11%">11%</div>
+            <div class="sb-seg s1" style="width:11%">11%</div>
+            <div class="sb-seg s4" style="width:3%"></div>
+          </div>
+        </div>
+        <div class="stackbar" style="margin:0">
+          <div class="sb-title"><span>クリック数の中身</span><span class="sb-total">884回</span></div>
+          <div class="sb-track">
+            <div class="sb-seg s3" style="width:12%"></div>
+            <div class="sb-seg s2" style="width:44%">指名 44%</div>
+            <div class="sb-seg s1" style="width:9%"></div>
+            <div class="sb-seg s4" style="width:35%">35%</div>
+          </div>
+        </div>
+        <div class="sb-legend">
+          <span><i style="background:var(--accent)"></i>一般キーワード（本命）</span>
+          <span><i style="background:var(--ink)"></i>指名検索</span>
+          <span><i style="background:#EAE2D6"></i>同語ノイズ</span>
+          <span><i style="background:#DCD3C8"></i>内訳の出ない分</span>
+        </div>
+      </div>
+    </div>
+
     <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-02新設（月次レポートで実戦済み）</div>
+        <div class="g-nm">地域タイルマップ（.tilemap）</div>
+        <div class="g-ds">都道府県を正方形タイルで日本列島の形に並べ、色の濃さ=量で塗る。「関西一円が濃い」のような面の広がりが一目で伝わる。値ラベルは上位10県程度だけ・正確な大小比較は横棒（.hbar）を右に併置して担わせる。47タイルの配置はsnippets.htmlの雛形をコピー。</div>
+      </div>
+      <div class="g-demo">
+        <div class="tilemap">
+        <div class="tile b1" style="grid-column:13;grid-row:1"><span class="tn">北海道</span></div>
+        <div class="tile b0" style="grid-column:12;grid-row:2"><span class="tn">青森</span></div>
+        <div class="tile b0" style="grid-column:11;grid-row:3"><span class="tn">秋田</span></div>
+        <div class="tile b0" style="grid-column:12;grid-row:3"><span class="tn">岩手</span></div>
+        <div class="tile b0" style="grid-column:11;grid-row:4"><span class="tn">山形</span></div>
+        <div class="tile b0" style="grid-column:12;grid-row:4"><span class="tn">宮城</span></div>
+        <div class="tile b0" style="grid-column:10;grid-row:5"><span class="tn">新潟</span></div>
+        <div class="tile b0" style="grid-column:11;grid-row:5"><span class="tn">福島</span></div>
+        <div class="tile b0" style="grid-column:8;grid-row:6"><span class="tn">石川</span></div>
+        <div class="tile b0" style="grid-column:9;grid-row:6"><span class="tn">富山</span></div>
+        <div class="tile b0" style="grid-column:10;grid-row:6"><span class="tn">長野</span></div>
+        <div class="tile b0" style="grid-column:11;grid-row:6"><span class="tn">群馬</span></div>
+        <div class="tile b1" style="grid-column:12;grid-row:6"><span class="tn">栃木</span></div>
+        <div class="tile b2" style="grid-column:13;grid-row:6"><span class="tn">茨城</span><span class="tv">109</span></div>
+        <div class="tile b0" style="grid-column:8;grid-row:7"><span class="tn">福井</span></div>
+        <div class="tile b1" style="grid-column:9;grid-row:7"><span class="tn">岐阜</span></div>
+        <div class="tile b0" style="grid-column:10;grid-row:7"><span class="tn">山梨</span></div>
+        <div class="tile b2" style="grid-column:11;grid-row:7"><span class="tn">埼玉</span><span class="tv">119</span></div>
+        <div class="tile b5" style="grid-column:12;grid-row:7"><span class="tn">東京</span><span class="tv">969</span></div>
+        <div class="tile b2" style="grid-column:13;grid-row:7"><span class="tn">千葉</span><span class="tv">123</span></div>
+        <div class="tile b0" style="grid-column:4;grid-row:8"><span class="tn">島根</span></div>
+        <div class="tile b0" style="grid-column:5;grid-row:8"><span class="tn">鳥取</span></div>
+        <div class="tile b3" style="grid-column:7;grid-row:8"><span class="tn">京都</span><span class="tv">206</span></div>
+        <div class="tile b0" style="grid-column:8;grid-row:8"><span class="tn">滋賀</span></div>
+        <div class="tile b3" style="grid-column:9;grid-row:8"><span class="tn">愛知</span><span class="tv">238</span></div>
+        <div class="tile b1" style="grid-column:10;grid-row:8"><span class="tn">静岡</span></div>
+        <div class="tile b3" style="grid-column:12;grid-row:8"><span class="tn">神奈川</span><span class="tv">202</span></div>
+        <div class="tile b0" style="grid-column:3;grid-row:9"><span class="tn">山口</span></div>
+        <div class="tile b1" style="grid-column:4;grid-row:9"><span class="tn">広島</span></div>
+        <div class="tile b1" style="grid-column:5;grid-row:9"><span class="tn">岡山</span></div>
+        <div class="tile b4" style="grid-column:6;grid-row:9"><span class="tn">兵庫</span><span class="tv">455</span></div>
+        <div class="tile b5" style="grid-column:7;grid-row:9"><span class="tn">大阪</span><span class="tv">793</span></div>
+        <div class="tile b3" style="grid-column:8;grid-row:9"><span class="tn">奈良</span><span class="tv">255</span></div>
+        <div class="tile b1" style="grid-column:9;grid-row:9"><span class="tn">三重</span></div>
+        <div class="tile b1" style="grid-column:4;grid-row:10"><span class="tn">愛媛</span></div>
+        <div class="tile b0" style="grid-column:5;grid-row:10"><span class="tn">香川</span></div>
+        <div class="tile b0" style="grid-column:6;grid-row:10"><span class="tn">徳島</span></div>
+        <div class="tile b0" style="grid-column:7;grid-row:10"><span class="tn">和歌山</span></div>
+        <div class="tile b1" style="grid-column:2;grid-row:10"><span class="tn">福岡</span></div>
+        <div class="tile b0" style="grid-column:3;grid-row:10"><span class="tn">大分</span></div>
+        <div class="tile b0" style="grid-column:1;grid-row:11"><span class="tn">長崎</span></div>
+        <div class="tile b0" style="grid-column:2;grid-row:11"><span class="tn">佐賀</span></div>
+        <div class="tile b0" style="grid-column:3;grid-row:11"><span class="tn">熊本</span></div>
+        <div class="tile b0" style="grid-column:5;grid-row:11"><span class="tn">高知</span></div>
+        <div class="tile b0" style="grid-column:2;grid-row:12"><span class="tn">鹿児島</span></div>
+        <div class="tile b0" style="grid-column:3;grid-row:12"><span class="tn">宮崎</span></div>
+        <div class="tile b0" style="grid-column:1;grid-row:13"><span class="tn">沖縄</span></div>
+        </div>
+        <div class="map-legend">
+          <span><i style="background:var(--accent)"></i>700〜</span>
+          <span><i style="background:#CB6F44"></i>400〜</span>
+          <span><i style="background:#DE9873"></i>200〜</span>
+          <span><i style="background:#EBC0A9"></i>100〜</span>
+          <span><i style="background:#F3DDD1"></i>40〜</span>
+          <span><i style="background:#F0EBE3"></i>それ未満</span>
+        </div>
+      </div>
+    </div>
+
+<div class="g-blk">
       <div class="g-meta">
         <div class="g-no is-add">追加 — 資料で使用中</div>
         <div class="g-nm">優先度バー</div>
@@ -1071,8 +1189,68 @@
             <tr><td class="label">キャンセル件数</td><td class="num">6</td><td class="num prev">3</td><td class="num down">+100.0%</td></tr>
             <tr class="tgroup"><td colspan="4">売上</td></tr>
             <tr><td class="label">売上（予約合計）</td><td class="num">¥75,443</td><td class="num prev">¥125,300</td><td class="num down">-39.8%</td></tr>
+            <tr><td class="label ind">うち延長料金</td><td class="num">¥0</td><td class="num prev">¥0</td><td class="num">±0</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-01</div>
+        <div class="g-nm">ぶら下がり行・折り返す項目名</div>
+        <div class="g-ds">td.label.ind は親行の変種をぶら下げる（「うち延長料金」「同（60分）」）。字下げは必ずこのクラスで持ち、全角空白を項目名に直書きしない — 空白が文字として検索・コピーに混ざり、折り返した時に2行目の字下げが消えるため（SEOレポートの旧方式から統一）。td.label.wrap は既定の nowrap を解いて折り返す。併用可。</div>
+      </div>
+      <div class="table-wrap" style="max-width:720px">
+        <table>
+          <thead><tr><th style="width:26rem">項目</th><th class="num" style="width:10rem">単価（円）</th></tr></thead>
+          <tbody>
+            <tr><td class="label wrap">訪問セッション（90分・標準）</td><td class="num">40,000 / 回</td></tr>
+            <tr><td class="label ind">同（60分）</td><td class="num">35,000 / 回</td></tr>
+            <tr><td class="label ind">同（120分）</td><td class="num">45,000 / 回</td></tr>
+            <tr><td class="label wrap ind">併用すると、折り返した2行目もこのとおり字下げの位置に揃います</td><td class="num">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-01</div>
+        <div class="g-nm">数値列の役割分け・推奨列・項目名の補足行</div>
+        <div class="g-ds">数値列が複数あると全部が主役になり、答えが分からなくなる。差し色は「答えの金額」の列だけに残し、金額でない数（回数等）は td.num.cnt（墨）、計算の途中経過は td.num.calc（グレー）に落とす。選択肢が横に並ぶ表の推奨・標準列は th.std / td.std の薄い面で示す（面を着せるのは1列だけ）。項目名の下の1行補足は td .td-sub — 例示や条件を注記に逃がさず行内で完結させる（2行を超えるなら.termへ）。</div>
+      </div>
+      <div>
+        <div class="table-wrap" style="margin-top:0">
+          <table>
+            <thead><tr><th style="width:16rem">プラン</th><th class="num" style="width:5rem">訪問</th><th class="num" style="width:14rem">月額の内訳（90分の場合）</th><th class="num" style="width:8rem">月額（円）</th></tr></thead>
+            <tbody>
+              <tr><td class="label wrap">Light — 訪問なし<span class="td-sub">相談と方向づけが中心</span></td><td class="num cnt">0回</td><td class="num calc">20,000 ＋ 15,000×4</td><td class="num">80,000</td></tr>
+              <tr><td class="label wrap">Standard — 隔週訪問（おすすめ）<span class="td-sub">訪問で一緒に操作する</span></td><td class="num cnt">2回</td><td class="num calc">20,000 ＋ 40,000×2 ＋ 15,000×2</td><td class="num"><strong style="color:var(--accent)">130,000</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap" style="margin-bottom:0">
+          <table>
+            <thead><tr><th style="width:16rem">プラン</th><th class="num">60分</th><th class="num std">90分（標準）</th><th class="num">120分</th></tr></thead>
+            <tbody>
+              <tr><td class="label wrap">Standard（訪問2回）</td><td class="num">120,000</td><td class="num std">130,000</td><td class="num">140,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-01</div>
+        <div class="g-nm">単価カード（statの中サイズ .n.md）</div>
+        <div class="g-ds">単価・内訳など「答えでない数字」を .stat で見せる時は中サイズ .n.md（30px）に落とす。月額のような答えの数字と同じ特大（60px）にすると「これが料金（固定）」と誤読される — 料金提案の初見レビューで実際に起きた誤読（2026-09-01）。数字の大きさで序列をつける。</div>
+      </div>
+      <div class="stat-row" style="max-width:900px">
+        <div class="stat"><span class="l">基本料金 — 毎月</span><span class="n md">20,000<small>円 / 月</small></span><span class="d">回数にかかわらず毎月かかる</span></div>
+        <div class="stat"><span class="l">オンライン — 90分固定</span><span class="n md">15,000<small>円 / 回</small></span><span class="d">画面を共有して一緒に操作する</span></div>
+        <div class="stat"><span class="l">訪問 — 長さで変わる</span><span class="n md">35,000〜45,000<small>円 / 回</small></span><span class="d">標準の90分は 40,000円</span></div>
       </div>
     </div>
 
@@ -1113,6 +1291,60 @@
 
     <div class="g-blk">
       <div class="g-meta">
+        <div class="g-no is-add">改定 — 結論は章の外に置かない</div>
+        <div class="g-nm">結論の章（01章）</div>
+        <div class="g-ds">そのページの答えは、<strong>最初の章そのもの</strong>にする（2026-09-04改定。章の外に置く専用の箱は廃止した）。章ナビの1番目に「1 結論」、本文の最初の <code>.section</code>（<code>id="conclusion"</code>）の見出しを「結論」にし、薄い大数字01+明朝見出しという<strong>章の文法</strong>で見せる。章の文法は注記のアラートとも章ナビの格子とも形が違い、章ナビにも載るので「同じ形の箱が2つ続く」が起きない。タブ式のページはタブ1を「結論」にする。中身は答えの性格で選ぶ — 数字が答え=<code>.stat-row</code> / 判断を求める資料=<code>table.qa</code>（問い→答え。答えの1文目を <code>&lt;strong&gt;</code> で言い切る）/ 一言で足りる=本文1段落。補足（あわせて読む資料・この資料の読み方・進み具合）は<strong>その章の中の <code>ul.notes</code></strong> に※で1〜2行だけ添え、箱やアラートを重ねない。章の数は8が上限で、超えるページは答えに近い既存の章（概要・まとめ・比較）と統合する。</div>
+      </div>
+      <div class="g-demo">
+        <div class="section" id="conclusion" style="padding:0;background:none">
+          <div class="section-header">
+            <div class="section-num">01</div>
+            <div class="sh-body"><h2>結論</h2><div class="sh-sub">決済の載せ替え先と、切り替えの進め方</div></div>
+          </div>
+          <p>決済はStripeに載せ替えます。今の予約の流れは変えず、受け取り当日に本決済へ切り替えます。</p>
+          <div class="table-wrap">
+            <table class="qa">
+              <tbody>
+                <tr><td class="label wrap">① 領収書の発行元は誰か</td><td><strong>運営会社です。</strong> 決済口座が運営会社の1つだけなので、領収書には運営会社の事業名が出ます。</td></tr>
+                <tr><td class="label wrap">② いつまでに決めるか</td><td><strong>7月4日の定例までにお決めいただきます。</strong> 開発の着手がこの決定待ちになっています。</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <ul class="notes">
+            <li>あわせて読む資料: 手数料の内訳は「決済手数料の比較」をご覧ください。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 設計変更を語る資料に</div>
+        <div class="g-nm">変更点バッジ</div>
+        <div class="g-ds">設計の変更・決定の状態を示すバッジは、この4語だけを使う（2026-09-04固定）。<code>CHANGED</code> / <code>NEW</code> のような英字や、「弊社案」「旧仕様」などの言い換えは使わない — 同じ意味の語が資料ごとに割れると、読者は色と語の対応を毎回覚え直すことになる。</div>
+      </div>
+      <div class="g-row" style="gap:12px">
+        <span class="badge good">決定済み</span>
+        <span class="badge brand">弊社提案</span>
+        <span class="badge brand">変更点</span>
+        <span class="badge muted">旧設計</span>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — ページの末尾</div>
+        <div class="g-nm">footer（正本の明記）</div>
+        <div class="g-ds">mdが正本の資料は、footerに正本のパスだけを書く（2026-09-04改定）。「md更新時はこのHTMLも同期すること」のような保守者向けの指示は読者には不要なので、footerの直前のHTMLコメントに置く。</div>
+      </div>
+      <div class="g-demo">
+        <div class="codeblock" style="margin:0"><pre><span class="cm">&lt;!-- md更新時はこのHTMLも同期すること（正本: path/to/source.md） --&gt;</span>
+&lt;footer&gt;正本: <span class="hl">path/to/source.md</span>&lt;/footer&gt;</pre></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
         <div class="g-no is-add">追加 — 手順書の分節に</div>
         <div class="g-nm">小見出し分節</div>
         <div class="g-ds">章の中に複数のテーマが並ぶ時、h4の平坦な連なりは境界が見えず読みにくい。焦がしキッカー（役割や番号の一言）+明朝19px見出しの2段で分ける — 章見出しと同じ文法のミニ版。キッカーは省略可。白面カードで囲うのは不可（用語解説と紛れ、箱が並んでうるさくなる・2026-08-26）。</div>
@@ -1142,6 +1374,84 @@
 
     <div class="g-blk">
       <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-02新設</div>
+        <div class="g-nm">用語の横並び（.term-row）</div>
+        <div class="g-ds">対になる用語が2〜3個セットの時は横並びに。表の直下に置いて列の意味を開くのが定番（inline styleでflexを書かずこれを使う）。</div>
+      </div>
+      <div class="term-row">
+        <div class="term" style="margin:0"><div class="term-name">訪問ユーザー数 <span class="term-tag">— 用語</span></div><div class="t-body">サイトに来た「人数」。同じ人が月に何回来ても1人と数える。ここが増える = 新しい人に届いている。</div></div>
+        <div class="term" style="margin:0"><div class="term-name">セッション数 <span class="term-tag">— 用語</span></div><div class="t-body">サイトに来た「回数」。同じ人が日を改めて2回来れば2回。人数より回数の伸びが大きければ、繰り返し見に来る人が増えている。</div></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-02新設</div>
+        <div class="g-nm">セル内の副ラベル（.label-sub）</div>
+        <div class="g-ds">主ラベルは平易な日本語・原語や補足を薄く小さく添える（原則6の実践）。GA4等の管理画面と突き合わせる表で効く。</div>
+      </div>
+      <div class="table-wrap" style="max-width:620px">
+        <table>
+          <thead><tr><th>流入元</th><th class="num">訪問</th></tr></thead>
+          <tbody>
+            <tr><td class="label">他サイト経由（提携店・メディア） <span class="label-sub">Referral</span></td><td class="num">1,542</td></tr>
+            <tr><td class="label">検索（Googleなど・広告以外） <span class="label-sub">Organic Search</span></td><td class="num">1,380</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-02新設</div>
+        <div class="g-nm">2段ヘッダー（列グループ）</div>
+        <div class="g-ds">関連する列を1行目のグループ名（th.th-grp・中央揃え・弱い罫）で束ねる。グループ外の列はrowspanで下端を揃える。体制表・料金表・比較表の定番。停止中の行は tr.muted で沈める。</div>
+      </div>
+      <div class="table-wrap" style="max-width:720px">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2">案件名</th>
+              <th class="th-grp" colspan="3">体制</th>
+              <th rowspan="2">状況</th>
+            </tr>
+            <tr><th>メインPM</th><th>サブPM</th><th>エンジニア</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="label">案件A</td><td>担当1</td><td>担当2</td><td>担当3・担当4</td><td>開発（請負）</td></tr>
+            <tr><td class="label">案件B</td><td>担当2</td><td>—</td><td>担当5</td><td>保守（準委任）</td></tr>
+            <tr class="muted"><td class="label">案件C（停止中）</td><td>—</td><td>—</td><td>—</td><td>必要に応じて再開</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-02新設</div>
+        <div class="g-nm">グループ比較表（2段ヘッダー×推奨の面）</div>
+        <div class="g-ds">選択肢ごとに列をグループ化し、推奨の選択肢に th.th-grp.std+配下の td.std で面を着せる（面は1グループだけ）。サービス比較・プラン比較の定番。</div>
+      </div>
+      <div class="table-wrap" style="max-width:720px">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2">項目</th>
+              <th class="th-grp" colspan="2">サービスA</th>
+              <th class="th-grp std" colspan="2">サービスB（推奨）</th>
+            </tr>
+            <tr><th class="num">手数料</th><th class="num">月額</th><th class="num std">手数料</th><th class="num std">月額</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="label">基本プラン</td><td class="num cnt">3.0%</td><td class="num">¥0</td><td class="num cnt std">3.6%</td><td class="num std">¥0</td></tr>
+            <tr><td class="label">上位プラン</td><td class="num cnt">2.6%</td><td class="num">¥10,000</td><td class="num cnt std">3.3%</td><td class="num std">¥5,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
         <div class="g-no is-add">追加 — 意思決定の見せ場</div>
         <div class="g-nm">×○対比</div>
         <div class="g-ds">ダメな案と採用案を必ず並べて、理由まで書く。</div>
@@ -1160,6 +1470,52 @@
 
     <div class="g-blk">
       <div class="g-meta">
+        <div class="g-no is-add">追加 — 良し悪しでない対比に</div>
+        <div class="g-nm">現状/あるべき姿の対比（.asis / .tobe）</div>
+        <div class="g-ds">どちらかが「ダメ」なわけではない対比は○×マークを付けない。tobe側だけ焦がしの枠で行き先を示す。</div>
+      </div>
+      <div class="compare" style="margin:0">
+        <div class="compare-box asis">
+          <div class="cb-head">現状</div>
+          <p>予約時にカード情報を預からず、当日に店頭で決済している。</p>
+        </div>
+        <div class="compare-box tobe">
+          <div class="cb-head">あるべき姿</div>
+          <p>予約時にカードを登録し、当日はチェックインだけで決済が走る。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-04新設</div>
+        <div class="g-nm">選択肢と採否（.options / .option）</div>
+        <div class="g-ds">検討した案を横に並べ、採ったものを立たせ、捨てたものを沈める「決定の記録」の部品。状態は3つ — 素（中立）/ <code>.chosen</code>（採用＝焦がしの枠）/ <code>.dim</code>（不採用）。<strong>沈めるのに <code>opacity</code> は使わない</strong>（面ごと薄くなって紙の白が濁る。文字色と罫線をグレーに落とす＝<code>tr.muted</code> と同じ思想）。結論は既存のバッジ語彙で表し、新しい色を作らない。記号丸に案ごとの色は付けない — 藍・緑は図解の役割色なので意味が二重になる。2択の良し悪しは<code>.compare-box</code>、3案以上の採否はこちら。</div>
+      </div>
+      <div class="options" style="margin:0">
+        <div class="option dim">
+          <span class="num-chip">A</span>
+          <h4>オーソリだけ先行実装</h4>
+          <p>いまの仕組みのまま、当日の引き落としだけ足す短期の保険。</p>
+          <span class="badge muted">結論: やらない</span>
+        </div>
+        <div class="option">
+          <span class="num-chip">B</span>
+          <h4>いまの決済会社のまま作り替え</h4>
+          <p>会社をまたぐ仕組みを外し、1つの口座にまとめる形へ組み直す。</p>
+          <span class="badge plain">対抗案（費用を最優先するなら）</span>
+        </div>
+        <div class="option chosen">
+          <span class="num-chip brand">C</span>
+          <h4>載せ替えて1口座にまとめる</h4>
+          <p>公式の部品を使い、最終形をそのまま作る。</p>
+          <span class="badge good">結論: これ（6月19日決定）</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
         <div class="g-no is-add">追加 — 手順の定番</div>
         <div class="g-nm">番号つき手順</div>
         <div class="g-ds">番号の丸を罫線でつなぐ。1行1操作。</div>
@@ -1169,6 +1525,30 @@
         <li>データ種類の一覧で <strong>shop と Bicycle の2つだけ</strong>にチェック</li>
         <li>本番に反映（デプロイ）する</li>
       </ol>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-04新設</div>
+        <div class="g-nm">記号丸（.num-chip）</div>
+        <div class="g-ds">番号や記号（1・2・A・B）を丸で示す。明朝の文字・白面・1.5pxの輪郭で、番号つき手順の丸や役割つき縦フローの丸と同じ型。既定は墨の輪郭で、色の変種は <code>.brand</code>（焦がし）だけ — 藍・緑は図解の役割色（ユーザー・店舗）なので流用しない。表のセル内は小サイズの <code>.sm</code>（24px）。</div>
+      </div>
+      <div class="g-demo">
+        <div class="g-row" style="gap:14px">
+          <span class="num-chip">1</span>
+          <span class="num-chip">2</span>
+          <span class="num-chip">A</span>
+          <span class="num-chip brand">B</span>
+          <span class="g-st">既定＝墨の輪郭 / .brand＝焦がしの輪郭</span>
+        </div>
+        <div class="table-wrap" style="margin:0;max-width:520px">
+          <table>
+            <tbody>
+              <tr><td class="label"><span class="num-chip sm">A</span>表のセル内は .sm</td><td>24pxに縮み、文字の高さに揃う</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <div class="g-blk">
@@ -1198,7 +1578,7 @@
           <span class="r-arr">→</span>
           <span class="r-chip hot">Googleが自動で再読込</span>
         </div>
-        <p>頻度（月1回など）は増永さんと相談して決める。</p>
+        <p>頻度（月1回など）は先方の担当者と相談して決める。</p>
       </div>
     </div>
 
@@ -1210,12 +1590,48 @@
       </div>
       <div class="g-demo" style="gap:14px;max-width:640px">
         <div class="codeblock" style="margin:0"><pre><span class="cm"># 店舗一覧（1回につき最大100件）</span>
-curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"</pre></div>
+curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"</pre></div>
         <div class="urlmap">
-          <div class="urlmap-line"><span class="u-dim">https://rincle.co.jp</span><span class="u-path">/shop_detail</span><span class="u-dim">?shop=</span><span class="u-id">&lt;店舗ID&gt;</span></div>
+          <div class="urlmap-line"><span class="u-dim">https://example.co.jp</span><span class="u-path">/shop_detail</span><span class="u-dim">?shop=</span><span class="u-id">&lt;店舗ID&gt;</span></div>
         </div>
       </div>
     </div>
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-04新設</div>
+        <div class="g-nm">APIメソッドバッジ（.method）</div>
+        <div class="g-ds">APIリファレンスの GET / POST / DELETE / PUT。等幅フォント・小さめ・白面に役割色の輪郭で、緑＝取得 / 藍＝作成・更新 / 琥珀＝置き換え / 紅＝削除。クラスは<strong>ドット記法で統一</strong>する（<code>.method.get</code>）。<code>.method-get</code> のようなハイフン記法は作らない。</div>
+      </div>
+      <div class="g-row" style="gap:12px">
+        <span class="method get">GET</span>
+        <span class="method post">POST</span>
+        <span class="method put">PUT</span>
+        <span class="method delete">DELETE</span>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-04新設</div>
+        <div class="g-nm">開発者向け詳細（.dev-detail）</div>
+        <div class="g-ds">非エンジニア向けの本文と、開発者向けの詳細（コード・API名・内部仕様）を同じ場所で分ける折りたたみ。読者は本文だけ読めばよく、実装者は開けば足りる。<code>&lt;details&gt;</code> と <code>&lt;summary&gt;</code> で組み、中身は必ず <code>.dd-body</code> で包む。三角マークは焦がしで、開くと90度回る。中の小見出しは <code>h5</code> — 折りたたみの内側なので、本文の見出しの階段（4段）には数えない。</div>
+      </div>
+      <div class="g-demo" style="max-width:600px">
+        <details class="dev-detail" style="margin:0" open>
+          <summary>開発者向け: 実装の詳細</summary>
+          <div class="dd-body">
+            <h5>呼び出すAPI</h5>
+            <p><span class="method post">POST</span> <code>/v1/payment_intents</code> — 予約が確定した時点で作る。</p>
+            <h5>気をつけること</h5>
+            <ul>
+              <li>失敗すると402が返るので、その場で入力し直してもらう</li>
+              <li>金額の変更は当日のチェックインまで受け付ける</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </div>
+
   </div>
 
   <!-- ======================= 09 図解 ======================= -->
@@ -1229,7 +1645,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"</
       <div class="g-meta">
         <div class="g-no is-add">追加 — 資料で使用中（決済フロー資料の様式を踏襲）</div>
         <div class="g-nm">スイムレーン</div>
-        <div class="g-ds">横=時系列のフェーズ、縦=登場人物のレーン。例外の列はピンク+破線で「本流ではない」ことを示し、お金の行は琥珀でいくら動くかだけを追えるようにする。役割色: ユーザー=藍 / 販売店=緑 / システム=焦がしオレンジ / お金=琥珀。</div>
+        <div class="g-ds">横=時系列のフェーズ、縦=登場人物のレーン。例外の列はピンク+破線で「本流ではない」ことを示し、お金の行は琥珀でいくら動くかだけを追えるようにする。役割色: ユーザー=藍 / 販売店=緑 / システム=焦がしオレンジ / お金=琥珀。人間の役割が3つある図（例: 生徒/先生/編集者）は3人目に .other（=墨）を使い、お金の琥珀・例外の紅を人間役割に流用しない。</div>
       </div>
       <div class="lane-wrap" style="margin:0">
         <div class="lanes" style="grid-template-columns:96px repeat(5,minmax(0,1fr))">
@@ -1253,6 +1669,14 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"</
           <div class="lane-cell">貸出前の点検・受付処理</div>
           <div class="lane-cell ex">店頭で案内</div>
           <div class="lane-cell">状態確認・追加分の精算</div>
+
+          <!-- 人間の役割が3つある図の3人目は .other（=墨）。琥珀（お金）・紅（例外）を人間役割に流用しない -->
+          <div class="lane-label other"><i></i>同行者（第3の役割）</div>
+          <div class="lane-cell empty">—</div>
+          <div class="lane-cell ex empty">—</div>
+          <div class="lane-cell">受付に立ち会い</div>
+          <div class="lane-cell ex empty">—</div>
+          <div class="lane-cell">一緒に返却</div>
 
           <div class="lane-label sys"><i></i>システム</div>
           <div class="lane-cell">予約を登録。<strong>決済はしない</strong></div>
@@ -1337,7 +1761,14 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"</
           </div>
         </div>
         <div class="pflow-step">
-          <div class="pflow-dot store">3</div>
+          <div class="pflow-dot system">3</div>
+          <div class="pflow-body">
+            <div class="pflow-actor system">システム</div>
+            <div class="pflow-text">決済結果を記録し、店舗に通知する</div>
+          </div>
+        </div>
+        <div class="pflow-step">
+          <div class="pflow-dot store">4</div>
           <div class="pflow-body">
             <div class="pflow-actor store">店舗</div>
             <div class="pflow-text">結果を確認して貸し出す</div>
@@ -1361,11 +1792,49 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"</
 
     <div class="g-blk">
       <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-02新設（月次レポートで実戦済み）</div>
+        <div class="g-nm">ファネル・前月比較つき</div>
+        <div class="g-ds">当月バーの真下に前月の量を淡色の細バー（ゴースト）で敷き、率に「（前月 n%）」を併記。時間の色は横棒ペアと同じ「濃=当月 / 淡=前月」。目盛りは当月・前月の最大値に合わせる。「量は減ったが通過率が改善した」のような交差の物語が図だけで伝わる。</div>
+      </div>
+      <div class="g-demo">
+      <div class="funnel" style="max-width:620px;margin:0">
+        <div class="frow"><div class="fbar" style="width:58%">サイトに来た</div><span class="fv">3,315<small style="font-family:var(--sans);font-size:11px;color:var(--sub)">セッション</small></span></div>
+        <div class="frow ghost"><div class="fghost" style="width:82%"></div><span class="fl">前月 4,717</span></div>
+        <div class="fconv">82%<span>（前月 76%）</span></div>
+        <div class="frow"><div class="fbar f2" style="width:47%">検索・一覧を見た</div><span class="fv">2,725<small style="font-family:var(--sans);font-size:11px;color:var(--sub)">セッション</small></span></div>
+        <div class="frow ghost"><div class="fghost" style="width:63%"></div><span class="fl">前月 3,598</span></div>
+        <div class="fconv">16%<span>（前月 18%）</span></div>
+        <div class="frow"><div class="fbar f3" style="width:7%"></div><span class="fv">427<small style="font-family:var(--sans);font-size:11px;color:var(--sub)">セッション</small></span><span class="fl">詳細を見た</span></div>
+        <div class="frow ghost"><div class="fghost" style="width:11%"></div><span class="fl">前月 648</span></div>
+      </div>
+      <div class="alert alert-blue" style="max-width:620px;margin:0"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>この図の読み方:</strong> 複雑な図には「読み方ボックス」を1個だけ添える（この枠自体が見本）。図の解釈のしかた=このボックス / データの但し書き=※注記、と使い分ける。</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-02新設</div>
+        <div class="g-nm">ファネル・ラベル列型（.funnel.labeled）</div>
+        <div class="g-ds">段名が長くバーに収まらない資料向け。段名を左の固定列（.fname）に出す。ゴースト行は空の.fnameで桁を合わせる。</div>
+      </div>
+      <div class="funnel labeled" style="max-width:620px">
+        <div class="frow"><span class="fname">サイトに来た</span><div class="fbar" style="width:50%"></div><span class="fv">3,315</span></div>
+        <div class="fconv">82%</div>
+        <div class="frow"><span class="fname">検索・店舗ページを見た（提携店サイトからの直接訪問も含む）</span><div class="fbar f2" style="width:41%"></div><span class="fv">2,725</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
         <div class="g-no is-add">追加 — 組み方の定石</div>
         <div class="g-nm">状態遷移図（横フローの応用）</div>
         <div class="g-ds">ステータスの流れは横フロー（.swim）で組む: 状態=ピルチップ・現在の状態や到達点=強調（hot）・離脱先（キャンセル等）は例外の枝に。専用CSSは不要。</div>
       </div>
       <div class="swim" style="max-width:820px"><div class="swim-inner">
+        <div class="swim-row">
+          <div class="swim-label ext"><i></i>例外: 離脱</div>
+          <div class="swim-track"><div class="swim-node error">キャンセル（どの状態からでも）</div></div>
+        </div>
         <div class="swim-row">
           <div class="swim-label user"><i></i>予約の状態</div>
           <div class="swim-track">
@@ -1436,6 +1905,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"</
       <div class="legend" style="margin:0">
         <span><i style="background:var(--info)"></i>ユーザー操作</span>
         <span><i style="background:var(--ok)"></i>店舗操作</span>
+        <span><i style="background:var(--ink)"></i>第3の人間役割（.other・いる場合のみ）</span>
         <span><i style="background:var(--accent)"></i>システム・自動処理</span>
         <span><i style="background:var(--gold)"></i>お金の動き</span>
         <span><i style="background:var(--danger)"></i>例外・異常系</span>
@@ -1593,7 +2063,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"</
           <div class="sd-todo">
             <div class="sd-todo-row"><span>本番デプロイ（Data API公開）</span><span class="sd-todo-who">山本さん</span><span class="sd-todo-when">8月中</span></div>
             <div class="sd-todo-row"><span>sitemap生成→アップロード</span><span class="sd-todo-who">清野さん</span><span class="sd-todo-when">デプロイ後</span></div>
-            <div class="sd-todo-row"><span>再生成の頻度を決める</span><span class="sd-todo-who">増永さん</span><span class="sd-todo-when">次回定例</span></div>
+            <div class="sd-todo-row"><span>再生成の頻度を決める</span><span class="sd-todo-who">先方担当</span><span class="sd-todo-when">次回打合せ</span></div>
           </div>
         </div>
         <div class="slide-ft"><span>BRAND</span><span>12 / 12</span></div>
