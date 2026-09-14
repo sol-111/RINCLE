@@ -28,7 +28,7 @@
     </div>
     <h1>html-doc-design 使い方ガイド</h1>
     <p class="lead">クライアント向けHTML資料を「誌面エディトリアル様式」で作るClaude Codeスキルの説明書。中身がどうなっているか、どう使うか、社内にどう配るか。</p>
-    <div class="hero-meta">最終更新 2026-09-02 / このページ自体が本スキルの様式で組まれています</div>
+    <div class="hero-meta">最終更新 2026年9月14日 / このページ自体が本スキルの様式で組まれています</div>
   </div>
 </div>
 
@@ -65,7 +65,7 @@
       <div class="sh-body"><h2>中身のファイルと役割</h2><div class="sh-sub">何を守るか・どう見えるか・どう書くか</div></div>
     </div>
     <div class="codeblock"><pre>~/.claude/skills/html-doc-design/
-├── SKILL.md       <span class="cm"># ルールブック（原則11箇条+ページ構造+スライド規格）</span>
+├── SKILL.md       <span class="cm"># ルールブック（原則12箇条+ページ構造+スライド規格）</span>
 ├── decisions.md   <span class="cm"># 規約を決めた経緯・教訓（普段は読まない。変えたくなった時に）</span>
 ├── template.css   <span class="cm"># 核部品のCSS（コピーして使う。色の差し替えは:rootだけ）</span>
 ├── parts.css      <span class="cm"># 拡張部品42種のCSS（ボタン・モーダル・かんばん等。必要な時だけ）</span>
@@ -75,6 +75,7 @@
 ├── lint.py        <span class="cm"># 規約の検査プログラム（書いたら必ずかける。使い方は「3. 使い方」）</span>
 ├── guide.html     <span class="cm"># このページ（人間用の説明書）</span>
 ├── README.md      <span class="cm"># 人間用の説明書（テキスト版）</span>
+├── review/        <span class="cm"># 初見デザインレビューの道具（撮影 shoot.mjs・依頼文 prompt.md・手順 README.md）</span>
 └── _source/       <span class="cm"># 旧キャンバスの元データ（2026-08-21断面・以後更新されない参考資料）</span></pre></div>
     <div class="table-wrap">
       <table>
@@ -122,9 +123,10 @@ NG   proposal.html
         <tbody>
           <tr><td class="label">構造</td><td>タグの開閉・タブとパネルの対応が取れているか</td></tr>
           <tr><td class="label">統一性</td><td>ヒーローの部品・キッカー文言・ロゴの有無が全ページで同じか</td></tr>
-          <tr><td class="label">部品の組み方</td><td>statは「ラベルが上」・注記に※を直書きしない・表の字下げに全角空白を使わない・推奨列の面は1列だけ など</td></tr>
+          <tr><td class="label">部品の組み方</td><td>結論は01章に置く・図は主張を書いた<code>figure</code>で包む・章番号は01始まり・h2は1行・小見出しの番号はハイフン式・statは「ラベルが上」・アラートは緑/藍/紅の3色・色ベタの行ハイライトを作らない・ページ固有CSSで共通部品を作り直さない など</td></tr>
           <tr><td class="label">文章・敬語</td><td>半角括弧・全角スラッシュ・<code>「〜し、」</code>等の文つなぎ・二重敬語「ご〜される」</td></tr>
           <tr><td class="label">残骸</td><td>旧様式の色の直書き・絵文字（アイコンはSVGを使う決まり）</td></tr>
+          <tr><td class="label">一覧の正本</td><td>検査項目の全一覧は <code>lint.py</code> 冒頭の説明文が正です（ここは要約）</td></tr>
         </tbody>
       </table>
     </div>

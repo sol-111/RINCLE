@@ -19,7 +19,7 @@ Claude Codeの「スキル」= **ただのファイルの束**。`~/.claude/skil
 
 ```
 ~/.claude/skills/html-doc-design/
-├── SKILL.md       … ルールブック。原則11箇条+ページ構造+スライド規格+検証手順
+├── SKILL.md       … ルールブック。原則12箇条+ページ構造+スライド規格+検証手順
 ├── decisions.md   … 規約を「なぜそう決めたか」の経緯・教訓（普段は読まない。変えたくなった時に）
 ├── template.css   … 資料部品の核CSS。カラートークン・ヒーロー・章ナビ・表・チャート・
 │                     図解・スライド枠・演出まで（納品ページにコピーして使う）
@@ -32,6 +32,8 @@ Claude Codeの「スキル」= **ただのファイルの束**。`~/.claude/skil
 ├── lint.py        … 規約の検査プログラム。ページを書いたら必ずかける
 ├── guide.html     … 人間用の説明書（この説明書のHTML版）
 ├── README.md      … この説明書（Claudeは読まない。人間用）
+├── review/        … 初見デザインレビューの道具（撮影スクリプト shoot.mjs・依頼文 prompt.md・
+│                     手順 README.md）。節目だけ回す
 └── _source/       … 旧・Claude Designキャンバスの元データ（2026-08-21断面）。
                       正本がgallery.htmlに移ったため、以後更新されない参考資料
 ```

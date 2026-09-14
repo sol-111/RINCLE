@@ -209,7 +209,8 @@
 
     /* Welcome screen（資料集の入口。文言は script の welcome / sectionNotes に書く） */
     .welcome {
-      height: 100%;
+      flex: 1;
+      min-height: 0;
       overflow-y: auto;
       padding: 56px 48px 72px;
     }
@@ -332,10 +333,11 @@
   <header class="topbar" style="display:none;">
     <h2 id="page-title">ホーム</h2>
   </header>
-  <div class="content" id="content">
-    <!-- ようこそ画面の中身は renderWelcome() が script の welcome / sectionNotes から組む -->
-    <div class="welcome" id="welcome"></div>
-  </div>
+  <!-- ようこそ画面は #content の外に置く（中に置くと、資料を1本開いた時点で
+       contentEl.innerHTML='' に巻き込まれて消え、二度と戻れなくなる）。
+       出し入れは hidden 属性で行う -->
+  <div class="welcome" id="welcome"></div>
+  <div class="content" id="content" hidden></div>
 </main>
 
 <script>
@@ -375,6 +377,7 @@
   // ============================================================
   const nav = document.getElementById('nav');
   const contentEl = document.getElementById('content');
+  const welcomeEl = document.getElementById('welcome');
   const pageTitle = document.getElementById('page-title');
 
   // Track accordion open/close state per section
@@ -503,15 +506,19 @@
   let currentId = null;
   const baseTitle = document.title;
 
-  // サイドバーの現在地・見出し・URLハッシュだけを同期する（iframeは触らない）
-  function syncActive(page) {
+  // サイドバーの現在地・見出し・URLハッシュだけを同期する（iframeは触らない）。
+  // push=true（クリック等のユーザー操作）は履歴を1つ積む＝ブラウザの「戻る」でシェル内を戻れる。
+  // push=false（ハッシュからの復元・iframe内リンクの追従）は履歴を増やさず今のエントリを書き換える
+  function syncActive(page, push) {
     currentId = page.id;
     document.querySelectorAll('.nav-item').forEach(el => {
       el.classList.toggle('active', el.dataset.id === page.id);
     });
     pageTitle.textContent = page.title;
     document.title = page.title + ' — ' + baseTitle;
-    history.replaceState(null, '', '#' + page.id);
+    if (location.hash.slice(1) !== page.id) {
+      history[push ? 'pushState' : 'replaceState'](null, '', '#' + page.id);
+    }
   }
 
   // iframe内リンクの追従（原本からの改良点）:
@@ -530,11 +537,13 @@
       sectionState[page.section] = true;
       render();
     }
-    syncActive(page);
+    syncActive(page, true);  // iframe内リンクの遷移もユーザー操作なので履歴に積む
   }
 
-  function loadPage(page) {
-    syncActive(page);
+  function loadPage(page, push) {
+    syncActive(page, push !== false);
+    welcomeEl.hidden = true;
+    contentEl.hidden = false;
     contentEl.innerHTML = '';
     const frame = document.createElement('iframe');
     frame.src = page.src;
@@ -543,16 +552,26 @@
     contentEl.appendChild(frame);
   }
 
+  // ようこそ画面に戻す（「戻る」でハッシュが空になった時）
+  function showWelcome() {
+    currentId = null;
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    document.title = baseTitle;
+    contentEl.innerHTML = '';
+    contentEl.hidden = true;
+    welcomeEl.hidden = false;
+  }
+
   function restoreFromHash() {
     const hash = location.hash.slice(1);
-    if (!hash) return;
+    if (!hash) { showWelcome(); return; }
     const target = pages.find(p => p.id === hash);
     if (target) {
       // Make sure the section is open
       sectionState[target.section] = true;
       // Re-render nav to reflect opened section, then load page
       render();
-      loadPage(target);
+      loadPage(target, false);  // ハッシュ復元は履歴を増やさない
     }
   }
 
@@ -565,10 +584,11 @@
   renderWelcome();
   restoreFromHash();
   if (!currentId && AUTO_OPEN_FIRST && pages.length) loadPage(pages[0]);
-  // 戻る/進むボタンでの直リンク移動にも追従
+  // 戻る/進むボタンに追従する（ページ切替は pushState なので履歴が積まれている）。
+  // ハッシュが空になったら＝先頭まで戻ったら、ようこそ画面に戻す
   addEventListener('hashchange', () => {
     const hash = location.hash.slice(1);
-    if (hash && hash !== currentId) restoreFromHash();
+    if (hash !== currentId) restoreFromHash();
   });
 </script>
 

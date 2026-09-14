@@ -265,8 +265,14 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
   </table>
 </div>
 
-<!-- ============ バッジ（ink=強調/brand=最重要/good=実測/plain=中立/muted=沈める） ============ -->
-<span class="badge ink">再検討</span> <span class="badge brand">最重要</span> <span class="badge good">実測済み</span> <span class="badge plain">検討中</span> <span class="badge muted">対象外</span>
+<!-- ============ バッジ（ink=このページで唯一の最重要 / brand=高 / mid=中 / plain=低・中立 /
+     good=実測・決定 / bad=リスク・注意 / muted=沈める） ============ -->
+<span class="badge ink">このページの最重要</span> <span class="badge good">実測済み</span> <span class="badge bad">要確認</span> <span class="badge plain">検討中</span> <span class="badge muted">対象外</span>
+
+<!-- ============ 3段階の格付け（高・中・低）。重さの順は brand > mid > plain。
+     .badge.ink（黒ベタ）を「中」に流用しない — 黒ベタは焦がしベタより重く見え、高低が逆に読める。
+     ink はページ内で唯一の最重要マークにだけ（lintが1ページ4個以上を指摘する・2026-09-14） ============ -->
+<span class="badge brand">高</span> <span class="badge mid">中</span> <span class="badge plain">低</span>
 
 <!-- ============ 変更点バッジ（設計の変更・決定の状態を示す時はこの4語だけを使う。
      英字のCHANGED / NEW / OLD 等は使わない。「弊社案」「旧仕様」等の言い換えもしない） ============ -->
@@ -310,6 +316,11 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
 <!-- ============ 横棒グラフ / 統計数字 ============ -->
 <div class="hbar"><div style="font-size: 13px; font-weight: 700;">勝った側</div><div class="track"><div class="fill" style="width: 100%;"></div></div><div class="val">10件</div></div>
 <div class="hbar"><div style="font-size: 13px; color: var(--text);">負けた側</div><div class="track"><div class="fill dim" style="width: 40%;"></div></div><div class="val" style="color: var(--sub);">4件</div></div>
+
+<!-- 表のセルの中に置く小さな棒（.hbar.cell）。ラベル列を持たない「棒+値」の2列。
+     これは図でなく数値の見せ方なので個別にfigureで包まない —
+     表全体（.table-wrap）を1つの<figure class="fig" aria-label="この表の主張">で包む -->
+<td><div class="hbar cell"><div class="track"><div class="fill" style="width: 72%;"></div></div><div class="val">72%</div></div></td>
 
 <!-- ============ 地域タイルマップ（都道府県を正方形タイルで日本列島の形に。色の濃さ=量・6段階b0〜b5。
      値ラベル.tvは上位10県程度だけ。正確な比較は読めないので上位の横棒を右に併置する。
@@ -390,6 +401,10 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
   <span><i style="background:#DCD3C8"></i>内訳の出ない分</span>
 </div>
 <div class="stat"><div class="l">ラベル（日付つき出典）</div><div class="n hot">433</div></div>
+
+<!-- 答えでない数字（単価・内訳・まだ測れていないもの）は中サイズ .n.md（30px）に落とす。
+     単位の<small>も13pxに連動する。答えの数字と同じ特大にすると「これが料金（固定）」と誤読される -->
+<div class="stat"><div class="l">1件あたりの単価（2026年6月11日実測）</div><div class="n md">¥1,200<small>円</small></div></div>
 
 <!-- ============ 統計カード列（KPIの見せ場。ラベル→明朝特大→前月比の順・.d.up=緑/.d.down=紅） ============ -->
 <!-- 単価・内訳など「答えでない数字」は中サイズ .n.md（月額と同じ特大にすると固定料金と誤読される） -->
@@ -609,11 +624,26 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
     panels.forEach(function(p){ p.classList.toggle('active', p.id === id); });
     window.scrollTo({top: 0});
   }
+  // ハッシュの行き先を開く。パネル自体を指す時はそのタブを開き、
+  // 章など「閉じているタブの中の要素」を指す時は、そのタブを開いてからその位置へ送る
+  // （他ページからの #章id リンクや、本文中の「（5章）」リンクが閉じたタブの中でも着地するように。2026-09-14）
+  function openByHash(){
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (el.classList.contains('tab-panel')) { openTab(el.id); return; }
+    var panel = el.closest ? el.closest('.tab-panel') : null;
+    if (!panel) return;
+    openTab(panel.id);
+    el.scrollIntoView();
+  }
   tabBtns.forEach(function(b){
     b.addEventListener('click', function(){
       openTab(b.dataset.target);
       history.replaceState(null, '', '#' + b.dataset.target);
     });
   });
-  if (location.hash && document.getElementById(location.hash.slice(1))) openTab(location.hash.slice(1));
+  openByHash();
+  addEventListener('hashchange', openByHash);
 </script>

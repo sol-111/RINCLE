@@ -13,7 +13,7 @@
 /* このページ専用の最小CSS — 左が部品名+説明、右が実物の2カラム（元データの .blk 相当） */
 .g-blk{border-top:1px solid var(--line);padding:26px 0;display:grid;grid-template-columns:230px minmax(0,1fr);gap:36px}
 .section-header + .g-blk{border-top:none}
-.g-blk.g-full{grid-template-columns:1fr}
+.g-blk.g-full{grid-template-columns:minmax(0,1fr)}
 .g-meta{display:flex;flex-direction:column;gap:6px}
 .g-no{font-size:10.5px;letter-spacing:.18em;color:var(--accent);font-weight:700}
 .g-no.is-add{color:var(--sub)}
@@ -838,15 +838,16 @@
       <div class="g-meta">
         <div class="g-no">NO. 38 — ラベルとタグ</div>
         <div class="g-nm">ラベルとタグ</div>
-        <div class="g-ds">状態は塗り、分類は罫線。角丸は控えめの3px。効力を失ったもの（旧設計・対象外）は <code>muted</code> で沈める。</div>
+        <div class="g-ds">状態は塗り、分類は罫線。角丸は控えめの3px。効力を失ったもの（旧設計・対象外）は <code>muted</code> で沈める。<br><strong>3段階の格付けはこの順で重さを付ける</strong>（2026-09-14）: 高=<code>brand</code>（焦がしベタ）/ 中=<code>mid</code>（白面・焦がし1px輪郭）/ 低=<code>plain</code>（罫線のみ）。<strong><code>ink</code>（黒ベタ）は格付けの「中」に使わない</strong> — 黒ベタは焦がしベタより重く見え、高低が逆に読める。<code>ink</code> はページ内で唯一の最重要マークにだけ使う（lintが1ページ4個以上を指摘する）。<code>bad</code>（紅）はリスク・注意を示す。</div>
       </div>
       <div class="g-row" style="gap:12px">
-        <span class="badge ink">再検討</span>
-        <span class="badge brand">最重要</span>
+        <span class="badge brand">高</span>
+        <span class="badge mid">中</span>
+        <span class="badge plain">低</span>
+        <span class="badge ink">このページの最重要</span>
         <span class="badge good">実測済み</span>
         <span class="badge bad">要確認</span>
         <span class="badge plain" style="font-weight:400">SEO</span>
-        <span class="badge plain" style="font-weight:400">決済</span>
         <span class="badge plain" style="font-weight:400">タグ<span class="tag-x">×</span></span>
         <span class="badge muted">対象外</span>
       </div>
@@ -952,13 +953,29 @@
 
     <div class="g-blk">
       <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-04新設（原則11）</div>
+        <div class="g-nm">図の外枠（figure.fig）</div>
+        <div class="g-ds">図の部品（レーン格子・横フロー・縦フロー・ファネル・タイルマップ・積み上げバー・横棒・横棒ペア・ドーナツ・フェーズ帯）は <code>&lt;figure class="fig" aria-label="…"&gt;</code> で包む。<strong>aria-labelには図の見た目でなく、読者に持ち帰ってほしい結論を1文で書く</strong>。<br>○ 良い例: <code>aria-label="自転車が84%を占め、静的ページは1%に満たない"</code><br>× 悪い例: <code>aria-label="内訳の帯グラフ"</code>（見た目の説明で、読者は何も持ち帰れない）<br>読み上げソフトへの対応であると同時に、<strong>1文で書けない図は置く理由がない</strong>ことに書く段階で気づける仕掛け。読者に見せる解説はこれまでどおり図の直下の読み方ボックス（.alert.alert-blue）に置き、主張はHTMLの中だけに書く。図の中の <code>&lt;svg&gt;</code> は <code>aria-hidden="true"</code> にする（figureの主張と二重に読み上げられるため）。<br>表のセルの中の小さな棒（.hbar.cell）は図でなく数値の見せ方なので個別には包まない — <strong>表全体（.table-wrap）を1つのfigureで包み、aria-labelにはその表の主張を書く</strong>。このシートと次のシートの各見本は、実際にこの外枠で包んである。</div>
+      </div>
+      <div class="g-demo">
+        <figure class="fig" aria-label="サジェスト10件のうち8件が地域名で、地域名を含めない検索語では人が来ない">
+          <div class="hbar"><div style="font-size:13px;font-weight:700">ロードバイク レンタル</div><div class="track"><div class="fill" style="width:100%"></div></div><div class="val">10件</div></div>
+          <div class="hbar"><div style="font-size:13px;color:var(--text)">スポーツバイク レンタル</div><div class="track"><div class="fill dim" style="width:40%"></div></div><div class="val" style="color:var(--sub)">4件</div></div>
+          <figcaption>この図の <code>aria-label</code>: 「サジェスト10件のうち8件が地域名で、地域名を含めない検索語では人が来ない」。画面には出ず、読み上げと作り手の点検のために書く。</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
         <div class="g-no is-add">追加 — 資料で使用中</div>
         <div class="g-nm">ドーナツチャート</div>
         <div class="g-ds">線は細く2.4。中央は大きな数字だけ（補足文言は入れない）。単位・出典は凡例側に。データ色は焦がしオレンジ→墨→罫線色の順。2カラムの片側など半分幅に置く時は .chart.compact（リング130px・凡例は右）</div>
       </div>
-      <div class="g-demo">
+      <figure class="fig" aria-label="自転車の詳細ページが433URL中374を占め、静的ページは3しかない">
+        <div class="g-demo">
       <div class="chart">
-        <svg viewBox="0 0 42 42" style="width:170px;height:170px" role="img" aria-label="URL構成比">
+        <svg viewBox="0 0 42 42" style="width:170px;height:170px" aria-hidden="true">
           <circle class="ct-ring ct-rest-line" cx="21" cy="21" r="15.9155"></circle>
           <circle class="ct-ring ct-a" cx="21" cy="21" r="15.9155" stroke-dasharray="86.4 13.6" stroke-dashoffset="25"></circle>
           <circle class="ct-ring ct-b" cx="21" cy="21" r="15.9155" stroke-dasharray="12.9 87.1" stroke-dashoffset="-61.4"></circle>
@@ -972,7 +989,7 @@
         </div>
       </div>
       <div class="chart compact" style="max-width:520px">
-        <svg viewBox="0 0 42 42" role="img" aria-label="構成比（半分幅用）">
+        <svg viewBox="0 0 42 42" aria-hidden="true">
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"></circle>
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="70 30" stroke-dashoffset="25"></circle>
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-dasharray="28 72" stroke-dashoffset="-45"></circle>
@@ -985,6 +1002,7 @@
         </div>
       </div>
       </div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -993,7 +1011,8 @@
         <div class="g-nm">横棒グラフ</div>
         <div class="g-ds">2〜5項目の比較に。負けた側は罫線色で塗る。</div>
       </div>
-      <div class="g-demo" style="gap:16px;max-width:560px">
+      <figure class="fig" aria-label="「ロードバイク レンタル」のサジェストは10件で、「スポーツバイク レンタル」の4件を上回る">
+        <div class="g-demo" style="gap:16px;max-width:560px">
         <div class="hbar" style="margin:0">
           <div style="font-size:13px;font-weight:700;color:var(--ink)">ロードバイク レンタル</div>
           <div class="track"><div class="fill" style="width:100%"></div></div>
@@ -1006,6 +1025,7 @@
         </div>
         <div class="g-st">Googleサジェスト実測（2026-06-12）</div>
       </div>
+      </figure>
     </div>
 
         <div class="g-blk">
@@ -1014,7 +1034,8 @@
         <div class="g-nm">100%積み上げ構成バー（.stackbar）</div>
         <div class="g-ds">全体の中身の内訳を1本の帯で見せる。色は s1=焦がし（主役）→ s2=墨 → s3=下地 → s4=罫線色。2本並べると「表示の中身」対「クリックの中身」のような対比が語れる。狭いセグメントの%は凡例へ。</div>
       </div>
-      <div class="g-demo">
+      <figure class="fig" aria-label="検索で表示された回数の75%は目的の違うノイズで、クリックされた中身とは別物">
+        <div class="g-demo">
         <div class="stackbar" style="margin:0">
           <div class="sb-title"><span>検索表示回数の中身</span><span class="sb-total">30,352回</span></div>
           <div class="sb-track">
@@ -1040,6 +1061,7 @@
           <span><i style="background:#DCD3C8"></i>内訳の出ない分</span>
         </div>
       </div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -1048,7 +1070,8 @@
         <div class="g-nm">地域タイルマップ（.tilemap）</div>
         <div class="g-ds">都道府県を正方形タイルで日本列島の形に並べ、色の濃さ=量で塗る。「関西一円が濃い」のような面の広がりが一目で伝わる。値ラベルは上位10県程度だけ・正確な大小比較は横棒（.hbar）を右に併置して担わせる。47タイルの配置はsnippets.htmlの雛形をコピー。</div>
       </div>
-      <div class="g-demo">
+      <figure class="fig" aria-label="利用は関西一円に集中し、東北・九州にはまだ空白県が並ぶ">
+        <div class="g-demo">
         <div class="tilemap">
         <div class="tile b1" style="grid-column:13;grid-row:1"><span class="tn">北海道</span></div>
         <div class="tile b0" style="grid-column:12;grid-row:2"><span class="tn">青森</span></div>
@@ -1107,6 +1130,7 @@
           <span><i style="background:#F0EBE3"></i>それ未満</span>
         </div>
       </div>
+      </figure>
     </div>
 
 <div class="g-blk">
@@ -1159,7 +1183,8 @@
         <div class="g-nm">横棒ペア（当月×前月）</div>
         <div class="g-ds">同じ指標の2時点比較に。当月=焦がし・前月=下地。棒の長さはペア内の最大値を100%に。値は明朝で棒の右、凡例を下に。</div>
       </div>
-      <div style="max-width:640px">
+      <figure class="fig" aria-label="成立予約は前月の6件から11件へ、ほぼ倍に増えた">
+        <div style="max-width:640px">
         <div class="bars">
           <div class="brow"><span class="bl">成立予約件数</span><div class="bpair">
             <div class="bline"><div class="b cur" style="width:100%"></div><span class="bv">11件</span></div>
@@ -1172,6 +1197,7 @@
         </div>
         <div class="bars-legend"><span><i style="background:var(--accent)"></i>当月</span><span><i style="background:#EAE2D6"></i>前月</span></div>
       </div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -1647,7 +1673,8 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-nm">スイムレーン</div>
         <div class="g-ds">横=時系列のフェーズ、縦=登場人物のレーン。例外の列はピンク+破線で「本流ではない」ことを示し、お金の行は琥珀でいくら動くかだけを追えるようにする。役割色: ユーザー=藍 / 販売店=緑 / システム=焦がしオレンジ / お金=琥珀。人間の役割が3つある図（例: 生徒/先生/編集者）は3人目に .other（=墨）を使い、お金の琥珀・例外の紅を人間役割に流用しない。</div>
       </div>
-      <div class="lane-wrap" style="margin:0">
+      <figure class="fig" aria-label="お金が動くのは貸出開始と返却の2回だけで、予約の時点では動かない">
+        <div class="lane-wrap" style="margin:0">
         <div class="lanes" style="grid-template-columns:96px repeat(5,minmax(0,1fr))">
           <div class="lane-corner">レーン</div>
           <div class="lane-head">1 予約時<span class="sub">数日〜数週間前</span></div>
@@ -1693,6 +1720,7 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
           <div class="lane-cell money">追加分のみ</div>
         </div>
       </div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -1701,7 +1729,8 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-nm">横フロー（箱矢印・分岐つき）</div>
         <div class="g-ds">行=役割・チップの流れで手順を追う図。ノードはニュートラルなピル型チップ（役割は行ラベルが示すので色を付けない）、判定は墨罫+太字、強調は焦がし輪郭+薄い面。矢印は文字でなく線+矢じりを描く（高さが常に揃う）。分岐は左レールで束ね、枝のラベルは色つきキッカー（OK=緑/NG=紅）。</div>
       </div>
-      <div class="swim"><div class="swim-inner">
+      <figure class="fig" aria-label="既存ユーザーはログインからマイページまで一直線で、認証エラーだけが本流から外れる">
+        <div class="swim"><div class="swim-inner">
         <div class="swim-row">
           <div class="swim-label user"><i></i>ユーザー</div>
           <div class="swim-track">
@@ -1736,6 +1765,7 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
           </div>
         </div>
       </div></div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -1744,7 +1774,8 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-nm">役割つき縦フロー</div>
         <div class="g-ds">手順を詳しく語る時の縦フロー。番号丸は役割色の輪郭+明朝数字、役割はキッカーで明示、補足は左罫の注記に。図（レーン格子・横フロー）の下に「詳細」として添える使い方が定番。</div>
       </div>
-      <div class="pflow" style="max-width:640px">
+      <figure class="fig" aria-label="予約の確定から貸し出しまでを4者が順に引き取り、お金が動くのは2番目だけ">
+        <div class="pflow" style="max-width:640px">
         <div class="pflow-step">
           <div class="pflow-dot user">1</div>
           <div class="pflow-body">
@@ -1775,6 +1806,7 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
           </div>
         </div>
       </div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -1783,11 +1815,13 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-nm">ファネル</div>
         <div class="g-ds">段階ごとの絞り込みを見せる図。棒の幅=構成比（先頭を100%に）、段が下がるほど薄く。段間に転換率のキッカー。予約フローの離脱分析など「どこで減ったか」を語る時に。</div>
       </div>
-      <div class="funnel" style="max-width:620px">
+      <figure class="fig" aria-label="予約フローに進んだ51人のうち成立したのは11件で、完了率は22%">
+        <div class="funnel" style="max-width:620px">
         <div class="frow"><div class="fbar" style="width:100%">予約フローに進んだ人</div><span class="fv">51</span></div>
         <div class="fconv">完了率 22%</div>
         <div class="frow"><div class="fbar f2" style="width:22%"></div><span class="fv">11</span><span class="fl">成立予約（2026-07 実測）</span></div>
       </div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -1796,7 +1830,8 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-nm">ファネル・前月比較つき</div>
         <div class="g-ds">当月バーの真下に前月の量を淡色の細バー（ゴースト）で敷き、率に「（前月 n%）」を併記。時間の色は横棒ペアと同じ「濃=当月 / 淡=前月」。目盛りは当月・前月の最大値に合わせる。「量は減ったが通過率が改善した」のような交差の物語が図だけで伝わる。</div>
       </div>
-      <div class="g-demo">
+      <figure class="fig" aria-label="量は前月から減ったが、段ごとの通過率はすべて改善している">
+        <div class="g-demo">
       <div class="funnel" style="max-width:620px;margin:0">
         <div class="frow"><div class="fbar" style="width:58%">サイトに来た</div><span class="fv">3,315<small style="font-family:var(--sans);font-size:11px;color:var(--sub)">セッション</small></span></div>
         <div class="frow ghost"><div class="fghost" style="width:82%"></div><span class="fl">前月 4,717</span></div>
@@ -1809,6 +1844,7 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
       </div>
       <div class="alert alert-blue" style="max-width:620px;margin:0"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>この図の読み方:</strong> 複雑な図には「読み方ボックス」を1個だけ添える（この枠自体が見本）。図の解釈のしかた=このボックス / データの但し書き=※注記、と使い分ける。</span></div>
       </div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -1817,11 +1853,13 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-nm">ファネル・ラベル列型（.funnel.labeled）</div>
         <div class="g-ds">段名が長くバーに収まらない資料向け。段名を左の固定列（.fname）に出す。ゴースト行は空の.fnameで桁を合わせる。</div>
       </div>
-      <div class="funnel labeled" style="max-width:620px">
+      <figure class="fig" aria-label="サイトに来た人の8割が店舗ページまで進み、そこから先で大きく絞り込まれる">
+        <div class="funnel labeled" style="max-width:620px">
         <div class="frow"><span class="fname">サイトに来た</span><div class="fbar" style="width:50%"></div><span class="fv">3,315</span></div>
         <div class="fconv">82%</div>
         <div class="frow"><span class="fname">検索・店舗ページを見た（提携店サイトからの直接訪問も含む）</span><div class="fbar f2" style="width:41%"></div><span class="fv">2,725</span></div>
       </div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -1830,7 +1868,8 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-nm">状態遷移図（横フローの応用）</div>
         <div class="g-ds">ステータスの流れは横フロー（.swim）で組む: 状態=ピルチップ・現在の状態や到達点=強調（hot）・離脱先（キャンセル等）は例外の枝に。専用CSSは不要。</div>
       </div>
-      <div class="swim" style="max-width:820px"><div class="swim-inner">
+      <figure class="fig" aria-label="予約は仮情報から返却済みまで一本道で、キャンセルはどの状態からでも起こりうる">
+        <div class="swim" style="max-width:820px"><div class="swim-inner">
         <div class="swim-row">
           <div class="swim-label ext"><i></i>例外: 離脱</div>
           <div class="swim-track"><div class="swim-node error">キャンセル（どの状態からでも）</div></div>
@@ -1857,6 +1896,7 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
           </div>
         </div>
       </div></div>
+      </figure>
     </div>
 
     <div class="g-blk">
@@ -1888,27 +1928,26 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-nm">フェーズ帯</div>
         <div class="g-ds">工程を帯でつなぐ。現在のフェーズだけ焦がしオレンジ。</div>
       </div>
-      <div class="phases" style="margin:0">
+      <figure class="fig" aria-label="DB再構築は完了し、いまはSEO設定一式の段階にいる">
+        <div class="phases" style="margin:0">
         <div class="phase done"><span class="pn">Phase 1</span><span class="pt">DB再構築</span><span class="ps">完了（7月）</span></div>
         <div class="phase now"><span class="pn">Phase 2</span><span class="pt">SEO設定一式</span><span class="ps">進行中</span></div>
         <div class="phase"><span class="pn">Phase 3</span><span class="pt">Stripe移行</span><span class="ps">予定</span></div>
         <div class="phase"><span class="pn">Phase 4</span><span class="pt">グロース施策</span><span class="ps">予定</span></div>
       </div>
+      </figure>
     </div>
 
     <div class="g-blk">
       <div class="g-meta">
         <div class="g-no is-add">追加 — 図解の約束事</div>
         <div class="g-nm">役割色の凡例</div>
-        <div class="g-ds">図解全体で色の意味を固定する。凡例は図の直下に必ず置く。</div>
+        <div class="g-ds">図解全体で色の意味を固定する。凡例は図の直下に必ず置く。<strong>載せるのは、その図に実際に出ている役割だけ</strong>（2026-09-14）— 語彙の一覧を毎回そのまま貼ると、図に出ていない色まで並んで「この図には何かが足りない」と読めてしまう。<strong>同じ役割構成の図が続く章は、先頭の図の直下に1枚だけ置く</strong>。下は「ユーザーと店舗とお金だけが出てくる図」の凡例の例。<br>色の語彙そのものは6つ: ユーザー=藍 / 店舗（相手方）=緑 / 第3の人間役割=墨（.other）/ システム=焦がし / お金=琥珀 / 例外=紅。</div>
       </div>
       <div class="legend" style="margin:0">
         <span><i style="background:var(--info)"></i>ユーザー操作</span>
         <span><i style="background:var(--ok)"></i>店舗操作</span>
-        <span><i style="background:var(--ink)"></i>第3の人間役割（.other・いる場合のみ）</span>
-        <span><i style="background:var(--accent)"></i>システム・自動処理</span>
         <span><i style="background:var(--gold)"></i>お金の動き</span>
-        <span><i style="background:var(--danger)"></i>例外・異常系</span>
       </div>
     </div>
   </div>
