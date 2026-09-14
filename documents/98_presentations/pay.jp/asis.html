@@ -11,41 +11,6 @@
 <style>
 /* ページ固有CSS — Pay.JP 現行フロー（共通部品は ../assets/design.css を参照） */
 
-/* 登場人物の図（白面+1px罫線・役割色は罫線と見出しのみ。原則11: ユーザー=藍/店舗=緑/システム=焦がし） */
-.diagram{display:flex;align-items:stretch;justify-content:center;gap:14px;padding:28px 16px;margin:28px 0;background:var(--surface);border:1px solid var(--line);border-radius:4px;flex-wrap:wrap}
-.diagram-box{background:var(--surface);border:1px solid var(--line);border-radius:4px;text-align:center;padding:16px 24px;min-width:160px}
-.diagram-box .db-icon{display:block;margin-bottom:4px}
-.diagram-box .db-icon .icon{width:22px;height:22px}
-.diagram-box strong{display:block;font-family:var(--serif);font-size:16px;font-weight:600;margin-bottom:2px;color:var(--ink)}
-.diagram-box span{font-size:11.5px;color:var(--sub)}
-.diagram-box.customer{border-color:var(--info-line)}
-.diagram-box.customer .db-icon{color:var(--info)}
-.diagram-box.platform{border-color:var(--accent)}
-.diagram-box.platform .db-icon{color:var(--accent)}
-.diagram-box.shop{border-color:var(--ok-line)}
-.diagram-box.shop .db-icon{color:var(--ok)}
-.diagram-arrow{align-self:center;font-size:18px;color:var(--sub)}
-
-/* 役割つき縦ステップ（丸=役割色の輪郭・数字は明朝・つなぎ線は罫線色1px） */
-.fstep{display:flex;gap:16px;position:relative}
-.fstep:not(:last-child){padding-bottom:24px}
-.fstep:not(:last-child)::after{content:"";position:absolute;left:15px;top:36px;bottom:2px;width:1px;background:var(--line)}
-.pfdot{width:31px;height:31px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:13px;flex-shrink:0;position:relative;z-index:1}
-.pfdot.user{border-color:var(--info);color:var(--info)}
-.pfdot.system{border-color:var(--accent);color:var(--accent)}
-.pfdot.payjp{border-color:var(--accent);color:var(--accent)}
-.pfdot.admin{border-color:var(--ink);color:var(--ink)}
-.pfdot.shop{border-color:var(--ok);color:var(--ok)}
-.fbody{flex:1;padding-top:3px}
-.factor{font-size:10.5px;font-weight:700;letter-spacing:.16em;margin-bottom:2px}
-.factor.user{color:var(--info)}
-.factor.system{color:var(--accent)}
-.factor.payjp{color:var(--accent)}
-.factor.admin{color:var(--ink)}
-.factor.shop{color:var(--ok)}
-.ftext{font-size:14px;color:var(--text);line-height:1.9}
-.fnote{font-size:12.5px;color:var(--sub);margin-top:4px;padding-left:12px;border-left:1px solid var(--line);line-height:1.9}
-
 /* お金の流れ図（白面+罫線。お金=琥珀） */
 .moneyflow{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:22px 26px;margin:28px 0}
 .moneyflow h4{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:14px}
@@ -58,14 +23,6 @@
 tr.sum td{border-top:1px solid var(--ink)}
 tr.sum td strong{color:var(--accent-deep)}
 
-/* まとめ帯の小見出し（墨地の中） */
-.recap .r-block{display:flex;flex-direction:column;gap:8px}
-.recap .r-title{font-size:10.5px;font-weight:700;letter-spacing:.16em;opacity:.75}
-.recap p.r-note{font-size:11.5px;opacity:.7}
-
-@media (max-width:760px){
-  .diagram-arrow{transform:rotate(90deg)}
-}
 </style>
 </head>
 <body>
@@ -106,30 +63,49 @@ tr.sum td strong{color:var(--accent-deep)}
 </div>
 
 <!-- 全体フロー（ナビ） -->
-<nav class="flow">
-  <a href="#overview"><span class="fnum">1</span><span class="ft">結論と全体像</span><span class="fd">ライド開始で課金・返金は手動・店舗負担は約18.5%</span></a>
-  <a href="#shop-register"><span class="fnum">2</span><span class="ft">店舗の登録・審査</span><span class="fd">Pay.JP審査に通ると決済OK</span></a>
-  <a href="#card-register"><span class="fnum">3</span><span class="ft">カード登録</span><span class="fd">予約フローの「支払い方法」で</span></a>
-  <a href="#reserve"><span class="fnum">4</span><span class="ft">予約確定</span><span class="fd">この時点では課金なし</span></a>
-  <a href="#ride-start"><span class="fnum">5</span><span class="ft">決済の実行</span><span class="fd">ライド開始の操作でカード引き落とし</span></a>
-  <a href="#extend"><span class="fnum">6</span><span class="ft">延長料金の決済</span><span class="fd">ライド終了時に追加引き落とし</span></a>
-  <a href="#refund"><span class="fnum">7</span><span class="ft">返金</span><span class="fd">管理画面から手動で実行</span></a>
-  <a href="#money"><span class="fnum">8</span><span class="ft">お金の流れまとめ</span><span class="fd">決済1件あたりの分配と手数料</span></a>
+<nav class="flow-tabs">
+  <button class="tab-btn active" data-target="panel-overview"><span class="fnum">1</span><span class="ft">結論と全体像</span><span class="fd">ライド開始で課金・返金は手動・店舗負担は18.3%</span></button>
+  <button class="tab-btn" data-target="panel-shop-register"><span class="fnum">2</span><span class="ft">店舗の登録・審査</span><span class="fd">Pay.JP審査に通ると決済OK</span></button>
+  <button class="tab-btn" data-target="panel-card-register"><span class="fnum">3</span><span class="ft">カード登録</span><span class="fd">予約フローの「支払い方法」で</span></button>
+  <button class="tab-btn" data-target="panel-reserve"><span class="fnum">4</span><span class="ft">予約確定</span><span class="fd">この時点では課金なし</span></button>
+  <button class="tab-btn" data-target="panel-ride-start"><span class="fnum">5</span><span class="ft">決済の実行</span><span class="fd">ライド開始の操作でカード引き落とし</span></button>
+  <button class="tab-btn" data-target="panel-extend"><span class="fnum">6</span><span class="ft">延長料金の決済</span><span class="fd">ライド終了時に追加引き落とし</span></button>
+  <button class="tab-btn" data-target="panel-refund"><span class="fnum">7</span><span class="ft">返金</span><span class="fd">管理画面から手動で実行</span></button>
+  <button class="tab-btn" data-target="panel-money"><span class="fnum">8</span><span class="ft">お金の流れまとめ</span><span class="fd">決済1件あたりの分配と手数料</span></button>
 </nav>
 
 <div class="container">
 
+<div class="tab-panel active" id="panel-overview">
+
   <!-- 01 結論と全体像（結論を旧「概要」に統合・2026-09-04。章数は8のまま） -->
   <div class="section" id="overview">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論と全体像</h2><div class="sh-sub">予約では課金せず、ライド開始でカードから引き落とす。お金は「お客さん → Pay.JP → 店舗」の順に流れる</div></div></div>
-    <p>現行のPay.JP連携は次の流れです。①予約の時点では課金せず、店舗が「ライド開始」を押した時にカードから引き落とす。②延長料金は別の決済として追加で引き落とす。③返金は管理者が管理画面から手動で行う（延長がある場合は通常分と延長分の2回）。店舗の手数料負担は合わせて約18.5%です（プラットフォーム15% + カード約3.5%）。</p>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論と全体像</h2><div class="sh-sub">お金がいつ動き、誰にいくら渡るかを示します</div></div></div>
+    <p>現行のPay.JP連携は次の流れです。①予約の時点では課金せず、店舗が「ライド開始」を押した時にカードから引き落とす。②延長料金は別の決済として追加で引き落とす。③返金は管理者が管理画面から手動で行う（延長がある場合は通常分と延長分の2回）。店舗の手数料負担は合わせて18.3%です（プラットフォーム15% + カード3.3%）。</p>
 
-    <div class="diagram">
-      <div class="diagram-box customer"><span class="db-icon"><svg class="icon"><use href="#i-user"/></svg></span><strong>お客さん</strong><span>予約してお金を支払う</span></div>
-      <div class="diagram-arrow">→</div>
-      <div class="diagram-box platform"><span class="db-icon"><svg class="icon"><use href="#i-card"/></svg></span><strong>Pay.JP</strong><span>決済処理・お金の分配</span></div>
-      <div class="diagram-arrow">→</div>
-      <div class="diagram-box shop"><span class="db-icon"><svg class="icon"><use href="#i-shop"/></svg></span><strong>店舗</strong><span>サービス提供・売上受取</span></div>
+    <div class="stat-row">
+      <div class="stat"><span class="l">店舗の手数料負担（合計）</span><span class="n hot">18.3<small>%</small></span></div>
+      <div class="stat"><span class="l">うち プラットフォーム手数料</span><span class="n md">15<small>%</small></span></div>
+      <div class="stat"><span class="l">うち カード手数料</span><span class="n md">3.3<small>%</small></span></div>
+    </div>
+
+    <figure class="fig" aria-label="お金はお客さんからPay.JPを経由して店舗に渡り、Rincleは店舗の取り分から手数料を受け取る">
+    <div class="swim"><div class="swim-inner">
+      <div class="swim-row">
+        <div class="swim-label gold"><i></i>お金の流れ</div>
+        <div class="swim-track">
+          <div class="swim-node">お客さん<small style="color:var(--sub);margin-left:6px">予約して支払う</small></div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node hot">Pay.JP<small style="color:var(--sub);margin-left:6px">決済処理・お金の分配</small></div>
+          <div class="swim-arrow"></div>
+          <div class="swim-node">店舗<small style="color:var(--sub);margin-left:6px">サービス提供・売上受取</small></div>
+        </div>
+      </div>
+    </div></div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--gold)"></i>お金の動き</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Rincle / Pay.JP）</span>
     </div>
 
     <div class="term">
@@ -141,22 +117,85 @@ tr.sum td strong{color:var(--accent-deep)}
     <ul class="notes">
       <li>読み方: 今後の決済はStripeへの載せ替えが決定しています（6月19日決定）。このページは、載せ替えまで現行本番で動き続けるPay.JP連携の説明です。</li>
       <li>文中の画面名（shop_admin・admin等）はDB再構築前の旧サイト時点のもので、新サイト（2026年7月リリース）に旧shop_adminページはありません。ページ構成も変わっています。</li>
+      <li>カード手数料の3.3%はPAY.JP公表のスタンダード料率です（2026年6月時点）。契約上の実料率はPAY.JPの管理画面か契約書で要確認です。</li>
     </ul>
   </div>
+
+</div><!-- /panel-overview -->
+
+<div class="tab-panel" id="panel-shop-register">
 
   <!-- 1 店舗登録 -->
   <div class="section" id="shop-register">
     <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>店舗の登録 〜 審査フロー</h2><div class="sh-sub">店舗がRincleで決済を受け取れるようになるまでの流れ</div></div></div>
 
-    <div class="card">
-      <div class="fstep"><div class="pfdot shop">1</div><div class="fbody"><div class="factor shop">店舗オーナー</div><div class="ftext">Rincleで店舗アカウントを登録する</div></div></div>
-      <div class="fstep"><div class="pfdot system">2</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">Pay.JPに「この店舗の決済口座を作ってください」と依頼する</div><div class="fnote">店舗名 / 銀行口座情報 / 手数料率: 15% / 最低振込金額: 1,000円</div></div></div>
-      <div class="fstep"><div class="pfdot system">3</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">Pay.JPに「この店舗の審査ページを作ってください」と依頼する</div></div></div>
-      <div class="fstep"><div class="pfdot system">4</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">審査用URLをブラウザで直接開く</div><div class="fnote">メール送信ではなく、店舗登録完了後にそのまま画面遷移する</div></div></div>
-      <div class="fstep"><div class="pfdot shop">5</div><div class="fbody"><div class="factor shop">店舗オーナー</div><div class="ftext">Pay.JPの審査ページで本人確認書類をアップロードする</div><div class="fnote">この画面はPay.JPが用意したもので、Rincleの画面ではない</div></div></div>
-      <div class="fstep"><div class="pfdot payjp">6</div><div class="fbody"><div class="factor payjp">Pay.JP（自動）</div><div class="ftext">提出された書類を審査する（数日かかる場合あり）</div></div></div>
-      <div class="fstep"><div class="pfdot payjp">7</div><div class="fbody"><div class="factor payjp">Pay.JP（自動）</div><div class="ftext">審査が終わったら、Rincleに「結果出たよ」と自動通知する</div></div></div>
-      <div class="fstep"><div class="pfdot system">8</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">通知を受け取って店舗の審査状態を更新する</div><div class="fnote">合格 → 決済受付OK + 「審査通過のご案内」メール送信<br>不合格 → 決済受付NG + 「審査否決のご案内」メール送信</div></div></div>
+    <figure class="fig" aria-label="決済を受け付けられるかどうかはPay.JPの審査しだいで、Rincle側に承認の操作はない">
+    <div class="pflow">
+      <div class="pflow-step">
+        <div class="pflow-dot store">1</div>
+        <div class="pflow-body">
+          <div class="pflow-actor store">店舗オーナー</div>
+          <div class="pflow-text">Rincleで店舗アカウントを登録する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">2</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">Pay.JPに「この店舗の決済口座を作ってください」と依頼する</div>
+          <div class="pflow-note">店舗名 / 銀行口座情報 / 手数料率: 15% / 最低振込金額: 1,000円</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">3</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">Pay.JPに「この店舗の審査ページを作ってください」と依頼する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">4</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">審査用URLをブラウザで直接開く</div>
+          <div class="pflow-note">メール送信ではなく、店舗登録完了後にそのまま画面遷移する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot store">5</div>
+        <div class="pflow-body">
+          <div class="pflow-actor store">店舗オーナー</div>
+          <div class="pflow-text">Pay.JPの審査ページで本人確認書類をアップロードする</div>
+          <div class="pflow-note">この画面はPay.JPが用意したもので、Rincleの画面ではない</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">6</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Pay.JP（自動）</div>
+          <div class="pflow-text">提出された書類を審査する（数日かかる場合あり）</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">7</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Pay.JP（自動）</div>
+          <div class="pflow-text">審査が終わったら、Rincleに「結果出たよ」と自動通知する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">8</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">通知を受け取って店舗の審査状態を更新する</div>
+          <div class="pflow-note">合格 → 決済受付OK + 「審査通過のご案内」メール送信<br>不合格 → 決済受付NG + 「審査否決のご案内」メール送信</div>
+        </div>
+      </div>
+    </div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--ok)"></i>店舗の操作</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Rincle / Pay.JP）</span>
     </div>
 
     <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div><strong>審査はPay.JPが行います。</strong>Rincleの管理画面に「承認ボタン」はありません。審査に通るまで、その店舗ではクレジットカード決済ができません。</div></div>
@@ -174,39 +213,149 @@ tr.sum td strong{color:var(--accent-deep)}
     </div>
   </div>
 
+</div><!-- /panel-shop-register -->
+
+<div class="tab-panel" id="panel-card-register">
+
   <!-- 2 カード登録 -->
   <div class="section" id="card-register">
     <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>お客さんのカード登録フロー</h2><div class="sh-sub">予約フローの「支払い方法」ステップで行う</div></div></div>
 
-    <div class="card">
-      <div class="fstep"><div class="pfdot user">1</div><div class="fbody"><div class="factor user">お客さん</div><div class="ftext">予約フローの「支払い方法」ステップに進む</div></div></div>
-      <div class="fstep"><div class="pfdot system">2</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">そのお客さんが既にカード登録済みか確認する</div><div class="fnote">登録済み → 登録済みカードを表示（ドロップダウンで選択）/ 未登録 → カード入力フォームを表示</div></div></div>
-      <div class="fstep"><div class="pfdot user">3</div><div class="fbody"><div class="factor user">お客さん</div><div class="ftext">「オンライン決済」を選択してカード情報を入力する</div></div></div>
-      <div class="fstep"><div class="pfdot payjp">4</div><div class="fbody"><div class="factor payjp">Pay.JP（自動）</div><div class="ftext">カード入力フォームを表示する</div><div class="fnote">カード番号はRincleのサーバーを通らない（セキュリティのため）</div></div></div>
-      <div class="fstep"><div class="pfdot user">5</div><div class="fbody"><div class="factor user">お客さん</div><div class="ftext">カード番号・有効期限・セキュリティコードを入力する</div></div></div>
-      <div class="fstep"><div class="pfdot payjp">6</div><div class="fbody"><div class="factor payjp">Pay.JP（自動）</div><div class="ftext">カード情報を受け取って「トークン」（使い捨ての引換券）を発行する</div></div></div>
-      <div class="fstep"><div class="pfdot system">7</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">トークンを使ってカードを登録する</div><div class="fnote">初めてのお客さん → 顧客アカウント作成後にカード登録<br>既存のお客さん → カードを追加登録</div></div></div>
-      <div class="fstep"><div class="pfdot system">8</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">顧客情報を取得して登録完了を確認する</div><div class="fnote">この時点ではメインカードの設定は行わない（予約確定時に設定される）</div></div></div>
+    <figure class="fig" aria-label="カード番号はPay.JPのフォームが直接預かるので、Rincleのサーバーを通らない">
+    <div class="pflow">
+      <div class="pflow-step">
+        <div class="pflow-dot user">1</div>
+        <div class="pflow-body">
+          <div class="pflow-actor user">お客さん</div>
+          <div class="pflow-text">予約フローの「支払い方法」ステップに進む</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">2</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">そのお客さんが既にカード登録済みか確認する</div>
+          <div class="pflow-note">登録済み → 登録済みカードを表示（ドロップダウンで選択）/ 未登録 → カード入力フォームを表示</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot user">3</div>
+        <div class="pflow-body">
+          <div class="pflow-actor user">お客さん</div>
+          <div class="pflow-text">「オンライン決済」を選択してカード情報を入力する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">4</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Pay.JP（自動）</div>
+          <div class="pflow-text">カード入力フォームを表示する</div>
+          <div class="pflow-note">カード番号はRincleのサーバーを通らない（セキュリティのため）</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot user">5</div>
+        <div class="pflow-body">
+          <div class="pflow-actor user">お客さん</div>
+          <div class="pflow-text">カード番号・有効期限・セキュリティコードを入力する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">6</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Pay.JP（自動）</div>
+          <div class="pflow-text">カード情報を受け取って「トークン」（使い捨ての引換券）を発行する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">7</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">トークンを使ってカードを登録する</div>
+          <div class="pflow-note">初めてのお客さん → 顧客アカウント作成後にカード登録<br>既存のお客さん → カードを追加登録</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">8</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">顧客情報を取得して登録完了を確認する</div>
+          <div class="pflow-note">この時点ではメインカードの設定は行わない（予約確定時に設定される）</div>
+        </div>
+      </div>
+    </div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--info)"></i>お客さんの操作</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Rincle / Pay.JP）</span>
     </div>
 
     <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>カード番号はRincleには保存されません。</strong>Pay.JPが安全に管理します。カード情報は予約フローの「支払い方法」ステップで入力します。</div></div>
   </div>
 
+</div><!-- /panel-card-register -->
+
+<div class="tab-panel" id="panel-reserve">
+
   <!-- 3 予約確定 -->
   <div class="section" id="reserve">
     <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>予約確定フロー</h2><div class="sh-sub">この時点ではカード引き落としは行われない</div></div></div>
 
-    <div class="card">
-      <div class="fstep"><div class="pfdot user">1</div><div class="fbody"><div class="factor user">お客さん</div><div class="ftext">Rincleで予約を確定する（支払方法: クレジットカード）</div></div></div>
-      <div class="fstep"><div class="pfdot system">2</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">Pay.JPから顧客情報を取得する</div></div></div>
-      <div class="fstep"><div class="pfdot system">3</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">取得したカード情報の1つ目をデフォルトカードとして設定する</div><div class="fnote">ドロップダウンで選択したカードではなく、取得した顧客カードの1つ目が使われる</div></div></div>
-      <div class="fstep"><div class="pfdot system">4</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">予約情報を作成する（ステータス: 来客待ち）</div></div></div>
-      <div class="fstep"><div class="pfdot system">5</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">営業日カレンダーを更新する（自転車を確保）</div></div></div>
-      <div class="fstep"><div class="pfdot system">6</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">メールを送信する</div><div class="fnote">お客さんに予約確認メール / 店舗に予約通知メール / PEDALSTANDARDに通知メール</div></div></div>
+    <figure class="fig" aria-label="予約を確定しても引き落としは起きず、動くのは自転車の確保とカードの設定だけ">
+    <div class="pflow">
+      <div class="pflow-step">
+        <div class="pflow-dot user">1</div>
+        <div class="pflow-body">
+          <div class="pflow-actor user">お客さん</div>
+          <div class="pflow-text">Rincleで予約を確定する（支払方法: クレジットカード）</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">2</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">Pay.JPから顧客情報を取得する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">3</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">取得したカード情報の1つ目をデフォルトカードとして設定する</div>
+          <div class="pflow-note">ドロップダウンで選択したカードではなく、取得した顧客カードの1つ目が使われる</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">4</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">予約情報を作成する（ステータス: 来客待ち）</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">5</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">営業日カレンダーを更新する（自転車を確保）</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">6</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">メールを送信する</div>
+          <div class="pflow-note">お客さんに予約確認メール / 店舗に予約通知メール / PEDALSTANDARDに通知メール</div>
+        </div>
+      </div>
     </div>
+    </figure>
 
     <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>予約確定時に<strong>課金は発生しません</strong>（自転車の確保とカード設定のみ）。実際のカード引き落としは「ライド開始」時に行われます。</div></div>
   </div>
+
+</div><!-- /panel-reserve -->
+
+<div class="tab-panel" id="panel-ride-start">
 
   <!-- 3.5 ライド開始 -->
   <div class="section" id="ride-start">
@@ -217,12 +366,50 @@ tr.sum td strong{color:var(--accent-deep)}
       <h4>ライド開始時の決済フロー</h4>
     </div>
 
-    <div class="card">
-      <div class="fstep"><div class="pfdot shop">1</div><div class="fbody"><div class="factor shop">店舗スタッフ</div><div class="ftext">shop_admin画面の予約一覧から「ライド開始」をクリック</div></div></div>
-      <div class="fstep"><div class="pfdot shop">2</div><div class="fbody"><div class="factor shop">店舗スタッフ</div><div class="ftext">確認ポップアップで「はい」をクリック</div></div></div>
-      <div class="fstep"><div class="pfdot system">3</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">Pay.JPに「このお客さんのカードから引き落としてください」と依頼する</div><div class="fnote">顧客ID（cus_xxxxx）/ 合計金額 / 店舗テナントID（ten_xxxxx）/ 手数料 = 金額 × 15%</div></div></div>
-      <div class="fstep"><div class="pfdot payjp">4</div><div class="fbody"><div class="factor payjp">Pay.JP（自動）</div><div class="ftext">カードから引き落としを実行する</div></div></div>
-      <div class="fstep"><div class="pfdot system">5</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">決済情報（charge_id）を予約データに保存する</div><div class="fnote">エラー時 → 店頭決済（未請求）として更新する。お金の分配は<a href="#money">8章 お金の流れまとめ</a>を参照</div></div></div>
+    <figure class="fig" aria-label="カードが使えるかどうかは店頭で初めて分かり、失敗すると店頭決済（未請求）に切り替わる">
+    <div class="pflow">
+      <div class="pflow-step">
+        <div class="pflow-dot store">1</div>
+        <div class="pflow-body">
+          <div class="pflow-actor store">店舗スタッフ</div>
+          <div class="pflow-text">shop_admin画面の予約一覧から「ライド開始」をクリック</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot store">2</div>
+        <div class="pflow-body">
+          <div class="pflow-actor store">店舗スタッフ</div>
+          <div class="pflow-text">確認ポップアップで「はい」をクリック</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">3</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">Pay.JPに「このお客さんのカードから引き落としてください」と依頼する</div>
+          <div class="pflow-note">顧客ID（cus_xxxxx）/ 合計金額 / 店舗テナントID（ten_xxxxx）/ 手数料 = 金額 × 15%</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">4</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Pay.JP（自動）</div>
+          <div class="pflow-text">カードから引き落としを実行する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">5</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">決済情報（charge_id）を予約データに保存する</div>
+          <div class="pflow-note">エラー時 → 店頭決済（未請求）として更新する。お金の分配は<a href="#money">8章 お金の流れまとめ</a>を参照</div>
+        </div>
+      </div>
+    </div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--ok)"></i>店舗の操作</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Rincle / Pay.JP）</span>
     </div>
 
 
@@ -233,45 +420,161 @@ tr.sum td strong{color:var(--accent-deep)}
       <p>管理者のステータス変更でも決済が実行される場合があります。</p>
     </div>
 
-    <div class="card">
-      <div class="fstep"><div class="pfdot admin">1</div><div class="fbody"><div class="factor admin">Rincle管理者</div><div class="ftext">admin画面の予約一覧でステータスをドロップダウンから変更する</div></div></div>
-      <div class="fstep"><div class="pfdot system">2</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">条件を満たす場合、Pay.JPに引き落としを依頼する</div><div class="fnote">条件: 来客待ち・未請求 かつ クレジットカード決済</div></div></div>
-      <div class="fstep"><div class="pfdot system">3</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">決済情報を予約データに保存する</div></div></div>
+    <figure class="fig" aria-label="管理者がステータスを変えるだけでも引き落としが走る">
+    <div class="pflow">
+      <div class="pflow-step">
+        <div class="pflow-dot other">1</div>
+        <div class="pflow-body">
+          <div class="pflow-actor other">Rincle管理者</div>
+          <div class="pflow-text">admin画面の予約一覧でステータスをドロップダウンから変更する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">2</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">条件を満たす場合、Pay.JPに引き落としを依頼する</div>
+          <div class="pflow-note">条件: 来客待ち・未請求 かつ クレジットカード決済</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">3</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">決済情報を予約データに保存する</div>
+        </div>
+      </div>
+    </div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--ink)"></i>管理者（PEDALSTANDARD）</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Rincle / Pay.JP）</span>
     </div>
 
     <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div>現金支払い等で支払いが行われていないユーザーに対して実行する想定です。ドロップダウンのステータス変更で自動発火します。</div></div>
   </div>
 
+</div><!-- /panel-ride-start -->
+
+<div class="tab-panel" id="panel-extend">
+
   <!-- 4 延長 -->
   <div class="section" id="extend">
     <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>延長料金の決済フロー</h2><div class="sh-sub">ライド（利用）が予定より長くなった場合、追加料金が発生する流れ</div></div></div>
 
-    <div class="card">
-      <div class="fstep"><div class="pfdot shop">1</div><div class="fbody"><div class="factor shop">店舗スタッフ</div><div class="ftext">延長を登録する（合計金額・手数料・延長返却日を更新）</div></div></div>
-      <div class="fstep"><div class="pfdot shop">2</div><div class="fbody"><div class="factor shop">店舗スタッフ</div><div class="ftext">「ライド終了」ボタンをクリックする</div></div></div>
-      <div class="fstep"><div class="pfdot system">3</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">延長料金がある場合、Pay.JPに追加引き落としを依頼する</div></div></div>
-      <div class="fstep"><div class="pfdot payjp">4</div><div class="fbody"><div class="factor payjp">Pay.JP（自動）</div><div class="ftext">カードから追加引き落としを実行する</div></div></div>
-      <div class="fstep"><div class="pfdot system">5</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">予約ステータスを決済済みに更新する</div><div class="fnote">エラー時 → 返却済み・延長未決済として更新する</div></div></div>
+    <figure class="fig" aria-label="延長料金は元の決済とは別の決済になるため、返金のときも別々に戻すことになる">
+    <div class="pflow">
+      <div class="pflow-step">
+        <div class="pflow-dot store">1</div>
+        <div class="pflow-body">
+          <div class="pflow-actor store">店舗スタッフ</div>
+          <div class="pflow-text">延長を登録する（合計金額・手数料・延長返却日を更新）</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot store">2</div>
+        <div class="pflow-body">
+          <div class="pflow-actor store">店舗スタッフ</div>
+          <div class="pflow-text">「ライド終了」ボタンをクリックする</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">3</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">延長料金がある場合、Pay.JPに追加引き落としを依頼する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">4</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Pay.JP（自動）</div>
+          <div class="pflow-text">カードから追加引き落としを実行する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">5</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">予約ステータスを決済済みに更新する</div>
+          <div class="pflow-note">エラー時 → 返却済み・延長未決済として更新する</div>
+        </div>
+      </div>
+    </div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--ok)"></i>店舗の操作</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Rincle / Pay.JP）</span>
     </div>
 
     <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><div>延長料金は、ライド開始時の決済とは<strong>別の決済</strong>として処理されます。返金するときも、それぞれ個別に返金する必要があります。</div></div>
   </div>
 
+</div><!-- /panel-extend -->
+
+<div class="tab-panel" id="panel-refund">
+
   <!-- 5 返金 -->
   <div class="section" id="refund">
     <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>返金フロー</h2><div class="sh-sub">予約がキャンセルされたなどの理由で、お客さんに返金する流れ</div></div></div>
 
-    <div class="card">
-      <div class="fstep"><div class="pfdot admin">1</div><div class="fbody"><div class="factor admin">Rincle管理者</div><div class="ftext">admin画面の予約一覧からステータスを「キャンセル」に変更する</div></div></div>
-      <div class="fstep"><div class="pfdot admin">2</div><div class="fbody"><div class="factor admin">Rincle管理者</div><div class="ftext">キャンセルポップアップで「返金あり」をクリック</div></div></div>
-      <div class="fstep"><div class="pfdot system">3</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">Pay.JPに通常決済の返金を依頼する</div></div></div>
-      <div class="fstep"><div class="pfdot payjp">4</div><div class="fbody"><div class="factor payjp">Pay.JP（自動）</div><div class="ftext">お客さんのカードに返金処理を行う</div></div></div>
-      <div class="fstep"><div class="pfdot system">5</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">延長料金の決済があれば、そちらも返金する</div></div></div>
-      <div class="fstep"><div class="pfdot system">6</div><div class="fbody"><div class="factor system">Rincle（自動）</div><div class="ftext">返金IDを予約データに保存 + 営業日カレンダーを更新</div></div></div>
+    <figure class="fig" aria-label="返金は管理者の手作業で、延長があると通常分と延長分の2回に分かれる">
+    <div class="pflow">
+      <div class="pflow-step">
+        <div class="pflow-dot other">1</div>
+        <div class="pflow-body">
+          <div class="pflow-actor other">Rincle管理者</div>
+          <div class="pflow-text">admin画面の予約一覧からステータスを「キャンセル」に変更する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot other">2</div>
+        <div class="pflow-body">
+          <div class="pflow-actor other">Rincle管理者</div>
+          <div class="pflow-text">キャンセルポップアップで「返金あり」をクリック</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">3</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">Pay.JPに通常決済の返金を依頼する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">4</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Pay.JP（自動）</div>
+          <div class="pflow-text">お客さんのカードに返金処理を行う</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">5</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">延長料金の決済があれば、そちらも返金する</div>
+        </div>
+      </div>
+      <div class="pflow-step">
+        <div class="pflow-dot system">6</div>
+        <div class="pflow-body">
+          <div class="pflow-actor system">Rincle（自動）</div>
+          <div class="pflow-text">返金IDを予約データに保存 + 営業日カレンダーを更新</div>
+        </div>
+      </div>
+    </div>
+    </figure>
+    <div class="legend">
+      <span><i style="background:var(--ink)"></i>管理者（PEDALSTANDARD）</span>
+      <span><i style="background:var(--accent)"></i>システム・外部サービス（Rincle / Pay.JP）</span>
     </div>
 
     <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div>返金は管理画面からの手動操作です（お客さん側からは返金できません）。延長料金がある場合は、通常分と延長分の<strong>2回返金</strong>が必要です。</div></div>
   </div>
+
+</div><!-- /panel-refund -->
+
+<div class="tab-panel" id="panel-money">
 
   <!-- お金の流れまとめ -->
   <div class="section" id="money">
@@ -282,8 +585,8 @@ tr.sum td strong{color:var(--accent-deep)}
       <div class="money-row"><span class="money-amount">お客さんのカード</span><span class="money-arrow">→</span><span>10,000円 引き落とし</span></div>
       <div class="money-row" style="margin-left:32px"><span class="money-arrow">↓</span><span class="money-label">Pay.JP が一時預かり → 振込時に分配</span></div>
       <div class="money-row" style="margin-left:48px"><span class="money-arrow">→</span><span><strong>Rincleへ: 1,500円</strong></span><span class="money-label">（プラットフォーム手数料 15%）</span></div>
-      <div class="money-row" style="margin-left:48px"><span class="money-arrow">→</span><span><strong>Pay.JPへ: 約350円</strong></span><span class="money-label">（カード手数料 約3.5%）</span></div>
-      <div class="money-row" style="margin-left:48px"><span class="money-arrow">→</span><span><strong>店舗へ: 約8,150円</strong></span><span class="money-label">（10,000 − 1,500 − 350）</span></div>
+      <div class="money-row" style="margin-left:48px"><span class="money-arrow">→</span><span><strong>Pay.JPへ: 330円</strong></span><span class="money-label">（カード手数料 3.3%）</span></div>
+      <div class="money-row" style="margin-left:48px"><span class="money-arrow">→</span><span><strong>店舗へ: 8,170円</strong></span><span class="money-label">（10,000 − 1,500 − 330）</span></div>
     </div>
 
     <div class="table-wrap">
@@ -291,48 +594,54 @@ tr.sum td strong{color:var(--accent-deep)}
         <thead><tr><th>店舗から見た負担</th><th>率</th><th>支払先</th></tr></thead>
         <tbody>
           <tr><td class="label">プラットフォーム手数料</td><td><strong>15%</strong></td><td>Rincle（PEDALSTANDARD）</td></tr>
-          <tr><td class="label">カード手数料</td><td><strong>約3.5%</strong></td><td>Pay.JP</td></tr>
-          <tr class="sum"><td class="label"><strong>合計負担</strong></td><td><strong>約18.5%</strong></td><td></td></tr>
+          <tr><td class="label">カード手数料</td><td><strong>3.3%</strong></td><td>Pay.JP</td></tr>
+          <tr class="sum"><td class="label"><strong>合計負担</strong></td><td><strong>18.3%</strong></td><td></td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>カード手数料（約3.5%）は店舗負担です。</strong><br>Pay.JPの設定により、カード手数料はRincleのプラットフォーム手数料には含まれず、店舗の取り分から差し引かれます。</div></div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><div><strong>カード手数料（3.3%）は店舗負担です。</strong><br>Pay.JPの設定により、カード手数料はRincleのプラットフォーム手数料には含まれず、店舗の取り分から差し引かれます。<br>3.3%はPAY.JP公表のスタンダード料率です。契約上の実料率は要確認。</div></div>
 
-    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>契約と実装のズレは解消済み:</strong> 旧実装では10%に設定されていました。現在は契約通りの <strong>15%</strong> に修正済みです（2026-06時点）。切り替え前に作成された既存テナントへの適用状況は要確認。</div></div>
+    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><div><strong>契約と実装のズレは解消済み:</strong> 旧実装では10%に設定されていました。現在は契約通りの <strong>15%</strong> に修正済みです（2026年6月時点）。切り替え前に作成された既存テナントへの適用状況は要確認。</div></div>
   </div>
 
-  <!-- まとめ -->
-  <div class="recap">
-    <h2>フロー全体のまとめ</h2>
-    <div class="r-block">
-      <div class="r-title">店舗側の準備</div>
-      <div class="r-flow"><span class="r-chip">店舗登録</span><span class="r-arr">→</span><span class="r-chip">Pay.JP審査（数日）</span><span class="r-arr">→</span><span class="r-chip">審査通過</span><span class="r-arr">→</span><span class="r-chip hot">決済受付OK！</span></div>
-    </div>
-    <div class="r-block">
-      <div class="r-title">お客さん側の準備</div>
-      <div class="r-flow"><span class="r-chip">予約フローの「支払い方法」でカード登録</span><span class="r-arr">→</span><span class="r-chip hot">以降はそのカードで決済OK！</span></div>
-    </div>
-    <div class="r-block">
-      <div class="r-title">予約 〜 決済</div>
-      <div class="r-flow"><span class="r-chip">予約確定（課金なし・自転車確保のみ）</span><span class="r-arr">→</span><span class="r-chip">店舗が「ライド開始」</span><span class="r-arr">→</span><span class="r-chip">カード引き落とし</span><span class="r-arr">→</span><span class="r-chip hot">完了</span></div>
-      <p class="r-note">※ 管理者がステータス変更で課金する場合もあり</p>
-    </div>
-    <div class="r-block">
-      <div class="r-title">延長が発生したら</div>
-      <div class="r-flow"><span class="r-chip">店舗が延長登録</span><span class="r-arr">→</span><span class="r-chip">「ライド終了」</span><span class="r-arr">→</span><span class="r-chip">延長料金を追加で引き落とし</span></div>
-    </div>
-    <div class="r-block">
-      <div class="r-title">キャンセル・返金</div>
-      <div class="r-flow"><span class="r-chip">管理者が返金実行</span><span class="r-arr">→</span><span class="r-chip">カードに返金（通常分 + 延長分）</span></div>
-    </div>
-  </div>
+</div><!-- /panel-money -->
 
 </div>
 
 <!-- md更新時はこのHTMLも同期すること（正本: documents/2_requirements/04_integration/pay.jp/payjp-flow-asis.md） -->
 <footer>正本: documents/2_requirements/04_integration/pay.jp/payjp-flow-asis.md</footer>
 
+<script>
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  function openTab(id){
+    tabBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.id === id); });
+    window.scrollTo({top: 0});
+  }
+  // ハッシュの行き先を開く。パネル自体を指す時はそのタブを開き、
+  // 章など「閉じているタブの中の要素」を指す時は、そのタブを開いてからその位置へ送る
+  function openByHash(){
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (el.classList.contains('tab-panel')) { openTab(el.id); return; }
+    var panel = el.closest ? el.closest('.tab-panel') : null;
+    if (!panel) return;
+    openTab(panel.id);
+    el.scrollIntoView();
+  }
+  tabBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      openTab(b.dataset.target);
+      history.replaceState(null, '', '#' + b.dataset.target);
+    });
+  });
+  openByHash();
+  addEventListener('hashchange', openByHash);
+</script>
 <script>
 (function(){
   // 読み進みバー

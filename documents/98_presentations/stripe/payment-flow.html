@@ -92,7 +92,8 @@
     <h1>予約・決済・貸出・返却フロー（決定版）</h1>
     <p class="lead">増永さんの構想（6月30日受領）を弊社がStripeの実装観点で検証・図解しました。<strong>7月3日定例で「当日決済のみ（オーソリなし・QRチェックインなし）」のフローに決定</strong>しました。弊社の変更・補強箇所には「弊社提案」の印を付けています。</p>
     <div class="hero-meta">
-      <span>ベース: 増永さん構想.md（6月30日）</span>
+      <!-- ベース: documents/1_meeting_minutes/増永さん構想.md（6月30日受領） -->
+      <span>ベース: 増永さんの構想（6月30日受領）</span>
       <span>前提: Stripeへの載せ替え（6月19日決定）</span>
       <span>デポジットは今回スコープ外・将来対応できる設計にする（7月3日）</span>
     </div>
@@ -113,7 +114,12 @@
 
   <!-- 01 結論 -->
   <div class="section" id="conclusion">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">7月3日定例で「当日決済のみ」に決定 — 予約時は0円・お金が動くのは貸出開始と返却の最大2回</div></div></div>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">決済をいつ行い、お金が何回動くか</div></div></div>
+    <div class="stat-row">
+      <div class="stat"><span class="l">予約の時点で引き落とす金額</span><span class="n hot">&yen;0</span></div>
+      <div class="stat"><span class="l">通常利用でお金が動く回数</span><span class="n">最大2<small>回</small></span></div>
+    </div>
+
     <p><strong>当日決済のみ</strong>で確定（オーソリなし・QRチェックインなし。トラブルが多ければオーソリは後から検討）。お金が動く回数は通常利用で<strong>最大2回</strong>（貸出開始時に全額＋返却時に追加分・<strong>予約時は0円</strong>）。オーソリを見送った理由は<strong>明細が最大3つに分かれる</strong>＋当日のオプション変更が頻発する現場と相性が悪いため。残る論点はキャンセルポリシー・破損請求・本人確認（6章）。</p>
     <ul class="notes">
       <li><strong>領収書 / インボイスは調査完了</strong>です。別資料「<a href="receipt-invoice.html">領収書・インボイスの扱い</a>」をご覧ください。</li>
@@ -311,7 +317,7 @@
         <li>破損・紛失あり → <strong>損害分だけ確定（キャプチャ）して残りは解放</strong>。3-2の「後日請求」より確実に回収できる</li>
       </ul>
 
-      <p style="margin-bottom:8px"><strong>導入時の前提条件（調査済み・#25）</strong></p>
+      <p style="margin-bottom:8px"><strong>導入時の前提条件（調査済み）</strong><!-- 社内タスク #25 --></p>
       <ul style="margin-bottom:16px">
         <li><strong>クレジットカード限定にする。</strong>デビット / プリペイドはオーソリでも実際にお金が引き落とされ、返金に最大2週間かかる（「30万円引かれた！」クレームに直結）。Stripeはカード種別を判定して弾ける — <strong>Pay.jpにはできなかったことで、Stripeを選んだ利点がそのまま効く</strong></li>
         <li><strong>金額は3〜5万円が現実解。</strong>一般カードのショッピング枠（10〜30万円スタートが相場）で通る上限の目安。高額にするほど「枠が足りず借りられない人」が増える（詳細: 決済基盤の方針資料 §2.5）</li>
@@ -358,14 +364,14 @@
   <div class="section" id="s5">
     <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>決定事項と残る論点（7月3日更新）</h2></div></div>
 
-    <h3>増永さん側で決めてもらうこと（残り）</h3>
+    <h3>決めてもらうこと（残り）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>#</th><th>決めること</th><th>補足</th></tr></thead>
+        <thead><tr><th style="width:220px">決めること</th><th style="width:120px">誰が決める</th><th>補足</th></tr></thead>
         <tbody>
-          <tr><td>1</td><td class="label">キャンセルポリシーの中身<br><span style="font-family:'Noto Sans JP',sans-serif;font-weight:400;font-size:12px;color:var(--sub)">周辺ルールもセットで</span></td><td>基本の「何日前から・何%・無断キャンセルはいくら」に加え<strong>運用で必ず出てくる次の6点もセットで決めたい</strong>（バラバラに決めると二度手間になるため）。<strong>キャンセル料請求の実装と詳細見積はここが決まらないと着手できない</strong>。周辺ルール6点は下の表にまとめています</td></tr>
-          <tr><td>2</td><td class="label">破損請求の運用ルール</td><td>提案4-2を採用する場合: 誰が金額を査定するか（加盟店 or 運営）・上限額の目安</td></tr>
-          <tr><td>3</td><td class="label">本人確認の基準</td><td>全予約で確認するか、高額車両・E-Bikeのみか。確認書類の種類</td></tr>
+          <tr><td class="label wrap">キャンセルポリシーの中身<span class="td-sub">周辺ルールもセットで</span></td><td>増永さん側</td><td>基本の「何日前から・何%・無断キャンセルはいくら」に加え<strong>運用で必ず出てくる次の6点もセットで決めたい</strong>（バラバラに決めると二度手間になるため）。<strong>キャンセル料請求の実装と詳細見積はここが決まらないと着手できない</strong>。周辺ルール6点は下の表にまとめています</td></tr>
+          <tr><td class="label wrap">破損請求の運用ルール</td><td>増永さん側</td><td>提案4-2を採用する場合: 誰が金額を査定するか（加盟店 or 運営）・上限額の目安</td></tr>
+          <tr><td class="label wrap">本人確認の基準</td><td>増永さん側</td><td>全予約で確認するか、高額車両・E-Bikeのみか。確認書類の種類</td></tr>
         </tbody>
       </table>
     </div>
@@ -392,7 +398,7 @@
 </div>
 
 <!-- md更新時はこのHTMLも同期すること（正本: このHTMLが決定版のフローの正本。ベース: documents/1_meeting_minutes/増永さん構想.md〈6月30日受領〉+弊社の実装検証。7月3日定例で決定 = documents/1_meeting_minutes/7.3.txt。関連: payjp-vs-stripe.html「7.1 決済フロー設計」の旧設計は本資料で置き換え） -->
-<footer>正本: この資料（7月3日決定版） / ベース: documents/1_meeting_minutes/増永さん構想.md</footer>
+<footer>正本: この資料（7月3日決定版）</footer>
 
 <script>
 (function(){

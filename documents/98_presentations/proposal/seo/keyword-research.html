@@ -11,28 +11,17 @@
 <style>
 /* ページ固有CSS — 検索キーワード調査（共通部品は ../../assets/design.css を参照） */
 
-.hero h1 .sub{font-size:24px;color:var(--text);letter-spacing:0}
 .section p{font-size:14px}
-.card ul{padding-left:20px;font-size:14px;margin:0}
-.card li{margin-bottom:8px;line-height:1.9}
-.card li:last-child{margin-bottom:0}
+.section ul{padding-left:20px;font-size:14px;margin:16px 0 0}
+.section li{margin-bottom:8px;line-height:1.9}
+.section li:last-child{margin-bottom:0}
 
-/* 結論の2枚組は共通部品の .stat-row / .stat（2列に詰め、勝ち負けを左罫と数字の色で示す） */
-.stat-row{grid-template-columns:1fr 1fr}
-.stat.win{border-left-color:var(--ok)}
-.stat.win .n{color:var(--ok)}
-.stat.lose{border-left-color:var(--danger)}
-.stat.lose .n{color:var(--danger)}
+/* 「型」列は折り返さない */
+td.ty{white-space:nowrap}
 
-/* サジェスト語のチップ（罫線基調。緑=地域名 / 琥珀=情報型） */
-.tag{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:2px 9px;font-size:12px;font-weight:500;color:var(--text);margin:2px}
-.tag.geo{background:var(--ok-soft);border-color:var(--ok-line);color:var(--ok-text)}
-.tag.info{background:var(--gold-soft);border-color:#EAD9AE;color:var(--gold-text)}
+/* サジェスト語のチップ（罫線基調・色は付けない。種類は表の「型」列で示す） */
+.chip{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:2px 9px;font-size:12px;font-weight:500;color:var(--text);margin:2px}
 
-@media (max-width:760px){
-  .hero h1 .sub{font-size:18px}
-  .stat-row{grid-template-columns:1fr}
-}
 </style>
 </head>
 <body>
@@ -64,9 +53,9 @@
       </div>
       <span class="hero-no">SEO</span>
     </div>
-    <h1>検索キーワード調査 <span class="sub">「ロードバイク軸」の定量裏付け</span></h1>
-    <p class="lead">「検索語の実態を調べる」（6月12日定例の宿題）への回答。Googleサジェスト（検索補完の実データ）から、人々が本当にどう検索しているかを確認しました。</p>
-    <div class="hero-meta">2026-06-12調査 ｜ 手法: Googleサジェスト（一次データ）</div>
+    <h1>検索キーワード調査</h1>
+    <p class="lead">「検索語の実態を調べる」（6月12日定例の宿題）への回答です。Googleサジェスト（検索補完の実データ）から人々が本当にどう検索しているかを確認しました。「ロードバイク軸」の定量的な裏付けになります。</p>
+    <div class="hero-meta">2026年6月12日調査 ｜ 手法: Googleサジェスト（一次データ）</div>
   </div>
 </div>
 
@@ -83,16 +72,17 @@
   <div class="section" id="conclusion">
     <div class="section-header">
       <div class="section-num">01</div>
-      <div class="sh-body"><h2>結論</h2><div class="sh-sub">サジェスト件数で見る検索需要の差</div></div>
+      <div class="sh-body"><h2>結論</h2><div class="sh-sub">2つの検索語をサジェスト件数で比べた結果</div></div>
     </div>
-    <div class="stat-row">
-      <div class="stat win">
-        <span class="l">「ロードバイク レンタル」のサジェスト（2026-06-12 実測）</span>
-        <span class="n">10<small>件</small></span>
+    <!-- 2枚組なので列数だけ指定（.lanes と同じインライン指定。狭い幅では自動で1列） -->
+    <div class="stat-row" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+      <div class="stat">
+        <span class="l">「ロードバイク レンタル」のサジェスト（2026年6月12日実測）</span>
+        <span class="n hot">10<small>件</small></span>
         <span class="d">サジェストがフルに出る。うち8件が地域名で、地域×レンタルの検索需要が実在する</span>
       </div>
-      <div class="stat lose">
-        <span class="l">「スポーツバイク レンタル」のサジェスト（2026-06-12 実測）</span>
+      <div class="stat">
+        <span class="l">「スポーツバイク レンタル」のサジェスト（2026年6月12日実測）</span>
         <span class="n">4<small>件</small></span>
         <span class="d">サジェストが4件しか出ない。「スポーツバイクでは誰も調べない」の定量的な証拠</span>
       </div>
@@ -107,50 +97,45 @@
   <div class="section" id="data">
     <div class="section-header">
       <div class="section-num">02</div>
-      <div class="sh-body"><h2>取得データ（Googleサジェスト・2026-06-12）</h2><div class="sh-sub">7つの検索語で実測したサジェスト</div></div>
-    </div>
-    <div class="legend">
-      <span><i style="background: var(--ok);"></i>地域名</span>
-      <span><i style="background: var(--gold);"></i>情報型（記事ネタになる語）</span>
-      <span><i style="background: var(--surface); border: 1px solid var(--line);"></i>その他の修飾語</span>
+      <div class="sh-body"><h2>取得データ</h2><div class="sh-sub">7つの検索語で実測したサジェスト（2026年6月12日・Googleサジェスト）</div></div>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>入力KW</th><th>サジェスト（上位）</th><th>読み取り</th></tr></thead>
+        <thead><tr><th>入力KW</th><th>型</th><th>サジェスト（上位）</th><th>読み取り</th></tr></thead>
         <tbody>
           <tr>
-            <td class="label">ロードバイク レンタル</td>
-            <td><span class="tag geo">東京</span><span class="tag geo">東京 安い</span><span class="tag geo">八王子</span><span class="tag geo">都内</span><span class="tag geo">多摩川</span><span class="tag geo">荒川</span><span class="tag">1ヶ月</span><span class="tag geo">千葉</span><span class="tag geo">神奈川</span></td>
+            <td class="label">ロードバイク レンタル</td><td class="ty">地域型</td>
+            <td><span class="chip">東京</span><span class="chip">東京 安い</span><span class="chip">八王子</span><span class="chip">都内</span><span class="chip">多摩川</span><span class="chip">荒川</span><span class="chip">1ヶ月</span><span class="chip">千葉</span><span class="chip">神奈川</span></td>
             <td><strong>10件フル・8件が地域名</strong>。「安い」「1ヶ月」の修飾も需要あり</td>
           </tr>
           <tr>
-            <td class="label">スポーツバイク レンタル</td>
-            <td><span class="tag geo">東京</span><span class="tag geo">大阪</span><span class="tag">レンタルサイクル スポーツバイク</span></td>
+            <td class="label">スポーツバイク レンタル</td><td class="ty">地域型</td>
+            <td><span class="chip">東京</span><span class="chip">大阪</span><span class="chip">レンタルサイクル スポーツバイク</span></td>
             <td><strong>4件のみ</strong>。需要が薄い証拠</td>
           </tr>
           <tr>
-            <td class="label">レンタサイクル</td>
-            <td><span class="tag">日本橋</span><span class="tag">新宿</span><span class="tag">東京</span><span class="tag">料金</span><span class="tag">ドコモ</span><span class="tag">中央区</span><span class="tag">近く</span><span class="tag">江戸川区</span><span class="tag">公園</span></td>
+            <td class="label">レンタサイクル</td><td class="ty">地域型</td>
+            <td><span class="chip">日本橋</span><span class="chip">新宿</span><span class="chip">東京</span><span class="chip">料金</span><span class="chip">ドコモ</span><span class="chip">中央区</span><span class="chip">近く</span><span class="chip">江戸川区</span><span class="chip">公園</span></td>
             <td>街乗り・シェアサイクル文脈（ハローサイクリング等の世界）。RINCLEの主戦場ではない</td>
           </tr>
           <tr>
-            <td class="label">eバイク レンタル</td>
-            <td><span class="tag geo">東京</span><span class="tag geo">大阪</span><span class="tag geo">関西</span><span class="tag geo">埼玉</span><span class="tag geo">名古屋</span><span class="tag geo">しまなみ</span><span class="tag geo">千葉</span><span class="tag geo">長野県</span><span class="tag geo">京都</span></td>
+            <td class="label">eバイク レンタル</td><td class="ty">地域型</td>
+            <td><span class="chip">東京</span><span class="chip">大阪</span><span class="chip">関西</span><span class="chip">埼玉</span><span class="chip">名古屋</span><span class="chip">しまなみ</span><span class="chip">千葉</span><span class="chip">長野県</span><span class="chip">京都</span></td>
             <td>10件フル。<strong>E-Bike×観光地の需要が既に顕在化</strong></td>
           </tr>
           <tr>
-            <td class="label">クロスバイク レンタル</td>
-            <td><span class="tag geo">東京</span><span class="tag">1ヶ月</span><span class="tag geo">埼玉</span><span class="tag geo">大阪</span><span class="tag geo">京都</span><span class="tag geo">千葉</span><span class="tag geo">名古屋</span><span class="tag geo">琵琶湖</span><span class="tag geo">神奈川</span></td>
+            <td class="label">クロスバイク レンタル</td><td class="ty">地域型</td>
+            <td><span class="chip">東京</span><span class="chip">1ヶ月</span><span class="chip">埼玉</span><span class="chip">大阪</span><span class="chip">京都</span><span class="chip">千葉</span><span class="chip">名古屋</span><span class="chip">琵琶湖</span><span class="chip">神奈川</span></td>
             <td>10件フル。長期（1ヶ月）需要も見える</td>
           </tr>
           <tr>
-            <td class="label">しまなみ海道 自転車</td>
-            <td><span class="tag info">レンタル</span><span class="tag info">時間</span><span class="tag info">所要時間</span><span class="tag info">料金</span><span class="tag info">ルート</span><span class="tag info">乗り捨て</span><span class="tag info">距離</span><span class="tag info">通行料</span><span class="tag info">荷物</span></td>
+            <td class="label">しまなみ海道 自転車</td><td class="ty">情報型</td>
+            <td><span class="chip">レンタル</span><span class="chip">時間</span><span class="chip">所要時間</span><span class="chip">料金</span><span class="chip">ルート</span><span class="chip">乗り捨て</span><span class="chip">距離</span><span class="chip">通行料</span><span class="chip">荷物</span></td>
             <td><strong>情報型クエリの宝庫 = ブログ記事の見出しがそのまま見える</strong></td>
           </tr>
           <tr>
-            <td class="label">ビワイチ</td>
-            <td><span class="tag info">距離</span><span class="tag info">レンタサイクル</span><span class="tag info">時間</span><span class="tag info">ルート</span><span class="tag info">コース</span><span class="tag info">何キロ</span><span class="tag info">スタート地点</span></td>
+            <td class="label">ビワイチ</td><td class="ty">情報型</td>
+            <td><span class="chip">距離</span><span class="chip">レンタサイクル</span><span class="chip">時間</span><span class="chip">ルート</span><span class="chip">コース</span><span class="chip">何キロ</span><span class="chip">スタート地点</span></td>
             <td>同上。「ビワイチ レンタサイクル」が直接出る</td>
           </tr>
         </tbody>
@@ -167,13 +152,11 @@
       <div class="section-num">03</div>
       <div class="sh-body"><h2>含意</h2><div class="sh-sub">このデータから決めたこと</div></div>
     </div>
-    <div class="card">
-      <ul>
-        <li><strong>メタ情報・記事・広告の文言は「ロードバイク」「eバイク」軸で統一</strong>（「スポーツバイク」は社名・ブランド説明以外で使わない）— 6月12日確定方針の再確認</li>
-        <li><strong>ブログ記事の構成はサジェストに従う</strong>: 「しまなみ海道」記事なら所要時間・料金・ルート・乗り捨て可否・荷物の扱いを網羅すれば検索意図をカバーできる</li>
-        <li>「ロードバイク / クロスバイク レンタル <strong>1ヶ月</strong>」= 長期レンタル需要の存在。将来の商品設計の材料（月貸し・サブスクは競合CycleTripの領域）</li>
-      </ul>
-    </div>
+    <ul>
+      <li><strong>メタ情報・記事・広告の文言は「ロードバイク」「eバイク」軸で統一する</strong>（「スポーツバイク」は社名・ブランド説明以外で使わない）</li>
+      <li><strong>ブログ記事の構成はサジェストに従う</strong>: 「しまなみ海道」記事なら所要時間・料金・ルート・乗り捨て可否・荷物の扱いを網羅すれば検索意図をカバーできる</li>
+      <li>「ロードバイク / クロスバイク レンタル <strong>1ヶ月</strong>」= 長期レンタル需要の存在。将来の商品設計の材料（月貸し・サブスクは競合CycleTripの領域）</li>
+    </ul>
   </div>
 
   <!-- 次のアクション -->
@@ -189,7 +172,7 @@
       <li><strong>キーワードプランナーで月間検索数を取得する</strong> — 取れた実数を記事の優先順位づけに使います</li>
     </ol>
     <p>取得対象の検索語:</p>
-    <p><span class="tag">ロードバイク レンタル × 主要都市</span><span class="tag">観光ルート名 × レンタサイクル</span><span class="tag">eバイク レンタル × 地域</span></p>
+    <p><span class="chip">ロードバイク レンタル × 主要都市</span><span class="chip">観光ルート名 × レンタサイクル</span><span class="chip">eバイク レンタル × 地域</span></p>
   </div>
 
 </div>

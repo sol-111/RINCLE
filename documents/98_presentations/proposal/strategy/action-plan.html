@@ -44,9 +44,6 @@
 .gantt-table .g-label{font-size:12.5px;font-weight:700;white-space:nowrap;padding-right:14px;min-width:120px;line-height:1.6}
 .gantt-bar{height:26px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--paper)}
 .gantt-bar.plain{background:var(--paper);border:1px solid var(--line);color:var(--ink)}
-.legend-row{margin-top:22px;display:flex;flex-wrap:wrap;gap:20px;justify-content:center;font-size:11.5px}
-.legend-row span.item{display:inline-flex;align-items:center;gap:8px;font-weight:700}
-.legend-row i{width:10px;height:10px;border-radius:2px;display:inline-block}
 </style>
 </head>
 <body>
@@ -88,16 +85,27 @@
   <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">費用ゼロのPhase 1から2週間で着手</span></a>
   <a href="#phases"><span class="fnum">2</span><span class="ft">実行フェーズ</span><span class="fd">Phase 1〜4 + 並行トラック</span></a>
   <a href="#schedule"><span class="fnum">3</span><span class="ft">全体スケジュール</span><span class="fd">Week 1〜Month 6の流れ</span></a>
-  <a href="#kpi"><span class="fnum">4</span><span class="ft">KPI目標</span><span class="fd">追跡する指標と目標値</span></a>
-  <a href="#cost"><span class="fnum">5</span><span class="ft">概算費用</span><span class="fd">工数と外注時の目安</span></a>
+  <a href="#cost"><span class="fnum">4</span><span class="ft">費用とKPI</span><span class="fd">工数と外注時の目安・追跡する指標</span></a>
 </nav>
 
 <div class="container">
 
   <!-- ===== 1. 結論 ===== -->
   <div class="section" id="conclusion">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">今週から2週間はPhase 1（計測とSEO基盤の整備・費用ゼロ）から</div></div></div>
-    <p>今週から2週間はPhase 1（計測とSEO基盤の整備・費用ゼロ）から着手します。詳しくは<a href="#phases">02 実行フェーズ</a>をご覧ください。</p>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">最初に着手する範囲と、その規模</div></div></div>
+    <p><strong>今週から2週間はPhase 1（計測とSEO基盤の整備・即効集客）に絞って着手します</strong>。外部への支払いが発生せず、SEOの効果が出るまでの2〜6ヶ月を待たずに動かせる施策だけを並べた範囲です。中身は<a href="#phases">02 実行フェーズ</a>をご覧ください。</p>
+    <div class="stat-row">
+      <div class="stat">
+        <span class="l">Phase 1に充てる期間</span>
+        <span class="n">2<small>週間</small></span>
+        <span class="d">今週から。GBP対応だけは店舗との調整を含めて2〜4週間の継続作業です</span>
+      </div>
+      <div class="stat">
+        <span class="l">Phase 1の工数の目安</span>
+        <span class="n">5〜8<small>人日</small></span>
+        <span class="d">12施策の合計。内訳は<a href="#cost">04 費用とKPI</a></span>
+      </div>
+    </div>
     <ul class="notes">
       <li>2026年8月20日時点の進み具合: DB再構築は完了しました。新サイトは2026年7月上旬に本番リリース済みです。GA4・Search Console・sitemap.xmlの本番設置はこれからです（sitemap.xmlは手動生成方式に決定・2026年8月20日）。</li>
     </ul>
@@ -253,7 +261,7 @@
           <span class="phase-label" style="color:var(--ink);">並行トラック</span>
           <span class="phase-period" style="color:var(--sub);">Phase 3〜・toCマーケと並行</span>
         </div>
-        <div class="phase-subtitle">自治体・DMO営業（2026-06調査で新設）</div>
+        <div class="phase-subtitle">自治体・DMO営業（2026年6月の調査で新設）</div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>施策</th><th style="width:200px">費用・進め方</th></tr></thead>
@@ -332,52 +340,12 @@
           </tr>
         </tbody>
       </table>
-
-      <div class="legend-row">
-        <span class="item"><i style="background:var(--phase1);"></i> Phase 1: 計測+SEO基盤+即効集客</span>
-        <span class="item"><i style="background:var(--phase2);"></i> Phase 2: データ+設計</span>
-        <span class="item"><i style="background:var(--phase3);"></i> Phase 3: UI / UX</span>
-        <span class="item"><i style="background:var(--phase4);"></i> Phase 4: 集客</span>
-        <span class="item"><i style="background:var(--paper);border:1px solid var(--line);"></i> 並行: 自治体・DMO営業</span>
-      </div>
     </div>
   </div>
 
-  <!-- ===== 4. KPI目標 ===== -->
-  <div class="section" id="kpi">
-    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>KPI目標 <span class="badge plain">凍結中（2026年8月20日）</span></h2><div class="sh-sub">Phase 1でベースラインを取得した上で追跡する</div></div></div>
-    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>この表の読み方:</strong> KGI / KPIの目標は現在凍結中です（実績の月次記録は継続しています）。下の数値は2026年5月時点の案で、利用者の増加と差別化機能の実装を待って設定し直します。この数値をもとに判断しないでください。</div></div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>KPI</th>
-            <th>ベースライン</th>
-            <th>Phase 2終了時</th>
-            <th>Phase 3終了時</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td class="label">月間サイト訪問数</td><td style="color:var(--sub);">要計測</td><td>現状の2倍</td><td>現状の5倍</td></tr>
-          <tr><td class="label">予約完了率（CVR）</td><td style="color:var(--sub);">要計測</td><td>現状+1%</td><td>現状+3%</td></tr>
-          <tr><td class="label">月間予約数</td><td style="color:var(--sub);">要計測</td><td>現状の2倍</td><td>現状の5倍</td></tr>
-          <tr><td class="label">レビュー数（累計）</td><td>0件</td><td>72件</td><td>120件</td></tr>
-          <tr><td class="label">リピート率</td><td style="color:var(--sub);">要計測</td><td>10%</td><td>20%</td></tr>
-          <tr><td class="label">レンタル→購入相談数（物販送客）</td><td>0件（T3-5実装後に計測）</td><td style="color:var(--sub);">—</td><td>計測開始・実績作り</td></tr>
-          <tr><td class="label">Googleインデックス数</td><td>2ページ</td><td>30ページ以上</td><td>50ページ以上</td></tr>
-          <tr><td class="label">主要KW検索順位</td><td>圏外</td><td>50位以内</td><td>20位以内</td></tr>
-          <tr><td class="label">パートナーショップ数</td><td>24店舗<div class="td-sub">作成当時の値。2026年8月20日の実測では56店舗</div></td><td>30店舗</td><td>50店舗</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <ul class="notes">
-      <li>具体的な数値目標は、Phase 1でベースラインのデータを取得したあとに調整します。</li>
-    </ul>
-  </div>
-
-  <!-- ===== 5. 概算費用 ===== -->
+  <!-- ===== 4. 費用とKPI（旧04 KPI目標 + 旧05 概算費用を統合・2026-09-14） ===== -->
   <div class="section" id="cost">
-    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>概算費用</h2><div class="sh-sub">工数と外注する場合の目安</div></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>費用とKPI</h2><div class="sh-sub">各Phaseにかかる工数の目安と、あとで追跡する指標</div></div></div>
     <div class="table-wrap">
       <table>
         <thead>
@@ -396,7 +364,7 @@
           <tr><td class="label ind">Tier 2</td><td>比較機能 / レビュー / SEOページ / 初心者導線</td><td>20〜40人日</td><td class="num calc">100〜300万円</td></tr>
           <tr><td class="label ind">Tier 3</td><td>LINE / リピート設計 / ダッシュボード</td><td>20〜40人日</td><td class="num calc">100〜300万円</td></tr>
           <tr><td class="label">Phase 4</td><td>Google広告（月額）</td><td>—</td><td class="num">月5〜30万円<div class="td-sub">初期は小さく開始</div></td></tr>
-          <tr><td class="label ind">Phase 4</td><td>SNS運用</td><td>月2〜4人日</td><td class="num">月10〜30万円</td></tr>
+          <tr><td class="label">Phase 4</td><td>SNS運用</td><td>月2〜4人日</td><td class="num">月10〜30万円</td></tr>
         </tbody>
       </table>
     </div>
@@ -404,6 +372,39 @@
       <li>Bubble.ioベースの開発か、別途フロントエンドを開発するかで大きく変わります。内製の場合はエンジニア1〜2名で対応できる範囲です。</li>
       <li>Phase 3の親行に金額は入れていません。Tier 1〜3の各行をご覧ください。</li>
     </ul>
+
+    <div class="sub-item" id="kpi">
+      <div class="kick">かけた費用を何で測るか</div>
+      <h4>KPI目標 <span class="badge plain">凍結中（2026年8月20日）</span></h4>
+      <p>Phase 1でベースラインを取得した上で追跡する指標です。</p>
+      <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div><strong>この表の読み方:</strong> KGI / KPIの目標は現在凍結中です（実績の月次記録は継続しています）。下の数値は2026年5月時点の案で、利用者の増加と差別化機能の実装を待って設定し直します。この数値をもとに判断しないでください。</div></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>KPI</th>
+              <th>ベースライン</th>
+              <th>Phase 2終了時</th>
+              <th>Phase 3終了時</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="label">月間サイト訪問数</td><td style="color:var(--sub);">要計測</td><td>現状の2倍</td><td>現状の5倍</td></tr>
+            <tr><td class="label">予約完了率（CVR）</td><td style="color:var(--sub);">要計測</td><td>現状+1%</td><td>現状+3%</td></tr>
+            <tr><td class="label">月間予約数</td><td style="color:var(--sub);">要計測</td><td>現状の2倍</td><td>現状の5倍</td></tr>
+            <tr><td class="label">レビュー数（累計）</td><td>0件</td><td>72件</td><td>120件</td></tr>
+            <tr><td class="label">リピート率</td><td style="color:var(--sub);">要計測</td><td>10%</td><td>20%</td></tr>
+            <tr><td class="label">レンタル→購入相談数（物販送客）</td><td>0件（T3-5実装後に計測）</td><td style="color:var(--sub);">—</td><td>計測開始・実績作り</td></tr>
+            <tr><td class="label">Googleインデックス数</td><td>2ページ</td><td>30ページ以上</td><td>50ページ以上</td></tr>
+            <tr><td class="label">主要KW検索順位</td><td>圏外</td><td>50位以内</td><td>20位以内</td></tr>
+            <tr><td class="label">パートナーショップ数</td><td>24店舗<div class="td-sub">作成当時の値。2026年8月20日の実測では56店舗</div></td><td>30店舗</td><td>50店舗</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="notes">
+        <li>具体的な数値目標は、Phase 1でベースラインのデータを取得したあとに調整します。</li>
+      </ul>
+    </div>
   </div>
 
 </div>

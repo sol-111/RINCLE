@@ -21,12 +21,6 @@
 .url-legend{display:flex;gap:26px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid rgba(237,230,223,.16)}
 .url-legend span{font-size:11.5px;color:#A89A8E;display:flex;align-items:center;gap:8px;line-height:1.7}
 .url-legend i{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
-
-/* 載せないページ表の×印（塗らずに罫線で） */
-.ng{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--surface);border:1px solid var(--danger-line);color:var(--danger);font-family:var(--serif);font-size:11px;line-height:1;margin-right:8px;vertical-align:2px}
-
-/* 表の3列目（優先度バー）は幅を確保 */
-.pri{min-width:150px}
 </style>
 </head>
 <body>
@@ -60,19 +54,18 @@
     </div>
     <h1>sitemap.xml 作成手順</h1>
     <p class="lead">本番サイト（rincle.co.jp）の全ページ一覧をGoogleに知らせるsitemap.xmlを、BubbleのData APIで作ってBubbleのルート直下に置き、登録するまでの手順です。</p>
-    <div class="hero-meta">2026-08-26更新 ｜ 作業は弊社が実施 ｜ 増永さんは「前提」「載せるページ / 載せないページ」と末尾の「運用のまとめ」をご覧ください</div>
+    <div class="hero-meta">2026年8月26日更新 ｜ 作業は弊社が実施 ｜ 増永さんは「結論」「前提と載せる範囲」をご覧ください</div>
   </div>
 </div>
 
 <!-- 全体フロー（ナビ） -->
 <nav class="flow">
   <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">Data APIのID一覧から手作業で組み立てる</span></a>
-  <a href="#why"><span class="fnum">2</span><span class="ft">前提: なぜ手作業で作るのか</span><span class="fd">Bubbleの自動生成が使えない理由</span></a>
-  <a href="#pages"><span class="fnum">3</span><span class="ft">載せるページ / 載せないページ</span><span class="fd">Bubble設定で選定済みの5ページに合わせる</span></a>
-  <a href="#step1"><span class="fnum">4</span><span class="ft">bubbleファイルの用意</span><span class="fd">設計図からページの種類を洗い出す</span></a>
-  <a href="#step2"><span class="fnum">5</span><span class="ft">Data APIの設定</span><span class="fd">店舗・自転車のID一覧を取る</span></a>
-  <a href="#step3"><span class="fnum">6</span><span class="ft">sitemap.xmlを生成</span><span class="fd">スクリプトが取得〜組み立てまで実行</span></a>
-  <a href="#step4"><span class="fnum">7</span><span class="ft">公開とGoogle登録</span><span class="fd">Bubbleに置いてSearch Consoleへ</span></a>
+  <a href="#why"><span class="fnum">2</span><span class="ft">前提と載せる範囲</span><span class="fd">手作業で作る理由と、載せる / 載せないページ</span></a>
+  <a href="#step1"><span class="fnum">3</span><span class="ft">bubbleファイルの用意</span><span class="fd">設計図からページの種類を洗い出す</span></a>
+  <a href="#step2"><span class="fnum">4</span><span class="ft">Data APIの設定</span><span class="fd">店舗・自転車のID一覧を取る</span></a>
+  <a href="#step3"><span class="fnum">5</span><span class="ft">sitemap.xmlを生成</span><span class="fd">スクリプトが取得〜組み立てまで実行</span></a>
+  <a href="#step4"><span class="fnum">6</span><span class="ft">公開とGoogle登録</span><span class="fd">Bubbleに置いてSearch Consoleへ</span></a>
 </nav>
 
 <div class="container">
@@ -81,22 +74,33 @@
   <div class="section" id="conclusion">
     <div class="section-header">
       <div class="section-num">01</div>
-      <div class="sh-body"><h2>結論</h2><div class="sh-sub">Bubbleの自動生成に頼らず、Data APIのID一覧から手作業で組み立てる</div></div>
+      <div class="sh-body"><h2>結論</h2><div class="sh-sub">sitemap.xmlの作り方と、作り直しの手順</div></div>
     </div>
-    <p>Bubbleの自動生成では店舗・自転車の1件1件のURLが載らないため、Data APIからID一覧を取ってsitemap.xmlを手作業で組み立てます。2026-08-21の初回生成は408 URL（静的3 + 店舗63 + 自転車342）でした。</p>
+    <p>Bubbleの自動生成では店舗・自転車の1件1件のURLが載らないため、Data APIからID一覧を取ってsitemap.xmlを手作業で組み立てます。</p>
+    <!-- 単独の stat なので幅いっぱいに使う（.lanes と同じインラインの列指定） -->
+    <div class="stat-row" style="grid-template-columns:1fr">
+      <div class="stat">
+        <span class="l">2026年8月21日 初回生成</span>
+        <span class="n hot">408<small>URL</small></span>
+        <span class="d">静的3 + 店舗63 + 自転車342</span>
+      </div>
+    </div>
     <ul class="notes">
       <li>店舗・自転車が増えたら、手順3（再生成）→ 手順4（再アップロード）をやり直す。Search Consoleが自動で再読み込みする。手順1・2は最初の1回だけ（ページの種類を増やした時のみ再確認）。</li>
       <li>再生成の頻度（月1回など）は増永さんと相談して決める。</li>
     </ul>
   </div>
 
-  <!-- 2 前提 -->
+  <!-- 2 前提と載せる範囲 -->
   <div class="section" id="why">
     <div class="section-header">
       <div class="section-num">02</div>
-      <div class="sh-body"><h2>前提: なぜ手作業で作るのか</h2><div class="sh-sub">Bubbleの自動生成が使えない理由</div></div>
+      <div class="sh-body"><h2>前提と載せる範囲</h2><div class="sh-sub">手作業で組み立てる理由と、sitemapに入れるページの選び方</div></div>
     </div>
 
+    <div class="sub-item">
+      <div class="kick">前提</div>
+      <h4>なぜ手作業で作るのか</h4>
     <p style="font-size: 14.5px;">sitemap.xmlは「このサイトにはこんなページがあります」とGoogleに伝える一覧ファイル。RINCLEのページはほとんどが「店舗詳細」「自転車詳細」で、URLはページ名の後ろにIDを付ける形です。</p>
 
     <div class="url-anatomy">
@@ -104,7 +108,7 @@
       <div class="url-line"><span class="seg seg-base">https://rincle.co.jp</span><span class="seg seg-page">/bicycle_detail</span><span class="seg seg-base">?bicycle=</span><span class="seg seg-id">&lt;自転車ID&gt;</span></div>
       <div class="url-legend">
         <span><i style="background: #9FC5EA;"></i>ページの種類（全部で19ページ）</span>
-        <span><i style="background: #F0B08E;"></i>データベース上のID（sitemapに載せるのは店舗63・自転車342〈2026-08-21時点〉）</span>
+        <span><i style="background: #F0B08E;"></i>データベース上のID（sitemapに載せるのは店舗63・自転車342〈2026年8月21日時点〉）</span>
       </div>
     </div>
 
@@ -118,16 +122,12 @@
         <p>ID一覧を自分たちで集めてsitemap.xmlを組み立てる。必要な材料は<strong>①ページの種類の一覧</strong>（bubbleファイルから）と<strong>②店舗・自転車のID一覧</strong>（Data APIから）の2つ。</p>
       </div>
     </div>
-  </div>
-
-  <!-- 3 載せる / 載せない -->
-  <div class="section" id="pages">
-    <div class="section-header">
-      <div class="section-num">03</div>
-      <div class="sh-body"><h2>sitemapに載せるページ / 載せないページ</h2><div class="sh-sub">Bubble設定（sitemap_pages）で選定済みの5ページに合わせる</div></div>
     </div>
 
-    <h3>載せるページ（5種類）</h3>
+    <div class="sub-item" id="pages">
+      <div class="kick">載せる範囲</div>
+      <h4>sitemapに載せるページ（5種類）</h4>
+    <p>Bubble設定（sitemap_pages）で選定済みの5ページに合わせます。</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th>ページ</th><th>URL</th><th>優先度の目安</th></tr></thead>
@@ -143,28 +143,29 @@
 
     <p>sitemapのほとんどはデータ由来のURL（店舗詳細・自転車詳細）です。店舗・自転車が増えるほど、再生成の価値が上がります。</p>
 
-    <h3>載せないページ</h3>
+    <h4>載せないページ</h4>
     <div class="table-wrap">
       <table>
         <thead><tr><th>ページ</th><th>URL</th><th>理由</th></tr></thead>
         <tbody>
-          <tr><td class="label"><span class="ng">×</span>ログイン・会員登録</td><td><code>/signin</code></td><td>機能ページ。検索から来てもらう価値がない</td></tr>
-          <tr><td class="label"><span class="ng">×</span>マイページ</td><td><code>/mypage</code></td><td>ログイン後の個人情報ページ。検索結果に出してはいけない</td></tr>
-          <tr><td class="label"><span class="ng">×</span>予約</td><td><code>/reservation</code></td><td>予約フロー途中のページ。検索流入は不要</td></tr>
-          <tr><td class="label"><span class="ng">×</span>予約履歴一覧</td><td><code>/user_reservation_list</code></td><td>ログイン後の個人情報ページ</td></tr>
-          <tr><td class="label"><span class="ng">×</span>パスワード再設定</td><td><code>/reset_pw</code></td><td>機能ページ</td></tr>
-          <tr><td class="label"><span class="ng">×</span>加盟店申込フォーム</td><td><code>/shop_form</code></td><td>招待経由で使うページ。一般公開の入り口ではない</td></tr>
-          <tr><td class="label"><span class="ng">×</span>管理画面（4ページ）</td><td><code>/admin</code> <code>/admin_signin</code> <code>/admin_price_simulation</code> <code>/admin_update_calendar</code></td><td>運営・店舗の内部ページ</td></tr>
-          <tr><td class="label"><span class="ng">×</span>エラー・メンテ画面</td><td><code>/404</code> <code>/maintenance</code></td><td>案内用のページで中身がない</td></tr>
+          <tr><td class="label">ログイン・会員登録</td><td><code>/signin</code></td><td>機能ページ。検索から来てもらう価値がない</td></tr>
+          <tr><td class="label">マイページ</td><td><code>/mypage</code></td><td>ログイン後の個人情報ページ。検索結果に出してはいけない</td></tr>
+          <tr><td class="label">予約</td><td><code>/reservation</code></td><td>予約フロー途中のページ。検索流入は不要</td></tr>
+          <tr><td class="label">予約履歴一覧</td><td><code>/user_reservation_list</code></td><td>ログイン後の個人情報ページ</td></tr>
+          <tr><td class="label">パスワード再設定</td><td><code>/reset_pw</code></td><td>機能ページ</td></tr>
+          <tr><td class="label">加盟店申込フォーム</td><td><code>/shop_form</code></td><td>招待経由で使うページ。一般公開の入り口ではない</td></tr>
+          <tr><td class="label">管理画面（4ページ）</td><td><code>/admin</code> <code>/admin_signin</code> <code>/admin_price_simulation</code> <code>/admin_update_calendar</code></td><td>運営・店舗の内部ページ</td></tr>
+          <tr><td class="label">エラー・メンテ画面</td><td><code>/404</code> <code>/maintenance</code></td><td>案内用のページで中身がない</td></tr>
         </tbody>
       </table>
+    </div>
     </div>
   </div>
 
   <!-- 手順1 -->
   <div class="section" id="step1">
     <div class="section-header">
-      <div class="section-num">04</div>
+      <div class="section-num">03</div>
       <div class="sh-body"><h2>手順1. bubbleファイルの用意</h2><div class="sh-sub">ページの種類を洗い出す</div></div>
     </div>
     <div class="term">
@@ -183,7 +184,7 @@
   <!-- 手順2 -->
   <div class="section" id="step2">
     <div class="section-header">
-      <div class="section-num">05</div>
+      <div class="section-num">04</div>
       <div class="sh-body"><h2>手順2. Data APIの設定</h2><div class="sh-sub">店舗・自転車のID一覧を取る</div></div>
     </div>
     <div class="term">
@@ -216,7 +217,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
   <!-- 手順3 -->
   <div class="section" id="step3">
     <div class="section-header">
-      <div class="section-num">06</div>
+      <div class="section-num">05</div>
       <div class="sh-body"><h2>手順3. sitemap.xmlを生成する</h2><div class="sh-sub">スクリプトが取得〜XML組み立てまで全部やる</div></div>
     </div>
     <p style="font-size: 14px;">生成スクリプト <code>generate_sitemap.js</code>（リポジトリの <code>documents/4_growth/03_seo/sitemap/</code>）を実行します。</p>
@@ -244,15 +245,15 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
     </ul>
     <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span>本番反映前に動きを試したい時は <code>--dev</code> を付けると開発版（version-test）のData APIで動きます。</span></div>
     <h3>生成後の確認</h3>
-    <p>出力件数を確かめます。2026-08-21の初回生成は合計408 URLでした。</p>
+    <p>出力件数を確かめます。2026年8月21日の初回生成は合計408 URLでした。</p>
     <div class="stat-row">
       <div class="stat"><div class="l">静的ページ</div><div class="n md">3</div></div>
       <div class="stat"><div class="l">店舗詳細</div><div class="n md">63</div></div>
       <div class="stat"><div class="l">自転車詳細</div><div class="n md">342</div></div>
     </div>
     <ul class="notes">
-      <li>店舗は全67件中、審査未通過3・辞退1を除外した数。自転車は全440件中、非表示89（うち削除済み6）と掲載しない店舗の9台を除外した数（2026-08-21）。</li>
-      <li>店舗はサイトの検索に出る数より多くなるのが正常。在庫ゼロの店舗も載せるため（2026-08-21時点で sitemap 63件 / 検索表示 53件）。</li>
+      <li>店舗は全67件中、審査未通過3・辞退1を除外した数。自転車は全440件中、非表示89（うち削除済み6）と掲載しない店舗の9台を除外した数（2026年8月21日）。</li>
+      <li>店舗はサイトの検索に出る数より多くなるのが正常。在庫ゼロの店舗も載せるため（2026年8月21日時点で sitemap 63件 / 検索表示 53件）。</li>
       <li>自転車はサイトの表示数とほぼ一致する。大きくずれた場合は除外条件の判定が実態と合っていないため、要調査。</li>
     </ul>
   </div>
@@ -260,7 +261,7 @@ curl "https://rincle.co.jp/api/1.1/obj/<span class="hl">bicycle</span>?limit=100
   <!-- 手順4 -->
   <div class="section" id="step4">
     <div class="section-header">
-      <div class="section-num">07</div>
+      <div class="section-num">06</div>
       <div class="sh-body"><h2>手順4. 公開とGoogleへの登録</h2><div class="sh-sub">Bubbleに置いてSearch Consoleから知らせる</div></div>
     </div>
 

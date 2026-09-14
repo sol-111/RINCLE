@@ -11,37 +11,12 @@
 <style>
 /* ページ固有CSS — SEO支援プラン（共通部品は ../../assets/design.css を参照） */
 
-.hero h1 .sub{font-size:26px;color:var(--text);letter-spacing:0}
 .section p{font-size:14px}
-.card ul,.sub-item ul{padding-left:20px;font-size:14px;margin:16px 0 0}
-.card li,.sub-item li{margin-bottom:8px;line-height:1.9}
-.card li:last-child,.sub-item li:last-child{margin-bottom:0}
+.section ul{padding-left:20px;font-size:14px;margin:16px 0 0}
+.section li{margin-bottom:8px;line-height:1.9}
+.section li:last-child{margin-bottom:0}
 
 td.center{text-align:center}
-
-/* 記事作成フロー図（矢羽レイアウト・塗りは弱く罫線基調に寄せる） */
-.steps-wrap{overflow-x:auto;padding:6px 2px}
-.steps-flow{min-width:740px}
-.steps-row{display:grid;grid-template-columns:56px repeat(5,1fr);align-items:stretch;gap:10px;margin-bottom:12px}
-.steps-row:last-child{margin-bottom:0}
-.steps-row .who{display:flex;align-items:center;font-family:var(--serif);font-size:15px;color:var(--ink)}
-.step{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink);text-align:center;padding:15px 12px;font-weight:700;font-size:13px;
-      clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%,16px 50%)}
-.step.first{clip-path:polygon(0 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,0 100%)}
-.step .ic{line-height:1;color:var(--accent)}
-.step .ic .icon{width:18px;height:18px}
-.step .st{font-size:9.5px;font-weight:700;letter-spacing:.14em;color:var(--accent)}
-.s1{background:rgba(184,83,47,.07)}
-.s2{background:rgba(184,83,47,.10)}
-.s3{background:rgba(184,83,47,.13)}
-.s4{background:rgba(184,83,47,.16)}
-.s5{background:rgba(184,83,47,.19)}
-.step.client{background:var(--paper);color:var(--text)}
-.step.client .ic,.step.client .st{color:var(--sub)}
-
-@media (max-width:760px){
-  .hero h1 .sub{font-size:18px}
-}
 </style>
 </head>
 <body>
@@ -75,7 +50,7 @@ td.center{text-align:center}
     </div>
     <h1>SEO支援プラン</h1>
     <p class="lead">検索集客の入口になる「地域×サイクリングコース記事」を、弊社が代行で継続的に作成・運用するプランです。</p>
-    <div class="hero-meta">2026-06-19提案 ｜ PEDALSTANDARD社向け ｜ 弊社（清野・山本）</div>
+    <div class="hero-meta">2026年6月19日提案 ｜ PEDALSTANDARD社向け ｜ 弊社（清野・山本）</div>
   </div>
 </div>
 
@@ -94,7 +69,7 @@ td.center{text-align:center}
   <div class="section" id="conclusion">
     <div class="section-header">
       <div class="section-num">01</div>
-      <div class="sh-body"><h2>結論</h2><div class="sh-sub">決めていただくのはライトかスタンダードかの選択</div></div>
+      <div class="sh-body"><h2>結論</h2><div class="sh-sub">この提案の中身と、ご判断いただく点</div></div>
     </div>
     <div class="table-wrap">
       <table class="qa">
@@ -226,27 +201,35 @@ td.center{text-align:center}
       <div class="sh-body"><h2>記事作成フロー</h2><div class="sh-sub">貴社は「レビュー」のみ並走</div></div>
     </div>
     <p>記事執筆の全工程を弊社が担当させていただきます。</p>
-    <div class="card">
-      <div class="steps-wrap">
-        <div class="steps-flow">
-          <div class="steps-row">
-            <div class="who">弊社</div>
-            <div class="step first s1"><span class="ic"><svg class="icon"><use href="#i-search"/></svg></span><span class="st">STEP 1</span>KW選定</div>
-            <div class="step s2"><span class="ic"><svg class="icon"><use href="#i-list"/></svg></span><span class="st">STEP 2</span>記事構成作成</div>
-            <div class="step s3"><span class="ic"><svg class="icon"><use href="#i-file"/></svg></span><span class="st">STEP 3</span>記事執筆</div>
-            <div class="step s4"><span class="ic"><svg class="icon"><use href="#i-check"/></svg></span><span class="st">STEP 4</span>レビュー</div>
-            <div class="step s5"><span class="ic"><svg class="icon"><use href="#i-send"/></svg></span><span class="st">STEP 5</span>編集公開</div>
-          </div>
-          <div class="steps-row">
-            <div class="who">貴社</div>
-            <div class="step client" style="grid-column: 5;"><span class="ic"><svg class="icon"><use href="#i-search"/></svg></span><span class="st">STEP 4 と並走</span>レビュー</div>
-          </div>
-        </div>
+    <figure class="fig" aria-label="記事は全工程を弊社が担当する。貴社はSTEP 4のレビューだけ並走する">
+    <div class="lane-wrap">
+      <div class="lanes" style="grid-template-columns:92px repeat(5,minmax(140px,1fr))">
+        <div class="lane-corner">工程 →</div>
+        <div class="lane-head">STEP 1<span class="sub">KW選定</span></div>
+        <div class="lane-head">STEP 2<span class="sub">記事構成作成</span></div>
+        <div class="lane-head">STEP 3<span class="sub">記事執筆</span></div>
+        <div class="lane-head">STEP 4<span class="sub">レビュー</span></div>
+        <div class="lane-head">STEP 5<span class="sub">編集公開</span></div>
+
+        <div class="lane-label sys"><i></i><span>弊社</span></div>
+        <div class="lane-cell">狙う検索語を選ぶ</div>
+        <div class="lane-cell">記事の構成を作る</div>
+        <div class="lane-cell">記事を書く</div>
+        <div class="lane-cell">内容を確認する</div>
+        <div class="lane-cell">SEO設定をして公開する</div>
+
+        <div class="lane-label shop"><i></i><span>貴社</span></div>
+        <div class="lane-cell empty">—</div>
+        <div class="lane-cell empty">—</div>
+        <div class="lane-cell empty">—</div>
+        <div class="lane-cell">記事レビュー（STEP 4と並走）</div>
+        <div class="lane-cell empty">—</div>
       </div>
-      <div class="legend">
-        <span><i style="background: var(--accent);"></i>弊社が全工程を担当</span>
-        <span><i style="background: var(--paper); border: 1px solid var(--line);"></i>貴社は「レビュー」工程のみ並走</span>
-      </div>
+    </div>
+    </figure>
+    <div class="legend">
+      <span><i style="background: var(--accent);"></i>弊社（全工程を担当）</span>
+      <span><i style="background: var(--ok);"></i>貴社（STEP 4のレビューのみ並走）</span>
     </div>
   </div>
 
@@ -257,11 +240,11 @@ td.center{text-align:center}
       <div class="sh-body"><h2>施策推進イメージ</h2><div class="sh-sub">ライトプラン（最小構成）の6ヶ月</div></div>
     </div>
     <p>ライトプラン（最小構成）の場合の6ヶ月イメージ。月ごとに変わるのは最初の2ヶ月だけで、3ヶ月目からは同じ運転が続きます。</p>
-    <figure class="fig" aria-label="月ごとに変わるのは最初の2ヶ月だけで、3ヶ月目からは新規3本とリライト1本の同じ運転が毎月続く">
+    <figure class="fig" aria-label="月ごとに変わるのは最初の2ヶ月だけで、3ヶ月目からは同じ運転が毎月続く">
     <div class="phases">
-      <div class="phase"><span class="pn">1ヶ月目</span><span class="pt">立ち上げ</span><span class="ps">KW設計・競合分析・記事テンプレ設計</span></div>
-      <div class="phase"><span class="pn">2ヶ月目</span><span class="pt">通常運転の開始</span><span class="ps">新規3本・月次レポート開始</span></div>
-      <div class="phase"><span class="pn">3ヶ月目以降</span><span class="pt">積み上げと改善</span><span class="ps">新規3本＋リライト1本</span></div>
+      <div class="phase"><span class="pn">1ヶ月目</span><span class="pt">立ち上げ</span></div>
+      <div class="phase"><span class="pn">2ヶ月目</span><span class="pt">通常運転の開始</span></div>
+      <div class="phase"><span class="pn">3ヶ月目以降</span><span class="pt">積み上げと改善</span></div>
     </div>
     </figure>
     <div class="table-wrap">

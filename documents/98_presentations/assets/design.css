@@ -22,6 +22,7 @@
   --gold:#C99A2E;  --gold-text:#8F5A0A;  --gold-soft:#F7EFDF;  --gold-line:#EAD9AE;
   --code-bg:#221B16;
   --serif:'Shippori Mincho',serif;
+  --sans:'Noto Sans JP',-apple-system,BlinkMacSystemFont,'Hiragino Sans',Meiryo,sans-serif; /* body の font-family と同じ並び。明朝の中でゴシックに戻す時に使う（単位・注記） */
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -174,6 +175,7 @@ h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);marg
 .sub-item .kick{font-size:10.5px;font-weight:700;letter-spacing:.2em;color:var(--accent);margin-bottom:6px}
 .sub-item h4{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);line-height:1.6;margin:0 0 14px}
 .sub-item p{font-size:13.5px;margin-bottom:8px}
+.sub-item h4 + * ~ h4{margin-top:22px} /* 1つの .sub-item に h4 が続く時、2つ目以降は上に余白を持たせる（見出しが前の段落に貼り付くため） */
 
 /* ---------- 表（上罫は墨2px・項目名は明朝） ---------- */
 .table-wrap{overflow-x:auto;margin:28px 0}
@@ -197,7 +199,7 @@ td.label.ind{padding-left:22px;font-size:14.5px;color:var(--text)} /* 直前の�
    字下げは全角空白を項目名に直書きせず、必ずこのクラスで持つ — 空白を文字で入れると検索・コピーに混ざり、
    折り返した時に2行目の字下げが消える（2026-09-01にSEOレポートの全角空白方式から統一） */
 td .label-sub{font-size:11px;color:var(--sub);margin-left:6px;font-weight:400} /* 主ラベルの後ろに原語・補足を薄く添える（例: 他サイト経由 <span class="label-sub">Referral</span>） */
-td .td-sub{display:block;font-family:'Noto Sans JP',sans-serif;font-size:11.5px;font-weight:400;color:var(--sub);line-height:1.8;white-space:normal;margin-top:2px} /* 項目名の下の1行補足。例示や条件を注記に逃がさず行内で完結させる（2行を超えるなら.termへ） */
+td .td-sub{display:block;font-family:var(--sans);font-size:11.5px;font-weight:400;color:var(--sub);line-height:1.8;white-space:normal;margin-top:2px} /* 項目名の下の1行補足。例示や条件を注記に逃がさず行内で完結させる（2行を超えるなら.termへ） */
 th.std,td.std{background:var(--accent-faint)} /* 選択肢が横に並ぶ表の推奨・標準列を薄い面で示す。面を着せるのは1列だけ */
 td.num.cnt{color:var(--ink)} /* 金額でない数（回数等）は墨 — 差し色は「答えの金額」の列だけに残す */
 td.num.calc{color:var(--sub);font-size:13px} /* 計算の途中経過（内訳の式）は脇役のグレー */
@@ -221,6 +223,9 @@ td.num.calc{color:var(--sub);font-size:13px} /* 計算の途中経過（内訳�
 .badge.brand{background:var(--accent);color:var(--paper)}
 .badge.good{background:var(--ok-soft);border:1px solid var(--ok-line);color:var(--ok-text)}
 .badge.bad{background:var(--danger-soft);border:1px solid var(--danger-line);color:var(--danger-text)}
+/* 3段階の格付けの「中」。高=.badge.brand（焦がしベタ）/ 中=.badge.mid（白面・焦がし1px輪郭）/ 低=.badge.plain（罫線のみ）。
+   .badge.ink（黒ベタ）を「中」に流用しない — 黒ベタは焦がしベタより重く見え、格付けの順序が逆に読める（2026-09-14） */
+.badge.mid{background:var(--surface);border:1px solid var(--accent);color:var(--accent)}
 .badge.plain{border:1px solid var(--line);color:var(--text)}
 .badge.muted{border:1px solid var(--line-soft);color:var(--sub);font-weight:400} /* 効力を失ったもの（旧設計）を沈める */
 /* 変更点バッジの語彙は4語で固定（2026-09-04決定。英字のCHANGED/NEW等は使わない）:
@@ -299,7 +304,7 @@ ol.steps + ul.notes{margin-top:26px}
 /* ---------- チャート（線は細く・中央は数字だけ・出典は凡例側） ---------- */
 .chart{display:flex;gap:40px;align-items:center;flex-wrap:wrap}
 .chart svg{width:150px;height:150px;flex-shrink:0}
-.chart text.big{font-family:var(--serif);font-size:10px;fill:#26221E;dominant-baseline:central}
+.chart text.big{font-family:var(--serif);font-size:10px;fill:var(--ink);dominant-baseline:central}
 .chart .cl{display:flex;flex-direction:column;min-width:280px;font-size:13.5px}
 .chart .cl > div{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line-soft);padding:10px 0}
 .chart .cl > div:last-of-type{border-bottom:none}
@@ -311,10 +316,16 @@ ol.steps + ul.notes{margin-top:26px}
 .chart.compact svg{width:130px;height:130px}
 .chart.compact .cl{min-width:0;flex:1}
 .hbar{display:grid;grid-template-columns:190px 1fr 56px;align-items:center;gap:14px;margin:8px 0}
-.hbar .track{height:16px;background:#EAE2D6;border-radius:2px}
-.hbar .fill{height:16px;background:var(--accent);border-radius:2px}
+.hbar .track{display:block;height:16px;background:#EAE2D6;border-radius:2px}
+.hbar .fill{display:block;height:16px;background:var(--accent);border-radius:2px}
 .hbar .val{font-family:var(--serif);font-size:15px;text-align:right}
 .hbar .fill.dim{background:#C9BFB4} /* 主役でない棒を沈める（ヒストグラムで攻めどころだけ焦がしにする等） */
+/* 表のセルの中に置く小さな棒（.hbar.cell）。ラベル列を持たず「棒+値」だけの2列にする。
+   これは図でなく数値の見せ方なので figure で個別に包まない — 表全体（.table-wrap）を1つの figure で包み、
+   aria-label にはその表の主張を書く（2026-09-14登録。2ページで再発明されていたものを昇格） */
+.hbar.cell{grid-template-columns:1fr 42px;gap:8px;margin:0;min-width:96px}
+.hbar.cell .track,.hbar.cell .fill{height:8px}
+.hbar.cell .val{font-size:13px}
 /* 100%積み上げ構成バー: 1本の帯を構成比で塗り分ける（「全体の中身の内訳」を1行で見せる）。
    色は s1=焦がし・s2=墨・s3=下地・s4=罫線色 の順に「主役→脇役」で割り当てる（データ色3段+残り）。
    帯の中に%を書けるのは広いセグメントだけ（狭ければ凡例に逃がす） */
@@ -339,10 +350,12 @@ ol.steps + ul.notes{margin-top:26px}
 .tile .tn{font-size:9.5px;letter-spacing:.02em}
 .tile .tv{font-family:var(--serif);font-size:11px}
 .tile.b0{background:#F0EBE3;color:#B4AA9C}
-.tile.b1{background:#F3DDD1;color:var(--text)}
-.tile.b2{background:#EBC0A9;color:var(--text)}
-.tile.b3{background:#DE9873;color:#fff}
-.tile.b4{background:#CB6F44;color:#fff}
+/* 6段階の濃さは --accent から導出する（案件のブランド色を替えるとタイルマップも追随する）。
+   b1〜b2 は文字が墨でも読める薄さ・b3 以降は白抜き */
+.tile.b1{background:color-mix(in srgb, var(--accent) 18%, var(--paper));color:var(--text)}
+.tile.b2{background:color-mix(in srgb, var(--accent) 36%, var(--paper));color:var(--text)}
+.tile.b3{background:color-mix(in srgb, var(--accent) 60%, var(--paper));color:#fff}
+.tile.b4{background:color-mix(in srgb, var(--accent) 80%, var(--paper));color:#fff}
 .tile.b5{background:var(--accent);color:#fff}
 .map-legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--sub);margin-top:14px}
 .map-legend i{width:14px;height:14px;border-radius:3px;display:inline-block;vertical-align:-2px;margin-right:5px}
@@ -357,6 +370,7 @@ ol.steps + ul.notes{margin-top:26px}
 .stat .d.up{color:var(--ok)}
 .stat .d.down{color:var(--danger)}
 .stat .n.md{font-size:30px} /* 単価・内訳など「答えでない数字」の中サイズ。月額と同じ特大にすると固定料金と誤読される（2026-09-01 料金提案の教訓） */
+.stat .n.md small{font-size:13px} /* 中サイズの単位は数字に合わせて落とす（60px用の20pxのままだと数字の2/3になる） */
 
 /* ---------- 横棒ペア（当月×前月の比較チャート。当月=焦がし/前月=下地） ---------- */
 .bars{display:flex;flex-direction:column;gap:16px;margin:24px 0}
@@ -376,7 +390,7 @@ ol.steps + ul.notes{margin-top:26px}
    図の部品は <figure class="fig" aria-label="この図が言っていること"> で包む。
    aria-label は見た目の説明でなく「読者に持ち帰ってほしい結論」を1文で。
    1文で書けない図は置く理由がない — 書く段階で気づくための仕掛け ---------- */
-figure.fig{margin:22px 0 8px}
+figure.fig{margin:22px 0 8px;min-width:0} /* min-width:0 = グリッド/フレックスの子になっても、中の横スクロール部品（.lane-wrap等）の幅に引っぱられない */
 figure.fig > :first-child{margin-top:0}
 figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-top:10px}
 
@@ -522,6 +536,7 @@ footer{text-align:center;padding:36px 0;color:var(--sub);font-size:12px;border-t
   .hero{padding:44px 24px 84px}
   .hero h1{font-size:32px;margin-top:36px}
   .flow,.flow-tabs{grid-template-columns:1fr 1fr;margin-top:-40px}
+  .flow a:nth-child(2n+1){border-left:none} /* 2カラムになるので左罫線の消去も2列前提に */
   .flow a,.tab-btn{border-top:1px solid var(--line-soft)}
   .flow::after,.flow-tabs::after{display:none}
   .flow:has(> a:nth-child(2n+1):last-child)::after,

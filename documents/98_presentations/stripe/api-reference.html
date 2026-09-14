@@ -59,7 +59,7 @@
     <!-- #20再調査の派生 -->
     <div class="hero-meta">
       <span>出典: docs.stripe.com</span>
-      <span>作成: 2026-06-12</span>
+      <span>作成: 2026年6月12日</span>
     </div>
   </div>
 </div>
@@ -78,8 +78,13 @@
 
   <!-- 01 結論 -->
   <div class="section" id="conclusion">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">集約モデルはStripeの素のアカウント1つで完結する。唯一の構造的なデメリットは手数料3.6%</div></div></div>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">集約モデルをStripeで組んだ場合の利点と弱点</div></div></div>
     <p>集約モデルはStripeの素のアカウント1つで完結します（Connectは不要で、店舗ごとの決済アカウントと審査が消えます）。カードの有効性チェックは標準機能（SetupIntent）で0円ででき、3Dセキュア・CVC・領収書も標準です。唯一の構造的なデメリットは手数料3.6%で、Pay.jpより高い点です。詳しくは<a href="#s5">6章</a>にあります。</p>
+
+    <div class="stat-row">
+      <div class="stat"><span class="l">Stripeのカード手数料（唯一の弱点）</span><span class="n hot">3.6<small>%</small></span></div>
+      <div class="stat"><span class="l">カードの有効性チェックにかかる金額</span><span class="n">&yen;0</span></div>
+    </div>
   </div>
 
   <!-- 02 -->
@@ -94,7 +99,7 @@
         <tr><td class="label">公開キー</td><td><code>pk_...</code> — Stripe.js / Elementsでカード情報を直接Stripeへ送る</td></tr>
         <tr><td class="label">バージョニング</td><td>日付ベース。アカウントに固定・<code>Stripe-Version</code>ヘッダで上書き可。後方互換が強い</td></tr>
         <tr><td class="label">冪等性</td><td><code>Idempotency-Key</code>ヘッダ対応（二重課金防止。決済系POSTでは必須運用に）</td></tr>
-        <tr><td class="label">Stripeの /v2 名前空間</td><td>イベント配信等の一部APIのみ。<strong>カード決済は引き続き /v1 が現行</strong>（2026-06時点）</td></tr>
+        <tr><td class="label">Stripeの /v2 名前空間</td><td>イベント配信等の一部APIのみ。<strong>カード決済は引き続き /v1 が現行</strong>（2026年6月時点）</td></tr>
         <tr><td class="label">Bubble連携</td><td>公式プラグインあり（Elements・PaymentIntent対応）。3DSは自動ハンドリング</td></tr>
         </tbody>
       </table>
@@ -140,7 +145,8 @@
           <div class="swim-node">requires_action（3DS等）</div>
           <div class="swim-arrow"></div>
           <div class="swim-node">processing</div>
-          <div class="swim-arrow"></div>
+          <!-- 分岐は必ず次の行に落として左レールでつなぐ（矢印が行末に取り残されるのを防ぐ・規約12） -->
+          <div style="flex-basis:100%;height:0" aria-hidden="true"></div>
           <div class="swim-branch">
             <div>
               <div class="swim-branch-label ok">即時確定（capture_method=automatic）</div>
@@ -185,7 +191,7 @@
     <h3>PaymentIntent（支払い）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:90px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:90px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
         <tbody>
         <tr><td><span class="method post">POST</span></td><td><code>/v1/payment_intents</code></td><td>作成（amount, currency=jpy, customer, capture_method 等）</td></tr>
         <tr><td><span class="method get">GET</span></td><td><code>/v1/payment_intents</code> / <code>:id</code></td><td>一覧 / 取得</td></tr>
@@ -200,7 +206,7 @@
     <h3>SetupIntent（カード検証・保存 — 50円オーソリの代替）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:170px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
         <tbody>
         <tr><td><span class="method post">POST</span></td><td><code>/v1/setup_intents</code></td><td>作成（将来課金用にカードを検証して保存）</td></tr>
         <tr><td><span class="method get">GET</span> <span class="method post">POST</span></td><td><code>/v1/setup_intents/:id</code></td><td>取得 / 更新</td></tr>
@@ -212,7 +218,7 @@
     <h3>Customer / PaymentMethod（顧客・カード）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:170px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
         <tbody>
         <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v1/customers</code></td><td>作成 / 一覧（<code>:id</code>でGET/POST/DELETE）</td></tr>
         <tr><td><span class="method get">GET</span></td><td><code>/v1/customers/:id/payment_methods</code></td><td>顧客の支払い手段一覧</td></tr>
@@ -225,7 +231,7 @@
     <h3>Refund（返金 — キャンセルポリシーの実装箇所）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:170px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
         <tbody>
         <tr><td><span class="method post">POST</span></td><td><code>/v1/refunds</code></td><td>返金作成（<code>payment_intent</code> + <code>amount</code>で部分返金可）</td></tr>
         <tr><td><span class="method get">GET</span> <span class="method post">POST</span></td><td><code>/v1/refunds/:id</code></td><td>取得 / 更新</td></tr>
@@ -236,7 +242,7 @@
     <h3>Billing（店舗月額課金に使う系）</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:170px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
         <tbody>
         <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v1/products</code>・<code>/v1/prices</code></td><td>商品・価格（月額プランの定義）</td></tr>
         <tr><td><span class="method post">POST</span> <span class="method get">GET</span></td><td><code>/v1/subscriptions</code> / <code>:id</code></td><td>定期課金の作成・取得（解約はDELETE）</td></tr>
@@ -248,13 +254,13 @@
     <h3>入金・会計系 / Webhook</h3>
     <div class="table-wrap">
       <table>
-        <thead><tr><th style="width:130px">メソッド</th><th>パス</th><th>意味</th></tr></thead>
+        <thead><tr><th style="width:170px">メソッド</th><th>パス</th><th>説明</th></tr></thead>
         <tbody>
         <tr><td><span class="method get">GET</span></td><td><code>/v1/balance</code> / <code>/v1/balance_transactions</code></td><td>残高 / 増減明細（<strong>月次の実入金照合はここ</strong>）</td></tr>
         <tr><td><span class="method get">GET</span></td><td><code>/v1/payouts</code> / <code>:id</code></td><td>自社銀行口座への入金（自動・手数料無料）</td></tr>
         <tr><td><span class="method get">GET</span></td><td><code>/v1/disputes</code> / <code>:id</code></td><td>チャージバック</td></tr>
         <tr><td><span class="method get">GET</span></td><td><code>/v1/events</code> / <code>:id</code></td><td>イベント取得</td></tr>
-        <tr><td><span class="method post">POST</span> <span class="method get">GET</span> <span class="method delete">DEL</span></td><td><code>/v1/webhook_endpoints</code> 系</td><td>Webhook送信先の管理（<code>Stripe-Signature</code>の署名検証必須）</td></tr>
+        <tr><td><span class="method post">POST</span> <span class="method get">GET</span> <span class="method delete">DELETE</span></td><td><code>/v1/webhook_endpoints</code> 系</td><td>Webhook送信先の管理（<code>Stripe-Signature</code>の署名検証必須）</td></tr>
         </tbody>
       </table>
     </div>

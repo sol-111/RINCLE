@@ -12,15 +12,9 @@
 /* ページ固有CSS — 現状課題と改善策（共通部品は ../../assets/design.css を参照）
    §3-C: UIモックの「中身」は実機再現なのでレイアウトはそのまま。額縁だけウィンドウ型に統一し、色は同じ役割のトークンへ置換 */
 
-/* ---------- カード（役割色は左2px罫線・見出しは明朝） ---------- */
-.card.edge-red{border-left:2px solid var(--danger)}
-.card.edge-green{border-left:2px solid var(--ok)}
-.card h4.c-title{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:10px;color:var(--ink);line-height:1.6}
-.card.edge-red h4.c-title{color:var(--danger-text)}
-.card.edge-green h4.c-title{color:var(--ok-text)}
-.card p.body{font-size:13.5px;color:var(--text);line-height:2}
-.card-head-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
-.card-head-row h4.c-title{margin-bottom:0}
+/* ---------- カード内の見出しと箇条書き（共通部品 .card は再定義しない） ---------- */
+.c-head{font-family:var(--serif);font-size:17px;font-weight:600;margin:0 0 10px;color:var(--ink);line-height:1.6}
+.c-list{margin:8px 0 0 20px;font-size:13.5px;line-height:2}
 
 /* ---------- ファネル（罫線で組む・段階名はキッカー） ---------- */
 .funnel-section{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:26px 28px;margin:28px 0}
@@ -28,14 +22,11 @@
 .funnel-header span:nth-child(2),.funnel-header span:nth-child(3){padding-left:18px}
 .funnel-phase-label{font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--accent);margin:4px 0 14px}
 .funnel-step{display:grid;grid-template-columns:100px 1fr 1fr;gap:16px;align-items:stretch;margin-bottom:12px}
-.step-label{display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--line);border-left-width:2px;border-radius:3px;font-weight:700;font-size:12px;padding:12px 8px;text-align:center;line-height:1.5}
-.step-issue,.step-solution{background:var(--surface);border:1px solid var(--line-soft);border-left-width:2px;border-radius:3px;padding:13px 16px;font-size:12.5px;line-height:1.9}
-.step-issue{border-left-color:var(--danger)}
-.step-solution{border-left-color:var(--ok)}
-/* 先頭の「課題」「施策」だけがラベル（ブロック）。本文中の<strong>はインラインの焦がし太字に保つ */
-.step-issue strong,.step-solution strong{color:var(--accent-deep)}
-.step-issue > strong:first-child{display:block;margin-bottom:4px;font-size:10.5px;letter-spacing:.16em;color:var(--danger)}
-.step-solution > strong:first-child{display:block;margin-bottom:4px;font-size:10.5px;letter-spacing:.16em;color:var(--ok)}
+.fn-label{display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--line);border-left-width:2px;border-radius:3px;font-weight:700;font-size:12px;padding:12px 8px;text-align:center;line-height:1.5}
+.fn-issue,.fn-solution{background:var(--surface);border:1px solid var(--line-soft);border-left-width:2px;border-radius:3px;padding:13px 16px;font-size:12.5px;line-height:1.9}
+.fn-issue{border-left-color:var(--danger)}
+.fn-solution{border-left-color:var(--ok)}
+.fn-issue strong,.fn-solution strong{color:var(--accent-deep)}
 .funnel-divider{border:none;border-top:1px solid var(--line);margin:24px 0}
 
 /* ---------- 施策モックの額縁（ウィンドウ型: 白面+1px罫線+上部グレードット3つ・角丸6px） ---------- */
@@ -52,7 +43,6 @@
 .mock-body{padding:20px}
 .mock-hint{background:var(--surface);border:1px solid var(--info-line);border-left-width:2px;border-radius:3px;padding:9px 14px;margin-top:14px;font-size:11.5px;line-height:1.8;color:var(--info-text)}
 
-.card ul{margin:8px 0 0 20px;font-size:13.5px;line-height:2}
 
 @media (max-width:760px){
   .funnel-step{grid-template-columns:1fr}
@@ -109,40 +99,61 @@
 <!-- ============ 結論 ============ -->
 <div class="tab-panel active" id="panel-conclusion">
   <div class="section" id="conclusion">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">最も効くのは検索エンジンに見つけてもらう手当て。費用ゼロのPhase 1から</div></div></div>
-    <p>最も効くのは検索エンジンにページを見つけてもらう手当てです。<strong>費用ゼロで数日でできるPhase 1（サイトマップ・canonical・ページ別title / meta・Search Console登録）から着手します</strong>。2〜4週間の実測を見てから、次の投資を判断したいと考えています。</p>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">いま最も効く手当てと、次の投資を判断する時期</div></div></div>
+    <p>最も効くのは検索エンジンにページを見つけてもらう手当てです。<strong>費用ゼロで数日でできるPhase 1（サイトマップの設置・ページ別のtitle / meta・Search Consoleへの登録）から着手します</strong>。2〜4週間の実測を見てから、次の投資を判断したいと考えています。</p>
+    <div class="stat-row">
+      <div class="stat">
+        <span class="l">Phase 1にかかる費用</span>
+        <span class="n">&yen;0</span>
+        <span class="d">Bubble標準の設定を完遂するだけで、外部サービスの契約は発生しません</span>
+      </div>
+      <div class="stat">
+        <span class="l">次の投資を判断するまでの実測期間</span>
+        <span class="n">2〜4<small>週間</small></span>
+        <span class="d">索引に載ったページ数の伸びを見てから、Phase 2以降の要否を決めます</span>
+      </div>
+    </div>
+    <ul class="notes">
+      <li>Phase 1〜3の中身はタブ2「致命的問題: Bubble.ioのSEO問題」にまとめています。</li>
+    </ul>
   </div>
 </div>
 
 <!-- ============ SEO問題 ============ -->
 <div class="tab-panel" id="panel-seo">
   <div class="section">
-    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>致命的問題: Bubble.ioのSEO問題</h2><div class="sh-sub">2026-06-11 実測で更新（旧サイトでの計測値）</div></div></div>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>致命的問題: Bubble.ioのSEO問題</h2><div class="sh-sub">旧サイトで実測した3つの弱点と、段階を踏んだ対策</div></div></div>
 
-    <div class="card edge-red">
-      <div class="card-head-row">
-        <span class="num-chip">1</span>
-        <h4 class="c-title">インデックスは2〜3ページのみ — 真因は「CSRだから」ではなくディスカバリー問題</h4>
-      </div>
-      <p class="body">2026-06実測: title/meta/OGPはサーバー側で出力済み（旧記述「メタ情報すらない」は誤り）。GooglebotはCSRページもレンダリングできる（Vercel×MERJ調査）。<br>
-      <strong>真因は「sitemap.xmlが404」+「初期HTMLに内部リンク（&lt;a&gt;）が皆無」</strong> → Googleがそもそもページを発見できない。canonical不在で検索パラメータ付きURLがインデックスされる実害も確認済み。</p>
+    <div class="sub-item">
+      <div class="kick">問題 1</div>
+      <h4>索引に載っているのは2〜3ページだけ — 原因はページの作り方ではない</h4>
+      <p><strong>原因はページの作り方ではなく、Googleにページを見つけてもらう仕組みが無いことです</strong>。ページの一覧を渡すサイトマップが置かれておらず、最初に配られるHTMLの中にページ同士をつなぐリンクが1本もありません。そのためGoogleは店舗ページや自転車ページの存在自体を知ることができません（2026年6月11日実測・旧サイト）。</p>
+      <details class="dev-detail"><summary>開発者向けの詳細</summary><div class="dd-body">
+        <ul>
+          <li>title / meta / OGPはサーバー側で出力済みです（旧記述「メタ情報すらない」は誤り）。</li>
+          <li>GooglebotはCSR（ブラウザ側で画面を組み立てる方式）のページもレンダリングできます（Vercel×MERJ調査）。したがって真因はレンダリングではなくディスカバリーです。</li>
+          <li>実測での真因は sitemap.xml が404であることと、初期HTMLに内部リンク（&lt;a&gt;）が皆無であることの2点です。</li>
+          <li>canonical不在のため、検索パラメータ付きURLがインデックスされる実害も確認済みです。</li>
+        </ul>
+      </div></details>
     </div>
 
-    <div class="card edge-red">
-      <div class="card-head-row">
-        <span class="num-chip">2</span>
-        <h4 class="c-title">初回ロードは想定よりさらに遅い（Lighthouse実測）</h4>
-      </div>
-      <p class="body">旧記述「LCP 3〜5秒」は過小評価だった。Lighthouse実測（モバイル・2026-06-11・旧サイト）: <strong>スコア25 / 100、FCP 20.3秒、LCP 49.3秒、総重量9.2MB</strong>。<br>
-      ラボ値のため実回線の体感はこれより短いが、この重量ではどの回線でもLCP 2.5秒合格（Core Web Vitals）はほぼ不可能。モバイルユーザーの<strong>53%は3秒以上で離脱</strong>する（Google / SOASTA調査）。※検索速度改善込みの新サイトが2026年7月にリリース済みのため要再計測。</p>
+    <div class="sub-item">
+      <div class="kick">問題 2</div>
+      <h4>初回ロードは想定よりさらに遅い（Lighthouse実測）</h4>
+      <p>旧サイトの計測（モバイル・2026年6月11日実測）で、<strong>最初に何かが表示されるまで20.3秒、画面の主役が出るまで49.3秒、1ページの総重量9.2MB</strong>でした。旧記述の「3〜5秒」は過小評価です。スマートフォンで見る方の<strong>53%は3秒以上で離脱</strong>します（Google / SOASTA調査）。※検索速度改善込みの新サイトが2026年7月にリリース済みのため、要再計測です。</p>
+      <details class="dev-detail"><summary>開発者向けの詳細</summary><div class="dd-body">
+        <ul>
+          <li>Lighthouse（モバイル・2026年6月11日・旧サイト）のスコアは25 / 100、FCP 20.3秒、LCP 49.3秒、総重量9.2MBです。</li>
+          <li>ラボ値のため実回線の体感はこれより短くなります。ただしこの重量では、どの回線でもCore Web VitalsのLCP 2.5秒合格はほぼ不可能です。</li>
+        </ul>
+      </div></details>
     </div>
 
-    <div class="card edge-red">
-      <div class="card-head-row">
-        <span class="num-chip">3</span>
-        <h4 class="c-title">料金・車種情報がクローラーに見えない（実測で裏付け）</h4>
-      </div>
-      <p class="body">初期HTMLの可視テキストはトップ6文字・店舗詳細31文字のみ。<strong>料金・車種・住所はゼロ</strong>。本文コンテンツだけがJS依存になっている。</p>
+    <div class="sub-item">
+      <div class="kick">問題 3</div>
+      <h4>料金・車種情報がクローラーに見えない（実測で裏付け）</h4>
+      <p>最初に配られるHTMLに文字として入っているのは、トップページで6文字・店舗詳細で31文字だけです。<strong>料金・車種・住所は1文字も入っていません</strong>。本文はどれも、ブラウザが後から組み立てる作りです。</p>
     </div>
 
     <div class="term-row">
@@ -155,10 +166,17 @@
       <div class="kick">対策</div>
       <h4>段階を踏んで進める（いきなり作り直しには飛ばない）</h4>
       <ol class="steps">
-        <li><strong>Phase 1 — 費用ゼロ・即日〜数日</strong> <span class="badge good">まずここから</span><br>Bubble標準の設定を完遂します。サイトマップの設置 / canonicalの有効化 / ページ別のtitle・meta / Search Consoleへの登録。真因が「見つけてもらえない」ことである以上、これだけで大きく改善する見込みが十分にあります。インデックス数を2〜4週間実測してから、次の投資を判断します。</li>
-        <li><strong>Phase 2 — 月額 $49〜</strong><br>Prerender.io + Cloudflare Worker で、検索ロボットにだけ組み立て済みのHTMLを配信します（公式の手順があります。作業は30〜45分です）。人が見るときの表示速度は改善しない点にご注意ください。</li>
-        <li><strong>Phase 3</strong><br>Astro等でSEO用のページを別建てにします。店舗×車種のカテゴリページをサブディレクトリで配信します。予約の流れはBubbleのまま誘導します。Bubble.ioを捨てる必要はありません。</li>
+        <li><strong>Phase 1 — 費用ゼロ・即日〜数日</strong> <span class="badge good">まずここから</span><br>Bubble標準の設定を完遂します。サイトマップの設置 / 重複したURLの正規化 / ページ別のtitle・meta / Search Consoleへの登録。真因が「見つけてもらえない」ことである以上、これだけで大きく改善する見込みが十分にあります。インデックス数を2〜4週間実測してから、次の投資を判断します。</li>
+        <li><strong>Phase 2 — 月額 $49〜</strong><br>検索ロボットにだけ、組み立て済みのHTMLを配る仕組みを挟みます（公式の手順があります。作業は30〜45分です）。人が見るときの表示速度は改善しない点にご注意ください。</li>
+        <li><strong>Phase 3</strong><br>検索から人を集めるためのページを別建てにします。店舗×車種のまとめページを同じドメインの下で配信します。予約の流れは今のサイトのまま誘導します。今のサイトを作り直す必要はありません。</li>
       </ol>
+      <details class="dev-detail"><summary>開発者向けの詳細（Phase 2・Phase 3の構成）</summary><div class="dd-body">
+        <ul>
+          <li>Phase 1の「重複したURLの正規化」は canonical の設定です。</li>
+          <li>Phase 2: Prerender.io + Cloudflare Worker でボットを判定します。ボットにはプリレンダリング済みのHTMLを返します。</li>
+          <li>Phase 3: Astro等の静的サイト生成でカテゴリページを作ります。配信はサブディレクトリです。Bubble.ioは予約機能としてそのまま使います。</li>
+        </ul>
+      </div></details>
       <ul class="notes">
         <li>サイトマップは手動生成方式に決めました（2026年8月20日更新）。Bubble標準の自動生成では、新しいURL構成で店舗・自転車の個別ページが載らないためです。<!-- 手順: documents/4_growth/03_seo/sitemap/sitemap-creation-guide.md --></li>
       </ul>
@@ -169,7 +187,7 @@
 <!-- ============ コンバージョンファネル ============ -->
 <div class="tab-panel" id="panel-funnel">
   <div class="section">
-    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>コンバージョンファネル <span class="badge bad">最重要</span></h2><div class="sh-sub">ユーザーが「認知」から「リピート」に至るまでの各ステップの課題と改善施策</div></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>コンバージョンファネル <span class="badge brand">最重要</span></h2><div class="sh-sub">ユーザーが「認知」から「リピート」に至るまでの各ステップの課題と改善施策</div></div></div>
 
     <div class="funnel-section">
       <div class="funnel-header">
@@ -181,25 +199,21 @@
       <p class="funnel-phase-label">Acquisition （集客）</p>
 
       <div class="funnel-step">
-        <div class="step-label">Step 0<br>認知</div>
-        <div class="step-issue">
-          <strong>課題</strong>
-          SEO流入ほぼゼロ（2026-06実測: インデックス2〜3ページのみ）、SNSも弱い。そもそもユーザーがRINCLEを知る手段がない。
+        <div class="fn-label">Step 0<br>認知</div>
+        <div class="fn-issue">
+          SEO流入ほぼゼロ（2026年6月実測: インデックス2〜3ページのみ）、SNSも弱い。そもそもユーザーがRINCLEを知る手段がない。
         </div>
-        <div class="step-solution">
-          <strong>施策</strong>
+        <div class="fn-solution">
           SEO段階導入（まずPhase 1: Bubbleネイティブ設定・無料 → 効果実測 → SSGランディングページ） / Google Business Profile登録 / SNS運用（Instagram・X）
         </div>
       </div>
 
       <div class="funnel-step">
-        <div class="step-label">Step 1<br>ランディング</div>
-        <div class="step-issue">
-          <strong>課題</strong>
-          SPA読み込みが極端に遅い（旧サイト実測FCP 20.3秒）、その間は白画面 or ローディング。5秒以内にサービスの価値が伝わるか疑問。
+        <div class="fn-label">Step 1<br>ランディング</div>
+        <div class="fn-issue">
+          画面の読み込みが極端に遅い（旧サイトでは最初に何かが出るまで20.3秒）。その間は白画面か読み込み中の表示。5秒以内にサービスの価値が伝わるか疑問。
         </div>
-        <div class="step-solution">
-          <strong>施策</strong>
+        <div class="fn-solution">
           ファーストビュー最適化（ヘッドライン+検索バー+信頼指標。星評価はレビューが溜まってから） / スケルトンUIで白画面回避 / ファーストビューだけ静的HTML / CSSで即時表示
         </div>
       </div>
@@ -211,13 +225,11 @@
       <p class="funnel-phase-label">Engagement （探索・比較）</p>
 
       <div class="funnel-step">
-        <div class="step-label">Step 2<br>検索・探索</div>
-        <div class="step-issue">
-          <strong>課題</strong>
+        <div class="fn-label">Step 2<br>検索・探索</div>
+        <div class="fn-issue">
           横断検索なし・フィルタなし。初心者はどの自転車を選べばいいか分からない。検索結果0件の体験も未設計。
         </div>
-        <div class="step-solution">
-          <strong>施策</strong>
+        <div class="fn-solution">
           統合検索バー / フィルタ・ソート / 0件時の代替提案 / 初心者診断モード
         </div>
       </div>
@@ -225,25 +237,21 @@
       <div class="alert alert-red" style="margin:12px 0;"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>日付範囲をまたぐ空き検索のDB設計には落とし穴があります:</strong> Bubbleでは「予約済みレコードを除外する方式」が定石で、advancedフィルタ多用はクライアント処理のため件数増で破綻する。検索バー実装前にDB再構築後の新設計（2026年7月に本番リリース済み）と整合を取る。設計レビューを必須とする。</div></div>
 
       <div class="funnel-step">
-        <div class="step-label">Step 2.5<br>比較・検討</div>
-        <div class="step-issue">
-          <strong>課題</strong>
+        <div class="fn-label">Step 2.5<br>比較・検討</div>
+        <div class="fn-issue">
           空き状況の比較ができない。自転車同士の比較もできない。
         </div>
-        <div class="step-solution">
-          <strong>施策</strong>
+        <div class="fn-solution">
           一覧での空き比較 / 自転車スペック比較 / レコメンド / お気に入り機能
         </div>
       </div>
 
       <div class="funnel-step">
-        <div class="step-label">Step 3<br>詳細確認</div>
-        <div class="step-issue">
-          <strong>課題</strong>
+        <div class="fn-label">Step 3<br>詳細確認</div>
+        <div class="fn-issue">
           料金体系が不明瞭。レビューがゼロ。キャンセルポリシーが見つからない。
         </div>
-        <div class="step-solution">
-          <strong>施策</strong>
+        <div class="fn-solution">
           料金シミュレーター / レビュー機能 / キャンセルポリシー明示
         </div>
       </div>
@@ -253,13 +261,11 @@
       <p class="funnel-phase-label">Conversion （予約・決済）</p>
 
       <div class="funnel-step">
-        <div class="step-label">Step 4<br>予約・決済</div>
-        <div class="step-issue">
-          <strong>課題</strong>
+        <div class="fn-label">Step 4<br>予約・決済</div>
+        <div class="fn-issue">
           フォーム項目が多い。会員登録が必須。最大の離脱ポイント。
         </div>
-        <div class="step-solution">
-          <strong>施策</strong>
+        <div class="fn-solution">
           フォームは<strong>合計8項目以下</strong>に（9項目以上はCVR約4分の1: 4.2% vs 1項目18.2%・Baymard） / ゲスト予約OK（登録強制の撤廃でCVR 20〜30%向上） / カート放棄メール（放棄者の46%は24時間以内に再検索 → 1時間以内+翌朝の2通）
         </div>
       </div>
@@ -269,25 +275,21 @@
       <p class="funnel-phase-label">Retention （利用・リピート）</p>
 
       <div class="funnel-step">
-        <div class="step-label">Step 5<br>予約後〜当日</div>
-        <div class="step-issue">
-          <strong>課題</strong>
+        <div class="fn-label">Step 5<br>予約後〜当日</div>
+        <div class="fn-issue">
           確認メール1通で放置。当日の流れが不明。不安が残る。
         </div>
-        <div class="step-solution">
-          <strong>施策</strong>
+        <div class="fn-solution">
           マイページ / リマインドメール / QRチェックイン
         </div>
       </div>
 
       <div class="funnel-step">
-        <div class="step-label">Step 6-7<br>利用中〜利用後</div>
-        <div class="step-issue">
-          <strong>課題</strong>
+        <div class="fn-label">Step 6-7<br>利用中〜利用後</div>
+        <div class="fn-issue">
           利用中・利用後のフォローが一切ない。リピートにつながらない。
         </div>
-        <div class="step-solution">
-          <strong>施策</strong>
+        <div class="fn-solution">
           困ったときボタン / ライドサマリー / リピートクーポン / レビュー依頼は<strong>返却後24〜48時間以内</strong>（投稿レビューの約70%は依頼メール経由） / 購入導線は「試乗履歴つき購入相談予約」として実装
         </div>
       </div>
@@ -317,7 +319,7 @@
       <div class="mock-body" style="background:var(--paper);">
         <div style="background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:24px;">
           <div style="text-align:center; font-family:var(--serif); font-size:19px; font-weight:600; color:var(--ink); margin-bottom:4px;">全国のプロショップでスポーツバイクをレンタル</div>
-          <div style="text-align:center; font-size:12px; color:var(--sub); margin-bottom:20px;">24店舗 / 12都府県 / プロ整備済み（コピー例・2026-05時点の値）</div>
+          <div style="text-align:center; font-size:12px; color:var(--sub); margin-bottom:20px;">24店舗 / 12都府県 / プロ整備済み（コピー例・2026年5月時点の値）</div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <div style="flex:1; min-width:110px; background:var(--paper); border:1px solid var(--line); border-radius:3px; padding:10px 12px;">
               <div style="font-size:10px; color:var(--sub);">エリア</div>
@@ -713,24 +715,16 @@
       </div>
     </div>
 
-    <div class="card">
-      <h4 class="c-title">在庫管理の二重入力問題</h4>
-      <p class="body">ショップが自店の在庫管理とRINCLEの在庫を別々に管理 → 面倒 → 更新されない → 在庫ズレ → オーバーブッキング or 「満車」誤表示。<br>対策: 管理画面をとにかくシンプルに。Googleカレンダー連携/CSV/API提供。</p>
-    </div>
-
-    <div class="card">
-      <h4 class="c-title">ショップのROIが見えない</h4>
-      <p class="body">「RINCLEに参加して結局いくら儲かったの？」に答えられないと契約更新時に離脱。<br>対策: ダッシュボードで月次の予約数/売上/レビュー評価/「レンタル後に購入相談があった件数」を可視化。</p>
-    </div>
-
-    <div class="card">
-      <h4 class="c-title">写真・データの品質がそろわない</h4>
-      <p class="body">高画質な店舗 vs スマホのぼやけた写真1枚。予約率に直結。<br>対策: 撮影ガイドライン提供。テンプレート的な商品登録フォーム。優秀ショップを検索上位表示。</p>
-    </div>
-
-    <div class="card">
-      <h4 class="c-title">サービス品質のばらつき</h4>
-      <p class="body">1店舗の悪い体験がRINCLE全体のブランドを毀損する。<br>対策: レビュースコアのモニタリング。認定制度（ブロンズ / シルバー / ゴールド）。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:210px">課題</th><th>中身</th><th>対策</th></tr></thead>
+        <tbody>
+          <tr><td class="label wrap">在庫管理の二重入力</td><td>ショップが自店の在庫管理とRINCLEの在庫を別々に持つ → 面倒 → 更新されない → 在庫ズレ → オーバーブッキング or 「満車」の誤表示</td><td>管理画面をとにかく簡単にする。Googleカレンダー連携 / CSV / API提供</td></tr>
+          <tr><td class="label wrap">ショップのROIが見えない</td><td>「RINCLEに参加して結局いくら儲かったのか」に答えられないと、契約更新時に離脱する</td><td>ダッシュボードで月次の予約数 / 売上 / レビュー評価 /「レンタル後に購入相談があった件数」を見せる</td></tr>
+          <tr><td class="label wrap">写真・データの品質がそろわない</td><td>高画質な店舗と、スマホのぼやけた写真1枚の店舗が混在する。予約率に直結する</td><td>撮影ガイドラインを配る。商品登録フォームをひな型化する。品質の高い店舗を検索上位に出す</td></tr>
+          <tr><td class="label wrap">サービス品質のばらつき</td><td>1店舗の悪い体験が、RINCLE全体のブランドを損なう</td><td>レビュースコアを監視する。認定制度（ブロンズ / シルバー / ゴールド）を設ける</td></tr>
+        </tbody>
+      </table>
     </div>
     </div>
 
@@ -738,16 +732,17 @@
       <div class="kick">収益モデル（2026年6月追加）</div>
       <h4>収益モデルが未定義 — 「誰からいくら取るか」を決める</h4>
 
-    <div class="card edge-red">
-      <h4 class="c-title">レンタル手数料だけでは事業が立たない</h4>
-      <p class="body">体験OTAの送客手数料相場は10〜20%（アソビュー・KLOOK）。掲載無料+成果報酬が業界標準。Anycaの15〜35%は供給離反を招いた危険域。<br>
-      試算: レンタル単価6,000〜13,200円 × 手数料18% = <strong>1予約あたり1,080〜2,376円</strong>。初期の予約数では手数料収益だけで事業は成立しない。</p>
-    </div>
-
-    <div class="card edge-green">
-      <h4 class="c-title">本命収益源は物販送客（try-before-buy）</h4>
-      <p class="body" style="margin-bottom:8px;">米Trekは<strong>「レンタル料の100%を購入代金に充当」</strong>を標準特典化。国内スポーツバイクでは未確立の差別化余地。レンティオ公表値では、レンタル機会の提供で<strong>購入数が4倍以上</strong>になるケースもある（購入転換率3%の商品でも）。</p>
-      <p class="body">購入成約への送客フィー（例: 車体価格の3〜5%）なら30万円の完成車で<strong>9,000〜15,000円 / 台</strong> — レンタル手数料の数倍。「レンタル料の購入充当」をRINCLE標準特典として全店共通化する。Step 7の「試乗履歴つき購入相談予約」と接続する。</p>
+    <div class="compare">
+      <div class="compare-box asis">
+        <div class="cb-head">現状: レンタル手数料だけでは事業が立たない</div>
+        <p>体験OTAの送客手数料の相場は10〜20%です（アソビュー・KLOOK）。掲載無料+成果報酬が業界標準で、Anycaの15〜35%は供給側の離反を招いた危険域でした。</p>
+        <p>試算: レンタル単価6,000〜13,200円 × 手数料18% = <strong>1予約あたり1,080〜2,376円</strong>。初期の予約数では、手数料収益だけで事業は成立しません。</p>
+      </div>
+      <div class="compare-box tobe">
+        <div class="cb-head">あるべき姿: 本命収益源は物販送客</div>
+        <p>米Trekは<strong>「レンタル料の100%を購入代金に充当」</strong>を標準特典にしています。国内のスポーツバイクでは未確立の差別化余地です。レンティオの公表値では、レンタル機会の提供で<strong>購入数が4倍以上</strong>になる例もあります（購入転換率3%の商品でも）。</p>
+        <p>購入成約への送客フィー（例: 車体価格の3〜5%）なら、30万円の完成車で<strong>9,000〜15,000円 / 台</strong> — レンタル手数料の数倍です。「レンタル料の購入充当」をRINCLEの標準特典として全店共通にします。Step 7の「試乗履歴つき購入相談予約」と接続します。</p>
+      </div>
     </div>
 
     <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>KPIに<strong>「テイクレート」「GMV」「レンタル→購入相談率・購入転換率」</strong>を追加します。</div></div>
@@ -757,15 +752,16 @@
       <div class="kick">保険・賠償（2026年6月追加）</div>
       <h4>保険・賠償の構造的な穴</h4>
 
-    <div class="card edge-red">
-      <h4 class="c-title">施設賠償責任保険は「利用者の運転ミス」を補償しない</h4>
-      <p class="body">一般的な施設賠償責任保険の対象は事業者の整備・管理ミス起因のみ。<strong>大半の交通事故である利用者の運転ミスは補償されない</strong>。自転車事故は数千万円の賠償判例がある。保険加入を条例で義務化する自治体が拡大中。無保険の重大事故1件でプラットフォーム全体の信用が崩壊し得る。</p>
-    </div>
-
-    <div class="card edge-green">
-      <h4 class="c-title">対策: 全パートナー店舗の保険加入状況の棚卸しが最優先</h4>
-      <p class="body" style="margin-bottom:8px;">レンタサイクル事業者専用保険（最大1億円補償、6台で年12,000円。自転車安全対策協議会）の加入を加盟基準として義務化を検討。</p>
-      <p class="body">高額車両（カーボンロード等）の破損時の負担ルールと、免責補償オプション（レンタルバイク業界の定番。収益源も兼ねる）を予約前に明示する — Step 3「本当に大丈夫？」の不安解消に直結。</p>
+    <div class="compare">
+      <div class="compare-box asis">
+        <div class="cb-head">現状: 施設賠償責任保険は「利用者の運転ミス」を補償しない</div>
+        <p>一般的な施設賠償責任保険の対象は、事業者の整備・管理ミスに起因するものだけです。<strong>大半の交通事故である利用者の運転ミスは補償されません</strong>。自転車事故には数千万円の賠償判例があります。保険加入を条例で義務化する自治体も広がっています。無保険の重大事故が1件でも起きれば、プラットフォーム全体の信用が崩れます。</p>
+      </div>
+      <div class="compare-box tobe">
+        <div class="cb-head">あるべき姿: 全パートナー店舗の保険加入状況の棚卸しが最優先</div>
+        <p>レンタサイクル事業者専用保険（最大1億円補償・6台で年12,000円。自転車安全対策協議会）への加入を、加盟基準として義務化することを検討します。</p>
+        <p>高額車両（カーボンロード等）の破損時の負担ルールと、免責補償オプション（レンタルバイク業界の定番で、収益源も兼ねます）を予約前に明示します — Step 3「本当に大丈夫？」の不安解消に直結します。</p>
+      </div>
     </div>
     </div>
   </div>
@@ -779,9 +775,9 @@
     <div class="sub-item">
       <div class="kick">コールドスタートの突破</div>
       <h4>サービス開始3ヶ月（2026年5月時点）— レビューゼロ・ブランド認知ゼロからどう抜けるか</h4>
-    <div class="card edge-green">
-      <h4 class="c-title">レビューの種まき戦略</h4>
-      <ul>
+    <div class="card">
+      <h4 class="c-head">レビューの種まき戦略</h4>
+      <ul class="c-list">
         <li>パートナーショップの既存顧客にレビュー依頼</li>
         <li>体験モニター募集（無料 or 50%OFF）— ただし投稿は任意とする。対価と紐づけない</li>
         <li>自転車メディア・ブロガーに体験取材を依頼</li>
@@ -790,9 +786,9 @@
       <div class="alert alert-red" style="margin-bottom:0;"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>ステマ規制（景表法・2023年10月施行）:</strong> 「レビュー投稿を条件」に対価を提供すると広告表示義務が発生する。措置命令・課徴金の対象になり得る。投稿してもらう場合は「モニター利用」である旨の表示を徹底。インセンティブは投稿行為のみに付与する。評価内容を条件にしない。</div></div>
     </div>
 
-    <div class="card edge-green">
-      <h4 class="c-title">パートナーショップの既存チャネルを活用</h4>
-      <ul>
+    <div class="card">
+      <h4 class="c-head">パートナーショップの既存チャネルを活用</h4>
+      <ul class="c-list">
         <li>各ショップのWebサイト・SNS・店頭POPにRINCLEへの導線を設置</li>
         <li>ショップの既存顧客にRINCLEを紹介するメールを配信</li>
         <li>ショップのGoogleビジネスプロフィールにRINCLEのリンクを追加</li>
@@ -804,17 +800,22 @@
     <div class="sub-item">
       <div class="kick">計測の整備</div>
       <h4>計測できていないものは改善できない — 最低限つかむべき数値</h4>
-    <ul class="notes">
-      <li>いずれもGA4と予約データで取得します。GA4の本番設置後に順次埋めます。</li>
-    </ul>
-    <div class="stat-row">
-      <div class="stat"><span class="l">月間サイト訪問数</span><span class="n md hot">未計測</span></div>
-      <div class="stat"><span class="l">検索→詳細 遷移率</span><span class="n md hot">未計測</span></div>
-      <div class="stat"><span class="l">予約完了率</span><span class="n md hot">未計測</span></div>
-      <div class="stat"><span class="l">No-show率</span><span class="n md hot">未計測</span></div>
-      <div class="stat"><span class="l">リピート率</span><span class="n md hot">未計測</span></div>
-      <div class="stat"><span class="l">GMV・テイクレート・レンタル→購入相談率</span><span class="n md hot">未計測</span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>指標</th><th style="width:120px">現状</th><th style="width:220px">取得手段</th></tr></thead>
+        <tbody>
+          <tr><td class="label">月間サイト訪問数</td><td>未計測</td><td>GA4</td></tr>
+          <tr><td class="label">検索 → 詳細 遷移率</td><td>未計測</td><td>GA4</td></tr>
+          <tr><td class="label">予約完了率</td><td>未計測</td><td>GA4 + 予約データ</td></tr>
+          <tr><td class="label">No-show率</td><td>未計測</td><td>予約データ</td></tr>
+          <tr><td class="label">リピート率</td><td>未計測</td><td>予約データ</td></tr>
+          <tr><td class="label wrap">GMV・テイクレート・レンタル → 購入相談率</td><td>未計測</td><td>予約データ</td></tr>
+        </tbody>
+      </table>
     </div>
+    <ul class="notes">
+      <li>GA4の本番設置後に、上の「現状」列を順次埋めます。</li>
+    </ul>
     <div class="alert alert-red"><span class="a-icon"><svg class="icon"><use href="#i-alert"/></svg></span><div><strong>これらの数値が1つでも取れていないなら、まず計測の整備が最優先です。</strong> どの施策をやるべきかは、ファネルのどこで一番漏れているかで決まります。GA4の本番設置は2026年8月20日時点でまだです。<!-- task_list #21-22 --></div></div>
     </div>
   </div>

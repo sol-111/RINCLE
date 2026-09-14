@@ -11,12 +11,11 @@
 <style>
 /* ページ固有CSS — ブログSEOの方針（共通部品は ../../assets/design.css を参照） */
 
-.hero h1 .sub{font-size:24px;color:var(--text);letter-spacing:0}
 .section p{font-size:14px}
-.card ul,.card ol{padding-left:20px;font-size:14px;margin:0}
-.card li{margin-bottom:8px;line-height:1.9}
-.card li:last-child{margin-bottom:0}
-.card p + p{margin-top:10px}
+.section p + p{margin-top:10px}
+.section ul:not(.notes),.section ol:not(.steps){padding-left:20px;font-size:14px;margin:0}
+.section li{margin-bottom:8px;line-height:1.9}
+.section li:last-child{margin-bottom:0}
 
 /* 表の評価記号（◎○＝緑 / △＝琥珀 / ×＝紅。塗らず文字色だけ） */
 td.center{text-align:center;white-space:nowrap}
@@ -26,10 +25,6 @@ td.center{text-align:center;white-space:nowrap}
 
 /* 出典行 */
 .src{font-size:11px;color:var(--sub);margin-top:12px;line-height:1.8}
-
-@media (max-width:760px){
-  .hero h1 .sub{font-size:18px}
-}
 </style>
 </head>
 <body>
@@ -61,10 +56,10 @@ td.center{text-align:center;white-space:nowrap}
       </div>
       <span class="hero-no">SEO</span>
     </div>
-    <h1>ブログSEOの方針 <span class="sub">どこに・どの形式・何のツールで書くか</span></h1>
-    <p class="lead">「地域ごとのサイクリングコースで集客したい」構想（6月12日定例）の実現方式を、置き場所・形式・ツールの3軸で整理した報告です。</p>
+    <h1>ブログSEOの方針</h1>
+    <p class="lead">「地域ごとのサイクリングコースで集客したい」構想（6月12日定例）の実現方式を、どこに・どの形式で・何のツールで書くかの3軸で整理した報告です。</p>
     <!-- タスク#24。2026-06-12調査・06-24統合・06-30定例で実現方式を更新・07-02 SEO差の洗い出しを追記（§6） -->
-    <div class="hero-meta">2026-07-02更新 ｜ PEDALSTANDARD社向け ｜ 弊社（清野・山本）</div>
+    <div class="hero-meta">2026年7月2日更新 ｜ PEDALSTANDARD社向け ｜ 弊社（清野・山本）</div>
   </div>
 </div>
 
@@ -83,16 +78,16 @@ td.center{text-align:center;white-space:nowrap}
   <div class="section" id="conclusion">
     <div class="section-header">
       <div class="section-num">01</div>
-      <div class="sh-body"><h2>結論</h2><div class="sh-sub">3軸＋用途振り分けのまとめ</div></div>
+      <div class="sh-body"><h2>結論</h2><div class="sh-sub">どこに・どの形式で・何のツールで・用途の振り分け</div></div>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>観点</th><th>結論</th><th>ひとこと</th></tr></thead>
+        <thead><tr><th>観点</th><th>結論</th><th>なぜ</th></tr></thead>
         <tbody>
-          <tr><td class="label">どこに書くか</td><td>SEO資産＝<strong>自社ドメイン配下</strong>（<strong>サブドメイン</strong>継続 — SEO差は小さいと2026-07-02の調査で確認・§6） / 拡散＝<strong>note（無料）</strong></td><td>noteの検索評価は後から自社に移せない → 最初から自社ドメインに書く</td></tr>
-          <tr><td class="label">どの形式で</td><td><strong>ブログ記事 ＋ 本体エリアページ</strong>（狭義の1枚LPは作らない。作り込み型LPは記事と同等）</td><td>情報収集層は売り込みLPで拾えない。記事で集客→エリアページで予約</td></tr>
-          <tr><td class="label">何のツールで</td><td>当面<strong>Claude Code製の静的LP（HTML / CSS）</strong>で自走（WordPressは保留・本格化時に再検討）</td><td>WordPress構築コストを先送り。増永さん側がClaude Codeで量産→手直しして公開</td></tr>
-          <tr><td class="label">用途で振り分け</td><td>SEO上位狙い＝静的LP記事 / お知らせ＝BubbleのCMS / 拡散＝note</td><td>「全部WordPress」でも「全部Bubble」でもない</td></tr>
+          <tr><td class="label">どこに書くか</td><td>SEO資産＝<strong>自社ドメイン配下</strong>（<strong>サブドメイン</strong>継続 — SEO差は小さいと2026年7月2日の調査で確認・§6） / 拡散＝<strong>note（無料）</strong></td><td>noteの検索評価は後から自社ドメインに移せないため</td></tr>
+          <tr><td class="label">どの形式で</td><td><strong>ブログ記事 ＋ 本体エリアページ</strong>（狭義の1枚LPは作らない。作り込み型LPは記事と同等）</td><td>情報収集の段階の人は売り込みLPでは拾えないため</td></tr>
+          <tr><td class="label">何のツールで</td><td>当面<strong>Claude Code製の静的LP（HTML / CSS）</strong>で自走（WordPressは保留・本格化時に再検討）</td><td>WordPressの構築コストを先送りできるため</td></tr>
+          <tr><td class="label">用途で振り分け</td><td>SEO上位狙い＝静的LP記事 / お知らせ＝BubbleのCMS / 拡散＝note</td><td></td></tr>
         </tbody>
       </table>
     </div>
@@ -148,7 +143,7 @@ td.center{text-align:center;white-space:nowrap}
       <p><strong>※ ただし作り込んだ複数ページのLPなら別。</strong>中身が情報性を持ち複数ページに分かれていれば、それは実質ブログ / オウンドメディアと同じ（呼び名の差）。弱いのは「ペラ1枚の売り込み」。</p>
     </div>
     <h3>「ブログ記事 ＋ 本体エリアページ」とは</h3>
-    <p>2種類のページは<strong>ユーザーの段階が違う</strong>。「本体エリアページ」は新規に作る別物ではなく、<strong>rincle.co.jpの予約サイト側にある既存のエリア検索 / 店舗一覧ページ</strong>（sitemap化する約430URL〈店舗56・自転車374ほか静的ページ・2026-08-20本番実測〉）を指す。</p>
+    <p>2種類のページは<strong>ユーザーの段階が違う</strong>。「本体エリアページ」は新規に作る別物ではなく、<strong>rincle.co.jpの予約サイト側にある既存のエリア検索 / 店舗一覧ページ</strong>（sitemap化する約430URL〈店舗56・自転車374ほか静的ページ・2026年8月20日本番実測〉）を指す。</p>
     <div class="table-wrap">
       <table>
         <thead><tr><th></th><th>① ブログ記事</th><th>② 本体エリアページ</th></tr></thead>
@@ -188,7 +183,7 @@ td.center{text-align:center;white-space:nowrap}
     </div></div>
     </figure>
     <div class="legend">
-      <span><i style="background: var(--info);"></i>ユーザーの動き</span>
+      <span><i style="background: var(--info);"></i>読者の型</span>
       <span><i style="background: var(--accent);"></i>予約（このページで刈り取る）</span>
     </div>
     <p>①から②へは記事内リンク（「このコースを走るなら」）でつなぎます。</p>
@@ -363,7 +358,7 @@ td.center{text-align:center;white-space:nowrap}
         </tbody>
       </table>
     </div>
-    <p class="src">出典: Google公式Site Movesドキュメント / John Mueller発言（2016・2017・2018・2021）/ 鈴木謙一・海外SEO情報ブログ / Web担当者Forum ほか — 詳細URLは正本md（日英22ソース・主張107件から反証検証を通過した24件に基づく・2026-07-02調査）</p>
+    <p class="src">出典: Google公式Site Movesドキュメント / John Mueller発言（2016・2017・2018・2021）/ 鈴木謙一・海外SEO情報ブログ / Web担当者Forum ほか — 詳細URLは正本md（日英22ソース・主張107件から反証検証を通過した24件に基づく・2026年7月2日調査）</p>
 
     <h3>始め方と順序</h3>
       <ol class="steps">

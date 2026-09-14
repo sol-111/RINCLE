@@ -96,13 +96,12 @@
 .swot-card.t li::before{background:var(--gold)}
 
 /* 記号丸は共通部品の .num-chip（カード内では見出しとの間を空ける） */
-.card > .num-chip{margin-bottom:10px}
+.grid2 > div > .num-chip{margin-bottom:10px}
 .grid2 h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin:0 0 6px;line-height:1.6}
 .grid2 .p-attr{font-size:12px;color:var(--sub);margin-bottom:10px}
 .grid2 p.body{font-size:13px;color:var(--text);line-height:1.9}
 
 /* 表の補足（項目名=明朝。RINCLEの行は面を着せず焦がしの太字で示す） */
-.table-wrap td:first-child{font-family:var(--serif);font-size:15px;color:var(--ink)}
 td.hot{color:var(--accent-deep);font-weight:700}
 
 @media (max-width:860px){
@@ -157,11 +156,10 @@ td.hot{color:var(--accent-deep);font-weight:700}
 <nav class="flow-tabs">
   <button class="tab-btn active" data-target="panel-conclusion"><span class="fnum">1</span><div class="ft">結論</div><div class="fd">RINCLEの唯一性の核と競争の3正面</div></button>
   <button class="tab-btn" data-target="panel-market"><span class="fnum">2</span><div class="ft">市場概況</div><div class="fd">サイクルツーリズム・E-Bike市場の現在地</div></button>
-  <button class="tab-btn" data-target="panel-players"><span class="fnum">3</span><div class="ft">RINCLE+競合5社</div><div class="fd">主要プレイヤーのプロフィール整理</div></button>
+  <button class="tab-btn" data-target="panel-players"><span class="fnum">3</span><div class="ft">RINCLE+競合5社</div><div class="fd">主要プレイヤーと周辺サービスの整理</div></button>
   <button class="tab-btn" data-target="panel-model"><span class="fnum">4</span><div class="ft">モデル・料金比較</div><div class="fd">収益構造と料金水準の横並び比較</div></button>
   <button class="tab-btn" data-target="panel-vs"><span class="fnum">5</span><div class="ft">1対1比較・SWOT</div><div class="fd">主要競合との直接比較と強み・弱み</div></button>
-  <button class="tab-btn" data-target="panel-additional"><span class="fnum">6</span><div class="ft">追加競合カテゴリ</div><div class="fd">シェアサイクルなど周辺サービスの整理</div></button>
-  <button class="tab-btn" data-target="panel-action"><span class="fnum">7</span><div class="ft">アクション・ペルソナ</div><div class="fd">調査から導く打ち手と狙う顧客像</div></button>
+  <button class="tab-btn" data-target="panel-action"><span class="fnum">6</span><div class="ft">アクション・ペルソナ</div><div class="fd">調査から導く打ち手と狙う顧客像</div></button>
 </nav>
 
 <div class="container">
@@ -169,13 +167,13 @@ td.hot{color:var(--accent-deep);font-weight:700}
 <!-- ============ 結論 ============ -->
 <div class="tab-panel active" id="panel-conclusion">
   <div class="section" id="conclusion">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">どの陣営も持たない「横断 × 統一予約 × 即時反映」が唯一性の核</div></div></div>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">この調査から見えた唯一性の核と、競争が起きている面</div></div></div>
     <p>直接競合はすべて自社で車両を保有する型で、規模を伸ばしにくい構造です。<strong>「マルチブランド横断 × 統一Web予約 × 在庫の即時反映」はどの陣営も持っておらず、ここがRINCLEの唯一性の核</strong>です（メーカーは自社ブランドしか並べられないため、構造的に真似できません）。</p>
     <p>年10%以上成長する市場に大手プラットフォーマーは依然として不在です。ただし競争は次の3正面に広がっています（2026年6月更新）。</p>
     <div class="term-row">
-      <div class="term"><div class="term-name">メーカー直営・供給網</div><div class="term-tag">正面 1</div><div class="t-body">Trek / Specialized / MERIDA / ヤマハ。詳細はタブ6をご覧ください。</div></div>
-      <div class="term"><div class="term-name">インバウンド特化系</div><div class="term-tag">正面 2</div><div class="t-body">Livelo等。訪日旅行者に的をしぼった事業者です。</div></div>
-      <div class="term"><div class="term-name">シェアサイクル / OTA</div><div class="term-tag">正面 3</div><div class="t-body">顧客との接点を押さえる形での競合です。</div></div>
+      <div class="term"><div class="term-name">メーカー直営・供給網 <span class="term-tag">— 正面1</span></div><div class="t-body">Trek / Specialized / MERIDA / ヤマハ。詳細はタブ3の「周辺サービス」をご覧ください。</div></div>
+      <div class="term"><div class="term-name">インバウンド特化系 <span class="term-tag">— 正面2</span></div><div class="t-body">Livelo等。訪日旅行者に的をしぼった事業者です。</div></div>
+      <div class="term"><div class="term-name">シェアサイクル / OTA <span class="term-tag">— 正面3</span></div><div class="t-body">顧客との接点を押さえる形での競合です。</div></div>
     </div>
   </div>
 </div>
@@ -211,7 +209,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
 
     <div class="grid2">
       <div class="stat">
-        <span class="l">しまなみジャパン 2025年度の貸出件数（過去最多）— 出典: トラベルボイス 2026-04-30 / しまなみジャパン市場調査</span>
+        <span class="l">しまなみジャパン 2025年度の貸出件数（過去最多）— 出典: トラベルボイス 2026年4月30日 / しまなみジャパン市場調査</span>
         <span class="n md hot">79,502<small>件</small></span>
         <span class="d">貸出台数173,279台。国内+8%に対し訪日旅行者は前年度比<strong>+70%</strong>。成長の要因は2023年10月からの<strong>予約・貸出のデジタル化（アプリ導入）</strong>で、「予約のデジタル化がレンタル実績を押し上げる」国内最大級の実例です</span>
       </div>
@@ -227,7 +225,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
 <!-- ============ RINCLE + 競合5社 ============ -->
 <div class="tab-panel" id="panel-players">
   <div class="section">
-    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>RINCLE + 競合 5社</h2><div class="sh-sub">調査対象のプロフィール</div></div></div>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>RINCLE + 競合 5社</h2><div class="sh-sub">直接競合5社のプロフィールと、その外側の周辺サービス</div></div></div>
 
 
     <div class="comp-grid">
@@ -237,7 +235,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
         <h4>RINCLE（リンクル）</h4>
         <p class="comp-company">PEDALSTANDARD株式会社（代表: 増永康已）</p>
         <div class="comp-detail"><span class="label">モデル</span><span>プロショップネットワーク型PF</span></div>
-        <div class="comp-detail"><span class="label">エリア</span><span>12都府県・24店舗（2026-05調査時点の公表値）</span></div>
+        <div class="comp-detail"><span class="label">エリア</span><span>12都府県・24店舗（2026年5月調査時点の公表値）</span></div>
         <div class="comp-detail"><span class="label">設立</span><span>2024年6月（サービス: 2026年2月〜）</span></div>
         <div class="comp-detail"><span class="label">資本金</span><span>800万円</span></div>
         <div class="comp-detail"><span class="label">目標</span><span>47都道府県・300店舗・3,000台</span></div>
@@ -323,6 +321,110 @@ td.hot{color:var(--accent-deep);font-weight:700}
       </div>
 
     </div>
+
+    <div class="sub-item" id="panel-additional">
+      <div class="kick">直接競合の外側</div>
+      <h4>周辺サービス</h4>
+      <p>上の5社は「スポーツバイクを貸す」直接の競合です。その外側に、別の形でRINCLEと同じ客を取りうる事業者がいます（2026年6月の深掘り調査で大幅に更新した部分です）。</p>
+      <h4>A.【最重要】メーカー直営・メーカー供給網レンタル — 「脅威（仮定）」が現実に</h4>
+      <p style="font-size:13px;color:var(--sub);margin-bottom:16px">RINCLEと同じ「プロショップ品質 × 試乗→購入導線」を、メーカーが直営店で既に実装している。</p>
+      <div class="comp-grid" style="grid-template-columns:repeat(2,1fr);">
+        <div class="comp-card">
+          <h4>Trek 直営店レンタル <span class="badge bad">脅威度 高</span></h4>
+          <p class="comp-company">TREK Bicycle 東京青山 / 福岡天神（直営2店）</p>
+          <div class="comp-detail"><span class="label">料金</span><span>¥5,000〜¥10,000/日（カーボンロード/E-Bikeまで）・最長10日</span></div>
+          <div class="comp-detail"><span class="label">導線</span><span><strong>レンタル後1ヶ月以内の購入でレンタル料金分を車両代から割引</strong> — RINCLEの「試乗→購入」と完全に同じ訴求</span></div>
+          <div class="comp-links">
+            <a href="https://www.trekbikes.com/jp/ja_JP/jblog/rental-bike-25/" target="_blank">公式案内</a>
+          </div>
+        </div>
+        <div class="comp-card">
+          <h4>Specialized 直営レンタル <span class="badge bad">脅威度 高</span></h4>
+          <p class="comp-company">名城 / 北海道ボールパークFビレッジ（直営2拠点）</p>
+          <div class="comp-detail"><span class="label">導線</span><span><strong>「Try and Buy プログラム」</strong>: レンタル後3ヶ月以内の購入でレンタル料金分を割引。レンタル車＝試乗車と同車種</span></div>
+          <div class="comp-detail"><span class="label">留意</span><span>RINCLEパートナーに「スペシャライズド神戸」が含まれるため、直営拡大方針との関係（競合化 / 共存）は要ヒアリング</span></div>
+          <div class="comp-links">
+            <a href="https://specialized-store.jp/meijo/rental/" target="_blank">名城</a>
+            <a href="https://specialized-store.jp/hokkaido-experience-center/rental/" target="_blank">北海道</a>
+          </div>
+        </div>
+        <div class="comp-card">
+          <h4>MERIDA「FEEL. E-BIKE」 <span class="badge bad">脅威度 高</span></h4>
+          <p class="comp-company">MIYATA×MERIDA供給・現地施設運営（規模で既存競合を上回る）</p>
+          <div class="comp-detail"><span class="label">規模</span><span><strong>全国50拠点以上</strong>（北海道〜沖縄。長野約15・静岡約8など観光地に厚い）</span></div>
+          <div class="comp-detail"><span class="label">構造</span><span>「メーカーが車両供給し現地施設が貸す」分散ネットワーク型 — RINCLEのモデルに最も近い。ただし<strong>統一予約・決済・リアルタイム在庫は持たない</strong>（公式は検索のみ）</span></div>
+          <div class="comp-detail"><span class="label">RINCLEの優位</span><span>規模では上回られる。ただし統一Web予約とマルチブランドは持たない</span></div>
+          <div class="comp-links">
+            <a href="https://www.merida.jp/feel/rental/" target="_blank">レンタル検索</a>
+          </div>
+        </div>
+        <div class="comp-card">
+          <h4>ヤマハ YPJ / モンベル <span class="badge plain">脅威度 中</span></h4>
+          <p class="comp-company">メーカー組織化網・アウトドア大手</p>
+          <div class="comp-detail"><span class="label">ヤマハ</span><span>スポーツ電動アシスト「YPJ」レンタルショップ網を公式に組織化・掲載</span></div>
+          <div class="comp-detail"><span class="label">モンベル</span><span>レンタル対応6店舗（自社ブランドSCHEIDEGG）。館山市の観光施設にE-MTB供給など「自治体への車両供給元」の顔も</span></div>
+          <div class="comp-detail"><span class="label">留意</span><span>ブランド力と店舗網により、将来的に競合になるリスクがある</span></div>
+          <div class="comp-links">
+            <a href="https://www.yamaha-motor.co.jp/pas/ypj/rentalshop/" target="_blank">YPJ一覧</a>
+            <a href="https://www.montbell.jp/generalpage/disp.php?id=545" target="_blank">モンベル</a>
+          </div>
+        </div>
+      </div>
+
+      <h4>B. インバウンド特化の海外系プレイヤー（新カテゴリ）</h4>
+      <p style="font-size:13px;color:var(--sub);margin-bottom:16px">いずれも規模は小さいが、<strong>「英語 × ホテルデリバリー × ハイエンドロード」の高単価セグメントを既に押さえている</strong>。多言語未対応のままではこの層を丸ごと取りこぼす。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>サービス</th>
+              <th>概要</th>
+              <th>RINCLEとの関係</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label wrap"><a href="https://www.livelo.cc/pages/road-bike-rental-tokyo" target="_blank" style="color:var(--accent-deep);font-weight:700;">Livelo</a></td>
+              <td>世界30都市以上展開の外資系ロードバイクレンタル。東京ではRibble（Ultegraカーボン）をホテルデリバリー。完全インバウンド向け</td>
+              <td>多言語・ホテル配送・グローバル予約網が強み</td>
+            </tr>
+            <tr>
+              <td class="label wrap"><a href="https://roadbikerentaljapan.com/" target="_blank" style="color:var(--accent-deep);font-weight:700;">Road Bike Rental Japan</a></td>
+              <td>インバウンド向けロード / ツーリングレンタル＋ガイド。Ride with GPSと提携</td>
+              <td>英語完結のツーリング需要を先取り</td>
+            </tr>
+            <tr>
+              <td class="label wrap"><a href="https://www.lotuscyclejapan.com/rental-bikes" target="_blank" style="color:var(--accent-deep);font-weight:700;">Lotus Cycle Japan</a></td>
+              <td>ロード / E-Bike等を全国で柔軟に受取・返却（英語サイト）</td>
+              <td>「全国×乗り捨て柔軟×英語」でRINCLEの弱点を突く構成</td>
+            </tr>
+            <tr>
+              <td class="label wrap"><a href="https://www.bimbimbikes.com/bike-rental/japan" target="_blank" style="color:var(--accent-deep);font-weight:700;">Bimbimbikes</a></td>
+              <td>海外の自転車レンタル予約アグリゲーター。日本の提携店を英語で予約可能</td>
+              <td>海外プラットフォーマーが「日本の棚」を既に持つ例</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>訪日メディアは「日本のシェアサイクルは日本の電話番号が必要・英語アプリが弱い」点を障壁として指摘 → <strong>英語対応するだけで差別化になる余地</strong>（出典: Japan Guide）</div></div>
+
+      <h4>C / D. 隣接領域の再定義 — シェアサイクルは「顧客接点の独占」、OTAは「取るべき棚」</h4>
+      <div class="grid2">
+        <div class="card" style="border-left:2px solid var(--gold);margin:0;">
+          <h4 style="margin-bottom:8px;">シェアサイクル大手（HELLO CYCLING / LUUP）</h4>
+          <p class="body">HELLO CYCLINGは全国約11,300ステーション・約50,000台・<strong>会員460万人超</strong>。LUUPは京都ポート1,300超など観光地に高密度展開。スポーツバイク参入の兆候はなし（2026年6月時点）。</p>
+          <p class="body" style="margin-top:8px;"><strong>脅威の本質は車種拡大ではなく顧客接点（アプリ・会員基盤）の独占。</strong>観光地での「自転車でまわる体験」の第一想起を奪われつつある。RINCLEは「半日〜1日×ロングライド」の体験価値を明確に打ち出さないと中間層を失う。</p>
+        </div>
+        <div class="card" style="border-left:2px solid var(--info);margin:0;">
+          <h4 style="margin-bottom:8px;">アクティビティOTA — 競合ではなく「取るべき棚」</h4>
+          <p class="body">アソビュー（CycleTrip掲載済み）/じゃらん遊び・体験（クロスビー掲載済み）/Klook（訪日客向けに東京・札幌・阿蘇等のレンタサイクル商品を多数販売、<strong>海外OTA経由のインバウンド予約導線が確立済み</strong>） / RYDE CYCLE（横断検索アプリ）。</p>
+          <p class="body" style="margin-top:8px;">OTAは在庫を持たないため直接競合ではないが、（1）「地名×レンタサイクル」の検索上流を押さえる、（2） 競合が既に掲載済み、の2点で<strong>RINCLEが未掲載のままだと発見可能性で構造的に不利</strong>。アソビュー/じゃらん/Klook掲載は検討価値が高い。</p>
+        </div>
+      </div>
+      <div class="card" style="font-size:12px;color:var(--sub);">
+        <strong style="color:var(--ink);">その他の周辺プレイヤー:</strong> RIDEAWAY（多摩川中心・無人レンタル実験、脅威度 低〜中）/ ブリヂストン「エシクル」（子ども用サブスク）/ glafit「WANDERIDE」（宿×電動モビリティ）/ 自治体・DMO直営E-Bikeレンタル（十日町・戸隠・館山等 — 競合であると同時にRINCLEの予約システム提供先になり得る）
+      </div>
+    </div>
   </div>
 </div>
 
@@ -347,49 +449,49 @@ td.hot{color:var(--accent-deep);font-weight:700}
         </thead>
         <tbody>
           <tr>
-            <td class="hot">RINCLE</td>
+            <td class="label wrap hot">RINCLE</td>
             <td>プロショップネットワーク型PF</td>
             <td>—（店舗依存）</td>
             <td>24店舗</td>
             <td>12都府県（拡大中）</td>
           </tr>
           <tr>
-            <td>CycleTrip BASE</td>
+            <td class="label wrap">CycleTrip BASE</td>
             <td>自社BtoC＋CtoC＋サブスク</td>
             <td>約300台</td>
             <td>3拠点</td>
             <td>東京・名古屋・羽田</td>
           </tr>
           <tr>
-            <td>ジャイアントストア</td>
+            <td class="label wrap">ジャイアントストア</td>
             <td>メーカー直営</td>
             <td>—</td>
             <td>12店舗</td>
             <td>観光地中心</td>
           </tr>
           <tr>
-            <td>クロスビープランニング</td>
+            <td class="label wrap">クロスビープランニング</td>
             <td>レンタル＋ガイドツアー</td>
             <td>数十台</td>
             <td>1店舗</td>
             <td>大阪のみ</td>
           </tr>
           <tr>
-            <td>東京サイクリングツアー</td>
+            <td class="label wrap">東京サイクリングツアー</td>
             <td>デリバリー型（無店舗）</td>
             <td>約40台</td>
             <td>0（配送）</td>
             <td>東京23区</td>
           </tr>
           <tr>
-            <td>Power Kids</td>
+            <td class="label wrap">Power Kids</td>
             <td>プロショップ副次型（宅配）</td>
             <td>—</td>
             <td>2店舗</td>
             <td>群馬（宅配で全国）</td>
           </tr>
           <tr>
-            <td>MERIDA FEEL. E-BIKE（参考・2026-06追加）</td>
+            <td class="label wrap">MERIDA FEEL. E-BIKE（参考・2026年6月追加）</td>
             <td>メーカー供給×現地施設運営</td>
             <td>—</td>
             <td>50拠点超</td>
@@ -403,7 +505,12 @@ td.hot{color:var(--accent-deep);font-weight:700}
     <div class="sub-item">
       <div class="kick">収益の仕組み</div>
       <h4>各社が「どうやって収益を得ているか」の図解</h4>
-      
+      <div class="legend">
+        <span><i style="background:var(--info)"></i>利用者</span>
+        <span><i style="background:var(--ok)"></i>店舗（相手方）</span>
+        <span><i style="background:var(--accent)"></i>プラットフォーム（システム）</span>
+      </div>
+
     <div class="model-grid">
 
       <div class="model-card rincle-model full">
@@ -505,11 +612,6 @@ td.hot{color:var(--accent-deep);font-weight:700}
       </div>
 
     </div>
-<div class="legend">
-        <span><i style="background:var(--info)"></i>利用者</span>
-        <span><i style="background:var(--ok)"></i>店舗（相手方）</span>
-        <span><i style="background:var(--accent)"></i>プラットフォーム（システム）</span>
-      </div>
 
     </div>
 
@@ -528,35 +630,35 @@ td.hot{color:var(--accent-deep);font-weight:700}
         </thead>
         <tbody>
           <tr>
-            <td class="hot">RINCLE</td>
+            <td class="label wrap hot">RINCLE</td>
             <td colspan="3" style="text-align:center;">店舗により異なる（参考: 2,500円〜 / 6,000円〜 / 13,200円〜）</td>
           </tr>
           <tr>
-            <td>CycleTrip BASE</td>
+            <td class="label wrap">CycleTrip BASE</td>
             <td>3,500円</td>
             <td>6,500〜7,500円</td>
             <td>9,000〜14,000円</td>
           </tr>
           <tr>
-            <td>ジャイアントストア</td>
+            <td class="label wrap">ジャイアントストア</td>
             <td>4,950〜6,600円</td>
             <td>6,930〜9,240円</td>
             <td>12,870〜17,160円</td>
           </tr>
           <tr>
-            <td>クロスビープランニング</td>
+            <td class="label wrap">クロスビープランニング</td>
             <td>4,500円</td>
             <td>5,500〜7,500円</td>
             <td>—</td>
           </tr>
           <tr>
-            <td>東京サイクリングツアー</td>
+            <td class="label wrap">東京サイクリングツアー</td>
             <td>5,940円</td>
             <td>6,380〜7,480円</td>
             <td>7,920円</td>
           </tr>
           <tr>
-            <td>Power Kids</td>
+            <td class="label wrap">Power Kids</td>
             <td>—</td>
             <td>〜3,000円 / 日相当（5日15,000円）</td>
             <td>—</td>
@@ -596,7 +698,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
           </div>
           <div class="vs-summary">
             <p class="vs-section-label">総評</p>
-            <p>最大の直接競合。CycleTrip BASEは品質統一とプランの多様性が強み。RINCLEはスケーラビリティで圧倒（7年3店舗 vs 3ヶ月24店舗）。羽田店の「交通ハブ×24時間無人×割引」はインバウンドの入口を先に押さえる動きとして要注視（2026-06追記）。</p>
+            <p>最大の直接競合。CycleTrip BASEは品質統一とプランの多様性が強み。RINCLEはスケーラビリティで圧倒（7年3店舗 vs 3ヶ月24店舗）。羽田店の「交通ハブ×24時間無人×割引」はインバウンドの入口を先に押さえる動きとして要注視（2026年6月追記）。</p>
           </div>
         </div>
       </div>
@@ -713,8 +815,8 @@ td.hot{color:var(--accent-deep);font-weight:700}
         <div class="swot-body">
           <ul>
             <li>サービス歴が浅い（2026年2月開始）・ユーザーレビューがゼロ</li>
-            <li><strong>多言語未対応</strong> — しまなみ訪日+70%とLivelo等の存在から優先度を上げるべき弱み（2026-06更新）</li>
-            <li><strong>OTA / アグリゲーター未掲載</strong> — 競合（CycleTrip・クロスビー）は掲載済みで発見可能性で構造的に不利（2026-06追加）</li>
+            <li><strong>多言語未対応</strong> — しまなみ訪日+70%とLivelo等の存在から優先度を上げるべき弱み（2026年6月更新）</li>
+            <li><strong>OTA / アグリゲーター未掲載</strong> — 競合（CycleTrip・クロスビー）は掲載済みで発見可能性で構造的に不利（2026年6月追加）</li>
             <li>配送・乗り捨て非対応</li>
             <li>料金プランの限定性（月額 / サブスクなし）</li>
             <li>パートナー間の品質統一が難しい</li>
@@ -759,116 +861,10 @@ td.hot{color:var(--accent-deep);font-weight:700}
   </div>
 </div>
 
-<!-- ============ 追加競合カテゴリ ============ -->
-<div class="tab-panel" id="panel-additional">
-  <div class="section">
-    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>追加競合カテゴリ</h2><div class="sh-sub">シェアサイクルなど周辺サービスの整理（2026年6月の深掘り調査で大幅更新）</div></div></div>
-
-    <h3>A.【最重要】メーカー直営・メーカー供給網レンタル — 「脅威（仮定）」が現実に</h3>
-    <p style="font-size:13px;color:var(--sub);margin-bottom:16px">RINCLEと同じ「プロショップ品質 × 試乗→購入導線」を、メーカーが直営店で既に実装している。</p>
-    <div class="comp-grid" style="grid-template-columns:repeat(2,1fr);">
-      <div class="comp-card">
-        <h4>Trek 直営店レンタル <span class="badge bad">脅威度 高</span></h4>
-        <p class="comp-company">TREK Bicycle 東京青山 / 福岡天神（直営2店）</p>
-        <div class="comp-detail"><span class="label">料金</span><span>¥5,000〜¥10,000/日（カーボンロード/E-Bikeまで）・最長10日</span></div>
-        <div class="comp-detail"><span class="label">導線</span><span><strong>レンタル後1ヶ月以内の購入でレンタル料金分を車両代から割引</strong> — RINCLEの「試乗→購入」と完全に同じ訴求</span></div>
-        <div class="comp-links">
-          <a href="https://www.trekbikes.com/jp/ja_JP/jblog/rental-bike-25/" target="_blank">公式案内</a>
-        </div>
-      </div>
-      <div class="comp-card">
-        <h4>Specialized 直営レンタル <span class="badge bad">脅威度 高</span></h4>
-        <p class="comp-company">名城 / 北海道ボールパークFビレッジ（直営2拠点）</p>
-        <div class="comp-detail"><span class="label">導線</span><span><strong>「Try and Buy プログラム」</strong>: レンタル後3ヶ月以内の購入でレンタル料金分を割引。レンタル車＝試乗車と同車種</span></div>
-        <div class="comp-detail"><span class="label">留意</span><span>RINCLEパートナーに「スペシャライズド神戸」が含まれるため、直営拡大方針との関係（競合化 / 共存）は要ヒアリング</span></div>
-        <div class="comp-links">
-          <a href="https://specialized-store.jp/meijo/rental/" target="_blank">名城</a>
-          <a href="https://specialized-store.jp/hokkaido-experience-center/rental/" target="_blank">北海道</a>
-        </div>
-      </div>
-      <div class="comp-card">
-        <h4>MERIDA「FEEL. E-BIKE」 <span class="badge bad">脅威度 高</span></h4>
-        <p class="comp-company">MIYATA×MERIDA供給・現地施設運営（規模で既存競合を上回る）</p>
-        <div class="comp-detail"><span class="label">規模</span><span><strong>全国50拠点以上</strong>（北海道〜沖縄。長野約15・静岡約8など観光地に厚い）</span></div>
-        <div class="comp-detail"><span class="label">構造</span><span>「メーカーが車両供給し現地施設が貸す」分散ネットワーク型 — RINCLEのモデルに最も近い。ただし<strong>統一予約・決済・リアルタイム在庫は持たない</strong>（公式は検索のみ）</span></div>
-        <div class="comp-detail"><span class="label">RINCLEの優位</span><span>規模では上回られる。ただし統一Web予約とマルチブランドは持たない</span></div>
-        <div class="comp-links">
-          <a href="https://www.merida.jp/feel/rental/" target="_blank">レンタル検索</a>
-        </div>
-      </div>
-      <div class="comp-card">
-        <h4>ヤマハ YPJ / モンベル <span class="badge plain">脅威度 中</span></h4>
-        <p class="comp-company">メーカー組織化網・アウトドア大手</p>
-        <div class="comp-detail"><span class="label">ヤマハ</span><span>スポーツ電動アシスト「YPJ」レンタルショップ網を公式に組織化・掲載</span></div>
-        <div class="comp-detail"><span class="label">モンベル</span><span>レンタル対応6店舗（自社ブランドSCHEIDEGG）。館山市の観光施設にE-MTB供給など「自治体への車両供給元」の顔も</span></div>
-        <div class="comp-detail"><span class="label">留意</span><span>ブランド力と店舗網により、将来的に競合になるリスクがある</span></div>
-        <div class="comp-links">
-          <a href="https://www.yamaha-motor.co.jp/pas/ypj/rentalshop/" target="_blank">YPJ一覧</a>
-          <a href="https://www.montbell.jp/generalpage/disp.php?id=545" target="_blank">モンベル</a>
-        </div>
-      </div>
-    </div>
-
-    <h3>B. インバウンド特化の海外系プレイヤー（新カテゴリ）</h3>
-    <p style="font-size:13px;color:var(--sub);margin-bottom:16px">いずれも規模は小さいが、<strong>「英語 × ホテルデリバリー × ハイエンドロード」の高単価セグメントを既に押さえている</strong>。多言語未対応のままではこの層を丸ごと取りこぼす。</p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>サービス</th>
-            <th>概要</th>
-            <th>RINCLEとの関係</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><a href="https://www.livelo.cc/pages/road-bike-rental-tokyo" target="_blank" style="color:var(--accent-deep);font-weight:700;">Livelo</a></td>
-            <td>世界30都市以上展開の外資系ロードバイクレンタル。東京ではRibble（Ultegraカーボン）をホテルデリバリー。完全インバウンド向け</td>
-            <td>多言語・ホテル配送・グローバル予約網が強み</td>
-          </tr>
-          <tr>
-            <td><a href="https://roadbikerentaljapan.com/" target="_blank" style="color:var(--accent-deep);font-weight:700;">Road Bike Rental Japan</a></td>
-            <td>インバウンド向けロード / ツーリングレンタル＋ガイド。Ride with GPSと提携</td>
-            <td>英語完結のツーリング需要を先取り</td>
-          </tr>
-          <tr>
-            <td><a href="https://www.lotuscyclejapan.com/rental-bikes" target="_blank" style="color:var(--accent-deep);font-weight:700;">Lotus Cycle Japan</a></td>
-            <td>ロード / E-Bike等を全国で柔軟に受取・返却（英語サイト）</td>
-            <td>「全国×乗り捨て柔軟×英語」でRINCLEの弱点を突く構成</td>
-          </tr>
-          <tr>
-            <td><a href="https://www.bimbimbikes.com/bike-rental/japan" target="_blank" style="color:var(--accent-deep);font-weight:700;">Bimbimbikes</a></td>
-            <td>海外の自転車レンタル予約アグリゲーター。日本の提携店を英語で予約可能</td>
-            <td>海外プラットフォーマーが「日本の棚」を既に持つ例</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="alert alert-blue"><span class="a-icon"><svg class="icon"><use href="#i-info"/></svg></span><div>訪日メディアは「日本のシェアサイクルは日本の電話番号が必要・英語アプリが弱い」点を障壁として指摘 → <strong>英語対応するだけで差別化になる余地</strong>（出典: Japan Guide）</div></div>
-
-    <h3>C / D. 隣接領域の再定義 — シェアサイクルは「顧客接点の独占」、OTAは「取るべき棚」</h3>
-    <div class="grid2">
-      <div class="card" style="border-left:2px solid var(--gold);margin:0;">
-        <h4 style="margin-bottom:8px;">シェアサイクル大手（HELLO CYCLING / LUUP）</h4>
-        <p class="body">HELLO CYCLINGは全国約11,300ステーション・約50,000台・<strong>会員460万人超</strong>。LUUPは京都ポート1,300超など観光地に高密度展開。スポーツバイク参入の兆候はなし（2026-06時点）。</p>
-        <p class="body" style="margin-top:8px;"><strong>脅威の本質は車種拡大ではなく顧客接点（アプリ・会員基盤）の独占。</strong>観光地での「自転車でまわる体験」の第一想起を奪われつつある。RINCLEは「半日〜1日×ロングライド」の体験価値を明確に打ち出さないと中間層を失う。</p>
-      </div>
-      <div class="card" style="border-left:2px solid var(--info);margin:0;">
-        <h4 style="margin-bottom:8px;">アクティビティOTA — 競合ではなく「取るべき棚」</h4>
-        <p class="body">アソビュー（CycleTrip掲載済み）/じゃらん遊び・体験（クロスビー掲載済み）/Klook（訪日客向けに東京・札幌・阿蘇等のレンタサイクル商品を多数販売、<strong>海外OTA経由のインバウンド予約導線が確立済み</strong>） / RYDE CYCLE（横断検索アプリ）。</p>
-        <p class="body" style="margin-top:8px;">OTAは在庫を持たないため直接競合ではないが、（1）「地名×レンタサイクル」の検索上流を押さえる、（2） 競合が既に掲載済み、の2点で<strong>RINCLEが未掲載のままだと発見可能性で構造的に不利</strong>。アソビュー/じゃらん/Klook掲載は検討価値が高い。</p>
-      </div>
-    </div>
-    <div class="card" style="font-size:12px;color:var(--sub);">
-      <strong style="color:var(--ink);">その他の周辺プレイヤー:</strong> RIDEAWAY（多摩川中心・無人レンタル実験、脅威度 低〜中）/ ブリヂストン「エシクル」（子ども用サブスク）/ glafit「WANDERIDE」（宿×電動モビリティ）/ 自治体・DMO直営E-Bikeレンタル（十日町・戸隠・館山等 — 競合であると同時にRINCLEの予約システム提供先になり得る）
-    </div>
-  </div>
-</div>
-
 <!-- ============ アクション・ペルソナ ============ -->
 <div class="tab-panel" id="panel-action">
   <div class="section">
-    <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>アクション・ペルソナ</h2><div class="sh-sub">調査から導く打ち手と、狙う顧客像</div></div></div>
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>アクション・ペルソナ</h2><div class="sh-sub">調査から導く打ち手と、狙う顧客像</div></div></div>
 
     <div class="sub-item">
       <div class="kick">優先アクション候補</div>
@@ -941,13 +937,28 @@ td.hot{color:var(--accent-deep);font-weight:700}
     panels.forEach(function(p){ p.classList.toggle('active', p.id === id); });
     window.scrollTo({top: 0});
   }
+  // ハッシュの行き先を開く。パネル自体を指す時はそのタブを開き、
+  // 章など「閉じているタブの中の要素」を指す時は、そのタブを開いてからその位置へ送る
+  // （他ページからの #章id リンクや、本文中の「（5章）」リンクが閉じたタブの中でも着地するように。2026-09-14）
+  function openByHash(){
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (el.classList.contains('tab-panel')) { openTab(el.id); return; }
+    var panel = el.closest ? el.closest('.tab-panel') : null;
+    if (!panel) return;
+    openTab(panel.id);
+    el.scrollIntoView();
+  }
   tabBtns.forEach(function(b){
     b.addEventListener('click', function(){
       openTab(b.dataset.target);
       history.replaceState(null, '', '#' + b.dataset.target);
     });
   });
-  if (location.hash && document.getElementById(location.hash.slice(1))) openTab(location.hash.slice(1));
+  openByHash();
+  addEventListener('hashchange', openByHash);
 </script>
 
 <script>

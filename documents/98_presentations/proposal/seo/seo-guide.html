@@ -11,7 +11,6 @@
 <style>
 /* ページ固有CSS — SEO設定ガイド（共通部品は ../../assets/design.css を参照） */
 
-h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin:26px 0 12px;line-height:1.6}
 p{font-size:14px}
 /* 素の箇条書きだけを字下げする（共通部品の ul.notes / ol.steps は自前の字下げを持つ） */
 .section ul:not(.notes),.section ol:not(.steps){padding-left:1.5em;font-size:13.5px;margin:16px 0}
@@ -63,7 +62,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
     <h1>RINCLE SEO設定ガイド</h1>
     <p class="lead">初心者向け — 専門知識ゼロから始められます</p>
     <!-- 作成 2026-05-20。2026-08-20更新: sitemapを手動生成へ方針変更・noindex対象を新ページ構成に更新・タブ形式に再構成 -->
-    <div class="hero-meta">最終更新 2026-08-20 ｜ PEDALSTANDARD社向け ｜ 弊社（清野・山本）</div>
+    <div class="hero-meta">2026年8月20日更新 ｜ PEDALSTANDARD社向け ｜ 弊社（清野・山本）</div>
   </div>
 </div>
 
@@ -71,26 +70,51 @@ td.hot{color:var(--accent-deep);font-weight:700}
 <!-- タブナビゲーション -->
 <!-- ============================================================ -->
 <nav class="flow-tabs">
-  <button class="tab-btn active" data-target="panel-intro"><span class="fnum">0</span><div class="ft">SEOって何</div><div class="fd">現状と期待効果・なぜ今やるか</div></button>
-  <button class="tab-btn" data-target="panel-step1"><span class="fnum">1</span><div class="ft">メタ情報</div><div class="fd">検索結果とSNSでの見え方を整える</div></button>
-  <button class="tab-btn" data-target="panel-step2"><span class="fnum">2</span><div class="ft">sitemap</div><div class="fd">ページ一覧をGoogleに知らせる</div></button>
-  <button class="tab-btn" data-target="panel-step3"><span class="fnum">3</span><div class="ft">Search Console</div><div class="fd">Googleの管理画面に登録する</div></button>
-  <button class="tab-btn" data-target="panel-step4"><span class="fnum">4</span><div class="ft">GA4・Clarity</div><div class="fd">アクセス計測と行動録画の導入</div></button>
-  <button class="tab-btn" data-target="panel-step5"><span class="fnum">5</span><div class="ft">効果測定</div><div class="fd">設定後に何をどう確認するか</div></button>
-  <button class="tab-btn" data-target="panel-roadmap"><span class="fnum">6</span><div class="ft">ロードマップ・チェック表</div><div class="fd">進め方と設定の確認一覧</div></button>
-  <button class="tab-btn" data-target="panel-glossary"><span class="fnum">7</span><div class="ft">用語集</div><div class="fd">このガイドに出てくる用語の意味</div></button>
+  <button class="tab-btn active" data-target="panel-conclusion"><span class="fnum">1</span><div class="ft">結論</div><div class="fd">無料の設定を先にやり切る</div></button>
+  <button class="tab-btn" data-target="panel-intro"><span class="fnum">2</span><div class="ft">SEOって何</div><div class="fd">現状と期待効果・なぜ今やるか</div></button>
+  <button class="tab-btn" data-target="panel-step1"><span class="fnum">3</span><div class="ft">メタ情報</div><div class="fd">検索結果とSNSでの見え方を整える</div></button>
+  <button class="tab-btn" data-target="panel-step2"><span class="fnum">4</span><div class="ft">sitemap</div><div class="fd">ページ一覧をGoogleに知らせる</div></button>
+  <button class="tab-btn" data-target="panel-step3"><span class="fnum">5</span><div class="ft">Search Console</div><div class="fd">Googleの管理画面に登録する</div></button>
+  <button class="tab-btn" data-target="panel-step4"><span class="fnum">6</span><div class="ft">GA4・Clarity</div><div class="fd">アクセス計測と行動録画の導入</div></button>
+  <button class="tab-btn" data-target="panel-step5"><span class="fnum">7</span><div class="ft">効果測定</div><div class="fd">設定後に何をどう確認するか</div></button>
+  <button class="tab-btn" data-target="panel-roadmap"><span class="fnum">8</span><div class="ft">ロードマップ・チェック表</div><div class="fd">進め方と設定の確認一覧</div></button>
+  <button class="tab-btn" data-target="panel-glossary"><span class="fnum">9</span><div class="ft">用語集</div><div class="fd">このガイドに出てくる用語の意味</div></button>
 </nav>
 
 <div class="container">
 
-<div class="tab-panel active" id="panel-intro">
+<div class="tab-panel active" id="panel-conclusion">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="sh-body"><h2>結論</h2><div class="sh-sub">このガイドで何を、どの順でやるか</div></div>
+    </div>
+    <p>このガイドの答えは<strong>「無料でできる設定を先にやり切る」</strong>ことです。有料の仕組みへの投資は、設定の効果を実測してから判断します。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>順番</th><th>やること</th><th>費用</th></tr></thead>
+        <tbody>
+          <tr><td class="label">1</td><td><strong>Step 1〜4 の設定</strong>（メタ情報・sitemap・Search Console・GA4 / クラリティ）</td><td>無料</td></tr>
+          <tr><td class="label">2</td><td><strong>2〜4週間、計測する</strong>（Search Consoleでインデックス数・表示回数を見る）</td><td>無料</td></tr>
+          <tr><td class="label">3</td><td><strong>Phase 2 に進むか判断する</strong>（Cloudflare + Prerender.ioを入れるかどうか）</td><td>$49 / 月〜</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="notes">
+      <li>やることの一覧と設定の確認表は「<a href="#panel-roadmap">ロードマップ・チェック表</a>」タブにあります。</li>
+      <li>Step 1〜4 の中身は、それぞれのタブで手順まで説明しています。</li>
+    </ul>
+  </div>
+</div><!-- /panel-conclusion -->
+
+<div class="tab-panel" id="panel-intro">
 
   <!-- ============================================================ -->
   <!-- SEOって何？ -->
   <!-- ============================================================ -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">00</div>
+      <div class="section-num">02</div>
       <div class="sh-body"><h2>SEOって何？</h2><div class="sh-sub">現状と期待効果・なぜ今やるか</div></div>
     </div>
 
@@ -102,7 +126,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
     <div class="alert alert-red">
       <svg class="a-icon icon"><use href="#i-alert"/></svg>
       <span>
-        <strong>RINCLEの現状（2026-06-11実測で更新）</strong><br>
+        <strong>RINCLEの現状（2026年6月11日実測で更新）</strong><br>
         Googleにインデックス（登録）されているページは<strong>実質2〜3ページのみ</strong>。<br>
         （1）トップページ（2）店舗詳細1件 — しかも日付・検索条件のクエリパラメータ付きのままインデックス（3）規約ページ<br>
         「スポーツバイク レンタル」「ロードバイク レンタル 神戸」など主要キーワードで<strong>検索圏外</strong>。<br>
@@ -110,7 +134,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
       </span>
     </div>
 
-    <h3>なぜ今SEOをやるのか — 数字で見る期待効果（2026-06-11 本番アクセスログ実測）</h3>
+    <h3>なぜ今SEOをやるのか — 数字で見る期待効果（2026年6月11日 本番アクセスログ実測）</h3>
     <p>GA4が未設置のため、サーバーのアクセスログから実測した現状:</p>
 
     <div class="stat-row">
@@ -131,7 +155,8 @@ td.hot{color:var(--accent-deep);font-weight:700}
       </div>
     </div>
 
-    <div class="stat-row">
+    <!-- 単独の stat なので幅いっぱいに使う（.lanes と同じインラインの列指定） -->
+    <div class="stat-row" style="grid-template-columns:1fr">
       <div class="stat">
         <span class="l">検索流入 +100人 / 月なら</span>
         <span class="n hot">+6,100<small>円 / 月</small></span>
@@ -150,28 +175,18 @@ td.hot{color:var(--accent-deep);font-weight:700}
     </div>
   </div>
 
-  <div class="recap">
-    <h2>このガイドの進め方</h2>
-    <div class="r-flow">
-      <span class="r-chip">Step 1〜4 の無料設定</span><span class="r-arr">→</span>
-      <span class="r-chip">2〜4週間 計測</span><span class="r-arr">→</span>
-      <span class="r-chip hot">Phase 2 に進むか判断</span>
-    </div>
-    <p>いまやることの一覧と進め方は「<a href="#panel-roadmap" style="color: inherit;">ロードマップ・チェック表</a>」タブにあります。</p>
-  </div>
-
 </div><!-- /panel-intro -->
 
 <div class="tab-panel" id="panel-step1">
   <div class="section">
     <div class="section-header">
-      <div class="section-num">01</div>
+      <div class="section-num">03</div>
       <div class="sh-body"><h2>Step 1. メタ情報の設定</h2><div class="sh-sub">検索結果とSNSでの見え方を整える</div></div>
     </div>
     <p>検索結果に表示される情報や、SNSでシェアされたときの見え方を設定します。まず、いま何がどうなっているかの一覧です。</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>項目</th><th>いまの状態（2026-06-11実測）</th></tr></thead>
+        <thead><tr><th>項目</th><th>いまの状態（2026年6月11日実測）</th></tr></thead>
         <tbody>
           <tr><td class="label">titleタグ</td><td>設定済みだが品質が低い。トップは <code>Rincle</code> の6文字だけでキーワードが無い</td></tr>
           <tr><td class="label">meta description</td><td>設定済み。ただし<strong>全ページ同一文面</strong></td></tr>
@@ -190,7 +205,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
           <p><strong>何？</strong> ブラウザのタブに表示される文字です。Google検索結果の<strong>青い文字のリンク</strong>部分でもあります。</p>
           <p><strong>文字数:</strong> 30〜60文字が目安。長すぎると「...」で切れます。</p>
           <p><strong>ポイント:</strong> ページの内容を端的に表す。狙いたいキーワードを前半に入れる。<strong>検索キーワードは「ロードバイク」「E-Bike」軸を使い、「スポーツバイク」は使わない</strong>（サジェスト調査で誰も検索しないことを確認済み・社名やブランド説明の文中はOK。詳細は「検索キーワード調査」資料）。全ページに「RINCLE」を含め、ページごとに違うタイトルにする。</p>
-          <p><strong>RINCLEの現状（2026-06-11実測）:</strong> <span class="warn-val">設定済みだが品質が低い。</span>トップは <code>Rincle</code> の6文字だけでキーワードが無く、店舗詳細は <code>Rincle｜RINCLE 箕面稲店 / スペシャライズド箕面</code> と動的生成はできているが「レンタル」等の検索キーワードが入っていない。</p>
+          <p><strong>RINCLEの現状（2026年6月11日実測）:</strong> <span class="warn-val">設定済みだが品質が低い。</span>トップは <code>Rincle</code> の6文字だけでキーワードが無く、店舗詳細は <code>Rincle｜RINCLE 箕面稲店 / スペシャライズド箕面</code> と動的生成はできているが「レンタル」等の検索キーワードが入っていない。</p>
           <div class="table-wrap">
             <table>
               <thead><tr><th>ページ</th><th>title 設定例</th></tr></thead>
@@ -218,14 +233,15 @@ td.hot{color:var(--accent-deep);font-weight:700}
           <h4>meta description（メタ ディスクリプション）</h4>
           <p><strong>何？</strong> Google検索結果でタイトルの下に表示される<strong>グレーの説明文</strong>です。</p>
           <p><strong>文字数:</strong> 70〜120文字が目安。</p>
-          <p><strong>ポイント:</strong> そのページに何が書いてあるかを具体的に書き、「全国54店舗」「プロショップ」等の差別化ポイントと行動を促す言葉（「簡単予約」等）を入れる（店舗数は2026-06-11時点のDB実数。対外表記は「全国100店舗以上」で決め打ちする方向で協議中〈6月19日・#33〉→ 確定後に全ページの文言を差し替える）。</p>
-          <p><strong>RINCLEの現状（2026-06-11実測）:</strong> 設定済み。ただし<span class="warn-val"><strong>全ページ同一文面</strong></span>（店舗詳細ページもトップと同じ説明文）。ページごとに固有の文面へ差し替えるのが課題。</p>
+          <p><strong>ポイント:</strong> そのページに何が書いてあるかを具体的に書き、「全国のプロショップ」等の差別化ポイントと行動を促す言葉（「簡単予約」等）を入れる（店舗数の対外表記は「全国100店舗以上」で決め打ちする方向で協議中〈6月19日〉。確定後に例文へ反映する）。</p>
+          <!-- 対外表記を「全国100店舗以上」で決め打ちする件はタスク#33（増永さん側で決定） -->
+          <p><strong>RINCLEの現状（2026年6月11日実測）:</strong> 設定済み。ただし<span class="warn-val"><strong>全ページ同一文面</strong></span>（店舗詳細ページもトップと同じ説明文）。ページごとに固有の文面へ差し替えるのが課題。</p>
           <div class="table-wrap">
             <table>
               <thead><tr><th>ページ</th><th>meta description 設定例</th></tr></thead>
               <tbody>
-                <tr><td class="label">トップページ</td><td>全国54店舗のプロショップでロードバイク・E-Bikeをレンタル。プロの整備で安心、ネットで簡単予約。初めてのスポーツバイク体験にも最適です。</td></tr>
-                <tr><td class="label">店舗一覧</td><td>RINCLEのパートナーショップを検索。全国54店舗から、最寄りの店舗を見つけてロードバイク・E-Bikeをレンタルできます。</td></tr>
+                <tr><td class="label">トップページ</td><td>全国のプロショップでロードバイク・E-Bikeをレンタル。プロの整備で安心、ネットで簡単予約。初めてのスポーツバイク体験にも最適です。</td></tr>
+                <tr><td class="label">店舗一覧</td><td>RINCLEのパートナーショップを検索。全国のプロショップから、最寄りの店舗を見つけてロードバイク・E-Bikeをレンタルできます。</td></tr>
                 <tr><td class="label">店舗詳細（例: 神戸）</td><td>スペシャライズド神戸でロードバイク・E-Bikeをレンタル。JR神戸駅から徒歩3分。プロスタッフが初心者にも丁寧にサポートします。</td></tr>
               </tbody>
             </table>
@@ -241,7 +257,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
         <div class="sub-item">
           <h4>OGP（Open Graph Protocol）</h4>
           <p><strong>何？</strong> LINE・X（旧Twitter）・FacebookなどでURLを送ったときに表示される<strong>カード（画像+タイトル+説明）</strong>の設定です。</p>
-          <p><strong>RINCLEの現状（2026-06-11実測）:</strong> og:title / og:description / og:image / og:url / og:type / og:site_name すべて設定済み。ただし<span class="warn-val"><strong>og:imageがアプリアイコン（apple-touch-icon.png）の流用</strong></span>で、推奨の1200×630pxサイズでない。SNSカードの見栄えのため専用画像への差し替えが課題。</p>
+          <p><strong>RINCLEの現状（2026年6月11日実測）:</strong> og:title / og:description / og:image / og:url / og:type / og:site_name すべて設定済み。ただし<span class="warn-val"><strong>og:imageがアプリアイコン（apple-touch-icon.png）の流用</strong></span>で、推奨の1200×630pxサイズでない。SNSカードの見栄えのため専用画像への差し替えが課題。</p>
           <p><strong>設定項目:</strong></p>
           <ul>
             <li><code>og:title</code> — カードのタイトル（titleタグと同じでOK）</li>
@@ -262,7 +278,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
         <div class="sub-item">
           <h4>h1タグ（大見出し）</h4>
           <p><strong>何？</strong> そのページで一番大きな見出し。Googleは「このページは何について書かれているか」をh1タグから判断します。</p>
-          <p><strong>RINCLEの現状（2026-06-11実測）:</strong> <span class="warn-val">初期HTMLにh1 / h2が一切ない</span>（Googleがページのテーマを判断できない）。</p>
+          <p><strong>RINCLEの現状（2026年6月11日実測）:</strong> <span class="warn-val">初期HTMLにh1 / h2が一切ない</span>（Googleがページのテーマを判断できない）。</p>
           <p><strong>ポイント:</strong> 各ページに1つだけ設定する。ページのメインテーマを表す。検索キーワードを自然に含める。</p>
           <p><strong>Bubble.ioでの設定方法</strong></p>
           <ol class="steps">
@@ -290,7 +306,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
           <h4>canonical URL（正式URLの指定）</h4>
           <p><strong>何？</strong> 同じ内容のページが複数のURLで表示される場合に、「正式なURLはこれです」とGoogleに伝える仕組みです。重複ページの評価分散を防ぎます。</p>
           <p><strong>例:</strong> <code>https://rincle.co.jp/shop_detail?shop=12345</code> と <code>https://rincle.co.jp/shop_detail?shop=12345&amp;ref=top</code> が同じ内容なら、前者をcanonicalに指定。</p>
-          <p><strong>RINCLEの現状（2026-06-11実測）:</strong> canonicalが無いため、<span class="warn-val"><strong>日付・検索条件のクエリパラメータが付いたままのURLが「店舗ページの正式な姿」としてインデックスされている実害</strong></span>が確認済み。早急に設定すべき。</p>
+          <p><strong>RINCLEの現状（2026年6月11日実測）:</strong> canonicalが無いため、<span class="warn-val"><strong>日付・検索条件のクエリパラメータが付いたままのURLが「店舗ページの正式な姿」としてインデックスされている実害</strong></span>が確認済み。早急に設定すべき。</p>
           <p><strong>Bubble.ioでの設定方法</strong>（標準機能で対応できるため、手書きHTMLは不要です）</p>
           <!-- 「Enable canonical url」の名称は2026-06-11にBubble公式マニュアルで確認済み -->
           <ol class="steps">
@@ -307,7 +323,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
           <h4>noindex（検索結果に出さないページの設定）</h4>
           <p><strong>何？</strong> 「このページはGoogleの検索結果に載せないで」と伝えるタグです。マイページ・予約履歴一覧のようなログイン後の個人情報ページ（noindex<strong>必須</strong>）や、ログイン・予約・パスワード再設定・加盟店申込・管理画面のような検索から来ても意味がない機能ページ（noindex推奨）に設定します。店舗詳細・自転車詳細などそれ以外のページはSEOの入口なので何もしません。</p>
           <ul class="notes">
-            <li>2026-08-20更新: DB再構築後の新ページ構成に合わせて対象を差し替え（旧: mypage / login / register / reserve）。</li>
+            <li>2026年8月20日更新: DB再構築後の新ページ構成に合わせて対象を差し替え（旧: mypage / login / register / reserve）。</li>
           </ul>
           <p><strong>Bubble.ioでの設定方法</strong></p>
           <ol class="steps">
@@ -333,7 +349,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
         <div class="sub-item">
           <h4>構造化データ（JSON-LD）<span class="badge plain">新規追加</span></h4>
           <p><strong>何？</strong> 「このページは自転車店の情報です」「これは商品で価格は6,000円です」と、Googleが機械的に理解できる形式（JSON-LD）でページに埋め込むデータ。検索結果に星評価・パンくず・FAQ等の<strong>「リッチリザルト」</strong>が表示される条件になります。</p>
-          <p><strong>RINCLEの現状（2026-06-11実測）:</strong> <span class="warn-val">構造化データなし</span>。</p>
+          <p><strong>RINCLEの現状（2026年6月11日実測）:</strong> <span class="warn-val">構造化データなし</span>。</p>
           <div class="table-wrap">
             <table>
               <thead><tr><th>スキーマ</th><th>適用ページ</th><th>備考</th></tr></thead>
@@ -361,7 +377,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
 <div class="tab-panel" id="panel-step2">
   <div class="section">
     <div class="section-header">
-      <div class="section-num">02</div>
+      <div class="section-num">04</div>
       <div class="sh-body"><h2>Step 2. sitemapの作成</h2><div class="sh-sub">ページ一覧をGoogleに知らせる</div></div>
     </div>
     <p><strong>sitemap（サイトマップ）</strong>とは、サイトの全ページの一覧を記した「地図」です。Googleに「うちのサイトにはこんなページがありますよ」と教えるためのファイルです。</p>
@@ -415,7 +431,7 @@ td.hot{color:var(--accent-deep);font-weight:700}
         <div class="codeblock"><pre><code>User-agent: *
 Disallow: /version-test/
 <span class="hl">Sitemap: https://rincle.co.jp/sitemap.xml</span></code></pre></div>
-        <p><strong>Bubble.ioでの設定方法（2026-06-11更新）:</strong><br>
+        <p><strong>Bubble.ioでの設定方法（2026年6月11日更新）:</strong><br>
           Settings &gt; SEO / metatags の<strong>「Customize robots.txt （advanced）」</strong>のチェックボックスをONにします。表示された編集欄に上記を入力します。
         </p>
   </div>
@@ -424,24 +440,25 @@ Disallow: /version-test/
 <div class="tab-panel" id="panel-step3">
   <div class="section">
     <div class="section-header">
-      <div class="section-num">03</div>
+      <div class="section-num">05</div>
       <div class="sh-body"><h2>Step 3. Google Search Console — Googleとの窓口</h2><div class="sh-sub">検索結果での見え方を確認・操作する</div></div>
     </div>
     <p><strong>Google Search Console（サーチコンソール）</strong>は、Googleが無料で提供する「あなたのサイトがGoogleにどう見えているか」を確認・操作できる管理画面です。SEOの効果測定は、最終的にすべてこの画面の数字で答え合わせします。</p>
 
-        <div class="compare">
-          <div class="compare-box good">
-            <div class="cb-head"><span class="cb-mark">◎</span>Search Consoleが見るもの</div>
-            <p>検索結果に<strong>「出るまで」</strong>。何ページ登録されたか・どんな検索語で何回表示されたか・何位か・何回クリックされたか。</p>
+        <div class="term-row">
+          <div class="term">
+            <div class="term-name">Search Consoleが見るもの</div>
+            <div class="t-body">検索結果に<strong>「出るまで」</strong>。何ページ登録されたか・どんな検索語で何回表示されたか・何位か・何回クリックされたか。</div>
           </div>
-          <div class="compare-box asis">
-            <div class="cb-head">GA4が見るもの（Step 4）</div>
-            <p>サイトに<strong>「来た後」</strong>。何人来たか・どこから来たか・どのページを見て予約したか。SCとGA4は入口と中身で役割分担している。</p>
+          <div class="term">
+            <div class="term-name">GA4が見るもの <span class="term-tag">— Step 4</span></div>
+            <div class="t-body">サイトに<strong>「来た後」</strong>。何人来たか・どこから来たか・どのページを見て予約したか。</div>
           </div>
         </div>
+        <p>Search ConsoleとGA4は、入口と中身で役割を分担しています。</p>
 
         <h4>仕組み: 検索結果に載るまでの3段階</h4>
-        <figure class="fig" aria-label="Googleが読みに来て登録したページだけが検索結果に出るので、登録されていないページは何を検索しても出てこない">
+        <figure class="fig" aria-label="Googleに登録された分だけが検索結果に出る">
         <div class="swim"><div class="swim-inner">
           <div class="swim-row">
             <div class="swim-label admin"><i></i>Google</div>
@@ -455,9 +472,6 @@ Disallow: /version-test/
           </div>
         </div></div>
         </figure>
-        <div class="legend">
-          <span><i style="background: var(--accent);"></i>Googleが行う処理（右端が到達点）</span>
-        </div>
         <div class="term-row">
           <div class="term">
             <div class="term-name">クロール <span class="term-tag">— 用語</span></div>
@@ -534,7 +548,7 @@ Disallow: /version-test/
           <h4>URL検査 — 主要ページの「割り込み申請」</h4>
           <p><strong>なぜやるのか:</strong> sitemapは「一覧を渡す」だけで、いつ読みに来るかはGoogle任せ（数日〜数週間）。URL検査から「インデックス登録をリクエスト」すると<strong>そのページを優先的に見てもらえる</strong> — 行列への割り込み申請のようなもの。1日の上限（10件ほど）があるので<strong>価値の高いページから</strong>使う。</p>
           <p><strong>方法:</strong> 画面上部の検索バーにURLを貼る → 検査結果が出たら「<strong>インデックス登録をリクエスト</strong>」ボタン（1件1〜2分）。</p>
-          <p><strong>対象の選び方:</strong> 静的ページ+<strong>在庫が多く中身の濃い店舗ページ</strong>（「尾道 ロードバイク レンタル」のような地域検索の受け皿になるため）。自転車詳細はsitemapからの自然な巡回に任せ、枠を店舗に使う。選定例（2026-08-26・在庫数順）:</p>
+          <p><strong>対象の選び方:</strong> 静的ページ+<strong>在庫が多く中身の濃い店舗ページ</strong>（「尾道 ロードバイク レンタル」のような地域検索の受け皿になるため）。自転車詳細はsitemapからの自然な巡回に任せ、枠を店舗に使う。選定例（2026年8月26日・在庫数順）:</p>
           <div class="table-wrap">
             <table class="table-mom">
               <thead><tr><th>ページ</th><th>URL</th></tr></thead>
@@ -578,7 +592,7 @@ Disallow: /version-test/
 <div class="tab-panel" id="panel-step4">
   <div class="section">
     <div class="section-header">
-      <div class="section-num">04</div>
+      <div class="section-num">06</div>
       <div class="sh-body"><h2>Step 4. GA4・クラリティの導入</h2><div class="sh-sub">アクセス計測と行動録画</div></div>
     </div>
     <p><strong>GA4</strong>は、サイトに何人来たか・どのページを見たか・どれくらい滞在したかを計測する無料ツールです。</p>
@@ -597,8 +611,11 @@ Disallow: /version-test/
             <li>表示された<strong>測定ID（G-XXXXXXXXXX）</strong>をコピーする</li>
             <li>下の設置コードをBubble.ioの「Script in header」に貼り付ける</li>
           </ol>
+        </div>
 
-        <h4>設置コード例</h4>
+        <div class="sub-item">
+          <div class="kick">貼り付けるコード</div>
+          <h4>設置コード例</h4>
         <div class="codeblock"><pre><code>&lt;!-- Google tag (gtag.js) --&gt;
 &lt;script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"&gt;&lt;/script&gt;
 &lt;script&gt;
@@ -677,6 +694,7 @@ Disallow: /version-test/
         </div>
 
         <div class="sub-item">
+          <div class="kick">何ができるか</div>
           <h4>クラリティの主な機能</h4>
           <div class="term-row">
             <div class="term">
@@ -701,6 +719,7 @@ Disallow: /version-test/
         </div>
 
         <div class="sub-item">
+          <div class="kick">3ステップ</div>
           <h4>クラリティの導入手順</h4>
           <ol class="steps">
             <li><a href="https://clarity.microsoft.com/" target="_blank">clarity.microsoft.com</a> を開く。Microsoft / Google / Facebookのいずれかのアカウントでログインする。New project から URL に <code>https://rincle.co.jp</code> を入力する</li>
@@ -745,30 +764,21 @@ Disallow: /version-test/
 <div class="tab-panel" id="panel-step5">
   <div class="section">
     <div class="section-header">
-      <div class="section-num">05</div>
+      <div class="section-num">07</div>
       <div class="sh-body"><h2>Step 5. 効果測定</h2><div class="sh-sub">設定後に何をどう確認するか</div></div>
     </div>
     <p>設定して終わりではありません。定期的にチェックして改善を続けましょう。</p>
 
-        <h4>1週間後にチェックすること</h4>
+        <h4>確認のタイミング</h4>
+        <ol class="steps">
+          <li><strong>1週間後 — 設定が動いているかを確かめる</strong><br>GA4にデータが来ているか・Search Consoleにエラーが出ていないか・OGPが正しく表示されるかを見ます。</li>
+          <li><strong>2〜4週間後 — 数字が動いたかを確かめる</strong><br>インデックス数・表示回数・検索順位・自然検索からの流入を見ます。伸びていなければtitle・descriptionを見直します。</li>
+        </ol>
         <ul class="notes">
-          <li>Search Consoleでインデックス登録されたページ数が増えているか</li>
-          <li>GA4でデータが取れているか（リアルタイムレポートで確認）</li>
-          <li>Search Consoleにエラーが出ていないか</li>
-          <li>OGPが正しく表示されるか（LINEやXにURLを貼って確認）</li>
+          <li>それぞれで確認する項目の一覧は「<a href="#panel-roadmap">ロードマップ・チェック表</a>」タブのチェック表にあります。</li>
         </ul>
 
-        <h4>2〜4週間後にチェックすること</h4>
-        <ul class="notes">
-          <li>Search Console「ページ（カバレッジ）」でインデックス数が増えたか（2〜3ページ → 主要ページ分に増加が期待値）</li>
-          <li>Search Consoleの「検索パフォーマンス」で表示回数・クリック数を確認</li>
-          <li>狙ったキーワードで検索順位が付き始めているか</li>
-          <li>GA4で自然検索（Organic Search）からの流入が発生しているか</li>
-          <li>ページごとのtitle・descriptionに改善の余地がないか見直す</li>
-          <li>サイトの表示速度をPageSpeed Insightsで確認（LCP 2.5秒以下が理想）</li>
-        </ul>
-
-        <h4>表示速度の現状（2026-06-11 Lighthouse実測）</h4>
+        <h4>表示速度の現状（2026年6月11日 Lighthouse実測）</h4>
         <p>Lighthouse 12（モバイルエミュレーション・simulated slow 4G）での実測値:</p>
         <div class="table-wrap">
           <table>
@@ -806,7 +816,7 @@ Disallow: /version-test/
         <ul>
           <li><strong>方式:</strong> Cloudflare Workerをドメインのフロントに置き、ボットのリクエストだけPrerenderへルーティングする公式手順がある（人間のアクセスは従来どおりBubbleへ）</li>
           <li><strong>所要時間:</strong> 30〜45分。Cloudflare無料プランで可。<strong>Bubble側のプラン変更は不要</strong>（「Bubbleの上位プランが必要」という古いフォーラム情報は過去のもの）</li>
-          <li><strong>料金:</strong> Starter $49 / 月（25,000レンダー）〜、Growth $149 / 月（100,000レンダー）。30日間の無料トライアルあり（2026-06時点）</li>
+          <li><strong>料金:</strong> Starter $49 / 月（25,000レンダー）〜、Growth $149 / 月（100,000レンダー）。30日間の無料トライアルあり（2026年6月時点）</li>
         </ul>
         <ul class="notes">
           <li>改善するのはクローラーから見えるHTMLだけ。<strong>人間のユーザーの表示速度は1ミリ秒も変わらない</strong>。</li>
@@ -823,12 +833,12 @@ Disallow: /version-test/
   <!-- ============================================================ -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">06</div>
+      <div class="section-num">08</div>
       <div class="sh-body"><h2>導入ロードマップとチェック表</h2><div class="sh-sub">段階導入の進め方と、設定の確認一覧</div></div>
     </div>
     <p>いきなり外部サービスや別サイト構築に投資せず、<strong>無料の設定から始めて効果を実測してから次に進みます</strong>。</p>
 
-    <figure class="fig" aria-label="無料でできるBubbleの設定をやり切って効果を実測してから、有料の仕組みや別サイトへの投資を判断する">
+    <figure class="fig" aria-label="無料の設定が先で、有料の投資はその後">
     <div class="phases">
       <div class="phase"><span class="pn">Phase 1</span><span class="pt">Bubbleネイティブ設定の完遂</span><span class="ps">無料 ｜ 最初に着手</span></div>
       <div class="phase"><span class="pn">Phase 2</span><span class="pt">Cloudflare + Prerender.io</span><span class="ps">$49 / 月〜 ｜ 必要なら</span></div>
@@ -880,57 +890,58 @@ Disallow: /version-test/
     <div class="sub-item">
       <div class="kick">設定の確認一覧</div>
       <h4>SEO設定チェックリスト</h4>
-      <p>全項目にチェックが入れば、基本的なSEO対策は完了です。</p>
+      <p>全項目にチェックが入れば、基本的なSEO対策は完了です。「状態」の欄に済み / 未を書き込んでお使いください。</p>
+      <div class="table-wrap">
+        <table class="table-mom">
+          <thead><tr><th>項目</th><th>状態</th></tr></thead>
+          <tbody>
+          <tr class="tgroup"><td colspan="2">Step 1: メタ情報</td></tr>
+          <tr><td>全ページのtitleタグをキーワード入りの固有の文面に修正した（現状: 設定済みだがトップは「Rincle」のみ）</td><td></td></tr>
+          <tr><td>全ページのmeta descriptionをページ固有の文面に修正した（現状: 全ページ同一文面）</td><td></td></tr>
+          <tr><td>og:imageを1200×630の専用画像に差し替えた（現状: アイコン流用）</td><td></td></tr>
+          <tr><td>各ページにh1タグを設定した</td><td></td></tr>
+          <tr><td>画像にalt属性を設定した</td><td></td></tr>
+          <tr><td>「Enable canonical url」のチェックボックスをONにした（Bubble-defined canonical url tagが出力される）</td><td></td></tr>
+          <tr><td>主要ページに構造化データ（BikeStore / Product+Offer / BreadcrumbList / FAQPage）を設定してリッチリザルトテストで検証した</td><td></td></tr>
+          <tr><td>noindex対象ページ（マイページ / 予約履歴一覧 / ログイン・会員登録 / 予約 / パスワード再設定 / 加盟店申込 / 管理画面4ページ）のPage HTML Headerにnoindexを設定した</td><td></td></tr>
+          <tr><td>index対象ページにnoindexが入っていないことを確認した</td><td></td></tr>
+          <tr><td>アプリ全体がインデックス可能なことを確認した（公開ページのソースに意図しないnoindexが無い・robots.txtで全体をブロックしていない。2026年6月11日更新）</td><td></td></tr>
+          <tr class="tgroup"><td colspan="2">Step 2: sitemap / robots.txt</td></tr>
+          <tr><td>Data APIで shop / Bicycle を公開にチェックして本番デプロイした（「sitemap.xml 作成手順」手順2）</td><td></td></tr>
+          <tr><td>generate_sitemap.js でsitemap.xmlを生成して店舗数・自転車数がサイトの実数と合っていることを確認した</td><td></td></tr>
+          <tr><td>「Hosting files in the root directory」でsitemap.xmlをアップロードした（自動生成「Expose a sitemap file」はOFFのまま）</td><td></td></tr>
+          <tr><td>https://rincle.co.jp/sitemap.xml でアクセスできることを確認した</td><td></td></tr>
+          <tr><td>robots.txtに「Sitemap: https://rincle.co.jp/sitemap.xml」を追記した</td><td></td></tr>
+          <tr class="tgroup"><td colspan="2">Step 3: Search Console</td></tr>
+          <tr><td>Google Search Consoleにプロパティを追加した</td><td></td></tr>
+          <tr><td>サイトの所有権を確認した</td><td></td></tr>
+          <tr><td>sitemapを送信した</td><td></td></tr>
+          <tr><td>主要ページのインデックス登録をリクエストした</td><td></td></tr>
+          <tr class="tgroup"><td colspan="2">Step 4: GA4・クラリティ</td></tr>
+          <tr><td>GA4アカウントを作成した</td><td></td></tr>
+          <tr><td>測定ID（G-XXXXXXXXXX）を取得した</td><td></td></tr>
+          <tr><td>Bubble.ioのheaderにGA4スニペットを貼り付けた</td><td></td></tr>
+          <tr><td>リアルタイムレポートで動作確認した</td><td></td></tr>
+          <tr><td>クラリティのアカウントを作成した</td><td></td></tr>
+          <tr><td>トラッキングコードを取得した</td><td></td></tr>
+          <tr><td>Bubble.ioのheaderにクラリティのスニペットを貼り付けた</td><td></td></tr>
+          <tr><td>ダッシュボードでセッション録画が表示されることを確認した</td><td></td></tr>
+          <tr class="tgroup"><td colspan="2">Step 5: 効果測定（1週間後）</td></tr>
+          <tr><td>Search Consoleでインデックス登録されたページ数が増えたことを確認した</td><td></td></tr>
+          <tr><td>GA4でデータが取れていることをリアルタイムレポートで確認した</td><td></td></tr>
+          <tr><td>Search Consoleにエラーが出ていないことを確認した</td><td></td></tr>
+          <tr><td>OGPが正しく表示されることを確認した（LINEやXにURLを貼って確認）</td><td></td></tr>
+          <tr class="tgroup"><td colspan="2">Step 5: 効果測定（2〜4週間後）</td></tr>
+          <tr><td>Search Console「ページ（カバレッジ）」でインデックス数が増えたことを確認した（2〜3ページ → 主要ページ分に増加が期待値）</td><td></td></tr>
+          <tr><td>Search Consoleの「検索パフォーマンス」で表示回数・クリック数を確認した</td><td></td></tr>
+          <tr><td>狙ったキーワードで検索順位が付き始めていることを確認した</td><td></td></tr>
+          <tr><td>GA4で自然検索（Organic Search）からの流入が発生していることを確認した</td><td></td></tr>
+          <tr><td>ページごとのtitle・descriptionに改善の余地がないか見直した</td><td></td></tr>
+          <tr><td>サイトの表示速度をPageSpeed Insightsで確認した（LCP 2.5秒以下が理想）</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    <h4>Step 1: メタ情報</h4>
-    <ul class="notes">
-      <li>全ページのtitleタグをキーワード入りの固有の文面に修正した（現状: 設定済みだがトップは「Rincle」のみ）</li>
-      <li>全ページのmeta descriptionをページ固有の文面に修正した（現状: 全ページ同一文面）</li>
-      <li>og:imageを1200×630の専用画像に差し替えた（現状: アイコン流用）</li>
-      <li>各ページにh1タグを設定した</li>
-      <li>画像にalt属性を設定した</li>
-      <li>「Enable canonical url」のチェックボックスをONにした（Bubble-defined canonical url tagが出力される）</li>
-      <li>主要ページに構造化データ（BikeStore / Product+Offer / BreadcrumbList / FAQPage）を設定してリッチリザルトテストで検証した</li>
-      <li>noindex対象ページ（マイページ/予約履歴一覧/ログイン・会員登録/予約/パスワード再設定/加盟店申込/管理画面4ページ）のPage HTML Headerにnoindexを設定した</li>
-      <li>index対象ページにnoindexが入っていないことを確認した</li>
-      <li>アプリ全体がインデックス可能なことを確認した（公開ページのソースに意図しないnoindexが無い・robots.txtで全体をブロックしていない。2026-06-11更新）</li>
-    </ul>
-
-    <h4>Step 2: sitemap / robots.txt</h4>
-    <ul class="notes">
-      <li>Data APIで shop / Bicycle を公開にチェックして本番デプロイした（「sitemap.xml 作成手順」手順2）</li>
-      <li>generate_sitemap.js でsitemap.xmlを生成して店舗数・自転車数がサイトの実数と合っていることを確認した</li>
-      <li>「Hosting files in the root directory」でsitemap.xmlをアップロードした（自動生成「Expose a sitemap file」はOFFのまま）</li>
-      <li>https://rincle.co.jp/sitemap.xml でアクセスできることを確認した</li>
-      <li>robots.txtに「Sitemap: https://rincle.co.jp/sitemap.xml」を追記した</li>
-    </ul>
-
-    <h4>Step 3: Search Console</h4>
-    <ul class="notes">
-      <li>Google Search Consoleにプロパティを追加した</li>
-      <li>サイトの所有権を確認した</li>
-      <li>sitemapを送信した</li>
-      <li>主要ページのインデックス登録をリクエストした</li>
-    </ul>
-
-    <h4>Step 4: GA4・クラリティ</h4>
-    <ul class="notes">
-      <li>GA4アカウントを作成した</li>
-      <li>測定ID（G-XXXXXXXXXX）を取得した</li>
-      <li>Bubble.ioのheaderにGA4スニペットを貼り付けた</li>
-      <li>リアルタイムレポートで動作確認した</li>
-      <li>クラリティのアカウントを作成した</li>
-      <li>トラッキングコードを取得した</li>
-      <li>Bubble.ioのheaderにクラリティのスニペットを貼り付けた</li>
-      <li>ダッシュボードでセッション録画が表示されることを確認した</li>
-    </ul>
-
-    <h4>Step 5: 効果測定</h4>
-    <ul class="notes">
-      <li>1週間後: GA4とSearch Consoleが動作していることを確認</li>
-      <li>2〜4週間後: インデックス数の増加と検索キーワードの出現を確認</li>
-    </ul>
   </div>
 
 </div><!-- /panel-roadmap -->
@@ -942,7 +953,7 @@ Disallow: /version-test/
   <!-- ============================================================ -->
   <div class="section">
     <div class="section-header">
-      <div class="section-num">07</div>
+      <div class="section-num">09</div>
       <div class="sh-body"><h2>用語集</h2><div class="sh-sub">このガイドに出てくる用語の意味</div></div>
     </div>
     <p>このガイドに出てくる用語をまとめました。</p>
