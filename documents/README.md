@@ -113,6 +113,12 @@ documents/
 │   └── 04_analytics/               # 計測
 │       └── ga4_tracking_items.csv  #   GA4計測項目一覧（41項目・KPI対応・Phase1〜3）
 │
+├── 5_subsidy/                      # 補助金・助成金（調査メモ・申請書類）
+│   ├── README.md
+│   ├── kouboyouryou0819-2.pdf      #   兵庫県「稼ぐ力の強化に向けた設備投資支援事業費補助金」公募要領（原本）
+│   ├── kaseguchikara-koubo-youryou.md  # 上記のまとめ（要件・対象経費・書類・スケジュール+RINCLE向け確認事項）
+│   └── client-faq.md               #   採択後の実施フェーズ想定Q&A（33問・回答不明は空欄+確認先）
+│
 ├── 98_presentations/               # 説明資料（HTML SPA）
 │   ├── index.html                  #   SPA エントリポイント（サイドバーナビ）
 │   ├── bizflow/                    #   業務フロー
@@ -138,6 +144,8 @@ documents/
 │   │       ├── seo-support-plan.html     # SEO記事作成代行プラン
 │   │       ├── blog-seo-strategy.html    # ブログSEOの方針（統合版）
 │   │       └── keyword-research.html     # 検索キーワード調査
+│   ├── subsidy/                    #   補助金
+│   │   └── kaseguchikara-faq.html  #     補助金 採択後の進め方と想定Q&A（5_subsidy/の2本のmdを1ページに）
 │   └── stripe/                     #   Stripe 関連
 │       ├── api-reference.html      #     Stripe APIリファレンス
 │       ├── payjp-vs-stripe.html    #     決済基盤の方針（比較+移行計画）
@@ -179,6 +187,6 @@ documents/
 
 ## 番号体系
 
-- フォルダの先頭番号（`0_`〜`4_`, `98_`, `99_`）は大分類の並び順
+- フォルダの先頭番号（`0_`〜`5_`, `98_`, `99_`）は大分類の並び順
 - サブフォルダの番号（`00_`, `01_`, ...）はセクションの並び順
 - CSV ファイルの番号（`01_`, `02_`, ...）はエクスポート順

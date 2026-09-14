@@ -232,6 +232,7 @@
   // ここにページを追加していく。section でグループ化（同じ section 名は連続させる）。
   // ============================================================
   const pages = [
+    { section: '補助金',           id: 'subsidy-kaseguchikara', title: '補助金 採択後の進め方と想定Q&A', src: 'subsidy/kaseguchikara-faq.html' },
     { section: '提案資料：SEO',    id: 'proposal-seo-plan',    title: 'SEO支援プラン（記事代行）',  src: 'proposal/seo/seo-support-plan.html' },
     { section: '提案資料：SEO',    id: 'proposal-seo',         title: 'SEO設定ガイド',             src: 'proposal/seo/seo-guide.html' },
     { section: '提案資料：SEO',    id: 'proposal-sitemap',     title: 'sitemap.xml 作成手順',       src: 'proposal/seo/sitemap-creation-guide.html' },
@@ -257,6 +258,7 @@
   ];
   // 節ごとの初期状態と目印（いま進んでいる節だけ開く。役目を終えた節は閉じて「旧」を付ける）
   const sectionMeta = {
+    '補助金':            { open: true },
     '提案資料：SEO':     { open: true },
     'Stripe 決済連携':   { open: true },
     '業務フロー':        { open: false },

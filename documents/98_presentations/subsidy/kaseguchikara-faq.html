@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>補助金 採択後の進め方と想定Q&amp;A（兵庫県 稼ぐ力の強化に向けた設備投資支援事業費補助金） | RINCLE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/design.css">
+<style>
+  /* ページ固有CSS — 補助金 採択後の進め方と想定Q&A（共通部品は ../assets/design.css を参照） */
+  .hero-meta{display:flex;gap:20px;flex-wrap:wrap}
+
+  /* 問い→答えの表: 問いの列幅を固定し、答えの1文目を太字で言い切る */
+  table.qa td.label.wrap{width:30%}
+
+  /* 回答未確認の行: バッジの右に確認先を小さく添える */
+  .ask{display:inline-block;margin-left:10px;font-size:12.5px;color:var(--sub)}
+
+  /* 章の中の本文・箇条書き */
+  .sub-item > p{font-size:14px;line-height:2}
+  .plain-list{padding-left:22px;font-size:13.5px}
+  .plain-list li{margin-bottom:8px;line-height:1.95}
+  .plain-list li:last-child{margin-bottom:0}
+  .compare-box ul{padding-left:20px;margin-top:8px;font-size:13px}
+  .compare-box li{margin-bottom:6px;line-height:1.9}
+
+  td.label{white-space:normal}
+  .table-wrap + .table-wrap{margin-top:20px}
+  .sub-item + .sub-item{margin-top:36px}
+</style>
+</head>
+<body>
+
+<!-- SVGアイコンスプライト（<use href="#i-〇〇">で参照） -->
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.7 2.7 0 1 1 4 2.4c-.9.5-1.4 1.1-1.4 2v.3"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6z"/><polyline points="14 2 14 6 18 6"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
+
+<!-- ========== HERO ========== -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">補助金 — 2026-09-14</span>
+      </div>
+      <span class="hero-no">SUBSIDY</span>
+    </div>
+    <h1>補助金 採択後の進め方と想定Q&amp;A</h1>
+    <p class="lead">兵庫県「令和8年度 稼ぐ力の強化に向けた設備投資支援事業費補助金」は、PEDALSTANDARD社が第1期公募で申請して満額で採択されました（9月1日ご報告）。この資料は公募要領（全21ページ）を採択後の実施フェーズの観点で読み解いたものです。<strong>11月30日までに何を終え、実績報告で弊社がどの書類を用意するか</strong>を整理したうえで、聞かれそうな33の質問に要領の根拠つきで答えます。要領に記載がなく答えられない質問は回答を空欄にして確認先を書いています。</p>
+    <div class="hero-meta">
+      <span>事業実施期間: 交付決定日〜令和8年11月30日（月）</span>
+      <span>実績報告: 令和8年12月10日（木）まで</span>
+      <span>事務局: 0120-850-271（平日9〜17時）</span>
+    </div>
+  </div>
+</div>
+
+<!-- 章ナビ（タブ） -->
+<nav class="flow-tabs">
+  <button class="tab-btn active" data-target="panel-conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">11月30日までに納品と振込を終える</span></button>
+  <button class="tab-btn" data-target="panel-outline"><span class="fnum">2</span><span class="ft">制度の骨子</span><span class="fd">金額・補助率・第1期の期日・流れ</span></button>
+  <button class="tab-btn" data-target="panel-eligibility"><span class="fnum">3</span><span class="ft">対象者と要件</span><span class="fd">実施期間中も維持が必要な要件</span></button>
+  <button class="tab-btn" data-target="panel-expenses"><span class="fnum">4</span><span class="ft">対象経費</span><span class="fd">請求書に混ぜてはいけない経費</span></button>
+  <button class="tab-btn" data-target="panel-execute"><span class="fnum">5</span><span class="ft">実施の手順と証拠書類</span><span class="fd">発注・納品・支払の書類に書くこと</span></button>
+  <button class="tab-btn" data-target="panel-after"><span class="fnum">6</span><span class="ft">実績報告と事後の義務</span><span class="fd">報告様式・3年間の効果報告・財産処分</span></button>
+  <button class="tab-btn" data-target="panel-faq"><span class="fnum">7</span><span class="ft">想定Q&amp;A</span><span class="fd">33問・未確認は空欄と確認先</span></button>
+  <button class="tab-btn" data-target="panel-checklist"><span class="fnum">8</span><span class="ft">確認事項</span><span class="fd">打ち合わせで確認すること</span></button>
+</nav>
+
+<div class="container">
+
+<!-- ============ 01 結論 ============ -->
+<div class="tab-panel active" id="panel-conclusion">
+  <div class="section" id="conclusion">
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">採択後に守る期限・作るもの・弊社が用意する書類・お金の動き・続く義務の5点</div></div></div>
+    <p>申請した計画書どおりの開発を、交付決定日以降の日付で発注して11月30日までに納品・検収・銀行振込を終えます。採択は済んでいるので、これからの論点は「補助金を満額受け取るための実施と証拠づくり」です。実績報告では弊社が発行する発注書・納品書・請求書と、設計書・操作マニュアル・画面写真が直接審査されます。期限は11月30日、実績報告は12月10日までです。</p>
+
+    <div class="table-wrap">
+      <table class="qa">
+        <tbody>
+          <tr>
+            <td class="label wrap">① いつまでに何を終えるか</td>
+            <td><strong>11月30日（月）までに発注・納品・検収・銀行振込の全てを完了します。</strong> その後、事業完了日から30日以内または12月10日（木）のいずれか早い日までに実績報告を提出します。期間内に完了しないと交付決定が取り消されます（2章・6章）。</td>
+          </tr>
+          <tr>
+            <td class="label wrap">② 何を作るか</td>
+            <td><strong>申請した補助事業計画書（様式第1-1号）と見積書のとおりです。</strong> 内容や経費配分を変えるなら、発注前に「補助金変更交付申請書（様式第3号）」を出して承認を受けます。審査に1か月程度かかるため、変えるなら今すぐ動く必要があります。増額はなく、新規費目の追加は原則できません（5章）。</td>
+          </tr>
+          <tr>
+            <td class="label wrap">③ 弊社が用意する書類は何か</td>
+            <td><strong>発注書または契約書、納品書または検収書、見積と一致する請求書、システムの画面写真、設計書、操作マニュアルです。</strong> 「1式」表記は不可で、内容・数量・金額・日付を明記します。日付は全て交付決定日以降かつ11月30日以前です（5章）。</td>
+          </tr>
+          <tr>
+            <td class="label wrap">④ お金の動きで守ることは何か</td>
+            <td><strong>PEDALSTANDARD社名義の口座からの銀行振込のみ、11月30日までに全額です。</strong> 前払い・クレジットカード・相殺は対象外。保守料・SEO作業・決済手数料・人件費は対象外なので、補助対象の開発費と同じ請求書に混ぜません。補助金は実績報告の受理後1〜3か月の後払いです（4章）。</td>
+          </tr>
+          <tr>
+            <td class="label wrap">⑤ 採択後も続く義務は何か</td>
+            <td><strong>3年間の事業効果報告、令和14年3月31日までの書類保存、耐用年数の期間の財産処分制限です。</strong> 納品物の所有権はPEDALSTANDARD社に帰属させて契約書に明記します（6章）。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="notes">
+      <li>この資料は2026年9月14日時点の公募要領（令和8年5月版）に基づきます。要領の各章番号は本文の表に〔 〕で示しています。</li>
+      <li>交付決定日・交付決定額・申請した計画書の内容は弊社では未確認です。9月15日の打ち合わせで確認します（8章）。</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ 02 制度の骨子 ============ -->
+<div class="tab-panel" id="panel-outline">
+  <div class="section" id="outline">
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>制度の骨子</h2><div class="sh-sub">県内中小企業の「稼ぐ力」を強化する設備・システム投資に、最大500万円を補助する</div></div></div>
+    <p>物価高騰や人手不足に負けない「稼ぐ力」の強化のため、収益力向上に資する設備導入を補助する制度です。持続可能な賃上げ環境の整備が目的です。採択後の効果報告でも「賃上げの状況」が問われます。〔1・2〕</p>
+
+    <div class="sub-item">
+      <div class="kick">金額と補助率</div>
+      <h4>補助対象経費の2分の1・小規模事業者は3分の2</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>項目</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td class="label">対象事業</td><td>売上の増加: 収益力の向上につながると認められる設備等の導入</td></tr>
+            <tr><td class="label">補助金額</td><td><strong>500万円以内（下限25万円）</strong></td></tr>
+            <tr><td class="label">補助率</td><td>補助対象経費の<strong>2分の1以内</strong>。小規模事業者は<strong>3分の2以内</strong></td></tr>
+            <tr><td class="label">対象となる事業の規模</td><td>補助対象経費（消費税を除く）が<strong>50万円以上</strong>の事業。補助額の1,000円未満は切り捨て</td></tr>
+            <tr><td class="label">交付額の確定</td><td>実績報告の審査で確定する。対象外経費が含まれていれば除外して減額。交付決定額より増えることはない</td></tr>
+            <tr><td class="label">根拠</td><td>令和8年度産業労働部補助金交付要綱</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">スケジュール</div>
+      <h4>第1期採択のため、事業完了は11月30日・実績報告は12月10日</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>区分</th><th class="std">第1期公募（今回・採択済み）</th><th>第2期公募（参考）</th></tr></thead>
+          <tbody>
+            <tr><td class="label">申請期間</td><td class="std">令和8年6月8日（月）〜7月7日（火）</td><td>令和8年9月1日（火）〜9月30日（水）</td></tr>
+            <tr><td class="label">事業実施期間</td><td class="std"><strong>交付決定日〜令和8年11月30日（月）</strong></td><td>交付決定日〜令和9年1月31日（日）</td></tr>
+            <tr><td class="label">実績報告の期限</td><td class="std"><strong>令和8年12月10日（木）</strong>。事業完了日から30日以内と、いずれか早い日</td><td>令和9年2月10日（水）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="notes">
+        <li>補助金の支払は、不備のない実績報告の受理後1〜3か月程度です。振込日の個別連絡はありません。〔13〕</li>
+        <li>事業実施期間の延長規定は要領に記載がありません。</li>
+      </ul>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">交付までの流れ</div>
+      <h4>今は「補助事業の実施」の段階・お金が入るのは実績報告の後</h4>
+      <figure class="fig" aria-label="交付決定は済んでおり、いま実施の段階にある。補助金が振り込まれるのは実績報告の後で、開発費はいったん全額を事業者が立て替える">
+      <div class="swim"><div class="swim-inner">
+        <div class="swim-row">
+          <div class="swim-label other"><i></i>申請まで（済）</div>
+          <div class="swim-track">
+            <div class="swim-node">商工会議所の伴走支援</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node">申請書の提出（7月7日まで）</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node">審査（書類のみ）</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node">交付決定通知（満額）</div>
+          </div>
+        </div>
+        <div class="swim-row">
+          <div class="swim-label other"><i></i>実施と報告</div>
+          <div class="swim-track">
+            <div class="swim-node hot">補助事業の実施（今ここ・11月30日まで）</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node">実績報告（12月10日まで）</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node">補助金額の確定通知</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node">請求</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node hot">補助金の支払</div>
+          </div>
+        </div>
+        <div class="swim-row">
+          <div class="swim-label other"><i></i>支払後</div>
+          <div class="swim-track">
+            <div class="swim-node">事業効果報告（毎年・3年間）</div>
+            <div class="swim-arrow"></div>
+            <div class="swim-node">書類保存（令和14年3月31日まで）</div>
+          </div>
+        </div>
+      </div></div>
+      <figcaption>公募要領「補助金交付までの流れ（予定）」より。焦がし色の枠は、いまの段階と入金の節目</figcaption>
+      </figure>
+      <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><strong>リスク:</strong> 交付決定通知書の受領前に行った発注・契約・登録・申込・支払は全て補助対象外です。補助対象の開発の発注書・契約書は、交付決定日以降の日付で起こす必要があります。〔注意点4〕</span></div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">申請にあたっての注意点</div>
+      <h4>公募要領の冒頭に掲げられた11の注意点</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>注意点</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td class="label">1 趣旨の理解</td><td>事業者が自ら経営を見つめ直して経営計画を作成したうえで行う取り組みを支援する制度。事業者自らが検討した記載がない場合は不採択</td></tr>
+            <tr><td class="label">2 交付要綱</td><td>令和8年度産業労働部補助金交付要綱に基づいて実施。不正受給・目的外使用は交付取消・返還命令・加算金・公表の対象</td></tr>
+            <tr><td class="label">3 他制度との重複</td><td>国・都道府県・市区町村等が補助する他の制度と重複する事業は対象外</td></tr>
+            <tr><td class="label">4 着手の時期</td><td><strong>交付決定通知書の受領後でないと着手できない。支払方法は銀行振込のみ・現金不可</strong></td></tr>
+            <tr><td class="label">5 内容の変更</td><td><strong>事業内容・経費配分の変更は事前に「補助金変更承認申請書」を提出して承認を受ける。新しい費目の追加は原則不可</strong></td></tr>
+            <tr><td class="label">6 実績報告の期日</td><td><strong>期日までに実績報告書等の提出がないと、交付決定を受けていても補助金は交付されない</strong></td></tr>
+            <tr><td class="label">7 交付額の減少</td><td>実績報告の確認時に要件を満たさなければ交付しない。対象外経費が含まれていればその分を除外する</td></tr>
+            <tr><td class="label">8 財産処分の制限</td><td>単価50万円（税抜）以上の取得物は処分制限財産。耐用年数の期間（10年以上は10年）、目的外使用・売却・譲渡・貸付・担保・廃棄・移転には県の承認が必要</td></tr>
+            <tr><td class="label">9 事業効果報告</td><td>事業実施後3年間、毎年「事業効果報告書」を提出。未提出は交付取消・返還命令の対象</td></tr>
+            <tr><td class="label">10 書類の保存</td><td>関係書類を事業終了後5年間（令和14年3月31日まで）保存。会計検査院・県監査委員の求めに応じて閲覧に供する</td></tr>
+            <tr><td class="label">11 その他</td><td>細部は事務局の指示に従う。県による電話連絡・訪問・現地調査がある。<strong>取引先（発注先）にも協力を求めることがある</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 03 対象者と要件 ============ -->
+<div class="tab-panel" id="panel-eligibility">
+  <div class="section" id="eligibility">
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>対象者と要件</h2><div class="sh-sub">採択の前提となった要件は、事業実施期間中も維持する必要がある</div></div></div>
+    <p>採択は済んでいます。ただし、みなし大企業の条件は事業実施期間中も適用されます。また実施期間内に対象者の要件を満たさなくなった場合、補助金は支払われません。事業者名・代表者・所在地に変更があれば「申請事項変更届（様式第13号）」が必要です。〔4・14（2）〕</p>
+
+    <div class="sub-item">
+      <div class="kick">補助要件</div>
+      <h4>採択時に満たした9つの要件</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>要件</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td class="label">（1）所在地</td><td>申請日時点で、兵庫県内に本補助事業を実施する事業所を有する中小企業者等であること</td></tr>
+            <tr><td class="label">（2）事業期間</td><td>申請日時点で、創業（開業）から1年以上経過していること</td></tr>
+            <tr><td class="label">（3）他制度</td><td>同一とみなされる事業で、国・都道府県・市区町村等の他制度の交付決定を受けていないこと</td></tr>
+            <tr><td class="label">（4）申請数</td><td>同一事業者が複数の申請をしていないこと。第1期採択者は第2期に申請不可</td></tr>
+            <tr><td class="label">（5）経営指導</td><td>商工会・商工会議所による経営指導の結果、本補助事業の実施が賃上げの促進につながると認められること</td></tr>
+            <tr><td class="label">（6）県税</td><td>県税の滞納がないこと</td></tr>
+            <tr><td class="label">（7）公序良俗</td><td>事業内容が公の秩序または善良な風俗を害するおそれがないこと</td></tr>
+            <tr><td class="label">（8）使途の妥当性</td><td>公的資金の使途として社会通念上不適切と判断される事業でないこと</td></tr>
+            <tr><td class="label">（9）暴力団排除</td><td>暴力団・暴力団員と関係がある事業者でないこと</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">中小企業者の定義</div>
+      <h4>資本金か従業員数のいずれかを満たせば中小企業者</h4>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th rowspan="2">業種（日本標準産業分類）</th><th class="th-grp" colspan="2">中小企業者（いずれかを満たす）</th></tr>
+            <tr><th>資本金または出資総額</th><th>常時使用する従業員数</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="label">① 製造業・建設業・運輸業・その他（②〜⑦以外）</td><td class="num">3億円以下</td><td class="num">300人以下</td></tr>
+            <tr><td class="label">② 卸売業</td><td class="num">1億円以下</td><td class="num">100人以下</td></tr>
+            <tr><td class="label">③ サービス業（⑥⑦を除く）</td><td class="num">5,000万円以下</td><td class="num">100人以下</td></tr>
+            <tr><td class="label">④ 小売業</td><td class="num">5,000万円以下</td><td class="num">50人以下</td></tr>
+            <tr><td class="label">⑤ ゴム製品製造業（一部を除く）</td><td class="num">3億円以下</td><td class="num">900人以下</td></tr>
+            <tr><td class="label">⑥ ソフトウェア業・情報処理サービス業</td><td class="num">3億円以下</td><td class="num">300人以下</td></tr>
+            <tr><td class="label">⑦ 旅館業</td><td class="num">5,000万円以下</td><td class="num">200人以下</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">小規模事業者の定義</div>
+      <h4>補助率が3分の2になる線引き</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>業種</th><th>常時使用する従業員数</th></tr></thead>
+          <tbody>
+            <tr><td class="label">① 製造業その他</td><td class="num">20人以下</td></tr>
+            <tr><td class="label">② 商業・サービス業（宿泊業・娯楽業以外）</td><td class="num"><strong>5人以下</strong></td></tr>
+            <tr><td class="label">③ サービス業のうち宿泊業・娯楽業</td><td class="num">20人以下</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="term">
+        <div class="term-name">常時使用する従業員 <span class="term-tag">— 用語</span></div>
+        <div class="t-body">次の人は人数に含めません。会社役員（従業員兼務役員は含める）、個人事業主本人と同居の親族従業員、申請時点で育児休業・介護休業・傷病休業・休職中の社員、日雇いや2か月以内の有期雇用・季節4か月以内の雇用者、所定労働時間が通常の従業員の4分の3以下のパートタイム労働者。</div>
+      </div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">みなし大企業</div>
+      <h4>次のいずれかに当たると対象外・実施期間中も適用</h4>
+      <ul class="plain-list">
+        <li>発行済株式・出資の2分の1以上を同一の大企業が所有している</li>
+        <li>発行済株式・出資の3分の2以上を大企業が所有している</li>
+        <li>大企業の役員・職員を兼ねている者が役員総数の2分の1以上を占めている</li>
+        <li>上記に該当する中小企業者等が発行済株式・出資の総額を所有している</li>
+        <li>上記に該当する中小企業者等の役員・職員を兼ねている者が役員総数の全てを占めている</li>
+        <li>直近過去3年間の課税所得の年平均額が15億円を超える</li>
+      </ul>
+      <ul class="notes">
+        <li>大企業とは、資本金と従業員数がともに上の表の数字を超える者。海外企業・自治体等の公的機関も大企業とみなします。社外取締役・監査役は上の「役員」に含みません。</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 04 対象経費 ============ -->
+<div class="tab-panel" id="panel-expenses">
+  <div class="section" id="expenses">
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>対象経費</h2><div class="sh-sub">システムの購入・構築は対象。保守料・手数料・人件費・交付決定前の支払は対象外なので、請求書を分ける</div></div></div>
+    <p>実績報告で対象外経費が含まれていると判明した場合、その分は補助対象から除外されます。弊社が発行する見積書・請求書では、補助対象の開発費と、保守やSEOなどの対象外の作業を明確に区分する必要があります。〔注意点7・9 ⑥〕</p>
+
+    <div class="sub-item">
+      <div class="kick">補助対象経費</div>
+      <h4>設備等導入費 — 機械装置とシステムの購入・構築</h4>
+      <div class="compare">
+        <div class="compare-box good"><div class="cb-head"><span class="cb-mark">○</span>対象になる経費（設備等導入費）</div>
+          <ul>
+            <li>機械装置等の購入・製作・改良に要する経費</li>
+            <li><strong>専用ソフトウェア・情報システム等の購入・構築に要する経費</strong></li>
+            <li>上記の使用場所への導入に直接必要な運搬・据付に要する経費</li>
+            <li>いずれも<strong>単価50万円（税抜）以上</strong>で、専ら補助事業のために使用され、<strong>補助事業者に所有権が帰属</strong>するもの</li>
+          </ul>
+        </div>
+        <div class="compare-box bad"><div class="cb-head"><span class="cb-mark">×</span>4つの共通条件を1つでも外すと対象外</div>
+          <ul>
+            <li>使用目的が補助事業の遂行に必要なものと明確に特定できない</li>
+            <li><strong>交付決定日より前に発生した、または11月30日までに支払が完了していない</strong></li>
+            <li><strong>銀行振込以外で支払った</strong>（現金・小切手・手形・相殺・クレジットカードは不可）</li>
+            <li>証拠資料等で支払金額が確認できない</li>
+          </ul>
+        </div>
+      </div>
+      <ul class="notes">
+        <li>「据付」は、新規購入した機械装置・システムの設置と一体で捉えられる軽微なものに限ります。</li>
+        <li>発注先と金額は、申請時の相見積もり（または相見積もり省略理由書）に基づきます。同一条件で2者以上から取得した見積のうち最低価格の者に発注する決まりです。</li>
+      </ul>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">補助対象事業の要件</div>
+      <h4>計画書に基づき、他制度と重複せず、関係者間の取引でなく、期間内に完了する事業</h4>
+      <ul class="plain-list">
+        <li>策定した「補助事業計画書（様式第1-1号）」に基づいて実施する取り組みであること</li>
+        <li>同じ経費に対して国・県・市区町村等の他制度の交付決定を受けていないこと</li>
+        <li><strong>自社（グループ企業）内での取引でないこと。</strong>親会社・子会社・関連会社・関係会社、役員や従業員が兼任している会社、代表者の3親等以内の親族が経営する会社からの購入は認められない</li>
+        <li>事業実施期間内に事業が完了すること</li>
+      </ul>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">補助対象とならない経費</div>
+      <h4>公募要領が挙げる17区分</h4>
+      <p>「補助対象経費」に掲げる経費であっても、次に該当するものは対象になりません。RINCLEの請求で判断が必要になりそうな区分を太字にしています。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>区分</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td class="label">（1）単なる更新</td><td><strong>設備等の単なる更新であると判断できるもの</strong></td></tr>
+            <tr><td class="label">（2）汎用機器</td><td>汎用的に使用可能な機械（自動車、電話機、スマートフォン、事務用プリンター、複合機、ユニット等）</td></tr>
+            <tr><td class="label">（3）自社製作</td><td>自社により機械装置やシステムを製作・構築する場合の経費</td></tr>
+            <tr><td class="label">（4）他用途</td><td>外注先に設置するなど、自社事業以外にも使用できると判断されるもの</td></tr>
+            <tr><td class="label">（5）保守・保証</td><td><strong>各種保証・保険料・保守料（メンテナンス料）・管理料</strong>など、設備等の導入に要する経費ではないもの</td></tr>
+            <tr><td class="label">（6）商品</td><td>商品として販売・賃貸する設備等の購入・製作・構築（デモ品・見本品も不可）。レンタル用の自転車はここに当たる</td></tr>
+            <tr><td class="label">（7）修理</td><td>設備等の修理に要する経費</td></tr>
+            <tr><td class="label">（8）工事</td><td>「据付」の範囲を超える整備工事費・基礎工事費等</td></tr>
+            <tr><td class="label">（9）他制度と重複</td><td>国・都道府県・市区町村等が補助する他の制度の交付決定を受けている事業と重複する経費</td></tr>
+            <tr><td class="label">（10）証拠なし</td><td><strong>証拠書類がない経費</strong></td></tr>
+            <tr><td class="label">（11）手続き費用</td><td><strong>本補助事業の手続きに要する経費</strong>（実績報告書等の作成・送付・手続き）</td></tr>
+            <tr><td class="label">（12）関係者への発注</td><td>自社内部・資本関係がある事業者への発注。代表者や役員が一人でも代表者・役員を兼ねる事業者への発注。代表者・役員の3親等以内の親族が代表者・役員に就いている事業者への発注</td></tr>
+            <tr><td class="label">（13）価格の妥当性</td><td>一般価格・市場価格と比べて高額な経費、高額な送料、中古品、オークションによる購入</td></tr>
+            <tr><td class="label">（14）税・手数料・消耗品</td><td>公租公課、通信費、<strong>振込手数料・決済手数料</strong>、事務用消耗品、キャンセル料、<strong>通常業務と混合して区分し難い支払</strong></td></tr>
+            <tr><td class="label">（15）謝金・人件費</td><td>研修参加費、<strong>専門家報酬・謝金（コンサル料を含む）</strong>、免許・特許の取得費、<strong>役員報酬・直接人件費</strong></td></tr>
+            <tr><td class="label">（16）不正・不適切な取引</td><td>購入額の一部・全額を申請者へ戻すもの、他事業者と同一・極めて類似した案件、不適切な相互発注、契約業務を生業としていない事業者への外注</td></tr>
+            <tr><td class="label">（17）その他</td><td>目的に合致しないもの、関連が判断しにくい経費、<strong>交付決定前の発注・契約・購入・支払（前払いを含む）</strong>、<strong>申請者名義の銀行振込以外の決済</strong>、申請者名義以外の口座での決済、建物・不動産・構築物、リースを目的とした製品等の調達</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 05 実施の手順と証拠書類 ============ -->
+<div class="tab-panel" id="panel-execute">
+  <div class="section" id="execute">
+    <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>実施の手順と証拠書類</h2><div class="sh-sub">発注・納品・支払の3段階それぞれで、日付と内容が揃った書類を残す</div></div></div>
+    <p>実績報告で審査されるのは「計画どおりに」「実施期間内に」「対象経費が適正に支出された」の3点です。弊社が発行する書類は、この3点を証明する材料になります。〔13〕</p>
+
+    <div class="sub-item">
+      <div class="kick">実施の手順</div>
+      <h4>11月30日から逆算して進める</h4>
+      <ol class="steps">
+        <li>交付決定通知書で<strong>交付決定日と交付決定額</strong>を確認する。申請した補助事業計画書・見積書の控えと、弊社の開発範囲を照合する</li>
+        <li>計画と実際の開発内容にずれがあれば、発注前に「補助金変更交付申請書（様式第3号）」を事務局に提出して承認を受ける（審査1か月程度）</li>
+        <li>交付決定日以降の日付で<strong>発注書または契約書</strong>を取り交わす。納品物の所有権（ソースコード等）がPEDALSTANDARD社に帰属する条項を入れる</li>
+        <li>開発を実施する。納品物として<strong>設計書・操作マニュアル</strong>を作成する。<strong>主要機能の画面写真</strong>を撮る</li>
+        <li>11月中旬を目標に<strong>納品書または検収書</strong>を発行する。あわせて見積と一致する<strong>請求書</strong>（税抜と消費税を分けて記載）を発行する</li>
+        <li>PEDALSTANDARD社名義の口座から<strong>銀行振込</strong>で全額を支払う。振込明細を保管する。11月30日までに完了</li>
+        <li>事業完了日から30日以内、または12月10日までに<strong>実績報告</strong>をメールで提出する（6章）</li>
+      </ol>
+      <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><strong>リスク:</strong> 事業実施期間の延長規定は公募要領に記載がありません。11月30日に納品・振込が間に合わないと、交付決定の取消で補助金は支払われません。開発の着手が遅れる場合は早めに事務局へ相談します。〔15〕</span></div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">証拠書類に書くこと</div>
+      <h4>4種類の書類それぞれの必須記載事項</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>段階</th><th>次のうちいずれかの書類</th><th>記載が必要な内容</th><th>用意する側</th></tr></thead>
+          <tbody>
+            <tr><td class="label">発注</td><td>発注書・契約書・申込書・相手事業者からの受注確認書または請書</td><td>経費の内容（製品名と型番、サービス名、工事内容、数量など）、発注金額、発注元と発注先の事業者名、日付（<strong>交付決定日以降</strong>）</td><td>弊社・PEDALSTANDARD社</td></tr>
+            <tr><td class="label">納品・完了</td><td>納品書・完了報告書・工事完了書・検収書</td><td>経費の内容、発注元と発注先の事業者名、日付（<strong>事業実施期間内</strong>）、納品場所（住所）</td><td>弊社</td></tr>
+            <tr><td class="label">支払</td><td>銀行振込明細書（ATMの利用明細）・振込金受取書（窓口）・当座勘定照合表（当座預金）</td><td>振込者名義、振込先名義、日付、金額</td><td>PEDALSTANDARD社</td></tr>
+            <tr><td class="label">事業の実施</td><td>システムの主要な機能が分かる画面の写真・当該システムの設計書・操作マニュアル</td><td>導入したシステムが計画どおりに動いていることが分かるもの</td><td>弊社</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="notes">
+        <li>見積書と同じく、「1式」「1組」の表記は避けて内訳・数量・単価が分かる形にします。補助対象外の経費（保守等）は別の書類に分けます。</li>
+        <li>Webシステムの場合の「納品場所（住所）」の書き方は要領に記載がありません。事務局に確認します。</li>
+      </ul>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">変更・廃止の手続き</div>
+      <h4>発注前に承認を得る。減額はあっても増額はない</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>場面</th><th>手続き</th><th>留意点</th></tr></thead>
+          <tbody>
+            <tr><td class="label">経費の追加・内容の変更</td><td>変更する事業の実施前（発注・契約前）に「補助金変更交付申請書（様式第3号）」を提出して承認を受ける</td><td>審査に1か月程度かかることがある。事業目的が変わる大幅変更は不可。減額はあっても増額はない。計画書にない新規費目の追加は原則不可。事前連絡なく変更・実施すると補助金が交付されないことがある</td></tr>
+            <tr><td class="label">事業者名・代表者名・法人番号・本社所在地・事業実施場所の変更</td><td>「申請事項変更届（様式第13号）」を提出</td><td>法人化や法人名変更の場合は変更後の履歴事項全部証明書も添付。実施期間内に対象者の要件を満たさなくなった場合は補助金は支払われない</td></tr>
+            <tr><td class="label">事業の全部をやめる</td><td>実施期間の終了日までに「補助事業中止（廃止）承認申請書（様式第5号）」を提出。承認後に様式第6号で通知される</td><td>廃止を承認した事業には補助金は支払われない</td></tr>
+            <tr><td class="label">期間内に完了しない・実績報告を出さない</td><td>「交付決定取消通知書」で交付決定が取り消される</td><td>補助金は支払われない</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 06 実績報告と事後の義務 ============ -->
+<div class="tab-panel" id="panel-after">
+  <div class="section" id="after">
+    <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>実績報告と事後の義務</h2><div class="sh-sub">実績報告で補助額が決まる。その後3年間の効果報告と、耐用年数の期間の財産処分制限が続く</div></div></div>
+
+    <div class="sub-item">
+      <div class="kick">実績報告</div>
+      <h4>事業完了から30日以内、遅くとも12月10日まで</h4>
+      <p>補助事業が完了した日（納品と経費の支払いが完了した日）から30日以内、または12月10日（木）のいずれか早い日までに提出します。提出方法は申請時と同じで、件名は「【実績報告】事業者名」、様式はWord・Excelのまま、1通30MB以下でメール添付します。請求書は実績報告と同時に提出します。県が預かったうえで額の確定後に正式受理されます。〔11・13〕</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>番号</th><th>書類</th><th>記載が必要な内容・条件</th></tr></thead>
+          <tbody>
+            <tr><td class="label">①</td><td>補助事業実績報告書（様式第8号）</td><td></td></tr>
+            <tr><td class="label">②</td><td>補助事業報告書（様式第8-1号）</td><td></td></tr>
+            <tr><td class="label">③</td><td>補助金取得財産等管理台帳（様式第12号）</td><td>処分制限財産を記載して管理する</td></tr>
+            <tr><td class="label">④</td><td>補助金請求書（様式第10号）</td><td>確定通知番号・年月日・提出年月日は空欄のまま</td></tr>
+            <tr><td class="label">⑤</td><td>発注内容が確認できる書類</td><td>5章の表のとおり。<strong>着手日が交付決定日以降のものに限る</strong></td></tr>
+            <tr><td class="label">⑥</td><td>納品・完了が確認できる書類</td><td>5章の表のとおり。日付は事業実施期間内</td></tr>
+            <tr><td class="label">⑦</td><td>支払を証明する書類</td><td>5章の表のとおり</td></tr>
+            <tr><td class="label">⑧</td><td>事業実施が確認できる書類</td><td><strong>システムの主要な機能が分かる画面の写真、設計書・操作マニュアル</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="notes">
+        <li>審査では「計画どおりに実施された」「実施期間内に実施された」「対象経費が適正に支出された」の3点が確認されます。不備があれば事務局の指示で訂正します。</li>
+        <li>実績報告後に県の実地調査が入ることがあります。正当な理由なく拒否すると交付決定が取り消されます。取引先（弊社）にも協力依頼が来る可能性があります。</li>
+        <li>補助金の支払は、不備のない実績報告の受理後1〜3か月程度です。</li>
+      </ul>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">事業効果報告</div>
+      <h4>完了年度の翌年から3年間、毎年提出する</h4>
+      <p>事業完了年度の翌年以後3年間（3期分）、「事業効果報告書（様式第15号）」を毎年度提出します。記載内容は①導入した設備等の内容 ②導入による効果 ③導入した設備等を活用した経営発展の今後の展望 ④<strong>賃上げの状況</strong>などの予定です。提出期限・方法は別途連絡されます。期限までに提出がない場合は交付取消・返還命令（加算金付き）の対象です。〔16〕</p>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">財産処分の制限</div>
+      <h4>50万円以上の取得物は耐用年数の期間、県の承認なしに処分できない</h4>
+      <ul class="plain-list">
+        <li>補助金で取得した単価50万円（税抜）以上のものは処分制限財産です。「補助金取得財産等管理台帳（様式第12号）」に記載して管理します</li>
+        <li>制限される処分: 補助事業目的外での使用、売却、譲渡、交換、貸付、担保権の設定、取壊し・廃棄、移転</li>
+        <li>処分制限期間は、減価償却資産の耐用年数等に関する省令に定める耐用年数に相当する期間（10年以上の場合は10年）</li>
+        <li>処分する前に「補助金取得財産等の処分承認申請書（様式第14号）」を県に提出して承認を受けます。承認された場合も、残存簿価に補助率を乗じた額の返還を求められることがあります</li>
+        <li><strong>取得した財産は県内事業所で使用しなければなりません。</strong>県外の事業所に移設して使用した場合は「移転」に該当します。返還を求められることがあります</li>
+        <li>事業完了後に対象者の要件を満たさなくなった場合も処分の対象です（大企業になった場合は返還を求めない）</li>
+      </ul>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">書類の保存と不正への処分</div>
+      <h4>令和14年3月31日まで保存。不正は年10.95%の加算金つきで返還</h4>
+      <p>申請書類一式、交付決定通知書、発注書・請求書等の証拠書類は、一般の書類と区分していつでも閲覧できる状態で、<strong>令和14年3月31日まで5年間</strong>保存します。会計検査院・県監査委員の実地検査に応じる義務があります。〔17（3）〕</p>
+      <p>偽りその他不正の手段による受給、目的外使用、交付条件・要綱・要領違反、不適当な行為、交付決定後に対象外経費と判明した場合などは、交付決定の全部または一部の取消、返還命令、受領日から納付日までの日数に応じた<strong>年10.95%の加算金</strong>、不正内容の公表の対象です。〔17（2）〕</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 07 想定Q&A ============ -->
+<div class="tab-panel" id="panel-faq">
+  <div class="section" id="faq">
+    <div class="section-header"><div class="section-num">07</div><div class="sh-body"><h2>想定Q&amp;A</h2><div class="sh-sub">採択後の実施について聞かれそうな33の質問。答えの1文目で言い切って要領の該当章を〔 〕で添える</div></div></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>この章の読み方:</strong> 「回答未確認」のバッジがついた質問は、公募要領に記載がなく現時点で答えられないものです。確認先に問い合わせた結果を得しだい回答を埋めます。</span></div>
+
+    <div class="sub-item">
+      <div class="kick">A. スケジュール</div>
+      <h4>いつまでに・いつ入るか</h4>
+      <div class="table-wrap">
+        <table class="qa">
+          <tbody>
+            <tr><td class="label wrap">Q1. いつまでに何を終える必要がありますか</td><td><strong>11月30日（月）までに、発注・納品・検収・銀行振込の全てを完了させます。</strong> その後、事業完了日から30日以内または12月10日（木）のいずれか早い日までに実績報告を提出します。〔2・11〕</td></tr>
+            <tr><td class="label wrap">Q2. 交付決定日はいつですか。いつから発注できますか</td><td><strong>交付決定通知書に記載された交付決定日から発注・契約できます。</strong> それより前の発注・契約・登録・申込・支払は対象外です。〔注意点4〕<span class="ask">確認先: 増永さん（交付決定通知書の日付）</span></td></tr>
+            <tr><td class="label wrap">Q3. 11月30日に納品が間に合わなかったらどうなりますか</td><td><strong>交付決定が取り消され、補助金は支払われません。</strong> 期間延長の規定は要領に記載がありません。〔15〕<span class="ask">確認先: 事務局（延長の可否）</span></td></tr>
+            <tr><td class="label wrap">Q4. 実績報告はいつ出しますか</td><td><strong>事業完了日から30日以内、または12月10日のいずれか早い日までです。</strong> 11月中に完了すれば、完了日から30日以内が先に来ます。〔11〕</td></tr>
+            <tr><td class="label wrap">Q5. 補助金はいつ振り込まれますか</td><td><strong>不備のない実績報告の受理後1〜3か月程度です。</strong> 12月上旬に報告すれば、早ければ年内、遅くとも令和9年3月頃の見込みです。振込日の個別連絡はありません。〔13〕</td></tr>
+            <tr><td class="label wrap">Q6. 補助金は満額入りますか</td><td><strong>対象外経費が含まれていればその分を除外して減額されます。</strong> 要件を満たさない場合は交付されません。交付決定額より増えることはありません。〔注意点7・14〕</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">B. 発注・契約</div>
+      <h4>契約書・見積との一致・変更・権利帰属・請求書の分け方</h4>
+      <div class="table-wrap">
+        <table class="qa">
+          <tbody>
+            <tr><td class="label wrap">Q7. 弊社との契約書は必要ですか。何を書きますか</td><td><strong>発注書・契約書・申込書・請書のいずれかで、発注内容が確認できる書類が必要です。</strong> 記載事項は、経費の内容（製品名と型番、サービス名、数量など）、発注金額、発注元と発注先の事業者名、日付（交付決定日以降）です。〔12 ⑤〕</td></tr>
+            <tr><td class="label wrap">Q8. 発注内容は申請時の見積と同じでないといけませんか</td><td><strong>交付決定を受けた内容（補助事業計画書と見積書）で実施します。</strong> 内容や経費配分を変える場合は、発注前に「補助金変更交付申請書（様式第3号）」を提出して承認を受けます。〔14〕</td></tr>
+            <tr><td class="label wrap">Q9. 開発内容を追加・変更したい場合はどうしますか</td><td><strong>発注・契約前に様式第3号を事務局に提出して承認を受けます。</strong> 審査に1か月程度かかることがあります。事業目的が変わる大幅変更は不可、増額はなく、新規費目の追加は原則できません。11月30日から逆算すると、変えるなら今すぐ動く必要があります。〔14〕</td></tr>
+            <tr><td class="label wrap">Q10. 弊社との契約は準委任（時間単価）でも大丈夫ですか</td><td><strong>成果物が特定できる請負形式のほうが要件に合います。</strong> 実績報告で発注書・納品書（検収書）・振込明細が必要で、経費の内容と数量が特定できる必要があります。準委任契約そのものが認められるかは要領に記載がありません。〔12〕<span class="ask">確認先: 事務局</span></td></tr>
+            <tr><td class="label wrap">Q11. 開発したシステムの著作権・ソースコードは誰のものですか</td><td><strong>PEDALSTANDARD社に帰属させる必要があります。</strong> 補助対象は「補助事業者に所有権が帰属する」設備等に限られます。納品物の権利の帰属を契約書に明記します。〔6〕</td></tr>
+            <tr><td class="label wrap">Q12. 保守費やSEO作業も同じ請求書にまとめてよいですか</td><td><strong>分けてください。</strong> 保守料・メンテナンス料、専門家報酬・コンサル料、決済手数料、人件費は対象外です。補助対象経費と区分されていない請求は対象外になる可能性があります。対象外の作業は別の請求書にします。〔7（5）（14）（15）・9 ⑥〕</td></tr>
+            <tr><td class="label wrap">Q13. 消費税分はどうなりますか</td><td><strong>補助対象経費は税抜で計算します。</strong> 消費税は補助されません。請求書は税抜金額と消費税を分けて記載します。〔2・7（14ア）〕</td></tr>
+            <tr><td class="label wrap">Q14. 見積は2者以上取ったことになっていますか</td><td><strong>申請時に2者以上の相見積もりか、相見積もり省略理由書（様式第1-3号）のどちらかを提出しているはずです。</strong> 省略理由書の場合、発注先と金額は見積どおりに進めます。〔6・9〕<span class="ask">確認先: 増永さん（申請時にどちらを提出したか）</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">C. 納品・検収</div>
+      <h4>納品書の書き方・納品物・日付</h4>
+      <div class="table-wrap">
+        <table class="qa">
+          <tbody>
+            <tr><td class="label wrap">Q15. 納品書・検収書には何を書きますか</td><td><strong>経費の内容、発注元と発注先の事業者名、日付、納品場所（住所）です。</strong> 経費の内容は製品名と型番、サービス名、数量など。日付は事業実施期間内である必要があります。〔12 ⑥〕</td></tr>
+            <tr><td class="label wrap">Q16. Webシステムの場合、納品場所（住所）はどう書きますか</td><td><span class="badge muted">回答未確認</span><span class="ask">確認先: 事務局（本社所在地とするのが自然だが要領に記載なし）</span></td></tr>
+            <tr><td class="label wrap">Q17. 納品物として弊社が用意するものは何ですか</td><td><strong>システムの主要な機能が分かる画面の写真、設計書、操作マニュアルです。</strong> 実績報告の添付書類として必要で、弊社が納品物として作成します。〔12 ⑧〕</td></tr>
+            <tr><td class="label wrap">Q18. 納品の日付はいつになりますか</td><td><strong>納品書・検収書の日付が交付決定日〜11月30日の間である必要があります。</strong> 検収後に支払うため、振込の日程から逆算して11月中旬までの納品が安全です。〔12 ⑥〕</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">D. 支払</div>
+      <h4>振込の方法・時期・証拠</h4>
+      <div class="table-wrap">
+        <table class="qa">
+          <tbody>
+            <tr><td class="label wrap">Q19. 支払方法に制約はありますか</td><td><strong>PEDALSTANDARD社名義の口座からの銀行振込のみです。</strong> 現金・クレジットカード・手形・相殺は不可です。申請者名義以外の口座で決済された経費も対象外です。〔6・7（17オカ）〕</td></tr>
+            <tr><td class="label wrap">Q20. 前払いや分割払いはできますか</td><td><strong>前払いは対象外です。</strong> 分割については記載がありません。いずれにせよ全額の振込が11月30日までに完了している必要があります。〔7（17エ）〕<span class="ask">確認先: 事務局（期間内の分割払いの可否）</span></td></tr>
+            <tr><td class="label wrap">Q21. 振込手数料は補助されますか</td><td><strong>されません。</strong> 金融機関への振込手数料は対象外です。〔7（14ウ）〕</td></tr>
+            <tr><td class="label wrap">Q22. 振込の証拠として何が必要ですか</td><td><strong>振込者名義・振込先名義・日付・金額が記載された書類です。</strong> 銀行振込明細書（ATMの利用明細）、振込金受取書（窓口の場合）、当座勘定照合表（当座預金の場合）のいずれかです。〔12 ⑦〕</td></tr>
+            <tr><td class="label wrap">Q23. 弊社への支払が12月にずれたらどうなりますか</td><td><strong>事業実施期間外の支払は対象外です。</strong> 補助対象にするには11月30日までに振込を完了する必要があります。〔6（2）イ〕</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">E. 実績報告・事後の義務</div>
+      <h4>報告書類・弊社の協力・3年間の義務</h4>
+      <div class="table-wrap">
+        <table class="qa">
+          <tbody>
+            <tr><td class="label wrap">Q24. 実績報告には何が必要ですか</td><td><strong>報告様式4種と添付書類4種です。</strong> 様式は補助事業実績報告書（第8号）・補助事業報告書（第8-1号）・補助金取得財産等管理台帳（第12号）・補助金請求書（第10号）。添付は発注内容・納品・支払・事業実施のそれぞれが確認できる書類。件名「【実績報告】事業者名」でメール添付、様式はWord・Excelのまま、1通30MB以下です。〔11・12〕</td></tr>
+            <tr><td class="label wrap">Q25. 実績報告で弊社が協力することは何ですか</td><td><strong>書類の書式を整えることと、納品物を用意することです。</strong> 発注書・納品書・請求書を要件どおりの記載にすること、設計書・操作マニュアル・画面写真を納品物として用意すること、県の実地調査や取引先への問い合わせがあれば協力することです。〔注意点11・12〕</td></tr>
+            <tr><td class="label wrap">Q26. 請求書はいつ出しますか</td><td><strong>補助金請求書（様式第10号）は実績報告と同時に提出します。</strong> 確定通知番号・年月日・提出年月日は空欄のままです。県が預かったうえで額の確定後に正式受理されます。〔12・13〕</td></tr>
+            <tr><td class="label wrap">Q27. 県の調査は来ますか</td><td><strong>実績報告後に実地調査が入ることがあります。</strong> 正当な理由なく拒否すると交付決定が取り消されます。事業効果の確認のため電話・訪問がある場合もあります。取引先（弊社）にも協力依頼が来る可能性があります。〔注意点11・13（3）〕</td></tr>
+            <tr><td class="label wrap">Q28. 採択された後の義務は何ですか</td><td><strong>3つあります。</strong> ①事業完了年度の翌年から3年間、毎年「事業効果報告書（様式第15号）」を提出（未提出は交付取消・加算金付き返還）②関係書類を令和14年3月31日まで5年間保存 ③50万円以上の取得物は耐用年数の期間、目的外使用・売却・譲渡・貸付・県外移転などが制限。〔16・17〕</td></tr>
+            <tr><td class="label wrap">Q29. 効果報告には何を書きますか。賃上げは義務ですか</td><td><strong>導入した設備等の内容、導入による効果、今後の経営発展の展望、賃上げの状況などを毎年度記載します。</strong> 具体的な賃上げ額や率の数値目標が必須かは要領に記載がありません。〔16〕<span class="ask">確認先: 商工会議所・事務局</span></td></tr>
+            <tr><td class="label wrap">Q30. 補助金で作った機能を他社に提供したり売ったりできますか</td><td><strong>耐用年数の期間は県の事前承認（様式第14号）が必要です。</strong> 処分制限財産に当たる場合、承認されても補助金相当額の返還を求められることがあります。〔17（1）〕</td></tr>
+            <tr><td class="label wrap">Q31. RINCLEは全国の加盟店が使うシステムです。「県内事業所で使用」の要件に引っかかりませんか</td><td><strong>要領に記載がなく、効果報告・財産処分の段階で問題にならないか確認しておきます。</strong> 補助金で取得した財産は「県内事業所で使用しなければならない」とされ、県外事業所への移設は「移転」として返還対象です。本社（県内）が所有・運用するWebシステムを全国の加盟店が利用する形の扱いは記載がありません。〔17（1）イ〕<span class="ask">確認先: 事務局</span></td></tr>
+            <tr><td class="label wrap">Q32. 事業者名・代表者・所在地が変わったらどうしますか</td><td><strong>「申請事項変更届（様式第13号）」を提出します。</strong> 法人化・法人名変更の場合は変更後の履歴事項全部証明書も添付します。実施期間内に対象者要件を満たさなくなった場合は補助金は支払われません。〔14（2）〕</td></tr>
+            <tr><td class="label wrap">Q33. 不正と判断されるとどうなりますか</td><td><strong>交付決定の取消、返還命令、年10.95%の加算金、不正内容の公表の対象です。</strong> 交付決定後に対象外経費と判明した場合もその分は交付されません。〔17（2）〕</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 08 確認事項 ============ -->
+<div class="tab-panel" id="panel-checklist">
+  <div class="section" id="checklist">
+    <div class="section-header"><div class="section-num">08</div><div class="sh-body"><h2>確認事項</h2><div class="sh-sub">9月15日の打ち合わせで増永さんに確認することと、事務局に問い合わせること</div></div></div>
+
+    <div class="sub-item">
+      <div class="kick">増永さんに確認すること</div>
+      <h4>交付決定の内容と、書類・お金の段取り</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>確認事項</th><th>なぜ必要か</th><th>関連する章</th><th>確認結果</th></tr></thead>
+          <tbody>
+            <tr><td class="label"><strong>交付決定通知書の交付決定日と交付決定額</strong></td><td>発注書・契約書の日付はこの日以降にする。交付決定額が補助の上限</td><td>2章・5章</td><td></td></tr>
+            <tr><td class="label"><strong>提出した補助事業計画書（様式第1-1号）の開発内容・完了予定日</strong></td><td>弊社の納品内容をこれに一致させる。ずれがあれば様式第3号を発注前に提出</td><td>5章</td><td></td></tr>
+            <tr><td class="label">弊社が出した見積書の控えと、相見積もりか省略理由書か</td><td>発注先と金額は見積どおりに進める。請求書も見積と一致させる</td><td>4章</td><td></td></tr>
+            <tr><td class="label">弊社との契約形態（請負か準委任か）と、権利帰属の条項</td><td>成果物が特定できる請負が要件に合う。所有権はPEDALSTANDARD社に帰属</td><td>5章</td><td></td></tr>
+            <tr><td class="label">検収・振込の予定日</td><td>11月30日までに全額を銀行振込で完了する必要がある。補助金は後払い</td><td>5章</td><td></td></tr>
+            <tr><td class="label">補助金担当スタッフが弊社に求める書類の書式</td><td>発注書・納品書・請求書・設計書・操作マニュアルの記載事項をすり合わせる</td><td>5章・6章</td><td></td></tr>
+            <tr><td class="label">実績報告の様式の入手と作成分担</td><td>様式第8号・第8-1号・第10号・第12号は事業者が作成。弊社は添付書類を用意</td><td>6章</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="sub-item">
+      <div class="kick">事務局に確認すること</div>
+      <h4>要領に記載がなく、実施の進め方を左右する事項</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>確認事項</th><th>確認先</th><th>関連する質問</th><th>確認結果</th></tr></thead>
+          <tbody>
+            <tr><td class="label"><strong>事業実施期間の延長規定の有無</strong>（11月30日に間に合わないリスクがある場合）</td><td>事務局</td><td>Q3</td><td></td></tr>
+            <tr><td class="label">Webシステムの場合の「納品場所（住所）」の書き方</td><td>事務局</td><td>Q16</td><td></td></tr>
+            <tr><td class="label">準委任契約（時間単価）での発注が認められるか</td><td>事務局</td><td>Q10</td><td></td></tr>
+            <tr><td class="label">期間内であれば分割払い（着手金と残金）が認められるか</td><td>事務局</td><td>Q20</td><td></td></tr>
+            <tr><td class="label">全国の加盟店が使うWebシステムと「県内事業所で使用」の財産処分要件の関係</td><td>事務局</td><td>Q31</td><td></td></tr>
+            <tr><td class="label">賃上げの数値目標が必須か</td><td>商工会議所・事務局</td><td>Q29</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>進め方:</strong> 打ち合わせでは交付決定日・交付決定額・計画書の開発内容の3点を最初に確認します。計画と弊社の開発範囲にずれがあれば様式第3号の提出を即日で判断します。ずれがなければ交付決定日以降の日付で発注書を取り交わして開発に入ります。</span></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- md更新時はこのHTMLも同期すること（正本: documents/5_subsidy/kaseguchikara-koubo-youryou.md〈公募要領まとめ〉+ documents/5_subsidy/client-faq.md〈想定Q&A〉。原本PDF: documents/5_subsidy/kouboyouryou0819-2.pdf。2026-09-14: 第2期申請前提から第1期採択後の実施フェーズ前提に書き換え） -->
+<footer>正本: documents/5_subsidy/kaseguchikara-koubo-youryou.md・client-faq.md</footer>
+
+<script>
+(function(){
+  // 読み進みバー
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  // ふわっと表示（JS無効・アニメ抑制設定では何もしない）
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  // フローナビの現在地ハイライト（読み位置より上の最後の章を点灯。最上部では消灯）
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var updateCur = function(){
+      var line = window.innerHeight * 0.3;
+      var cur = null;
+      map.forEach(function(m){ if (m[1].getBoundingClientRect().top <= line) cur = m; });
+      links.forEach(function(l){ l.classList.remove('cur'); });
+      if (cur) cur[0].classList.add('cur');
+    };
+    addEventListener('scroll', updateCur, {passive:true}); updateCur();
+  }
+})();
+</script>
+<script>
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  function openTab(id){
+    tabBtns.forEach(function(b){ b.classList.toggle('active', b.dataset.target === id); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.id === id); });
+    window.scrollTo({top: 0});
+  }
+  // ハッシュの行き先を開く。パネル自体を指す時はそのタブを開き、
+  // 章など「閉じているタブの中の要素」を指す時は、そのタブを開いてからその位置へ送る
+  function openByHash(){
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (el.classList.contains('tab-panel')) { openTab(el.id); return; }
+    var panel = el.closest ? el.closest('.tab-panel') : null;
+    if (!panel) return;
+    openTab(panel.id);
+    el.scrollIntoView();
+  }
+  tabBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      openTab(b.dataset.target);
+      history.replaceState(null, '', '#' + b.dataset.target);
+    });
+  });
+  openByHash();
+  addEventListener('hashchange', openByHash);
+</script>
+</body>
+</html>
