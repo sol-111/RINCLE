@@ -429,7 +429,7 @@ def lint_file(path, allow_emoji):
     # カタログ(specimen)は部品を文脈の外に展示するので対象外。
     if not specimen:
         FIG_PARTS = ('lanes', 'swim', 'pflow', 'funnel', 'tilemap',
-                     'stackbar', 'hbar', 'bars', 'chart', 'phases')
+                     'stackbar', 'hbar', 'bars', 'chart', 'phases', 'gantt')
         # <figure>/</figure> の出現を走査して「いま figure の中か」を状態で持つ（2026-09-14）。
         # 旧実装は直前1200文字をさかのぼっていたため、.tilemap のように長いマークアップの後ろに
         # 置いた .hbar から figure が見えず誤検知していた（SKILL.md が推奨する併置そのものが NG になった）。

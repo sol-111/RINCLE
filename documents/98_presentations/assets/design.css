@@ -500,6 +500,30 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 .phase.done{border-top-color:var(--ink)} .phase.done .pn{color:var(--ink)}
 .phase.now{border-top-color:var(--accent)} .phase.now .pn,.phase.now .pt{color:var(--accent)}
 
+/* ---------- 週割り工程表（.gantt: 左=工程名・右=1列1週間の格子。週数は --g-weeks で指定〈既定13〉。
+   棒の色は役割色: 書き手側=焦がし.own / 相手方=緑.party / 共同=墨.joint / 期限の外=破線.after / 継続的な関与=白面+緑輪郭.hollow。
+   日付が固定の節目は菱形.g-ms（.own=焦がし / .party=緑 / 既定=墨）。日付は「月.日」表記（半角/は文章規約で前後スペースが要るため） ---------- */
+.gantt-wrap{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin:28px 0 0;overflow-x:auto}
+.gantt{min-width:880px;padding:18px 24px 14px;display:flex;flex-direction:column}
+.g-row{display:grid;grid-template-columns:196px repeat(var(--g-weeks,13),1fr);align-items:center;min-height:40px;border-top:1px solid var(--line-soft)}
+.g-row.g-head{border-top:0;min-height:34px;align-items:end;padding-bottom:6px}
+.g-row.g-month{border-top:0;min-height:22px;align-items:end}
+.g-row.g-head .g-wk{font-family:var(--serif);font-size:11.5px;color:var(--sub);text-align:left;padding-left:6px;border-left:1px solid var(--line-soft);line-height:1.2;font-variant-numeric:tabular-nums}
+.g-row.g-month .g-mo{font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--accent);padding-left:6px;border-left:1px solid var(--line)}
+.g-label{font-size:12px;font-weight:700;color:var(--ink);padding-right:14px;line-height:1.5;display:grid;grid-template-columns:8px 1fr;column-gap:8px;align-items:center}
+.g-label i{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.g-label.own i{background:var(--accent)} .g-label.party i{background:var(--ok)} .g-label.joint i{background:var(--ink)} .g-label.after i{background:var(--line)}
+.g-label small{grid-column:2;display:block;font-weight:400;color:var(--sub);font-size:10.5px;line-height:1.4}
+.g-bar{height:22px;border-radius:3px;display:flex;align-items:center;padding:0 10px;font-size:10.5px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;margin:0 2px}
+.g-bar.own{background:var(--accent)} .g-bar.party{background:var(--ok)} .g-bar.joint{background:var(--ink)}
+.g-bar.after{background:var(--surface);border:1px dashed var(--line);color:var(--sub)}
+.g-bar.hollow{background:var(--surface);border:1px solid var(--ok);color:var(--ok-text)}
+.g-ms{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--ink);white-space:nowrap;line-height:1.3;padding-left:4px}
+.g-ms b{width:9px;height:9px;transform:rotate(45deg);background:var(--ink);flex-shrink:0;display:inline-block}
+.g-ms.own{color:var(--accent-deep)} .g-ms.own b{background:var(--accent)}
+.g-ms.party{color:var(--ok-text)} .g-ms.party b{background:var(--ok)}
+.g-cell{display:flex;flex-direction:column;gap:3px;justify-content:center;min-height:40px;padding:4px 0}
+
 /* ---------- 縦フロー（分岐つき） ---------- */
 .fbox{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:12px 18px;font-size:12.5px;font-weight:700;text-align:center}
 .fbox.q{border-color:var(--accent);color:var(--accent)}
