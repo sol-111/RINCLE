@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データ移行（Bubble版RINCLEから新システムへ何を移すか） | RINCLE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/design.css">
+<style>
+  /* ページ固有CSS — データ移行（共通部品は ../assets/design.css を参照） */
+  .hero-meta{display:flex;gap:20px;flex-wrap:wrap}
+  table.qa td.label.wrap{width:30%}
+  .sub-item > p{font-size:14px;line-height:2}
+  .sub-item + .sub-item{margin-top:36px}
+  .table-wrap + .table-wrap{margin-top:20px}
+  td.label{white-space:normal}
+  #targets td.label,#exclude td.label{white-space:nowrap}
+  .stat-row.four{grid-template-columns:repeat(4,1fr)}
+  .compare-box ul{padding-left:20px;margin-top:8px;font-size:13px}
+  .compare-box li{margin-bottom:6px;line-height:1.9}
+</style>
+</head>
+<body>
+
+<svg style="display:none" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="4 12.5 10 18.5 20 6.5"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><line x1="12" y1="7.5" x2="12" y2="7.5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><line x1="12" y1="16.8" x2="12" y2="16.8"/></symbol>
+</defs></svg>
+
+<div class="progress" aria-hidden="true"><i></i></div>
+
+<!-- ========== HERO ========== -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
+        <span class="hero-kicker">補助金 — 2026-09-16 更新</span>
+      </div>
+      <span class="hero-no">SUBSIDY</span>
+    </div>
+    <h1>データ移行</h1>
+    <p class="lead">Bubble版RINCLEを作り直すにあたり今のデータのうち何を新システムへ移すか、何を移さないか、Pay.jpの決済情報と画像はどう扱うかをまとめました。移すのは店舗・営業日と貸出日・自転車・料金・会員・予約の6区分です。<strong>Pay.jpはIDを移すだけで、店舗の再申請も利用者のカード再登録も発生しません。</strong>移せないのはパスワードだけで、公開時に再設定の案内を出します。件数はBubbleの構造と2026年6月11日の本番データから拾っています。</p>
+    <div class="hero-meta">
+      <span>移行スクリプト: 10月26日〜11月6日</span>
+      <span>リハーサル: 11月9日〜13日</span>
+      <span>納品: 11月23日（実データ入りのステージング）</span>
+    </div>
+  </div>
+</div>
+
+<!-- 章ナビ -->
+<nav class="flow">
+  <a href="#conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">移す6区分と、移せないもの</span></a>
+  <a href="#targets"><span class="fnum">2</span><span class="ft">移すもの</span><span class="fd">区分ごとの中身と件数</span></a>
+  <a href="#exclude"><span class="fnum">3</span><span class="ft">移さないもの・移せないもの</span><span class="fd">マスタ・ログ・パスワード</span></a>
+  <a href="#payjp"><span class="fnum">4</span><span class="ft">Pay.jpと画像</span><span class="fd">IDを移すだけで済む理由</span></a>
+  <a href="#steps"><span class="fnum">5</span><span class="ft">手順と日程</span><span class="fd">書き出し・変換・照合・差分</span></a>
+  <a href="#design"><span class="fnum">6</span><span class="ft">設計で決めること</span><span class="fd">二重持ちの解消と確認事項</span></a>
+</nav>
+
+<div class="container">
+
+<!-- ============ 01 結論 ============ -->
+<div class="section" id="conclusion">
+  <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">何を移すか、何を移さないか、いつ移すか</div></div></div>
+  <p>移すのは6区分で、Pay.jpの決済情報はIDだけを持っていけば動きます。予約は未来分も含めて全件引き継ぎ、切替後に旧システムを使う場面をなくします。11月23日の納品時点でこの6区分が入ったステージングを渡します。公開の前日に差分だけを再移行します。</p>
+
+  <div class="stat-row four">
+    <div class="stat"><span class="l">店舗（2026年6月11日時点）</span><span class="n hot">54<small>店</small></span></div>
+    <div class="stat"><span class="l">自転車</span><span class="n">369<small>台</small></span></div>
+    <div class="stat"><span class="l">会員（利用者91・加盟店54・管理者1）</span><span class="n">146<small>人</small></span></div>
+    <div class="stat"><span class="l">予約</span><span class="n">121<small>件</small></span></div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="qa">
+      <tbody>
+        <tr>
+          <td class="label wrap">① 何を移すか</td>
+          <td><strong>店舗・営業日と貸出日・自転車・料金・会員・予約の6区分です。</strong> お知らせやFAQなどの運営コンテンツは、件数が少なければ運営が入れ直す方が早いので、10月26日の前に件数を見て決めます（2章）。</td>
+        </tr>
+        <tr>
+          <td class="label wrap">② Pay.jpはどうなるか</td>
+          <td><strong>店舗のテナントIDと会員の顧客ID、予約の決済IDを移すだけです。</strong> テナントとカードはBubbleではなくPEDALSTANDARD社のPay.jpアカウントの中にあるので、同じアカウントのAPIキーを使えば、54店の審査結果も登録済みカードもそのまま生きています。店舗の再申請、運営の再審査、利用者のカード再登録は発生しません（4章）。</td>
+        </tr>
+        <tr>
+          <td class="label wrap">③ 移せないものは何か</td>
+          <td><strong>パスワードだけです。</strong> Bubbleが暗号化して持っていて取り出せません。公開時に全会員へ再設定の案内メールを送ります。画像はBubbleの置き場からダウンロードして入れ直します（3章・4章）。</td>
+        </tr>
+        <tr>
+          <td class="label wrap">④ いつ移すか</td>
+          <td><strong>10月26日から11月6日でスクリプトを作ります。11月9日から13日にリハーサルをします。11月23日の納品時点で実データ入りのステージングを渡します。</strong> 補助金の実地調査や画面写真で「店舗がゼロ」の画面を見せないためです。公開の前日に、納品後に増えた予約と会員の差分だけを再移行します（5章）。</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="notes">
+    <li>この資料はPay.jpを継続する場合を基本に書いています。Stripeへ載せ替える場合の差分は4章にあります。</li>
+    <li>全体の日程は別資料「<a href="roadmap.html">補助金事業 ロードマップ</a>」の2章にあります。</li>
+  </ul>
+</div>
+
+<!-- ============ 02 移すもの ============ -->
+<div class="section" id="targets">
+  <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>移すもの</h2><div class="sh-sub">6区分それぞれの、Bubbleでの持ち方・件数・中身・注意</div></div></div>
+  <p>Bubbleのデータ型は34種あります。そのうち業務データにあたる型を6区分にまとめました。件数は2026年6月11日の本番書き出しの値で、移行の直前に最新を書き出し直します。</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>区分</th><th>Bubbleの型</th><th class="num">件数</th><th>中身</th><th>注意</th></tr></thead>
+      <tbody>
+        <tr><td class="label">店舗</td><td>shop</td><td class="num">54店</td><td>店舗名・住所・最寄駅・アクセス・紹介文・連絡先・画像・都道府県・前日貸出の可否・現地払いの可否</td><td>Pay.jpのテナントID・申請フォームURL・審査状態をそのまま持つ</td></tr>
+        <tr><td class="label">営業日・貸出日</td><td>__20_business_hour、shop_holiday、bicycle_exception、option_exception</td><td class="num">未確認</td><td>曜日ごとの営業時間 / 定休日・臨時休業・臨時営業（日付範囲）/ 自転車ごと・オプションごとの貸出不可日</td><td>切替日以降の分だけ移す。shop_holidayの「レンタル可能な自転車リスト」は計算結果なのでコピーしない（6章）</td></tr>
+        <tr><td class="label">自転車</td><td>Bicycle</td><td class="num">369台</td><td>名前・ブランド・サイズ・色・シリアル・電動か・最大貸出日数・料金（4時間〜30日・延長1時間・延長1日）・画像・表示順</td><td>アーカイブ済みのものは移さない</td></tr>
+        <tr><td class="label">料金</td><td>Price_menu、Option、Sub_Option</td><td class="num">316行</td><td>店舗ごとの料金表 / オプション（ヘルメット等）とその料金・数量</td><td>自転車にも料金表にも同じ料金項目がある。どちらを正にするか設計で決める（6章）</td></tr>
+        <tr><td class="label">会員</td><td>User、rider_info</td><td class="num">146人</td><td>氏名・かな・生年月日・身長・電話・住所・郵便番号・メール・権限・所属店舗・Pay.jpの顧客ID・最終利用日</td><td>パスワードは移せない。乗る人の情報（rider_info）は予約に紐づけて移す</td></tr>
+        <tr><td class="label">予約（過去分と未来分の全件）</td><td>reservation、reservation_detail、reservation_option、sales_record</td><td class="num">121件</td><td>予約番号・店舗・利用者・貸出日・返却日・延長・合計金額・手数料・支払方法・状態 / 明細（自転車・料金表・乗る人）/ 付けたオプション / 月次の売上記録</td><td>Pay.jpの決済ID（本決済・延長・返金）を必ず持つ。返金と効果報告の集計に使う</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="notes">
+    <li>営業日・貸出日の型は6月11日の書き出しに含まれていないため件数が未確認です。10月19日までの書き出しで確認します。</li>
+  </ul>
+
+  <div class="sub-item">
+    <div class="kick">運営コンテンツ</div>
+    <h4>移した方がよいが、入れ直しでも済むもの</h4>
+    <p>お知らせ（News）、バナー、FAQとその分類、問い合わせ履歴、通知。件数が少なければ、運営が新システムで入れ直す方が移行スクリプトを作るより早いです。10月26日のスクリプト着手前に件数を見て決めます。</p>
+  </div>
+</div>
+
+<!-- ============ 03 移さないもの・移せないもの ============ -->
+<div class="section" id="exclude">
+  <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>移さないもの・移せないもの</h2><div class="sh-sub">マスタとログは作り直す。パスワードだけは仕組み上移せない</div></div></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>分類</th><th>対象</th><th>理由</th></tr></thead>
+      <tbody>
+        <tr><td class="label">移さない</td><td>都道府県・祝日などのマスタ（Prefecture、holidays、holiday_master、select_prefcture）</td><td>新システム側で定義し直す</td></tr>
+        <tr><td class="label">移さない</td><td>アクセスログ、Webhookのログ、作業用の型（__FV、__maintenance、__27_reservation_count）</td><td>ログと作業用。アクセス解析はGA4に置き換わる</td></tr>
+        <tr><td class="label">移さない</td><td>「- deleted」の付いた廃止項目、新項目に置き換わった旧項目</td><td>新旧の対応表で1件ずつ判定する</td></tr>
+        <tr><td class="label">移さない</td><td>shop_holidayの「レンタル可能な自転車リスト」</td><td>予約が入るたびにBubbleが書き換えている計算結果。コピーすると予約データと二重管理になる</td></tr>
+        <tr><td class="label"><strong>移せない</strong></td><td><strong>パスワード</strong></td><td>Bubbleが暗号化して持っていて取り出せない。公開時に全会員へ再設定メール</td></tr>
+        <tr class="muted"><td class="label">移せない（Stripeにする場合のみ）</td><td>カード情報</td><td>Pay.jp側にあり他社へは移せない。Pay.jp継続なら顧客IDを移すだけで登録済みカードはそのまま使える</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>補足:</strong> パスワードの再設定は「ログイン画面でメールアドレスを入れると再設定用のリンクが届く」という通常の流れです。公開日に全会員へ案内メールを送ります。Bubble版は1か月並走させます。</span></div>
+</div>
+
+<!-- ============ 04 Pay.jpと画像 ============ -->
+<div class="section" id="payjp">
+  <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>Pay.jpと画像</h2><div class="sh-sub">決済情報はIDを移すだけ。画像はダウンロードして入れ直す</div></div></div>
+  <p>テナント（店舗ごとの決済口）と顧客（会員のカード）は、BubbleではなくPEDALSTANDARD社のPay.jpアカウントの中にあります。新システムが持つのはそのIDだけです。同じアカウントのAPIキーで呼べば、今のテナントもカードもそのまま使えます。</p>
+
+  <div class="sub-item">
+    <div class="kick">移すID</div>
+    <h4>3種類のIDを新DBに持っていく</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>ID</th><th>どこにある</th><th>何に使う</th></tr></thead>
+        <tbody>
+          <tr><td class="label">テナントID（ten_…）</td><td>店舗</td><td>決済時に「どの店舗に払うか」を指定する。54店全てに入っている。全店が審査通過済み</td></tr>
+          <tr><td class="label">顧客ID（cus_…）</td><td>会員</td><td>登録済みカードでの決済。カードの再登録が不要になる</td></tr>
+          <tr><td class="label">決済ID（ch_…）</td><td>予約（本決済・延長・返金の3つ）</td><td>返金、延長決済の照合、売上集計</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sub-item">
+    <div class="kick">Pay.jp側でやること</div>
+    <h4>増永さんにお願いする2つ</h4>
+    <ol class="steps">
+      <li>Pay.jpの管理画面でAPIキー（秘密鍵・公開鍵）を確認して当社に渡す。Bubbleに入っているものと同じアカウントであることを確認する</li>
+      <li>公開の前日に、Webhookの送り先URLを新システムのものに差し替える。テナントの審査結果通知などを受けるため</li>
+    </ol>
+  </div>
+
+  <div class="sub-item">
+    <div class="kick">再申請が必要になる場合</div>
+    <h4>今回は該当しない3つのケース</h4>
+    <div class="compare">
+      <div class="compare-box bad"><div class="cb-head"><span class="cb-mark">×</span>店舗の再申請が発生する</div>
+        <ul>
+          <li>Pay.jpのアカウント自体を作り直す</li>
+          <li>Pay.jpのまま「テナント型→単一アカウント型」に契約を変える</li>
+          <li>Stripe Connectのように店舗ごとの口座を作る方式にする</li>
+        </ul>
+      </div>
+      <div class="compare-box good"><div class="cb-head"><span class="cb-mark">○</span>今回の進め方</div>
+        <ul>
+          <li>同じPay.jpアカウントのAPIキーを使う</li>
+          <li>テナントID・顧客ID・決済IDをデータとして移す</li>
+          <li>Webhookの送り先だけ差し替える</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-item">
+    <div class="kick">Stripeにする場合の差分</div>
+    <h4>6月19日の決定（Stripe・集約モデル）を11月に入れる場合</h4>
+    <p>テナントIDは不要になります（PEDALSTANDARD社が一括で受けて店舗へ月次振込）。会員のカードは移せないので公開時に全員再登録が必要です。店舗の振込先口座を新たに集めます。11月の納品に収めるならPay.jp継続、Stripeは12月以降の別工程が現実的です。ロードマップの論点3で扱います。</p>
+  </div>
+
+  <div class="sub-item">
+    <div class="kick">画像</div>
+    <h4>Bubbleの置き場からダウンロードして入れ直す</h4>
+    <p>店舗画像・自転車画像・会員画像はBubbleのファイル置き場にあります。BubbleのCSV書き出しにはURLしか入りません。移行スクリプトでURLから画像を取得して新システムの置き場に入れ直します。新しいURLをデータに書き込みます。Bubbleを解約すると元の画像が消えるので、この工程は省けません。取得できなかった画像は一覧にしてPEDAL社に渡します。手で差し替えてもらいます。</p>
+  </div>
+</div>
+
+<!-- ============ 05 手順と日程 ============ -->
+<div class="section" id="steps">
+  <div class="section-header"><div class="section-num">05</div><div class="sh-body"><h2>手順と日程</h2><div class="sh-sub">書き出し → 変換と流し込み → 照合 → 納品 → 公開前日の差分</div></div></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>日付</th><th>やること</th><th>担当</th><th>完了条件</th></tr></thead>
+      <tbody>
+        <tr><td class="label">9月24日〜30日</td><td>機能設計①データ構造で新DBのテーブル定義を決める（7月のDB設計を土台に）</td><td>当社</td><td>テーブル定義書</td></tr>
+        <tr><td class="label">10月19日（月）まで</td><td>Bubbleの管理画面のDataタブから、2章・3章の型を全部CSVで書き出して当社に渡す（15分程度）。Pay.jpのAPIキーも渡す</td><td>増永さん</td><td>CSV一式とAPIキー</td></tr>
+        <tr><td class="label">10月26日〜11月6日</td><td><strong>移行スクリプト</strong>を作る。新旧の項目対応表を作る。CSVを変換して新DBに流し込む。画像のダウンロードと再アップロードも含む</td><td>当社</td><td>ステージングに店舗54・自転車369・会員146・予約121が入る</td></tr>
+        <tr><td class="label">11月6日（金）</td><td>定例で、ステージングの店舗一覧・自転車一覧・予約一覧をPEDAL社が見る。件数と表示を確認する</td><td>3者</td><td>差異の一覧</td></tr>
+        <tr><td class="label">11月9日〜13日</td><td><strong>リハーサル</strong>。最新のCSVを再度書き出してもらい、スクリプトを頭から再実行する。件数と画面表示を照合して手順書にする</td><td>増永さん（書き出し）・当社</td><td>移行手順書。差異ゼロ</td></tr>
+        <tr><td class="label"><strong>11月23日（月・祝）</strong></td><td>実データ入りのステージングを納品物として渡す。画面写真も実データで撮る</td><td>当社</td><td>納品</td></tr>
+        <tr><td class="label">公開の前日</td><td>最新のCSVを書き出して差分（納品後に増えた予約・会員）だけ再移行する。Webhookの送り先を差し替える</td><td>増永さん・当社</td><td>本番DBが最新</td></tr>
+        <tr><td class="label">公開日（切替日）</td><td>Bubble側を数時間「メンテナンス中」にして新規予約を止める → rincle.co.jp のDNSを新システムへ向ける → 停止中に入った最後の差分を移す → 旧URLの主要パスを新URLへ転送 → Bubbleの独自ドメインを外して既定URLで1か月並走。<strong>予約は未来分も含めて全件引き継ぐ</strong>ので、切替後に旧システムを店舗・利用者が使う場面はない</td><td>当社・増永さん（DNS）</td><td>新システムが rincle.co.jp で動き、旧予約も新画面で扱える</td></tr>
+        <tr><td class="label">公開日</td><td>全会員にパスワード再設定の案内メール。Bubble版は既定URLで1か月並走</td><td>PEDAL社</td><td>案内送付</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub-item">
+    <div class="kick">照合のしかた</div>
+    <h4>3つの見方で移行の正しさを確かめる</h4>
+    <ol class="steps">
+      <li>件数。型ごとにCSVの行数と新DBの件数が一致すること</li>
+      <li>金額。予約の合計金額と手数料の合計がBubbleと一致すること。売上集計に直結する</li>
+      <li>画面。店舗一覧・自転車一覧・予約一覧・マイページを開き、代表3店舗分を目で確認すること</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ============ 06 設計で決めること ============ -->
+<div class="section" id="design">
+  <div class="section-header"><div class="section-num">06</div><div class="sh-body"><h2>設計で決めること</h2><div class="sh-sub">Bubbleの二重持ちを新DBでどう解消するか、と確認事項</div></div></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>論点</th><th>現状</th><th>当社の見立て</th></tr></thead>
+      <tbody>
+        <tr><td class="label">自転車と料金表の二重持ち</td><td>自転車にも「1日料金・延長料金」がある。料金表にも同じ項目がある</td><td>新DBでは料金表を正にする。自転車は料金表を参照する。移行時に自転車側の料金は料金表に寄せる。7月のDB設計に答えがあればそれに従う</td></tr>
+        <tr><td class="label">会員・店舗担当・管理者の混在</td><td>1つのUserを権限で区別している</td><td>会員と店舗スタッフを別テーブルにするか、権限で分けたままにするかを機能設計①で決める。移行スクリプトはどちらにも対応できる</td></tr>
+        <tr><td class="label">空き状況の持ち方</td><td>営業日カレンダーに「その日に借りられる自転車のリスト」を保存している</td><td>保存せず「自転車一覧 − 予約済み − 貸出不可日 − 休業日」で毎回計算する。二重管理をなくす</td></tr>
+        <tr><td class="label">予約の過去分をどこまで移すか</td><td>121件（6月11日時点）</td><td>全部移す。効果報告（3年間）の予約件数・売上の元データになる</td></tr>
+        <tr><td class="label">運営コンテンツ</td><td>件数未確認</td><td>少なければ運営が入れ直す。10月26日の前に件数を見て決める</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub-item">
+    <div class="kick">空き状況</div>
+    <h4>保存する作りから、計算する作りへ</h4>
+    <div class="compare">
+      <div class="compare-box asis"><div class="cb-head">現状（Bubble）</div><p>予約が入るたびに、営業日カレンダーの「借りられる自転車のリスト」を書き換えて保存する。予約データとリストの2か所に同じ事実がある。</p></div>
+      <div class="compare-box tobe"><div class="cb-head">新システム</div><p>リストは持たない。表示するたびに「自転車一覧 − 予約済み − 貸出不可日 − 休業日」を計算する。事実は予約と貸出不可日の1か所だけ。</p></div>
+    </div>
+  </div>
+
+  <div class="sub-item">
+    <div class="kick">確認事項</div>
+    <h4>スクリプト着手（10月26日）までに確かめること</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>確認すること</th><th>誰が</th><th>確認結果</th></tr></thead>
+        <tbody>
+          <tr><td class="label">Pay.jpのAPIキーがBubbleと同じアカウントのものか</td><td>増永さん</td><td></td></tr>
+          <tr><td class="label">営業日・貸出日、お知らせ、FAQなどの件数</td><td>増永さん（書き出し）</td><td></td></tr>
+          <tr><td class="label">7月のDB設計で料金の二重持ちと会員の分割がどう扱われているか</td><td>当社</td><td></td></tr>
+          <tr><td class="label">画像の総容量（Bubbleのファイル置き場の使用量）</td><td>増永さん</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- md更新時はこのHTMLも同期すること（正本: documents/5_subsidy/data-migration.md。根拠: rincle-test/rincle.bubble と 4_growth/01_strategy/context/ の2026-06-11本番書き出し〈gitignore対象〉） -->
+<footer>正本: documents/5_subsidy/data-migration.md</footer>
+
+<script>
+(function(){
+  var bar = document.querySelector('.progress i');
+  if (bar) {
+    var onScroll = function(){
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+    };
+    addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  }
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    var targets = document.querySelectorAll('.section,.recap,nav.flow');
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    targets.forEach(function(el){ el.classList.add('rv'); io.observe(el); });
+  }
+  var links = document.querySelectorAll('.flow a[href^="#"]');
+  if (links.length) {
+    var map = [];
+    links.forEach(function(a){ var t = document.querySelector(a.getAttribute('href')); if (t) map.push([a, t]); });
+    var updateCur = function(){
+      var line = window.innerHeight * 0.3;
+      var cur = null;
+      map.forEach(function(m){ if (m[1].getBoundingClientRect().top <= line) cur = m; });
+      links.forEach(function(l){ l.classList.remove('cur'); });
+      if (cur) cur[0].classList.add('cur');
+    };
+    addEventListener('scroll', updateCur, {passive:true}); updateCur();
+  }
+})();
+</script>
+</body>
+</html>
