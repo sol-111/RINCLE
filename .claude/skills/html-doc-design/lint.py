@@ -26,12 +26,14 @@
            .badge.ink(黒ベタ)は1ページ3個まで(唯一の最重要マーク。3段階の「中」は.badge.mid)
            章番号は01始まり・小見出し番号はハイフン式(「4-1」。ドット式「7.1」は使わない)
            h2は1行(全角26字まで。補足はsh-subへ)・H1に副題の子要素を入れない(副題はリードへ)
-           01章のsh-subと結論本文の1文目が同文でない(sh-sub=何を扱うか / 本文=答え)
+           01章のsh-subと結論本文の1文目が同文でない(01章のsh-sub=何を扱うか / 本文=答え。02章以降のsh-subは主張文=目視)
            ページ固有<style>で共通部品(stat/badge/tag/alert/term/card/step(s)/hbar/legend/chart/
            table/notes/compare-box/sub-item)を再定義・新変種を作らない(メディアクエリ内の調整は対象外)
            沈めるのにopacityを使わない(文字色と罫線をグレーに落として沈める=tr.muted / .option.dim)
            見出しタグへのfont-size直書きなし(階段4段固定)・部品への個別max-widthなし(.slideの額は例外)
            固定px幅の空白divなし・inlineのbox-shadowなし(影は浮かぶ部品のCSSだけ)・スライド内の表は5行まで
+           差分表(.dtable): .drowの種別はeq/rep/del/insのどれか1つ・.dcellは<pre>を持つ・凡例.dlegendがページに1枚・
+           #hlトグルを置いたらbody.nohlを切り替えるscriptがある(specimenは凡例チェックのみ免除しない=見本も凡例を持つ)
   残骸   : トークン外の配色直書き(template.css自身が使う色は自動許可)・絵文字(許可リスト外)
   文章   : 半角()の使用(全角（）を使う)・全角／の使用(半角/+前後半角スペース)・/の前後スペース欠け
            接続助詞「し、/り、/て、/が、」の文つなぎ(句点で切る。ただし/つまり/〜のとおり等の接続詞・
@@ -44,6 +46,10 @@
 構造・配色・絵文字・stat順などの実質チェックはカタログにもかかる。
 アプリ画面をHTMLで模写して見せる資料は <!-- lint-mode: mockup --> で
 描写のための直書き(box-shadow・固定px幅・部品max-width)だけ免除される(文章・構造チェックはかかる)。
+デッキ(投影用スライド・<!-- lint-mode: deck --> または body.deck)は誌面の規約(ヒーロー/章ナビ/01章)の代わりに
+デッキの規約でみる: 送りスクリプト・全枚に下枠(.slide-ft)と2枚目以降のページ番号(.pg)・
+本文スライドの見出し h1.sd-h は1つ/48字以内/常体/「ラベル：」や題名形でない・表5行/箇条書き5本まで・
+h1は1枚1つ・本文より小さい文字の直書きなし(.sd-src除く)・図はfigure.fig・30枚まで。文章規約と敬語は誌面と同じ。
 
 exit code: 指摘ありなら1、クリーンなら0。
 生成をエージェントに並列分担させた後は必ず実行すること(参照割れは構造検証では出ない)。
@@ -98,7 +104,8 @@ def css_rules(s):
 # ページ固有CSSで再定義・新変種を作ってはいけない共通部品（2026-09-14追加）。
 # トークン一致か「部品名-」の接頭辞一致で判定する（.stat-card / .steps-flow / .alert-amber 等）
 PART_CLASSES = ('stat', 'badge', 'tag', 'alert', 'term', 'card', 'step', 'steps', 'hbar',
-                'legend', 'chart', 'table', 'notes', 'compare', 'compare-box', 'sub-item', 'section')
+                'legend', 'chart', 'table', 'notes', 'compare', 'compare-box', 'sub-item', 'section',
+                'dtable', 'dmeta', 'dlegend')
 # template.css / parts.css を丸ごと<style>に埋め込む自己完結ページで誤検知しないための許可リスト。
 # 「セレクタも宣言も本体と同一」なら埋め込みのコピーなので対象外。宣言が違えば再定義として拾う
 _TPL_RULES = {}
@@ -180,6 +187,108 @@ class Tracker(HTMLParser):
                 break
 
 
+
+def text_rules(s, bad):
+    """文章規約・敬語(2026-09-01追加)。誌面ページとデッキの両方から呼ぶ。カタログ=specimenは見本文のため対象外"""
+    text = re.sub(r'<!--.*?-->', ' ', s, flags=re.S)
+    text = re.sub(r'<(style|script|code|pre|svg)\b.*?</\1>', ' ', text, flags=re.S)
+    text = re.sub(r'<[^>]+>', ' ', text)
+    text = html.unescape(text)
+    text = re.sub(r'https?://\S+', ' ', text)
+
+    def ctx(m, t):
+        return re.sub(r'\s+', ' ', t[max(0, m.start() - 14):m.end() + 14]).strip()
+
+    for m in re.finditer(r'[()]', text):
+        bad(f"半角括弧(全角（）を使う): …{ctx(m, text)}…")
+    for m in re.finditer(r'／', text):
+        bad(f"全角／(半角/を前後半角スペース付きで使う): …{ctx(m, text)}…")
+    # ファイルパス(footerの正本パス等)・URL断片・APIエンドポイント(/captureなど先頭スラッシュ)の
+    # スラッシュは文章ではないので対象外。1個だけの「円/回」等は文章として拾う
+    def _is_path(tok):
+        # 「documents/README.md」のようにスラッシュ1個の正本パスも除外する（原則5のfooterが誤検知していた）
+        return (tok.count('/') >= 2 or tok.endswith('/') or tok.startswith('/') or '/.' in tok
+                or re.search(r'\.(md|html|css|js|mjs|json|py|xlsx|csv|txt|png|svg|webp)$', tok) is not None)
+    text_slash = ' '.join(tok for tok in text.split() if not ('/' in tok and _is_path(tok)))
+    for m in re.finditer(r'\S/|/\S', text_slash):
+        bad(f"/の前後に半角スペースがない: …{ctx(m, text_slash)}…")
+    # 接続助詞の文つなぎ。接続詞・慣用句(ただし/しかし/つまり/やはり/〜のとおり/さて/よって/したがって)は除外。
+    # 「が、」は動詞の言い切りに続く逆接だけを拾う(名詞+主語の「が、」は正当なので除外)
+    EXC = ('ただし', 'しかし', 'つまり', 'やはり', 'とおり', 'どおり', 'より', 'さて', 'よって', 'したがって')  # 「より」=比較・「により」の助詞(「〜おり、」は拾う)
+    for m in re.finditer(r'([しりてが])、', text):
+        pre = text[max(0, m.start() - 5):m.end() - 1]
+        if any(pre.endswith(e) for e in EXC):
+            continue
+        if m.group(1) == 'が' and not re.search(r'(ます|です|ません|ました|でした|る|た)が$', pre):
+            continue
+        bad(f"接続助詞「{m.group(1)}、」で文をつないでいる(句点で切るか読点を落とす): …{ctx(m, text)}…")
+    # 敬語: 機械で確実に拾える2パターンだけ(主体依存の使い分けはSKILL.mdの敬語規約=目視)
+    for m in re.finditer(r'ご[一-龥]{1,4}され', text):
+        bad(f"二重敬語「ご〜される」(「ご決裁いただく」等に): …{ctx(m, text)}…")
+    for m in re.finditer(r'で結構です', text):
+        bad(f"提案側の「で結構です」は上から目線(「お時間をいただければ十分です」等に): …{ctx(m, text)}…")
+
+
+def lint_deck(path, s, issues):
+    """デッキ(投影用スライド・body.deck)の規約。誌面ページの規約(ヒーロー/章ナビ/01章)は適用しない"""
+    bad = issues.append
+    if 'fonts.googleapis.com' not in s:
+        bad("Webフォントlinkなし")
+    if 'class="deck-nav"' not in s or 'section.slide' not in s:
+        bad("デッキ送りのスクリプト/.deck-navなし(deck.htmlの雛形を使う)")
+    slides = re.findall(r'<section class="slide"[^>]*>(.*?)</section>', s, re.S)
+    if not slides:
+        bad("section.slide が1枚もない(1 section=1スライド)")
+    for i, sl in enumerate(slides, 1):
+        tag = f"{i:02d}枚目"
+        if 'class="slide-ft"' not in sl:
+            bad(f"{tag}: 共通の下枠(.slide-ft)なし")
+        elif i > 1 and 'class="pg"' not in sl:
+            bad(f"{tag}: 下枠にページ番号(.pg)なし(表紙だけ日付)")
+        # 本文スライドは見出し帯(sd-head)に主張の h1.sd-h を1つ持つ
+        if 'sd-head' in sl:
+            hs = re.findall(r'<h1 class="sd-h">(.*?)</h1>', sl, re.S)
+            if len(hs) != 1:
+                bad(f"{tag}: .sd-head の h1.sd-h が{len(hs)}個(1個)")
+            else:
+                h = _text(hs[0])
+                if _zen_len(h) > 48:
+                    bad(f"{tag}: 見出しが長い(全角48字=2行を超える): {h[:30]}…")
+                if re.search(r'(です|ます|でした|ました|ません)[。]?$', h):
+                    bad(f"{tag}: 見出しは常体で書く(です・ます禁止): {h[:30]}")
+                if re.search(r'[：:]', h):
+                    bad(f"{tag}: 見出しに「ラベル：」形式を使わない(主張1文にする): {h[:30]}")
+                if re.search(r'(について|の件|のご説明|のまとめ|の概要|の紹介)$', h):
+                    bad(f"{tag}: 見出しが題名になっている(主張1文にする): {h[:30]}")
+        # 型に関係なく: 表は5行まで・箇条書きは5本まで・見出しは1枚に1つ
+        for t in re.findall(r'<table\b.*?</table>', sl, re.S):
+            rows = len(re.findall(r'<tr\b', t.split('<tbody', 1)[-1])) if '<tbody' in t else len(re.findall(r'<tr\b', t)) - 1
+            if rows > 5:
+                bad(f"{tag}: 表が{rows}行(5行まで。分けるか削る)")
+        for u in re.findall(r'<ul\b[^>]*>(.*?)</ul>', sl, re.S):
+            n = len(re.findall(r'<li\b', u))
+            if n > 5:
+                bad(f"{tag}: 箇条書きが{n}本(5本まで)")
+        if len(re.findall(r'<h1\b', sl)) > 1:
+            bad(f"{tag}: h1が複数(1枚1メッセージ)")
+        if 'sd-msg' in sl and re.search(r'class="sd-h"', sl):
+            bad(f"{tag}: 1メッセージ型と見出し帯を同居させない")
+        # 本文の最小サイズ: .sd-body より小さい font-size の直書き禁止(投影で読めない)
+        for m in re.finditer(r'font-size:\s*(\.\d+|0\.\d+)em', sl):
+            if float(m.group(1)) < .8 and 'sd-src' not in sl[max(0, m.start()-80):m.start()]:
+                bad(f"{tag}: 本文より小さい文字の直書き(font-size:{m.group(1)}em。出典の .sd-src 以外は18px相当を下回らない)")
+    if len(slides) > 30:
+        bad(f"スライドが{len(slides)}枚(目安は30枚まで。長い話は誌面ページにする)")
+    # 図の部品は figure.fig で包む(原則11・誌面と同じ)
+    for cls in ('lanes', 'swim', 'pflow', 'funnel', 'tilemap', 'stackbar', 'hbar', 'phases'):
+        for m in re.finditer(r'<(\w+)[^>]*class="[^"]*\b' + cls + r'\b[^"]*"', s):
+            before = s[max(0, m.start() - 400):m.start()]
+            if '<figure' not in before or before.rfind('</figure>') > before.rfind('<figure'):
+                bad(f"図の部品 .{cls} が figure.fig で包まれていない")
+                break
+    text_rules(s, bad)
+
+
 def lint_file(path, allow_emoji):
     s = open(path, encoding='utf-8').read()
     name = os.path.basename(path)
@@ -195,6 +304,11 @@ def lint_file(path, allow_emoji):
     n_open, n_close = len(re.findall(r'<div\b', s)), s.count('</div>')
     if n_open != n_close:
         bad(f"div開閉不一致 {n_open}/{n_close}")
+
+    # デッキ(投影用スライド): 誌面の規約でなくデッキの規約でみる
+    if '<!-- lint-mode: deck -->' in s or re.search(r'<body[^>]*class="[^"]*\bdeck\b', s):
+        lint_deck(path, s, issues)
+        return issues, None, False, None
 
     # 資料ページでないもの(SPAシェル等)はここまで
     if 'class="hero"' not in s:
@@ -497,6 +611,23 @@ def lint_file(path, allow_emoji):
     # 見出しの階段は4段固定(原則4): 見出しタグへのinline font-size上書きは階段を崩す
     for m in re.finditer(r'<h([1-4])[^>]*style="[^"]*font-size[^"]*"', s):
         bad(f"h{m.group(1)}にfont-sizeの直書き(見出しの階段は4段固定・CSSに任せる)")
+    # 差分表(.dtable) — 2026-09-24昇格。行の種別・原文の入れ物・凡例・トグルのscriptを揃える
+    if re.search(r'class="[^"]*\bdtable\b', s):
+        for m in re.finditer(r'<div[^>]*class="([^"]*\bdrow\b[^"]*)"', s):
+            kinds = [k for k in ('eq', 'rep', 'del', 'ins') if k in m.group(1).split()]
+            if len(kinds) != 1:
+                bad(f"差分表の行(.drow)の種別はeq/rep/del/insのどれか1つ: {m.group(1)!r}")
+        n_cell = len(re.findall(r'<div[^>]*class="[^"]*\bdcell\b[^"]*"', s))
+        n_pre = len(re.findall(r'<div[^>]*class="[^"]*\bdcell\b[^"]*"[^>]*>\s*<pre\b', s))
+        if n_cell != n_pre:
+            bad(f"差分表のセル(.dcell)は原文を<pre>で持つ(加工しない・空行は&nbsp;): {n_cell - n_pre}個が<pre>でない")
+        n_leg = len(re.findall(r'class="[^"]*\bdlegend\b', s))
+        if n_leg == 0:
+            bad("差分表に凡例がない(.dlegend を読み方ボックス.alert-blueの中にページで1枚)")
+        elif n_leg > 1:
+            bad(f"差分表の凡例(.dlegend)が{n_leg}枚(ページで1枚。差分表が複数ある章は最初の表の前か01章に)")
+        if re.search(r'id="hl"', s) and not re.search(r"classList\.toggle\(\s*['\"]nohl['\"]", s):
+            bad("差分の色トグル(#hl)があるのに body.nohl を切り替えるscriptがない(snippets.htmlの差分表のscript)")
     # 位置合わせ用の固定px幅の空白div禁止(原則12 — レーン格子に置き換える)
     if not mockup:
         for m in re.finditer(r'<div style="width:\s*\d+px;?\s*">\s*</div>', s):  # styleがwidthだけの空div=スペーサー(背景つきのサムネ見本等は対象外)
@@ -534,45 +665,9 @@ def lint_file(path, allow_emoji):
     if found:
         bad(f"絵文字(アイコンはSVGスプライトを使う): {found}")
 
-    # --- 文章規約(2026-09-01追加。カタログ=specimenは見本文のため対象外) ---
+    # --- 文章規約(関数 text_rules に切り出し・デッキと共用) ---
     if not specimen:
-        text = re.sub(r'<!--.*?-->', ' ', s, flags=re.S)
-        text = re.sub(r'<(style|script|code|pre|svg)\b.*?</\1>', ' ', text, flags=re.S)
-        text = re.sub(r'<[^>]+>', ' ', text)
-        text = html.unescape(text)
-        text = re.sub(r'https?://\S+', ' ', text)
-
-        def ctx(m, t):
-            return re.sub(r'\s+', ' ', t[max(0, m.start() - 14):m.end() + 14]).strip()
-
-        for m in re.finditer(r'[()]', text):
-            bad(f"半角括弧(全角（）を使う): …{ctx(m, text)}…")
-        for m in re.finditer(r'／', text):
-            bad(f"全角／(半角/を前後半角スペース付きで使う): …{ctx(m, text)}…")
-        # ファイルパス(footerの正本パス等)・URL断片・APIエンドポイント(/captureなど先頭スラッシュ)の
-        # スラッシュは文章ではないので対象外。1個だけの「円/回」等は文章として拾う
-        def _is_path(tok):
-            # 「documents/README.md」のようにスラッシュ1個の正本パスも除外する（原則5のfooterが誤検知していた）
-            return (tok.count('/') >= 2 or tok.endswith('/') or tok.startswith('/') or '/.' in tok
-                    or re.search(r'\.(md|html|css|js|mjs|json|py|xlsx|csv|txt|png|svg|webp)$', tok) is not None)
-        text_slash = ' '.join(tok for tok in text.split() if not ('/' in tok and _is_path(tok)))
-        for m in re.finditer(r'\S/|/\S', text_slash):
-            bad(f"/の前後に半角スペースがない: …{ctx(m, text_slash)}…")
-        # 接続助詞の文つなぎ。接続詞・慣用句(ただし/しかし/つまり/やはり/〜のとおり/さて/よって/したがって)は除外。
-        # 「が、」は動詞の言い切りに続く逆接だけを拾う(名詞+主語の「が、」は正当なので除外)
-        EXC = ('ただし', 'しかし', 'つまり', 'やはり', 'とおり', 'どおり', 'より', 'さて', 'よって', 'したがって')  # 「より」=比較・「により」の助詞(「〜おり、」は拾う)
-        for m in re.finditer(r'([しりてが])、', text):
-            pre = text[max(0, m.start() - 5):m.end() - 1]
-            if any(pre.endswith(e) for e in EXC):
-                continue
-            if m.group(1) == 'が' and not re.search(r'(ます|です|ません|ました|でした|る|た)が$', pre):
-                continue
-            bad(f"接続助詞「{m.group(1)}、」で文をつないでいる(句点で切るか読点を落とす): …{ctx(m, text)}…")
-        # 敬語: 機械で確実に拾える2パターンだけ(主体依存の使い分けはSKILL.mdの敬語規約=目視)
-        for m in re.finditer(r'ご[一-龥]{1,4}され', text):
-            bad(f"二重敬語「ご〜される」(「ご決裁いただく」等に): …{ctx(m, text)}…")
-        for m in re.finditer(r'で結構です', text):
-            bad(f"提案側の「で結構です」は上から目線(「お時間をいただければ十分です」等に): …{ctx(m, text)}…")
+        text_rules(s, bad)
 
     return issues, kicker, False, ('hero-logo' in s)
 

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>デッキ雛形 — 誌面エディトリアル</title>
+<!-- lint-mode: deck -->
+<!-- デッキ（投影用スライド）の器。1 section.slide = 1枚。矢印キー/スペース/クリックで送り、#3 のようなハッシュで直リンク。
+     印刷（Chrome → PDF）では1枚1ページになる。CSSは納品時に template.css を <style> にインライン（トークンだけ案件に差し替え）。
+     正本の規約は SKILL.md「デッキ」節。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="template.css">
+</head>
+<body class="deck">
+
+<!-- 01 表紙（下枠は日付） -->
+<section class="slide" data-title="表紙">
+  <div class="sd-cover">
+    <div class="sd-cover-top">
+      <span class="hero-kicker">BRAND — カテゴリ</span>
+      <span class="hero-no">資料 07</span>
+    </div>
+    <div class="sd-cover-body">
+      <div class="sd-title">デッキの題</div>
+      <div class="sd-rule"></div>
+      <div class="sd-lead">1〜2文のリード。誰向けに何を決めるための資料か。</div>
+    </div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span>2026-09-25</span></div>
+</section>
+
+<!-- 02 章とびら -->
+<section class="slide" data-title="章とびら">
+  <div class="sd-chapter">
+    <div class="ghost">01</div>
+    <div style="display:flex;flex-direction:column;gap:.4em">
+      <div class="sd-eyebrow">CHAPTER</div>
+      <div class="sd-ch-name">章の名前</div>
+      <div class="sd-ch-sub">この章で決めること</div>
+    </div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 03 本文スライドの基本形（見出し帯=キッカー+主張のh1・本文=箇条書き5本まで） -->
+<section class="slide" data-title="本文の基本形">
+  <div class="sd-head">
+    <div class="sd-kicker">現状</div>
+    <h1 class="sd-h">主張を1文・常体で書く（2行まで）</h1>
+  </div>
+  <div class="sd-body">
+    <ul>
+      <li>箇条書きは5本まで。1本1文</li>
+      <li>語尾を揃える（体言止めなら全部体言止め）</li>
+      <li>本文の文字は18px相当を下回らない</li>
+    </ul>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 04 2カラム（左右に見出し付きの並列） -->
+<section class="slide" data-title="2カラム">
+  <div class="sd-head">
+    <div class="sd-kicker">比較</div>
+    <h1 class="sd-h">左右で並べて違いを1つに絞る</h1>
+  </div>
+  <div class="sd-body">
+    <div class="sd-two">
+      <div><h3>左の見出し</h3><ul><li>要点1</li><li>要点2</li></ul></div>
+      <div><h3>右の見出し</h3><ul><li>要点1</li><li>要点2</li></ul></div>
+    </div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 05 前提→帰結 -->
+<section class="slide" data-title="前提→帰結">
+  <div class="sd-head">
+    <div class="sd-kicker">判断</div>
+    <h1 class="sd-h">3つの前提から1つの帰結を導く</h1>
+  </div>
+  <div class="sd-body">
+    <div class="sd-pc">
+      <div class="sd-pc-col"><h3>前提</h3><ul><li>前提1</li><li>前提2</li><li>前提3</li></ul></div>
+      <div class="sd-pc-arrow"></div>
+      <div class="sd-pc-col"><h3>帰結</h3><p>前提から導かれる結論を1文で。</p></div>
+    </div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 06 矢羽（工程・段階） -->
+<section class="slide" data-title="矢羽">
+  <div class="sd-head">
+    <div class="sd-kicker">進め方</div>
+    <h1 class="sd-h">4段階で進め、今は2段目にいる</h1>
+  </div>
+  <div class="sd-body">
+    <div class="sd-steps">
+      <div class="sd-step"><span class="n">1</span><span class="t">要件</span><span class="d">9月</span></div>
+      <div class="sd-step hot"><span class="n">2</span><span class="t">設計</span><span class="d">10月前半</span></div>
+      <div class="sd-step"><span class="n">3</span><span class="t">実装</span><span class="d">10〜11月</span></div>
+      <div class="sd-step"><span class="n">4</span><span class="t">納品</span><span class="d">11月末</span></div>
+    </div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 07 軸のある表（5行まで・誌面の table をそのまま使う） -->
+<section class="slide" data-title="表">
+  <div class="sd-head">
+    <div class="sd-kicker">費用</div>
+    <h1 class="sd-h">補助対象は構築費だけで、保守は含めない</h1>
+  </div>
+  <div class="sd-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>費目</th><th>補助</th><th class="num">金額</th></tr></thead>
+        <tbody>
+          <tr><td class="label">構築費</td><td>対象</td><td class="num">7,035,000円</td></tr>
+          <tr><td class="label">保守費</td><td>対象外</td><td class="num">月額</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 08 図解1枚（誌面の図の部品を1枚に置く。figure に主張） -->
+<section class="slide" data-title="図解">
+  <div class="sd-head">
+    <div class="sd-kicker">仕組み</div>
+    <h1 class="sd-h">図解は1枚に1つ、主張は見出しに書く</h1>
+  </div>
+  <div class="sd-body">
+    <figure class="fig sd-fig" aria-label="この図が言っていること">
+      <!-- .swim / .lanes / .pflow / .phases / .stackbar 等をここに置く -->
+    </figure>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 09 1メッセージ -->
+<section class="slide" data-title="1メッセージ">
+  <div class="sd-center">
+    <div class="sd-eyebrow">結論</div>
+    <div class="sd-msg">1枚に言いたいことは1つ</div>
+    <div class="sd-hair"></div>
+    <div class="sd-note">根拠の一言</div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 10 ビッグナンバー -->
+<section class="slide" data-title="ビッグナンバー">
+  <div class="sd-nums">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:.3em">
+      <div class="sd-bignum">433</div>
+      <div class="sd-bignum-label">登録するURL</div>
+    </div>
+    <div class="sd-vline"></div>
+    <div class="sd-mini">
+      <div class="sd-mini-row"><span>自転車詳細</span><strong>374</strong></div>
+      <div class="sd-mini-row"><span>店舗詳細</span><strong>56</strong></div>
+      <div class="sd-mini-row" style="border-bottom:none"><span>静的ページ</span><strong>3</strong></div>
+      <div class="sd-src">2026-08-20 本番実測</div>
+    </div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 11 ×○比較 -->
+<section class="slide" data-title="×○比較">
+  <div class="sd-head">
+    <div class="sd-kicker">決め方</div>
+    <h1 class="sd-h">手動で組み立てる案を採る</h1>
+  </div>
+  <div class="sd-body">
+    <div class="sd-vs">
+      <div class="sd-vs-box is-bad">
+        <div class="sd-vs-head"><span class="sd-vs-mark">×</span><span class="sd-vs-name">自動生成</span></div>
+        <div class="sd-vs-note">店舗・自転車の個別URLが載らない</div>
+      </div>
+      <div class="sd-vs-box is-good">
+        <div class="sd-vs-head"><span class="sd-vs-mark">○</span><span class="sd-vs-name">手動で組み立て（採用）</span></div>
+        <div class="sd-vs-note">Data APIでID一覧を集めて全URLを網羅</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<!-- 12 締め（やること・担当・期日） -->
+<section class="slide" data-title="次のアクション">
+  <div class="sd-head">
+    <div class="sd-kicker">次のアクション</div>
+    <h1 class="sd-h">来週までに3つを片づける</h1>
+  </div>
+  <div class="sd-body">
+    <div class="sd-todo">
+      <div class="sd-todo-row"><span>やること1</span><span class="sd-todo-who">担当</span><span class="sd-todo-when">期日</span></div>
+      <div class="sd-todo-row"><span>やること2</span><span class="sd-todo-who">担当</span><span class="sd-todo-when">期日</span></div>
+      <div class="sd-todo-row"><span>やること3</span><span class="sd-todo-who">担当</span><span class="sd-todo-when">期日</span></div>
+    </div>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+
+<div class="deck-nav" aria-hidden="true"><span id="deck-pos"></span> ← → で送り</div>
+
+<script>
+// デッキ送り: 矢印/スペース/PageUpDown/Home/End・クリック（右半分=次・左半分=前）・ハッシュ #n で直リンク。
+// .pg にページ番号「n / N」を自動で入れる。JS無効でも印刷では全枚が並ぶ（@media print で display:flex）。
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('section.slide')),N=slides.length,cur=0;
+  slides.forEach(function(s,i){var p=s.querySelector('.pg');if(p)p.textContent=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0');});
+  function show(i){cur=Math.max(0,Math.min(N-1,i));slides.forEach(function(s,j){s.classList.toggle('cur',j===cur);});
+    var pos=document.getElementById('deck-pos');if(pos)pos.textContent=(cur+1)+' / '+N;
+    if(location.hash!=='#'+(cur+1))history.replaceState(null,'','#'+(cur+1));}
+  function fromHash(){var n=parseInt(location.hash.slice(1),10);show(isNaN(n)?0:n-1);}
+  addEventListener('hashchange',fromHash);
+  addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey)return;
+    var k=e.key;
+    if(k==='ArrowRight'||k==='ArrowDown'||k===' '||k==='PageDown'||k==='Enter'){e.preventDefault();show(cur+1);}
+    else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace'){e.preventDefault();show(cur-1);}
+    else if(k==='Home'){show(0);}else if(k==='End'){show(N-1);}
+  });
+  addEventListener('click',function(e){if(e.target.closest('a,button,input,textarea,details,summary'))return;
+    show(e.clientX>innerWidth/2?cur+1:cur-1);});
+  fromHash();
+})();
+</script>
+</body>
+</html>

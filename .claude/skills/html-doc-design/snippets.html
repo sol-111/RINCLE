@@ -90,7 +90,7 @@
 <div class="section" id="step1">
   <div class="section-header">
     <div class="section-num">02</div>
-    <div class="sh-body"><h2>章タイトル</h2><div class="sh-sub">サブ説明（キッカー）</div></div>
+    <div class="sh-body"><h2>章タイトル</h2><div class="sh-sub">この章の主張を1文で（02章以降。01章だけは「何を扱うか」）</div></div>
   </div>
   ...
 </div>
@@ -221,6 +221,35 @@
     </tbody>
   </table>
 </div>
+
+<!-- ============ 差分表（.dtable: 正本の「現行版」と「修正案」を行単位で左右に並べる。文章の改訂レビュー用。
+     行の種別は4つのどれか1つ: eq=変更なし（文字グレー）/ rep=置換（左紅・右緑の罫+字単位の<del><ins>）/ del=左から消えた / ins=右に増えた。
+     原文は<pre>に入れて加工しない（空行は&nbsp;）。変更のない行が続く箇所は.dfoldの1行に畳み、畳んだ行数を書く。
+     凡例.dlegend+色の表示トグル#hlは読み方ボックスの中にページで1枚（トグルのscriptは下・</body>直前）。
+     図ではなく表の族なので<figure>で包まない。文字数などの規模は.dmeta（ラベルが上・明朝22px。答えの数字ではないので.statにしない）。
+     2段組で幅が要るページは .hero-inner,.flow,.flow-tabs,.container,footer の max-width を1320pxに揃えて広げてよい ============ -->
+<div class="dmeta"><div class="dm"><span class="l">現行版の文字数</span><span class="v">3,425</span></div><div class="dm"><span class="l">修正案の文字数</span><span class="v">3,641</span></div><div class="dm"><span class="l">増減</span><span class="v up">+216</span></div></div>
+<div class="alert alert-blue">
+  <svg class="icon a-icon"><use href="#i-info"/></svg>
+  <div><strong>この表の読み方:</strong> 左が現行版、右が修正案です。消した字は紅、足した字は緑で示します。変更のない行が続く箇所は畳んでいます。
+  <div class="dlegend"><span class="dl-del"><i></i>消した字・変更前</span><span class="dl-ins"><i></i>足した字・変更後</span><label><input type="checkbox" id="hl" checked> 差分の色を表示</label></div>
+  </div>
+</div>
+<div class="dtable">
+<div class="dhead"><div>現行版</div><div>修正案</div></div>
+<div class="dfold">変更のない12行を畳んでいます</div>
+<div class="drow eq"><div class="dcell l"><pre>変更のない行は左右に同じ文を置き、文字をグレーに落とす</pre></div><div class="dcell r"><pre>変更のない行は左右に同じ文を置き、文字をグレーに落とす</pre></div></div>
+<div class="drow rep"><div class="dcell l"><pre>決済は<del>予約時に前払い</del>とする</pre></div><div class="dcell r"><pre>決済は<ins>受け取り当日に店頭で</ins>とする</pre></div></div>
+<div class="drow del"><div class="dcell l"><pre><del>左からだけ消えた行は、右を&amp;nbsp;の空セルにする</del></pre></div><div class="dcell r"><pre>&nbsp;</pre></div></div>
+<div class="drow ins"><div class="dcell l"><pre>&nbsp;</pre></div><div class="dcell r"><pre><ins>右に増えた行は、左を&amp;nbsp;の空セルにする</ins></pre></div></div>
+</div>
+<!-- 差分の色トグル（差分表を置いたページのみ・</body>直前。チェックを外すと body.nohl が付いて紅緑と罫が消える） -->
+<script>
+(function(){
+  var hl = document.getElementById('hl');
+  if (hl) hl.addEventListener('change', function(e){ document.body.classList.toggle('nohl', !e.target.checked); });
+})();
+</script>
 
 <!-- ============ コードブロック（唯一のダーク面） ============ -->
 <div class="codeblock"><pre><span class="cm"># コメント</span>
@@ -615,17 +644,44 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
 </div>
 
 <!-- ============ スライド（16:9・共通下枠=左ブランド/右ページ番号。1枚1メッセージ・表は5行まで） ============ -->
+<!-- 誌面の中に1枚だけ置く時は .slide の額（max-widthと font-size を指定）。デッキとして丸ごと投影する時は deck.html の器を使う（body.deck・1 section=1枚・.pg は自動記入） -->
 <div class="slide" style="max-width: 960px; font-size: 16px;">
-  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1em; padding: 0 10%; text-align: center;">
-    <div class="kicker">結論</div>
-    <div style="font-family: var(--serif); font-size: 2.2em; line-height: 1.7; color: var(--ink);">1枚に言いたいことは1つ</div>
-    <div style="width: 48px; height: 1px; background: var(--ink);"></div>
-    <div style="font-size: .8em; color: var(--sub);">根拠の一言</div>
+  <div class="sd-center">
+    <div class="sd-eyebrow">結論</div>
+    <div class="sd-msg">1枚に言いたいことは1つ</div>
+    <div class="sd-hair"></div>
+    <div class="sd-note">根拠の一言</div>
   </div>
   <div class="slide-ft"><span>BRAND</span><span>06 / 12</span></div>
 </div>
-<!-- 章とびら: <div class="ghost" style="font-size: 8em;">02</div> を左に置き、右にCHAPTERキッカー+明朝章名 -->
-<!-- ビッグナンバー: .stat の特大版（明朝96px+出典小） / 締め: 宿題表（やること・担当・期日の3列） -->
+<!-- 本文スライドの基本形（デッキの本文系8種はこの骨格。見出し=主張1文・常体・2行まで / 本文=箇条書き5本まで） -->
+<section class="slide" data-title="本文の基本形">
+  <div class="sd-head">
+    <div class="sd-kicker">現状</div>
+    <h1 class="sd-h">主張を1文・常体で書く</h1>
+  </div>
+  <div class="sd-body">
+    <ul><li>箇条書きは5本まで</li><li>語尾を揃える</li></ul>
+  </div>
+  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+</section>
+<!-- 前提→帰結: .sd-body の中に -->
+<div class="sd-pc">
+  <div class="sd-pc-col"><h3>前提</h3><ul><li>前提1</li><li>前提2</li></ul></div>
+  <div class="sd-pc-arrow"></div>
+  <div class="sd-pc-col"><h3>帰結</h3><p>前提から導かれる結論を1文で。</p></div>
+</div>
+<!-- 矢羽（工程・段階。現在地=.hot）: .sd-body の中に -->
+<div class="sd-steps">
+  <div class="sd-step"><span class="n">1</span><span class="t">要件</span><span class="d">9月</span></div>
+  <div class="sd-step hot"><span class="n">2</span><span class="t">設計</span><span class="d">10月前半</span></div>
+  <div class="sd-step"><span class="n">3</span><span class="t">実装</span><span class="d">10〜11月</span></div>
+</div>
+<!-- 2カラム: <div class="sd-two"><div><h3>左</h3>…</div><div><h3>右</h3>…</div></div>
+     軸のある表: .sd-body に誌面の .table-wrap>table をそのまま（5行まで）
+     図解1枚: <figure class="fig sd-fig" aria-label="主張">誌面の図の部品</figure>
+     章とびら: <div class="ghost">02</div> を左に置き、右にCHAPTERキッカー+明朝章名
+     ビッグナンバー: .sd-nums / ×○比較: .sd-vs / 締め: .sd-todo（やること・担当・期日の3列）。全型の実物は deck.html -->
 
 <!-- ============ footer（書くのは正本のパスだけ。保守者向けの指示は読者に不要なのでコメントへ） ============ -->
 <!-- md更新時はこのHTMLも同期すること（正本: path/to/source.md） -->

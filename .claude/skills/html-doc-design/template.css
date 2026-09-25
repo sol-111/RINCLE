@@ -217,6 +217,58 @@ td.num.calc{color:var(--sub);font-size:13px} /* 計算の途中経過（内訳�
 .pri .bar{height:7px;border-radius:99px;background:var(--accent);flex-shrink:0}
 .pri .pv{font-family:var(--serif);font-size:14px;color:var(--ink)}
 
+/* ---------- 差分表（.dtable: 正本mdの「現行版」と「修正案」を行単位で左右に並べる。文章の改訂レビュー用）
+   上罫は墨2px・面は白・角丸4pxで表と同じ組み。影は使わない。図ではなく表の族なので <figure> で包まない。
+   引用した原文は加工せず見せるため <pre> で持ち、フォントだけ本文に揃える（コード面ではない）。
+   役割色は alert と同じ意味色: 消した字=紅 / 足した字=緑（新しい色は作らない）。
+   行の左端3pxの罫でどちら側が動いたかを示す — .rep=置換〈左紅・右緑〉/ .del=左から消えた〈左紅〉/ .ins=右に増えた〈右緑〉/ .eq=変更なし。
+   変更のない行は文字色をグレーに落として沈める（面ごと薄くしない=原則3）。変更のない行が続く箇所は .dfold の1行に畳む。
+   del / ins の装飾は .dtable の中だけに効かせる（本文中の <del> に波及させない）。
+   凡例 .dlegend と色の表示トグル（チェックを外すと body.nohl が付いて紅緑と罫が消える）は
+   読み方ボックス（.alert.alert-blue）の中にページで1枚。トグルの script は snippets.html。
+   2段組の引用文で本文幅が足りないため、差分表を主役にするページはページ固有CSSで
+   .hero-inner,.flow,.flow-tabs,.container,footer の max-width を 1320px に揃えて広げてよい
+   （紙面幅そのものの変更=トークン差し替えと同じ扱い。部品個別の max-width ではない）。
+   2026-09-24 正本mdを持つ資料の改訂レビューから昇格（経緯は decisions.md） ---------- */
+.dtable{background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--ink);border-radius:4px;overflow:hidden;margin:24px 0}
+.dhead{display:grid;grid-template-columns:1fr 1fr;background:var(--paper);border-bottom:1px solid var(--line)}
+.dhead div{padding:9px 16px;font-size:10.5px;letter-spacing:.18em;color:var(--sub)}
+.dhead div+div{border-left:1px solid var(--line)}
+.drow{display:grid;grid-template-columns:1fr 1fr}
+.drow+.drow{border-top:1px solid var(--line-soft)}
+.dcell{padding:11px 16px 11px 13px;border-left:3px solid transparent}
+.dcell.l{border-right:1px solid var(--line)}
+.dcell pre{font-family:inherit;font-size:13px;line-height:1.95;white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+.drow.eq .dcell pre{color:var(--sub)}
+.drow.rep .dcell.l,.drow.del .dcell.l{border-left-color:var(--danger)}
+.drow.rep .dcell.r,.drow.ins .dcell.r{border-left-color:var(--ok)}
+.dtable del{background:var(--danger-soft);color:var(--danger-text);text-decoration:none;border-radius:2px;padding:0 2px}
+.dtable ins{background:var(--ok-soft);color:var(--ok-text);text-decoration:none;border-radius:2px;padding:0 2px}
+body.nohl .dtable del,body.nohl .dtable ins{background:none;color:inherit}
+body.nohl .dcell{border-left-color:transparent}
+.dfold{padding:8px 16px;font-size:11px;letter-spacing:.1em;color:var(--sub);background:var(--paper);border-top:1px solid var(--line-soft)}
+/* 差分の凡例（行の罫と同じ3pxの線で示す。丸の .legend は図解の役割色用なので流用しない） */
+.dlegend{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;margin-top:8px;font-size:12.5px}
+.dlegend span i{display:inline-block;width:22px;border-top:3px solid var(--line);margin-right:8px;vertical-align:.3em}
+.dlegend .dl-del i{border-top-color:var(--danger)}
+.dlegend .dl-ins i{border-top-color:var(--ok)}
+.dlegend label{display:inline-flex;align-items:center;gap:7px;cursor:pointer;user-select:none}
+.dlegend input{accent-color:var(--accent)}
+/* 差分の規模を示す小さな数字の行（.dmeta: 文字数・増減・変更のあった章の数。ラベルが上・数字は明朝22px）。
+   答えの数字ではないので .stat の特大にしない — 数字の序列は .stat 60 > .n.md 30 > .dmeta 22 */
+.dmeta{display:flex;flex-wrap:wrap;gap:6px 34px;align-items:flex-end;border-top:1px solid var(--line);padding-top:13px;margin-top:4px}
+.dmeta .dm{display:flex;flex-direction:column;gap:1px}
+.dmeta .dm .l{font-size:10.5px;letter-spacing:.1em;color:var(--sub)}
+.dmeta .dm .v{font-family:var(--serif);font-size:22px;line-height:1.2;color:var(--ink)}
+.dmeta .dm .v.up{color:var(--ok)}
+.dmeta .dm .v.down{color:var(--danger)}
+@media (max-width:900px){
+  .dhead{grid-template-columns:1fr}
+  .dhead div+div{border-left:none;border-top:1px solid var(--line)}
+  .drow{grid-template-columns:1fr}
+  .dcell.l{border-right:none;border-bottom:1px solid var(--line-soft)}
+}
+
 /* ---------- バッジ・タグ ---------- */
 .badge{display:inline-block;padding:4px 12px;border-radius:3px;font-size:12px;font-weight:700;white-space:nowrap}
 .badge.ink{background:var(--ink);color:var(--paper)}
@@ -535,6 +587,156 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 .slide{width:100%;aspect-ratio:16/9;background:#FDFCFA;border:1px solid var(--line);border-radius:4px;box-shadow:0 10px 30px -16px rgba(38,34,30,.3);overflow:hidden;position:relative;display:flex;flex-direction:column}
 .slide-ft{position:absolute;left:5%;right:5%;bottom:3%;display:flex;justify-content:space-between;align-items:center;font-size:.6em;letter-spacing:.14em;color:#A9A199}
 .slide .ghost{font-family:var(--serif);font-weight:700;line-height:1;color:rgba(184,83,47,.14)}
+
+/* ============================================================================
+   スライドの型（2026-09-25 parts.css から移動。額縁は上の .slide / .slide-ft / .ghost）
+   ※ここは元データと同じ実寸。.slide に max-width:560px と font-size:15px を
+     付けた状態で正しく見える（.slide-ft が .6em=9px になる）。
+     大きく映す時は各値を em に読み替える。
+   ============================================================================ */
+.sd-cover{flex:1;display:flex;flex-direction:column;gap:12px;padding:40px 44px 0}
+.sd-cover-top{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid var(--ink);padding-bottom:10px}
+.sd-cover-body{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+.sd-title{font-family:var(--serif);font-size:34px;line-height:1.4;color:var(--ink)}
+.sd-rule{width:48px;height:2px;background:var(--accent)}
+.sd-lead{font-size:11.5px;line-height:1.9;color:var(--text);max-width:360px}
+.sd-chapter{flex:1;display:flex;align-items:center;gap:24px;padding:0 44px}
+.sd-eyebrow{font-size:9.5px;letter-spacing:.2em;font-weight:700;color:var(--accent)}
+.sd-ch-name{font-family:var(--serif);font-size:28px;color:var(--ink)}
+.sd-ch-sub{font-size:11px;color:var(--sub)}
+.sd-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 56px;text-align:center}
+.sd-msg{font-family:var(--serif);font-size:26px;line-height:1.7;color:var(--ink)}
+.sd-hair{width:48px;height:1px;background:var(--ink)}
+.sd-note{font-size:11px;color:var(--sub)}
+.sd-nums{flex:1;display:flex;align-items:center;justify-content:center;gap:48px;padding:0 44px}
+.sd-bignum{font-family:var(--serif);font-size:96px;line-height:1;color:var(--accent)}
+.sd-bignum-label{font-size:11px;letter-spacing:.14em;color:var(--text)}
+.sd-vline{width:1px;height:110px;background:var(--line)}
+.sd-mini{display:flex;flex-direction:column;gap:10px;font-size:12px;color:var(--text)}
+.sd-mini-row{display:flex;justify-content:space-between;gap:24px;border-bottom:1px solid var(--line-soft);padding-bottom:6px}
+.sd-mini-row strong{font-family:var(--serif)}
+.sd-src{font-size:9.5px;color:#A9A199}
+.sd-split{flex:1;display:grid;grid-template-columns:1fr 1.1fr;gap:28px;padding:34px 44px 30px}
+.sd-claim{display:flex;flex-direction:column;gap:10px;justify-content:center}
+.sd-claim-title{font-family:var(--serif);font-size:21px;line-height:1.6;color:var(--ink)}
+.sd-claim-note{font-size:10.5px;line-height:1.8;color:var(--text)}
+.sd-tbl{display:flex;flex-direction:column;justify-content:center;font-size:10.5px}
+.sd-tbl-head{display:grid;grid-template-columns:1fr .5fr;border-bottom:1.5px solid var(--ink);padding-bottom:5px;letter-spacing:.12em;color:var(--sub);font-size:8.5px}
+.sd-tbl-row{display:grid;grid-template-columns:1fr .5fr;border-bottom:1px solid var(--line-soft);padding:7px 0}
+.sd-tbl-row:last-child{border-bottom:none}
+.sd-tbl-row span:first-child{font-weight:700;color:var(--ink)}
+.sd-tbl-num{text-align:right;font-family:var(--serif);color:var(--accent)}
+.sd-pane{flex:1;display:flex;flex-direction:column;gap:14px;padding:30px 44px}
+.sd-pane-title{font-family:var(--serif);font-size:17px;color:var(--ink)}
+.sd-vs{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1}
+.sd-vs-box{border-radius:4px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.sd-vs-box.is-bad{border:1px solid var(--danger-line);background:#FDFAF9}
+.sd-vs-box.is-good{border:1px solid var(--ok-line);background:#FBFDFB}
+.sd-vs-head{display:flex;align-items:center;gap:8px}
+.sd-vs-mark{width:18px;height:18px;border-radius:50%;color:var(--paper);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.sd-vs-box.is-bad .sd-vs-mark{background:var(--danger)}
+.sd-vs-box.is-good .sd-vs-mark{background:var(--ok)}
+.sd-vs-name{font-size:12px;font-weight:700}
+.sd-vs-box.is-bad .sd-vs-name{color:var(--danger-text)}
+.sd-vs-box.is-good .sd-vs-name{color:var(--ok-text)}
+.sd-vs-note{font-size:10.5px;line-height:1.8;color:var(--text)}
+.sd-todo{display:flex;flex-direction:column;border-top:1.5px solid var(--ink)}
+.sd-todo-row{display:grid;grid-template-columns:1fr 100px 90px;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:11px}
+.sd-todo-row:last-child{border-bottom:none}
+.sd-todo-row span:first-child{font-weight:700;color:var(--ink)}
+.sd-todo-who{color:var(--text)}
+.sd-todo-when{text-align:right;font-family:var(--serif);color:var(--accent)}
+
+/* ---------- デッキ（投影用。1 section=1スライド・器は deck.html・2026-09-25） ----------
+   画面では1枚ずつ表示して矢印キーで送り、印刷（Chrome→PDF）では1枚1ページ。
+   1em = スライド幅/60（幅1320pxで22px）。中身は em で組む。本文 .sd-body は .82em（≒18px）が下限。
+   上の .sd-* は小さな見本用の px 値なので、.deck の中では em に読み替える。 */
+body.deck{margin:0;background:#EAE2D6;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.deck .slide{display:none;--sw:min(100vw,177.78vh);width:var(--sw);height:calc(var(--sw)*9/16);aspect-ratio:auto;font-size:calc(var(--sw)/60);border:0;border-radius:0;box-shadow:none;margin:0;flex-direction:column}
+.deck .slide.cur{display:flex}
+.deck .slide-ft{font-size:.5em;left:3.4em;right:3.4em;bottom:1.2em}
+/* 本文スライドの共通骨格: 見出し帯（キッカー+主張の h1）+ 本文 */
+.sd-head{padding:2.2em 3.4em 0;display:flex;flex-direction:column;gap:.5em}
+.sd-kicker{font-size:.5em;letter-spacing:.2em;font-weight:700;color:var(--accent)}
+.sd-h{font-family:var(--serif);font-size:1.5em;line-height:1.45;color:var(--ink);margin:0;font-weight:600}
+.sd-body{flex:1;display:flex;flex-direction:column;padding:1.46em 4.15em 3.17em;font-size:.82em;line-height:1.8;color:var(--text);min-height:0} /* padding は .82em で割って見出し帯(3.4em)と左端を揃える */
+.sd-body>p{margin:0}
+.sd-body ul{margin:0;padding-left:1.2em}
+.sd-body li{margin:.3em 0}
+.sd-two{display:grid;grid-template-columns:1fr 1fr;gap:2.4em;flex:1;align-items:start}
+.sd-two h3{font-family:var(--serif);font-size:1em;font-weight:600;color:var(--ink);margin:0 0 .5em;padding-bottom:.35em;border-bottom:.1em solid var(--ink)}
+/* 既存の型を em に読み替え */
+.deck .sd-cover{padding:2.6em 3.4em 0;gap:.6em}
+.deck .sd-cover-top{padding-bottom:.5em;gap:1em}
+.deck .sd-cover-top .hero-kicker,.deck .sd-cover-top .hero-no{font-size:.55em}
+.deck .sd-cover-body{margin-top:1.6em;gap:.7em}
+.deck .sd-title{font-size:2.4em}
+.deck .sd-rule{width:2.4em;height:.12em}
+.deck .sd-lead{font-size:.8em;max-width:28em}
+.deck .sd-chapter{padding:0 3.4em;gap:1.4em}
+.deck .sd-eyebrow{font-size:.55em}
+.deck .sd-ch-name{font-size:2em}
+.deck .sd-ch-sub{font-size:.75em}
+.deck .ghost{font-size:7em}
+.deck .sd-center{padding:0 4em;gap:1em}
+.deck .sd-msg{font-size:1.9em}
+.deck .sd-hair{width:2.4em}
+.deck .sd-note{font-size:.75em}
+.deck .sd-nums{gap:3em;padding:0 3.4em}
+.deck .sd-bignum{font-size:6.5em}
+.deck .sd-bignum-label{font-size:.75em}
+.deck .sd-vline{height:6em}
+.deck .sd-mini{font-size:.8em;gap:.6em}
+.deck .sd-mini-row{gap:1.5em;padding-bottom:.4em}
+.deck .sd-src{font-size:.6em}
+.deck .sd-split{padding:0;gap:2em}
+.deck .sd-claim-title{font-size:1.4em}
+.deck .sd-claim-note{font-size:.8em}
+.deck .sd-tbl{font-size:.85em}
+.deck .sd-tbl-head{font-size:.65em;padding-bottom:.4em}
+.deck .sd-tbl-row{padding:.5em 0}
+.deck .sd-pane{padding:0;gap:1em}
+.deck .sd-pane-title{font-size:1.1em}
+.deck .sd-vs{gap:1.2em}
+.deck .sd-vs-box{padding:1.1em 1.3em;gap:.6em;border-radius:0}
+.deck .sd-vs-mark{width:1.3em;height:1.3em;font-size:.7em}
+.deck .sd-vs-name{font-size:.9em}
+.deck .sd-vs-note{font-size:.8em}
+.deck .sd-todo-row{grid-template-columns:1fr 7em 6em;gap:.8em;padding:.7em 0;font-size:.85em}
+/* 投影用に足した型（em 基準。見本 .slide の 15px 基準でもそのまま効く） */
+.sd-pc{flex:1;display:grid;grid-template-columns:1fr auto 1fr;gap:1.4em;align-items:stretch}           /* 前提→帰結 */
+.sd-pc-col{display:flex;flex-direction:column;gap:.6em}
+.sd-pc-col h3{font-family:var(--serif);font-size:1em;font-weight:600;color:var(--ink);margin:0;padding-bottom:.4em;border-bottom:.1em solid var(--ink)}
+.sd-pc-arrow{align-self:center;width:0;height:0;border-top:.7em solid transparent;border-bottom:.7em solid transparent;border-left:1em solid var(--accent)}
+.sd-steps{flex:1;display:flex;align-items:center;gap:.4em}                                                /* 矢羽 */
+.sd-step{flex:1;position:relative;background:var(--line);padding:.9em 1.2em .9em 1.6em;clip-path:polygon(0 0,calc(100% - .9em) 0,100% 50%,calc(100% - .9em) 100%,0 100%,.9em 50%)}
+.sd-step::before{content:"";position:absolute;inset:1.5px;background:var(--surface);clip-path:polygon(0 0,calc(100% - .9em) 0,100% 50%,calc(100% - .9em) 100%,0 100%,.9em 50%)} /* 輪郭=外層の罫線色を1.5px見せる */
+.sd-step:first-child,.sd-step:first-child::before{clip-path:polygon(0 0,calc(100% - .9em) 0,100% 50%,calc(100% - .9em) 100%,0 100%)}
+.sd-step:first-child{padding-left:1.2em}
+.sd-step>*{position:relative}
+.sd-step .n{font-family:var(--serif);color:var(--accent);font-size:.9em}
+.sd-step .t{font-weight:700;color:var(--ink);display:block}
+.sd-step .d{font-size:.75em;color:var(--sub)}
+.sd-step.hot{background:var(--accent)}
+.sd-step.hot::before{background:var(--accent-faint)}
+.sd-fig{flex:1;display:flex;flex-direction:column;justify-content:center}                                /* 図解1枚 */
+.sd-fig .fig{margin:0}
+.sd-body .table-wrap{margin:0}                                                                            /* 軸のある表（5行まで。誌面の table は px なので em に読み替え） */
+.sd-body table{font-size:1em}
+.sd-body thead th{font-size:.65em;padding:0 .9em .8em 0}
+.sd-body td{padding:.8em .9em .8em 0}
+.sd-body td.label{font-size:1.05em}
+.sd-body td.num{font-size:1em}
+.sd-body td.label.wrap{font-size:1em}
+.sd-body tbody tr:hover td{background:transparent}
+.deck-nav{position:fixed;right:1rem;bottom:1rem;font:12px var(--sans);color:var(--sub);background:rgba(255,255,255,.85);border:1px solid var(--line);padding:4px 10px;border-radius:999px;letter-spacing:.1em}
+@media print{
+  @page{size:338.67mm 190.5mm;margin:0}
+  body.deck{background:#fff;display:block;min-height:0}
+  .deck .slide{display:flex!important;width:338.67mm;height:190.5mm;font-size:5.64mm;page-break-after:always;break-after:page}
+  .deck .slide:last-child{page-break-after:auto;break-after:auto}
+  .deck-nav,.progress{display:none}
+}
 
 /* ---------- 読み進みバー・演出 ---------- */
 .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:99;pointer-events:none}

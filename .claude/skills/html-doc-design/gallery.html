@@ -56,7 +56,7 @@
   <a href="#s5"><span class="fnum">05</span><span class="ft">フィードバック</span><span class="fd">トースト・進捗・アラート等</span></a>
   <a href="#s6"><span class="fnum">06</span><span class="ft">データ表示</span><span class="fd">表・カンバン・ガント等</span></a>
   <a href="#s7"><span class="fnum">07</span><span class="ft">チャート</span><span class="fd">ドーナツ・横棒・優先度バー・統計数字</span></a>
-  <a href="#s8"><span class="fnum">08</span><span class="ft">資料部品</span><span class="fd">章ナビ・用語解説・まとめ帯等</span></a>
+  <a href="#s8"><span class="fnum">08</span><span class="ft">資料部品</span><span class="fd">章ナビ・用語解説・差分表等</span></a>
   <a href="#s9"><span class="fnum">09</span><span class="ft">図解</span><span class="fd">スイムレーン・フロー・フェーズ帯・週割り工程表</span></a>
   <a href="#s10"><span class="fnum">10</span><span class="ft">スライド部品</span><span class="fd">定例でそのまま映す16:9の型</span></a>
 </nav>
@@ -1658,6 +1658,32 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
       </div>
     </div>
 
+
+    <div class="g-blk g-full">
+      <div class="g-meta">
+        <div class="g-no is-add">追加 — 2026-09-24新設</div>
+        <div class="g-nm">差分表（.dtable）</div>
+        <div class="g-ds">正本mdの「現行版」と「修正案」を行単位で左右に並べ、文章の改訂を判断してもらう資料の部品。上罫は墨2px・白面・角丸4pxで表と同じ組み。原文は <code>&lt;pre&gt;</code> に入れて加工せず、フォントだけ本文に揃える。<strong>色は alert と同じ意味色</strong>で、消した字=紅 <code>&lt;del&gt;</code> / 足した字=緑 <code>&lt;ins&gt;</code>。行の左端3pxの罫がどちら側の動きかを示す（<code>rep</code>=置換・<code>del</code>=左から消えた・<code>ins</code>=右に増えた・<code>eq</code>=変更なし）。変更のない行は文字をグレーに落として沈め、続く箇所は <code>.dfold</code> の1行に畳む。凡例 <code>.dlegend</code> と色の表示トグルは読み方ボックスの中にページで1枚。図ではなく表の族なので <code>&lt;figure&gt;</code> で包まない。規模の数字（文字数・増減）は <code>.dmeta</code> — 答えの数字ではないので .stat の特大にせず明朝22pxに留める。2段組で幅が要るページは、紙面幅そのもの（<code>.hero-inner,.flow,.flow-tabs,.container,footer</code>）を1320pxに揃えて広げてよい。正本mdを持つ資料の改訂レビューから昇格（2026-09）。</div>
+      </div>
+      <div class="g-demo">
+        <div class="dmeta"><div class="dm"><span class="l">現行版の文字数</span><span class="v">3,425</span></div><div class="dm"><span class="l">修正案の文字数</span><span class="v">3,641</span></div><div class="dm"><span class="l">増減</span><span class="v up">+216</span></div></div>
+        <div class="alert alert-blue" style="margin:0">
+          <svg class="icon a-icon"><use href="#i-info"/></svg>
+          <div><strong>この表の読み方:</strong> 左が現行版、右が修正案です。消した字は紅、足した字は緑で示します。変更のない行が続く箇所は畳んでいます。
+          <div class="dlegend"><span class="dl-del"><i></i>消した字・変更前</span><span class="dl-ins"><i></i>足した字・変更後</span><label><input type="checkbox" id="hl" checked> 差分の色を表示</label></div>
+          </div>
+        </div>
+        <div class="dtable" style="margin:0">
+          <div class="dhead"><div>現行版</div><div>修正案</div></div>
+          <div class="dfold">変更のない12行を畳んでいます</div>
+          <div class="drow eq"><div class="dcell l"><pre>予約は公式サイトで受け付け、当日は店頭で本人確認を行う。</pre></div><div class="dcell r"><pre>予約は公式サイトで受け付け、当日は店頭で本人確認を行う。</pre></div></div>
+          <div class="drow rep"><div class="dcell l"><pre>決済は<del>予約時に全額を前払い</del>とし、<del>キャンセル料は一律50%</del>。</pre></div><div class="dcell r"><pre>決済は<ins>受け取り当日に店頭で</ins>とし、<ins>前日までのキャンセルは無料</ins>。</pre></div></div>
+          <div class="drow del"><div class="dcell l"><pre><del>領収書は運営会社と店舗の2枚を発行する。</del></pre></div><div class="dcell r"><pre>&nbsp;</pre></div></div>
+          <div class="drow ins"><div class="dcell l"><pre>&nbsp;</pre></div><div class="dcell r"><pre><ins>領収書は運営会社の名義で1枚だけ発行する。</ins></pre></div></div>
+        </div>
+        <div class="g-st">「差分の色を表示」を外すと body.nohl が付き、紅緑の下地と左端の罫が消えて修正案の読み通しができる</div>
+      </div>
+    </div>
   </div>
 
   <!-- ======================= 09 図解 ======================= -->
@@ -2165,6 +2191,90 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
 
     <div class="g-blk">
       <div class="g-meta">
+        <div class="g-no is-add">スライド 08</div>
+        <div class="g-nm">本文の基本形（見出し帯+本文）</div>
+        <div class="g-ds">デッキの本文系はこの骨格。見出し=主張1文・常体・2行まで。箇条書きは5本まで・本文18px相当以上。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-head">
+          <div class="sd-kicker">現状</div>
+          <h1 class="sd-h">主張を1文・常体で書く</h1>
+        </div>
+        <div class="sd-body">
+          <ul><li>箇条書きは5本まで。1本1文</li><li>語尾を揃える</li><li>本文は18px相当を下回らない</li></ul>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>03 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 09</div>
+        <div class="g-nm">前提→帰結</div>
+        <div class="g-ds">左に前提の箇条書き、矢印、右に帰結1文。判断の根拠を1枚で見せる。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-head">
+          <div class="sd-kicker">判断</div>
+          <h1 class="sd-h">3つの前提から1つの帰結を導く</h1>
+        </div>
+        <div class="sd-body">
+          <div class="sd-pc">
+            <div class="sd-pc-col"><h3>前提</h3><ul><li>前提1</li><li>前提2</li><li>前提3</li></ul></div>
+            <div class="sd-pc-arrow"></div>
+            <div class="sd-pc-col"><h3>帰結</h3><p>前提から導かれる結論を1文で。</p></div>
+          </div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>05 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 10</div>
+        <div class="g-nm">矢羽（工程・段階）</div>
+        <div class="g-ds">段階を横に並べ、現在地を.hotで焦がしに。矢羽の輪郭は2層（外=罫線色・内=白面）で出す。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-head">
+          <div class="sd-kicker">進め方</div>
+          <h1 class="sd-h">4段階で進め、今は2段目にいる</h1>
+        </div>
+        <div class="sd-body">
+          <div class="sd-steps">
+            <div class="sd-step"><span class="n">1</span><span class="t">要件</span><span class="d">9月</span></div>
+            <div class="sd-step hot"><span class="n">2</span><span class="t">設計</span><span class="d">10月前半</span></div>
+            <div class="sd-step"><span class="n">3</span><span class="t">実装</span><span class="d">10〜11月</span></div>
+            <div class="sd-step"><span class="n">4</span><span class="t">納品</span><span class="d">11月末</span></div>
+          </div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>06 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">スライド 11</div>
+        <div class="g-nm">軸のある表・図解1枚</div>
+        <div class="g-ds">誌面の table と図の部品をそのまま .sd-body に置く（デッキ専用の表は作らない）。表は5行まで・図は figure.fig に主張。</div>
+      </div>
+      <div class="slide" style="max-width:560px;font-size:15px">
+        <div class="sd-head">
+          <div class="sd-kicker">費用</div>
+          <h1 class="sd-h">補助対象は構築費だけで、保守は含めない</h1>
+        </div>
+        <div class="sd-body">
+          <div class="table-wrap"><table>
+            <thead><tr><th>費目</th><th>補助</th><th class="num">金額</th></tr></thead>
+            <tbody><tr><td class="label">構築費</td><td>対象</td><td class="num">7,035,000円</td></tr><tr><td class="label">保守費</td><td>対象外</td><td class="num">月額</td></tr></tbody>
+          </table></div>
+        </div>
+        <div class="slide-ft"><span>BRAND</span><span>07 / 12</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
         <div class="g-no is-add">共通規格</div>
         <div class="g-nm">スライドの約束事</div>
         <div class="g-ds">全スライド共通のルール。</div>
@@ -2172,7 +2282,9 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
       <div class="numnote" style="max-width:640px">
         <div class="numnote-row"><span class="numnote-n">1</span><span>16:9・余白は上下30px/左右44px以上。1枚に言いたいことは1つ。</span></div>
         <div class="numnote-row"><span class="numnote-n">2</span><span>下枠に左=ブランド名・右=ページ番号（表紙だけ日付）。進捗ドットは使わずページ番号で示す。</span></div>
-        <div class="numnote-row"><span class="numnote-n">3</span><span>本文の最小サイズは投影で読める18px相当。表は5行まで、超えるなら分割。</span></div>
+        <div class="numnote-row"><span class="numnote-n">3</span><span>本文の最小サイズは投影で読める18px相当。表は5行まで・箇条書きは5本まで、超えるなら分割。</span></div>
+        <div class="numnote-row"><span class="numnote-n">4</span><span>本文スライドの見出しは主張1文・常体・2行まで。「ラベル：」型と「〜について」型は禁止。下部の結論帯は置かない。</span></div>
+        <div class="numnote-row"><span class="numnote-n">5</span><span>デッキとして投影する時は deck.html の器（body.deck）。ここの見本は560px縮小版で、投影時はemで拡大される。PDF化はChromeの印刷（1枚1ページ）。</span></div>
       </div>
     </div>
   </div>
@@ -2212,6 +2324,8 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
     };
     addEventListener('scroll', updateCur, {passive:true}); updateCur();
   }
+  var hl = document.getElementById('hl');
+  if (hl) hl.addEventListener('change', function(e){ document.body.classList.toggle('nohl', !e.target.checked); });
 })();
 </script>
 </body>
