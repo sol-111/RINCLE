@@ -563,9 +563,8 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
    日付が固定の節目は菱形.g-ms（.own=焦がし / .party=緑 / 既定=墨）。日付は「月.日」表記（半角/は文章規約で前後スペースが要るため） ---------- */
 .gantt-wrap{margin:28px 0 0;overflow-x:auto} /* 2026-09-25 コンサル型に作り直し: 外枠なし・棒に文字なし・色は2段+墨・節目は最上段のマイルストーン行に▲ */
 .gantt{min-width:880px;padding:0;display:flex;flex-direction:column;--g-label:196px}
-.g-row{display:grid;grid-template-columns:var(--g-label) repeat(var(--g-weeks,13),1fr);align-items:center;min-height:38px;border-top:1px solid var(--line-soft);
-  background-image:linear-gradient(to right,var(--line-soft) 1px,transparent 1px);background-size:calc((100% - var(--g-label)) / var(--g-weeks,13)) 100%;background-position:var(--g-label) 0;background-repeat:repeat-x} /* 週の縦線 */
-.g-row.g-head,.g-row.g-month{border-top:0;background-image:none}
+.g-row{display:grid;grid-template-columns:var(--g-label) repeat(var(--g-weeks,13),1fr);align-items:center;min-height:38px;border-top:1px solid var(--line-soft)} /* 週の縦線は引かない（行の横罫だけ。週の位置は上の目盛りで読む） */
+.g-row.g-head,.g-row.g-month{border-top:0}
 .g-row.g-head{min-height:30px;align-items:end;padding-bottom:6px;border-bottom:2px solid var(--ink)}
 .g-row.g-month{min-height:22px;align-items:end}
 .g-row.g-head .g-wk{font-family:var(--serif);font-size:11.5px;color:var(--sub);text-align:left;padding-left:6px;line-height:1.2;font-variant-numeric:tabular-nums}
@@ -581,8 +580,8 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 .g-ms b{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid var(--ink);flex-shrink:0;display:inline-block;transform:none} /* ▲ */
 .g-ms.own{color:var(--accent-deep)} .g-ms.own b{border-bottom-color:var(--accent)}
 .g-ms.party{color:var(--ink)} .g-ms.party b{border-bottom-color:var(--ink)}
-.g-cell{display:flex;flex-direction:column;gap:2px;justify-content:center;min-height:38px;padding:4px 0}
-.g-row.g-ms-row{min-height:44px;background-color:var(--accent-faint)} /* 最上段のマイルストーン行（動かない日付を1行に集める） */
+.g-cell{display:flex;flex-direction:column;gap:2px;justify-content:center;min-height:38px;padding:4px 0 4px 8px}
+.g-row.g-ms-row{min-height:44px;background:var(--accent-faint)} /* 最上段のマイルストーン行（動かない日付を1行に集める） */
 .g-row.g-ms-row .g-label{font-family:var(--sans);font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--sub)}
 
 /* ---------- スライド（16:9・定例でそのまま映す型） ---------- */
