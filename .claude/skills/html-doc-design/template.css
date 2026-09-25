@@ -564,7 +564,7 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 .gantt-wrap{margin:28px 0 0;overflow-x:auto} /* 2026-09-25 コンサル型に作り直し: 外枠なし・棒に文字なし・色は2段+墨・節目は最上段のマイルストーン行に▲ */
 .gantt{min-width:880px;padding:0;display:flex;flex-direction:column;--g-label:196px;position:relative}
 .gantt::after{content:"";position:absolute;left:calc(var(--g-label) - 1px);top:0;bottom:0;width:1.5px;background:var(--ink)} /* 軸の縦罫は1本で通す（行ごとの罫だと横罫で途切れる） */
-.g-row{display:grid;grid-template-columns:var(--g-label) repeat(var(--g-weeks,13),1fr);align-items:center;min-height:38px;border-top:1px solid var(--line-soft);position:relative;isolation:isolate}
+.g-row{display:grid;grid-template-columns:var(--g-label) repeat(var(--g-weeks,13),1fr);align-items:center;min-height:34px;border-top:1px solid var(--line-soft);position:relative;isolation:isolate}
 .g-row::before{content:"";position:absolute;left:var(--g-label);right:1px;top:0;bottom:0;z-index:-1;pointer-events:none;
   background-image:linear-gradient(to right,transparent calc(100% - 1px),var(--line) calc(100% - 1px));background-size:calc(100% / var(--g-weeks,13)) 100%;background-repeat:repeat-x;
   -webkit-mask-image:repeating-linear-gradient(to bottom,#000 0 2px,transparent 2px 5px);mask-image:repeating-linear-gradient(to bottom,#000 0 2px,transparent 2px 5px)} /* 週の点線の格子（日付の側だけ。行見出し列には引かない） */
@@ -577,9 +577,9 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 .g-label{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--ink);padding:7px 14px 7px 0;line-height:1.5;align-self:stretch;display:flex;flex-direction:column;justify-content:center} /* 行見出し=軸列（表と同じ縦罫） */
 .g-label i{display:none} /* 旧: 役割の丸ドット。色は棒が持つので廃止 */
 .g-label small{display:block;font-family:var(--sans);font-weight:400;color:var(--sub);font-size:10.5px;line-height:1.5}
-.g-bar{height:14px;border-radius:0;margin:0 3px;font-size:0;color:transparent;overflow:hidden} /* 棒に文字は入れない（何の棒かは行見出しが語る） */
+.g-bar{height:26px;border-radius:0;margin:0 2px;font-size:0;color:transparent;overflow:hidden} /* 棒に文字は入れない（何の棒かは行見出しが語る）。棒はセルいっぱい（上下左右の余白は数px） */
 .g-bar.own{background:var(--accent)} .g-bar.party{background:#EAE2D6} .g-bar.joint{background:var(--ink)}
-.g-bar.after,.g-bar.hollow{background:none;border:1px solid var(--line);height:14px} /* 期限の外・繰り返しは輪郭だけ */
+.g-bar.after,.g-bar.hollow{background:none;border:1px solid var(--line);height:26px} /* 期限の外・繰り返しは輪郭だけ */
 .g-ms{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:var(--ink);white-space:nowrap;line-height:1.3;padding-left:2px}
 .g-ms b{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid var(--ink);flex-shrink:0;display:inline-block;transform:none} /* ▲ */
 .g-ms.own{color:var(--accent-deep)} .g-ms.own b{border-bottom-color:var(--accent)}
