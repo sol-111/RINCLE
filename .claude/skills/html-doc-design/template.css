@@ -563,8 +563,12 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
    日付が固定の節目は菱形.g-ms（.own=焦がし / .party=緑 / 既定=墨）。日付は「月.日」表記（半角/は文章規約で前後スペースが要るため） ---------- */
 .gantt-wrap{margin:28px 0 0;overflow-x:auto} /* 2026-09-25 コンサル型に作り直し: 外枠なし・棒に文字なし・色は2段+墨・節目は最上段のマイルストーン行に▲ */
 .gantt{min-width:880px;padding:0;display:flex;flex-direction:column;--g-label:196px}
-.g-row{display:grid;grid-template-columns:var(--g-label) repeat(var(--g-weeks,13),1fr);align-items:center;min-height:38px;border-top:1px solid var(--line-soft)} /* 週の縦線は引かない（行の横罫だけ。週の位置は上の目盛りで読む） */
+.g-row{display:grid;grid-template-columns:var(--g-label) repeat(var(--g-weeks,13),1fr);align-items:center;min-height:38px;border-top:1px solid var(--line-soft);position:relative;isolation:isolate}
+.g-row::before{content:"";position:absolute;left:var(--g-label);right:0;top:0;bottom:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(to right,var(--line) 1px,transparent 1px);background-size:calc(100% / var(--g-weeks,13)) 100%;background-repeat:repeat-x;
+  -webkit-mask-image:repeating-linear-gradient(to bottom,#000 0 2px,transparent 2px 5px);mask-image:repeating-linear-gradient(to bottom,#000 0 2px,transparent 2px 5px)} /* 週の点線の格子（日付の側だけ。行見出し列には引かない） */
 .g-row.g-head,.g-row.g-month{border-top:0}
+.g-row.g-head::before,.g-row.g-month::before{display:none}
 .g-row.g-head{min-height:30px;align-items:end;padding-bottom:6px;border-bottom:2px solid var(--ink)}
 .g-row.g-month{min-height:22px;align-items:end}
 .g-row.g-head .g-wk{font-family:var(--serif);font-size:11.5px;color:var(--sub);text-align:left;padding-left:6px;line-height:1.2;font-variant-numeric:tabular-nums}
