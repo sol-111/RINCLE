@@ -799,7 +799,7 @@ table.nest thead th:nth-child(2){padding-left:18px}
 .oppose-tag.alt{background:var(--ink)}
 
 /* --- 循環サイクル .cycle（各項目に --i=番号 と --n=総数。楕円の周りに等間隔） --- */
-.cycle{position:relative;aspect-ratio:2/1;margin:1.6em 0}
+.cycle{position:relative;aspect-ratio:5/2;margin:1.6em 0} /* 幅いっぱいでも高くなりすぎない扁平の楕円 */
 .cycle::before{content:"";position:absolute;inset:10% 14%;border:1px dashed var(--accent);border-radius:50%}
 .cycle-item{position:absolute;left:calc(50% + 42% * sin(360deg * var(--i) / var(--n)));top:calc(50% - 46% * cos(360deg * var(--i) / var(--n)));transform:translate(-50%,-50%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:.2em;width:9em;font-size:.9em;line-height:1.5}
 .cycle-item .t{font-weight:700;color:var(--ink)}
