@@ -727,6 +727,7 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 
 /* --- 表の変種: ヒートマップ .heat / 充足度 .hb / 入れ子行 .nest / 打ち手の効果 .efx --- */
 table.heat td.h0,table.heat td.h1,table.heat td.h2,table.heat td.h3{text-align:center;font-weight:700;padding:.5em .8em;border:2px solid var(--surface);white-space:nowrap}
+table.heat tbody td:first-child,table.heat thead tr:first-child th:first-child{border-right-width:2.5px} /* 隣のセルの白い2px罫に負けないよう軸罫を太くする（collapseは太い方が勝つ） */
 table.heat td.h0{background:var(--surface);color:var(--sub);outline:1px solid var(--line-soft);outline-offset:-2px;font-weight:400}
 table.heat td.h1{background:var(--accent-faint);color:var(--text)}
 table.heat td.h2{background:var(--accent-soft);color:var(--ink)}
