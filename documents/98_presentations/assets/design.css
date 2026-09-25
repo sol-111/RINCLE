@@ -195,7 +195,7 @@ th.num{text-align:right} /* 数値列は見出しも右揃えにして値と縦�
 /* 2段ヘッダー（列グループ）: 1行目に th[rowspan]（グループ外の列）と th.th-grp[colspan]（グループ名）、
    2行目にグループ内の列見出し。グループ名とサブ見出しの間は弱い罫・本文との境は通常どおり墨2px */
 thead th[rowspan]{vertical-align:bottom}
-thead th.th-grp{text-align:center;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:8px}
+thead th.th-grp{text-align:left;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:8px}
 thead tr+tr th{padding-top:10px}
 /* 停止中・対象外の行を沈める（例: 動いていない案件の行） */
 tbody tr.muted td{color:var(--sub)}
