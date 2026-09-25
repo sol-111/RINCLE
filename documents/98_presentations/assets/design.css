@@ -182,8 +182,10 @@ h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);marg
 .table-wrap{overflow-x:auto;margin:28px 0}
 table{width:100%;border-collapse:collapse;font-size:14px}
 thead th{border-bottom:2px solid var(--ink);padding:0 16px 10px 0;text-align:left;font-size:14px;letter-spacing:.04em;font-weight:700;color:var(--ink);white-space:nowrap} /* 2026-09-25 見出し行は本文と同じ大きさ・太字・墨（薄い小文字をやめる） */
-table:has(td.label:first-child) thead th:first-child,table:has(td.label:first-child) tbody td.label:first-child{border-right:1.5px solid var(--ink);padding-right:18px} /* 行見出しの軸列に縦罫（ここが軸と分かる） */
-table:has(td.label:first-child) tbody td:first-child:not(.label){border-right:1.5px solid var(--ink)} /* 軸列の中の変種行（.ind等はlabelを持つ。持たない行も罫を通す） */
+table:has(td.label:first-child) thead tr:first-child th:first-child,table:has(td.label:first-child) tbody td:first-child{border-right:1.5px solid var(--ink);padding-right:18px} /* 行見出しの軸列に縦罫（ここが軸と分かる）。2段ヘッダーは1行目の先頭thだけ */
+table:has(td.label:first-child) tr>*:nth-child(2),table.nest tr>*:nth-child(2){padding-left:18px} /* 軸の縦罫の右に余白（罫に文字が貼り付かない） */
+table:has(td.label:first-child) thead tr:nth-child(2) th:first-child{padding-left:18px} /* 2段ヘッダーの2行目は先頭thが軸の右隣 */
+table:has(td.label:first-child) tr.tgroup td:first-child{border-right:0} /* 前月比較表のグループ見出し行は軸をまたぐ */
 td{padding:18px 16px 18px 0;border-bottom:1px solid var(--line-soft);vertical-align:baseline}
 tbody tr:hover td{background:var(--accent-faint)}
 td.label{font-family:var(--serif);font-size:17px;color:var(--ink);white-space:nowrap}
@@ -738,7 +740,7 @@ tbody tr:hover td.h3{background:var(--accent)}
 .hb{display:inline-block;width:1.3em;height:1.3em;border-radius:50%;border:1.5px solid var(--ink);vertical-align:-.3em;background:conic-gradient(var(--ink) 0 var(--q),transparent var(--q) 100%)} /* ハーベイボール: --q=充足度 */
 .hb.q0{--q:0%}.hb.q1{--q:25%}.hb.q2{--q:50%}.hb.q3{--q:75%}.hb.q4{--q:100%}
 td .hb{margin-right:.4em}
-table.nest td.grp{font-family:var(--serif);font-size:1.05em;color:var(--ink);vertical-align:middle;border-right:.14em solid var(--ink);padding-right:1em;background:var(--accent-faint)} /* 入れ子行: rowspan の親ラベル */
+table.nest td.grp{font-family:var(--serif);font-size:1.05em;color:var(--ink);vertical-align:middle;border-right:1.5px solid var(--ink);padding:.6em 1em .6em .8em;background:var(--accent-faint)} /* 入れ子行: rowspan の親ラベル */
 table.nest td.sub{font-weight:700;color:var(--ink)}
 .efx{display:inline-block;vertical-align:middle;height:1.6em;line-height:1.6em;padding:0 1.2em 0 .7em;min-width:4em;background:var(--accent);color:var(--paper);font-family:var(--serif);font-size:.95em;clip-path:polygon(0 0,calc(100% - .7em) 0,100% 50%,calc(100% - .7em) 100%,0 100%)} /* 効果の幅（増やす方向=焦がし） */
 .efx.down{background:#EAE2D6;color:var(--ink)}                                                            /* 減らす方向=下地 */
@@ -912,6 +914,7 @@ body.deck{margin:0;background:#EAE2D6;min-height:100vh;display:flex;align-items:
 .sd-body table{font-size:1em}
 .sd-body thead th{font-size:.9em;padding:0 .9em .6em 0}
 .sd-body td{padding:.8em .9em .8em 0}
+.sd-body table:has(td.label:first-child) tr>*:nth-child(2),.sd-body table.nest tr>*:nth-child(2){padding-left:1em}
 .sd-body td.label{font-size:1.05em}
 .sd-body td.num{font-size:1em}
 .sd-body td.label.wrap{font-size:1em}
