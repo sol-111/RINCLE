@@ -20,7 +20,7 @@
 .g-nm{font-family:var(--serif);font-size:20px;color:var(--ink)}
 .g-ds{font-size:11.5px;line-height:1.8;color:var(--sub)}
 .g-demo{display:flex;flex-direction:column;gap:16px;min-width:0}
-.g-row{display:flex;align-items:center;gap:36px;flex-wrap:wrap}
+.g-side{display:flex;align-items:flex-start;gap:36px;flex-wrap:wrap} /* 横並びの補助。ganttの .g-row と衝突するので g-side */
 .g-st{font-size:10.5px;color:var(--sub)}
 .g-frame{border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--surface);max-width:560px}
 .g-lines{display:flex;flex-direction:column;gap:6px;font-size:12.5px;line-height:1.9}
@@ -164,7 +164,7 @@
         <div class="g-nm">キャレットと選択</div>
         <div class="g-ds">文字の挿入位置は墨の縦線。選択範囲は淡オレンジ。</div>
       </div>
-      <div class="g-row">
+      <div class="g-side">
         <div class="input is-focus" style="width:320px">sitemap.xml 作成手<span class="caret"></span>順</div>
         <div class="input" style="width:320px">sitemap.xml <span class="text-sel">作成手順</span></div>
       </div>
@@ -185,7 +185,7 @@
         <div class="g-ds">主ボタンは墨、強い誘導だけ焦がしオレンジ。角丸3px・高さ44px。</div>
       </div>
       <div class="g-demo">
-        <div class="g-row" style="gap:16px">
+        <div class="g-side" style="gap:16px">
           <button class="btn btn-main">主要な操作</button>
           <button class="btn btn-cta">強い誘導</button>
           <button class="btn btn-next">次の操作</button>
@@ -234,7 +234,7 @@
         <div class="g-nm">チェックボックス</div>
         <div class="g-ds">四角・墨塗りに白チェック。中間状態は横棒。</div>
       </div>
-      <div class="g-row">
+      <div class="g-side">
         <label class="chk"><span class="chk-box"></span>未選択</label>
         <label class="chk"><span class="chk-box is-on"><svg class="chk-mark" viewBox="0 0 24 24"><path d="M4 12.5 10 18.5 20 6.5"></path></svg></span>選択</label>
         <label class="chk"><span class="chk-box is-on"><span class="chk-part"></span></span>一部選択</label>
@@ -247,7 +247,7 @@
         <div class="g-nm">ラジオボタン</div>
         <div class="g-ds">丸・どれかひとつ。選択は焦がしオレンジの点。</div>
       </div>
-      <div class="g-row">
+      <div class="g-side">
         <label class="radio"><span class="radio-box"></span>サブドメイン</label>
         <label class="radio is-on"><span class="radio-box is-on"><span class="radio-dot"></span></span>サブディレクトリ</label>
         <label class="radio is-off"><span class="radio-box"></span>無効</label>
@@ -260,7 +260,7 @@
         <div class="g-nm">トグルスイッチ</div>
         <div class="g-ds">オンは焦がしオレンジ。設定の即時反映にだけ使う。</div>
       </div>
-      <div class="g-row">
+      <div class="g-side">
         <label class="switch"><span class="switch-track"><span class="switch-knob"></span></span>オフ</label>
         <label class="switch is-on"><span class="switch-track is-on"><span class="switch-knob"></span></span>Data APIを公開</label>
       </div>
@@ -287,7 +287,7 @@
         <div class="g-nm">数値スピナー</div>
         <div class="g-ds">上下の段付きで数を送る。由来は機械のダイヤル。</div>
       </div>
-      <div class="g-row" style="gap:24px">
+      <div class="g-side" style="gap:24px">
         <div class="spin">
           <button class="spin-btn">−</button>
           <div class="spin-val">56</div>
@@ -303,7 +303,7 @@
         <div class="g-nm">右クリックメニュー</div>
         <div class="g-ds">編集操作の定番3つ+ショートカット表記。</div>
       </div>
-      <div class="g-row" style="align-items:flex-start;gap:24px">
+      <div class="g-side" style="align-items:flex-start;gap:24px">
         <div class="menu">
           <div class="menu-item"><span>切り取り</span><span class="menu-key">⌘X</span></div>
           <div class="menu-item is-on"><span>コピー</span><span class="menu-key">⌘C</span></div>
@@ -343,7 +343,7 @@
         <div class="g-nm">ドロップダウン</div>
         <div class="g-ds">閉じた状態と開いた状態。選択行は淡オレンジ。</div>
       </div>
-      <div class="g-row" style="align-items:flex-start;gap:28px">
+      <div class="g-side" style="align-items:flex-start;gap:28px">
         <div class="dd-head">京都府<svg class="dd-caret" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></div>
         <div class="dd">
           <div class="dd-head is-open">京都府<svg class="dd-caret" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"></path></svg></div>
@@ -409,7 +409,7 @@
         <div class="g-nm">ハンバーガー</div>
         <div class="g-ds">三本線。押すとドロワー（11）が開く。</div>
       </div>
-      <div class="g-row" style="gap:20px">
+      <div class="g-side" style="gap:20px">
         <button class="btn btn-sq"><svg class="btn-ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
         <button class="btn btn-sq is-open"><svg class="btn-ico" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"></path></svg></button>
         <span class="g-st">閉じている / 開いている（×）</span>
@@ -475,7 +475,7 @@
         <div class="g-nm">スクロールバー</div>
         <div class="g-ds">細く・薄く。つまみは罫線色、ホバーで弱い文字色。</div>
       </div>
-      <div class="g-row" style="gap:24px">
+      <div class="g-side" style="gap:24px">
         <div class="scrollbox">
           長い本文がここに続く。読み進みは右端の細いつまみで示す……
           <div class="scrollbox-thumb"></div>
@@ -589,7 +589,7 @@
         <div class="g-nm">フォルダ・ごみ箱・アーカイブ</div>
         <div class="g-ds">置き場の比喩3点。行アクションとして並べて使う。</div>
       </div>
-      <div class="g-row" style="gap:16px">
+      <div class="g-side" style="gap:16px">
         <div class="fchip">
           <svg class="ic ic-md" viewBox="0 0 24 24"><path d="M3 6h6l2 2h10v11H3z"></path></svg>
           <span class="fchip-name">07_release</span><span class="fchip-meta">26ファイル</span>
@@ -609,7 +609,7 @@
         <div class="g-nm">アバター</div>
         <div class="g-ds">頭文字+淡い面。写真は使わず文字で。</div>
       </div>
-      <div class="g-row" style="gap:20px">
+      <div class="g-side" style="gap:20px">
         <span class="ava ava-ink ava-lg">増</span>
         <span class="ava">清</span>
         <span class="ava ava-soft ava-sm">山</span>
@@ -840,7 +840,7 @@
         <div class="g-nm">ラベルとタグ</div>
         <div class="g-ds">状態は塗り、分類は罫線。角丸は控えめの3px。効力を失ったもの（旧設計・対象外）は <code>muted</code> で沈める。<br><strong>3段階の格付けはこの順で重さを付ける</strong>（2026-09-14）: 高=<code>brand</code>（焦がしベタ）/ 中=<code>mid</code>（白面・焦がし1px輪郭）/ 低=<code>plain</code>（罫線のみ）。<strong><code>ink</code>（黒ベタ）は格付けの「中」に使わない</strong> — 黒ベタは焦がしベタより重く見え、高低が逆に読める。<code>ink</code> はページ内で唯一の最重要マークにだけ使う（lintが1ページ4個以上を指摘する）。<code>bad</code>（紅）はリスク・注意を示す。</div>
       </div>
-      <div class="g-row" style="gap:12px">
+      <div class="g-side" style="gap:12px">
         <span class="badge brand">高</span>
         <span class="badge mid">中</span>
         <span class="badge plain">低</span>
@@ -1051,7 +1051,7 @@
         <div class="g-ds">線は細く2.4。中央は大きな数字だけ（補足文言は入れない）。単位・出典は凡例側に。データ色は焦がしオレンジ→墨→罫線色の順。2カラムの片側など半分幅に置く時は .chart.compact（リング130px・凡例は右）</div>
       </div>
       <figure class="fig" aria-label="自転車の詳細ページが433URL中374を占め、静的ページは3しかない">
-        <div class="g-demo">
+        <div class="g-side" style="align-items:flex-start">
       <div class="chart">
         <svg viewBox="0 0 42 42" style="width:170px;height:170px" aria-hidden="true">
           <circle class="ct-ring ct-rest-line" cx="21" cy="21" r="15.9155"></circle>
@@ -1066,7 +1066,7 @@
           <div class="src">単位: URL / 出典: 2026-08-20 本番実測</div>
         </div>
       </div>
-      <div class="chart compact" style="max-width:520px">
+      <div class="chart compact" style="flex:1 1 400px">
         <svg viewBox="0 0 42 42" aria-hidden="true">
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"></circle>
           <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="70 30" stroke-dashoffset="25"></circle>
@@ -1230,7 +1230,7 @@
         <div class="g-nm">統計数字</div>
         <div class="g-ds">数字が主役の時は明朝の特大+左罫線。順序は常に**ラベル（日付つき出典）→数字**（statの順序は全変種で統一 — 旧「数字が上」の見本が残っていて参照割れが起きた教訓・2026-08-26）。</div>
       </div>
-      <div class="g-row" style="align-items:flex-start;gap:56px">
+      <div class="g-side" style="align-items:flex-start;gap:56px">
         <div class="stat">
           <div class="l">sitemapに登録する合計（2026-08-20 実測）</div>
           <div style="display:flex;align-items:baseline;gap:8px"><span class="n">433</span><span style="font-size:13px;color:var(--sub)">URL</span></div>
@@ -1460,7 +1460,7 @@
         <div class="g-nm">変更点バッジ</div>
         <div class="g-ds">設計の変更・決定の状態を示すバッジは、この4語だけを使う（2026-09-04固定）。<code>CHANGED</code> / <code>NEW</code> のような英字や、「弊社案」「旧仕様」などの言い換えは使わない — 同じ意味の語が資料ごとに割れると、読者は色と語の対応を毎回覚え直すことになる。</div>
       </div>
-      <div class="g-row" style="gap:12px">
+      <div class="g-side" style="gap:12px">
         <span class="badge good">決定済み</span>
         <span class="badge brand">弊社提案</span>
         <span class="badge brand">変更点</span>
@@ -1671,7 +1671,7 @@
         <div class="g-ds">番号や記号（1・2・A・B）を丸で示す。明朝の文字・白面・1.5pxの輪郭で、番号つき手順の丸や役割つき縦フローの丸と同じ型。既定は墨の輪郭で、色の変種は <code>.brand</code>（焦がし）だけ — 藍・緑は図解の役割色（ユーザー・店舗）なので流用しない。表のセル内は小サイズの <code>.sm</code>（24px）。</div>
       </div>
       <div class="g-demo">
-        <div class="g-row" style="gap:14px">
+        <div class="g-side" style="gap:14px">
           <span class="num-chip">1</span>
           <span class="num-chip">2</span>
           <span class="num-chip">A</span>
@@ -1739,7 +1739,7 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-nm">APIメソッドバッジ（.method）</div>
         <div class="g-ds">APIリファレンスの GET / POST / DELETE / PUT。等幅フォント・小さめ・白面に役割色の輪郭で、緑＝取得 / 藍＝作成・更新 / 琥珀＝置き換え / 紅＝削除。クラスは<strong>ドット記法で統一</strong>する（<code>.method.get</code>）。<code>.method-get</code> のようなハイフン記法は作らない。</div>
       </div>
-      <div class="g-row" style="gap:12px">
+      <div class="g-side" style="gap:12px">
         <span class="method get">GET</span>
         <span class="method post">POST</span>
         <span class="method put">PUT</span>
@@ -2224,16 +2224,16 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-label joint"><i></i>判断日<small>削るか決める</small></div>
         <div class="g-cell" style="grid-column:4 / 5"><div class="g-ms own"><b></b>10.23 中間判断</div></div>
       </div>
-      <div class="g-row">
+      <div class="g-side">
         <div class="g-label party"><i></i>定例で確認<small>毎週金曜</small></div>
         <div class="g-bar hollow" style="grid-column:2 / 9">できた画面を相手方が操作して確認</div>
       </div>
-      <div class="g-row">
+      <div class="g-side">
         <div class="g-label party"><i></i>納品→検収→振込<small>11.18 → 11.20 → 11.25</small></div>
         <div class="g-cell" style="grid-column:8 / 9"><div class="g-ms own"><b></b>11.18 納品</div><div class="g-ms party"><b></b>11.20 検収</div></div>
         <div class="g-cell" style="grid-column:9 / 10"><div class="g-ms party"><b></b>11.25 振込</div></div>
       </div>
-      <div class="g-row">
+      <div class="g-side">
         <div class="g-label after"><i></i>納品後<small>期限の外</small></div>
         <div class="g-bar after" style="grid-column:9 / 10">社内テスト</div>
       </div>
