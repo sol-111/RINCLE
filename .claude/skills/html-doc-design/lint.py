@@ -39,6 +39,11 @@
            接続助詞「し、/り、/て、/が、」の文つなぎ(句点で切る。ただし/つまり/〜のとおり等の接続詞・
            慣用句と主語の「が、」は除外。code/pre内は対象外)
   敬語   : 二重敬語「ご〜される」・提案側の「で結構です」(それ以外の敬語=主体依存は機械判定不能のためSKILL.md参照)
+  内容   : (2026-09-25 内容レビューから) NG=章参照「N章」が章数を超える・「M月D日（曜）」の曜日が暦と違う・
+           footerが「最終更新 …」でも「正本: …」でもない
+           WARN(exit codeに数えない・目視で判断)=「当社」「貴社」の定義なし・h2/sh-subの個数表現・表記ゆれの代表ペア・
+           口語・説明のない専門語・導入文4文以上・導入文と01章の1文目が同文・評価語・和暦だけ/YYYY-MM-DDの本文日付
+           (語彙リストは lint.py の COLLOQUIAL / JARGON / EVALUATIVE / VARIANT_PAIRS。案件で増やす)
   目視   : footerの正本パス(mdが正本の場合のみ必須=機械判定不能)・章の背景交互・図解の役割色と凡例
 
 部品カタログ(gallery等・部品を文脈の外に展示するページ)は、ページ内に
@@ -231,6 +236,107 @@ def text_rules(s, bad):
         bad(f"提案側の「で結構です」は上から目線(「お時間をいただければ十分です」等に): …{ctx(m, text)}…")
 
 
+# ---- 内容規約(2026-09-25 内容レビューの採否表から。WARNは exit code に数えない=目視で判断する) ----
+COLLOQUIAL = ('全振り', '効く', '効きます', '生きています', '生きている', '持っていけば', '拾う', '拾える', 'ペナルティ',
+              'ざっくり', 'ぶっちゃけ', 'だるい', 'やばい', 'めっちゃ', 'とりあえず', 'ちゃんと', 'いっぱい', 'けっこう',
+              'まあ', 'ですよね', 'かなと', 'っぽい', 'ダメ', 'ムリ')
+JARGON = ('ステージング', '単体テスト', 'テスト駆動', 'Playwright', 'TTL', 'DNS', 'Webhook', 'APIキー', 'テナント',
+          'DBスキーマ', 'スキーマ', '準委任', 'デプロイ', 'マイグレーション', 'リポジトリ', 'エンドポイント', 'トークン',
+          'キャッシュ', 'クエリ', 'インデックス', 'リダイレクト', 'サブドメイン', 'オーソリ', 'CDN', 'JSON', 'CSV')
+EVALUATIVE = ('限定的', '十分です', '十分に', '問題ない', '問題ありません', '最小限', '安全です', '安全に', '不利益はありません',
+              '不利益はない', '現実的', '成立します', '成立する', '変えるところがない', '影響はありません', '影響はない', '容易', '簡単に')
+VARIANT_PAIRS = (('PEDALSTANDARD社', 'PEDAL社'), ('交付決定取消', '交付決定の取消'), ('実物チェック', '実物のチェック'),
+                 ('営業日と貸出日', '営業日・貸出不可日'), ('別紙', '別の請求書'), ('お客様', '利用者'), ('ユーザー', '利用者'),
+                 ('店舗様', '店舗'), ('弊社', '当社'), ('御社', '貴社'))
+NUM = r'[0-9０-９一二三四五六七八九十]+'
+
+
+def content_rules(s, bad):
+    """内容レビュー由来の規約。NGは bad('…')、WARNは bad('WARN …')。誌面ページ専用(カタログ=specimenは呼ばない)"""
+    import datetime
+    warn = lambda m: bad('WARN ' + m)
+    text = re.sub(r'<!--.*?-->', ' ', s, flags=re.S)
+    text = re.sub(r'<(style|script|code|pre|svg)\b.*?</\1>', ' ', text, flags=re.S)
+    body = html.unescape(re.sub(r'<[^>]+>', ' ', text))
+
+    def ctx(m, t):
+        return re.sub(r'\s+', ' ', t[max(0, m.start() - 14):m.end() + 14]).strip()
+
+    # 1 役割語「当社」「貴社」は初出で定義(「当社（株式会社◯◯）」)
+    for w in ('当社', '貴社'):
+        if w in body and not re.search(w + r'（[^）]{2,30}）', body):
+            warn(f"「{w}」が誰か定義されていない(初出で「{w}（社名）」と書く)")
+    # 2 h2・sh-sub に個数表現を書かない(原則13。本文の数と食い違うのが定番の破綻)
+    for m in re.finditer(r'<(h2|div class="sh-sub")[^>]*>(.*?)</(?:h2|div)>', s, re.S):
+        t = _text(m.group(2))
+        mm = re.search(NUM + r'(つ|点|段階|項目|種類|本|件|か所|カ所|箇所)(?!目)', t)
+        if mm and '分の' not in t:
+            warn(f"見出し・副題に個数表現「{mm.group(0)}」(本文の数と食い違いやすい。個数を消すか主張文に): {t[:30]!r}")
+    # 3 章参照「N章」は存在する章に限る
+    n_sec = len(re.findall(r'<div class="section-num"', s))
+    if n_sec:
+        for m in re.finditer(r'(\d{1,2})章', body):
+            n = int(m.group(1))
+            if n > n_sec or n == 0:
+                bad(f"章参照「{m.group(0)}」が本編の章数({n_sec})を超えている: …{ctx(m, body)}…")
+    # 4 日付の曜日は暦と一致(年は本文の最初の「20xx年」から。無ければ今年)
+    ym = re.search(r'(20\d\d)年', body)
+    year = int(ym.group(1)) if ym else datetime.date.today().year
+    YOBI = '月火水木金土日'
+    for m in re.finditer(r'(\d{1,2})月(\d{1,2})日（([月火水木金土日])）', body):
+        mo, d, w = int(m.group(1)), int(m.group(2)), m.group(3)
+        near = re.search(r'(20\d\d)年\s*$', body[max(0, m.start() - 8):m.start()])  # 「2027年1月31日」のように年が直前にあればそれを使う
+        y = int(near.group(1)) if near else year
+        try:
+            real = YOBI[datetime.date(y, mo, d).weekday()]
+        except ValueError:
+            continue
+        if real != w:
+            bad(f"曜日が暦と合わない: {m.group(0)} は {y}年では（{real}）")
+    # 5 1資料1用語(表記ゆれの代表ペア)
+    for a, b in VARIANT_PAIRS:
+        if a in body and b in body:
+            warn(f"表記ゆれ「{a}」と「{b}」が同じページにある(1資料1用語)")
+    # 6 口語・俗語
+    for w in COLLOQUIAL:
+        m = re.search(re.escape(w), body)
+        if m:
+            warn(f"口語「{w}」(言い換える): …{ctx(m, body)}…")
+    # 7 専門語は初出で括弧の日常語(「語（…）」の定義形が同じページにあれば免除。.term での解説も免除)
+    for w in JARGON:
+        if re.search(r'(?<![A-Za-z])' + re.escape(w) + r'(?![A-Za-z])', body):
+            if re.search(re.escape(w) + r'（', body) or re.search(r'class="term[^"]*"[^>]*>(?:(?!</div>).)*' + re.escape(w), s, re.S):
+                continue
+            warn(f"専門語「{w}」に日常語の説明がない(初出で「{w}（…）」か .term で解説)")
+    # 8 hero導入文は3文まで。01章冒頭の1文目と同文にしない
+    lm = re.search(r'<p class="lead">(.*?)</p>', s, re.S)
+    if lm:
+        lead = _text(lm.group(1))
+        n_sent = len([x for x in re.split(r'。', lead) if x.strip()])
+        if n_sent > 3:
+            warn(f"導入文が{n_sent}文(3文まで: 期限・進め方・判断)")
+        ci = s.find('id="conclusion"')
+        if ci > 0:
+            pm = re.search(r'<p[^>]*>(.*?)</p>', s[ci:], re.S)
+            if pm:
+                first = _text(pm.group(1)).split('。')[0]
+                if first and first == lead.split('。')[0]:
+                    warn("導入文の1文目と01章の1文目が同文(二重に読ませない)")
+    # 9 評価語には同じ章に根拠(機械では根拠の有無を判定できないので語の存在をWARN)
+    for w in EVALUATIVE:
+        m = re.search(re.escape(w), body)
+        if m:
+            warn(f"評価語「{w}」(同じ章に根拠を置くか「事務局への確認待ち」等と断る): …{ctx(m, body)}…")
+    # 11 日付書式: 本文は「M月D日（曜）」。和暦は西暦を主に併記、YYYY-MM-DD は本文に書かない(hero-metaとfooterは対象外)
+    inner = re.sub(r'<div class="hero-meta">.*?</div>|<span class="hero-kicker">.*?</span>|<footer>.*?</footer>', ' ', text, flags=re.S)
+    inner = html.unescape(re.sub(r'<[^>]+>', ' ', inner))
+    for m in re.finditer(r'令和\d+年', inner):
+        if not re.search(r'20\d\d年', inner[max(0, m.start() - 20):m.end() + 20]):
+            warn(f"和暦だけの日付(西暦を主にして併記): …{ctx(m, inner)}…")
+    for m in re.finditer(r'20\d\d-\d\d-\d\d', inner):
+        warn(f"本文の日付が YYYY-MM-DD(本文は「M月D日（曜）」・年は初出のみ): …{ctx(m, inner)}…")
+
+
 def lint_deck(path, s, issues):
     """デッキ(投影用スライド・body.deck)の規約。誌面ページの規約(ヒーロー/章ナビ/01章)は適用しない"""
     bad = issues.append
@@ -346,7 +452,10 @@ def lint_file(path, allow_emoji):
     for m in re.finditer(r'<footer[^>]*>(.*?)</footer>', s, re.S):
         ftext = re.sub(r'<[^>]+>', '', m.group(1))
         if '同期' in ftext:
-            bad(f"footerに保守者向けの同期指示(正本パスだけにし、指示はHTMLコメントへ): {ftext.strip()[:44]!r}")
+            bad(f"footerに保守者向けの同期指示(更新日か正本パスだけにし、指示はHTMLコメントへ): {ftext.strip()[:44]!r}")
+        ft = ftext.strip()
+        if ft and not (ft.startswith('最終更新') or ft.startswith('正本')):
+            bad(f"footerは「最終更新 YYYY年M月D日」(クライアント向け)か「正本: パス」(社内向け)のどちらか: {ft[:44]!r}")
     # 正本パスの明記はmdが正本の場合のみ必須のため機械判定しない（目視チェック）
     # ヒーローに統計チップ・カードを置かない(原則7)。ヒーロー開始〜本文開始までの間に .stat/.chip があれば違反
     hero_start = s.find('class="hero"')
@@ -678,6 +787,7 @@ def lint_file(path, allow_emoji):
     # --- 文章規約(関数 text_rules に切り出し・デッキと共用) ---
     if not specimen:
         text_rules(s, bad)
+        content_rules(s, bad)  # 内容規約(2026-09-25)。WARNは目視判断
 
     return issues, kicker, False, ('hero-logo' in s)
 
@@ -702,6 +812,7 @@ def main(argv):
         return 2
 
     total = 0
+    total_warn = 0
     kickers = {}
     logo_state = {}
     for p in paths:
@@ -710,11 +821,16 @@ def main(argv):
             kickers.setdefault(kicker, []).append(os.path.basename(p))
         if has_logo is not None:
             logo_state.setdefault(has_logo, []).append(os.path.basename(p))
-        tag = 'SKIP(ヒーローなし)' if skipped and not issues else ('NG' if issues else 'OK')
+        warns = [i for i in issues if i.startswith('WARN ')]
+        issues = [i for i in issues if not i.startswith('WARN ')]
+        tag = 'SKIP(ヒーローなし)' if skipped and not issues else ('NG' if issues else ('WARN' if warns else 'OK'))
         print(f"{tag:4} {os.path.basename(p)}")
         for i in issues:
             print(f"     - {i}")
+        for i in warns:
+            print(f"     ~ {i[5:]}")
         total += len(issues)
+        total_warn += len(warns)
     if len(logo_state) > 1 and not multi_doc:
         print("NG   ヒーローロゴの有無が混在(ロゴなし案件は全ページ省略・あり案件は全ページ設置):")
         for state, files in logo_state.items():
@@ -725,7 +841,7 @@ def main(argv):
         for k, files in kickers.items():
             print(f"     - '{k}': {len(files)}ファイル (例: {files[0]})")
         total += 1
-    print(f"\n{len(paths)}ファイル / 指摘 {total}件" + ("" if total else " — ALL CLEAN"))
+    print(f"\n{len(paths)}ファイル / 指摘 {total}件" + (f" / 注意(WARN) {total_warn}件" if total_warn else "") + ("" if total else " — ALL CLEAN"))
     return 1 if total else 0
 
 
