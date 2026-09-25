@@ -577,7 +577,7 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 .g-label{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--ink);padding:7px 14px 7px 0;line-height:1.5;align-self:stretch;display:flex;flex-direction:column;justify-content:center} /* 行見出し=軸列（表と同じ縦罫） */
 .g-label i{display:none} /* 旧: 役割の丸ドット。色は棒が持つので廃止 */
 .g-label small{display:block;font-family:var(--sans);font-weight:400;color:var(--sub);font-size:10.5px;line-height:1.5}
-.g-bar{align-self:stretch;min-height:26px;border-radius:0;margin:4px 2px;font-size:0;color:transparent;overflow:hidden} /* 棒に文字は入れない（何の棒かは行見出しが語る）。棒は行の高さいっぱい（上下4px・左右2pxの余白）。行見出しが2行でも棒が細く浮かない */
+.g-bar{height:26px;border-radius:0;margin:0;font-size:0;color:transparent;overflow:hidden} /* 棒に文字は入れない（何の棒かは行見出しが語る）。高さ26px固定・左右の余白なし（週の境界にぴったり付ける） */
 .g-bar.own{background:var(--accent)} .g-bar.party{background:#EAE2D6} .g-bar.joint{background:var(--ink)}
 .g-bar.after,.g-bar.hollow{background:none;border:1px solid var(--line)} /* 期限の外・繰り返しは輪郭だけ */
 .g-ms{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;color:var(--ink);white-space:nowrap;line-height:1.3;padding-left:2px}
