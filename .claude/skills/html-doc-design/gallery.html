@@ -2197,7 +2197,7 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
       <div class="g-meta">
         <div class="g-no is-add">追加 — 期間の図解（2026-09-16）</div>
         <div class="g-nm">週割り工程表</div>
-        <div class="g-ds">「誰が・いつ・何を」を1列=1週間の格子で見せる。フェーズ帯は順番だけを語るが、工程表は<strong>並走と期限の内側・外側</strong>を語る。棒の色は役割色（書き手側=焦がし / 相手方=緑 / 共同=墨 / 期限の外=破線）。日付が固定の節目は菱形。棒の中の文言は短く、詳しい日付は左の工程名の下の小さな文字へ。日付は「月.日」表記（半角/は文章規約で前後にスペースが要る）。週数は <code>style="--g-weeks:N"</code>。補助金・納期のある受託開発のロードマップで確立。</div>
+        <div class="g-ds">「誰が・いつ・何を」を1列=1週間の格子で見せる。フェーズ帯は順番だけを語るが、工程表は<strong>並走と期限の内側・外側</strong>を語る。2026-09-25にコンサル型に作り直した: 外枠なし・<strong>棒に文字を入れない</strong>（何の棒かは左の行見出しが語る）・色は濃=書き手側 / 淡=相手方 / 墨=共同の3つ、期限の外は輪郭だけ・<strong>動かない日付は最上段のマイルストーン行に▲で集める</strong>（判断日・納品・検収・振込）・毎週の定例のような繰り返しは棒にせず読み方ボックスへ。日付は「月.日」表記（半角/は文章規約で前後にスペースが要る）。週数は <code>style="--g-weeks:N"</code>。補助金・納期のある受託開発のロードマップで確立。</div>
       </div>
 <figure class="fig" aria-label="実装に6週間を確保し、納品・検収・振込を期限の内側に置く">
   <div class="gantt-wrap">
@@ -2212,45 +2212,27 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-wk">10.5</div><div class="g-wk">10.12</div><div class="g-wk">10.19</div><div class="g-wk">10.26</div>
         <div class="g-wk">11.2</div><div class="g-wk">11.9</div><div class="g-wk">11.16</div><div class="g-wk">11.23</div>
       </div>
-      <div class="g-row">
-        <div class="g-label party"><i></i>デザイン制作<small>相手方。3便に分けて納期を切る</small></div>
-        <div class="g-bar party" style="grid-column:2 / 4">第1便 → 第2便 → 第3便</div>
+      <div class="g-row g-ms-row">
+        <div class="g-label">マイルストーン</div>
+        <div class="g-cell" style="grid-column:4 / 5"><div class="g-ms"><b></b>10.23 中間判断</div></div>
+        <div class="g-cell" style="grid-column:8 / 9"><div class="g-ms own"><b></b>11.18 納品</div><div class="g-ms"><b></b>11.20 検収</div></div>
+        <div class="g-cell" style="grid-column:9 / 10"><div class="g-ms"><b></b>11.25 振込</div></div>
       </div>
       <div class="g-row">
-        <div class="g-label own"><i></i>実装<small>書き手側。10.5〜11.13</small></div>
-        <div class="g-bar own" style="grid-column:2 / 8">利用者画面 → 予約・決済 → 管理画面</div>
+        <div class="g-label">デザイン制作<small>相手方。第1便→第2便→第3便</small></div>
+        <div class="g-bar party" style="grid-column:2 / 4"></div>
       </div>
       <div class="g-row">
-        <div class="g-label joint"><i></i>判断日<small>削るか決める</small></div>
-        <div class="g-cell" style="grid-column:4 / 5"><div class="g-ms own"><b></b>10.23 中間判断</div></div>
+        <div class="g-label">実装<small>書き手側。10.5〜11.13。利用者画面→予約・決済→管理画面</small></div>
+        <div class="g-bar own" style="grid-column:2 / 8"></div>
       </div>
       <div class="g-row">
-        <div class="g-label party"><i></i>定例で確認<small>毎週金曜</small></div>
-        <div class="g-bar hollow" style="grid-column:2 / 9">できた画面を相手方が操作して確認</div>
-      </div>
-      <div class="g-row">
-        <div class="g-label party"><i></i>納品→検収→振込<small>11.18 → 11.20 → 11.25</small></div>
-        <div class="g-cell" style="grid-column:8 / 9"><div class="g-ms own"><b></b>11.18 納品</div><div class="g-ms party"><b></b>11.20 検収</div></div>
-        <div class="g-cell" style="grid-column:9 / 10"><div class="g-ms party"><b></b>11.25 振込</div></div>
-      </div>
-      <div class="g-row">
-        <div class="g-label after"><i></i>納品後<small>期限の外</small></div>
-        <div class="g-bar after" style="grid-column:9 / 10">社内テスト</div>
+        <div class="g-label">社内テスト<small>期限の外</small></div>
+        <div class="g-bar after" style="grid-column:9 / 10"></div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
   </div>
+  <div class="legend"><span><i class="sq" style="background:var(--accent)"></i>書き手側</span><span><i class="sq" style="background:#EAE2D6"></i>相手方</span><span><i class="sq" style="background:var(--ink)"></i>共同</span><span><i class="sq" style="background:none;border:1px solid var(--line)"></i>期限の外</span></div>
 </figure>      <div class="legend" style="margin-bottom:0">
   <span><i style="background: var(--accent);"></i>書き手側</span>
   <span><i style="background: var(--ok);"></i>相手方</span>

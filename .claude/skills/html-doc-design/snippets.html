@@ -583,65 +583,25 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
 </div>
 
 <!-- ============ 週割り工程表（.gantt: 期間の計画を「誰が・いつ」で見せる。1列=1週間・週数は style="--g-weeks:N"。
-     棒の色は役割色: 書き手側=焦がし.own / 相手方=緑.party / 共同=墨.joint / 期限の外=破線.after / 継続的な関与=.hollow。
-     節目は菱形.g-ms。棒の中の文言は短く（はみ出た分は切れる。詳細は左の <small> か本文へ）。
-     日付は「月.日」表記。凡例は図の直下に .legend で、その図に出ている役割だけ。figure.fig で包んで主張を aria-label に ============ -->
+     コンサル型（2026-09-25）: 外枠なし / 棒に文字を入れない（何の棒かは左の行見出し+small が語る）/ 色は own=焦がし・party=淡・joint=墨・after=輪郭だけ /
+     動かない日付は最上段の .g-ms-row に▲（.g-ms）で集める / 定例などの繰り返しは棒にせず読み方ボックスへ / figure.fig で包み aria-label に主張 ============ -->
 <figure class="fig" aria-label="実装に6週間を確保し、納品・検収・振込を期限の内側に置く">
   <div class="gantt-wrap">
     <div class="gantt" style="--g-weeks:8">
-      <div class="g-row g-month">
-        <div></div>
-        <div class="g-mo" style="grid-column:2 / 6">10月</div>
-        <div class="g-mo" style="grid-column:6 / 10">11月</div>
+      <div class="g-row g-month"><div></div><div class="g-mo" style="grid-column:2 / 6">10月</div><div class="g-mo" style="grid-column:6 / 10">11月</div></div>
+      <div class="g-row g-head"><div></div><div class="g-wk">10.5</div><div class="g-wk">10.12</div><div class="g-wk">10.19</div><div class="g-wk">10.26</div><div class="g-wk">11.2</div><div class="g-wk">11.9</div><div class="g-wk">11.16</div><div class="g-wk">11.23</div></div>
+      <div class="g-row g-ms-row">
+        <div class="g-label">マイルストーン</div>
+        <div class="g-cell" style="grid-column:4 / 5"><div class="g-ms"><b></b>10.23 中間判断</div></div>
+        <div class="g-cell" style="grid-column:8 / 9"><div class="g-ms own"><b></b>11.18 納品</div><div class="g-ms"><b></b>11.20 検収</div></div>
       </div>
-      <div class="g-row g-head">
-        <div></div>
-        <div class="g-wk">10.5</div><div class="g-wk">10.12</div><div class="g-wk">10.19</div><div class="g-wk">10.26</div>
-        <div class="g-wk">11.2</div><div class="g-wk">11.9</div><div class="g-wk">11.16</div><div class="g-wk">11.23</div>
-      </div>
-      <div class="g-row">
-        <div class="g-label party"><i></i>デザイン制作<small>相手方。3便に分けて納期を切る</small></div>
-        <div class="g-bar party" style="grid-column:2 / 4">第1便 → 第2便 → 第3便</div>
-      </div>
-      <div class="g-row">
-        <div class="g-label own"><i></i>実装<small>書き手側。10.5〜11.13</small></div>
-        <div class="g-bar own" style="grid-column:2 / 8">利用者画面 → 予約・決済 → 管理画面</div>
-      </div>
-      <div class="g-row">
-        <div class="g-label joint"><i></i>判断日<small>削るか決める</small></div>
-        <div class="g-cell" style="grid-column:4 / 5"><div class="g-ms own"><b></b>10.23 中間判断</div></div>
-      </div>
-      <div class="g-row">
-        <div class="g-label party"><i></i>定例で確認<small>毎週金曜</small></div>
-        <div class="g-bar hollow" style="grid-column:2 / 9">できた画面を相手方が操作して確認</div>
-      </div>
-      <div class="g-row">
-        <div class="g-label party"><i></i>納品→検収→振込<small>11.18 → 11.20 → 11.25</small></div>
-        <div class="g-cell" style="grid-column:8 / 9"><div class="g-ms own"><b></b>11.18 納品</div><div class="g-ms party"><b></b>11.20 検収</div></div>
-        <div class="g-cell" style="grid-column:9 / 10"><div class="g-ms party"><b></b>11.25 振込</div></div>
-      </div>
-      <div class="g-row">
-        <div class="g-label after"><i></i>納品後<small>期限の外</small></div>
-        <div class="g-bar after" style="grid-column:9 / 10">社内テスト</div>
-      </div>
+      <div class="g-row"><div class="g-label">作業名<small>担当・期間・中身の順序</small></div><div class="g-bar own" style="grid-column:2 / 8"></div></div>
+      <div class="g-row"><div class="g-label">相手方の作業<small>期間</small></div><div class="g-bar party" style="grid-column:2 / 4"></div></div>
+      <div class="g-row"><div class="g-label">期限の外<small>納品後</small></div><div class="g-bar after" style="grid-column:9 / 10"></div></div>
     </div>
   </div>
+  <div class="legend"><span><i class="sq" style="background:var(--accent)"></i>書き手側</span><span><i class="sq" style="background:#EAE2D6"></i>相手方</span><span><i class="sq" style="background:var(--ink)"></i>共同</span><span><i class="sq" style="background:none;border:1px solid var(--line)"></i>期限の外</span></div>
 </figure>
-<div class="legend">
-  <span><i style="background: var(--accent);"></i>書き手側</span>
-  <span><i style="background: var(--ok);"></i>相手方</span>
-  <span><i style="background: var(--ink);"></i>共同</span>
-  <span><i style="background: var(--line);"></i>期限の外</span>
-</div>
-<div style="display: flex; flex-direction: column;">
-  <div class="fbox">作業する</div>
-  <div class="farr">↓</div>
-  <div class="fbox q">確認は通った？</div>
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 6px;">
-    <div><div class="farr" style="color: var(--ok);">はい ↓</div><div class="fbox yes">次へ進む</div></div>
-    <div><div class="farr" style="color: var(--danger);">いいえ ↓</div><div class="fbox no">見直す</div></div>
-  </div>
-</div>
 
 <!-- ============ スライド（16:9・共通下枠=左ブランド/右ページ番号。1枚1メッセージ・表は5行まで） ============ -->
 <!-- 誌面の中に1枚だけ置く時は .slide の額（max-widthと font-size を指定）。デッキとして丸ごと投影する時は deck.html の器を使う（body.deck・1 section=1枚・.pg は自動記入） -->
