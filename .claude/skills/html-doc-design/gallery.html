@@ -1117,7 +1117,7 @@
         <div class="stackbar" style="margin:0">
           <div class="sb-title"><span>検索表示回数の中身</span><span class="sb-total">30,352回</span></div>
           <div class="sb-track">
-            <div class="sb-seg s3" style="width:75%">ノイズ 75%</div>
+            <div class="sb-seg s3" style="width:75%">75%</div>
             <div class="sb-seg s2" style="width:11%">11%</div>
             <div class="sb-seg s1" style="width:11%">11%</div>
             <div class="sb-seg s4" style="width:3%"></div>
@@ -2072,7 +2072,7 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
       </div>
       <figure class="fig" aria-label="予約フローに進んだ51人のうち成立したのは11件で、完了率は22%">
         <div class="funnel" style="max-width:620px">
-        <div class="frow"><div class="fbar" style="width:100%">予約フローに進んだ人</div><span class="fv">51</span></div>
+        <div class="frow"><div class="fbar" style="width:100%"></div><span class="fv">51</span><span class="fl">予約フローに進んだ人</span></div>
         <div class="fconv">完了率 22%</div>
         <div class="frow"><div class="fbar f2" style="width:22%"></div><span class="fv">11</span><span class="fl">成立予約（2026-07 実測）</span></div>
       </div>
@@ -2088,10 +2088,10 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
       <figure class="fig" aria-label="量は前月から減ったが、段ごとの通過率はすべて改善している">
         <div class="g-demo">
       <div class="funnel" style="max-width:620px;margin:0">
-        <div class="frow"><div class="fbar" style="width:58%">サイトに来た</div><span class="fv">3,315<small style="font-family:var(--sans);font-size:11px;color:var(--sub)">セッション</small></span></div>
+        <div class="frow"><div class="fbar" style="width:58%"></div><span class="fv">3,315<small style="font-family:var(--sans);font-size:11px;color:var(--sub)">セッション</small></span><span class="fl">サイトに来た</span></div>
         <div class="frow ghost"><div class="fghost" style="width:82%"></div><span class="fl">前月 4,717</span></div>
         <div class="fconv">82%<span>（前月 76%）</span></div>
-        <div class="frow"><div class="fbar f2" style="width:47%">検索・一覧を見た</div><span class="fv">2,725<small style="font-family:var(--sans);font-size:11px;color:var(--sub)">セッション</small></span></div>
+        <div class="frow"><div class="fbar f2" style="width:47%"></div><span class="fv">2,725<small style="font-family:var(--sans);font-size:11px;color:var(--sub)">セッション</small></span><span class="fl">検索・一覧を見た</span></div>
         <div class="frow ghost"><div class="fghost" style="width:63%"></div><span class="fl">前月 3,598</span></div>
         <div class="fconv">16%<span>（前月 18%）</span></div>
         <div class="frow"><div class="fbar f3" style="width:7%"></div><span class="fv">427<small style="font-family:var(--sans);font-size:11px;color:var(--sub)">セッション</small></span><span class="fl">詳細を見た</span></div>
@@ -2152,29 +2152,6 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         </div>
       </div></div>
       </figure>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">追加 — 図解の基本形</div>
-        <div class="g-nm">縦フロー（分岐つき）</div>
-        <div class="g-ds">上から下へ。分岐は菱形ではなく問いの箱+2択で平易に。</div>
-      </div>
-      <div style="max-width:420px;display:flex;flex-direction:column">
-        <div class="fbox">sitemap.xml を生成する</div>
-        <div class="farr">↓</div>
-        <div class="fbox q">店舗数・自転車数は実数と合っている？</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:6px">
-          <div style="display:flex;flex-direction:column">
-            <div class="farr" style="color:var(--ok)">はい ↓</div>
-            <div class="fbox yes">Bubbleへアップロード</div>
-          </div>
-          <div style="display:flex;flex-direction:column">
-            <div class="farr" style="color:var(--danger)">いいえ ↓</div>
-            <div class="fbox no">除外条件を見直す</div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="g-blk">
