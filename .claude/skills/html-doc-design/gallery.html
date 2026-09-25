@@ -11,10 +11,10 @@
 <link rel="stylesheet" href="parts.css">
 <style>
 /* このページ専用の最小CSS — 左が部品名+説明、右が実物の2カラム（元データの .blk 相当） */
-.g-blk{border-top:1px solid var(--line);padding:26px 0;display:grid;grid-template-columns:230px minmax(0,1fr);gap:36px}
+.g-blk{border-top:1px solid var(--line);padding:26px 0 30px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px} /* 2026-09-25 文字が上・部品が下（左右2列だと説明が長い部品で縦に間延びする） */
 .section-header + .g-blk{border-top:none}
 .g-blk.g-full{grid-template-columns:minmax(0,1fr)}
-.g-meta{display:flex;flex-direction:column;gap:6px}
+.g-meta{display:flex;flex-direction:column;gap:6px;max-width:880px}
 .g-no{font-size:10.5px;letter-spacing:.18em;color:var(--accent);font-weight:700}
 .g-no.is-add{color:var(--sub)}
 .g-nm{font-family:var(--serif);font-size:20px;color:var(--ink)}
@@ -54,19 +54,18 @@
   <a href="#s3"><span class="fnum">03</span><span class="ft">ナビゲーション</span><span class="fd">タブ・パンくず・ページャ等</span></a>
   <a href="#s4"><span class="fnum">04</span><span class="ft">入れ物と画面</span><span class="fd">カード・モーダル・ウィンドウ等</span></a>
   <a href="#s5"><span class="fnum">05</span><span class="ft">フィードバック</span><span class="fd">トースト・進捗・アラート等</span></a>
-  <a href="#s6"><span class="fnum">06</span><span class="ft">データ表示</span><span class="fd">表・カンバン・ガント等</span></a>
+  <a href="#s6"><span class="fnum">06</span><span class="ft">データ表示</span><span class="fd">表・ヒートマップ・充足度・カンバン等</span></a>
   <a href="#s7"><span class="fnum">07</span><span class="ft">チャート</span><span class="fd">ドーナツ・横棒・優先度バー・統計数字</span></a>
-  <a href="#s8"><span class="fnum">08</span><span class="ft">資料部品</span><span class="fd">章ナビ・用語解説・差分表等</span></a>
-  <a href="#s9"><span class="fnum">09</span><span class="ft">図解</span><span class="fd">スイムレーン・フロー・フェーズ帯・週割り工程表</span></a>
+  <a href="#s8"><span class="fnum">08</span><span class="ft">資料部品</span><span class="fd">章ナビ・並列カラム・意思決定・対応付け等</span></a>
+  <a href="#s9"><span class="fnum">09</span><span class="ft">図解</span><span class="fd">フロー・工程表・2×2・イシューツリー等</span></a>
   <a href="#s10"><span class="fnum">10</span><span class="ft">スライド部品</span><span class="fd">定例でそのまま映す16:9の型</span></a>
-  <a href="#s11"><span class="fnum">11</span><span class="ft">コンサル型の部品</span><span class="fd">並列カラム・対応付け・評価表・図解</span></a>
 </nav>
 
 <div class="container">
 
   <aside class="intro">
     <span class="kicker">この見本の使い方</span>
-    <p>「UI部品の由来図鑑」の47部品をこの様式で作り直し、チャート類・資料部品・図解・スライド部品・コンサル型の部品を加えた全11章。部品名の脇の番号（NO. 01〜47）は由来図鑑の通し番号。<strong>案件ごとに差し替えるのは色（<code>--accent</code> 系）だけ</strong>で、部品の構造と組み方は共通。</p>
+    <p>「UI部品の由来図鑑」の47部品をこの様式で作り直し、チャート類・資料部品・図解・スライド部品を加えた全10章（2026-09-25にコンサル型の部品23種を各章へ追加）。部品名の脇の番号（NO. 01〜47）は由来図鑑の通し番号。<strong>案件ごとに差し替えるのは色（<code>--accent</code> 系）だけ</strong>で、部品の構造と組み方は共通。</p>
   </aside>
 
 
@@ -497,7 +496,7 @@
       <div class="g-meta">
         <div class="g-no">NO. 02 — カード</div>
         <div class="g-nm">カード</div>
-        <div class="g-ds">白面+罫線1px。影は使わず罫線と余白で区切る（影は浮かぶ部品 — メニュー・モーダル・トーストだけ）。</div>
+        <div class="g-ds">墨の上罫1本で区切る（2026-09-25に囲みの箱をやめた）。影は使わず罫線と余白で区切る（影は浮かぶ部品 — メニュー・モーダル・トーストだけ）。</div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:640px">
         <div class="card" style="margin:0;display:flex;flex-direction:column;gap:8px">
@@ -943,6 +942,84 @@
         </div>
       </div>
     </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">table.heat</div>
+        <div class="g-nm">ヒートマップ表（濃淡で強弱）</div>
+        <div class="g-ds">td.h0〜h3 の4段。なし=白面・低=淡・中=薄・高=焦がし。凡例を直下に。行ホバーで色が変わらない。</div>
+      </div>
+      <div>
+    <div class="table-wrap"><table class="heat">
+      <thead><tr><th>データ</th><th>量</th><th>変換</th><th>決済との紐づき</th></tr></thead>
+      <tbody>
+        <tr><td class="label">店舗</td><td class="h1">低</td><td class="h1">低</td><td class="h2">中</td></tr>
+        <tr><td class="label">自転車</td><td class="h2">中</td><td class="h1">低</td><td class="h0">なし</td></tr>
+        <tr><td class="label">会員</td><td class="h3">高</td><td class="h2">中</td><td class="h3">高</td></tr>
+        <tr><td class="label">予約</td><td class="h3">高</td><td class="h3">高</td><td class="h3">高</td></tr>
+      </tbody>
+    </table></div>
+    <div class="legend"><span><i class="sq" style="background:var(--surface)"></i>なし</span><span><i class="sq" style="background:var(--accent-faint)"></i>低</span><span><i class="sq" style="background:var(--accent-soft)"></i>中</span><span><i class="sq" style="background:var(--accent)"></i>高</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.hb（ハーベイボール）</div>
+        <div class="g-nm">充足度評価表</div>
+        <div class="g-ds">span.hb.q0〜q4 で0/25/50/75/100%。墨の円。凡例を直下に。</div>
+      </div>
+      <div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>評価軸</th><th>Pay.jp継続</th><th>Stripe</th><th>判断の理由</th></tr></thead>
+      <tbody>
+        <tr><td class="label">移行の手間</td><td><span class="hb q4"></span>満たす</td><td><span class="hb q2"></span>一部</td><td>テナントIDを移せば継続できる</td></tr>
+        <tr><td class="label">手数料</td><td><span class="hb q1"></span>一部</td><td><span class="hb q4"></span>満たす</td><td>プラットフォーム手数料を一本化できる</td></tr>
+        <tr><td class="label">今後の拡張</td><td><span class="hb q0"></span>満たさない</td><td><span class="hb q4"></span>満たす</td><td>デポジット・分割に対応</td></tr>
+      </tbody>
+    </table></div>
+    <div class="legend"><span><span class="hb q4"></span>満たす</span><span><span class="hb q2"></span>一部満たす</span><span><span class="hb q0"></span>満たさない</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">table.nest</div>
+        <div class="g-nm">入れ子行の行列（rowspan）</div>
+        <div class="g-ds">td.grp[rowspan] が親ラベル（淡い面+右の墨罫）、td.sub が子。階層を表で示す。</div>
+      </div>
+      <div>
+    <div class="table-wrap"><table class="nest">
+      <thead><tr><th>区分</th><th>データ</th><th>扱い</th></tr></thead>
+      <tbody>
+        <tr><td class="grp" rowspan="3">店舗側</td><td class="sub">店舗</td><td>移す</td></tr>
+        <tr><td class="sub">自転車</td><td>移す</td></tr>
+        <tr><td class="sub">オプション在庫</td><td>移す</td></tr>
+        <tr><td class="grp" rowspan="2">利用者側</td><td class="sub">会員</td><td>再登録</td></tr>
+        <tr><td class="sub">予約</td><td>旧システムで消化</td></tr>
+      </tbody>
+    </table></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.efx</div>
+        <div class="g-nm">打ち手の効果表（行内の矢印棒）</div>
+        <div class="g-ds">span.efx に width:% で幅。増やす方向=焦がし、減らす方向=下地 .down。凡例を直下に。</div>
+      </div>
+      <div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>打ち手</th><th>効果の幅（予約数 / 月）</th><th>前提・制約</th></tr></thead>
+      <tbody>
+        <tr><td class="label">店舗ページのSEO</td><td><span class="efx" style="width:60%">+20〜30</span></td><td>全国100店舗の掲載が前提</td></tr>
+        <tr><td class="label">再登録メール</td><td><span class="efx" style="width:35%">+8〜12</span></td><td>会員146人が対象</td></tr>
+        <tr><td class="label">保守費の固定化</td><td><span class="efx down" style="width:25%">−5万円</span></td><td>月額換算</td></tr>
+      </tbody>
+    </table></div>
+    <div class="legend"><span><i class="sq" style="background:var(--accent)"></i>増やす方向</span><span><i class="sq" style="background:#EAE2D6"></i>減らす方向</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- ======================= 07 チャート ======================= -->
@@ -1291,6 +1368,39 @@
         <div class="numnote-row"><span class="numnote-n">1</span><span>出典のある数字だけを使う。凡例か脚注に日付つきで書く。</span></div>
         <div class="numnote-row"><span class="numnote-n">2</span><span>1ページに1〜2個まで。ドーナツの中央は大きな数字だけ。</span></div>
         <div class="numnote-row"><span class="numnote-n">3</span><span>データ色は焦がしオレンジ→墨→罫線色の3段。それ以上増やさない。</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.wfall</div>
+        <div class="g-nm">増減ブリッジ（ウォーターフォール）</div>
+        <div class="g-ds">各棒に --b（下端%）と --h（高さ%）。合計=墨・増=焦がし・減=紅。凡例を直下に。</div>
+      </div>
+      <div>
+    <figure class="fig" aria-label="手数料一本化と保守費固定で月の利益は100から140になる" style="margin:0;display:contents"><div class="wfall">
+      <div class="bar total" style="--b:0%;--h:50%"><span class="v">100</span><i></i><span class="l">現在</span></div>
+      <div class="bar" style="--b:50%;--h:12%"><span class="v">+24</span><i></i><span class="l">手数料一本化</span></div>
+      <div class="bar" style="--b:62%;--h:10%"><span class="v">+20</span><i></i><span class="l">保守費固定</span></div>
+      <div class="bar neg" style="--b:60%;--h:12%"><span class="v">−4</span><i></i><span class="l">Stripe手数料</span></div>
+      <div class="bar total" style="--b:0%;--h:70%"><span class="v">140</span><i></i><span class="l">切替後</span></div>
+    </div></figure>
+    <div class="legend"><span><i class="sq" style="background:var(--ink)"></i>合計</span><span><i class="sq" style="background:var(--accent)"></i>増</span><span><i class="sq" style="background:var(--danger)"></i>減</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.dotgrid / .dots</div>
+        <div class="g-nm">割合のドットマトリクス</div>
+        <div class="g-ds">100個の i のうち .on を割合ぶん。上に明朝の%・下にラベル。出典を添える。</div>
+      </div>
+      <div>
+    <figure class="fig" aria-label="利用者の58%がカード登録済みで、2回以上の予約は21%にとどまる" style="margin:0;display:contents"><div class="dotgrid">
+      <div><div class="v">58%</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="l">カード登録済み</div></div>
+      <div><div class="v">42%</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="l">未登録</div></div>
+      <div><div class="v">21%</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="l">2回以上の予約</div></div>
+    </div></figure>
       </div>
     </div>
   </div>
@@ -1685,6 +1795,124 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-st">「差分の色を表示」を外すと body.nohl が付き、紅緑の下地と左端の罫が消えて修正案の読み通しができる</div>
       </div>
     </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">並列カラム .cols</div>
+        <div class="g-nm">見出し付きの並列カラム（エグゼクティブサマリー）</div>
+        <div class="g-ds">c2〜c5。各カラムは明朝見出し+墨の下罫+1文目 .col-lead の言い切り。粒度・主語・語尾を揃える。</div>
+      </div>
+      <div>
+    <div class="cols c3">
+      <div><h3>要件</h3><p class="col-lead">補助率は3分の2で、支払済みの分だけが対象になる。</p><p>実施期間は交付決定日から11月30日まで。</p></div>
+      <div><h3>進め方</h3><p class="col-lead">管理画面から実装して11月13日に最終判断する。</p><p>納品は11月24日、検収と振込を11月中に終える。</p></div>
+      <div><h3>依頼</h3><p class="col-lead">契約形態と着手日を今週中に決めていただく。</p><p>デザインの初稿は10月9日までに受け取る。</p></div>
+    </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.cols のキッカー版</div>
+        <div class="g-nm">SCR（状況・難所・解決）</div>
+        <div class="g-ds">見出しの代わりに .col-k のキッカー。1文目を .col-lead で言い切り、注記は .col-note で点線の下に。</div>
+      </div>
+      <div>
+    <div class="cols c3">
+      <div><div class="col-k">状況</div><p class="col-lead">Bubbleの保守費が毎月かかっている。</p><p>機能追加のたびに外注費も発生する。</p><div class="col-note">注: 2026年上期の実績</div></div>
+      <div><div class="col-k">難所</div><p class="col-lead">再構築の初期費用を自己資金で賄えない。</p><p>補助金は11月末までの完了が条件。</p><div class="col-note">注: 交付決定は10月上旬見込み</div></div>
+      <div><div class="col-k">解決</div><p class="col-lead">補助金で構築費の3分の2を賄い、11月中に切り替える。</p><p>保守は別契約で月額固定にする。</p><div class="col-note">注: 保守料は補助対象外</div></div>
+    </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.cols.arrows</div>
+        <div class="g-nm">課題→原因→解決（カラム間の矢印）</div>
+        <div class="g-ds">3カラムの間に焦がしの三角。因果があるときだけ矢印を入れる（単なる並列には入れない）。</div>
+      </div>
+      <div>
+    <div class="cols c3 arrows">
+      <div><h3>課題</h3><p class="col-lead">予約データを新システムに移せない。</p><p>移しても決済と紐づかない。</p></div>
+      <div><h3>原因</h3><p class="col-lead">決済IDが店舗ごとのテナントに分かれている。</p><p>新システムはStripeに載せ替える。</p></div>
+      <div><h3>解決</h3><p class="col-lead">予約と会員は引き継がず、再登録を案内する。</p><p>店舗・自転車・在庫だけを移す。</p></div>
+    </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.cols.pillars + .pillar-base</div>
+        <div class="g-nm">提言の柱（番号つき打ち手）+共通条件</div>
+        <div class="g-ds">上罫2px+番号丸+明朝見出し。柱の下の共通条件は墨ベタでなく白面+罫線の .pillar-base。</div>
+      </div>
+      <div>
+    <div class="cols c3 pillars">
+      <div><span class="num-chip brand">1</span><h3>管理画面から作る</h3><p>運営→店舗→利用者の順に実装する。</p><ul><li>10月5日着手</li><li>11月13日に最終判断</li></ul></div>
+      <div><span class="num-chip brand">2</span><h3>予約は引き継がない</h3><p>会員と予約は再登録にする。</p><ul><li>再登録メールを送る</li><li>旧システムは既定URLで残す</li></ul></div>
+      <div><span class="num-chip brand">3</span><h3>決済はStripeへ</h3><p>店舗ごとのテナントを作り直さない。</p><ul><li>手数料を一本化</li><li>Webhookを新環境へ</li></ul></div>
+    </div>
+    <div class="pillar-base"><span class="k">共通条件1</span><span>11月30日までに納品と支払を終える</span></div>
+    <div class="pillar-base"><span class="k">共通条件2</span><span>設計書と操作マニュアルを納品物に含める</span></div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.decide</div>
+        <div class="g-nm">意思決定（推奨する決定+依頼事項）</div>
+        <div class="g-ds">左=推奨する決定を明朝で1文、右=依頼事項を番号付きで担当つき。締めの手前に置く。</div>
+      </div>
+      <div>
+    <div class="decide">
+      <div><div class="k">推奨する意思決定</div><div class="d">構築は請負703万円、保守は準委任で別契約にする<small>補助対象は構築費のみ。保守を含めると不正受給になる。</small></div></div>
+      <div>
+        <div class="decide-ask"><span class="n">1</span><span>契約形態を今週中に決める</span><span class="who">PEDAL社 増永さん</span></div>
+        <div class="decide-ask"><span class="n">2</span><span>モックの初稿を10月9日までに共有する</span><span class="who">PEDAL社</span></div>
+        <div class="decide-ask"><span class="n">3</span><span>見積書を経費名と金額で出し直す</span><span class="who">当社</span></div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.claim-fig / .claim-panel</div>
+        <div class="g-nm">主張パネル+図</div>
+        <div class="g-ds">左1/4に番号・区分・この1枚の主張、右3/4に図表。各論が続く章で一覧ページの番号を持ち込む。</div>
+      </div>
+      <div>
+    <div class="claim-fig">
+      <div class="claim-panel"><div class="n">2</div><div class="k">進め方</div><div class="c">納品から振込まで3営業日で終える。</div></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>日付</th><th>内容</th><th>担当</th></tr></thead>
+        <tbody>
+          <tr><td class="label">11月24日</td><td>納品</td><td>当社</td></tr>
+          <tr><td class="label">11月25日</td><td>検収</td><td>PEDAL社</td></tr>
+          <tr><td class="label">11月26日</td><td>振込</td><td>PEDAL社</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.map2</div>
+        <div class="g-nm">課題→打ち手の対応</div>
+        <div class="g-ds">左右の行を対応付け、中央に三角1つ（行ごとに並べない）。打ち手は太字+補足1行。</div>
+      </div>
+      <div>
+    <div class="map2">
+      <div class="h l">課題</div><div class="h r">打ち手</div>
+      <div class="l">デザインがないと見積もれない</div><div class="r"><strong>PEDAL社がモックを作る</strong><span>10月9日に初稿</span></div>
+      <div class="mid"></div>
+      <div class="l">営業日と貸出不可日は移せない</div><div class="r"><strong>店舗に再登録を依頼する</strong><span>切替の1週間前に案内</span></div>
+      <div class="l">保守料は補助対象外</div><div class="r"><strong>保守は別契約にする</strong><span>月額固定・12月開始</span></div>
+    </div>
+      </div>
+    </div>
   </div>
 
   <!-- ======================= 09 図解 ======================= -->
@@ -2010,6 +2238,109 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="g-bar after" style="grid-column:9 / 10">社内テスト</div>
       </div>
     </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.mx2</div>
+        <div class="g-nm">2×2マトリクス</div>
+        <div class="g-ds">項目は style="left:%;top:%" で置く。上ほど・右ほど高い。強調は .hot。右に読み方を添えるなら .cols.c2 で。</div>
+      </div>
+      <div>
+    <figure class="fig" aria-label="効果が大きく手間が小さいのは店舗SEOと再登録メール" style="margin:0;display:contents"><div class="cols c2 fill" style="grid-template-columns:2fr 1fr">
+      <div class="mx2">
+        <span class="ax y">効果（上ほど大きい）</span><span class="ax x">手間（右ほど小さい）</span>
+        <span class="mx2-item hot" style="left:78%;top:22%">店舗SEO</span>
+        <span class="mx2-item hot" style="left:66%;top:34%">再登録メール</span>
+        <span class="mx2-item" style="left:30%;top:28%">予約引き継ぎ</span>
+        <span class="mx2-item" style="left:38%;top:70%">デポジット</span>
+        <span class="mx2-item" style="left:72%;top:80%">ロゴ差し替え</span>
+      </div>
+      <div><h3>読み方</h3><ul><li>右上=すぐ着手</li><li>左上=時期を決めて着手</li><li>下段=今回は見送り</li></ul></div>
+    </div></figure>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.itree</div>
+        <div class="g-nm">イシューツリー</div>
+        <div class="g-ds">ul/li の入れ子。根が左・枝が右。ノードは白面+左の墨罫。3階層まで。</div>
+      </div>
+      <div>
+    <figure class="fig" aria-label="間に合うかは設計・実装・検収の3つの問いで決まる" style="margin:0;display:contents"><div class="itree"><ul><li><span class="n">11月末に間に合うか</span>
+      <ul>
+        <li><span class="n">設計が10月中旬に終わるか</span><ul><li><span class="n">モックが10月9日に届くか</span></li><li><span class="n">4分割の設計が回るか</span></li></ul></li>
+        <li><span class="n">実装が11月18日に終わるか</span><ul><li><span class="n">管理→店舗→利用者の順で進むか</span></li><li><span class="n">11月13日に判断できるか</span></li></ul></li>
+        <li><span class="n">検収と振込が11月中か</span><ul><li><span class="n">検収を1日で終えられるか</span></li><li><span class="n">振込日を確保できるか</span></li></ul></li>
+      </ul></li></ul></div></figure>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.sd-steps.rail</div>
+        <div class="g-nm">矢羽レール（全体像の見出し）</div>
+        <div class="g-ds">薄い帯+番号丸+段名+時期。現在地は .hot。誌面では章の冒頭の全体像に。</div>
+      </div>
+      <div>
+    <div class="sd-steps rail">
+      <div class="sd-step"><span class="num-chip sm">1</span><span><span class="t">要件</span><span class="d">9月</span></span></div>
+      <div class="sd-step hot"><span class="num-chip sm brand">2</span><span><span class="t">設計</span><span class="d">10月前半</span></span></div>
+      <div class="sd-step"><span class="num-chip sm">3</span><span><span class="t">実装</span><span class="d">10〜11月</span></span></div>
+      <div class="sd-step"><span class="num-chip sm">4</span><span><span class="t">納品</span><span class="d">11月24日</span></span></div>
+      <div class="sd-step"><span class="num-chip sm">5</span><span><span class="t">切替</span><span class="d">12月</span></span></div>
+    </div>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.vchain</div>
+        <div class="g-nm">バリューチェーン（2段の矢羽）</div>
+        <div class="g-ds">行ラベル+矢羽+説明の3段組。当社の担当範囲だけ .hot で立て、比較する行は .dim で沈める。</div>
+      </div>
+      <div>
+    <figure class="fig" aria-label="店舗の5工程のうち当社が構築するのは予約・決済・貸出の3工程" style="margin:0;display:contents"><div class="vchain">
+      <span class="lbl">店舗</span>
+      <div class="sd-steps"><div class="sd-step"><span class="t">集客</span></div><div class="sd-step hot"><span class="t">予約</span></div><div class="sd-step hot"><span class="t">決済</span></div><div class="sd-step hot"><span class="t">貸出</span></div><div class="sd-step"><span class="t">返却</span></div></div>
+      <span></span>
+      <div class="vchain-notes"><span>SEO・SNS</span><span>空き確認と申込</span><span>カード登録と本決済</span><span>チェックイン</span><span>状態の更新</span></div>
+      <span class="lbl">当社</span>
+      <div class="sd-steps dim"><div class="sd-step"><span class="t">—</span></div><div class="sd-step"><span class="t">構築</span></div><div class="sd-step"><span class="t">構築</span></div><div class="sd-step"><span class="t">構築</span></div><div class="sd-step"><span class="t">—</span></div></div>
+    </div></figure>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.oppose</div>
+        <div class="g-nm">対向シェブロン</div>
+        <div class="g-ds">中央に下向きの札を2つ（焦がし/墨）、左右にそれぞれの要素。狙いが2つある時だけ。</div>
+      </div>
+      <div>
+    <figure class="fig" aria-label="収益を増やす手が3つ、損失を抑える手が3つある" style="margin:0;display:contents"><div class="oppose">
+      <div class="side"><div>検索流入を増やす</div><div>予約の離脱を減らす</div><div>単価を上げる</div></div>
+      <div class="mid"><div class="oppose-tag">収益を<br>増やす</div><div class="oppose-tag alt">損失を<br>抑える</div></div>
+      <div class="side"><div>保守費を固定にする</div><div>手数料を一本化する</div><div>手作業を減らす</div></div>
+    </div></figure>
+      </div>
+    </div>
+
+    <div class="g-blk">
+      <div class="g-meta">
+        <div class="g-no is-add">.cycle</div>
+        <div class="g-nm">循環サイクル</div>
+        <div class="g-ds">各項目に --i（番号）と --n（総数）。楕円の周りに等間隔。4〜6項目。</div>
+      </div>
+      <div>
+    <figure class="fig" aria-label="月次の改善は計測→分析→打ち手→実装を回す" style="margin:0;display:contents"><div class="cycle" style="--n:4">
+      <div class="cycle-item" style="--i:0"><span class="num-chip sm">1</span><span class="t">計測</span><span class="d">GA4・SC</span></div>
+      <div class="cycle-item" style="--i:1"><span class="num-chip sm">2</span><span class="t">分析</span><span class="d">月次レポート</span></div>
+      <div class="cycle-item" style="--i:2"><span class="num-chip sm">3</span><span class="t">打ち手</span><span class="d">課題→こうしたい</span></div>
+      <div class="cycle-item" style="--i:3"><span class="num-chip sm">4</span><span class="t">実装</span><span class="d">翌月に反映</span></div>
+    </div></figure>
+      </div>
+    </div>
   </div>
 </figure>      <div class="legend" style="margin-bottom:0">
   <span><i style="background: var(--accent);"></i>書き手側</span>
@@ -2288,13 +2619,6 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
         <div class="numnote-row"><span class="numnote-n">5</span><span>デッキとして投影する時は deck.html の器（body.deck）。ここの見本は560px縮小版で、投影時はemで拡大される。PDF化はChromeの印刷（1枚1ページ）。</span></div>
       </div>
     </div>
-  </div>
-
-  <div class="section" id="s11">
-    <div class="section-header">
-      <div class="section-num">11</div>
-      <div class="sh-body"><h2>コンサル型の部品</h2><div class="sh-sub">誌面の章にもデッキの1枚にも同じHTMLで置ける（2026-09-25・consulting-pptx-skill の62型から取り込み）</div></div>
-    </div>
 
     <div class="g-blk">
       <div class="g-meta">
@@ -2339,338 +2663,6 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
 
     <div class="g-blk">
       <div class="g-meta">
-        <div class="g-no is-add">並列カラム .cols</div>
-        <div class="g-nm">見出し付きの並列カラム（エグゼクティブサマリー）</div>
-        <div class="g-ds">c2〜c5。各カラムは明朝見出し+墨の下罫+1文目 .col-lead の言い切り。粒度・主語・語尾を揃える。</div>
-      </div>
-      <div>
-    <div class="cols c3">
-      <div><h3>要件</h3><p class="col-lead">補助率は3分の2で、支払済みの分だけが対象になる。</p><p>実施期間は交付決定日から11月30日まで。</p></div>
-      <div><h3>進め方</h3><p class="col-lead">管理画面から実装して11月13日に最終判断する。</p><p>納品は11月24日、検収と振込を11月中に終える。</p></div>
-      <div><h3>依頼</h3><p class="col-lead">契約形態と着手日を今週中に決めていただく。</p><p>デザインの初稿は10月9日までに受け取る。</p></div>
-    </div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.cols のキッカー版</div>
-        <div class="g-nm">SCR（状況・難所・解決）</div>
-        <div class="g-ds">見出しの代わりに .col-k のキッカー。1文目を .col-lead で言い切り、注記は .col-note で点線の下に。</div>
-      </div>
-      <div>
-    <div class="cols c3">
-      <div><div class="col-k">状況</div><p class="col-lead">Bubbleの保守費が毎月かかっている。</p><p>機能追加のたびに外注費も発生する。</p><div class="col-note">注: 2026年上期の実績</div></div>
-      <div><div class="col-k">難所</div><p class="col-lead">再構築の初期費用を自己資金で賄えない。</p><p>補助金は11月末までの完了が条件。</p><div class="col-note">注: 交付決定は10月上旬見込み</div></div>
-      <div><div class="col-k">解決</div><p class="col-lead">補助金で構築費の3分の2を賄い、11月中に切り替える。</p><p>保守は別契約で月額固定にする。</p><div class="col-note">注: 保守料は補助対象外</div></div>
-    </div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.cols.arrows</div>
-        <div class="g-nm">課題→原因→解決（カラム間の矢印）</div>
-        <div class="g-ds">3カラムの間に焦がしの三角。因果があるときだけ矢印を入れる（単なる並列には入れない）。</div>
-      </div>
-      <div>
-    <div class="cols c3 arrows">
-      <div><h3>課題</h3><p class="col-lead">予約データを新システムに移せない。</p><p>移しても決済と紐づかない。</p></div>
-      <div><h3>原因</h3><p class="col-lead">決済IDが店舗ごとのテナントに分かれている。</p><p>新システムはStripeに載せ替える。</p></div>
-      <div><h3>解決</h3><p class="col-lead">予約と会員は引き継がず、再登録を案内する。</p><p>店舗・自転車・在庫だけを移す。</p></div>
-    </div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.cols.pillars + .pillar-base</div>
-        <div class="g-nm">提言の柱（番号つき打ち手）+共通条件</div>
-        <div class="g-ds">上罫2px+番号丸+明朝見出し。柱の下の共通条件は墨ベタでなく白面+罫線の .pillar-base。</div>
-      </div>
-      <div>
-    <div class="cols c3 pillars">
-      <div><span class="num-chip brand">1</span><h3>管理画面から作る</h3><p>運営→店舗→利用者の順に実装する。</p><ul><li>10月5日着手</li><li>11月13日に最終判断</li></ul></div>
-      <div><span class="num-chip brand">2</span><h3>予約は引き継がない</h3><p>会員と予約は再登録にする。</p><ul><li>再登録メールを送る</li><li>旧システムは既定URLで残す</li></ul></div>
-      <div><span class="num-chip brand">3</span><h3>決済はStripeへ</h3><p>店舗ごとのテナントを作り直さない。</p><ul><li>手数料を一本化</li><li>Webhookを新環境へ</li></ul></div>
-    </div>
-    <div class="pillar-base"><span class="k">共通条件1</span><span>11月30日までに納品と支払を終える</span></div>
-    <div class="pillar-base"><span class="k">共通条件2</span><span>設計書と操作マニュアルを納品物に含める</span></div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.decide</div>
-        <div class="g-nm">意思決定（推奨する決定+依頼事項）</div>
-        <div class="g-ds">左=推奨する決定を明朝で1文、右=依頼事項を番号付きで担当つき。締めの手前に置く。</div>
-      </div>
-      <div>
-    <div class="decide">
-      <div><div class="k">推奨する意思決定</div><div class="d">構築は請負703万円、保守は準委任で別契約にする<small>補助対象は構築費のみ。保守を含めると不正受給になる。</small></div></div>
-      <div>
-        <div class="decide-ask"><span class="n">1</span><span>契約形態を今週中に決める</span><span class="who">PEDAL社 増永さん</span></div>
-        <div class="decide-ask"><span class="n">2</span><span>モックの初稿を10月9日までに共有する</span><span class="who">PEDAL社</span></div>
-        <div class="decide-ask"><span class="n">3</span><span>見積書を経費名と金額で出し直す</span><span class="who">当社</span></div>
-      </div>
-    </div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.claim-fig / .claim-panel</div>
-        <div class="g-nm">主張パネル+図</div>
-        <div class="g-ds">左1/4に番号・区分・この1枚の主張、右3/4に図表。各論が続く章で一覧ページの番号を持ち込む。</div>
-      </div>
-      <div>
-    <div class="claim-fig">
-      <div class="claim-panel"><div class="n">2</div><div class="k">進め方</div><div class="c">納品から振込まで3営業日で終える。</div></div>
-      <div class="table-wrap"><table>
-        <thead><tr><th>日付</th><th>内容</th><th>担当</th></tr></thead>
-        <tbody>
-          <tr><td class="label">11月24日</td><td>納品</td><td>当社</td></tr>
-          <tr><td class="label">11月25日</td><td>検収</td><td>PEDAL社</td></tr>
-          <tr><td class="label">11月26日</td><td>振込</td><td>PEDAL社</td></tr>
-        </tbody>
-      </table></div>
-    </div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.map2</div>
-        <div class="g-nm">課題→打ち手の対応</div>
-        <div class="g-ds">左右の行を対応付け、中央に三角1つ（行ごとに並べない）。打ち手は太字+補足1行。</div>
-      </div>
-      <div>
-    <div class="map2">
-      <div class="h l">課題</div><div class="h r">打ち手</div>
-      <div class="l">デザインがないと見積もれない</div><div class="r"><strong>PEDAL社がモックを作る</strong><span>10月9日に初稿</span></div>
-      <div class="mid"></div>
-      <div class="l">営業日と貸出不可日は移せない</div><div class="r"><strong>店舗に再登録を依頼する</strong><span>切替の1週間前に案内</span></div>
-      <div class="l">保守料は補助対象外</div><div class="r"><strong>保守は別契約にする</strong><span>月額固定・12月開始</span></div>
-    </div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">table.heat</div>
-        <div class="g-nm">ヒートマップ表（濃淡で強弱）</div>
-        <div class="g-ds">td.h0〜h3 の4段。なし=白面・低=淡・中=薄・高=焦がし。凡例を直下に。行ホバーで色が変わらない。</div>
-      </div>
-      <div>
-    <div class="table-wrap"><table class="heat">
-      <thead><tr><th>データ</th><th>量</th><th>変換</th><th>決済との紐づき</th></tr></thead>
-      <tbody>
-        <tr><td class="label">店舗</td><td class="h1">低</td><td class="h1">低</td><td class="h2">中</td></tr>
-        <tr><td class="label">自転車</td><td class="h2">中</td><td class="h1">低</td><td class="h0">なし</td></tr>
-        <tr><td class="label">会員</td><td class="h3">高</td><td class="h2">中</td><td class="h3">高</td></tr>
-        <tr><td class="label">予約</td><td class="h3">高</td><td class="h3">高</td><td class="h3">高</td></tr>
-      </tbody>
-    </table></div>
-    <div class="legend"><span><i class="sq" style="background:var(--surface)"></i>なし</span><span><i class="sq" style="background:var(--accent-faint)"></i>低</span><span><i class="sq" style="background:var(--accent-soft)"></i>中</span><span><i class="sq" style="background:var(--accent)"></i>高</span></div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.hb（ハーベイボール）</div>
-        <div class="g-nm">充足度評価表</div>
-        <div class="g-ds">span.hb.q0〜q4 で0/25/50/75/100%。墨の円。凡例を直下に。</div>
-      </div>
-      <div>
-    <div class="table-wrap"><table>
-      <thead><tr><th>評価軸</th><th>Pay.jp継続</th><th>Stripe</th><th>判断の理由</th></tr></thead>
-      <tbody>
-        <tr><td class="label">移行の手間</td><td><span class="hb q4"></span>満たす</td><td><span class="hb q2"></span>一部</td><td>テナントIDを移せば継続できる</td></tr>
-        <tr><td class="label">手数料</td><td><span class="hb q1"></span>一部</td><td><span class="hb q4"></span>満たす</td><td>プラットフォーム手数料を一本化できる</td></tr>
-        <tr><td class="label">今後の拡張</td><td><span class="hb q0"></span>満たさない</td><td><span class="hb q4"></span>満たす</td><td>デポジット・分割に対応</td></tr>
-      </tbody>
-    </table></div>
-    <div class="legend"><span><span class="hb q4"></span>満たす</span><span><span class="hb q2"></span>一部満たす</span><span><span class="hb q0"></span>満たさない</span></div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">table.nest</div>
-        <div class="g-nm">入れ子行の行列（rowspan）</div>
-        <div class="g-ds">td.grp[rowspan] が親ラベル（淡い面+右の墨罫）、td.sub が子。階層を表で示す。</div>
-      </div>
-      <div>
-    <div class="table-wrap"><table class="nest">
-      <thead><tr><th>区分</th><th>データ</th><th>扱い</th></tr></thead>
-      <tbody>
-        <tr><td class="grp" rowspan="3">店舗側</td><td class="sub">店舗</td><td>移す</td></tr>
-        <tr><td class="sub">自転車</td><td>移す</td></tr>
-        <tr><td class="sub">オプション在庫</td><td>移す</td></tr>
-        <tr><td class="grp" rowspan="2">利用者側</td><td class="sub">会員</td><td>再登録</td></tr>
-        <tr><td class="sub">予約</td><td>旧システムで消化</td></tr>
-      </tbody>
-    </table></div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.efx</div>
-        <div class="g-nm">打ち手の効果表（行内の矢印棒）</div>
-        <div class="g-ds">span.efx に width:% で幅。増やす方向=焦がし、減らす方向=下地 .down。凡例を直下に。</div>
-      </div>
-      <div>
-    <div class="table-wrap"><table>
-      <thead><tr><th>打ち手</th><th>効果の幅（予約数 / 月）</th><th>前提・制約</th></tr></thead>
-      <tbody>
-        <tr><td class="label">店舗ページのSEO</td><td><span class="efx" style="width:60%">+20〜30</span></td><td>全国100店舗の掲載が前提</td></tr>
-        <tr><td class="label">再登録メール</td><td><span class="efx" style="width:35%">+8〜12</span></td><td>会員146人が対象</td></tr>
-        <tr><td class="label">保守費の固定化</td><td><span class="efx down" style="width:25%">−5万円</span></td><td>月額換算</td></tr>
-      </tbody>
-    </table></div>
-    <div class="legend"><span><i class="sq" style="background:var(--accent)"></i>増やす方向</span><span><i class="sq" style="background:#EAE2D6"></i>減らす方向</span></div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.mx2</div>
-        <div class="g-nm">2×2マトリクス</div>
-        <div class="g-ds">項目は style="left:%;top:%" で置く。上ほど・右ほど高い。強調は .hot。右に読み方を添えるなら .cols.c2 で。</div>
-      </div>
-      <div>
-    <figure class="fig" aria-label="効果が大きく手間が小さいのは店舗SEOと再登録メール" style="margin:0;display:contents"><div class="cols c2 fill" style="grid-template-columns:2fr 1fr">
-      <div class="mx2">
-        <span class="ax y">効果（上ほど大きい）</span><span class="ax x">手間（右ほど小さい）</span>
-        <span class="mx2-item hot" style="left:78%;top:22%">店舗SEO</span>
-        <span class="mx2-item hot" style="left:66%;top:34%">再登録メール</span>
-        <span class="mx2-item" style="left:30%;top:28%">予約引き継ぎ</span>
-        <span class="mx2-item" style="left:38%;top:70%">デポジット</span>
-        <span class="mx2-item" style="left:72%;top:80%">ロゴ差し替え</span>
-      </div>
-      <div><h3>読み方</h3><ul><li>右上=すぐ着手</li><li>左上=時期を決めて着手</li><li>下段=今回は見送り</li></ul></div>
-    </div></figure>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.itree</div>
-        <div class="g-nm">イシューツリー</div>
-        <div class="g-ds">ul/li の入れ子。根が左・枝が右。ノードは白面+左の墨罫。3階層まで。</div>
-      </div>
-      <div>
-    <figure class="fig" aria-label="間に合うかは設計・実装・検収の3つの問いで決まる" style="margin:0;display:contents"><div class="itree"><ul><li><span class="n">11月末に間に合うか</span>
-      <ul>
-        <li><span class="n">設計が10月中旬に終わるか</span><ul><li><span class="n">モックが10月9日に届くか</span></li><li><span class="n">4分割の設計が回るか</span></li></ul></li>
-        <li><span class="n">実装が11月18日に終わるか</span><ul><li><span class="n">管理→店舗→利用者の順で進むか</span></li><li><span class="n">11月13日に判断できるか</span></li></ul></li>
-        <li><span class="n">検収と振込が11月中か</span><ul><li><span class="n">検収を1日で終えられるか</span></li><li><span class="n">振込日を確保できるか</span></li></ul></li>
-      </ul></li></ul></div></figure>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.sd-steps.rail</div>
-        <div class="g-nm">矢羽レール（全体像の見出し）</div>
-        <div class="g-ds">薄い帯+番号丸+段名+時期。現在地は .hot。誌面では章の冒頭の全体像に。</div>
-      </div>
-      <div>
-    <div class="sd-steps rail">
-      <div class="sd-step"><span class="num-chip sm">1</span><span><span class="t">要件</span><span class="d">9月</span></span></div>
-      <div class="sd-step hot"><span class="num-chip sm brand">2</span><span><span class="t">設計</span><span class="d">10月前半</span></span></div>
-      <div class="sd-step"><span class="num-chip sm">3</span><span><span class="t">実装</span><span class="d">10〜11月</span></span></div>
-      <div class="sd-step"><span class="num-chip sm">4</span><span><span class="t">納品</span><span class="d">11月24日</span></span></div>
-      <div class="sd-step"><span class="num-chip sm">5</span><span><span class="t">切替</span><span class="d">12月</span></span></div>
-    </div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.vchain</div>
-        <div class="g-nm">バリューチェーン（2段の矢羽）</div>
-        <div class="g-ds">行ラベル+矢羽+説明の3段組。当社の担当範囲だけ .hot で立て、比較する行は .dim で沈める。</div>
-      </div>
-      <div>
-    <figure class="fig" aria-label="店舗の5工程のうち当社が構築するのは予約・決済・貸出の3工程" style="margin:0;display:contents"><div class="vchain">
-      <span class="lbl">店舗</span>
-      <div class="sd-steps"><div class="sd-step"><span class="t">集客</span></div><div class="sd-step hot"><span class="t">予約</span></div><div class="sd-step hot"><span class="t">決済</span></div><div class="sd-step hot"><span class="t">貸出</span></div><div class="sd-step"><span class="t">返却</span></div></div>
-      <span></span>
-      <div class="vchain-notes"><span>SEO・SNS</span><span>空き確認と申込</span><span>カード登録と本決済</span><span>チェックイン</span><span>状態の更新</span></div>
-      <span class="lbl">当社</span>
-      <div class="sd-steps dim"><div class="sd-step"><span class="t">—</span></div><div class="sd-step"><span class="t">構築</span></div><div class="sd-step"><span class="t">構築</span></div><div class="sd-step"><span class="t">構築</span></div><div class="sd-step"><span class="t">—</span></div></div>
-    </div></figure>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.oppose</div>
-        <div class="g-nm">対向シェブロン</div>
-        <div class="g-ds">中央に下向きの札を2つ（焦がし/墨）、左右にそれぞれの要素。狙いが2つある時だけ。</div>
-      </div>
-      <div>
-    <figure class="fig" aria-label="収益を増やす手が3つ、損失を抑える手が3つある" style="margin:0;display:contents"><div class="oppose">
-      <div class="side"><div>検索流入を増やす</div><div>予約の離脱を減らす</div><div>単価を上げる</div></div>
-      <div class="mid"><div class="oppose-tag">収益を<br>増やす</div><div class="oppose-tag alt">損失を<br>抑える</div></div>
-      <div class="side"><div>保守費を固定にする</div><div>手数料を一本化する</div><div>手作業を減らす</div></div>
-    </div></figure>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.cycle</div>
-        <div class="g-nm">循環サイクル</div>
-        <div class="g-ds">各項目に --i（番号）と --n（総数）。楕円の周りに等間隔。4〜6項目。</div>
-      </div>
-      <div>
-    <figure class="fig" aria-label="月次の改善は計測→分析→打ち手→実装を回す" style="margin:0;display:contents"><div class="cycle" style="--n:4">
-      <div class="cycle-item" style="--i:0"><span class="num-chip sm">1</span><span class="t">計測</span><span class="d">GA4・SC</span></div>
-      <div class="cycle-item" style="--i:1"><span class="num-chip sm">2</span><span class="t">分析</span><span class="d">月次レポート</span></div>
-      <div class="cycle-item" style="--i:2"><span class="num-chip sm">3</span><span class="t">打ち手</span><span class="d">課題→こうしたい</span></div>
-      <div class="cycle-item" style="--i:3"><span class="num-chip sm">4</span><span class="t">実装</span><span class="d">翌月に反映</span></div>
-    </div></figure>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.wfall</div>
-        <div class="g-nm">増減ブリッジ（ウォーターフォール）</div>
-        <div class="g-ds">各棒に --b（下端%）と --h（高さ%）。合計=墨・増=焦がし・減=紅。凡例を直下に。</div>
-      </div>
-      <div>
-    <figure class="fig" aria-label="手数料一本化と保守費固定で月の利益は100から140になる" style="margin:0;display:contents"><div class="wfall">
-      <div class="bar total" style="--b:0%;--h:50%"><span class="v">100</span><i></i><span class="l">現在</span></div>
-      <div class="bar" style="--b:50%;--h:12%"><span class="v">+24</span><i></i><span class="l">手数料一本化</span></div>
-      <div class="bar" style="--b:62%;--h:10%"><span class="v">+20</span><i></i><span class="l">保守費固定</span></div>
-      <div class="bar neg" style="--b:60%;--h:12%"><span class="v">−4</span><i></i><span class="l">Stripe手数料</span></div>
-      <div class="bar total" style="--b:0%;--h:70%"><span class="v">140</span><i></i><span class="l">切替後</span></div>
-    </div></figure>
-    <div class="legend"><span><i class="sq" style="background:var(--ink)"></i>合計</span><span><i class="sq" style="background:var(--accent)"></i>増</span><span><i class="sq" style="background:var(--danger)"></i>減</span></div>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
-        <div class="g-no is-add">.dotgrid / .dots</div>
-        <div class="g-nm">割合のドットマトリクス</div>
-        <div class="g-ds">100個の i のうち .on を割合ぶん。上に明朝の%・下にラベル。出典を添える。</div>
-      </div>
-      <div>
-    <figure class="fig" aria-label="利用者の58%がカード登録済みで、2回以上の予約は21%にとどまる" style="margin:0;display:contents"><div class="dotgrid">
-      <div><div class="v">58%</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="l">カード登録済み</div></div>
-      <div><div class="v">42%</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="l">未登録</div></div>
-      <div><div class="v">21%</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="l">2回以上の予約</div></div>
-    </div></figure>
-      </div>
-    </div>
-
-    <div class="g-blk">
-      <div class="g-meta">
         <div class="g-no is-add">.sd-back</div>
         <div class="g-nm">裏表紙（デッキ専用）</div>
         <div class="g-ds">会社名と連絡先だけ。メッセージ・CTAは載せない（手前の通常スライドへ）。</div>
@@ -2678,6 +2670,7 @@ curl "https://example.co.jp/api/1.1/obj/<span class="hl">shop</span>?limit=100"<
       <div class="slide" style="max-width:560px;font-size:15px"><div class="sd-back"><div class="co">株式会社アイビス</div><div class="ct">担当: 清野 / seino@ibis.ne.jp</div></div><div class="slide-ft"><span>BRAND</span><span>34 / 34</span></div></div>
     </div>
   </div>
+
 
 </div>
 

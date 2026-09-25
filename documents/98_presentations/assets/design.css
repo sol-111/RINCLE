@@ -109,8 +109,9 @@ h3{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);marg
 h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);margin:26px 0 12px;line-height:1.6}
 
 /* ---------- カード（白面+罫線。影は浮遊部品のみ） ---------- */
-.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:24px 26px;margin:28px 0}
-.card.sel{border-color:var(--accent)}
+.card{background:none;border:0;border-top:2px solid var(--ink);border-radius:0;padding:16px 0 4px;margin:28px 0} /* 2026-09-25 コンサル型に寄せる: 囲みの箱をやめ、墨の上罫1本で区切る */
+.card.sel{border-top-color:var(--accent)}
+.card>h3:first-child,.card>h4:first-child{margin-top:0}
 .kicker{font-size:10.5px;letter-spacing:.16em;color:var(--accent);font-weight:700}
 
 /* ---------- 用語解説 ---------- */
@@ -136,11 +137,11 @@ h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);marg
 
 /* ---------- ×○対比 ---------- */
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:28px 0}
-.compare-box{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;display:flex;flex-direction:column;gap:8px} /* 素でも枠あり（変種は色を変えるだけ） */
-.compare-box.bad{border-color:var(--danger-line)}
-.compare-box.good{border-color:var(--ok-line)}
+.compare-box{background:none;border:0;border-top:2px solid var(--line);padding:14px 0 4px;display:flex;flex-direction:column;gap:8px} /* 囲みでなく役割色の上罫1本（2026-09-25） */
+.compare-box.bad{border-top-color:var(--danger)}
+.compare-box.good{border-top-color:var(--ok)}
 .compare-box.asis .cb-head{color:var(--sub)}
-.compare-box.tobe{border-color:var(--accent)}
+.compare-box.tobe{border-top-color:var(--accent)}
 .compare-box.tobe .cb-head{color:var(--accent)}
 .cb-head{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700}
 .compare-box.bad .cb-head{color:var(--danger-text)}
@@ -159,12 +160,12 @@ h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);marg
    記号丸に案ごとの色は付けない — 藍・緑は図解の役割色（ユーザー・店舗）で意味が二重になる。
    採否は「枠」と「バッジ」の2つが示す。列数は案の数だけ自動で並び、狭い幅では1列に折り返す ---------- */
 .options{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin:28px 0 8px}
-.option{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.option{background:none;border:0;border-top:2px solid var(--ink);padding:14px 0 4px;display:flex;flex-direction:column;gap:10px} /* 囲みでなく上罫（採用=焦がし・不採用=薄い罫） */
 .option h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);line-height:1.6;margin:0}
 .option p{font-size:12.5px;color:var(--text);line-height:1.9;flex:1;margin:0}
 .option .badge{align-self:flex-start}
-.option.chosen{border-color:var(--accent)}
-.option.dim{border-color:var(--line-soft)}
+.option.chosen{border-top-color:var(--accent)}
+.option.dim{border-top-color:var(--line)}
 .option.dim h4,.option.dim p{color:var(--sub)}
 .option.dim .num-chip{border-color:var(--line);color:var(--sub)}
 
@@ -180,7 +181,9 @@ h4{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);marg
 /* ---------- 表（上罫は墨2px・項目名は明朝） ---------- */
 .table-wrap{overflow-x:auto;margin:28px 0}
 table{width:100%;border-collapse:collapse;font-size:14px}
-thead th{border-bottom:2px solid var(--ink);padding:0 16px 12px 0;text-align:left;font-size:11px;letter-spacing:.18em;font-weight:500;color:var(--sub);white-space:nowrap}
+thead th{border-bottom:2px solid var(--ink);padding:0 16px 10px 0;text-align:left;font-size:14px;letter-spacing:.04em;font-weight:700;color:var(--ink);white-space:nowrap} /* 2026-09-25 見出し行は本文と同じ大きさ・太字・墨（薄い小文字をやめる） */
+table:has(td.label:first-child) thead th:first-child,table:has(td.label:first-child) tbody td.label:first-child{border-right:1.5px solid var(--ink);padding-right:18px} /* 行見出しの軸列に縦罫（ここが軸と分かる） */
+table:has(td.label:first-child) tbody td:first-child:not(.label){border-right:1.5px solid var(--ink)} /* 軸列の中の変種行（.ind等はlabelを持つ。持たない行も罫を通す） */
 td{padding:18px 16px 18px 0;border-bottom:1px solid var(--line-soft);vertical-align:baseline}
 tbody tr:hover td{background:var(--accent-faint)}
 td.label{font-family:var(--serif);font-size:17px;color:var(--ink);white-space:nowrap}
@@ -629,9 +632,9 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 .sd-pane{flex:1;display:flex;flex-direction:column;gap:14px;padding:30px 44px}
 .sd-pane-title{font-family:var(--serif);font-size:17px;color:var(--ink)}
 .sd-vs{display:grid;grid-template-columns:1fr 1fr;gap:16px;flex:1}
-.sd-vs-box{border-radius:4px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
-.sd-vs-box.is-bad{border:1px solid var(--danger-line);background:#FDFAF9}
-.sd-vs-box.is-good{border:1px solid var(--ok-line);background:#FBFDFB}
+.sd-vs-box{padding:14px 0 4px;display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--line)}
+.sd-vs-box.is-bad{border-top-color:var(--danger)}
+.sd-vs-box.is-good{border-top-color:var(--ok)}
 .sd-vs-head{display:flex;align-items:center;gap:8px}
 .sd-vs-mark{width:18px;height:18px;border-radius:50%;color:var(--paper);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
 .sd-vs-box.is-bad .sd-vs-mark{background:var(--danger)}
@@ -672,7 +675,7 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 .cols.pillars>div{border-top:.14em solid var(--ink);padding-top:1em}
 .cols.pillars .num-chip{margin-bottom:.6em}
 .cols.pillars h3{border-bottom:0;padding-bottom:0;margin-bottom:.3em}
-.pillar-base{display:flex;align-items:baseline;gap:1.2em;border:1px solid var(--line);background:var(--surface);padding:.7em 1.2em;margin:.8em 0 0;font-size:.92em} /* 柱の下の共通条件（墨ベタでなく白面+罫線） */
+.pillar-base{display:flex;align-items:baseline;gap:1.2em;border-top:1px solid var(--line);padding:.7em 0 .2em;margin:.6em 0 0;font-size:.92em} /* 柱の下の共通条件（墨ベタでなく白面+罫線） */
 .pillar-base .k{font-size:.72em;letter-spacing:.14em;font-weight:700;color:var(--accent);white-space:nowrap}
 
 /* --- 意思決定 .decide（左=推奨する決定・右=依頼事項1・2・3） --- */
@@ -882,7 +885,7 @@ body.deck{margin:0;background:#EAE2D6;min-height:100vh;display:flex;align-items:
 .deck .sd-pane{padding:0;gap:1em}
 .deck .sd-pane-title{font-size:1.1em}
 .deck .sd-vs{gap:1.2em}
-.deck .sd-vs-box{padding:1.1em 1.3em;gap:.6em;border-radius:0}
+.deck .sd-vs-box{padding:.9em 0 .3em;gap:.6em}
 .deck .sd-vs-mark{width:1.3em;height:1.3em;font-size:.7em}
 .deck .sd-vs-name{font-size:.9em}
 .deck .sd-vs-note{font-size:.8em}
@@ -907,7 +910,7 @@ body.deck{margin:0;background:#EAE2D6;min-height:100vh;display:flex;align-items:
 .sd-fig .fig{margin:0}
 .sd-body .table-wrap{margin:0}                                                                            /* 軸のある表（5行まで。誌面の table は px なので em に読み替え） */
 .sd-body table{font-size:1em}
-.sd-body thead th{font-size:.65em;padding:0 .9em .8em 0}
+.sd-body thead th{font-size:.9em;padding:0 .9em .6em 0}
 .sd-body td{padding:.8em .9em .8em 0}
 .sd-body td.label{font-size:1.05em}
 .sd-body td.num{font-size:1em}
