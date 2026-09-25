@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>補助金事業 ロードマップ（9月18日方針決定→11月23日納品→11月26日振込→12月7日実績報告） | RINCLE</title>
+<title>補助金事業 ロードマップ（9月18日決定→11月24日納品→11月26日振込→12月7日実績報告） | RINCLE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -17,7 +17,6 @@
   .table-wrap + .table-wrap{margin-top:20px}
   td.label{white-space:normal}
   .stat-row.four{grid-template-columns:repeat(4,1fr)}
-
 </style>
 </head>
 <body>
@@ -36,15 +35,15 @@
     <div class="hero-top">
       <div class="hero-brand">
         <img class="hero-logo" src="../assets/rincle-favicon.png" alt="RINCLE">
-        <span class="hero-kicker">補助金 — 2026-09-16 更新</span>
+        <span class="hero-kicker">補助金 — 2026年9月25日 更新</span>
       </div>
       <span class="hero-no">SUBSIDY</span>
     </div>
     <h1>補助金事業 ロードマップ</h1>
-    <p class="lead">兵庫県の補助金（第1期採択・補助率3分の2）を使ってRINCLEをAI駆動開発で作り直す事業の、9月18日の方針決定から12月7日の実績報告までの進め方です。<strong>11月30日までに納品・検収・振込を終える</strong>という動かせない期限から逆算したうえで、週ごとに「誰が・何を・いつまでに」を決めています。先に機能を洗い出して一覧にします。機能設計はデータ構造・管理画面・予約と決済・利用者向け画面の4つに分け、終わった部分から実装に入ります。実装はデザインの要らない店舗・運営の管理画面から始めます。PEDALSTANDARD社が作るデザインは利用者向け画面だけです。手直しと実装は当社が行います。テスト駆動で実装するため、独立したテスト工程は置かず、まとまった社内テストは納品後に回します。間に合わない見込みが立ったときは期日を動かさず、10月23日と11月13日の判断日で実施範囲を削ります。</p>
+    <p class="lead">兵庫県の補助金（第1期採択・補助率3分の2）でRINCLEを作り直す事業の、9月18日（金）の方針決定から12月7日（月）の実績報告までの進め方です。<strong>11月30日（月）までに納品と支払を終える</strong>という動かせない期限から逆算し週ごとに「誰が・何を・いつまでに」を決めています。間に合わない見込みが立ったときは期日を動かさず、10月23日（金）と11月13日（金）の判断日で実施範囲を削ります。</p>
     <div class="hero-meta">
-      <span>方針決定: 9月18日（金）11:00</span>
-      <span>納品: 11月23日（月・祝） / 検収: 11月23日〜25日 / 振込: 11月26日（木）</span>
+      <span>当社＝株式会社アイビス（清野・村本） / PEDAL社＝PEDALSTANDARD社の略（増永さん・吉川さん）</span>
+      <span>納品: 11月24日（火） / 検収: 11月24日〜25日 / 振込: 11月26日（木）</span>
       <span>実績報告: 12月7日（月）提出（期限12月10日）</span>
     </div>
   </div>
@@ -52,10 +51,10 @@
 
 <!-- 章ナビ（タブ） -->
 <nav class="flow-tabs">
-  <button class="tab-btn active" data-target="panel-conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">動かさない4つの日付と進め方</span></button>
+  <button class="tab-btn active" data-target="panel-conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">動かさない日付と、9月18日に決めた進め方</span></button>
   <button class="tab-btn" data-target="panel-schedule"><span class="fnum">2</span><span class="ft">スケジュール</span><span class="fd">週割りの工程表と、日付ごとのタスク表</span></button>
-  <button class="tab-btn" data-target="panel-decide"><span class="fnum">3</span><span class="ft">論点</span><span class="fd">9月18日に話す10の論点と当社の見立て</span></button>
-  <button class="tab-btn" data-target="panel-rules"><span class="fnum">4</span><span class="ft">役割・手続き・リスク</span><span class="fd">証拠書類と、削るときの順番</span></button>
+  <button class="tab-btn" data-target="panel-decide"><span class="fnum">3</span><span class="ft">論点</span><span class="fd">決定済みの項目と、9月25日までに決める項目</span></button>
+  <button class="tab-btn" data-target="panel-rules"><span class="fnum">4</span><span class="ft">役割・手続き・リスク</span><span class="fd">役割分担、証拠書類、リスクと削る順番</span></button>
 </nav>
 
 <div class="container">
@@ -63,44 +62,44 @@
 <!-- ============ 01 結論 ============ -->
 <div class="tab-panel active" id="panel-conclusion">
   <div class="section" id="conclusion">
-    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">この事業で動かさない日付と、間に合わせるための3つの決め方</div></div></div>
-    <p>11月30日に振込まで終えるには、納品を11月23日、検収を23日から25日、振込を11月26日に置く必要があります。実装は10月5日から11月18日までの6週間半に全振りします。遅れたときは期日ではなく実施範囲を削ります。データ移行は納品の範囲に入れ、実データが入った画面を納品します。</p>
+    <div class="section-header"><div class="section-num">01</div><div class="sh-body"><h2>結論</h2><div class="sh-sub">この事業で動かさない日付と、9月18日に決めた進め方の要点</div></div></div>
 
     <div class="stat-row four">
-      <div class="stat"><span class="l">実装完了（単体テスト済み）</span><span class="n">11<small>月</small>18<small>日</small></span></div>
-      <div class="stat"><span class="l">納品（設計書・マニュアル・画面写真つき）</span><span class="n hot">11<small>月</small>23<small>日</small></span></div>
+      <div class="stat"><span class="l">実装完了（単体テスト＝機能ごとの自動確認まで済み）</span><span class="n">11<small>月</small>18<small>日</small></span></div>
+      <div class="stat"><span class="l">納品（設計書・マニュアル・画面写真つき）</span><span class="n hot">11<small>月</small>24<small>日</small></span></div>
       <div class="stat"><span class="l">検収書の日付</span><span class="n">11<small>月</small>25<small>日</small></span></div>
-      <div class="stat"><span class="l">PEDALSTANDARD社からの銀行振込</span><span class="n hot">11<small>月</small>26<small>日</small></span></div>
+      <div class="stat"><span class="l">PEDAL社からの銀行振込</span><span class="n hot">11<small>月</small>26<small>日</small></span></div>
     </div>
 
     <div class="table-wrap">
       <table class="qa">
         <tbody>
           <tr>
-            <td class="label wrap">① いつまでに何を終えるか</td>
-            <td><strong>11月23日（月・祝）に納品、23日から25日で検収、11月26日（木）に振込です。</strong> 検収書の日付は11月25日（水）です。11月27日（金）と30日（月）を予備日として残します。23日は祝日なので、この日程で検収を始めてもらう合意を9月18日に取ります。12月10日は報告書を送る期限です。振込の期限ではありません。</td>
+            <td class="label wrap">いつまでに何を終えるか</td>
+            <td><strong>11月24日（火）に納品、24日から25日で検収、11月26日（木）に振込です。</strong> 検収書の日付は11月25日（水）です。11月27日（金）と30日（月）を予備日として残します。11月23日（月）は祝日なので、納品は翌営業日の24日です。12月10日（木）は報告書を送る期限で、振込の期限ではありません。</td>
           </tr>
           <tr>
-            <td class="label wrap">② どう進めるか</td>
-            <td><strong>9月25日までに機能一覧を確定します。機能設計は「データ構造→管理画面→予約・決済→利用者画面」の順に4分割して10月9日までに終えます。実装はデザインの要らない管理画面から10月5日に着手します。</strong> PEDAL社が作るデザインは利用者向け画面だけに絞ります。納期は10月9日と10月16日です。実装は10月5日から11月18日までの6週間半。 テスト駆動で作るので「実装完了＝単体テスト済み」です。独立したテスト工程は置かず、最終2日で主要な流れ（予約→決済→メール）を通します。PEDAL社側の動作確認は毎週の定例で少しずつ行い、まとまった社内テストは納品後の12月に回します（2章）。</td>
+            <td class="label wrap">どう進めるか</td>
+            <td><strong>増永さんがシルバーウィーク（9月19日〜23日）に不要な機能と追加したい機能を洗い出します。続けてモック（画面の見本）を運営→店舗→利用者の順に作ります。当社は届いた画面から設計と実装に入ります。</strong> 当社の見積は9月30日（水）に確定します。契約はその後です。実装は10月5日（月）から11月18日（水）までで、運営管理画面→店舗管理画面→予約・決済→利用者画面の順です。テスト駆動（機能ごとの自動確認を書きながら作る方法）で作るので、実装完了の時点で単体テスト（機能ごとの自動確認）は通っています。まとまった社内テストは納品後の12月に行います（2章）。</td>
           </tr>
           <tr>
-            <td class="label wrap">③ 間に合わないときはどうするか</td>
-            <td><strong>期日ではなく実施範囲を削ります。判断日は10月23日（金）と11月13日（金）の2回です。</strong> 見送った項目は請求しないだけで、補助金の上で不利益はありません。予約・会員と決済・加盟店ダッシュボード・新デザインの4項目は最後まで守ります（4章）。</td>
+            <td class="label wrap">間に合わないときはどうするか</td>
+            <td><strong>期日ではなく実施範囲を削ります。判断日は10月23日（金）と11月13日（金）の2回です。</strong> 見送った項目は請求しない扱いにできる見込みです（変更の承認が要るかは9月24日に事務局へ確認します）。予約・在庫管理、決済・会員管理、加盟店ダッシュボード、スマートフォンUI / UX改善の4項目は最後まで守ります（4章）。</td>
           </tr>
           <tr>
-            <td class="label wrap">④ 店舗のデータはどうするか</td>
-            <td><strong>Bubble版の店舗54店・自転車369台・会員146人を11月13日までにステージングへ移します。納品時点で実データが入った画面を渡します。</strong> 補助金の実地調査や画面写真で「店舗がゼロ」を見せないためです。決済は6月19日に決めた集約モデル（PEDALSTANDARD社が一括で受け、店舗へは月次振込）なので、店舗に決済アカウントの再申請や運営の再承認は発生しません（3章）。何を移すかは別資料「<a href="data-migration.html">データ移行</a>」にまとめています。</td>
+            <td class="label wrap">データはどうするか</td>
+            <td><strong>店舗・自転車・オプション（在庫を含む）を移します。会員と予約は移しません。</strong> 決済はStripeに載せ替えます。利用者には再登録の案内、店舗には営業日・貸出不可日の再登録の案内を送ります。データ移行は納品の範囲に入れ、実データが入った画面を納品します。何をどう移すかは別資料「<a href="data-migration.html">データ移行</a>」にまとめています。</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><strong>リスク:</strong> 補助対象経費は「補助事業期間中に支払が完了した経費」に限られます。12月5日に振り込んでも報告書は12月10日に間に合います。しかし支払が期間外になるため全額が対象外です。</span></div>
+    <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><strong>リスク:</strong> 補助対象経費は「事業実施期間中に支払が完了した経費」に限られます（公募要領。第1期の実施期間は交付決定日から11月30日まで）。12月に振り込んでも報告書は12月10日に間に合います。しかし支払が期間外になるため全額が対象外です。</span></div>
 
     <ul class="notes">
+      <li>当社の担当は9月30日をもって山本から村本に引き継ぎます。保守は準委任（作業時間に応じて支払う契約）で別契約にします（3章）。</li>
+      <li>定例の曜日・時刻（金曜11:00）、モックの納期（9月30日・10月9日・10月16日）、契約の締結日（10月2日）は当社の仮置きです。9月25日の定例で確定します。</li>
       <li>週次定例のたびに2章のタスク表の「状態」列を更新します。</li>
-      <li>納品の定義を「実装完了＝単体テスト済み」とする点は、9月18日の論点に入れています（3章）。データ移行の中身は別資料「データ移行」にまとめています。</li>
     </ul>
   </div>
 </div>
@@ -109,10 +108,10 @@
 <!-- ============ 02 スケジュール（全体像・タスク表・納品後） ============ -->
 <div class="tab-panel" id="panel-schedule">
   <div class="section" id="schedule">
-    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>スケジュール</h2><div class="sh-sub">週割りの工程表で全体をつかみ、日付ごとのタスク表で「誰が・何を・いつまでに」を追う</div></div></div>
-    <p>機能洗い出しを先頭に置き、機能設計は「データ構造→管理画面→予約・決済→利用者画面」の順に4分割します。終わった部分から実装に入ります。店舗・運営の管理画面は当社の標準部品で作るのでデザインを待ちません。PEDAL社のデザイン制作は利用者向け画面だけに絞ります。その分納期を後ろに置けます。デザインに依存するのは10月19日からの利用者画面の実装だけです。</p>
+    <div class="section-header"><div class="section-num">02</div><div class="sh-body"><h2>スケジュール</h2><div class="sh-sub">運営管理画面から順に作れば、11月18日の実装完了と11月24日の納品は11月30日の内側に収まる</div></div></div>
+    <p>工程表は1列が1週間です。設計は「A データ構造 → B 運営管理画面 → C 店舗管理画面と予約・決済 → D 利用者画面」の4つに分け、終わった部分から実装に入ります。増永さんのモックが運営→店舗→利用者の順に届くので、実装も同じ順です。</p>
 
-    <figure class="fig" aria-label="機能洗い出しと4分割の機能設計を先に置き、デザインの要らない管理画面から10月5日に実装を始める。利用者画面だけがデザインに依存し、納品11月23日・振込11月26日は11月30日の内側">
+    <figure class="fig" aria-label="増永さんの洗い出しとモックを先頭に置き、運営管理画面から10月5日に実装を始める。実装完了11月18日・納品11月24日・振込11月26日は11月30日の内側">
       <div class="gantt-wrap">
         <div class="gantt">
           <div class="g-row g-month">
@@ -130,164 +129,163 @@
             <div class="g-wk">12.7</div>
           </div>
           <div class="g-row">
-            <div class="g-label joint"><i></i>決定・契約<small>9.18決定 → 9.30締結</small></div>
-            <div class="g-bar joint" style="grid-column:2 / 5">決定 → 事務局確認 → 契約</div>
+            <div class="g-label joint"><i></i>決定・見積・契約<small>9.18決定 → 9.30見積 → 10.2契約（仮）</small></div>
+            <div class="g-bar joint" style="grid-column:2 / 5">決定 → 洗い出し → 見積 → 契約</div>
           </div>
           <div class="g-row">
-            <div class="g-label own"><i></i>機能洗い出し<small>9.17〜9.25。機能一覧を確定</small></div>
-            <div class="g-bar own" style="grid-column:2 / 4">棚卸し → 一覧</div>
+            <div class="g-label party"><i></i>機能の洗い出し<small>9.19〜9.23。不要な機能と追加要望</small></div>
+            <div class="g-bar party" style="grid-column:3 / 4">連休中</div>
           </div>
           <div class="g-row">
-            <div class="g-label own"><i></i>機能設計（4分割）<small>①データ構造 ②管理画面 ③予約・決済 ④利用者画面。9.24〜10.9</small></div>
-            <div class="g-bar own" style="grid-column:3 / 6">設計①→②→③→④</div>
+            <div class="g-label party"><i></i>モック<small>運営9.30 → 店舗10.9 → 利用者10.16（仮）</small></div>
+            <div class="g-bar party" style="grid-column:3 / 7">運営 → 店舗 → 利用者</div>
           </div>
           <div class="g-row">
-            <div class="g-label party"><i></i>デザイン（利用者画面）<small>9.25方針、10.9第1便、10.16第2便</small></div>
-            <div class="g-cell" style="grid-column:3 / 4"><div class="g-ms party"><b></b>9.25 方針合意</div></div>
-            <div class="g-bar party" style="grid-column:4 / 7">第1便 → 第2便</div>
+            <div class="g-label own"><i></i>設計A〜D<small>A データ構造 → B 運営 → C 店舗・予約決済 → D 利用者</small></div>
+            <div class="g-bar own" style="grid-column:3 / 7">A → B → C → D</div>
           </div>
           <div class="g-row">
-            <div class="g-label own"><i></i>基盤づくり<small>9.28〜10.7</small></div>
-            <div class="g-bar own" style="grid-column:4 / 6">認証・DB・決済</div>
+            <div class="g-label own"><i></i>環境づくり<small>9.28〜10.7</small></div>
+            <div class="g-bar own" style="grid-column:4 / 6">Vercel・Supabase・stg・Stripe</div>
           </div>
           <div class="g-row">
-            <div class="g-label own"><i></i>実装① 管理画面<small>10.5〜10.21。店舗→運営。デザイン不要</small></div>
-            <div class="g-bar own" style="grid-column:5 / 8">店舗管理 → 運営管理</div>
+            <div class="g-label own"><i></i>実装1 運営管理画面<small>10.5〜10.16</small></div>
+            <div class="g-bar own" style="grid-column:5 / 7">運営</div>
           </div>
           <div class="g-row">
-            <div class="g-label own"><i></i>実装② 予約・決済の中核<small>10.13〜10.28</small></div>
-            <div class="g-bar own" style="grid-column:6 / 9">予約 → 在庫 → Stripe → メール</div>
+            <div class="g-label own"><i></i>実装2 店舗管理画面<small>10.12〜10.23</small></div>
+            <div class="g-bar own" style="grid-column:6 / 8">店舗</div>
           </div>
           <div class="g-row">
-            <div class="g-label own"><i></i>実装③ 利用者画面<small>10.19〜11.10。HTMLを部品化</small></div>
-            <div class="g-bar own" style="grid-column:7 / 11">トップ・検索・詳細 → 予約の流れ</div>
+            <div class="g-label own"><i></i>実装3 予約・決済<small>10.19〜10.30。Stripe</small></div>
+            <div class="g-bar own" style="grid-column:7 / 9">予約 → 在庫 → Stripe → メール</div>
           </div>
           <div class="g-row">
-            <div class="g-label own"><i></i>実装④ 候補・仕上げ<small>11.2〜11.18</small></div>
+            <div class="g-label own"><i></i>実装4 利用者画面<small>10.26〜11.13</small></div>
+            <div class="g-bar own" style="grid-column:8 / 11">トップ・検索・詳細 → 予約の流れ</div>
+          </div>
+          <div class="g-row">
+            <div class="g-label own"><i></i>実装5 候補・仕上げ<small>11.2〜11.18</small></div>
             <div class="g-bar own" style="grid-column:9 / 12">候補項目 → 仕上げ</div>
           </div>
           <div class="g-row">
-            <div class="g-label own"><i></i>データ移行<small>10.26〜11.13。店舗54・自転車369・会員146</small></div>
-            <div class="g-bar own" style="grid-column:8 / 11">スクリプト → リハーサル</div>
+            <div class="g-label own"><i></i>データ移行<small>10.26〜11.13。店舗・自転車・オプション</small></div>
+            <div class="g-bar own" style="grid-column:8 / 11">変換 → リハーサル</div>
           </div>
           <div class="g-row">
             <div class="g-label joint"><i></i>判断日<small>削るか決める</small></div>
-            <div class="g-cell" style="grid-column:7 / 8"><div class="g-ms own"><b></b>10.23 中間判断</div></div>
-            <div class="g-cell" style="grid-column:10 / 11"><div class="g-ms own"><b></b>11.13 最終判断</div></div>
+            <div class="g-cell" style="grid-column:7 / 8"><div class="g-ms joint"><b></b>10.23 中間判断</div></div>
+            <div class="g-cell" style="grid-column:10 / 11"><div class="g-ms joint"><b></b>11.13 最終判断</div></div>
           </div>
           <div class="g-row">
-            <div class="g-label party"><i></i>定例で確認<small>毎週金曜11:00</small></div>
-            <div class="g-bar hollow" style="grid-column:3 / 13">できた画面をPEDAL社が15分操作して確認</div>
+            <div class="g-label joint"><i></i>定例で確認<small>毎週金曜11:00（仮）</small></div>
+            <div class="g-bar hollow" style="grid-column:3 / 13">できた画面をPEDAL社が操作して確認</div>
           </div>
           <div class="g-row">
             <div class="g-label own"><i></i>通し確認・納品物<small>11.19〜11.20</small></div>
             <div class="g-bar own" style="grid-column:11 / 12">通し確認</div>
           </div>
           <div class="g-row">
-            <div class="g-label party"><i></i>納品→検収→振込<small>11.23 → 11.23〜25 → 11.26</small></div>
-            <div class="g-cell" style="grid-column:12 / 13"><div class="g-ms own"><b></b>11.23 納品</div><div class="g-ms party"><b></b>11.25 検収</div><div class="g-ms party"><b></b>11.26 振込</div></div>
+            <div class="g-label party"><i></i>納品→検収→振込<small>11.24 → 11.24〜25 → 11.26</small></div>
+            <div class="g-cell" style="grid-column:12 / 13"><div class="g-ms own"><b></b>11.24 納品</div><div class="g-ms party"><b></b>11.25 検収</div><div class="g-ms party"><b></b>11.26 振込</div></div>
           </div>
           <div class="g-row">
-            <div class="g-label party"><i></i>実績報告<small>吉川さん。12.7提出</small></div>
+            <div class="g-label party"><i></i>実績報告<small>吉川さん。11.27〜12.4作成、12.7提出</small></div>
             <div class="g-bar party" style="grid-column:12 / 15">様式作成 → 12.7 提出</div>
           </div>
           <div class="g-row">
             <div class="g-label after"><i></i>納品後<small>12月〜1月</small></div>
-            <div class="g-bar after" style="grid-column:12 / 15">社内テスト → 切替</div>
+            <div class="g-bar after" style="grid-column:12 / 15">社内テスト → 再登録案内 → 切替</div>
           </div>
         </div>
       </div>
     </figure>
-    </figure>
     <div class="legend">
-      <span><i style="background: var(--accent);"></i>当社（清野・山本）</span>
-      <span><i style="background: var(--ok);"></i>PEDALSTANDARD社（増永さん・吉川さん）</span>
+      <span><i style="background: var(--accent);"></i>当社（清野・村本）</span>
+      <span><i style="background: var(--ok);"></i>PEDAL社（増永さん・吉川さん）</span>
       <span><i style="background: var(--ink);"></i>3者で行う</span>
+      <span><i style="background: var(--surface); border:1px solid var(--ink);"></i>毎週の確認（定例）</span>
       <span><i style="background: var(--line);"></i>納品後（補助金の期限の外）</span>
     </div>
-    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>この図の読み方:</strong> 1列が1週間で、日付は「月.日」の表記です。菱形は日付が固定の節目で、焦がし色は当社が守る節目、緑はPEDAL社側が守る節目です。破線の枠は補助金の期限の外で行う工程です。</span></div>
+    <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>この図の読み方:</strong> 1列が1週間で、日付は「月.日」の表記です（表では「M月D日（曜）」）。菱形は日付が固定の節目で、色は凡例のとおり茶＝当社、緑＝PEDAL社、黒＝3者です。破線の枠は補助金の期限の外で行う工程です。</span></div>
 
     <ul class="notes">
       <li>独立したテスト工程を置かない代わりに、テスト駆動で単体テストを実装と同時に書くこと、毎週の定例でPEDAL社にできた画面を操作して確認してもらうこと、最終2日で主要な流れを通すことの3つで品質を担保します。</li>
-      <li>データ構造は7月にBubble上で作り直したDB設計を土台にするので、機能設計①は5営業日で足ります。</li>
+      <li>データ構造は7月に当社がBubble上で作り直したDB設計（テーブル定義書）を土台にします。移行対象の店舗・自転車・オプションの対応づけもこの中で決めます。</li>
     </ul>
 
     <div class="sub-item">
       <div class="kick">タスク表</div>
       <h4>日付・やること・担当・完了条件。「状態」列は週次定例で更新する</h4>
-      <p>担当の「当社」は清野・山本、「PEDAL社」は増永さん・吉川さん、「吉川」は補助金手続きの担当としての吉川さんです。この表のとおりに進めれば11月26日の振込に間に合います。</p>
+      <p>担当の「当社」は清野・村本、「PEDAL社」は増永さん・吉川さん、「吉川さん（補助金）」は補助金手続きの担当としての吉川さんです。「（仮）」の日付は9月25日の定例で確定します。</p>
     </div>
 
     <div class="sub-item">
-      <div class="kick">9月16日（水）〜18日（金）</div>
-      <h4>準備と方針決定</h4>
+      <div class="kick">9月18日（金）〜24日（木）</div>
+      <h4>方針決定と洗い出し</h4>
       <div class="table-wrap">
         <table>
           <thead><tr><th>日付</th><th>やること</th><th>担当</th><th>完了条件</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td class="label">9月16日（水）</td><td>このロードマップと想定Q&amp;Aを最新化する</td><td>当社</td><td>mdとHTMLが揃う</td><td><span class="badge good">済</span></td></tr>
-            <tr><td class="label">9月17日（木）</td><td>「やりたいことリスト」を当社に送る</td><td>増永さん</td><td>当社が受領</td><td></td></tr>
-            <tr><td class="label">9月17日（木）</td><td>補助事業計画書（様式第1-1号）のWordを当社に送る</td><td>吉川</td><td>当社が受領</td><td></td></tr>
-            <tr><td class="label">9月17日（木）〜</td><td><strong>機能洗い出しに着手</strong>: 現行Bubble版の全画面・全機能を棚卸しして機能一覧を作り始める（9月25日確定）</td><td>当社</td><td>機能一覧の下書き</td><td></td></tr>
-            <tr><td class="label">9月17日（木）夜</td><td>リストの各項目を見積8項目に対応づけ、9月18日の論点整理（3章の表を埋めたもの）を用意する</td><td>当社</td><td>判断材料の資料</td><td></td></tr>
-            <tr><td class="label">9月18日（金）11:00</td><td>方針決定（3章の論点10件）</td><td>3者</td><td>決定事項を議事録に残す</td><td></td></tr>
-            <tr><td class="label">9月18日（金）</td><td>決定事項をこの資料に反映する。事務局への質問文を吉川さんに渡す</td><td>当社</td><td>質問文送付</td><td></td></tr>
+            <tr><td class="label">9月18日（金）11:00</td><td>方針決定（3章の論点）</td><td>3者</td><td>決定事項を議事録に残す</td><td><span class="badge good">済</span></td></tr>
+            <tr><td class="label">9月18日（金）〜19日（土）</td><td>決定事項を文書にして共有する（この資料と「データ移行」）</td><td>当社</td><td>共有済み</td><td></td></tr>
+            <tr><td class="label">9月19日（土）〜23日（水）</td><td><strong>機能の洗い出し</strong>: 運営画面・店舗画面の不要な機能を落とす。追加したい機能を書き出す</td><td>増永さん</td><td>洗い出しの一覧を当社に送付</td><td></td></tr>
+            <tr><td class="label">9月19日（土）〜</td><td><strong>モック（運営管理画面）</strong>の作成に着手する</td><td>増永さん</td><td>9月30日（仮）に当社へ</td><td></td></tr>
+            <tr><td class="label">9月24日（木）</td><td>認識違いの申し出の期限。違いがあればチャットで</td><td>3者</td><td>申し出なし・または修正済み</td><td></td></tr>
+            <tr><td class="label">9月24日（木）</td><td>事務局に電話で確認（4章）。結果を当社に共有する。交付決定通知書の写しを当社に送る</td><td>吉川さん（補助金）</td><td>4章の各項目に回答が入る。交付決定日と交付決定額が分かる</td><td></td></tr>
+            <tr><td class="label">9月24日（木）〜30日（水）</td><td><strong>設計A データ構造</strong>: 7月のDB設計を土台にテーブル定義を移植する。会員・店舗・自転車・オプション・予約・決済の構造を固める</td><td>当社</td><td>テーブル定義書</td><td></td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
     <div class="sub-item">
-      <div class="kick">9月24日（木）〜10月9日（金）</div>
-      <h4>機能洗い出し・機能設計・契約・デザイン（並走）</h4>
-      <p>9月21日〜23日は連休です。機能設計は4分割します。終わった部分から実装に入ります。</p>
+      <div class="kick">9月25日（金）〜10月2日（金）</div>
+      <h4>見積の確定・契約・設計・環境</h4>
       <div class="table-wrap">
         <table>
           <thead><tr><th>日付</th><th>やること</th><th>担当</th><th>完了条件</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td class="label">9月17日（木）〜25日（金）</td><td><strong>機能洗い出し</strong>: 現行Bubble版の全画面・全機能を棚卸しして機能一覧を作る。増永さんのリストを統合する。各機能を「利用者 / 店舗 / 運営」の3区分と見積8項目に対応づけ、「今回実施 / 見送り」を仮置きする</td><td>当社</td><td>機能一覧（表）の初版</td><td></td></tr>
-            <tr><td class="label">9月24日（木）</td><td>事務局に電話で確認（4章）。結果を当社に共有する</td><td>吉川</td><td>4章の各項目に回答が入る</td><td></td></tr>
-            <tr><td class="label">9月24日（木）</td><td>交付決定通知書の写しを当社に送る（交付決定日・交付決定額の確認）</td><td>吉川</td><td>当社が受領</td><td></td></tr>
-            <tr><td class="label">9月24日（木）〜30日（水）</td><td><strong>機能設計① データ構造</strong>: 7月のDB設計を土台にテーブル定義を移植する。会員・店舗・自転車・予約・決済の構造を固める</td><td>当社</td><td>テーブル定義書</td><td></td></tr>
-            <tr><td class="label">9月24日（木）〜</td><td>開発環境の用意（リポジトリ・Vercel・Supabase・Stripeのテスト環境）</td><td>当社</td><td>ステージングURLが出る</td><td></td></tr>
-            <tr><td class="label"><strong>9月25日（金）11:00</strong></td><td><strong>定例1回目＝機能一覧の確定</strong>。実施 / 見送りを決め、発注書の成果物明細にする。<strong>デザイン方針の合意</strong>（色・書体・トーン・部品の見本1画面をPEDAL社が持参。管理画面は当社の標準部品で作ることを確認）</td><td>3者</td><td>機能一覧の確定版・デザイン方針</td><td></td></tr>
-            <tr><td class="label">9月26日（金）〜30日（水）</td><td>請負契約書と発注書（成果物明細＝機能一覧、金額＝見積額、納期11月23日、検収11月25日、支払11月26日、所有権帰属）。発注書の日付は交付決定日以降にする</td><td>当社が案、PEDAL社が発注</td><td>締結済み契約書と発注書が双方の手元にある</td><td></td></tr>
-            <tr><td class="label">9月28日（月）〜10月2日（金）</td><td><strong>機能設計② 管理画面</strong>（店舗・運営）: 画面一覧、各画面の項目と操作、権限。デザインは当社の標準部品</td><td>当社</td><td>管理画面の設計書</td><td></td></tr>
-            <tr><td class="label">9月28日（月）〜10月7日（水）</td><td><strong>基盤づくり</strong>: 環境（リポジトリ・Vercel・Supabase）、認証、DBスキーマ、決済のテスト接続、メール送信、管理画面の共通部品</td><td>当社</td><td>ステージングで会員登録とログインができ、テスト決済が1回通る</td><td></td></tr>
-            <tr><td class="label">10月1日（木）まで</td><td>ステージング用サブドメイン staging.rincle.co.jp のDNSレコードを追加する。ドメインの取得先とDNS操作者、メール送信の経路を当社に共有する</td><td>増永さん</td><td>ステージングが rincle.co.jp 配下で開く</td><td></td></tr>
-            <tr><td class="label">10月1日（木）〜7日（水）</td><td><strong>機能設計③ 予約・決済</strong>: 予約の状態遷移、在庫、決済フロー（現行と同じ）、キャンセル・返金、メール通知</td><td>当社</td><td>予約・決済の設計書</td><td></td></tr>
-            <tr><td class="label">10月2日（金）11:00</td><td>定例2回目。データ構造と管理画面の設計書をPEDAL社が確認（仕様の抜けはここで出す）</td><td>3者</td><td>設計書①②に了承</td><td></td></tr>
-            <tr><td class="label">10月5日（月）〜9日（金）</td><td><strong>機能設計④ 利用者画面</strong>: 画面遷移、表示項目、検索条件。第1便デザインに合わせて仕上げる</td><td>当社</td><td>利用者画面の設計書</td><td></td></tr>
-            <tr><td class="label"><strong>10月9日（金）</strong></td><td><strong>デザイン第1便</strong>: トップ、検索結果、店舗詳細、自転車詳細（PC・スマホ）</td><td>PEDAL社</td><td>HTMLを当社に送付</td><td></td></tr>
-            <tr><td class="label">10月9日（金）11:00</td><td>定例3回目。予約・決済の設計書を確認。店舗管理画面の途中をPEDAL社が操作して確認</td><td>3者</td><td>設計書③に了承</td><td></td></tr>
+            <tr><td class="label"><strong>9月25日（金）11:00</strong>（仮）</td><td><strong>定例1回目</strong>。洗い出しの一覧を確認する。見積8項目との対応と「今回実施 / 見送り」を仮置きする。定例の曜日・時刻とモックの納期を確定する</td><td>3者</td><td>実施 / 見送りの仮置き。仮置きの日付が確定</td><td></td></tr>
+            <tr><td class="label">9月25日（金）〜30日（水）</td><td>当社の見積を精査し直す（実施項目、データ移行を請負に含めるか）</td><td>当社</td><td><strong>9月30日: 見積の確定版</strong>を送付</td><td></td></tr>
+            <tr><td class="label">9月28日（月）〜10月7日（水）</td><td><strong>環境づくり</strong>: Vercel（本番・ステージングの2環境）、Supabase（データベース。2つ）、stg.rincle.co.jp、Stripeのテスト環境、メール送信、認証</td><td>当社</td><td>ステージング（本番公開前に動かす確認用の環境）で会員登録とログインができ、テスト決済が1回通る</td><td></td></tr>
+            <tr><td class="label">9月28日（月）〜10月2日（金）</td><td><strong>設計B 運営管理画面</strong>: 画面一覧、各画面の項目と操作、権限。モック（9月30日）を反映する</td><td>当社</td><td>運営管理画面の設計書</td><td></td></tr>
+            <tr><td class="label">9月30日（水）（仮）</td><td><strong>モック（運営管理画面）</strong>を当社に渡す</td><td>増永さん</td><td>当社が受領</td><td></td></tr>
+            <tr><td class="label">10月1日（木）まで</td><td>stg.rincle.co.jp のDNS（ドメインの向き先の設定）にレコードを追加する。ドメインの取得先とDNSの操作者を当社に共有する</td><td>増永さん</td><td>ステージングが rincle.co.jp 配下で開く</td><td></td></tr>
+            <tr><td class="label">9月30日（水）〜10月2日（金）（仮）</td><td>請負契約書と発注書（成果物明細＝実施項目、金額＝見積額、納期11月24日、検収11月25日、支払11月26日、所有権帰属、検収後の不具合は無償修正）。保守の準委任契約（作業時間に応じて支払う契約）は別に用意する。発注書の日付は交付決定日以降にする</td><td>当社が案、PEDAL社が発注</td><td>締結済み契約書と発注書が双方の手元にある</td><td></td></tr>
+            <tr><td class="label">10月2日（金）11:00</td><td>定例2回目。データ構造と運営管理画面の設計書をPEDAL社が確認（仕様の抜けはここで出す）</td><td>3者</td><td>設計A・Bに了承</td><td></td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
     <div class="sub-item">
-      <div class="kick">10月5日（月）〜11月13日（金）</div>
+      <div class="kick">10月5日（月）〜11月18日（水）</div>
       <h4>実装（テスト駆動・単体テスト込み）</h4>
-      <p>管理画面、予約・決済の中核、利用者画面、候補項目の順に作ります。デザインに依存するのは利用者画面だけです。</p>
+      <p>運営管理画面→店舗管理画面→予約・決済→利用者画面→候補項目の順に作ります。モックに依存するのは各画面の着手時期だけで、届いた画面から順に作ります。</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>日付</th><th>やること</th><th>担当</th><th>完了条件</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td class="label">10月5日（月）〜16日（金）</td><td><strong>実装① 店舗管理画面</strong>: ログイン、予約一覧と「受信した」フラグ、自転車と在庫の登録、店舗情報、集計（予約件数・売上）</td><td>当社</td><td>店舗の立場で一通り操作できる。単体テスト通過</td><td></td></tr>
-            <tr><td class="label">10月12日（月・祝）〜21日（水）</td><td><strong>実装② 運営管理画面</strong>: 店舗・会員・予約の横断管理、マスタ管理</td><td>当社</td><td>運営の立場で一通り操作できる</td><td></td></tr>
-            <tr><td class="label">10月13日（火）〜28日（水）</td><td><strong>実装③ 予約・決済の中核</strong>: 予約作成→確定→キャンセル、在庫の引き当て処理、Stripe（テストモード）、メール通知。画面は仮</td><td>当社</td><td>ステージングで予約〜決済〜メールが通る</td><td></td></tr>
-            <tr><td class="label"><strong>10月16日（金）</strong></td><td><strong>デザイン第2便（最終）</strong>: 予約の流れ（日時選択→確認→決済→完了）、マイページ、登録・ログイン</td><td>PEDAL社</td><td>HTMLを当社に送付。以後デザインの新規追加は受けない</td><td></td></tr>
-            <tr><td class="label">10月16日（金）11:00</td><td>定例4回目。店舗管理画面の完成をPEDAL社が操作して確認</td><td>3者</td><td>気づきをチャットに書き出す</td><td></td></tr>
-            <tr><td class="label">10月19日（月）〜11月10日（火）</td><td><strong>実装④ 利用者画面</strong>: トップ・検索・店舗詳細・自転車詳細（第1便）→ 予約の流れ・マイページ・登録（第2便）。デザインHTMLを部品化して組み込む</td><td>当社</td><td>利用者の立場で予約〜決済まで通る</td><td></td></tr>
-            <tr><td class="label"><strong>10月23日（金）11:00</strong></td><td><strong>定例5回目＝中間判断</strong>。管理画面と予約・決済の進み具合を見たうえで、候補項目（検索最適化・多言語）を実施するか削るか決める（4章）</td><td>3者</td><td>削る項目が決まっていれば発注書の扱いを吉川さんが事務局に確認</td><td></td></tr>
-            <tr><td class="label">10月30日（金）11:00</td><td>定例6回目。予約の流れ（利用者画面）をPEDAL社が操作して確認</td><td>3者</td><td></td><td></td></tr>
-            <tr><td class="label">10月26日（月）〜11月6日（金）</td><td><strong>データ移行スクリプト</strong>: Bubbleの書き出し（店舗・自転車・料金・会員・予約履歴）を新DBに流し込む変換を作る。店舗のPay.jpテナントIDは移さない（集約モデルのため不要）</td><td>当社</td><td>ステージングに店舗54・自転車369が入る</td><td></td></tr>
-            <tr><td class="label">10月31日（金）まで</td><td>「実施した内容と具体的な効果」の書き方の提案を吉川さんに渡す（9月15日の宿題）</td><td>当社</td><td>提案文を送付</td><td></td></tr>
-            <tr><td class="label">11月2日（月）〜16日（月）</td><td><strong>実装⑤ 候補項目</strong>: 検索最適化、多言語（日英）。Stripe本番キーでの少額決済と返金の確認</td><td>当社</td><td></td><td></td></tr>
+            <tr><td class="label">10月5日（月）〜9日（金）</td><td><strong>設計C 店舗管理画面と予約・決済</strong>: 店舗側の画面一覧、予約の状態遷移、在庫、決済の流れ（Stripe）、キャンセル・返金、メール通知</td><td>当社</td><td>店舗管理画面と予約・決済の設計書</td><td></td></tr>
+            <tr><td class="label">10月5日（月）〜16日（金）</td><td><strong>実装1 運営管理画面</strong>: 店舗・会員・予約の横断管理、マスタ管理、店舗への案内メールの送信</td><td>当社</td><td>運営の立場で一通り操作できる。単体テスト通過</td><td></td></tr>
+            <tr><td class="label">10月9日（金）（仮）</td><td><strong>モック（店舗管理画面）</strong>を当社に渡す</td><td>増永さん</td><td>当社が受領</td><td></td></tr>
+            <tr><td class="label">10月9日（金）11:00</td><td>定例3回目。設計Cを確認。運営管理画面の途中をPEDAL社が操作して確認</td><td>3者</td><td>設計Cに了承</td><td></td></tr>
+            <tr><td class="label">10月12日（月・祝）〜23日（金）</td><td><strong>実装2 店舗管理画面</strong>: ログイン、予約一覧と「受信した」フラグ、自転車と在庫の登録、オプション、営業日・貸出不可日、店舗情報、集計（予約件数・売上）</td><td>当社</td><td>店舗の立場で一通り操作できる</td><td></td></tr>
+            <tr><td class="label">10月13日（火）〜16日（金）</td><td><strong>設計D 利用者画面</strong>: 画面遷移、表示項目、検索条件。モック（10月16日）を反映して10月23日までに仕上げる</td><td>当社</td><td>利用者画面の設計書</td><td></td></tr>
+            <tr><td class="label">10月16日（金）（仮）</td><td><strong>モック（利用者画面）</strong>を当社に渡す（トップ・検索・店舗詳細・自転車詳細・予約の流れ・マイページ・登録。PC・スマホ）。以後の画面の新規追加は12月以降</td><td>増永さん</td><td>当社が受領</td><td></td></tr>
+            <tr><td class="label">10月16日（金）11:00</td><td>定例4回目。運営管理画面の完成をPEDAL社が操作して確認</td><td>3者</td><td>気づきをチャットに書き出す</td><td></td></tr>
+            <tr><td class="label">10月19日（月）〜30日（金）</td><td><strong>実装3 予約・決済の中核</strong>: 予約作成→確定→キャンセル・在庫の引き当て・Stripe（テストモード）・メール通知</td><td>当社</td><td>ステージングで予約〜決済〜メールが通る</td><td></td></tr>
+            <tr><td class="label"><strong>10月23日（金）11:00</strong></td><td><strong>定例5回目＝中間判断</strong>。管理画面と予約・決済の進み具合を見たうえで、候補項目（検索最適化・多言語）を実施するか削るか決める（4章）。店舗管理画面の完成をPEDAL社が操作して確認</td><td>3者</td><td>削る項目が決まっていれば発注書の扱いを吉川さんが事務局に確認</td><td></td></tr>
+            <tr><td class="label">10月26日（月）〜11月13日（金）</td><td><strong>実装4 利用者画面</strong>: トップ・検索・店舗詳細・自転車詳細→予約の流れ・マイページ・登録。モックのHTMLを部品化して組み込む</td><td>当社</td><td>利用者の立場で予約〜決済まで通る</td><td></td></tr>
+            <tr><td class="label">10月26日（月）〜11月6日（金）</td><td><strong>データ移行の変換</strong>: Bubbleの書き出し（店舗・自転車・オプションと在庫）を新DBに流し込む変換を作る。会員・予約は対象外</td><td>当社</td><td>ステージングに店舗・自転車・オプションが入る（件数は書き出し時点と一致）</td><td></td></tr>
+            <tr><td class="label">10月30日（金）まで</td><td>「実施した内容と具体的な効果」の書き方の提案を吉川さんに渡す（9月15日の宿題）</td><td>当社</td><td>提案文を送付</td><td></td></tr>
+            <tr><td class="label">10月30日（金）11:00</td><td>定例6回目。予約〜決済の流れ（画面は仮）をPEDAL社が操作して確認</td><td>3者</td><td></td><td></td></tr>
+            <tr><td class="label">11月2日（月）〜16日（月）</td><td><strong>実装5 候補項目</strong>: 検索最適化、多言語（日英）。Stripe本番キーが取れていれば少額決済と返金を1回確認</td><td>当社</td><td></td><td></td></tr>
             <tr><td class="label">11月6日（金）11:00</td><td>定例7回目。利用者画面（トップ・検索・詳細）をPEDAL社が操作して確認</td><td>3者</td><td></td><td></td></tr>
             <tr><td class="label">11月9日（月）〜13日（金）</td><td><strong>データ移行のリハーサル</strong>: 最新の書き出しで再実行する。件数と画面表示を照合する。手順書にする</td><td>当社</td><td>移行手順書。実データ入りのステージング</td><td></td></tr>
             <tr><td class="label">11月11日（水）〜18日（水）</td><td>仕上げとデザイン差分の手直し。並行して<strong>操作マニュアル</strong>（店舗向け・運営向け）と設計書の更新を進める</td><td>当社</td><td><strong>11月18日: 実装完了。単体テスト全部通過</strong></td><td></td></tr>
-            <tr><td class="label"><strong>11月13日（金）11:00</strong></td><td><strong>定例8回目＝最終判断</strong>。実装完了11月18日に届かない部分があれば、確定項目の中で縮める箇所を決める（4章の順番）</td><td>3者</td><td>納品する機能の一覧が確定</td><td></td></tr>
+            <tr><td class="label"><strong>11月13日（金）11:00</strong></td><td><strong>定例8回目＝最終判断</strong>。実装完了11月18日に届かない部分があれば、確定項目の中で縮める箇所を決める（4章の順番）。利用者画面（予約の流れ）をPEDAL社が操作して確認</td><td>3者</td><td>納品する機能の一覧が確定</td><td></td></tr>
           </tbody>
         </table>
       </div>
@@ -300,26 +298,26 @@
         <table>
           <thead><tr><th>日付</th><th>やること</th><th>担当</th><th>完了条件</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td class="label">11月19日（木）</td><td><strong>主要フローの通し確認</strong>: 会員登録→検索→予約→決済→メール→店舗側で受信→返却。スマホ表示。Playwrightで自動化できるものは自動化して残す</td><td>当社</td><td>通し確認の結果が記録される</td><td></td></tr>
-            <tr><td class="label">11月19日（木）〜20日（金）</td><td>設計書を実装に合わせて最終更新。操作マニュアルを仕上げる。<strong>主要機能の画面写真</strong>を実施項目ごとに撮る（実績報告の添付）</td><td>当社</td><td>納品物一式が揃う</td><td></td></tr>
-            <tr><td class="label">11月20日（金）11:00</td><td>定例9回目。納品の可否を判定。既知の不具合は「納品後の無償修正一覧」にする。23日〜25日の検収の段取りを確認</td><td>3者</td><td>納品可の判断</td><td></td></tr>
+            <tr><td class="label">11月19日（木）</td><td><strong>主要フローの通し確認</strong>: 会員登録→検索→予約→決済→メール→店舗側で受信→返却。スマホ表示。自動で再実行できる形で残す</td><td>当社</td><td>通し確認の結果が記録される</td><td></td></tr>
+            <tr><td class="label">11月19日（木）〜20日（金）</td><td>設計書を実装に合わせて最終更新。操作マニュアルを仕上げる。<strong>主要機能の画面写真</strong>を実施項目ごとに撮る（実績報告の添付。実データ入り）</td><td>当社</td><td>納品物一式が揃う</td><td></td></tr>
+            <tr><td class="label">11月20日（金）11:00</td><td>定例9回目。納品の可否を判定。既知の不具合は「納品後の無償修正一覧」にする。24日〜25日の検収の段取りを確認</td><td>3者</td><td>納品可の判断</td><td></td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
     <div class="sub-item">
-      <div class="kick">11月23日（月・祝）〜30日（月）</div>
+      <div class="kick">11月24日（火）〜30日（月）</div>
       <h4>納品・検収・振込</h4>
-      <p>23日は勤労感謝の日です。PEDAL社に23日から検収を始めてもらう前提で、9月18日に合意を取ります。</p>
+      <p>11月23日（月）は勤労感謝の日です。納品は翌営業日の24日です。</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>日付</th><th>やること</th><th>担当</th><th>完了条件</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td class="label"><strong>11月23日（月・祝）</strong></td><td><strong>納品</strong>。納品書（項目名は見積の経費名、数量、金額、納品場所、日付）+ 設計書 + 操作マニュアル + 画面写真 + <strong>実データ（店舗・自転車・会員）を入れた</strong>ステージングURLと管理者アカウント</td><td>当社</td><td>PEDAL社が受領</td><td></td></tr>
-            <tr><td class="label">11月23日（月・祝）〜25日（水）</td><td>検収: 発注書の項目ごとに主要な操作が一通りできるかを確認（3章の定義）。細かな不具合は無償修正一覧に追記する。検収は止めない</td><td>PEDAL社</td><td>検収書に署名（日付11月25日）</td><td></td></tr>
+            <tr><td class="label"><strong>11月24日（火）</strong></td><td><strong>納品</strong>。納品書（項目名は見積の経費名、数量、金額、納品場所、日付）+ 設計書 + 操作マニュアル + 画面写真 + <strong>実データ（店舗・自転車・オプション）を入れた</strong>ステージングURLと管理者アカウント</td><td>当社</td><td>PEDAL社が受領</td><td></td></tr>
+            <tr><td class="label">11月24日（火）〜25日（水）</td><td>検収: 発注書の項目ごとに主要な操作が一通りできるかを確認（3章の定義）。細かな不具合は無償修正一覧に追記する。検収は止めない</td><td>PEDAL社</td><td>検収書に署名（日付11月25日）</td><td></td></tr>
             <tr><td class="label"><strong>11月25日（水）</strong></td><td><strong>検収書</strong>をPEDAL社が発行。当社が<strong>請求書</strong>を発行（見積・発注書と項目・金額を一致させる。税抜と消費税を分けて記載。保守など対象外の請求は別の請求書）</td><td>PEDAL社・当社</td><td>双方が原本を保管</td><td></td></tr>
-            <tr><td class="label"><strong>11月26日（木）</strong></td><td><strong>PEDALSTANDARD社名義の口座から銀行振込</strong>。振込明細（振込者名義・振込先名義・日付・金額）を保管</td><td>PEDAL社</td><td>振込完了。明細の写しを吉川さんが保管</td><td></td></tr>
+            <tr><td class="label"><strong>11月26日（木）</strong></td><td><strong>PEDAL社名義の口座から銀行振込</strong>。振込明細（振込者名義・振込先名義・日付・金額）を保管</td><td>PEDAL社</td><td>振込完了。明細の写しを吉川さんが保管</td><td></td></tr>
             <tr><td class="label">11月27日（金）・30日（月）</td><td>予備日（振込に不備があった場合の再実行）</td><td>PEDAL社</td><td></td><td></td></tr>
             <tr><td class="label">11月27日（金）11:00</td><td>定例10回目。振込の完了確認。実績報告の添付書類と下書きを確認</td><td>3者</td><td>書類一覧が全部○</td><td></td></tr>
           </tbody>
@@ -328,15 +326,15 @@
     </div>
 
     <div class="sub-item">
-      <div class="kick">12月1日（火）〜10日（木）</div>
+      <div class="kick">11月27日（金）〜12月10日（木）</div>
       <h4>実績報告</h4>
       <div class="table-wrap">
         <table>
           <thead><tr><th>日付</th><th>やること</th><th>担当</th><th>完了条件</th><th>状態</th></tr></thead>
           <tbody>
-            <tr><td class="label">12月1日（火）〜4日（金）</td><td>実績報告書（様式第8号・8-1号・12号）と補助金請求書（様式第10号）の作成</td><td>吉川</td><td>様式がWord / Excelのまま揃う</td><td></td></tr>
-            <tr><td class="label">12月1日（火）〜4日（金）</td><td>添付書類の最終確認: 発注書・納品書・請求書・振込明細・画面写真・設計書・操作マニュアル。当社は求められた形式の差し替えに即応する</td><td>吉川・当社</td><td>添付一覧が全部○</td><td></td></tr>
-            <tr><td class="label"><strong>12月7日（月）</strong></td><td><strong>実績報告をメール提出</strong>（件名「【実績報告】事業者名」、30MB以下、Word / Excelのまま）。期限の3日前に出して到達確認の余裕を持つ</td><td>吉川</td><td>事務局から到達確認の返信。3営業日以内に返信がなければ電話</td><td></td></tr>
+            <tr><td class="label">11月27日（金）〜12月4日（金）</td><td>実績報告書（様式第8号・8-1号・12号）と補助金請求書（様式第10号）の作成。当社が下書きに協力する</td><td>吉川さん（補助金）・当社</td><td>様式がWord / Excelのまま揃う</td><td></td></tr>
+            <tr><td class="label">12月1日（火）〜4日（金）</td><td>添付書類の最終確認: 発注書・納品書・請求書・振込明細・画面写真・設計書・操作マニュアル。当社は求められた形式の差し替えに即応する</td><td>吉川さん（補助金）・当社</td><td>添付一覧が全部○</td><td></td></tr>
+            <tr><td class="label"><strong>12月7日（月）</strong></td><td><strong>実績報告をメール提出</strong>（件名「【実績報告】事業者名」、30MB以下、Word / Excelのまま）。期限の3日前に出して到達確認の余裕を持つ</td><td>吉川さん（補助金）</td><td>事務局から到達確認の返信。3営業日以内に返信がなければ電話</td><td></td></tr>
             <tr><td class="label">12月10日（木）</td><td>提出期限（予備）</td><td></td><td></td><td></td></tr>
           </tbody>
         </table>
@@ -345,21 +343,21 @@
 
     <div class="sub-item">
       <div class="kick">納品後（補助金の期限の外）</div>
-      <h4>12月以降の社内テスト・本番切替・補助金の事後手続き</h4>
+      <h4>12月以降の社内テスト・再登録の案内・本番切替・補助金の事後手続き</h4>
       <div class="table-wrap">
         <table>
           <thead><tr><th>時期</th><th>やること</th><th>担当</th></tr></thead>
           <tbody>
-            <tr><td class="label">11月26日〜12月5日</td><td><strong>社内テスト</strong>: PEDAL社が実際の店舗・自転車データを入れたうえで、店舗の立場と利用者の立場で一通り操作する。当社は無償修正一覧に沿って修正する</td><td>PEDAL社確認、当社修正</td></tr>
-            <tr><td class="label">12月1日〜5日</td><td><strong>本番切替の差分移行の準備</strong>: 納品後にBubble版で増えた予約・会員だけを追加で移す手順を確認する。パスワードとカード情報は移せないので、再設定・再登録の案内文をPEDAL社と詰める</td><td>当社</td></tr>
+            <tr><td class="label">11月26日〜12月5日</td><td><strong>社内テスト</strong>: 納品したステージング（店舗・自転車・オプションの実データ入り）で、店舗の立場と利用者の立場で一通り操作する。当社は無償修正一覧に沿って修正する</td><td>PEDAL社確認、当社修正</td></tr>
+            <tr><td class="label">12月1日〜5日</td><td><strong>本番切替の差分移行の準備</strong>: 納品後にBubble版で増えた店舗・自転車・オプションだけを追加で移す手順を確認する。会員・予約は移さない</td><td>当社</td></tr>
+            <tr><td class="label">12月上旬</td><td>会員への再登録の案内文と、店舗への営業日・貸出不可日・オプションの再登録の案内文、切替日の告知の準備</td><td>PEDAL社（文面）・当社（送信機能）</td></tr>
             <tr><td class="label">12月上旬〜中旬</td><td>社外テスト: 加盟店3〜5店に先行アカウントを渡して実運用に近い操作をしてもらう。不具合は無償修正の一覧に沿って対応する</td><td>PEDAL社主導、当社修正</td></tr>
-            <tr><td class="label">12月上旬</td><td>会員へのパスワード再設定の案内文と、切替日の告知の準備</td><td>PEDAL社</td></tr>
-            <tr><td class="label">12月中旬（切替日）</td><td><strong>本番切替</strong>。前日に最新CSVで差分移行 → 当日、Bubble側を数時間「メンテナンス中」にして新規予約を止める → rincle.co.jp のDNSを新システムへ向ける（前週にTTL短縮） → 最後の差分を移す → 旧URLの主要パスを新URLへ転送 → Bubbleの独自ドメイン設定を外して既定URLで1か月並走。予約は未来分も含めて引き継いでいるので、旧システムを店舗・利用者が使う場面はなくなる</td><td>当社・増永さん（DNS）</td></tr>
-            <tr><td class="label">切替直後</td><td>SEO設定一式・GA4・Clarityの設置を新サイトに適用する</td><td>当社</td></tr>
-            <tr><td class="label">1月</td><td>Bubbleの契約を解約する（月119ドル）。Vercel+Supabaseの運用費は月3〜4千円程度</td><td>PEDAL社</td></tr>
-            <tr><td class="label">1〜3月</td><td>補助金の入金。書類は令和14年3月31日まで保管する</td><td>PEDAL社</td></tr>
+            <tr><td class="label">12月中旬（切替日、仮）</td><td><strong>本番切替</strong>。前日に最新の書き出しで差分移行 → 当日、Bubble側を「メンテナンス中」にして新規予約を止める → rincle.co.jp をBubbleから外して新システムに付け替える（前週にTTL（DNSの設定の反映待ち時間）を短縮）→ 旧URLの主要なパスを新URLへ転送 → Bubble版は既定のURLで参照用に1か月残す。Bubbleで受けた予約はBubble側で消化する</td><td>当社・増永さん（DNS）</td></tr>
+            <tr><td class="label">切替直後</td><td>会員への再登録案内メールと店舗への再登録案内メールを送る。SEO設定一式・GA4・Clarityの設置を新サイトに適用する</td><td>PEDAL社・当社</td></tr>
+            <tr><td class="label">1月</td><td>Bubbleの契約を解約する（月119ドル。2026年6月時点のプラン）。Vercel+Supabaseの運用費は月3〜4千円程度（当社の見立て）</td><td>PEDAL社</td></tr>
+            <tr><td class="label">1〜3月</td><td>補助金の入金。書類は2032年（令和14年）3月31日まで保管する</td><td>PEDAL社</td></tr>
             <tr><td class="label">翌年度から3年</td><td>事業効果報告（様式第15号）。予約件数・売上・賃上げの状況を毎年報告する。当社は数字の取り出しに協力する</td><td>PEDAL社</td></tr>
-            <tr><td class="label">継続</td><td>保守・追加開発は別契約。増永さん・吉川さんが自分で手を入れる範囲と、当社に頼む範囲を12月に決める</td><td>3者</td></tr>
+            <tr><td class="label">継続</td><td>保守・追加開発は準委任の別契約。増永さん・吉川さんが自分で手を入れる範囲と、当社に頼む範囲を12月に決める</td><td>3者</td></tr>
           </tbody>
         </table>
       </div>
@@ -367,29 +365,51 @@
   </div>
 </div>
 
-<!-- ============ 03 9月18日に決めること ============ -->
+<!-- ============ 03 論点 ============ -->
 <div class="tab-panel" id="panel-decide">
   <div class="section" id="decide">
-    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>論点</h2><div class="sh-sub">9月18日の打ち合わせで話す10項目。決まらないものは9月24日までにチャットで決める</div></div></div>
-    <p>下の10項目を9月18日の打ち合わせで話します。決まらない論点は「9月24日までにチャットで決める」と期限を切って持ち帰ります。当社の見立ては右から2列目に書いています。</p>
+    <div class="section-header"><div class="section-num">03</div><div class="sh-body"><h2>論点</h2><div class="sh-sub">作り直し・Stripe・データ移行の範囲・契約の形は9月18日に決まった。残るのは実施項目・納品の定義・定例の運び方</div></div></div>
+    <p>9月18日に決まった項目は「決定済み」の印を付けています。残っている項目は9月25日（金）の定例までにチャットで決めます。9月18日の決定事項に認識の違いがあれば、9月24日（木）までにお知らせください。</p>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>#</th><th>論点</th><th>当社の見立て</th><th>決まらないと止まるもの</th></tr></thead>
+        <thead><tr><th>#</th><th>論点</th><th>状態</th><th>決定内容 / 当社の見立て</th><th>決まらないと止まるもの</th></tr></thead>
         <tbody>
-          <tr><td class="num"><span class="num-chip sm">1</span></td><td class="label wrap"><strong>作り直し（AI駆動開発）でいくか、Bubbleの改修に留めるか</strong></td><td>作り直し。Bubbleに補助金を入れて1年以内に捨てると、耐用年数の期間の財産処分制限（目的外使用・廃棄の制限）に該当します。作り直しは申請名「次世代プラットフォームシステムの構築」にも合います</td><td>全部</td></tr>
-          <tr><td class="num"><span class="num-chip sm">2</span></td><td class="label wrap"><strong>見積8項目のどれを実施するか</strong></td><td>確定4項目+検索最適化+多言語（日英）。AIコンシェルジュとCRM自動化は見送り。増永さんの「やりたいことリスト」（9月17日受領予定）を見て最終化</td><td>発注書の項目・金額</td></tr>
-          <tr><td class="num"><span class="num-chip sm">3</span></td><td class="label wrap"><strong>決済の方式</strong></td><td>6月19日の決定どおり<strong>Stripe・集約モデル</strong>（PEDALSTANDARD社が一括で受け、店舗へは月次振込）。現行のPay.jpテナント型（店舗ごとに決済アカウントを申請→運営が審査→承認）は再現しません。店舗に登録フローをやり直してもらう必要も、運営の承認作業もなくなります。Stripe Connect（店舗ごとの口座）は採りません。利用者の操作の流れは現行同等（予約時に即時決済）。予約時カード登録+当日本決済の新構想は12月以降</td><td>決済と店舗登録の設計</td></tr>
-          <tr><td class="num"><span class="num-chip sm">4</span></td><td class="label wrap"><strong>デザインの範囲・納期・渡し方</strong></td><td>PEDAL社が作るのは<strong>利用者向け画面だけ</strong>（店舗・運営の管理画面は当社の標準部品で作る）。9月25日に方針（色・書体・トーン）を1画面の見本で合意、第1便10月9日（トップ・検索・店舗詳細・自転車詳細）、第2便10月16日（予約の流れ・マイページ・登録）。Claude製のHTMLをそのまま渡す。PCとスマホの2通り。文言も確定させて渡す</td><td>利用者画面の実装着手</td></tr>
-          <tr><td class="num"><span class="num-chip sm">5</span></td><td class="label wrap"><strong>契約の形</strong></td><td>請負契約（成果物を特定）。所有権はPEDALSTANDARD社に帰属と明記。既存の保守（準委任）とは契約・請求書を分ける</td><td>契約書の作成</td></tr>
-          <tr><td class="num"><span class="num-chip sm">6</span></td><td class="label wrap"><strong>納品と検収の定義</strong></td><td>納品＝「発注書の各項目に対応する機能がステージング環境で動き、単体テストが通った状態で、設計書・操作マニュアルを添えたもの」。検収＝「発注書の項目ごとに主要な操作が一通りできることの確認」。細かな不具合は検収を止めず「納品後の無償修正一覧」に載せる。まとまった社内テスト・データ移行・本番公開は納品に含めない</td><td>検収条件・契約書</td></tr>
-          <tr><td class="num"><span class="num-chip sm">7</span></td><td class="label wrap"><strong>支払の段取り</strong></td><td>11月26日に一括振込。事務局が分割を認めるなら、10月に着手金・11月に残金の2回払いも選べる（PEDAL社の資金繰りと当社の財務の両方に効く）</td><td>契約書の支払条項</td></tr>
-          <tr><td class="num"><span class="num-chip sm">8</span></td><td class="label wrap"><strong>定例の曜日・時刻</strong></td><td>毎週金曜11:00〜11:30（9月25日〜11月27日）。チャットでの質問回答は双方2営業日以内</td><td>進行全体</td></tr>
-          <tr><td class="num"><span class="num-chip sm">9</span></td><td class="label wrap"><strong>事務局への確認の担当</strong></td><td>吉川さんが9月24日までに電話（4章の確認事項）。当社が質問文を9月19日に用意</td><td>契約の締結</td></tr>
-          <tr><td class="num"><span class="num-chip sm">10</span></td><td class="label wrap"><strong>ドメインと切替の方式</strong></td><td><strong>rincle.co.jp は切替日に新システムへ向けます。そのために予約は未来分も含めて全件引き継ぎます。</strong> 引き継がないと旧システムを店舗・利用者から見える場所に残す必要があるので、ドメインを外せません。Bubble版は独自ドメインを外して既定URLで1か月並走。ステージングは staging.rincle.co.jp（検索に出ない設定と簡易認証）。旧URLの主要なパスは新側で転送します。確認したいのは、ドメインをどこで取得していてDNSを誰が操作できるか、今のメール送信がBubble経由か、の2点です</td><td>基盤づくり（DNS）、切替日の段取り</td></tr>
+          <tr><td class="num"><span class="num-chip sm">1</span></td><td class="label wrap"><strong>作り直し（AI駆動開発）でいくか</strong></td><td><span class="badge good">決定済み</span></td><td>作り直します。Bubbleに補助金を入れて短期で捨てると、耐用年数内の財産処分制限（要領の実施ガイドライン: 目的外使用・廃棄の制限）に当たります。作り直しは申請名「次世代プラットフォームシステムの構築」にも合います</td><td>—</td></tr>
+          <tr><td class="num"><span class="num-chip sm">2</span></td><td class="label wrap"><strong>見積8項目のどれを実施するか</strong></td><td><span class="badge plain">未決</span></td><td>確定4項目+検索最適化+多言語（日英）が当社案です。AIコンシェルジュとCRM自動化は見送ります。増永さんのシルバーウィークの洗い出し（不要機能・追加要望）を受けて9月30日に当社の見積を確定して発注書の項目にします。8項目の一覧は下の表です</td><td>発注書の項目・金額</td></tr>
+          <tr><td class="num"><span class="num-chip sm">3</span></td><td class="label wrap"><strong>決済の方式</strong></td><td><span class="badge good">決定済み</span></td><td><strong>Stripeに載せ替えます。</strong> Pay.jpの店舗ごとのテナント（店舗の決済アカウント）は引き継ぎません。利用者の操作の流れは現行同等（予約時に決済）です。予約時カード登録+当日本決済の新構想は12月以降です</td><td>—</td></tr>
+          <tr><td class="num"><span class="num-chip sm">4</span></td><td class="label wrap"><strong>データ移行の範囲</strong></td><td><span class="badge good">決定済み</span></td><td><strong>移すもの: 店舗・自転車・オプション（在庫を含む）。移さないもの: 会員・予約。</strong> 会員のパスワードは移せないので、利用者に再登録の案内メールを送ります。予約はBubble側で消化します。営業日と貸出不可日は店舗に再登録を依頼します。移行は納品の範囲に入れます。詳細は「<a href="data-migration.html">データ移行</a>」</td><td>—</td></tr>
+          <tr><td class="num"><span class="num-chip sm">5</span></td><td class="label wrap"><strong>デザイン・モックの進め方</strong></td><td><span class="badge good">決定済み</span><br><span class="badge plain">納期は仮</span></td><td><strong>増永さんがモックを作って運営→店舗→利用者の順に渡します。</strong> 当社はUXの手直しをして実装します。納期の仮置きは運営9月30日・店舗10月9日・利用者10月16日です。PC・スマホの2通り。運営・店舗の管理画面は現行と内容を変えない前提です</td><td>各画面の設計・実装の着手</td></tr>
+          <tr><td class="num"><span class="num-chip sm">6</span></td><td class="label wrap"><strong>契約の形と時期</strong></td><td><span class="badge good">決定済み</span></td><td><strong>請負703万円（税抜）+ 保守は準委任で別契約です。</strong> 補助金の対象は請負分だけです。所有権はPEDAL社に帰属と明記します。締結はシルバーウィーク明けの見積確定後（10月2日まで、仮）です。データ移行を請負の範囲に収められるかは見積で確定します</td><td>契約書の作成</td></tr>
+          <tr><td class="num"><span class="num-chip sm">7</span></td><td class="label wrap"><strong>納品と検収の定義</strong></td><td><span class="badge plain">未決</span><br><span class="badge plain">契約時に文書化</span></td><td>納品＝「発注書の各項目に対応する機能がステージングで動く。単体テストが通る。設計書・操作マニュアルを添える。実データ（店舗・自転車・オプション）が入った状態」。検収＝「発注書の項目ごとに主要な操作が一通りできることの確認」。細かな不具合は検収を止めず「納品後の無償修正一覧」に載せます。まとまった社内テスト・本番公開は納品に含めません</td><td>検収条件・契約書</td></tr>
+          <tr><td class="num"><span class="num-chip sm">8</span></td><td class="label wrap"><strong>ドメインと環境</strong></td><td><span class="badge good">決定済み</span></td><td>本番切替の日に rincle.co.jp をBubbleから外して新システムに付け替えます。Bubble版はBubbleの既定URLで残します（参照のみ）。ステージングは stg.rincle.co.jp です。環境はVercel（本番・ステージングの2つ）+ Supabase（データベース。2つ）です。<strong>確認したいこと:</strong> ドメインの取得先はどこか。DNSを誰が操作できるか</td><td>環境づくり・切替日の段取り</td></tr>
+          <tr><td class="num"><span class="num-chip sm">9</span></td><td class="label wrap"><strong>定例と連絡</strong></td><td><span class="badge plain">未決</span><br><span class="badge plain">仮: 金曜11:00</span></td><td>毎週金曜11:00〜11:30（9月25日〜11月27日）が当社案です。チャットでの質問回答は双方2営業日以内。事務局への確認は吉川さんが9月24日（木）までに電話します。質問文は当社が用意します</td><td>進行全体</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>決定事項（9月15日）:</strong> Bubble版を作り直す方向、デザインはPEDAL社側で制作、社外テストは納品後、の3点は9月15日の打ち合わせで3者の認識が揃っています。9月18日はこれを正式決定にします。</span></div>
+
+    <div class="sub-item">
+      <div class="kick">論点2の材料</div>
+      <h4>見積8項目（補助対象経費内訳の経費名）と当社の推奨</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>見積の経費名</th><th>当社の推奨</th><th>作り直しでの中身</th></tr></thead>
+          <tbody>
+            <tr><td class="label">予約・在庫管理システム高度化</td><td><span class="badge brand">確定</span></td><td>予約・貸出・返却・在庫の中核。予約時の「利用目的」入力を含む</td></tr>
+            <tr><td class="label">決済・会員管理システム高度化</td><td><span class="badge brand">確定</span></td><td>会員登録・ログイン・マイページ、Stripe決済</td></tr>
+            <tr><td class="label">加盟店ダッシュボード開発</td><td><span class="badge brand">確定</span></td><td>店舗の管理画面。予約一覧・「予約を受信した」フラグ・予約件数と売上の集計</td></tr>
+            <tr><td class="label">スマートフォンUI / UX改善</td><td><span class="badge brand">確定</span></td><td>トップと全画面の新デザイン実装、検索の表示速度改善</td></tr>
+            <tr><td class="label">AIレコメンド・検索最適化機能開発</td><td><span class="badge mid">候補（推奨: 実施）</span></td><td>目的・地域・レベルでの絞り込み検索の作り直し。条件に応じた店舗・自転車の提案</td></tr>
+            <tr><td class="label">多言語対応システム開発</td><td><span class="badge mid">候補（推奨: 日英で実施）</span></td><td>最初から多言語の仕組みを入れて日本語・英語を用意。中国語・韓国語は12月以降</td></tr>
+            <tr class="muted"><td class="label">CRM・マーケティング自動化機能開発</td><td><span class="badge muted">見送り</span></td><td>メール通知の自動化は確定項目に含まれる。LINE配信・クーポンは11月には収まらない</td></tr>
+            <tr class="muted"><td class="label">AIコンシェルジュ・チャットボット機能開発</td><td><span class="badge muted">見送り</span></td><td>9月15日で増永さん・吉川さんとも消極的。AIの従量課金が毎月かかる</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="notes">
+        <li>経費名は申請時の「補助対象経費内訳」（合計7,085,000円・税抜）のとおりです。契約の請負金額703万円（9月18日提示）との差は、9月30日の見積確定時に内訳と合わせて整理します。項目をまたいで金額を動かすと発注前に様式第3号（審査1か月）が要るので、項目ごとに「実施して請求する」か「実施せず請求しない」かの二択にします。</li>
+        <li>9月18日にお伝えした請負703万円は現行機能で見積もった暫定の額です（追加分の予備を含む）。増永さんの洗い出しを受けて9月30日に確定します。</li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -397,25 +417,26 @@
 <!-- ============ 04 役割・手続き・リスク ============ -->
 <div class="tab-panel" id="panel-rules">
   <div class="section" id="rules">
-    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>役割・手続き・リスク</h2><div class="sh-sub">誰が何に責任を持つか、補助金の証拠書類、間に合わないときの削り方</div></div></div>
+    <div class="section-header"><div class="section-num">04</div><div class="sh-body"><h2>役割・手続き・リスク</h2><div class="sh-sub">証拠書類の日付と担当を先に決めておけば、遅れたときも削る順番どおりに収められる</div></div></div>
 
     <div class="sub-item">
       <div class="kick">役割分担</div>
       <h4>作るもの・決めるもの・期限を守る責任</h4>
       <div class="table-wrap">
         <table>
-          <thead><tr><th></th><th>当社（清野・山本）</th><th>PEDAL社（増永さん・吉川さん）</th></tr></thead>
+          <thead><tr><th></th><th>当社（清野・村本）</th><th>PEDAL社（増永さん・吉川さん）</th></tr></thead>
           <tbody>
-            <tr><td class="label">作るもの</td><td>機能一覧、設計書、システム本体（管理画面のデザイン含む）、データ移行スクリプトと手順書、操作マニュアル、画面写真、納品書・請求書</td><td>利用者向け画面のデザイン（HTML）、画面の文言、店舗・自転車の実データ、実績報告書一式、効果報告（3年）</td></tr>
-            <tr><td class="label">決めるもの</td><td>技術の選択、データ構造、実装の順番</td><td>実施項目、仕様の最終判断、デザインの確定、資金繰り</td></tr>
-            <tr><td class="label">期限を守る責任</td><td>9月25日機能一覧確定、10月9日機能設計完了、11月18日実装完了（単体テスト済み）、11月23日納品</td><td>9月25日デザイン方針、10月9日・10月16日のデザイン納期、毎週の定例でできた画面を操作して確認すること、11月23日〜25日の検収、11月26日の振込</td></tr>
-            <tr><td class="label">連絡</td><td colspan="2">週次定例（金曜11:00）+ チャット。質問への回答は双方2営業日以内。回答が遅れた分は納期が後ろに動くのではなく、実施範囲が削れる</td></tr>
+            <tr><td class="label">作るもの</td><td>見積、設計書、システム本体、データ移行の変換と手順書、操作マニュアル、画面写真、納品書・請求書、再登録案内メールの送信機能</td><td>機能の洗い出し（不要・追加）、モック（運営→店舗→利用者）、画面の文言、再登録案内の文面、実績報告書一式、効果報告（3年）</td></tr>
+            <tr><td class="label">決めるもの</td><td>技術の選択、データ構造、実装の順番</td><td>実施項目、仕様の最終判断、モックの確定、資金繰り</td></tr>
+            <tr><td class="label">期限を守る責任</td><td>9月30日見積確定、設計A〜D、11月18日実装完了（単体テスト済み）、11月24日納品</td><td>9月23日洗い出し・モックの納期（9月30日・10月9日・10月16日、仮）、毎週の定例でできた画面を操作して確認すること、11月24日〜25日の検収、11月26日の振込</td></tr>
+            <tr><td class="label">連絡</td><td colspan="2">週次定例（金曜11:00、仮）+ チャット。質問への回答は双方2営業日以内。回答が遅れた分は納期を後ろに動かさず、実施範囲を削ります</td></tr>
           </tbody>
         </table>
       </div>
       <ul class="notes">
-        <li>デザインの手直しは当社で行います。ただし「画面の新規追加」と「仕様の変更」は10月16日以降受けません。受けた場合は12月以降の別契約です。</li>
-        <li>増永さん・吉川さんがClaudeで作った画面はHTMLのまま渡してもらいます。当社がそのまま部品化して組み込みます。</li>
+        <li>モックのUXの手直しは当社で行います。10月16日以降の「画面の新規追加」と「仕様の変更」は今回の納品に含めず、12月以降の別契約（準委任）とします。</li>
+        <li>増永さんが作った画面はHTMLのまま渡してもらいます。当社がそのまま部品化して組み込みます。</li>
+        <li>納品物の範囲（請負）の不具合は契約不適合責任の範囲で無償修正です。追加の要望と、PEDAL社が試しに改修するときのサポートは保守（準委任）の範囲です。</li>
       </ul>
     </div>
 
@@ -426,13 +447,13 @@
         <table>
           <thead><tr><th>手続き</th><th>書類</th><th>誰が作る</th><th>日付</th><th>注意</th></tr></thead>
           <tbody>
-            <tr><td class="label">発注</td><td>契約書+発注書</td><td>当社が案、PEDAL社が発注</td><td>9月26日〜30日（交付決定日以降）</td><td>項目名は見積の経費名。「1式」不可。数量・金額・発注元 / 先・日付</td></tr>
-            <tr><td class="label">納品</td><td>納品書</td><td>当社</td><td>11月23日</td><td>納品場所（住所）の書き方は事務局に確認済みの形で</td></tr>
+            <tr><td class="label">発注</td><td>契約書+発注書</td><td>当社が案、PEDAL社が発注</td><td>9月30日〜10月2日（仮。交付決定日以降）</td><td>項目名は見積の経費名。「1式」不可。数量・金額・発注元 / 先・日付（要領の実施ガイドライン）</td></tr>
+            <tr><td class="label">納品</td><td>納品書</td><td>当社</td><td>11月24日</td><td>納品場所（住所）の書き方は事務局に確認済みの形で</td></tr>
             <tr><td class="label">検収</td><td>検収書</td><td>PEDAL社</td><td>11月25日</td><td>事業実施期間内の日付</td></tr>
-            <tr><td class="label">請求</td><td>請求書</td><td>当社</td><td>11月25日</td><td>見積・発注書と項目・金額を一致。税抜と消費税を分ける。対象外の請求は別紙</td></tr>
-            <tr><td class="label">支払</td><td>振込明細</td><td>PEDAL社</td><td>11月26日</td><td>PEDALSTANDARD社名義。クレジットカード・現金・相殺は不可。振込手数料は自己負担</td></tr>
-            <tr><td class="label">実施の証明</td><td>画面写真・設計書・操作マニュアル</td><td>当社</td><td>11月20日までに作成、23日納品</td><td>実施した見積項目ごとに対応する画面が分かるようにする</td></tr>
-            <tr><td class="label">権利</td><td>契約書の所有権帰属条項</td><td>当社が案</td><td>契約時</td><td>ソースコード・データはPEDALSTANDARD社に帰属</td></tr>
+            <tr><td class="label">請求</td><td>請求書</td><td>当社</td><td>11月25日</td><td>見積・発注書と項目・金額を一致。税抜と消費税を分ける。対象外の請求は別の請求書</td></tr>
+            <tr><td class="label">支払</td><td>振込明細</td><td>PEDAL社</td><td>11月26日</td><td>PEDAL社名義。クレジットカード・現金・相殺は不可。振込手数料は自己負担（要領の実施ガイドライン）</td></tr>
+            <tr><td class="label">実施の証明</td><td>画面写真・設計書・操作マニュアル</td><td>当社</td><td>11月20日までに作成、24日納品</td><td>実施した見積項目ごとに対応する画面が分かるようにする</td></tr>
+            <tr><td class="label">権利</td><td>契約書の所有権帰属条項</td><td>当社が案</td><td>契約時</td><td>ソースコード・データはPEDAL社に帰属</td></tr>
           </tbody>
         </table>
       </div>
@@ -440,12 +461,12 @@
 
     <div class="sub-item">
       <div class="kick">事務局への確認</div>
-      <h4>9月24日に吉川さんから電話で確認すること（当社が9月19日までに質問文を用意）</h4>
+      <h4>9月24日（木）に吉川さんから電話で確認すること（質問文は当社が用意）</h4>
       <ol class="steps">
         <li>見積8項目のうち一部を実施しない場合、変更交付申請（様式第3号）は必要か。実績報告で当該項目を請求しないだけでよいか</li>
         <li>項目間で金額を動かす場合は様式第3号が必要という理解でよいか（必要なら振替はしない）</li>
         <li>Webシステムの納品書の「納品場所（住所）」は本社所在地でよいか</li>
-        <li>事業実施期間内であれば、着手金と残金の2回に分けた振込は認められるか</li>
+        <li>交付決定日はいつか（発注書の日付をそれ以降にする）</li>
       </ol>
     </div>
 
@@ -456,16 +477,17 @@
         <table>
           <thead><tr><th>リスク</th><th>兆候</th><th>対処</th><th>判断日</th></tr></thead>
           <tbody>
-            <tr><td class="label">デザインが遅れる</td><td>10月9日・10月16日の納期に届かない</td><td>利用者画面の実装は10月19日開始なので、第1便は1週間の遅れまで吸収できる。それ以上は当社が現行Bubble版のレイアウトを踏襲して作る。デザイン差し替えは12月以降</td><td>各納期の翌営業日</td></tr>
+            <tr><td class="label">交付決定日が契約日より後になる</td><td>9月24日に受け取る交付決定通知書の日付が10月2日より後</td><td>発注書の日付を交付決定日以降にずらす。実装の着手（10月5日）は契約と切り離して進める</td><td>9月24日</td></tr>
+            <tr><td class="label">モックが遅れる</td><td>9月30日・10月9日・10月16日（仮）の納期に届かない</td><td>運営・店舗の管理画面は現行Bubble版の内容を変えない前提なので、当社が現行のレイアウトを踏襲して先に作る。モック到着後に差分を当てる。利用者画面は1週間の遅れまで吸収できる（着手10月26日）</td><td>各納期の翌営業日</td></tr>
             <tr><td class="label">実装が遅れる</td><td>10月23日時点で予約〜決済の流れが通っていない</td><td>候補項目（検索最適化・多言語）を削って確定4項目に集中。削った項目は請求しない</td><td><strong>10月23日</strong></td></tr>
             <tr><td class="label">実装がさらに遅れる</td><td>11月13日時点で確定項目に未着手の機能がある</td><td>確定項目の中で縮める（下の順番の後半）。11月18日は動かさない</td><td><strong>11月13日</strong></td></tr>
             <tr><td class="label">独立したテスト工程がない</td><td>納品後に不具合が見つかる</td><td>単体テストと通し確認で主要フローは守る。細かな不具合は無償修正一覧で12月に対応。契約書に「検収後の不具合は無償修正」と明記する。検収を止めない仕組みにする</td><td>契約時</td></tr>
-            <tr><td class="label">決済で詰まる</td><td>Stripe本番審査・本番キーが11月13日までに取れない</td><td>決済はテストモードで納品する。本番キーの差し替えは公開時に行う。ただし本番の少額決済テストを1回はやっておく</td><td>11月13日</td></tr>
-            <tr><td class="label">仕様の追加が続く</td><td>機能一覧の確定（9月25日）後に「これも入れたい」が出る</td><td>12月以降の別契約に回す。今回の納品には含めない</td><td>随時</td></tr>
-            <tr><td class="label">事務局の回答が遅い</td><td>9月24日の電話で回答が持ち越し</td><td>契約は「一部項目を実施しない場合は請求しない」前提で締結する。振替はしない。分割は認められるまで一括前提</td><td>9月30日</td></tr>
-            <tr><td class="label">PEDAL社の資金繰り</td><td>11月26日に全額振込が難しい</td><td>実施項目を減らす（振込額も減る）。分割可なら10月に着手金。振込が12月にずれると全額が対象外になるので、ここは絶対に守る</td><td>10月23日</td></tr>
-            <tr><td class="label">実地調査で「店舗がない」画面を見られる</td><td>納品時のステージングに実データが入っていない</td><td>データ移行を納品の範囲に入れる。11月13日のリハーサルで店舗54・自転車369が表示されることを確認する。画面写真も実データ入りで撮る</td><td>11月13日</td></tr>
-            <tr><td class="label">主要フローに不具合が残る</td><td>11月19日の通し確認で予約〜決済が通らない</td><td>11月20日に集中修正。それでも通らない場合は該当機能を除いて納品する。無償修正一覧に載せる。納品日11月23日は動かさない</td><td>11月19日</td></tr>
+            <tr><td class="label">決済で詰まる</td><td>Stripe本番審査・本番キーが11月13日までに取れない</td><td>決済はテストモードで納品する。本番キーの差し替えは公開時に行う。本番キーが取れた時点で少額決済を1回確認する（取れなければ公開時に行う）</td><td>11月13日</td></tr>
+            <tr><td class="label">仕様の追加が続く</td><td>見積確定（9月30日）後に「これも入れたい」が出る</td><td>12月以降の別契約に回す。今回の納品には含めない</td><td>随時</td></tr>
+            <tr><td class="label">事務局の回答が遅い</td><td>9月24日の電話で回答が持ち越し</td><td>契約は「一部項目を実施しない場合は請求しない」前提で締結する。振替はしない</td><td>10月2日</td></tr>
+            <tr><td class="label">PEDAL社の資金繰り</td><td>11月26日に全額振込が難しい</td><td>実施項目を減らす（振込額も減る）。振込が12月にずれると全額が対象外になるので、ここは絶対に守る</td><td>10月23日</td></tr>
+            <tr><td class="label">実地調査で「店舗がない」画面を見られる</td><td>納品時のステージングに実データが入っていない</td><td>データ移行を納品の範囲に入れる。11月13日のリハーサルで店舗・自転車・オプションが表示されることを確認する。画面写真も実データ入りで撮る</td><td>11月13日</td></tr>
+            <tr><td class="label">主要フローに不具合が残る</td><td>11月19日の通し確認で予約〜決済が通らない</td><td>11月20日に集中修正。それでも通らない場合は該当機能を除いて納品する。無償修正一覧に載せる。納品日11月24日は動かさない</td><td>11月19日</td></tr>
           </tbody>
         </table>
       </div>
@@ -473,20 +495,20 @@
 
     <div class="sub-item">
       <div class="kick">削る順番</div>
-      <h4>実施範囲を削るときの順番と、最後まで守る4点</h4>
+      <h4>実施範囲を削るときの順番と、最後まで守る4項目</h4>
+      <p>最初から見送るのは「AIコンシェルジュ・チャットボット機能開発」と「CRM・マーケティング自動化機能開発」です。下の順番は、それ以外を削るときの順です。</p>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>順番</th><th>削る項目</th><th>補足</th></tr></thead>
+          <thead><tr><th>順番</th><th>削る項目（見積の経費名）</th><th>補足</th></tr></thead>
           <tbody>
-            <tr><td class="num"><span class="num-chip sm">1</span></td><td class="label">CRM・マーケティング自動化</td><td>最初から見送り推奨</td></tr>
-            <tr><td class="num"><span class="num-chip sm">2</span></td><td class="label">多言語対応</td><td>10月23日の中間判断で決める</td></tr>
-            <tr><td class="num"><span class="num-chip sm">3</span></td><td class="label">AIレコメンド・検索最適化</td><td>10月23日の中間判断で決める</td></tr>
-            <tr><td class="num"><span class="num-chip sm">4</span></td><td class="label">加盟店ダッシュボードの集計部分</td><td>11月13日の最終判断。「予約一覧と受信フラグ」に絞る。項目自体は残す</td></tr>
-            <tr><td></td><td class="label"><strong>最後まで守る</strong></td><td><strong>予約・在庫、決済・会員、加盟店ダッシュボード、スマートフォンUI / UXの4項目</strong></td></tr>
+            <tr><td class="num"><span class="num-chip sm">1</span></td><td class="label">多言語対応システム開発</td><td>10月23日の中間判断で決める</td></tr>
+            <tr><td class="num"><span class="num-chip sm">2</span></td><td class="label">AIレコメンド・検索最適化機能開発</td><td>10月23日の中間判断で決める</td></tr>
+            <tr><td class="num"><span class="num-chip sm">3</span></td><td class="label">加盟店ダッシュボード開発の集計部分</td><td>11月13日の最終判断。「予約一覧と受信フラグ」に絞る。項目自体は残す</td></tr>
+            <tr><td></td><td class="label"><strong>最後まで守る</strong></td><td><strong>予約・在庫管理システム高度化、決済・会員管理システム高度化、加盟店ダッシュボード開発、スマートフォンUI / UX改善の4項目</strong></td></tr>
           </tbody>
         </table>
       </div>
-      <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><strong>リスク:</strong> 期日を動かす選択肢はありません。11月30日を過ぎた支払は対象外、12月10日を過ぎた実績報告は交付決定の取消になります。</span></div>
+      <div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><strong>リスク:</strong> 期日を動かす選択肢はありません。11月30日を過ぎた支払は対象外（公募要領: 補助対象経費は事業実施期間中に支払が完了したもの）、12月10日を過ぎた実績報告は交付決定の取消になります（公募要領: 実績報告の期限）。</span></div>
     </div>
   </div>
 </div>
@@ -494,8 +516,8 @@
 
 </div><!-- /container -->
 
-<!-- md更新時はこのHTMLも同期すること（正本: documents/5_subsidy/roadmap.md。クライアント向けのため、mdの§10「清野原案からの変更点」と内部向けの注記〈正本パス・9/15合意からの経緯〉と§4「スコープ: 見積8項目」は載せない。mdの§1期日と逆算・§2全体像・§5タスク表・§9納品後はHTMLでは2章「スケジュール」に統合） -->
-<footer>正本: documents/5_subsidy/roadmap.md</footer>
+<!-- md更新時はこのHTMLも同期すること（正本: documents/5_subsidy/roadmap.md。クライアント向けのため、mdの§10「清野原案からの変更点」と内部向けの注記〈正本パス・経緯〉と§4の金額表は載せない。mdの§1期日と逆算・§2全体像・§5タスク表・§9納品後はHTMLでは2章「スケジュール」に統合。見積8項目は3章に経費名だけ） -->
+<footer>最終更新 2026年9月25日</footer>
 
 <script>
 (function(){

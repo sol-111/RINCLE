@@ -264,7 +264,7 @@ def content_rules(s, bad):
 
     # 1 役割語「当社」「貴社」は初出で定義(「当社（株式会社◯◯）」)
     for w in ('当社', '貴社'):
-        if w in body and not re.search(w + r'（[^）]{2,30}）', body):
+        if w in body and not re.search(w + r'（[^）]{2,30}）|「' + w + r'」は|' + w + r'[＝=]', body):  # 定義形: 当社（社名）/「当社」は…/ 当社＝…
             warn(f"「{w}」が誰か定義されていない(初出で「{w}（社名）」と書く)")
     # 2 h2・sh-sub に個数表現を書かない(原則13。本文の数と食い違うのが定番の破綻)
     for m in re.finditer(r'<(h2|div class="sh-sub")[^>]*>(.*?)</(?:h2|div)>', s, re.S):
@@ -294,8 +294,9 @@ def content_rules(s, bad):
         if real != w:
             bad(f"曜日が暦と合わない: {m.group(0)} は {y}年では（{real}）")
     # 5 1資料1用語(表記ゆれの代表ペア)
+    unquoted = re.sub(r'「[^」]*」', ' ', body)  # 条文の引用(「…」)の中は原文どおりでよいので対象外
     for a, b in VARIANT_PAIRS:
-        if a in body and b in body:
+        if a in unquoted and b in unquoted:
             warn(f"表記ゆれ「{a}」と「{b}」が同じページにある(1資料1用語)")
     # 6 口語・俗語
     for w in COLLOQUIAL:
@@ -305,7 +306,7 @@ def content_rules(s, bad):
     # 7 専門語は初出で括弧の日常語(「語（…）」の定義形が同じページにあれば免除。.term での解説も免除)
     for w in JARGON:
         if re.search(r'(?<![A-Za-z])' + re.escape(w) + r'(?![A-Za-z])', body):
-            if re.search(re.escape(w) + r'（', body) or re.search(r'class="term[^"]*"[^>]*>(?:(?!</div>).)*' + re.escape(w), s, re.S):
+            if re.search(re.escape(w) + r'（', body) or re.search(r'（' + re.escape(w) + r'）', body) or re.search(r'class="term[^"]*"[^>]*>(?:(?!</div>).)*' + re.escape(w), s, re.S):  # 定義形: 語（説明）/ 説明（語）/ .term
                 continue
             warn(f"専門語「{w}」に日常語の説明がない(初出で「{w}（…）」か .term で解説)")
     # 8 hero導入文は3文まで。01章冒頭の1文目と同文にしない
