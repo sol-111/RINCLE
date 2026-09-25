@@ -49,7 +49,9 @@
 デッキ(投影用スライド・<!-- lint-mode: deck --> または body.deck)は誌面の規約(ヒーロー/章ナビ/01章)の代わりに
 デッキの規約でみる: 送りスクリプト・全枚に下枠(.slide-ft)と2枚目以降のページ番号(.pg)・
 本文スライドの見出し h1.sd-h は1つ/48字以内/常体/「ラベル：」や題名形でない・表5行/箇条書き5本まで・
-h1は1枚1つ・本文より小さい文字の直書きなし(.sd-src除く)・図はfigure.fig・30枚まで。文章規約と敬語は誌面と同じ。
+h1は1枚1つ・本文より小さい文字の直書きなし(.sd-src除く)・図はfigure.fig・40枚まで・
+10枚超は全体マップ(.omap)・最終枚は裏表紙(.sd-back)。文章規約と敬語は誌面と同じ。
+図の部品にはコンサル型(.mx2/.itree/.cycle/.wfall/.dotgrid/.vchain/.oppose)も含む(2026-09-25)。
 
 exit code: 指摘ありなら1、クリーンなら0。
 生成をエージェントに並列分担させた後は必ず実行すること(参照割れは構造検証では出ない)。
@@ -252,6 +254,8 @@ def lint_deck(path, s, issues):
                 bad(f"{tag}: .sd-head の h1.sd-h が{len(hs)}個(1個)")
             else:
                 h = _text(hs[0])
+                if h in ('目次', '全体マップ'):
+                    continue  # 構造のスライドだけ題名でよい
                 if _zen_len(h) > 48:
                     bad(f"{tag}: 見出しが長い(全角48字=2行を超える): {h[:30]}…")
                 if re.search(r'(です|ます|でした|ました|ません)[。]?$', h):
@@ -277,11 +281,16 @@ def lint_deck(path, s, issues):
         for m in re.finditer(r'font-size:\s*(\.\d+|0\.\d+)em', sl):
             if float(m.group(1)) < .8 and 'sd-src' not in sl[max(0, m.start()-80):m.start()]:
                 bad(f"{tag}: 本文より小さい文字の直書き(font-size:{m.group(1)}em。出典の .sd-src 以外は18px相当を下回らない)")
-    if len(slides) > 30:
-        bad(f"スライドが{len(slides)}枚(目安は30枚まで。長い話は誌面ページにする)")
+    if len(slides) > 40:
+        bad(f"スライドが{len(slides)}枚(目安は40枚まで。長い話は誌面ページにする)")
+    # 10枚超のデッキは冒頭に全体マップ(.omap)を置く(まとめ⇄深掘り)。裏表紙(.sd-back)で終わり、最終枚に見出し(h1)を載せない
+    if len(slides) > 10 and 'class="omap"' not in s:
+        bad("10枚超のデッキに全体マップ(.omap)がない(2枚目に置き、各行に→P.nを付ける)")
+    if slides and 'sd-back' not in slides[-1]:
+        bad("最終枚が裏表紙(.sd-back)でない(締めのCTAは手前の通常スライドに置く)")
     # 図の部品は figure.fig で包む(原則11・誌面と同じ)
-    for cls in ('lanes', 'swim', 'pflow', 'funnel', 'tilemap', 'stackbar', 'hbar', 'phases'):
-        for m in re.finditer(r'<(\w+)[^>]*class="[^"]*\b' + cls + r'\b[^"]*"', s):
+    for cls in ('lanes', 'swim', 'pflow', 'funnel', 'tilemap', 'stackbar', 'hbar', 'phases', 'mx2', 'itree', 'cycle', 'wfall', 'dotgrid', 'vchain', 'oppose'):
+        for m in re.finditer(r'<(\w+)[^>]*class="[^"]*(?<![\w-])' + cls + r'(?![\w-])[^"]*"', s):
             before = s[max(0, m.start() - 400):m.start()]
             if '<figure' not in before or before.rfind('</figure>') > before.rfind('<figure'):
                 bad(f"図の部品 .{cls} が figure.fig で包まれていない")
@@ -543,7 +552,8 @@ def lint_file(path, allow_emoji):
     # カタログ(specimen)は部品を文脈の外に展示するので対象外。
     if not specimen:
         FIG_PARTS = ('lanes', 'swim', 'pflow', 'funnel', 'tilemap',
-                     'stackbar', 'hbar', 'bars', 'chart', 'phases', 'gantt')
+                     'stackbar', 'hbar', 'bars', 'chart', 'phases', 'gantt',
+                     'mx2', 'itree', 'cycle', 'wfall', 'dotgrid', 'vchain', 'oppose')  # 2026-09-25 コンサル型の図
         # <figure>/</figure> の出現を走査して「いま figure の中か」を状態で持つ（2026-09-14）。
         # 旧実装は直前1200文字をさかのぼっていたため、.tilemap のように長いマークアップの後ろに
         # 置いた .hbar から figure が見えず誤検知していた（SKILL.md が推奨する併置そのものが NG になった）。

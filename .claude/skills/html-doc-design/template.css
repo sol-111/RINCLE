@@ -647,6 +647,186 @@ figure.fig figcaption{font-size:11.5px;color:var(--sub);line-height:1.9;margin-t
 .sd-todo-who{color:var(--text)}
 .sd-todo-when{text-align:right;font-family:var(--serif);color:var(--accent)}
 
+
+/* ============================================================================
+   コンサル型の部品（2026-09-25 consulting-pptx-skill の62型から取り込み。誌面の章でもデッキの1枚でも同じHTML）
+   すべて em 基準（誌面では約15px=1em・デッキでは .sd-body の18px相当=1em）。塗りは意味がある時だけ・罫線と余白で組む。
+   ============================================================================ */
+/* --- 見出し付きの並列カラム .cols（エグゼクティブサマリー・SCR・課題→原因→解決・提言の柱の器） --- */
+.cols{display:grid;gap:2.4em;margin:1.6em 0;align-items:start}
+.cols.c2{grid-template-columns:1fr 1fr}
+.cols.c3{grid-template-columns:repeat(3,1fr)}
+.cols.c4{grid-template-columns:repeat(4,1fr)}
+.cols.c5{grid-template-columns:repeat(5,1fr);gap:1.6em}
+.cols>div{min-width:0}
+.cols h3,.cols .col-h{font-family:var(--serif);font-size:1.05em;font-weight:600;color:var(--ink);margin:0 0 .6em;padding-bottom:.4em;border-bottom:.1em solid var(--ink);line-height:1.5}
+.cols .col-k{font-size:.62em;letter-spacing:.18em;font-weight:700;color:var(--accent);margin-bottom:.5em}   /* カラムのキッカー（Situation 等） */
+.cols .col-lead{font-weight:700;color:var(--ink);margin:0 0 .5em;line-height:1.7}                         /* カラムの1文目（言い切り） */
+.cols p{font-size:.92em;line-height:1.8;margin:0 0 .5em}
+.cols ul{margin:.3em 0 0;padding-left:1.2em;font-size:.92em;line-height:1.8}
+.cols .col-note{border-top:1px dotted var(--line);margin-top:.9em;padding-top:.6em;font-size:.78em;color:var(--sub)}
+.cols.arrows{column-gap:3.2em}                                                                            /* 課題→原因→解決: カラム間に矢印 */
+.cols.arrows>div{position:relative}
+.cols.arrows>div+div::before{content:"";position:absolute;left:-2.2em;top:.55em;width:0;height:0;border-top:.5em solid transparent;border-bottom:.5em solid transparent;border-left:.8em solid var(--accent)}
+/* 提言の柱・番号つき打ち手: .cols に .pillars を重ねる。上罫2px+番号丸+見出し。並列は縦幅・粒度・語尾を揃える */
+.cols.pillars>div{border-top:.14em solid var(--ink);padding-top:1em}
+.cols.pillars .num-chip{margin-bottom:.6em}
+.cols.pillars h3{border-bottom:0;padding-bottom:0;margin-bottom:.3em}
+.pillar-base{display:flex;align-items:baseline;gap:1.2em;border:1px solid var(--line);background:var(--surface);padding:.7em 1.2em;margin:.8em 0 0;font-size:.92em} /* 柱の下の共通条件（墨ベタでなく白面+罫線） */
+.pillar-base .k{font-size:.72em;letter-spacing:.14em;font-weight:700;color:var(--accent);white-space:nowrap}
+
+/* --- 意思決定 .decide（左=推奨する決定・右=依頼事項1・2・3） --- */
+.decide{display:grid;grid-template-columns:1fr 1.1fr;gap:3em;margin:1.6em 0;align-items:start}
+.decide .k{font-size:.62em;letter-spacing:.18em;font-weight:700;color:var(--accent);margin-bottom:.6em}
+.decide .d{font-family:var(--serif);font-size:1.5em;line-height:1.6;color:var(--ink)}
+.decide .d small{display:block;font-family:var(--sans);font-size:.55em;color:var(--text);margin-top:.8em;line-height:1.8}
+.decide-ask{display:grid;grid-template-columns:2em 1fr;gap:.2em 1em;align-items:baseline;padding:.7em 0;border-bottom:1px solid var(--line-soft);font-size:.95em;line-height:1.7}
+.decide-ask:first-child{border-top:.14em solid var(--ink)}
+.decide-ask .n{font-family:var(--serif);font-size:1.4em;color:var(--accent);line-height:1}
+.decide-ask .who{grid-column:2;font-size:.78em;color:var(--sub)}
+
+/* --- 主張パネル+図 .claim-fig（左1/4=番号・区分・この1枚の主張、右3/4=図表） --- */
+.claim-fig{display:grid;grid-template-columns:minmax(10em,1fr) 3fr;gap:2em;margin:1.6em 0;align-items:stretch}
+.claim-panel{background:var(--accent-faint);border-left:.2em solid var(--accent);padding:1.2em 1.2em 1.2em 1.4em;display:flex;flex-direction:column;gap:.5em;min-height:12em}
+.claim-panel .n{font-family:var(--serif);font-size:2.2em;line-height:1;color:var(--accent)}
+.claim-panel .k{font-size:.62em;letter-spacing:.16em;font-weight:700;color:var(--sub)}
+.claim-panel .c{margin-top:auto;font-family:var(--serif);font-size:1.05em;line-height:1.7;color:var(--ink)}
+.claim-fig>figure,.claim-fig>.table-wrap{margin:0;min-width:0}
+
+/* --- 課題→打ち手の対応 .map2（左右の行を対応付け、中央に三角1つ） --- */
+.map2{display:grid;grid-template-columns:1fr 2.4em 1fr;column-gap:.6em;margin:1.6em 0;align-items:stretch;align-content:start}
+.map2>.h{font-family:var(--serif);font-size:1.05em;font-weight:600;color:var(--ink);padding-bottom:.4em;border-bottom:.1em solid var(--ink);grid-row:1}
+.map2>.h.l{grid-column:1}
+.map2>.h.r{grid-column:3}
+.map2>.l{grid-column:1}
+.map2>.r{grid-column:3}
+.map2>.l,.map2>.r{padding:.8em 0;border-bottom:1px dashed var(--line);font-size:.95em;line-height:1.7}
+.map2>.r strong{display:block;color:var(--ink)}
+.map2>.r span{display:block;font-size:.85em;color:var(--sub)}
+.map2>.mid{grid-column:2;grid-row:2 / span 40;display:flex;align-items:center;justify-content:center}
+.map2>.mid::before{content:"";width:0;height:0;border-top:.6em solid transparent;border-bottom:.6em solid transparent;border-left:.9em solid var(--accent)}
+
+/* --- 全体マップ .omap（各行の右端に → P.n。まとめ⇄深掘りの往復の起点。10枚超のデッキで冒頭に置く） --- */
+.omap{margin:1.6em 0;border-top:.14em solid var(--ink)}
+.omap-row{display:grid;grid-template-columns:9em 1fr auto;gap:1.6em;align-items:baseline;padding:.9em 0;border-bottom:1px solid var(--line-soft);font-size:.95em;line-height:1.7}
+.omap-row .l{font-family:var(--serif);font-weight:600;color:var(--ink)}
+.omap-row .p{font-family:var(--serif);color:var(--accent);white-space:nowrap}
+.omap-row .p::before{content:"→ "}
+/* 目次 .toc（1列。デッキの章扉やセパレーターでは現在の章を .cur で太字に） */
+.toc{margin:1.6em 0}
+.toc-row{display:grid;grid-template-columns:3em 1fr auto;gap:1.2em;align-items:baseline;padding:.7em 0;border-bottom:1px solid var(--line-soft);font-size:1em;color:var(--text)}
+.toc-row .n{font-family:var(--serif);color:var(--accent)}
+.toc-row .p{font-family:var(--serif);color:var(--sub);font-size:.85em}
+.toc-row.cur{color:var(--ink);font-weight:700}
+/* 右上タグチップ .tags（冒頭で立てた軸を全枚で運ぶ。該当だけ .on で反転） */
+.tags{display:inline-flex;align-items:center;align-self:start;gap:.3em;flex-wrap:wrap}
+.tags span{font-size:.62em;letter-spacing:.1em;padding:.15em .7em;border:1px solid var(--line);border-radius:999px;color:var(--sub);white-space:nowrap}
+.tags span.on{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* --- 表の変種: ヒートマップ .heat / 充足度 .hb / 入れ子行 .nest / 打ち手の効果 .efx --- */
+table.heat td.h0,table.heat td.h1,table.heat td.h2,table.heat td.h3{text-align:center;font-weight:700;padding:.5em .8em;border:2px solid var(--surface);white-space:nowrap}
+table.heat td.h0{background:var(--surface);color:var(--sub);outline:1px solid var(--line-soft);outline-offset:-2px;font-weight:400}
+table.heat td.h1{background:var(--accent-faint);color:var(--text)}
+table.heat td.h2{background:var(--accent-soft);color:var(--ink)}
+table.heat td.h3{background:var(--accent);color:var(--paper)}
+tbody tr:hover td.h0,tbody tr:hover td.h1,tbody tr:hover td.h2{background:inherit} /* 濃淡が意味を持つので行ホバーで変えない */
+tbody tr:hover td.h3{background:var(--accent)}
+.legend i.sq{border-radius:2px;border:1px solid var(--line-soft)}
+.hb{display:inline-block;width:1.3em;height:1.3em;border-radius:50%;border:1.5px solid var(--ink);vertical-align:-.3em;background:conic-gradient(var(--ink) 0 var(--q),transparent var(--q) 100%)} /* ハーベイボール: --q=充足度 */
+.hb.q0{--q:0%}.hb.q1{--q:25%}.hb.q2{--q:50%}.hb.q3{--q:75%}.hb.q4{--q:100%}
+td .hb{margin-right:.4em}
+table.nest td.grp{font-family:var(--serif);font-size:1.05em;color:var(--ink);vertical-align:middle;border-right:.14em solid var(--ink);padding-right:1em;background:var(--accent-faint)} /* 入れ子行: rowspan の親ラベル */
+table.nest td.sub{font-weight:700;color:var(--ink)}
+.efx{display:inline-block;vertical-align:middle;height:1.6em;line-height:1.6em;padding:0 1.2em 0 .7em;min-width:4em;background:var(--accent);color:var(--paper);font-family:var(--serif);font-size:.95em;clip-path:polygon(0 0,calc(100% - .7em) 0,100% 50%,calc(100% - .7em) 100%,0 100%)} /* 効果の幅（増やす方向=焦がし） */
+.efx.down{background:#EAE2D6;color:var(--ink)}                                                            /* 減らす方向=下地 */
+
+/* --- 2×2マトリクス .mx2（項目は style="left:%;top:%" で置く。上ほど・右ほど高い） --- */
+.mx2{position:relative;aspect-ratio:16/9;border-left:1px solid var(--ink);border-bottom:1px solid var(--ink);margin:1.6em 0}
+.mx2::before,.mx2::after{content:"";position:absolute;background:var(--line)}
+.mx2::before{left:50%;top:0;bottom:0;width:1px}
+.mx2::after{top:50%;left:0;right:0;height:1px}
+.mx2 .ax{position:absolute;font-size:.72em;color:var(--sub);letter-spacing:.08em}
+.mx2 .ax.y{left:.6em;top:.4em}
+.mx2 .ax.x{right:.6em;bottom:.4em}
+.mx2 .q{position:absolute;font-size:.68em;color:var(--sub);letter-spacing:.1em}                             /* 象限ラベル（任意） */
+.mx2 .q.tl{left:1em;top:2em}.mx2 .q.tr{right:1em;top:2em}.mx2 .q.bl{left:1em;bottom:2em}.mx2 .q.br{right:1em;bottom:2em}
+.mx2-item{position:absolute;transform:translate(-50%,-50%);background:var(--surface);border:1px solid var(--ink);padding:.25em .8em;font-size:.82em;font-weight:700;color:var(--ink);white-space:nowrap;z-index:1}
+.mx2-item.hot{border-color:var(--accent);background:var(--accent-faint);color:var(--accent-deep)}
+
+/* --- イシューツリー .itree（根が左・枝が右。ul/li の入れ子で書く） --- */
+.itree{margin:1.6em 0;font-size:.9em}
+.itree ul{list-style:none;margin:0;padding:0 0 0 2.4em;display:flex;flex-direction:column;justify-content:center;gap:.5em;position:relative}
+.itree>ul{padding-left:0}
+.itree li{display:flex;align-items:center;position:relative;gap:0}
+.itree li>.n{background:var(--surface);border:1px solid var(--line);border-left:.2em solid var(--ink);padding:.35em .9em;color:var(--ink);font-weight:700;white-space:nowrap;line-height:1.6}
+.itree li>ul>li>.n{font-weight:400}
+.itree ul ul li::before{content:"";position:absolute;left:-1.2em;top:50%;width:1.2em;border-top:1px solid var(--line)}
+.itree ul ul li::after{content:"";position:absolute;left:-1.2em;top:0;bottom:0;border-left:1px solid var(--line)}
+.itree ul ul li:first-child::after{top:50%}
+.itree ul ul li:last-child::after{bottom:50%}
+.itree ul ul li:only-child::after{display:none}
+.itree li>ul::before{content:"";width:1.2em;border-top:1px solid var(--line);position:absolute;left:0;top:50%}
+
+/* --- 矢羽レール .sd-steps.rail（薄い帯+番号丸。全体像の見出しに）/ バリューチェーン .vchain / 対向シェブロン .oppose --- */
+.sd-steps.rail .sd-step{display:flex;align-items:center;gap:.8em;padding:.8em 1.4em .8em 1.8em}
+.sd-steps.rail .sd-step:first-child{padding-left:1.2em}
+.sd-steps.rail .num-chip{flex:none}
+.sd-steps.rail .sd-step .t{display:block;font-size:.95em}
+.vchain{display:grid;grid-template-columns:auto 1fr;gap:.4em 1.2em;align-items:center;margin:1.6em 0}
+.vchain .lbl{font-weight:700;color:var(--ink);font-size:.9em;white-space:nowrap}
+.vchain .sd-steps{flex:none}
+.vchain .sd-step{padding:.5em 1em .5em 1.3em;text-align:center}
+.vchain .sd-step .t{font-size:.9em}
+.vchain .sd-steps.dim .sd-step::before{background:var(--paper)}
+.vchain .sd-steps.dim .sd-step .t{color:var(--sub)}
+.vchain-notes{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:.4em;font-size:.78em;color:var(--sub);line-height:1.6;padding:0 .4em 0 1.3em;margin-bottom:.6em}
+.oppose{display:grid;grid-template-columns:1fr auto 1fr;gap:1.2em 1.8em;margin:1.6em 0;align-items:stretch}
+.oppose .side{display:flex;flex-direction:column}
+.oppose .side div{padding:.7em 0;border-bottom:1px solid var(--line-soft);font-size:.95em;line-height:1.7;flex:1}
+.oppose .mid{display:flex;flex-direction:column;justify-content:center;gap:.8em}
+.oppose-tag{font-family:var(--serif);font-size:1em;line-height:1.5;text-align:center;color:var(--paper);background:var(--accent);padding:.9em 1.6em 1.6em;clip-path:polygon(0 0,100% 0,100% calc(100% - .8em),50% 100%,0 calc(100% - .8em))}
+.oppose-tag.alt{background:var(--ink)}
+
+/* --- 循環サイクル .cycle（各項目に --i=番号 と --n=総数。楕円の周りに等間隔） --- */
+.cycle{position:relative;aspect-ratio:2/1;margin:1.6em 0}
+.cycle::before{content:"";position:absolute;inset:10% 14%;border:1px dashed var(--accent);border-radius:50%}
+.cycle-item{position:absolute;left:calc(50% + 42% * sin(360deg * var(--i) / var(--n)));top:calc(50% - 46% * cos(360deg * var(--i) / var(--n)));transform:translate(-50%,-50%);text-align:center;display:flex;flex-direction:column;align-items:center;gap:.2em;width:9em;font-size:.9em;line-height:1.5}
+.cycle-item .t{font-weight:700;color:var(--ink)}
+.cycle-item .d{font-size:.82em;color:var(--sub)}
+
+/* --- 増減ブリッジ .wfall（各棒に --b=下端% と --h=高さ%。合計=墨・増=焦がし・減=紅） --- */
+.wfall{display:flex;align-items:stretch;gap:1em;height:14em;margin:1.6em 0;border-bottom:1px solid var(--ink)}
+.wfall .bar{flex:1;position:relative;min-width:0}
+.wfall .bar i{position:absolute;left:12%;right:12%;bottom:var(--b);height:var(--h);background:var(--accent)}
+.wfall .bar.total i{background:var(--ink)}
+.wfall .bar.neg i{background:var(--danger)}
+.wfall .bar .v{position:absolute;left:0;right:0;bottom:calc(var(--b) + var(--h) + .3em);text-align:center;font-family:var(--serif);font-size:.95em;color:var(--ink)}
+.wfall .bar .l{position:absolute;left:0;right:0;top:100%;margin-top:.4em;text-align:center;font-size:.75em;color:var(--sub);white-space:nowrap}
+.wfall+.legend,.wfall+*{margin-top:2.2em}
+/* --- 割合のドットマトリクス .dots（100個の i・.on が割合ぶん） --- */
+.dotgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:2em;margin:1.6em 0;text-align:center}
+.dots{display:grid;grid-template-columns:repeat(10,1fr);gap:.22em;width:9em;margin:0 auto}
+.dots i{aspect-ratio:1;background:#EAE2D6;display:block}
+.dots i.on{background:var(--accent)}
+.dotgrid .v{font-family:var(--serif);font-size:1.6em;color:var(--ink);line-height:1.2;margin-bottom:.4em}
+.dotgrid .l{font-size:.82em;color:var(--sub);margin-top:.6em}
+
+/* --- 裏表紙 .sd-back（デッキの最終枚。会社名と連絡先だけ・メッセージは載せない） --- */
+.sd-back{flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 3.4em;gap:.4em}
+.sd-back .co{font-family:var(--serif);font-size:1.6em;color:var(--ink)}
+.sd-back .ct{font-size:.8em;color:var(--sub)}
+/* デッキでの位置決め: タグチップは見出し帯の右上・出典は左下（下枠の1行上）の定位置 */
+.sd-head{position:relative}
+.sd-head .tags{position:absolute;right:3.4em;top:2.3em}
+.sd-source{position:absolute;left:3.4em;bottom:3.4em;font-size:.5em;color:var(--sub)}
+.deck .sd-body>.cols,.deck .sd-body>.decide,.deck .sd-body>.claim-fig,.deck .sd-body>.map2,.deck .sd-body>.omap,.deck .sd-body>.toc,.deck .sd-body>.mx2,.deck .sd-body>.itree,.deck .sd-body>.vchain,.deck .sd-body>.oppose,.deck .sd-body>.cycle,.deck .sd-body>.wfall,.deck .sd-body>.dotgrid{margin-top:0}
+.deck .sd-body>.claim-fig,.deck .sd-body>.oppose{flex:1}
+.cols.fill{flex:1;min-height:0;align-items:stretch}                                                       /* デッキで図を残り高さいっぱいに */
+.cols.fill .mx2{margin:0}
+.deck .cols.fill .mx2{aspect-ratio:auto;height:100%}
+.deck .sd-body>.mx2{aspect-ratio:auto;flex:1;min-height:0}
+.deck .sd-body .cycle{aspect-ratio:auto;flex:1;min-height:0}
+
 /* ---------- デッキ（投影用。1 section=1スライド・器は deck.html・2026-09-25） ----------
    画面では1枚ずつ表示して矢印キーで送り、印刷（Chrome→PDF）では1枚1ページ。
    1em = スライド幅/60（幅1320pxで22px）。中身は em で組む。本文 .sd-body は .82em（≒18px）が下限。

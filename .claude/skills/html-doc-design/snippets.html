@@ -683,6 +683,58 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
      章とびら: <div class="ghost">02</div> を左に置き、右にCHAPTERキッカー+明朝章名
      ビッグナンバー: .sd-nums / ×○比較: .sd-vs / 締め: .sd-todo（やること・担当・期日の3列）。全型の実物は deck.html -->
 
+<!-- ============ コンサル型の部品（2026-09-25。誌面の章にもデッキの1枚にも同じHTML。全型の実物は gallery.html 11章と deck.html） ============ -->
+<!-- 見出し付きの並列カラム（c2〜c5）。エグゼクティブサマリー・SCR・課題→原因→解決（.arrows）・提言の柱（.pillars）はこの器 -->
+<div class="cols c3">
+  <div><h3>要件</h3><p class="col-lead">1文目は言い切り。</p><p>補足。</p></div>
+  <div><div class="col-k">状況</div><p class="col-lead">キッカー版はSCRに。</p><div class="col-note">注: 注記は点線の下</div></div>
+  <div><span class="num-chip brand">3</span><h3>柱の見出し</h3><p>.pillars を足すと上罫2px+番号丸</p><ul><li>要点</li></ul></div>
+</div>
+<div class="pillar-base"><span class="k">共通条件1</span><span>柱の下の共通条件（白面+罫線）</span></div>
+<!-- 意思決定 -->
+<div class="decide">
+  <div><div class="k">推奨する意思決定</div><div class="d">決定を1文で<small>前提や注記</small></div></div>
+  <div>
+    <div class="decide-ask"><span class="n">1</span><span>依頼事項</span><span class="who">担当</span></div>
+    <div class="decide-ask"><span class="n">2</span><span>依頼事項</span><span class="who">担当</span></div>
+  </div>
+</div>
+<!-- 主張パネル+図 -->
+<div class="claim-fig">
+  <div class="claim-panel"><div class="n">2</div><div class="k">区分名</div><div class="c">この1枚の主張を1文で。</div></div>
+  <div class="table-wrap"><table>…</table></div>
+</div>
+<!-- 課題→打ち手の対応（左右の行を対応付け・中央に三角1つ） -->
+<div class="map2">
+  <div class="h l">課題</div><div class="h r">打ち手</div>
+  <div class="l">課題1</div><div class="r"><strong>打ち手1</strong><span>補足</span></div>
+  <div class="mid"></div>
+  <div class="l">課題2</div><div class="r"><strong>打ち手2</strong><span>補足</span></div>
+</div>
+<!-- 全体マップ（→P.n）/ 目次（.cur=現在章）/ 右上タグチップ（.on=該当） -->
+<div class="omap"><div class="omap-row"><span class="l">論点1</span><span>一言</span><span class="p">P.5</span></div></div>
+<div class="toc"><div class="toc-row cur"><span class="n">01</span><span>章名</span><span class="p">P.5</span></div></div>
+<div class="tags"><span>結論</span><span class="on">進め方</span></div>
+<!-- 表の変種: ヒートマップ（td.h0〜h3）/ ハーベイボール（.hb.q0〜q4）/ 入れ子行（td.grp[rowspan]+td.sub）/ 効果の幅（.efx / .efx.down + width:%） -->
+<table class="heat"><tbody><tr><td class="label">項目</td><td class="h0">なし</td><td class="h1">低</td><td class="h2">中</td><td class="h3">高</td></tr></tbody></table>
+<td><span class="hb q2"></span>一部満たす</td>
+<table class="nest"><tbody><tr><td class="grp" rowspan="2">親</td><td class="sub">子1</td><td>値</td></tr><tr><td class="sub">子2</td><td>値</td></tr></tbody></table>
+<td><span class="efx" style="width:60%">+20〜30</span></td>
+<div class="legend"><span><i class="sq" style="background:var(--accent)"></i>増やす方向</span><span><i class="sq" style="background:#EAE2D6"></i>減らす方向</span></div>
+<!-- 図: 2×2 / イシューツリー / 矢羽レール / バリューチェーン / 対向シェブロン / 循環 / 増減ブリッジ / ドットマトリクス（すべて figure.fig で包み aria-label に主張） -->
+<figure class="fig" aria-label="主張">
+  <div class="mx2"><span class="ax y">効果（上ほど大きい）</span><span class="ax x">手間（右ほど小さい）</span><span class="mx2-item hot" style="left:78%;top:22%">項目</span></div>
+</figure>
+<figure class="fig" aria-label="主張"><div class="itree"><ul><li><span class="n">根</span><ul><li><span class="n">枝</span><ul><li><span class="n">葉</span></li></ul></li></ul></li></ul></div></figure>
+<div class="sd-steps rail"><div class="sd-step hot"><span class="num-chip sm brand">1</span><span><span class="t">段名</span><span class="d">時期</span></span></div></div>
+<figure class="fig" aria-label="主張"><div class="vchain"><span class="lbl">行</span><div class="sd-steps"><div class="sd-step hot"><span class="t">工程</span></div></div><span></span><div class="vchain-notes"><span>説明</span></div></div></figure>
+<figure class="fig" aria-label="主張"><div class="oppose"><div class="side"><div>要素</div></div><div class="mid"><div class="oppose-tag">狙い<br>1</div><div class="oppose-tag alt">狙い<br>2</div></div><div class="side"><div>要素</div></div></div></figure>
+<figure class="fig" aria-label="主張"><div class="cycle" style="--n:4"><div class="cycle-item" style="--i:0"><span class="num-chip sm">1</span><span class="t">段</span><span class="d">説明</span></div></div></figure>
+<figure class="fig" aria-label="主張"><div class="wfall"><div class="bar total" style="--b:0%;--h:50%"><span class="v">100</span><i></i><span class="l">現在</span></div><div class="bar" style="--b:50%;--h:12%"><span class="v">+24</span><i></i><span class="l">増</span></div><div class="bar neg" style="--b:60%;--h:12%"><span class="v">−4</span><i></i><span class="l">減</span></div></div></figure>
+<figure class="fig" aria-label="主張"><div class="dotgrid"><div><div class="v">58%</div><div class="dots"><!-- <i class="on"></i>×58 + <i></i>×42 --></div><div class="l">ラベル</div></div></div></figure>
+<!-- 裏表紙（デッキ専用・最終枚） -->
+<section class="slide" data-title="裏表紙"><div class="sd-back"><div class="co">会社名</div><div class="ct">連絡先</div></div><div class="slide-ft"><span>BRAND</span><span class="pg"></span></div></section>
+
 <!-- ============ footer（書くのは正本のパスだけ。保守者向けの指示は読者に不要なのでコメントへ） ============ -->
 <!-- md更新時はこのHTMLも同期すること（正本: path/to/source.md） -->
 <footer>正本: path/to/source.md</footer>
