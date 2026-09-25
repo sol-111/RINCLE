@@ -753,19 +753,23 @@ table.nest td.sub{font-weight:700;color:var(--ink)}
 .mx2-item{position:absolute;transform:translate(-50%,-50%);background:var(--surface);border:1px solid var(--ink);padding:.25em .8em;font-size:.82em;font-weight:700;color:var(--ink);white-space:nowrap;z-index:1}
 .mx2-item.hot{border-color:var(--accent);background:var(--accent-faint);color:var(--accent-deep)}
 
-/* --- イシューツリー .itree（根が左・枝が右。ul/li の入れ子で書く） --- */
-.itree{margin:1.6em 0;font-size:.9em}
-.itree ul{list-style:none;margin:0;padding:0 0 0 2.4em;display:flex;flex-direction:column;justify-content:center;gap:.5em;position:relative}
-.itree>ul{padding-left:0}
-.itree li{display:flex;align-items:center;position:relative;gap:0}
-.itree li>.n{background:var(--surface);border:1px solid var(--line);border-left:.2em solid var(--ink);padding:.35em .9em;color:var(--ink);font-weight:700;white-space:nowrap;line-height:1.6}
-.itree li>ul>li>.n{font-weight:400}
+/* --- イシューツリー .itree（根が左・枝が右。ul/li の入れ子で書く。3階層まで）
+   サブグリッドで階層ごとに列を揃える（同じ階層の箱は一番長い箱の幅に合わせる）。--depth=階層数（既定3） --- */
+.itree{margin:1.6em 0;font-size:.9em;--depth:3}
+.itree ul{list-style:none;margin:0;padding:0;position:relative}
+.itree>ul{display:grid;grid-template-columns:repeat(var(--depth),max-content);column-gap:2.4em;row-gap:.5em;align-items:center}
+.itree li{display:grid;grid-column:1 / -1;grid-template-columns:subgrid;column-gap:2.4em;align-items:center;position:relative}
+.itree li>ul{display:grid;grid-column:2 / -1;grid-template-columns:subgrid;column-gap:2.4em;row-gap:.5em;align-items:center}
+.itree li>.n{grid-column:1;background:var(--surface);border:1px solid var(--line);border-left:.2em solid var(--ink);padding:.35em .9em;color:var(--ink);font-weight:700;line-height:1.6}
+.itree ul ul li>.n{font-weight:400}
 .itree ul ul li::before{content:"";position:absolute;left:-1.2em;top:50%;width:1.2em;border-top:1px solid var(--line)}
 .itree ul ul li::after{content:"";position:absolute;left:-1.2em;top:0;bottom:0;border-left:1px solid var(--line)}
 .itree ul ul li:first-child::after{top:50%}
 .itree ul ul li:last-child::after{bottom:50%}
 .itree ul ul li:only-child::after{display:none}
-.itree li>ul::before{content:"";width:1.2em;border-top:1px solid var(--line);position:absolute;left:0;top:50%}
+.itree li>ul::before{content:"";position:absolute;left:-2.4em;width:1.2em;top:50%;border-top:1px solid var(--line)}
+.sd-body .itree ul{padding:0;margin:0}          /* デッキの .sd-body ul の字下げを打ち消す（連結線がずれる） */
+.sd-body .itree li{margin:0}
 
 /* --- 矢羽レール .sd-steps.rail（薄い帯+番号丸。全体像の見出しに）/ バリューチェーン .vchain / 対向シェブロン .oppose --- */
 .sd-steps.rail .sd-step{display:flex;align-items:center;gap:.8em;padding:.8em 1.4em .8em 1.8em}
