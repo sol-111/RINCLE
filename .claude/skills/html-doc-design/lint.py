@@ -21,7 +21,8 @@
            変更点バッジの語彙(CHANGED/NEW等の英字を使わない=「決定済み/弊社提案/変更点/旧設計」の4語)
            fnumは英数字・表の字下げに全角空白の直書きなし(td.label.indを使う)
            推奨の面(std)は1列だけ(2段ヘッダーの比較表では1グループだけ)
-           色ベタの行ハイライトなし(tr.xxx td{background} — 強調は焦がしの太字かtd.stdの薄い面で)
+           色ベタの行ハイライトなし(tr.xxx td{background} — 強調は緑の文字かtd.stdの薄い面で)
+           報告書の型(2026-09-29): 答えの行 tr.answer は1表1本(推奨列 std と同居させない=面は1表1本)・注目枠 .focus / tr.focus は1図(1表)2か所まで
            琥珀のバッジなし(バッジ語彙はink/brand/mid/good/bad/plain/muted。琥珀は「お金」の役割色で意味が二重になる)
            .badge.ink(黒ベタ)は1ページ3個まで(唯一の最重要マーク。3段階の「中」は.badge.mid)
            章番号は01始まり・小見出し番号はハイフン式(「4-1」。ドット式「7.1」は使わない)
@@ -31,18 +32,21 @@
            table/notes/compare-box/sub-item)を再定義・新変種を作らない(メディアクエリ内の調整は対象外)
            沈めるのにopacityを使わない(文字色と罫線をグレーに落として沈める=tr.muted / .option.dim)
            見出しタグへのfont-size直書きなし(階段4段固定)・部品への個別max-widthなし(.slideの額は例外)
-           固定px幅の空白divなし・inlineのbox-shadowなし(影は浮かぶ部品のCSSだけ)・スライド内の表は5行まで
+           固定px幅の空白divなし・inlineのbox-shadowなし(影は浮かぶ部品のCSSだけ)・スライド内の表は10行まで
            差分表(.dtable): .drowの種別はeq/rep/del/insのどれか1つ・.dcellは<pre>を持つ・凡例.dlegendがページに1枚・
            #hlトグルを置いたらbody.nohlを切り替えるscriptがある(specimenは凡例チェックのみ免除しない=見本も凡例を持つ)
   残骸   : トークン外の配色直書き(template.css自身が使う色は自動許可)・絵文字(許可リスト外)
   文章   : 半角()の使用(全角（）を使う)・全角／の使用(半角/+前後半角スペース)・/の前後スペース欠け
            接続助詞「し、/り、/て、/が、」の文つなぎ(句点で切る。ただし/つまり/〜のとおり等の接続詞・
            慣用句と主語の「が、」は除外。code/pre内は対象外)
+  金額   : 金額は ¥2,280,000 の形(円記号+3桁区切り)。「228万円」「1,837円」の表記は使わない(2026-09-28)
   敬語   : 二重敬語「ご〜される」・提案側の「で結構です」(それ以外の敬語=主体依存は機械判定不能のためSKILL.md参照)
   内容   : (2026-09-25 内容レビューから) NG=章参照「N章」が章数を超える・「M月D日（曜）」の曜日が暦と違う・
            footerが「最終更新 …」でも「正本: …」でもない
-           WARN(exit codeに数えない・目視で判断)=「当社」「貴社」の定義なし・h2/sh-subの個数表現・表記ゆれの代表ペア・
-           口語・説明のない専門語・導入文4文以上・導入文と01章の1文目が同文・評価語・和暦だけ/YYYY-MM-DDの本文日付
+           WARN(exit codeに数えない・目視で判断)=「当社」「貴社」の定義なし・h2/sh-subの個数表現・sh-sub/デッキ見出しの作業報告型(〜を実施した・検討した。2026-09-29)・表記ゆれの代表ペア・
+           口語・説明のない専門語・導入文4文以上・導入文と01章の1文目が同文・評価語・和暦だけ/YYYY-MM-DDの本文日付・
+           表が6個超で図の3倍超・td.label(.wrapなし)が全角10字超(2026-09-28)
+           NG=ラベル(td.label/th/.stat .l/.g-label/.sd-step .t)の折り返し禁止をページCSSで潰す(2026-09-28)
            (語彙リストは lint.py の COLLOQUIAL / JARGON / EVALUATIVE / VARIANT_PAIRS。案件で増やす)
   目視   : footerの正本パス(mdが正本の場合のみ必須=機械判定不能)・章の背景交互・図解の役割色と凡例
 
@@ -53,10 +57,11 @@
 描写のための直書き(box-shadow・固定px幅・部品max-width)だけ免除される(文章・構造チェックはかかる)。
 デッキ(投影用スライド・<!-- lint-mode: deck --> または body.deck)は誌面の規約(ヒーロー/章ナビ/01章)の代わりに
 デッキの規約でみる: 送りスクリプト・全枚に下枠(.slide-ft)と2枚目以降のページ番号(.pg)・
-本文スライドの見出し h1.sd-h は1つ/48字以内/常体/「ラベル：」や題名形でない・表5行/箇条書き5本まで・
+本文スライドの見出し h1.sd-h は1つ/48字以内/常体/「ラベル：」や題名形でない(付録 section.slide.annex は題名形可・40枚に数えない)・「参考」の札の枚が3枚以上続いたらWARN(付録へ)・左下の.sd-sourceに注があればWARN(注は図表直下の※)・表10行/箇条書き7本まで・
 h1は1枚1つ・本文より小さい文字の直書きなし(.sd-src除く)・図はfigure.fig・40枚まで・
-10枚超は全体マップ(.omap)・最終枚は裏表紙(.sd-back)。文章規約と敬語は誌面と同じ。
+10枚超は「本資料の構成」(.sd-toc)・最終枚は裏表紙(.sd-back)。文章規約と敬語は誌面と同じ。
 図の部品にはコンサル型(.mx2/.itree/.cycle/.wfall/.dotgrid/.vchain/.oppose)も含む(2026-09-25)。
+報告書の型の図(.tline/.range/.timeline)も含む(2026-09-29)。
 
 exit code: 指摘ありなら1、クリーンなら0。
 生成をエージェントに並列分担させた後は必ず実行すること(参照割れは構造検証では出ない)。
@@ -64,16 +69,12 @@ exit code: 指摘ありなら1、クリーンなら0。
 import sys, re, glob, os, html
 from html.parser import HTMLParser
 
-OLD_COLORS = ['#F95320', '#23201D', '#B8532F', '#8F3E20', '#F3E6DC',
-              '#FBF9F5', '#26221E', '#EAE2D6', '#F3EFE8', '#F6EFE9', '#221B16']
-# デザインシステム自身（template.css）が使っている色は「直書き」でも正規とみなす
+# 誌面エディトリアル版より前の旧様式の色（RINCLEの原色など）。2026-09-29 の緑への作り替えでは、
+# 焦がし版の色（#B8532F・#EAE2D6 等）を旧様式に数えない — 既存の誌面の資料は焦がし版のままで有効なため
+OLD_COLORS = ['#F95320', '#23201D']
 _tpl = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'template.css')
-if os.path.exists(_tpl):
-    # コメントを先に落とす — ヘッダコメントの「RINCLE: #F95320 → #B8532F」を拾うと
-    # 旧ブランド原色まで「template.cssが使っている色」として許可され、チェックが死ぬ（2026-09-14修正）
-    _tpl_nocmt = re.sub(r'/\*.*?\*/', '', open(_tpl, encoding='utf-8').read(), flags=re.S)
-    _tpl_colors = {c.upper() for c in re.findall(r'#[0-9A-Fa-f]{6}', _tpl_nocmt)}
-    OLD_COLORS = [c for c in OLD_COLORS if c.upper() not in _tpl_colors]
+# 作業報告型の見出し(2026-09-29 第2弾): 見出しは作業の記録でなく、作業から分かったことを書く
+WORKLOG_END = re.compile(r'(を|に|と|で)?(実施|検討|整理|調査|分析|確認|実行)?(しました|した|を行った|行った|行いました|を実施した|を実施しました|を検討した|を整理した)[。]?$')
 EMOJI = re.compile('[\U0001F300-\U0001FAFF☀-➿]')
 # template.css自身がopacityを使うセレクタのクラス名(.recap/.funnel/.rv 等)。
 # CSSを丸ごと<style>に埋め込んだページで「沈めるのにopacity」チェックが誤反応しないための許可リスト
@@ -83,6 +84,13 @@ if os.path.exists(_tpl):
     for _sel, _dec in re.findall(r'([^{}]+)\{([^{}]*)\}', _tpl_src):
         if re.search(r'(?<![\w-])opacity\s*:', _dec):
             _TPL_OPACITY_CLASSES |= set(re.findall(r'\.([\w-]+)', _sel))
+# template.css 自身のセレクタ(納品ページは template.css を <style> に丸ごと入れるので、
+# 本体の規則をページ固有CSSの再発明と取り違えない。2026-09-29 tr.answer / table.heat の面で誤検知したため)
+_TPL_SELECTORS = set()
+if os.path.exists(_tpl):
+    for _sel, _dec in re.findall(r'([^{}]+)\{([^{}]*)\}', _tpl_src):
+        for _one in _sel.split(','):
+            _TPL_SELECTORS.add(re.sub(r'\s+', ' ', _one).strip())
 GOLD_TOKEN = re.compile(r'--gold|#EAD9AE|#C99A2E|#F7EFDF|#8F5A0A', re.I)
 BG_NEUTRAL = {'none', 'transparent', 'inherit', 'unset', 'initial'}
 
@@ -232,6 +240,11 @@ def text_rules(s, bad):
     # 敬語: 機械で確実に拾える2パターンだけ(主体依存の使い分けはSKILL.mdの敬語規約=目視)
     for m in re.finditer(r'ご[一-龥]{1,4}され', text):
         bad(f"二重敬語「ご〜される」(「ご決裁いただく」等に): …{ctx(m, text)}…")
+    # 金額は ¥2,280,000 の形（2026-09-28）。万円表記・円単位の表記は使わない。
+    # 例外は引用（「」の中。公募要領・契約文言は原文の表記のまま）
+    _unq = re.sub(r'「[^」]*」', ' ', text)
+    for m in re.finditer(r'[0-9０-９][0-9０-９,.]*\s*万?円', _unq):
+        bad(f"金額が円表記(¥2,280,000 の形にする。万円表記は使わない。引用「…」の中は原文のまま可): …{ctx(m, _unq)}…")
     for m in re.finditer(r'で結構です', text):
         bad(f"提案側の「で結構です」は上から目線(「お時間をいただければ十分です」等に): …{ctx(m, text)}…")
 
@@ -272,6 +285,8 @@ def content_rules(s, bad):
         mm = re.search(NUM + r'(つ|点|段階|項目|種類|本|件|か所|カ所|箇所)(?!目)', t)
         if mm and '分の' not in t:
             warn(f"見出し・副題に個数表現「{mm.group(0)}」(本文の数と食い違いやすい。個数を消すか主張文に): {t[:30]!r}")
+        if m.group(1) != 'h2' and WORKLOG_END.search(t):
+            warn(f"副題が作業報告型(作業から分かったことを主張にする): {t[:30]!r}")
     # 3 章参照「N章」は存在する章に限る
     n_sec = len(re.findall(r'<div class="section-num"', s))
     if n_sec:
@@ -328,6 +343,16 @@ def content_rules(s, bad):
         m = re.search(re.escape(w), body)
         if m:
             warn(f"評価語「{w}」(同じ章に根拠を置くか「事務局への確認待ち」等と断る): …{ctx(m, body)}…")
+    # 9b 長い項目名(2026-09-28): td.label(.wrapなし)が全角8字を超えると列幅次第で折り返しが崩れる。短くするか .wrap + <br>
+    for m in re.finditer(r'<td class="label(?![^"]*wrap)[^"]*">(.*?)</td>', s, re.S):
+        t = _text(m.group(1))
+        if _zen_len(t) > 10 and '<br' not in m.group(1):
+            warn(f"項目名が長い(全角10字超。短くするか td.label.wrap にして<br>で切る位置を決める): {t[:24]!r}")
+    # 10 表ばかりのページ(2026-09-28): 表が6個を超え、図(figure.fig)が1つもなければ注意。表は軸が2つある情報だけに使う
+    n_tab = len(re.findall(r'<table\b', s))
+    n_fig = len(re.findall(r'<figure\b', s))
+    if n_tab > 6 and n_tab > 3 * n_fig:
+        warn(f"表が{n_tab}個に対して図が{n_fig}個(表は軸が2つある情報だけ。時系列は矢羽・分岐はツリー・数字の見せ場はstat・主張と根拠は並列カラムに)")
     # 11 日付書式: 本文は「M月D日（曜）」。和暦は西暦を主に併記、YYYY-MM-DD は本文に書かない(hero-metaとfooterは対象外)
     inner = re.sub(r'<div class="hero-meta">.*?</div>|<span class="hero-kicker">.*?</span>|<footer>.*?</footer>', ' ', text, flags=re.S)
     inner = html.unescape(re.sub(r'<[^>]+>', ' ', inner))
@@ -338,6 +363,22 @@ def content_rules(s, bad):
         warn(f"本文の日付が YYYY-MM-DD(本文は「M月D日（曜）」・年は初出のみ): …{ctx(m, inner)}…")
 
 
+def face_rules(s, bad):
+    """表と図の面・枠の規約(2026-09-29)。誌面ページとデッキの両方から呼ぶ"""
+    # 報告書の型(2026-09-29): 答えの行 tr.answer は1つの表に1本だけ(面を着せる答えは1つ。内訳の行は文字色だけ)
+    for tm in re.finditer(r'<table[^>]*>(.*?)</table>', s, re.S):
+        n_ans = len(re.findall(r'<tr[^>]*class="[^"]*(?<![\w-])answer(?![\w-])[^"]*"', tm.group(1)))
+        if n_ans > 1:
+            bad(f"答えの行(tr.answer)が1つの表に{n_ans}本(面を着せるのは答えの1行だけ・内訳は td.pos/.neg の文字色で)")
+        elif n_ans == 1 and re.search(r'<t[dh][^>]*class="[^"]*(?<![\w-])std(?![\w-])', tm.group(1)):
+            bad("答えの行(tr.answer)と推奨列(std)の面が同じ表にある(面は1表1本=答えの行か列のどちらか。2026-09-29)")
+    # 注目枠(.focus / tr.focus)は1つの図・表に2か所まで(指差しが3つを超えると、どこも指していないのと同じ)
+    for fm in re.finditer(r'<(figure|table)\b[^>]*>(.*?)</\1>', s, re.S):
+        n_focus = len(re.findall(r'class="(?:[^"]*\s)?focus(?:\s[^"]*)?"', fm.group(2)))
+        if n_focus > 2:
+            bad(f"注目枠(.focus)が1つの{'図' if fm.group(1) == 'figure' else '表'}に{n_focus}か所(2か所まで。残りは読み方ボックスへ)")
+
+
 def lint_deck(path, s, issues):
     """デッキ(投影用スライド・body.deck)の規約。誌面ページの規約(ヒーロー/章ナビ/01章)は適用しない"""
     bad = issues.append
@@ -345,15 +386,23 @@ def lint_deck(path, s, issues):
         bad("Webフォントlinkなし")
     if 'class="deck-nav"' not in s or 'section.slide' not in s:
         bad("デッキ送りのスクリプト/.deck-navなし(deck.htmlの雛形を使う)")
-    slides = re.findall(r'<section class="slide"[^>]*>(.*?)</section>', s, re.S)
+    # 付録(section.slide.annex・2026-09-29): 40枚の上限に数えず、題名型の見出しを許す(ページ番号は「別添-n」の別系列)
+    slide_ms = list(re.finditer(r'<section class="slide([^"]*)"[^>]*>(.*?)</section>', s, re.S))
+    slides = [m.group(2) for m in slide_ms]
+    annex_flags = [bool(re.search(r'(?<![\w-])annex(?![\w-])', m.group(1))) for m in slide_ms]
     if not slides:
         bad("section.slide が1枚もない(1 section=1スライド)")
     for i, sl in enumerate(slides, 1):
         tag = f"{i:02d}枚目"
+        is_annex = annex_flags[i - 1]
         if 'class="slide-ft"' not in sl:
             bad(f"{tag}: 共通の下枠(.slide-ft)なし")
         elif i > 1 and 'class="pg"' not in sl:
             bad(f"{tag}: 下枠にページ番号(.pg)なし(表紙だけ日付)")
+        # 左下は出典だけ。注は図表の直下に ul.notes の※(2026-09-29。注・出典・会社名が左下に3段で積むと図に食い込む)
+        for src in re.findall(r'class="sd-source"[^>]*>(.*?)</div>', sl, re.S):
+            if re.search(r'(^|<br\s*/?>)\s*注[:：]', src):
+                bad(f"WARN {tag}: 左下の .sd-source に注がある(注は図表の直下に ul.notes の※で書き、左下は出典だけにする)")
         # 本文スライドは見出し帯(sd-head)に主張の h1.sd-h を1つ持つ
         if 'sd-head' in sl:
             hs = re.findall(r'<h1 class="sd-h">(.*?)</h1>', sl, re.S)
@@ -361,8 +410,8 @@ def lint_deck(path, s, issues):
                 bad(f"{tag}: .sd-head の h1.sd-h が{len(hs)}個(1個)")
             else:
                 h = _text(hs[0])
-                if h in ('目次', '全体マップ'):
-                    continue  # 構造のスライドだけ題名でよい
+                if h in ('目次', '全体マップ') or is_annex:
+                    continue  # 構造のスライドと付録だけ題名でよい
                 if _zen_len(h) > 48:
                     bad(f"{tag}: 見出しが長い(全角48字=2行を超える): {h[:30]}…")
                 if re.search(r'(です|ます|でした|ました|ません)[。]?$', h):
@@ -371,37 +420,50 @@ def lint_deck(path, s, issues):
                     bad(f"{tag}: 見出しに「ラベル：」形式を使わない(主張1文にする): {h[:30]}")
                 if re.search(r'(について|の件|のご説明|のまとめ|の概要|の紹介)$', h):
                     bad(f"{tag}: 見出しが題名になっている(主張1文にする): {h[:30]}")
-        # 型に関係なく: 表は5行まで・箇条書きは5本まで・見出しは1枚に1つ
+                if WORKLOG_END.search(h):
+                    bad(f"WARN {tag}: 見出しが作業報告型(作業から分かったことを主張にする): {h[:30]}")
+        # 型に関係なく: 表は10行まで・箇条書きは7本まで・見出しは1枚に1つ(2026-09-29 読めるデッキの密度に改定。旧: 5行・5本)
         for t in re.findall(r'<table\b.*?</table>', sl, re.S):
             rows = len(re.findall(r'<tr\b', t.split('<tbody', 1)[-1])) if '<tbody' in t else len(re.findall(r'<tr\b', t)) - 1
-            if rows > 5:
-                bad(f"{tag}: 表が{rows}行(5行まで。分けるか削る)")
+            if rows > 10:
+                bad(f"{tag}: 表が{rows}行(10行まで。2枚に割って続き番号 .sd-cont を振る)")
         for u in re.findall(r'<ul\b[^>]*>(.*?)</ul>', sl, re.S):
             n = len(re.findall(r'<li\b', u))
-            if n > 5:
-                bad(f"{tag}: 箇条書きが{n}本(5本まで)")
+            if n > 7:
+                bad(f"{tag}: 箇条書きが{n}本(7本まで)")
         if len(re.findall(r'<h1\b', sl)) > 1:
             bad(f"{tag}: h1が複数(1枚1メッセージ)")
         if 'sd-msg' in sl and re.search(r'class="sd-h"', sl):
             bad(f"{tag}: 1メッセージ型と見出し帯を同居させない")
-        # 本文の最小サイズ: .sd-body より小さい font-size の直書き禁止(投影で読めない)
+        # 本文の最小サイズ: .sd-body(.64em)より小さい font-size の直書き禁止(PDFで読めない)
         for m in re.finditer(r'font-size:\s*(\.\d+|0\.\d+)em', sl):
-            if float(m.group(1)) < .8 and 'sd-src' not in sl[max(0, m.start()-80):m.start()]:
-                bad(f"{tag}: 本文より小さい文字の直書き(font-size:{m.group(1)}em。出典の .sd-src 以外は18px相当を下回らない)")
-    if len(slides) > 40:
-        bad(f"スライドが{len(slides)}枚(目安は40枚まで。長い話は誌面ページにする)")
-    # 10枚超のデッキは冒頭に全体マップ(.omap)を置く(まとめ⇄深掘り)。裏表紙(.sd-back)で終わり、最終枚に見出し(h1)を載せない
-    if len(slides) > 10 and 'class="omap"' not in s:
-        bad("10枚超のデッキに全体マップ(.omap)がない(2枚目に置き、各行に→P.nを付ける)")
+            if float(m.group(1)) < .6 and 'sd-src' not in sl[max(0, m.start()-80):m.start()]:
+                bad(f"{tag}: 本文より小さい文字の直書き(font-size:{m.group(1)}em。出典の .sd-src 以外は14px相当を下回らない)")
+    # 「参考」の札の枚が3枚以上続いたら付録へ(2026-09-29 見直し。札は本文に挟んでよい許可ではない)
+    run = 0
+    for i, sl in enumerate(slides, 1):
+        if not annex_flags[i - 1] and re.search(r'class="sd-kicker"[^>]*>\s*<span class="badge muted">参考</span>', sl):
+            run += 1
+            if run == 3:
+                bad(f"WARN {i:02d}枚目: 「参考」の枚が3枚続いている(3枚以上続く参考資料は付録 section.slide.annex へ)")
+        else:
+            run = 0
+    n_main = sum(1 for f in annex_flags if not f)
+    if n_main > 40:
+        bad(f"スライドが{n_main}枚(本編は40枚まで。網羅的な一覧は付録 section.slide.annex へ)")
+    # 10枚超のデッキは冒頭に「本資料の構成」(.sd-toc)を置く(2026-09-29 全体マップ・目次・章とびらを統合)。裏表紙(.sd-back)で終わり、最終枚に見出し(h1)を載せない
+    if len(slides) > 10 and 'class="sd-toc"' not in s and 'class="omap"' not in s:  # 旧の全体マップを持つ既存のデッキはそのまま有効
+        bad("10枚超のデッキに「本資料の構成」(.sd-toc)がない(2〜3枚目に置き、章の頭でも出し直す)")
     if slides and 'sd-back' not in slides[-1]:
         bad("最終枚が裏表紙(.sd-back)でない(締めのCTAは手前の通常スライドに置く)")
     # 図の部品は figure.fig で包む(原則11・誌面と同じ)
-    for cls in ('lanes', 'swim', 'pflow', 'funnel', 'tilemap', 'stackbar', 'hbar', 'phases', 'mx2', 'itree', 'cycle', 'wfall', 'dotgrid', 'vchain', 'oppose'):
+    for cls in ('lanes', 'swim', 'pflow', 'funnel', 'tilemap', 'stackbar', 'hbar', 'mx2', 'itree', 'cycle', 'wfall', 'dotgrid', 'vchain', 'oppose', 'tline', 'range', 'timeline', 'drill'):
         for m in re.finditer(r'<(\w+)[^>]*class="[^"]*(?<![\w-])' + cls + r'(?![\w-])[^"]*"', s):
             before = s[max(0, m.start() - 400):m.start()]
             if '<figure' not in before or before.rfind('</figure>') > before.rfind('<figure'):
                 bad(f"図の部品 .{cls} が figure.fig で包まれていない")
                 break
+    face_rules(s, bad)
     text_rules(s, bad)
 
 
@@ -420,6 +482,20 @@ def lint_file(path, allow_emoji):
     n_open, n_close = len(re.findall(r'<div\b', s)), s.count('</div>')
     if n_open != n_close:
         bad(f"div開閉不一致 {n_open}/{n_close}")
+
+    # 2026-09-29 に廃止した部品（BCGの作法への作り替え）。template.css から消したので、使うと崩れる
+    RETIRED = {'recap': 'まとめ帯（黒を使わない。結論は冒頭）', 'toc': '目次（.sd-toc「本資料の構成」へ）', 'sd-chapter': '章とびら（.sd-toc へ）',
+               'omap': '全体マップ（.sd-toc へ）', 'chart': 'ドーナツ（100%積み上げ .stackbar へ）', 'pri': '優先度バー（.hbar へ）',
+               'sd-vs': '×○比較（.compare-box へ）', 'rail': '矢羽レール（.sd-steps へ）', 'phases': 'フェーズ帯（.sd-steps へ）',
+               'sd-split': '2分割（.cols.c2 へ）', 'drill': '旧ドリルダウン（.stackbar＋.split2 へ）'}
+    used = set()
+    for m in re.finditer(r'class="([^"]*)"', s):
+        used |= set(m.group(1).split())
+    if re.search(r'<table[^>]*class="[^"]*\bopen\b', s):
+        bad("WARN 廃止した部品: 罫の軽い表 table.open（既定の表と同じになった）")
+    for c, why in RETIRED.items():
+        if c in used:
+            bad(f"WARN 廃止した部品 .{c}: {why}（既存の資料はCSSを中に持つので崩れないが、新しく使わない）")
 
     # デッキ(投影用スライド): 誌面の規約でなくデッキの規約でみる
     if '<!-- lint-mode: deck -->' in s or re.search(r'<body[^>]*class="[^"]*\bdeck\b', s):
@@ -543,12 +619,12 @@ def lint_file(path, allow_emoji):
             bad(f"変更点バッジが英字の語彙: '{txt}'(「決定済み」「弊社提案」「変更点」「旧設計」の4語に固定)")
     # ページ固有CSSの規約(2026-09-04追加。ページごとの再発明で規約が崩れるのを止める)
     for sel, dec in css_rules(s):
-        # 色ベタの行ハイライトは使わない — 強調は焦がしの太字か td.std の薄い面で
+        # 色ベタの行ハイライトは使わない — 強調は緑の文字か td.std の薄い面で
         # <tr class="hl"> に対して CSS を「.hl td{…}」と書く形（tr. を省く）も拾う
-        if ':hover' not in sel and re.search(r'(?:^|[\s,>])(?:tr)?\.[\w-]+[^{,]*\btd\b', sel):
+        if ':hover' not in sel and re.sub(r'\s+', ' ', sel).strip() not in _TPL_SELECTORS and re.search(r'(?:^|[\s,>])(?:tr)?\.[\w-]+[^{,]*\btd\b', sel):
             mv = re.search(r'(?<![\w-])background(?:-color)?\s*:\s*([^;!]+)', dec)
             if mv and mv.group(1).strip().lower() not in BG_NEUTRAL:
-                bad(f"色ベタの行ハイライト(強調は焦がしの太字か td.std の薄い面で): {sel[:44]!r}")
+                bad(f"色ベタの行ハイライト(強調は緑の文字か td.std の薄い面で): {sel[:44]!r}")
         # 琥珀のバッジは語彙外 — バッジは ink/brand/good/plain/muted に固定(琥珀は「お金」の役割色)
         if re.search(r'\.badge\b', sel) and GOLD_TOKEN.search(dec):
             bad(f"琥珀のバッジ(バッジ語彙は ink/brand/mid/good/bad/plain/muted に固定。琥珀は「お金」の役割色): {sel[:44]!r}")
@@ -578,14 +654,14 @@ def lint_file(path, allow_emoji):
                     break
 
     # --- 2026-09-14 検収レビューで追加した規約（A-2） ---
-    # 3段階の重さ: 高=.badge.brand（焦がしベタ）/ 中=.badge.mid（白面・焦がし輪郭）/ 低=.badge.plain（罫線のみ）。
-    # .badge.ink（黒ベタ）はページ内で唯一の最重要マークにだけ使う（並べると焦がしベタより重く見え、格付けが逆に読める）
+    # 3段階の重さ: 高=.badge.brand（緑ベタ）/ 中=.badge.mid（白面・緑の輪郭）/ 低=.badge.plain（罫線のみ）。
+    # .badge.ink（黒ベタ）はページ内で唯一の最重要マークにだけ使う（並べると緑ベタより重く見え、格付けが逆に読める）
     if not specimen:
         n_ink = sum(1 for m in re.finditer(r'<\w+[^>]*class="([^"]*)"', s)
                     if {'badge', 'ink'} <= set(m.group(1).split()))
         if n_ink >= 4:
             bad(f".badge.ink（黒ベタ）が{n_ink}個(ページ内で唯一の最重要マークにだけ使う。"
-                "3段階の「中」は .badge.mid〈白面・焦がし輪郭〉へ)")
+                "3段階の「中」は .badge.mid〈白面・緑の輪郭〉へ)")
     # 章番号は常に1始まり。Step等の通し番号は見出し側（「Step 1.」）で持ち、章番号は動かさない
     if not specimen:
         secnums = [_text(m.group(1)) for m in re.finditer(r'<div class="section-num"[^>]*>(.*?)</div>', s, re.S)]
@@ -614,7 +690,7 @@ def lint_file(path, allow_emoji):
             mp = re.search(r'<p[^>]*>(.*?)</p>', seg, re.S)
             if msub and mp:
                 def _key(t):
-                    return re.sub(r'[\s　、。（）()「」『』・：:；;…—\-\u2010-\u2015]', '', t)
+                    return re.sub(r'[\s　、。（）()「」『』・：:；;…—\-\u2010-\u2015¥￥,]', '', t)
                 sub = _key(_text(msub.group(1)))
                 para = _key(re.split(r'。', _text(mp.group(1)))[0])
                 pre = 0
@@ -622,7 +698,9 @@ def lint_file(path, allow_emoji):
                     if _a != _b:
                         break
                     pre += 1
-                if len(sub) >= 10 and len(para) >= 10 and (sub in para or para in sub or pre >= 10):
+                # 金額や日付が同じだけで「同文」と誤判定しないよう、先頭一致は数字以外が8字以上あるときだけ数える（2026-09-28）
+                pre_ok = len(re.sub(r'[0-9]', '', sub[:pre])) >= 8
+                if len(sub) >= 10 and len(para) >= 10 and (sub in para or para in sub or (pre >= 10 and pre_ok)):
                     bad("01章の副題(sh-sub)と結論本文の1文目が同文"
                         f"(sh-sub=この章が何を扱うか / 本文=答え): {sub[:30]!r}")
     # ページ固有<style>で共通部品を再定義しない・新しい変種（.stat.win / .tag.geo 等）を作らない。
@@ -646,6 +724,12 @@ def lint_file(path, allow_emoji):
                 continue  # template.css/parts.css を丸ごと<style>に埋め込んだ自己完結ページ（同一定義）
             if one in seen_part_sel:
                 continue
+            # 2026-09-28: 短いラベル(td.label / th / .stat .l / .g-label / .sd-step .t)の折り返し禁止を潰さない。
+            # 折り返すなら td.label.wrap を使い、切る位置は <br> で決める(意図しない改行は資料の見た目を壊す)
+            if re.search(r'(?<![\w-])(td\.label|th|\.stat \.l|\.g-label|\.sd-step \.t)(?![\w-])', one) and re.search(r'white-space\s*:\s*(normal|pre-wrap|break-spaces)', dec):
+                seen_part_sel.add(one)
+                bad(f"ラベルの折り返し禁止をページCSSで潰している(折り返すなら td.label.wrap を使い、切る位置は<br>で決める): {one[:44]!r}")
+                continue
             if one in _TPL_RULES and _part_class(one) and not embedded_tpl:  # 本体の部品セレクタを別の中身で上書き＝再定義
                 seen_part_sel.add(one)
                 bad("ページ固有CSSで共通部品を再定義している"
@@ -663,7 +747,8 @@ def lint_file(path, allow_emoji):
     if not specimen:
         FIG_PARTS = ('lanes', 'swim', 'pflow', 'funnel', 'tilemap',
                      'stackbar', 'hbar', 'bars', 'chart', 'phases', 'gantt',
-                     'mx2', 'itree', 'cycle', 'wfall', 'dotgrid', 'vchain', 'oppose')  # 2026-09-25 コンサル型の図
+                     'mx2', 'itree', 'cycle', 'wfall', 'dotgrid', 'vchain', 'oppose',  # 2026-09-25 コンサル型の図
+                     'tline', 'range', 'timeline')  # 2026-09-29 報告書の型の図
         # <figure>/</figure> の出現を走査して「いま figure の中か」を状態で持つ（2026-09-14）。
         # 旧実装は直前1200文字をさかのぼっていたため、.tilemap のように長いマークアップの後ろに
         # 置いた .hbar から figure が見えず誤検知していた（SKILL.md が推奨する併置そのものが NG になった）。
@@ -728,6 +813,7 @@ def lint_file(path, allow_emoji):
             if n_std > 1:
                 bad(f"推奨列の面(std)が1行に{n_std}セル(面を着せるのは1列だけ)")
                 break
+    face_rules(s, bad)
     # 見出しの階段は4段固定(原則4): 見出しタグへのinline font-size上書きは階段を崩す
     for m in re.finditer(r'<h([1-4])[^>]*style="[^"]*font-size[^"]*"', s):
         bad(f"h{m.group(1)}にfont-sizeの直書き(見出しの階段は4段固定・CSSに任せる)")
@@ -759,7 +845,7 @@ def lint_file(path, allow_emoji):
     if not specimen and not mockup:
         for m in re.finditer(r'<\w+[^>]*class="[^"]*\b(term|steps|notes|table-wrap|compare|card)\b[^"]*"[^>]*style="[^"]*max-width', s):
             bad(f"部品({m.group(1)})に個別max-width(コンテナ幅いっぱいに使う。例外は.slideの額だけ)")
-    # スライドの表は5行まで(スライド共通規格)
+    # スライドの表は10行まで(スライド共通規格。2026-09-29 読めるデッキの密度に改定)
     for m in re.finditer(r'class="slide[" ]', s):
         seg = s[m.end():m.end() + 12000]
         nxt = seg.find('class="slide')
@@ -769,8 +855,8 @@ def lint_file(path, allow_emoji):
         if t0 >= 0:
             tbl = seg[t0:seg.find('</table>', t0)]
             rows = len(re.findall(r'<tr[^>]*>', tbl)) - (1 if '<thead' in tbl else 0)
-            if rows > 5:
-                bad(f"スライド内の表が{rows}行(5行まで — 超えるなら本文ページへ)")
+            if rows > 10:
+                bad(f"スライド内の表が{rows}行(10行まで — 超えるなら2枚に割る)")
 
     # --- 残骸 ---
     # コメントと <code>/<pre> の中は対象外 — 「原色#F95320は使わない」という説明の引用（guide.htmlの×の例）や、

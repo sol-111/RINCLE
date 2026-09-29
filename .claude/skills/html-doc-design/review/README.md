@@ -5,6 +5,7 @@
 手順:
 1. `shoot.mjs` で全ページを幅1280px・縦1800px刻みのPNGにする（タブ式ページはタブごと）。playwright が入ったフォルダで実行:
    `node shoot.mjs <出力dir> <ページ一覧txt(相対パス1行1件)> <資料フォルダ> [SPAシェルで開くハッシュ]`
+   playwright が無い環境では `python3 shoot_chrome.py <出力dir> <html>...`（ヘッドレスChromeだけで撮る。タブ切替・SPAシェルは撮れない。1ページ全体を1800px刻みにするだけ）
    末尾の index.html 撮影は、その資料フォルダに index.html がある時だけ自動で走る（無ければ飛ばす）。第5引数にハッシュ（例: `stripe-payment-flow`）を渡すと「1ページ開いた状態」も撮る
 2. `prompt.md` の {PROJECT}/{READER}/{DOCS} を案件の値で埋めたものを**案件の資料フォルダに保存**する（スキル側には案件固有の記述を入れない。RINCLE版: `documents/98_presentations/review/PROMPT.md`（結果は同フォルダ `review/<日付>/`））。画像を数十枚ずつのグループに分け、{SHOTS}/{PAGES}/{OUT} を埋めて **general-purpose（fork不可・初見が価値）** のエージェントを並列に走らせる
 3. レポート（Markdown）を統合し、規約化するものは decisions.md に追記する

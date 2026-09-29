@@ -6,7 +6,7 @@
 <title>html-doc-design 使い方ガイド</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="template.css">
 </head>
 <body>
@@ -27,16 +27,17 @@
       <span class="hero-no">GUIDE</span>
     </div>
     <h1>html-doc-design 使い方ガイド</h1>
-    <p class="lead">クライアント向けHTML資料を「誌面エディトリアル様式」で作るClaude Codeスキルの説明書。中身がどうなっているか、どう使うか、社内にどう配るか。</p>
-    <div class="hero-meta">最終更新 2026年9月14日 / このページ自体が本スキルの様式で組まれています</div>
+    <p class="lead">クライアント向けHTML資料を作るClaude Codeスキルの説明書です。主の様式は「読めるデッキ」で、手順書と定型レポートだけ「誌面」で組みます。中身の分担・使い方・社内への配り方をまとめました。</p>
+    <div class="hero-meta">最終更新 2026年9月29日 / このページ自体が本スキルの誌面の様式で組まれています</div>
   </div>
 </div>
 
 <nav class="flow">
   <a href="#s1"><span class="fnum">1</span><span class="ft">そもそもスキルとは</span><span class="fd">ただのファイルの束が動く仕組み</span></a>
-  <a href="#s2"><span class="fnum">2</span><span class="ft">中身のファイルと役割</span><span class="fd">ファイルの分担</span></a>
-  <a href="#s3"><span class="fnum">3</span><span class="ft">使い方</span><span class="fd">頼み方・検査・色替え・更新</span></a>
-  <a href="#s4"><span class="fnum">4</span><span class="ft">社内展開</span><span class="fd">チームへの配り方</span></a>
+  <a href="#s5"><span class="fnum">2</span><span class="ft">考え方</span><span class="fd">様式の使い分けと選び方</span></a>
+  <a href="#s2"><span class="fnum">3</span><span class="ft">中身のファイルと役割</span><span class="fd">ファイルの分担</span></a>
+  <a href="#s3"><span class="fnum">4</span><span class="ft">使い方</span><span class="fd">頼み方・検査・色替え・更新</span></a>
+  <a href="#s4"><span class="fnum">5</span><span class="ft">社内展開</span><span class="fd">チームへの配り方</span></a>
 </nav>
 
 <div class="container">
@@ -59,33 +60,61 @@
     <div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>確実に発動させたい時:</strong> チャットで <code>/html-doc-design</code> と打ってから頼む。</span></div>
   </div>
 
-  <div class="section" id="s2">
+  <div class="section" id="s5">
     <div class="section-header">
       <div class="section-num">02</div>
+      <div class="sh-body"><h2>考え方</h2><div class="sh-sub">器は資料の種類で決め、部品は伝えたいことの形で選ぶ</div></div>
+    </div>
+    <p style="font-size: 15px;"><strong>コンサルの成果物の型で、1枚ごとに主張が完結する資料を組みます。部品は「伝えたいことの形」で1つに絞って選びます。</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>様式</th><th>位置づけ</th><th>使う資料</th></tr></thead>
+        <tbody>
+          <tr><td class="label">読めるデッキ</td><td><span class="badge brand">既定</span></td><td>提案・報告・分析・比較検討・方針・見積。事前に送って読んでもらい、打合せでも映す資料</td></tr>
+          <tr><td class="label">誌面</td><td><span class="badge plain">付録</span></td><td>手順書・定型の月次レポート・用語集・APIリファレンス。上から順に読む資料</td></tr>
+          <tr><td class="label">画面UI</td><td><span class="badge plain">付録</span></td><td>資料の中でアプリの画面を再現するときだけ</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ol class="steps" style="margin-top: 18px;">
+      <li><strong>器を決める</strong>：上の表で様式を選ぶ。迷ったら読めるデッキ</li>
+      <li><strong>伝えたいことの形で章を引く</strong>：gallery.html は 文法・器・答え・数字・比べる・流れと時間・論理・補足と根拠 の順に並んでいる</li>
+      <li><strong>章の中で1つに絞る</strong>：似た部品が2つ残ったら SKILL.md の選択表で決める。同じ部品がデッキにも誌面にも置ける</li>
+    </ol>
+    <ul class="notes">
+      <li>部品の多くは、経産省の委託調査報告書29本（BCG・NRI・みずほR&amp;T・トーマツ・デロイト・ADLほか）から取り込んだ型です。特定の会社に寄らず、1枚で答え・根拠・前提に当たれるか、誤読しないか、作り手が再現できるかで選んでいます（経緯は decisions.md）。</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">03</div>
       <div class="sh-body"><h2>中身のファイルと役割</h2><div class="sh-sub">何を守るか・どう見えるか・どう書くか</div></div>
     </div>
     <div class="codeblock"><pre>~/.claude/skills/html-doc-design/
-├── SKILL.md       <span class="cm"># ルールブック（原則12箇条+ページ構造+スライド規格）</span>
+├── SKILL.md       <span class="cm"># ルールブック（様式の使い分け+原則+読めるデッキ+部品の地図+誌面のページ構造）</span>
 ├── decisions.md   <span class="cm"># 規約を決めた経緯・教訓（普段は読まない。変えたくなった時に）</span>
-├── template.css   <span class="cm"># 核部品のCSS（コピーして使う。色の差し替えは:rootだけ）</span>
-├── parts.css      <span class="cm"># 拡張部品42種のCSS（ボタン・モーダル・かんばん等。必要な時だけ）</span>
-├── snippets.html  <span class="cm"># 各部品のHTML雛形集（コピーして使う）</span>
-├── gallery.html   <span class="cm"># 全部品の見本（見た目の正本。ブラウザで開いて確認）</span>
+├── template.css   <span class="cm"># 核部品のCSS（コピーして使う。色はアイビスに固定）</span>
+├── parts.css      <span class="cm"># 画面UIの部品のCSS（ボタン・モーダル・かんばん等。画面を再現する時だけ）</span>
+├── snippets.html  <span class="cm"># 各部品のHTML雛形集（gallery.html と同じ章の順・コピーして使う）</span>
+├── gallery.html   <span class="cm"># 資料部品の見本（見た目の正本。8つの章＋付録A 誌面）</span>
+├── gallery-ui.html <span class="cm"># 画面UIの部品の見本</span>
+├── deck.html      <span class="cm"># 読めるデッキの器（一覧表示が既定・Pキーで送り・PDF化）</span>
 ├── shell.html     <span class="cm"># 複数ページをまとめるSPAシェルの雛形（サイドバー+iframe）</span>
-├── lint.py        <span class="cm"># 規約の検査プログラム（書いたら必ずかける。使い方は「3. 使い方」）</span>
+├── lint.py        <span class="cm"># 規約の検査プログラム（書いたら必ずかける。使い方は「4 使い方」）</span>
 ├── guide.html     <span class="cm"># このページ（人間用の説明書）</span>
 ├── README.md      <span class="cm"># 人間用の説明書（テキスト版）</span>
-├── review/        <span class="cm"># 初見デザインレビューの道具（撮影 shoot.mjs・依頼文 prompt.md・手順 README.md）</span>
-└── _source/       <span class="cm"># 旧キャンバスの元データ（2026-08-21断面・以後更新されない参考資料）</span></pre></div>
+└── review/        <span class="cm"># レビューの道具（内容レビュー content-prompt.md・初見レビューの shoot.mjs / prompt.md / README.md）</span></pre></div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>ファイル</th><th>役割</th><th>ひとこと</th></tr></thead>
         <tbody>
-          <tr><td class="label">SKILL.md</td><td>何を守るか</td><td>明朝見出し・罫線と余白・数字には出典 などのルール</td></tr>
-          <tr><td class="label">template.css / parts.css</td><td>どう見えるか</td><td>色を差し替えるのは先頭の<code>:root</code>トークンだけ</td></tr>
+          <tr><td class="label">SKILL.md</td><td>何を守るか</td><td>BCGの作法（ゴシック・緑の見出し・黒を使わない）・数字には出典・部品の優先度 などのルール</td></tr>
+          <tr><td class="label">template.css / parts.css</td><td>どう見えるか</td><td>色の変数（トークン）は先頭の<code>:root</code>に集約。色はアイビスに固定</td></tr>
           <tr><td class="label">snippets.html</td><td>どう書くか</td><td>部品ごとのコピペ用HTML+演出スクリプト</td></tr>
-          <tr><td class="label">gallery.html</td><td>どう見えるはずか</td><td><strong>見た目の正本</strong>。部品を追加したらここにも見本を足す（5点セット更新の掟）</td></tr>
-          <tr><td class="label">lint.py</td><td>守れているか</td><td>規約の検査プログラム。書いたら必ずかける（詳しくは「3. 使い方」）</td></tr>
+          <tr><td class="label">gallery.html</td><td>どう見えるはずか</td><td><strong>見た目の正本</strong>。部品を追加したらここにも見本を足す（5点セット更新の掟）。画面UIは gallery-ui.html</td></tr>
+          <tr><td class="label">deck.html</td><td>どう組むか</td><td>読めるデッキの器。コピーして1枚ずつ足す</td></tr>
+          <tr><td class="label">lint.py</td><td>守れているか</td><td>規約の検査プログラム。書いたら必ずかける（詳しくは「4 使い方」）</td></tr>
           <tr><td class="label">shell.html</td><td>どうまとめるか</td><td>資料が複数ある案件の入口ページの雛形</td></tr>
           <tr><td class="label">decisions.md</td><td>なぜそうなったか</td><td>規約の経緯と教訓。ルールを変えたくなった時に読む</td></tr>
         </tbody>
@@ -96,12 +125,12 @@
 
   <div class="section" id="s3">
     <div class="section-header">
-      <div class="section-num">03</div>
-      <div class="sh-body"><h2>使い方</h2><div class="sh-sub">頼み方・検査・ブランド色の差し替え・更新の流れ</div></div>
+      <div class="section-num">04</div>
+      <div class="sh-body"><h2>使い方</h2><div class="sh-sub">頼み方・検査・色・更新の流れ</div></div>
     </div>
     <h3>ふだんの頼み方</h3>
     <ul class="notes">
-      <li>「この調査結果を、いつものデザインでHTML資料にして」</li>
+      <li>「この調査結果を、いつものデザインでHTML資料にして」（提案・報告は読めるデッキ、手順書・定型レポートは誌面で組まれる）</li>
       <li>「このページをデザインシステムに合わせて刷新して」</li>
     </ul>
     <h3>書いたら必ず検査 — lint.py</h3>
@@ -123,7 +152,7 @@ NG   proposal.html
         <tbody>
           <tr><td class="label">構造</td><td>タグの開閉・タブとパネルの対応が取れているか</td></tr>
           <tr><td class="label">統一性</td><td>ヒーローの部品・キッカー文言・ロゴの有無が全ページで同じか</td></tr>
-          <tr><td class="label">部品の組み方</td><td>結論は01章に置く・図は主張を書いた<code>figure</code>で包む・章番号は01始まり・h2は1行・小見出しの番号はハイフン式・statは「ラベルが上」・アラートは緑/藍/紅の3色・色ベタの行ハイライトを作らない・ページ固有CSSで共通部品を作り直さない など</td></tr>
+          <tr><td class="label">部品の組み方</td><td>デッキは1枚1メッセージ・表10行まで・本文14px相当以上・付録は40枚に数えない・誌面は結論を01章に置く・答えの行と推奨列の面を同じ表に置かない・図は主張を書いた<code>figure</code>で包む・章番号は01始まり・h2は1行・小見出しの番号はハイフン式・statは「ラベルが上」・アラートは緑/藍/紅の3色・色ベタの行ハイライトを作らない・ページ固有CSSで共通部品を作り直さない など</td></tr>
           <tr><td class="label">文章・敬語</td><td>半角括弧・全角スラッシュ・<code>「〜し、」</code>等の文つなぎ・二重敬語「ご〜される」</td></tr>
           <tr><td class="label">残骸</td><td>旧様式の色の直書き・絵文字（アイコンはSVGを使う決まり）</td></tr>
           <tr><td class="label">一覧の正本</td><td>検査項目の全一覧は <code>lint.py</code> 冒頭の説明文が正です（ここは要約）</td></tr>
@@ -131,38 +160,34 @@ NG   proposal.html
       </table>
     </div>
     <ul class="notes">
-      <li>部品カタログ（gallery.html のような見本集）は、冒頭に <code>&lt;!-- lint-mode: specimen --&gt;</code> と書くと文脈依存の検査（章ナビ・まとめ帯の位置）だけ免除されます。</li>
+      <li>部品カタログ（gallery.html のような見本集）は、冒頭に <code>&lt;!-- lint-mode: specimen --&gt;</code> と書くと文脈依存の検査（章ナビの位置）だけ免除されます。</li>
       <li>固有名詞の絵文字は <code>--allow-emoji "固有名詞の絵文字"</code> で許可できます。資料集でページごとにキッカーが異なる構成は <code>--multi-doc</code>。</li>
-      <li>検査で拾えないもの — 章の背景の交互・図解の役割色と凡例・リンク先の実在 — は目視で確認します。</li>
+      <li>検査で拾えないもの — 図解の役割色と凡例・緑の重ねすぎ・リンク先の実在 — は目視で確認します。</li>
     </ul>
 
-    <h3>新しい案件で使う時 — ブランド色の差し替え</h3>
-    <p style="font-size: 14px;">その案件のロゴかファビコンをClaudeに渡して「このロゴの色でこの様式を使って」と言うだけ。鍵は<strong>原色をそのまま使わないこと</strong>。</p>
-    <div class="compare">
-      <div class="compare-box bad"><div class="cb-head"><span class="cb-mark">×</span>原色をそのまま差し色に</div><p>ロゴの原色（例: <code>#F95320</code>）は画面で強すぎて誌面の静けさが壊れる。</p></div>
-      <div class="compare-box good"><div class="cb-head"><span class="cb-mark">○</span>焦がしトーンに落とす</div><p>彩度を落とし暗めに寄せた色（例: <code>#B8532F</code>）を<code>--accent</code>に。役割色も同じく低彩度で揃える。</p></div>
-    </div>
+    <h3>色について — アイビスの緑に固定</h3>
+    <p style="font-size: 14px;">2026年9月29日から色はアイビスに固定しました。主色はロゴの葉の <code>#72B000</code>（面・印・棒）、見出しと強調の文字は <code>#4E8A00</code>、当社の独自提案だけオレンジ <code>#F87830</code>。案件ごとのブランド色への差し替えはしません。</p>
     <h3>デザインを変えたくなった時 — 更新の流れ</h3>
     <figure class="fig" aria-label="デザインの変更は、検討・スキルへの反映・既存ページへの移植の3段階で進む。スキルを直してから資料に移すので、様式が割れない">
-      <div class="phases">
-        <div class="phase done"><span class="pn">1</span><span class="pt">キャンバスで検討</span><span class="ps">「デザインキャンバスで見たい」と頼む</span></div>
-        <div class="phase now"><span class="pn">2</span><span class="pt">スキルに反映</span><span class="ps">「スキルに反映して」で5点セット更新</span></div>
-        <div class="phase"><span class="pn">3</span><span class="pt">ページに移植</span><span class="ps">「全ページに反映して」で既存資料へ</span></div>
+      <div class="sd-steps" style="font-size:15px">
+        <div class="sd-step"><span class="k">gallery.html を指差して相談する。大きな変更は新旧対照のHTMLで見比べる</span><span class="n">1</span><span class="t">見本で検討</span></div>
+        <div class="sd-step hot"><span class="k">「スキルに反映して」で5点セット更新</span><span class="n">2</span><span class="t">スキルに反映</span></div>
+        <div class="sd-step"><span class="k">「全ページに反映して」で既存資料へ</span><span class="n">3</span><span class="t">ページに移植</span></div>
       </div>
     </figure>
     <ul class="notes">
-      <li>更新は template.css（実体）→ snippets.html（雛形）→ gallery.html（見本）→ SKILL.md（ルール）→ lint.py（機械チェックできる規約のみ）の5点セット。リポジトリに同梱している案件では、更新後にリポジトリ側へコピーする</li>
+      <li>更新は template.css（実体）→ snippets.html（雛形）→ gallery.html（見本）→ SKILL.md（ルール）→ lint.py（機械チェックできる規約のみ）の5点セット。リポジトリ（gitで共有するプロジェクトのフォルダ）に同梱している案件では、更新後にリポジトリ側へコピーする</li>
     </ul>
   </div>
 
   <div class="section" id="s4">
     <div class="section-header">
-      <div class="section-num">04</div>
+      <div class="section-num">05</div>
       <div class="sh-body"><h2>社内展開</h2><div class="sh-sub">配る=フォルダをコピーする</div></div>
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>置き場所</th><th>効く範囲</th><th>向いている使い方</th></tr></thead>
+        <thead><tr><th>置き場所</th><th>使える範囲</th><th>向いている使い方</th></tr></thead>
         <tbody>
           <tr><td class="label" style="font-size: 14px; font-family: 'SFMono-Regular',Menlo,monospace;">~/.claude/skills/</td><td>その人の全案件</td><td>個人の標準装備にする</td></tr>
           <tr><td class="label" style="font-size: 14px; font-family: 'SFMono-Regular',Menlo,monospace;">リポジトリ/.claude/skills/</td><td>そのリポジトリを開いた人全員</td><td><strong>チーム展開はこちら。</strong>gitで共有され、pullした人に自動で配られる</td></tr>

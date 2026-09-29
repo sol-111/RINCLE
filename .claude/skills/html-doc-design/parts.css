@@ -55,7 +55,7 @@
 .btn-cta{background:var(--accent);border-color:var(--accent);color:var(--paper)}
 .btn-next{border-color:var(--ink);color:var(--ink)}
 .btn-link{padding:0 14px;border:none;color:var(--accent);text-decoration:underline;text-underline-offset:4px}
-.btn-off{background:#EFEAE3;border-color:var(--line-soft);color:#A9A199;cursor:default}
+.btn-off{background:#EFEAE3;border-color:var(--line-soft);color:#7F7F7F;cursor:default}
 .btn-danger{background:var(--danger);border-color:var(--danger);color:var(--paper)}
 .btn-quiet{border-color:var(--line);color:var(--text)}
 .btn-sm{height:40px;padding:0 20px;font-size:13px}
@@ -71,11 +71,11 @@
 .field-label{font-size:11px;letter-spacing:.14em;font-weight:700;color:var(--text)}
 .field-label.is-bad{color:var(--danger)}
 .input{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:14px;color:var(--ink)}
-.input.is-ph{color:#A9A199}
+.input.is-ph{color:#7F7F7F}
 .input.is-focus{border-color:var(--ink)}
 .input.is-bad{border-color:var(--danger)}
 .field-err{font-size:11px;color:var(--danger)}
-.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:11px 18px;font-size:14px;color:#A9A199}
+.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:11px 18px;font-size:14px;color:#7F7F7F}
 .search-icon{width:17px;height:17px;stroke:var(--sub);fill:none;stroke-width:1.5;stroke-linecap:round;flex-shrink:0}
 
 /* ---------- チェックボックス（四角・墨塗りに白チェック・中間は横棒） ---------- */
@@ -88,7 +88,7 @@
 /* ---------- ラジオボタン（丸・選択はブランド色の点） ---------- */
 .radio{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:var(--ink)}
 .radio.is-on{font-weight:700}
-.radio.is-off{color:#A9A199}
+.radio.is-off{color:#7F7F7F}
 .radio-box{width:20px;height:20px;flex-shrink:0;border:1.5px solid var(--text);border-radius:50%;background:var(--surface);display:inline-flex;align-items:center;justify-content:center}
 .radio-box.is-on{border-color:var(--accent)}
 .radio.is-off .radio-box{border-color:var(--line-soft);background:#F3EFE9}
@@ -99,7 +99,7 @@
 .switch.is-on{font-weight:700}
 .switch-track{width:44px;height:24px;flex-shrink:0;border-radius:999px;background:#D9D1C7;display:inline-flex;align-items:center;padding:0 3px}
 .switch-track.is-on{background:var(--accent);justify-content:flex-end}
-.switch-knob{width:18px;height:18px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(38,34,30,.3);display:inline-block}
+.switch-knob{width:18px;height:18px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(87,87,87,.3);display:inline-block}
 
 /* ---------- スライダー（値は明朝で添える） ---------- */
 .slider{display:flex;align-items:center;gap:20px}
@@ -116,7 +116,7 @@
 .spin-val{padding:11px 20px;font-family:var(--serif);font-size:17px;min-width:56px;text-align:center;color:var(--ink)}
 
 /* ---------- 右クリックメニュー（浮遊部品なので影あり） ---------- */
-.menu{background:var(--surface);border:1px solid var(--line);border-radius:4px;box-shadow:0 8px 24px -10px rgba(38,34,30,.25);min-width:240px;padding:6px 0}
+.menu{background:var(--surface);border:1px solid var(--line);border-radius:4px;box-shadow:0 8px 24px -10px rgba(87,87,87,.25);min-width:240px;padding:6px 0}
 .menu-item{display:flex;justify-content:space-between;gap:24px;padding:10px 18px;font-size:13.5px;color:var(--ink)}
 .menu-item.is-on{background:var(--accent-soft)}
 .menu-item.is-danger{color:var(--danger)}
@@ -134,13 +134,13 @@
 .dd-head.is-open{border-color:var(--ink);border-radius:3px 3px 0 0}
 .dd-caret{width:14px;height:14px;stroke:var(--text);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 .dd-head.is-open .dd-caret{stroke:var(--ink)}
-.dd-list{background:var(--surface);border:1px solid var(--line);border-top:none;border-radius:0 0 4px 4px;box-shadow:0 10px 26px -12px rgba(38,34,30,.3);padding:6px 0}
+.dd-list{background:var(--surface);border:1px solid var(--line);border-top:none;border-radius:0 0 4px 4px;box-shadow:0 10px 26px -12px rgba(87,87,87,.3);padding:6px 0}
 .dd-item{padding:9px 16px;font-size:13.5px;color:var(--ink)}
 .dd-item.is-on{background:var(--accent-soft);font-weight:700}
 
 /* ---------- パンくず（現在地だけ墨の太字） ---------- */
 .crumbs{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13.5px}
-.crumbs-sep{color:#C9BFB4}
+.crumbs-sep{color:#C8C8C8}
 .crumbs-cur{font-weight:700;color:var(--ink)}
 
 /* ---------- 段階ナビ（ウィザード。章ナビの親） ---------- */
@@ -157,7 +157,7 @@
 
 /* ---------- ドロワー（画面の端から引き出す目次） ---------- */
 .drawer-demo{width:420px;height:200px;border:1px solid var(--line);border-radius:4px;background:#F3EFE9;position:relative;overflow:hidden}
-.drawer-veil{position:absolute;inset:0;background:rgba(38,34,30,.28)}
+.drawer-veil{position:absolute;inset:0;background:rgba(87,87,87,.28)}
 .drawer{position:absolute;top:0;left:0;bottom:0;width:180px;background:var(--paper);border-right:1px solid var(--line);padding:16px 14px;display:flex;flex-direction:column;gap:10px}
 .drawer-kicker{font-size:10px;letter-spacing:.18em;color:var(--accent);font-weight:700}
 .drawer-item{font-size:12px;color:var(--text);padding-left:10px}
@@ -176,24 +176,24 @@
 
 /* ---------- スクロールバー（細く・薄く・読む邪魔をしない） ---------- */
 .scrollbox{width:320px;height:120px;border:1px solid var(--line);border-radius:3px;background:var(--surface);position:relative;padding:14px 24px 14px 16px;font-size:12px;line-height:1.9;color:var(--sub)}
-.scrollbox-thumb{position:absolute;top:10px;right:5px;width:5px;height:46px;border-radius:99px;background:#C9BFB4}
+.scrollbox-thumb{position:absolute;top:10px;right:5px;width:5px;height:46px;border-radius:99px;background:#C8C8C8}
 /* 実際にスクロールする箱に付ける版（幅5px・つまみは罫線色、ホバーで弱い文字色） */
-.thin-scroll{scrollbar-width:thin;scrollbar-color:#C9BFB4 transparent}
+.thin-scroll{scrollbar-width:thin;scrollbar-color:#C8C8C8 transparent}
 .thin-scroll::-webkit-scrollbar{width:5px;height:5px}
 .thin-scroll::-webkit-scrollbar-track{background:transparent}
-.thin-scroll::-webkit-scrollbar-thumb{background:#C9BFB4;border-radius:99px}
+.thin-scroll::-webkit-scrollbar-thumb{background:#C8C8C8;border-radius:99px}
 .thin-scroll::-webkit-scrollbar-thumb:hover{background:var(--sub)}
 
 /* ---------- ウィンドウ（資料内でアプリ画面を見せる額縁） ---------- */
 .win{width:480px;border:1px solid var(--line);border-radius:6px;background:var(--surface);overflow:hidden}
-.win-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line-soft);background:#F7F3EC}
-.win-dot{width:10px;height:10px;border-radius:50%;background:#C9BFB4;display:inline-block}
+.win-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line-soft);background:#F2F2F2}
+.win-dot{width:10px;height:10px;border-radius:50%;background:#C8C8C8;display:inline-block}
 .win-title{margin-left:8px;font-size:12px;color:var(--text)}
 .win-body{padding:20px;font-size:12.5px;color:var(--sub)}
 
 /* ---------- 確認ダイアログ（浮遊部品。破壊ボタンは紅） ---------- */
-.veil{background:rgba(38,34,30,.32);border-radius:6px;padding:40px;display:flex;justify-content:center}
-.dialog{background:var(--paper);border-radius:5px;padding:28px 30px;width:380px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 60px -20px rgba(38,34,30,.5)}
+.veil{background:rgba(87,87,87,.32);border-radius:6px;padding:40px;display:flex;justify-content:center}
+.dialog{background:var(--paper);border-radius:5px;padding:28px 30px;width:380px;display:flex;flex-direction:column;gap:14px;box-shadow:0 24px 60px -20px rgba(87,87,87,.5)}
 .dialog-title{font-family:var(--serif);font-size:18px;color:var(--ink)}
 .dialog-body{font-size:13px;line-height:1.9;color:var(--text)}
 .dialog-acts{display:flex;justify-content:flex-end;gap:12px;padding-top:6px}
@@ -213,7 +213,7 @@
 .carousel-stage{flex:1;height:150px;border:1px solid var(--line);border-radius:4px;background:repeating-linear-gradient(45deg,#F3EFE9 0 10px,#EDE7DE 10px 20px);display:flex;align-items:center;justify-content:center}
 .carousel-tag{font-size:11px;letter-spacing:.14em;color:var(--sub);background:var(--paper);padding:4px 12px;border:1px solid var(--line);border-radius:999px}
 .carousel-dots{display:flex;justify-content:center;gap:8px}
-.carousel-dot{width:6px;height:6px;border-radius:50%;background:#C9BFB4;display:inline-block}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:#C8C8C8;display:inline-block}
 .carousel-dot.is-on{width:20px;border-radius:99px;background:var(--accent)}
 
 /* ---------- 机まわり（フォルダの行+行アクション） ---------- */
@@ -250,7 +250,7 @@
 .wire-label{font-size:10.5px;color:var(--sub);text-align:center}
 
 /* ---------- トースト（隅にぽんと出て消える通知。成功は墨・失敗は紅） ---------- */
-.toast{display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:4px;padding:14px 18px;box-shadow:0 14px 34px -14px rgba(38,34,30,.5);font-size:13.5px}
+.toast{display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--paper);border-radius:4px;padding:14px 18px;box-shadow:0 14px 34px -14px rgba(87,87,87,.5);font-size:13.5px}
 .toast-bad{background:var(--danger)}
 .toast-icon{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
@@ -278,8 +278,8 @@
 @media (prefers-reduced-motion:reduce){.spinner{animation:none}}
 
 /* ---------- 空の状態（理由と次の一歩を添える） ---------- */
-.empty-state{border:1px dashed #C9BFB4;border-radius:4px;background:var(--surface);padding:40px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
-.empty-state-icon{width:30px;height:30px;stroke:#C9BFB4;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.empty-state{border:1px dashed #C8C8C8;border-radius:4px;background:var(--surface);padding:40px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.empty-state-icon{width:30px;height:30px;stroke:#C8C8C8;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .empty-state-title{font-family:var(--serif);font-size:16px;color:var(--ink)}
 .empty-state-note{font-size:12.5px;line-height:1.9;color:var(--sub)}
 
@@ -302,7 +302,7 @@
 .kanban-head.is-now .kanban-name,.kanban-head.is-now .kanban-count{color:var(--accent)}
 .kanban-card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px 16px;font-size:12.5px;line-height:1.7;color:var(--ink)}
 .kanban-card.is-now{border-color:var(--accent)}
-.kanban-card.is-done{background:#F7F3EC;border-color:var(--line-soft);color:var(--sub);text-decoration:line-through}
+.kanban-card.is-done{background:#F2F2F2;border-color:var(--line-soft);color:var(--sub);text-decoration:line-through}
 .kanban-tag{font-size:10.5px;font-weight:700;color:var(--accent);margin-top:6px}
 .kanban-meta{font-size:10.5px;color:var(--sub);margin-top:6px}
 
@@ -334,11 +334,11 @@
 
 /* ---------- チャートの補助色（変数に無い下地色をクラス化） ---------- */
 .ct-ring{fill:none;stroke-width:2.4}
-.ct-rest-line{stroke:#EAE2D6}
+.ct-rest-line{stroke:#F2F2F2}
 .ct-a{stroke:var(--accent)}
 .ct-b{stroke:var(--ink)}
-.ct-rest{background:#EAE2D6}
-.ct-lose{background:#C9BFB4}
+.ct-rest{background:#F2F2F2}
+.ct-lose{background:#C8C8C8}
 
 /* ---------- 番号つきの約束事リスト（明朝の番号+一文） ---------- */
 .numnote{display:flex;flex-direction:column;gap:10px;font-size:13.5px;line-height:1.9;color:var(--text)}
@@ -350,4 +350,4 @@
 .urlmap-line{white-space:nowrap}
 .u-dim{color:#A89A8E}
 .u-path{color:#9FC5EA;border-bottom:1.5px solid #9FC5EA}
-.u-id{color:#F0B08E;border-bottom:1.5px solid var(--accent)}
+.u-id{color:#C2E77A;border-bottom:1.5px solid var(--accent)}

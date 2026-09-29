@@ -3,79 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>デッキ雛形 — 誌面エディトリアル</title>
+<title>読めるデッキ雛形</title>
 <!-- lint-mode: deck -->
-<!-- デッキ（投影用スライド）の器。1 section.slide = 1枚。矢印キー/スペース/クリックで送り、#3 のようなハッシュで直リンク。
+<!-- 読めるデッキの器（主の様式・2026-09-29）。1 section.slide = 1枚。既定は全ページを縦に並べて読み、P で送り（矢印・スペース・クリック）・Esc で一覧。#3 のようなハッシュで直リンク。
      印刷（Chrome → PDF）では1枚1ページになる。CSSは納品時に template.css を <style> にインライン（トークンだけ案件に差し替え）。
      正本の規約は SKILL.md「デッキ」節。 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="template.css">
 </head>
 <body class="deck">
 
-<!-- 表紙（下枠は日付） -->
+<!-- 表紙（焦がしの全面塗り・白い大題。左上=宛先・右上=資料番号・下枠は左=日付 / 右=会社名。2026-09-29） -->
 <section class="slide" data-title="表紙">
   <div class="sd-cover">
     <div class="sd-cover-top">
-      <span class="hero-kicker">BRAND — カテゴリ</span>
+      <span class="hero-kicker">〇〇株式会社 御中</span>
       <span class="hero-no">資料 07</span>
     </div>
     <div class="sd-cover-body">
-      <div class="sd-title">デッキの題</div>
+      <div class="sd-title">デッキの題は、答えを<br>1文で言い切る</div>
       <div class="sd-rule"></div>
       <div class="sd-lead">1〜2文のリード。誰向けに何を決めるための資料か。</div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span>2026-09-25</span></div>
-</section>
-
-<!-- 全体マップ（10枚超のデッキの2枚目。各行に→P.n） -->
-<section class="slide" data-title="全体マップ（10枚超のデッキの2枚目。各行に→P.n）">
-  <div class="sd-head">
-    <div class="sd-kicker">全体像</div>
-    <h1 class="sd-h">3つの論点を順に確認して最後に1つ決める</h1>
-  </div>
-  <div class="sd-body">
-    <div class="omap">
-      <div class="omap-row"><span class="l">論点1 要件</span><span>補助金の要件と11月末までに終える条件</span><span class="p">P.5</span></div>
-      <div class="omap-row"><span class="l">論点2 進め方</span><span>設計→実装→納品の段取りと判断日</span><span class="p">P.9</span></div>
-      <div class="omap-row"><span class="l">論点3 移行</span><span>旧システムから引き継ぐデータの範囲</span><span class="p">P.14</span></div>
-      <div class="omap-row"><span class="l">決めること</span><span>契約形態と着手日</span><span class="p">P.18</span></div>
-    </div>
-  </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
-</section>
-
-<!-- 目次（1列。章扉で現在章を .cur に） -->
-<section class="slide" data-title="目次（1列。章扉で現在章を .cur に）">
-  <div class="sd-head">
-    <div class="sd-kicker">目次</div>
-    <h1 class="sd-h">目次</h1>
-  </div>
-  <div class="sd-body">
-    <div class="toc">
-      <div class="toc-row cur"><span class="n">01</span><span>補助金の要件</span><span class="p">P.5</span></div>
-      <div class="toc-row"><span class="n">02</span><span>進め方</span><span class="p">P.9</span></div>
-      <div class="toc-row"><span class="n">03</span><span>データ移行</span><span class="p">P.14</span></div>
-      <div class="toc-row"><span class="n">04</span><span>決めること</span><span class="p">P.18</span></div>
-    </div>
-  </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
-</section>
-
-<!-- 章とびら -->
-<section class="slide" data-title="章とびら">
-  <div class="sd-chapter">
-    <div class="ghost">01</div>
-    <div style="display:flex;flex-direction:column;gap:.4em">
-      <div class="sd-eyebrow">CHAPTER</div>
-      <div class="sd-ch-name">章の名前</div>
-      <div class="sd-ch-sub">この章で決めること</div>
-    </div>
-  </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span>2026年9月29日</span><span>株式会社アイビス</span></div>
 </section>
 
 <!-- エグゼクティブサマリー（3カラム） -->
@@ -92,25 +45,39 @@
       <div><h3>依頼</h3><p class="col-lead">契約形態と着手日を今週中に決めていただく。</p><p>デザインの初稿は10月9日までに受け取る。</p></div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
-<!-- 本文の基本形（見出し帯=キッカー+主張のh1・本文=箇条書き5本まで） -->
-<section class="slide" data-title="本文の基本形（見出し帯=キッカー+主張のh1・本文=箇条書き5本まで）">
+
+
+
+<!-- 本文の基本形（見出し帯=キッカー+主張のh1・本文=箇条書き7本まで） -->
+<section class="slide" data-title="本文の基本形（見出し帯=キッカー+主張のh1・本文=箇条書き7本まで）">
   <div class="sd-head">
     <div class="sd-kicker">現状</div>
     <h1 class="sd-h">主張を1文・常体で書く（2行まで）</h1>
   </div>
   <div class="sd-body">
     <ul>
-      <li>箇条書きは5本まで。1本1文</li>
+      <li>箇条書きは7本まで。1本1文</li>
       <li>語尾を揃える（体言止めなら全部体言止め）</li>
-      <li>本文の文字は18px相当を下回らない</li>
+      <li>本文の文字は14px相当を下回らない</li>
     </ul>
   </div>
     <div class="sd-source">出典: 2026-06-11 本番DB実測</div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
+
+<!-- 本資料の構成（2026-09-29 目次・章とびら・全体マップを統合。10枚超のデッキは2〜3枚目に置き、章の頭でも出し直す。いまの章=.cur・済んだ章=.done） -->
+<section class="slide" data-title="本資料の構成"><div class="sd-toc"><div class="lp"><b>本資料の構成</b></div><ol>
+<li class="done"><span class="n">1.</span>補助金の要件<span class="d"></span><span class="p">3</span></li>
+<li class="cur"><span class="n">2.</span>進め方と判断日<span class="d"></span><span class="p">8</span></li>
+<li><span class="n">3.</span>データ移行<span class="d"></span><span class="p">15</span></li>
+<li><span class="n">4.</span>決めていただくこと<span class="d"></span><span class="p">20</span></li>
+<li><span class="n"></span>付録<span class="d"></span><span class="p">別添-1</span></li></ol></div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
 
 <!-- 2カラム -->
 <section class="slide" data-title="2カラム">
@@ -124,7 +91,7 @@
       <div><h3>右の見出し</h3><ul><li>要点1</li><li>要点2</li></ul></div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 前提→帰結 -->
@@ -140,7 +107,7 @@
       <div class="sd-pc-col"><h3>帰結</h3><p>前提から導かれる結論を1文で。</p></div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- SCR（状況・難所・解決の3段） -->
@@ -156,7 +123,7 @@
       <div><div class="col-k">解決</div><p class="col-lead">補助金で構築費の3分の2を賄い、11月中に切り替える。</p><p>保守は別契約で月額固定にする。</p><div class="col-note">注: 保守料は補助対象外</div></div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 課題→原因→解決（3カラム矢印） -->
@@ -172,7 +139,7 @@
       <div><h3>解決</h3><p class="col-lead">予約と会員は引き継がず、再登録を案内する。</p><p>店舗・自転車・在庫だけを移す。</p></div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 課題→打ち手の対応（左右の行を対応付け） -->
@@ -190,7 +157,7 @@
       <div class="l">保守料は補助対象外</div><div class="r"><strong>保守は別契約にする</strong><span>月額固定・12月開始</span></div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 提言の柱（番号つき打ち手）+ 共通条件 -->
@@ -208,7 +175,7 @@
     <div class="pillar-base"><span class="k">共通条件1</span><span>11月30日までに納品と支払を終える</span></div>
     <div class="pillar-base"><span class="k">共通条件2</span><span>設計書と操作マニュアルを納品物に含める</span></div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 主張パネル+図（左1/4=番号・区分・主張、右=図表） -->
@@ -231,7 +198,7 @@
       </table></div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 矢羽 -->
@@ -242,32 +209,15 @@
   </div>
   <div class="sd-body">
     <div class="sd-steps">
-      <div class="sd-step"><span class="n">1</span><span class="t">要件</span><span class="d">9月</span></div>
-      <div class="sd-step hot"><span class="n">2</span><span class="t">設計</span><span class="d">10月前半</span></div>
-      <div class="sd-step"><span class="n">3</span><span class="t">実装</span><span class="d">10〜11月</span></div>
-      <div class="sd-step"><span class="n">4</span><span class="t">納品</span><span class="d">11月末</span></div>
+      <div class="sd-step"><span class="n">1</span><span class="k">9月</span><span class="t">要件</span></div>
+      <div class="sd-step hot"><span class="n">2</span><span class="k">10月前半</span><span class="t">設計</span></div>
+      <div class="sd-step"><span class="n">3</span><span class="k">10〜11月</span><span class="t">実装</span></div>
+      <div class="sd-step"><span class="n">4</span><span class="k">11月末</span><span class="t">納品</span></div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
-<!-- 矢羽レール（薄い帯+番号丸。全体像の見出し） -->
-<section class="slide" data-title="矢羽レール（薄い帯+番号丸。全体像の見出し）">
-  <div class="sd-head">
-    <div class="sd-kicker">全体像</div>
-    <h1 class="sd-h">5つの段階を通して11月末に切り替える</h1>
-  </div>
-  <div class="sd-body">
-    <div class="sd-steps rail">
-      <div class="sd-step"><span class="num-chip sm">1</span><span><span class="t">要件</span><span class="d">9月</span></span></div>
-      <div class="sd-step hot"><span class="num-chip sm brand">2</span><span><span class="t">設計</span><span class="d">10月前半</span></span></div>
-      <div class="sd-step"><span class="num-chip sm">3</span><span><span class="t">実装</span><span class="d">10〜11月</span></span></div>
-      <div class="sd-step"><span class="num-chip sm">4</span><span><span class="t">納品</span><span class="d">11月24日</span></span></div>
-      <div class="sd-step"><span class="num-chip sm">5</span><span><span class="t">切替</span><span class="d">12月</span></span></div>
-    </div>
-  </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
-</section>
 
 <!-- バリューチェーン（2段の矢羽+説明） -->
 <section class="slide" data-title="バリューチェーン（2段の矢羽+説明）">
@@ -285,7 +235,7 @@
       <div class="sd-steps dim"><div class="sd-step"><span class="t">—</span></div><div class="sd-step"><span class="t">構築</span></div><div class="sd-step"><span class="t">構築</span></div><div class="sd-step"><span class="t">構築</span></div><div class="sd-step"><span class="t">—</span></div></div>
     </div></figure>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 対向シェブロン（2つの狙いと左右の要素） -->
@@ -301,7 +251,7 @@
       <div class="side"><div>保守費を固定にする</div><div>手数料を一本化する</div><div>手作業を減らす</div></div>
     </div></figure>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 循環サイクル -->
@@ -315,14 +265,14 @@
       <div class="cycle-item" style="--i:0"><span class="num-chip sm">1</span><span class="t">計測</span><span class="d">GA4・SC</span></div>
       <div class="cycle-item" style="--i:1"><span class="num-chip sm">2</span><span class="t">分析</span><span class="d">月次レポート</span></div>
       <div class="cycle-item" style="--i:2"><span class="num-chip sm">3</span><span class="t">打ち手</span><span class="d">課題→こうしたい</span></div>
-      <div class="cycle-item" style="--i:3"><span class="num-chip sm">4</span><span class="t">実装</span><span class="d">翌月に反映</span></div>
+      <div class="cycle-item" style="--i:3"><span class="num-chip sm">4</span><span class="k">翌月に反映</span><span class="t">実装</span></div>
     </div></figure>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
-<!-- 軸のある表（5行まで・誌面の table をそのまま） -->
-<section class="slide" data-title="軸のある表（5行まで・誌面の table をそのまま）">
+<!-- 軸のある表（10行まで・誌面の table をそのまま。罫は既定でBCG型） -->
+<section class="slide" data-title="軸のある表（10行まで・緑の見出し・灰の通し罫・点線の行）">
   <div class="sd-head">
     <div class="sd-kicker">費用</div>
     <h1 class="sd-h">補助対象は構築費だけで、保守は含めない</h1>
@@ -332,13 +282,90 @@
       <table>
         <thead><tr><th>費目</th><th>補助</th><th class="num">金額</th></tr></thead>
         <tbody>
-          <tr><td class="label">構築費</td><td>対象</td><td class="num">7,035,000円</td></tr>
+          <tr><td class="label">構築費</td><td>対象</td><td class="num">¥7,035,000</td></tr>
           <tr><td class="label">保守費</td><td>対象外</td><td class="num">月額</td></tr>
         </tbody>
       </table>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
+<!-- 業務の全体図（2026-09-29 BCGの報告書から追加） -->
+<section class="slide" data-title="業務の全体図">
+  <div class="sd-head"><div class="sd-kicker">全体像</div><h1 class="sd-h">3つの区分で調べ、2つは当社の追加提案として上乗せする</h1></div>
+  <div class="sd-body"><figure class="fig" aria-label="3区分のうち2つの業務は当社の追加提案で、連携は全区分にまたがる" style="margin:0"><div class="scope"><div class="lg"><span><i></i>仕様書記載</span><span><i class="add"></i>追加提案</span></div>
+<div class="grp-row"><div class="grp"><b>（1）市場動向の調査</b><div class="card"><span class="num-chip">1</span>国内外の市場規模の推計</div><div class="card add"><span class="num-chip">2</span>主要プレイヤーの比較</div></div>
+<div class="grp"><b>（2）必要なリソースの特定</b><div class="card"><span class="num-chip">3</span>計算資源・データ・人材</div><div class="card"><span class="num-chip">4</span>確保の方策</div></div>
+<div class="grp"><b>（3）成果の最大化</b><div class="card add"><span class="num-chip">5</span>活用の方策</div></div></div>
+<div class="band">⑥ 他の政府検討との連携（全区分にまたがる）</div></div>
+</figure></div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
+<!-- 仕様書の原文→業務の対応（2026-09-29 BCGの報告書から追加） -->
+<section class="slide" data-title="仕様書の原文→業務の対応">
+  <div class="sd-head"><div class="sd-kicker">業務の範囲</div><h1 class="sd-h">仕様書の4業務に、技術の成熟度の分析を当社から足す</h1></div>
+  <div class="sd-body"><div class="spec"><div class="h">仕様書の記載（原文）</div><div></div><div class="h">業務の内容（当社整理）</div>
+<div class="src">2050年のカーボンニュートラルに資する革新的技術の、国内外の研究開発の動向を調査する。</div><div class="br"></div><div class="boxes"><div class="bx"><b>①-a</b>国内の研究開発動向</div><div class="bx"><b>①-b</b>海外の研究開発動向</div></div>
+<div class="src">調査結果を踏まえ、社会実装に向けた課題を整理する。</div><div class="br"></div><div class="boxes"><div class="bx"><b>②-a</b>社会実装の課題の整理</div><div class="bx own"><b>②-b</b>特許から見た技術の成熟度</div></div></div></div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
+<!-- 面の表（2026-09-29 BCGの報告書から追加） -->
+<section class="slide" data-title="面の表">
+  <div class="sd-head"><div class="sd-kicker">成長モデル</div><h1 class="sd-h">成長モデルごとに、売上段階で次に打つ手が変わる</h1></div>
+  <div class="sd-body"><table class="field"><thead><tr><th rowspan="2">成長モデル</th><th rowspan="2">主な業種</th><th colspan="3" class="th-grp">売上段階ごとの課題（億円）</th></tr><tr><th>10–30</th><th>30–60</th><th>60–100</th></tr></thead><tbody>
+<tr><td class="label"><span class="num-chip">1</span>製品ドリブン型</td><td>食料品・電気機械</td><td><ul><li>自社企画製品の製造</li><li>販売先の拡大</li></ul></td><td><ul><li>製品ラインの拡充</li></ul></td><td><ul><li>海外M&amp;Aで市場拡大</li></ul></td></tr>
+<tr><td class="label"><span class="num-chip">2</span>店舗ドリブン型</td><td>小売・飲食・宿泊</td><td><ul><li>店舗運営体制の確立</li></ul></td><td><ul><li>新規出店エリアの開拓</li></ul></td><td><ul><li>経営機能の強化</li></ul></td></tr>
+<tr><td class="label"><span class="num-chip">3</span>テクノロジー型</td><td>ITサービス</td><td><ul><li>営業・マーケティングの強化</li></ul></td><td><ul><li>新サービスの開発</li></ul></td><td><ul><li>海外市場への進出</li></ul></td></tr></tbody></table></div>
+  <div class="sd-source">出典: 各社の公表資料; 当社分析</div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
+<!-- 棒の列を持つ表（2026-09-29 BCGの報告書から追加） -->
+<section class="slide" data-title="棒の列を持つ表">
+  <div class="sd-head"><div class="sd-kicker">需要家</div><h1 class="sd-h">上位3社のうち、B社だけが短期契約の比率を上げる</h1></div>
+  <div class="sd-body"><figure class="fig" aria-label="上位3社の調達量と長期契約の比率。B社だけ長期の比率が55%と低い" style="margin:0"><div class="table-wrap"><table><thead><tr><th>需要家</th><th>調達量（万t / 年）</th><th>長期契約の比率</th><th>方針</th></tr></thead><tbody>
+<tr><td class="label"><span class="num-chip sm">1</span>A社</td><td class="bar"><div class="b"><i style="width:9em"></i><span>3,500</span></div></td><td class="share"><div class="s"><i style="width:80%">80%</i><i style="width:20%">20%</i></div></td><td>長期契約を維持</td></tr>
+<tr><td class="label"><span class="num-chip sm">2</span>B社</td><td class="bar"><div class="b"><i style="width:4em"></i><span>1,500</span></div></td><td class="share"><div class="s"><i class="hot" style="width:55%">55%</i><i style="width:45%">45%</i></div></td><td>短期の比率を上げる</td></tr>
+<tr><td class="label"><span class="num-chip sm">3</span>C社</td><td class="bar"><div class="b dim"><i style="width:2em"></i><span>600</span></div></td><td class="share"><div class="s"><i style="width:90%">90%</i><i style="width:10%"></i></div></td><td>—</td></tr></tbody></table></div></figure></div>
+  <div class="sd-source">出典: 各社の公表資料; 当社分析</div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
+<!-- 縦1本の積み上げ＋区分色の縦帯（2026-09-29 BCGの報告書から追加） -->
+<section class="slide" data-title="縦1本の積み上げ＋区分色の縦帯">
+  <div class="sd-head"><div class="sd-kicker">人材</div><h1 class="sd-h">政権交代で入れ替わるのは全体の26%の政治任用だけ</h1></div>
+  <div class="sd-body"><figure class="fig" aria-label="キャリア官僚が62%、政治任用が26%、その他が12%" style="margin:0"><div class="stack-note"><div class="col"><i style="flex-basis:62%;background:var(--accent-deep)">62%</i><i style="flex-basis:26%;background:var(--accent)">26%</i><i style="flex-basis:12%;background:var(--line-soft);color:var(--text)">12%</i></div>
+<div class="notes2"><div style="--c:var(--accent-deep)"><b>キャリア官僚（62%）</b>・任期はなく、政権交代で入れ替わらない</div><div style="--c:var(--accent)"><b>政治任用（26%）</b>・政権交代で約4,000のポストが交代する<br>・うち約100名は大統領が直接選ぶ</div><div style="--c:var(--line-soft)"><b>その他（12%）</b>・専門職の任期付き採用</div></div></div></figure></div>
+  <div class="sd-source">出典: 各国政府の公表資料; 当社分析</div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
+<!-- 報告書の型（2026-09-29）: 見出し帯に数字入りリード .sd-sum・時点 .sd-asof・続き番号 .sd-cont、本文はBCG型の表 table.open＋判定列、注→出典の2段 -->
+<section class="slide" data-title="報告書の型（リード・時点・罫の軽い表・判定列・注と出典）">
+  <div class="sd-head">
+    <div class="sd-kicker">各国の政策<span class="sd-cont">（1 / 2）</span></div>
+    <h1 class="sd-h">欧州は支援を広げ、米国は税額控除を絞る</h1>
+    <span class="sd-asof">2026年3月時点</span>
+    <p class="sd-sum">推進はドイツ<small>（入札2回）</small>だけで、米国は控除の期限を<small>1年</small>前倒しした</p>
+  </div>
+  <div class="sd-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>国</th><th class="verdict">判定</th><th>根拠</th></tr></thead>
+        <tbody>
+          <tr><td class="label">ドイツ</td><td class="verdict up">推進</td><td><span class="td-head">輸入水素の入札を2回目まで実施</span></td></tr>
+          <tr><td class="label">英国</td><td class="verdict flat">変化なし</td><td><span class="td-head">支援制度の第2弾が審査中</span></td></tr>
+          <tr><td class="label">米国</td><td class="verdict down">後退</td><td><span class="td-head">税額控除の適用期限を前倒し<sup>※1</sup></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  <ul class="notes"><li data-n="1">着工の期限が2028年から2027年へ</li></ul>
+  </div>
+  <div class="sd-source">出典: 各国政府の公表資料; 当社分析</div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- ヒートマップ表（濃淡で強弱） -->
@@ -359,7 +386,7 @@
     </table></div>
     <div class="legend"><span><i class="sq" style="background:var(--surface)"></i>なし</span><span><i class="sq" style="background:var(--accent-faint)"></i>低</span><span><i class="sq" style="background:var(--accent-soft)"></i>中</span><span><i class="sq" style="background:var(--accent)"></i>高</span></div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 充足度評価表（ハーベイボール） -->
@@ -379,7 +406,7 @@
     </table></div>
     <div class="legend"><span><span class="hb q4"></span>満たす</span><span><span class="hb q2"></span>一部満たす</span><span><span class="hb q0"></span>満たさない</span></div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 入れ子行の行列（rowspan で階層） -->
@@ -400,7 +427,7 @@
       </tbody>
     </table></div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 打ち手の効果表（行内の矢印棒） -->
@@ -415,12 +442,12 @@
       <tbody>
         <tr><td class="label">店舗ページのSEO</td><td><span class="efx" style="width:60%">+20〜30</span></td><td>全国100店舗の掲載が前提</td></tr>
         <tr><td class="label">再登録メール</td><td><span class="efx" style="width:35%">+8〜12</span></td><td>会員146人が対象</td></tr>
-        <tr><td class="label">保守費の固定化</td><td><span class="efx down" style="width:25%">−5万円</span></td><td>月額換算</td></tr>
+        <tr><td class="label">保守費の固定化</td><td><span class="efx down" style="width:25%">−¥50,000</span></td><td>月額換算</td></tr>
       </tbody>
     </table></div>
-    <div class="legend"><span><i class="sq" style="background:var(--accent)"></i>増やす方向</span><span><i class="sq" style="background:#EAE2D6"></i>減らす方向</span></div>
+    <div class="legend"><span><i class="sq" style="background:var(--accent)"></i>増やす方向</span><span><i class="sq" style="background:#F2F2F2"></i>減らす方向</span></div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 2×2マトリクス（効果×手間） -->
@@ -442,7 +469,7 @@
       <div><h3>読み方</h3><ul><li>右上=すぐ着手</li><li>左上=時期を決めて着手</li><li>下段=今回は見送り</li></ul></div>
     </div></figure>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- イシューツリー -->
@@ -459,14 +486,14 @@
         <li><span class="n">検収と振込が11月中か</span><ul><li><span class="n">検収を1日で終えられるか</span></li><li><span class="n">振込日を確保できるか</span></li></ul></li>
       </ul></li></ul></div></figure>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 増減ブリッジ（ウォーターフォール） -->
 <section class="slide" data-title="増減ブリッジ（ウォーターフォール）">
   <div class="sd-head">
     <div class="sd-kicker">内訳</div>
-    <h1 class="sd-h">手数料と保守費の削減で月の利益は40万円増える</h1>
+    <h1 class="sd-h">手数料と保守費の削減で月の利益は¥400,000増える</h1>
   </div>
   <div class="sd-body">
     <figure class="fig" aria-label="手数料一本化と保守費固定で月の利益は100から140になる" style="margin:0;display:contents"><div class="wfall">
@@ -478,8 +505,8 @@
     </div></figure>
     <div class="legend"><span><i class="sq" style="background:var(--ink)"></i>合計</span><span><i class="sq" style="background:var(--accent)"></i>増</span><span><i class="sq" style="background:var(--danger)"></i>減</span></div>
   </div>
-    <div class="sd-source">出典: 当社試算・万円 / 月</div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+    <div class="sd-source">出典: 当社試算・千円 / 月</div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 割合のドットマトリクス -->
@@ -496,7 +523,7 @@
     </div></figure>
   </div>
     <div class="sd-source">出典: 2026-06-11 本番DB実測（利用者91人）</div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 図解1枚（誌面の図の部品を1枚に。figure に主張） -->
@@ -510,7 +537,7 @@
       <!-- .swim / .lanes / .pflow / .phases / .stackbar / .funnel / .gantt 等をここに置く -->
     </figure>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 1メッセージ -->
@@ -521,7 +548,7 @@
     <div class="sd-hair"></div>
     <div class="sd-note">根拠の一言</div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- ビッグナンバー -->
@@ -539,29 +566,9 @@
       <div class="sd-src">2026-08-20 本番実測</div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
-<!-- ×○比較 -->
-<section class="slide" data-title="×○比較">
-  <div class="sd-head">
-    <div class="sd-kicker">決め方</div>
-    <h1 class="sd-h">手動で組み立てる案を採る</h1>
-  </div>
-  <div class="sd-body">
-    <div class="sd-vs">
-      <div class="sd-vs-box is-bad">
-        <div class="sd-vs-head"><span class="sd-vs-mark">×</span><span class="sd-vs-name">自動生成</span></div>
-        <div class="sd-vs-note">店舗・自転車の個別URLが載らない</div>
-      </div>
-      <div class="sd-vs-box is-good">
-        <div class="sd-vs-head"><span class="sd-vs-mark">○</span><span class="sd-vs-name">手動で組み立て（採用）</span></div>
-        <div class="sd-vs-note">Data APIでID一覧を集めて全URLを網羅</div>
-      </div>
-    </div>
-  </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
-</section>
 
 <!-- 意思決定（推奨する決定+依頼事項） -->
 <section class="slide" data-title="意思決定（推奨する決定+依頼事項）">
@@ -571,7 +578,7 @@
   </div>
   <div class="sd-body">
     <div class="decide">
-      <div><div class="k">推奨する意思決定</div><div class="d">構築は請負703万円、保守は準委任で別契約にする<small>補助対象は構築費のみ。保守を含めると不正受給になる。</small></div></div>
+      <div><div class="k">推奨する意思決定</div><div class="d">構築は請負¥7,030,000、保守は準委任で別契約にする<small>補助対象は構築費のみ。保守を含めると不正受給になる。</small></div></div>
       <div>
         <div class="decide-ask"><span class="n">1</span><span>契約形態を今週中に決める</span><span class="who">PEDAL社 増永さん</span></div>
         <div class="decide-ask"><span class="n">2</span><span>モックの初稿を10月9日までに共有する</span><span class="who">PEDAL社</span></div>
@@ -579,7 +586,7 @@
       </div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 締め（やること・担当・期日） -->
@@ -595,39 +602,63 @@
       <div class="sd-todo-row"><span>やること3</span><span class="sd-todo-who">担当</span><span class="sd-todo-when">期日</span></div>
     </div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
 <!-- 裏表紙（会社名と連絡先だけ。メッセージは載せない） -->
+<!-- 付録（別添）: section.slide.annex。ページ番号は「別添-n」の別系列・40枚に数えない・題名型の見出し可（2026-09-29） -->
+<section class="slide annex" data-title="付録（別添）">
+  <div class="sd-head"><div class="sd-kicker"><span class="badge muted">別添</span>各国の規定箇所</div><h1 class="sd-h">規定箇所の一覧（1 / 2）</h1></div>
+  <div class="sd-body">
+    <div class="table-wrap"><table><thead><tr><th>国</th><th>法令</th><th>条</th></tr></thead><tbody><tr><td class="label">米国</td><td>49 CFR</td><td>§180.205</td></tr><tr><td class="label">英国</td><td>容器規則</td><td>第12条</td></tr></tbody></table></div>
+  </div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
 <section class="slide" data-title="裏表紙（会社名と連絡先だけ。メッセージは載せない）">
   <div class="sd-back">
     <div class="co">株式会社アイビス</div>
     <div class="ct">担当: 清野 / seino@ibis.ne.jp</div>
   </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
+  <div class="slide-ft"><span class="pg"></span></div>
 </section>
 
-<div class="deck-nav" aria-hidden="true"><span id="deck-pos"></span> ← → で送り</div>
+<div class="deck-nav" aria-hidden="true"><span id="deck-pos"></span> P で送り / Esc で一覧</div>
 
 <script>
-// デッキ送り: 矢印/スペース/PageUpDown/Home/End・クリック（右半分=次・左半分=前）・ハッシュ #n で直リンク。
-// .pg にページ番号「n / N」を自動で入れる。JS無効でも印刷では全枚が並ぶ（@media print で display:flex）。
+// 読めるデッキ（2026-09-29）: 既定は全ページを縦に並べて読む。P で送りモード（1枚ずつ・矢印/スペース/クリックで送り）、Esc で一覧へ戻る。
+// ハッシュ #n で n 枚目へ（一覧ではそこまでスクロール・送りではその枚を表示）。
+// .pg にページ番号「n / N」を自動で入れる。JS無効でも一覧で全枚が読め、印刷では1枚1ページ。
 (function(){
-  var slides=[].slice.call(document.querySelectorAll('section.slide')),N=slides.length,cur=0;
-  slides.forEach(function(s,i){var p=s.querySelector('.pg');if(p)p.textContent=String(i+1).padStart(2,'0')+' / '+String(N).padStart(2,'0');});
+  var body=document.body,slides=[].slice.call(document.querySelectorAll('section.slide')),N=slides.length,cur=0;
+  // 付録（section.slide.annex）はページ番号を「別添-n」の別系列にする（2026-09-29）。本編は付録を数えない
+  var main=slides.filter(function(s){return !s.classList.contains('annex');}),annex=slides.filter(function(s){return s.classList.contains('annex');});
+  slides.forEach(function(s,i){s.id=s.id||('p'+(i+1));});
+  main.forEach(function(s,i){var p=s.querySelector('.pg');if(p)p.textContent=String(i+1);});
+  annex.forEach(function(s,i){var p=s.querySelector('.pg');if(p)p.textContent='別添-'+String(i+1);});
+  var pos=document.getElementById('deck-pos');
+  function playing(){return body.classList.contains('play');}
   function show(i){cur=Math.max(0,Math.min(N-1,i));slides.forEach(function(s,j){s.classList.toggle('cur',j===cur);});
-    var pos=document.getElementById('deck-pos');if(pos)pos.textContent=(cur+1)+' / '+N;
+    if(pos)pos.textContent=(cur+1)+' / '+N;
     if(location.hash!=='#'+(cur+1))history.replaceState(null,'','#'+(cur+1));}
-  function fromHash(){var n=parseInt(location.hash.slice(1),10);show(isNaN(n)?0:n-1);}
+  function go(i){if(playing()){show(i);}else{cur=Math.max(0,Math.min(N-1,i));slides[cur].scrollIntoView();}}
+  function fromHash(){var n=parseInt(location.hash.slice(1),10);if(!isNaN(n))go(n-1);}
+  function setPlay(on){
+    if(on){var y=0;slides.forEach(function(s,j){if(s.getBoundingClientRect().top<innerHeight*.4)y=j;});body.classList.add('play');show(y);}
+    else{body.classList.remove('play');slides[cur].scrollIntoView();}
+  }
   addEventListener('hashchange',fromHash);
   addEventListener('keydown',function(e){
     if(e.metaKey||e.ctrlKey||e.altKey)return;
     var k=e.key;
-    if(k==='ArrowRight'||k==='ArrowDown'||k===' '||k==='PageDown'||k==='Enter'){e.preventDefault();show(cur+1);}
+    if(k==='p'||k==='P'){e.preventDefault();setPlay(!playing());return;}
+    if(!playing())return;
+    if(k==='Escape'){setPlay(false);}
+    else if(k==='ArrowRight'||k==='ArrowDown'||k===' '||k==='PageDown'||k==='Enter'){e.preventDefault();show(cur+1);}
     else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace'){e.preventDefault();show(cur-1);}
     else if(k==='Home'){show(0);}else if(k==='End'){show(N-1);}
   });
-  addEventListener('click',function(e){if(e.target.closest('a,button,input,textarea,details,summary'))return;
+  addEventListener('click',function(e){if(!playing()||e.target.closest('a,button,input,textarea,details,summary'))return;
     show(e.clientX>innerWidth/2?cur+1:cur-1);});
   fromHash();
 })();

@@ -1,10 +1,14 @@
-<!-- HTML資料デザインシステム 部品雛形集 — 誌面エディトリアル版（コピーして使う。CSSは template.css） -->
+<!-- HTML資料デザインシステム 部品雛形集（コピーして使う。CSSは template.css・見本は gallery.html・画面UIは parts.css / gallery-ui.html）
+     2026-09-29 章立てを「伝えたいことの形」に組み直した: 準備 → 1 文法 → 2 器 → 3 答え → 4 数字 → 5 比べる → 6 流れと時間 → 7 論理 → 8 補足と根拠 → 付録A 誌面 → スクリプト。
+     主の様式は読めるデッキ（器は deck.html）。3〜8章の部品はデッキにも誌面にも同じHTMLで置ける -->
+
+<!-- ######## 準備（全ページ共通） ######## -->
 
 <!-- ============ Webフォント（<head>の<title>直後・必須） ============ -->
-<!-- 見出し=Shippori Mincho（明朝）、本文=Noto Sans JP。オフライン時はシステムフォントに落ちる -->
+<!-- 見出し=Shippori Mincho（ゴシック）、本文=Noto Sans JP。オフライン時はシステムフォントに落ちる -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
 <!-- ============ SVGアイコンスプライト（<body>先頭・使い方: <svg class="icon"><use href="#i-check"/></svg>） ============ -->
 <svg style="display:none" aria-hidden="true"><defs>
@@ -22,268 +26,10 @@
 <symbol id="i-arrow" viewBox="0 0 24 24"><line x1="4" y1="12" x2="20" y2="12"/><polyline points="13 5 20 12 13 19"/></symbol>
 </defs></svg>
 
-<!-- ============ 読み進みバー（<body>先頭） ============ -->
-<div class="progress" aria-hidden="true"><i></i></div>
+<!-- ######## 1 文法 — 色・書体・罫線・バッジ・記号丸 ######## -->
 
-<!-- ============ ヒーロー（全幅・上下の墨罫線で締める。ロゴは任意: ロゴが無い案件は<img class="hero-logo">行を丸ごと省略する（全ページで有無を統一）。ロゴパスは階層に合わせる） ============ -->
-<div class="hero">
-  <div class="hero-inner">
-    <div class="hero-top">
-      <div class="hero-brand">
-        <img class="hero-logo" src="../assets/logo.png" alt="ブランド名">
-        <span class="hero-kicker">BRAND — カテゴリ</span>
-      </div>
-      <span class="hero-no">資料 07</span>
-    </div>
-    <h1>ページタイトル</h1>
-    <p class="lead">1〜2文のリード。誰向けに何をまとめた資料か。</p>
-    <div class="hero-meta">最終更新 2026-08-21（更新内容の一言）</div>
-  </div>
-</div>
-
-<!-- ============ 章ナビ（全ページ必須・アンカー版。項目最大8個=4列×2行。1番目は「結論」） ============ -->
-<nav class="flow">
-  <a href="#conclusion" class="cur"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">このページの答え</span></a>
-  <a href="#step1"><span class="fnum">2</span><span class="ft">章タイトル</span><span class="fd">一言説明</span></a>
-</nav>
-
-<!-- ============ 章ナビ型タブ（長いページ用。data-target=パネルid・scriptは末尾。タブ1は「結論」） ============ -->
-<nav class="flow-tabs">
-  <button class="tab-btn active" data-target="panel-conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">このページの答え</span></button>
-  <button class="tab-btn" data-target="panel-b"><span class="fnum">2</span><span class="ft">タブ名B</span><span class="fd">一言説明</span></button>
-</nav>
-<div class="tab-panel active" id="panel-conclusion">...</div>
-<div class="tab-panel" id="panel-b">...</div>
-
-<!-- ============ 結論 = 最初の章（01章）。専用の箱は使わない（2026-09-04改定）
-     章ナビの1番目に「1 結論」を置き、本文の最初の .section を id="conclusion" の「結論」の章にする。
-     タブ式のページはタブ1を「結論」にする（開いた時に最初に見えるのがタブ1）。
-     中身は答えの性格で選ぶ: 数字が答え=.stat-row / 判断を求める資料=table.qa（問い→答え）/
-     一言で足りる=本文1段落。緑のアラート（決定事項）を1枚だけ添えるのは可。
-     補足（あわせて読む資料・この資料の読み方・進み具合）は ul.notes に※で1〜2行。
-     章の数は8が上限。超えるなら答えに近い既存の章（概要・まとめ・比較）と統合する ============ -->
-<div class="section" id="conclusion">
-  <div class="section-header">
-    <div class="section-num">01</div>
-    <div class="sh-body"><h2>結論</h2><div class="sh-sub">このページの答えを1行で（本文から起こす。事実を新しく作らない）</div></div>
-  </div>
-  <p>決済はStripeに載せ替えます。今の予約の流れは変えず、当日の受け取り時に本決済へ切り替えます。</p>
-
-  <!-- 判断を求める資料は「問い→答え」の表（左=問い・右=答え。答えは1文目を<strong>で言い切る） -->
-  <div class="table-wrap">
-    <table class="qa">
-      <tbody>
-        <tr><td class="label wrap">① 領収書の発行元は誰か</td><td><strong>運営会社です。</strong> 理由を1〜2文で続けます（詳しくは5章）。</td></tr>
-        <tr><td class="label wrap">② いつまでに決めるか</td><td><strong>7月4日の定例までにお決めいただきます。</strong> 理由を1〜2文で続けます。</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 補足はここに※で1〜2行だけ。箱やアラートを重ねない -->
-  <ul class="notes">
-    <li>あわせて読む資料: 手数料の内訳は「決済手数料の比較」をご覧ください。</li>
-    <li>この資料は7月4日時点の検討状況をまとめたものです。</li>
-  </ul>
-</div>
-
-<!-- ============ セクション見出し（薄い大番号+明朝。01は「結論」なので以降は02から） ============ -->
-<div class="section" id="step1">
-  <div class="section-header">
-    <div class="section-num">02</div>
-    <div class="sh-body"><h2>章タイトル</h2><div class="sh-sub">この章の主張を1文で（02章以降。01章だけは「何を扱うか」）</div></div>
-  </div>
-  ...
-</div>
-
-<!-- ============ 用語解説 ============ -->
-<div class="term">
-  <div class="term-name">Data API <span class="term-tag">— 用語</span></div>
-  <div class="t-body">日常語に開いた説明文。</div>
-</div>
-
-<!-- 用語が2〜3個セットの時は .term-row で横並び -->
-<div class="term-row">
-  <div class="term"><div class="term-name">訪問ユーザー数 <span class="term-tag">— 用語</span></div><div class="t-body">サイトに来た「人数」。同じ人が何回来ても1人と数える。</div></div>
-  <div class="term"><div class="term-name">セッション数 <span class="term-tag">— 用語</span></div><div class="t-body">サイトに来た「回数」。同じ人が日を改めて2回来れば2回。</div></div>
-</div>
-
-<!-- ============ 小見出し分節（章内のテーマ区切り。キッカーは省略可。箱で囲うのは不可=用語解説と紛れる） ============ -->
-<div class="sub-item">
-  <div class="kick">テーマの予告の一言</div>
-  <h4>テーマの見出し</h4>
-  <p>本文。中に表・手順・アラートを入れてよい。</p>
-</div>
-
-<!-- ============ アラート3種（色が意味を運ぶ。この3色以外は作らない）
-     緑=結論・決定 / 藍=読み方・補足 / 紅=リスク・注意。
-     琥珀（黄）のalertは作らない — 琥珀は「お金」の役割色。
-     「課題・やり残し」は ul.notes の※ か .compare-box.bad へ ============ -->
-<div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>結論:</strong> 本文（決まったこと・ページの答え）</span></div>
-<div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>補足:</strong> 本文（読み方・前提の補足）</span></div>
-<div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><strong>リスク:</strong> 本文（これから起こりうる悪いこと）</span></div>
-
-<!-- ============ ×○対比 ============ -->
-<div class="compare">
-  <div class="compare-box bad"><div class="cb-head"><span class="cb-mark">×</span>ダメな案</div><p>理由</p></div>
-  <div class="compare-box good"><div class="cb-head"><span class="cb-mark">○</span>採用案</div><p>理由</p></div>
-</div>
-
-<!-- 良し悪しでなく「現状 → あるべき姿」の対比は .asis/.tobe（○×マーク不要・tobe=焦がし枠） -->
-<div class="compare">
-  <div class="compare-box asis"><div class="cb-head">現状</div><p>いまの流れ</p></div>
-  <div class="compare-box tobe"><div class="cb-head">あるべき姿</div><p>変えた後の流れ</p></div>
-</div>
-
-<!-- ============ 選択肢と採否（.options / .option: 検討した案を横に並べ、採ったものを立たせ、捨てたものを沈める。
-     3案以上の採否＝決定の記録に使う〈2択の良し悪しは .compare-box〉。
-     状態は3つ: 素=中立 / .chosen=採用（焦がしの枠）/ .dim=不採用（グレーに沈める。opacityは使わない）。
-     結論バッジは既存の語彙で: 採用=.badge.good / 対抗案=.badge.plain / 不採用=.badge.muted。
-     記号丸（.num-chip）に案ごとの色は付けない — 採否は枠とバッジが示す ============ -->
-<div class="options">
-  <div class="option dim">
-    <span class="num-chip">A</span>
-    <h4>案Aの名前</h4>
-    <p>どういう案か（1〜2文）。</p>
-    <span class="badge muted">結論: やらない</span>
-  </div>
-  <div class="option">
-    <span class="num-chip">B</span>
-    <h4>案Bの名前</h4>
-    <p>どういう案か（1〜2文）。</p>
-    <span class="badge plain">対抗案</span>
-  </div>
-  <div class="option chosen">
-    <span class="num-chip brand">C</span>
-    <h4>案Cの名前</h4>
-    <p>どういう案か（1〜2文）。</p>
-    <span class="badge good">結論: これ（6月19日決定）</span>
-  </div>
-</div>
-
-<!-- ============ 表・2段ヘッダー（列グループ）: 関連する列を1行目のグループ名（th.th-grp[colspan]）で束ねる。
-     グループ外の列は th[rowspan=2]。停止中・対象外の行は tr.muted で沈める。
-     比較表では選択肢ごとをグループにし、推奨は th.th-grp.std（+配下の各セルに td.std）で面を着せる — 面は1グループだけ ============ -->
-<div class="table-wrap">
-  <table>
-    <thead>
-      <tr>
-        <th rowspan="2">案件名</th>
-        <th class="th-grp" colspan="3">体制</th>
-        <th rowspan="2">状況</th>
-      </tr>
-      <tr><th>メインPM</th><th>サブPM</th><th>エンジニア</th></tr>
-    </thead>
-    <tbody>
-      <tr><td class="label">案件A</td><td>担当1</td><td>担当2</td><td>担当3・担当4</td><td>開発（請負）</td></tr>
-      <tr class="muted"><td class="label">案件B（停止中）</td><td>—</td><td>—</td><td>—</td><td>必要に応じて再開</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- ============ 表（項目名=明朝 td.label・数値=td.num・優先度バー）。
-     セル内バー（.pri右寄せ）を表の途中の列で使う時は、そのtdに右余白を足す（例: style="padding-right:40px"。
-     バーが右端いっぱいまで寄るため、標準余白だけだと隣の列と詰まって見える）。
-     主ラベルに原語・補足を薄く添えるときは <span class="label-sub">（例: 他サイト経由 <span class="label-sub">Referral</span>）。
-     平易な日本語を主・専門用語を副で併記する原則6の実践 ============ -->
-<div class="table-wrap">
-  <table>
-    <thead><tr><th>ページ</th><th>URL</th><th style="text-align: right;">優先度</th></tr></thead>
-    <tbody>
-      <tr><td class="label">トップ</td><td><code>/</code></td><td class="num">1.0</td></tr>
-      <tr><td class="label">店舗詳細</td><td><code>/shop_detail?shop=ID</code></td>
-          <td><div class="pri" style="justify-content: flex-end;"><span class="bar" style="width: 80px;"></span><span class="pv">0.8</span></div></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- ============ 前月比較表（.table-mom: グループ行で分節・当月=墨/前月=グレー/増減=意味色。増えたら悪い指標は色を反転） ============ -->
-<div class="table-wrap">
-  <table class="table-mom">
-    <thead><tr><th>指標</th><th class="num">当月</th><th class="num">前月</th><th class="num">前月比</th></tr></thead>
-    <tbody>
-      <tr class="tgroup"><td colspan="4">グループ名</td></tr>
-      <tr><td class="label">良い指標</td><td class="num">11</td><td class="num prev">6</td><td class="num up">+83.3%</td></tr>
-      <tr><td class="label">悪化した指標</td><td class="num">6</td><td class="num prev">3</td><td class="num down">+100.0%</td></tr>
-      <!-- 親行の変種をぶら下げる時は td.label.ind。全角空白を項目名に直書きしないこと -->
-      <tr><td class="label ind">うち内訳</td><td class="num">2</td><td class="num prev">1</td><td class="num up">+100.0%</td></tr>
-      <!-- 長い項目名は td.label.wrap で折り返す（併用可: class="label wrap ind"） -->
-      <tr><td class="label wrap">折り返してほしい長い項目名をここに書く</td><td class="num">3</td><td class="num prev">3</td><td class="num">±0</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- ============ 選択肢の表（td-sub=項目名の補足行 / std=推奨列の面〈1列だけ〉/ cnt=金額でない数は墨 / calc=内訳の式はグレー。差し色は答えの金額だけ） ============ -->
-<div class="table-wrap">
-  <table>
-    <thead><tr><th>プラン</th><th class="num">回数</th><th class="num">月額の内訳</th><th class="num std">月額（標準）</th></tr></thead>
-    <tbody>
-      <tr><td class="label wrap">Standard — 隔週訪問（おすすめ）<span class="td-sub">項目名の下の1行補足（td-sub）。2行を超えるなら.termへ</span></td><td class="num cnt">2回</td><td class="num calc">20,000 ＋ 40,000×2</td><td class="num std">130,000</td></tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- ============ 差分表（.dtable: 正本の「現行版」と「修正案」を行単位で左右に並べる。文章の改訂レビュー用。
-     行の種別は4つのどれか1つ: eq=変更なし（文字グレー）/ rep=置換（左紅・右緑の罫+字単位の<del><ins>）/ del=左から消えた / ins=右に増えた。
-     原文は<pre>に入れて加工しない（空行は&nbsp;）。変更のない行が続く箇所は.dfoldの1行に畳み、畳んだ行数を書く。
-     凡例.dlegend+色の表示トグル#hlは読み方ボックスの中にページで1枚（トグルのscriptは下・</body>直前）。
-     図ではなく表の族なので<figure>で包まない。文字数などの規模は.dmeta（ラベルが上・明朝22px。答えの数字ではないので.statにしない）。
-     2段組で幅が要るページは .hero-inner,.flow,.flow-tabs,.container,footer の max-width を1320pxに揃えて広げてよい ============ -->
-<div class="dmeta"><div class="dm"><span class="l">現行版の文字数</span><span class="v">3,425</span></div><div class="dm"><span class="l">修正案の文字数</span><span class="v">3,641</span></div><div class="dm"><span class="l">増減</span><span class="v up">+216</span></div></div>
-<div class="alert alert-blue">
-  <svg class="icon a-icon"><use href="#i-info"/></svg>
-  <div><strong>この表の読み方:</strong> 左が現行版、右が修正案です。消した字は紅、足した字は緑で示します。変更のない行が続く箇所は畳んでいます。
-  <div class="dlegend"><span class="dl-del"><i></i>消した字・変更前</span><span class="dl-ins"><i></i>足した字・変更後</span><label><input type="checkbox" id="hl" checked> 差分の色を表示</label></div>
-  </div>
-</div>
-<div class="dtable">
-<div class="dhead"><div>現行版</div><div>修正案</div></div>
-<div class="dfold">変更のない12行を畳んでいます</div>
-<div class="drow eq"><div class="dcell l"><pre>変更のない行は左右に同じ文を置き、文字をグレーに落とす</pre></div><div class="dcell r"><pre>変更のない行は左右に同じ文を置き、文字をグレーに落とす</pre></div></div>
-<div class="drow rep"><div class="dcell l"><pre>決済は<del>予約時に前払い</del>とする</pre></div><div class="dcell r"><pre>決済は<ins>受け取り当日に店頭で</ins>とする</pre></div></div>
-<div class="drow del"><div class="dcell l"><pre><del>左からだけ消えた行は、右を&amp;nbsp;の空セルにする</del></pre></div><div class="dcell r"><pre>&nbsp;</pre></div></div>
-<div class="drow ins"><div class="dcell l"><pre>&nbsp;</pre></div><div class="dcell r"><pre><ins>右に増えた行は、左を&amp;nbsp;の空セルにする</ins></pre></div></div>
-</div>
-<!-- 差分の色トグル（差分表を置いたページのみ・</body>直前。チェックを外すと body.nohl が付いて紅緑と罫が消える） -->
-<script>
-(function(){
-  var hl = document.getElementById('hl');
-  if (hl) hl.addEventListener('change', function(e){ document.body.classList.toggle('nohl', !e.target.checked); });
-})();
-</script>
-
-<!-- ============ コードブロック（唯一のダーク面） ============ -->
-<div class="codeblock"><pre><span class="cm"># コメント</span>
-command --option <span class="hl">強調</span> <span class="hl2">二次強調</span></pre></div>
-
-<!-- ============ APIメソッドバッジ（.method: GET / POST / DELETE / PUT。等幅・白面+役割色の輪郭。
-     クラスはドット記法で統一する — .method-get のようなハイフン記法は作らない） ============ -->
-<span class="method get">GET</span> <span class="method post">POST</span> <span class="method put">PUT</span> <span class="method delete">DELETE</span>
-
-<!-- ============ 開発者向け詳細（.dev-detail: 非エンジニア向けの本文と、開発者向けの詳細〈コード・API名・内部仕様〉を
-     同じ場所で分ける折りたたみ。読者は本文だけ読めばよく、実装者は開けば足りる。
-     中身は必ず .dd-body で包む（上罫+余白）。中の小見出しは h5 — 本文の見出しの階段には数えない） ============ -->
-<details class="dev-detail">
-  <summary>開発者向け: 実装の詳細</summary>
-  <div class="dd-body">
-    <h5>呼び出すAPI</h5>
-    <p><span class="method post">POST</span> <code>/v1/payment_intents</code> — 予約確定時に作成する。</p>
-    <ul>
-      <li>失敗時は 402 が返るので、その場で再入力を促す</li>
-    </ul>
-  </div>
-</details>
-
-<!-- ============ 番号つき手順 / 注意リスト ============ -->
-<ol class="steps">
-  <li>手順1</li>
-  <li>手順2</li>
-</ol>
-<ul class="notes">
-  <li>注意事項（※印で表示される）</li>
-</ul>
-
-<!-- ============ 記号丸（.num-chip: 番号や記号〈1・2・A・B〉を丸で示す。明朝・白面・1.5px輪郭。
-     色の変種は .brand〈焦がし〉だけ — 藍・緑は図解の役割色（ユーザー・店舗）なので流用しない。
+<!-- ============ 記号丸（.num-chip: 番号や記号〈1・2・A・B〉を丸で示す。白面・1.5px輪郭。
+     色の変種は .brand〈緑〉だけ — 藍・緑は図解の役割色（ユーザー・店舗）なので流用しない。
      表のセル内は小サイズ .sm） ============ -->
 <span class="num-chip">1</span> <span class="num-chip brand">A</span>
 <div class="table-wrap">
@@ -299,7 +45,7 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
 <span class="badge ink">このページの最重要</span> <span class="badge good">実測済み</span> <span class="badge bad">要確認</span> <span class="badge plain">検討中</span> <span class="badge muted">対象外</span>
 
 <!-- ============ 3段階の格付け（高・中・低）。重さの順は brand > mid > plain。
-     .badge.ink（黒ベタ）を「中」に流用しない — 黒ベタは焦がしベタより重く見え、高低が逆に読める。
+     .badge.ink（黒ベタ）を「中」に流用しない — 黒ベタは緑ベタより重く見え、高低が逆に読める。
      ink はページ内で唯一の最重要マークにだけ（lintが1ページ4個以上を指摘する・2026-09-14） ============ -->
 <span class="badge brand">高</span> <span class="badge mid">中</span> <span class="badge plain">低</span>
 
@@ -307,40 +53,133 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
      英字のCHANGED / NEW / OLD 等は使わない。「弊社案」「旧仕様」等の言い換えもしない） ============ -->
 <span class="badge good">決定済み</span> <span class="badge brand">弊社提案</span> <span class="badge brand">変更点</span> <span class="badge muted">旧設計</span>
 
-<!-- ============ まとめ帯（墨・ページ内で唯一の濃い塗り） ============ -->
-<div class="recap">
-  <h2>運用のまとめ</h2>
-  <div class="r-flow">
-    <span class="r-chip">手順A</span><span class="r-arr">→</span>
-    <span class="r-chip hot">仕上げ</span>
+<!-- ######## 2 器 — 読めるデッキの1枚の作り・表紙〜裏表紙・図の外枠と図表名の行 ######## -->
+
+<!-- ============ スライド（16:9・共通下枠=右下に会社名+ページ番号・左下は出典 .sd-source だけ。注は本文の ul.notes（※）。1枚1メッセージ・表は10行まで・本文は14px相当以上＝読めるデッキ） ============ -->
+<!-- 誌面の中に1枚だけ置く時は .slide の額（max-widthと font-size を指定）。デッキとして丸ごと投影する時は deck.html の器を使う（body.deck・1 section=1枚・.pg は自動記入） -->
+<div class="slide" style="max-width: 960px; font-size: 16px;">
+  <div class="sd-center">
+    <div class="sd-eyebrow">結論</div>
+    <div class="sd-msg">1枚に言いたいことは1つ</div>
+    <div class="sd-hair"></div>
+    <div class="sd-note">根拠の一言</div>
   </div>
-  <p>補足。</p>
+  <div class="slide-ft"><span>6</span></div>
 </div>
 
-<!-- ============ ドーナツチャート（線2.4・中央は数字だけ・出典は凡例側）。
-     2カラムの片側など半分幅に置く時は .chart.compact（リング130px・凡例は右で折り返さない） ============ -->
-<div class="card">
-  <div class="chart">
-    <svg viewBox="0 0 42 42" role="img" aria-label="構成比">
-      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"></circle>
-      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="86.4 13.6" stroke-dashoffset="25"></circle>
-      <circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-dasharray="12.9 87.1" stroke-dashoffset="-61.4"></circle>
-      <text x="21" y="21" text-anchor="middle" class="big">433</text>
-    </svg>
-    <div class="cl">
-      <div><i style="background: var(--accent);"></i>系列A<strong>374</strong></div>
-      <div><i style="background: var(--ink);"></i>系列B<strong>56</strong></div>
-      <div><i style="background: #EAE2D6;"></i>系列C（残余=下地色）<strong>3</strong></div>
-      <div class="src" style="border-bottom: none;">単位: URL / 出典: 2026-08-20 実測</div>
+<!-- 本文スライドの基本形（デッキの本文系8種はこの骨格。見出し=主張1文・常体・2行まで / 本文=箇条書き7本まで） -->
+<section class="slide" data-title="本文の基本形">
+  <div class="sd-head">
+    <div class="sd-kicker">現状</div>
+    <h1 class="sd-h">主張を1文・常体で書く</h1>
+  </div>
+  <div class="sd-body">
+    <ul><li>箇条書きは7本まで</li><li>語尾を揃える</li></ul>
+  </div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
+<!-- 2カラム: <div class="sd-two"><div><h3>左</h3>…</div><div><h3>右</h3>…</div></div>
+     軸のある表: .sd-body に誌面の .table-wrap>table をそのまま（10行まで・既定は罫の軽い表＝軸の縦罫あり・点線の行罫）
+     図解1枚: <figure class="fig sd-fig" aria-label="主張">誌面の図の部品</figure>
+     ビッグナンバー: .sd-nums / ×○対比: .compare-box.bad / .good / 締め: .sd-todo（やること・担当・期日の3列）。全型の実物は deck.html -->
+
+<!-- 右上タグチップ（.on=該当） -->
+<div class="tags"><span>結論</span><span class="on">進め方</span></div>
+
+<!-- 表紙（主色の緑の全面塗り・白い大題・題の下の白い罫は右端まで。左上=宛先・右上=資料番号・下枠は左=日付 / 右=会社名。2026-09-29） -->
+<section class="slide" data-title="表紙">
+  <div class="sd-cover">
+    <div class="sd-cover-top"><span class="hero-kicker">〇〇株式会社 御中</span><span class="hero-no">資料 07</span></div>
+    <div class="sd-cover-body">
+      <div class="sd-title">題は答えを1文で言い切る</div>
+      <div class="sd-rule"></div>
+      <div class="sd-lead">誰向けに何を決めるための資料か（1〜2文）</div>
     </div>
   </div>
+  <div class="slide-ft"><span>2026年9月29日</span><span>株式会社アイビス</span></div>
+</section>
+
+<!-- 本資料の構成（2026-09-29 目次・章とびら・全体マップを統合。章の頭で毎回出し直す。済んだ章=.done・いまの章=.cur・点線でページ番号へ。10枚超のデッキは2〜3枚目にも置く） -->
+<section class="slide" data-title="本資料の構成"><div class="sd-toc"><div class="lp"><b>本資料の構成</b></div><ol>
+<li class="done"><span class="n">1.</span>章の名前<span class="d"></span><span class="p">3</span></li>
+<li class="cur"><span class="n">2.</span>いまの章<span class="d"></span><span class="p">8</span></li>
+<li><span class="n">3.</span>これからの章<span class="d"></span><span class="p">15</span></li>
+<li><span class="n"></span>付録<span class="d"></span><span class="p">別添-1</span></li></ol></div>
+  <div class="slide-ft"><span class="pg"></span></div>
+</section>
+
+<!-- 注と出典（デッキ）: 注は図表の直下に ul.notes の※（番号つきは li data-n="1" →「※1」、本文側は <sup>※1</sup>）。
+     左下の .sd-source は出典だけを1行（複数は「;」で並べる・加工した数字は「当社分析」） -->
+<div class="sd-body">
+  <table>…<td>税額控除の適用期限を前倒し<sup>※1</sup></td>…</table>
+  <ul class="notes"><li data-n="1">着工の期限が2028年から2027年へ</li><li>中小企業: 資本金3億円以下または従業員300人以下</li></ul>
+</div>
+<div class="sd-source">出典: 各国政府の公表資料; 当社分析</div>
+
+<!-- 裏表紙（デッキ専用・最終枚） -->
+<section class="slide" data-title="裏表紙"><div class="sd-back"><div class="co">会社名</div><div class="ct">連絡先</div></div><div class="slide-ft"><span class="pg"></span></div></section>
+
+<!-- ============ 図の主張（原則11・全ての図に必須）
+     図の部品は <figure class="fig" aria-label="この図が言っていること"> で包む。
+     aria-label は見た目の説明でなく「読者に持ち帰ってほしい結論」を1文で書く。
+       ○ 「自転車が84%を占め、静的ページは1%に満たない」
+       × 「内訳の帯グラフ」「フローの図」
+     1文で書けない図は置く理由がない — 書く段階で気づくための仕掛け。
+     読者に見せる解説は従来どおり図の直下の読み方ボックス（.alert.alert-blue）。
+     主張はHTMLの中だけに置く（画面には出ない） ============ -->
+<figure class="fig" aria-label="予約から返却までで、お金が動くのは貸出時と返却時の2回だけ">
+  <!-- ここに図の部品（.lanes / .swim / .pflow / .funnel / .tilemap / .stackbar / .hbar / .bars / .chart / .phases）-->
+  <figcaption>数字の出どころ・集計日（任意。読者に見せる補足）</figcaption>
+</figure>
+
+<!-- A1 図表名の行（figure.fig の先頭。題=名詞句・単位と時点は small・凡例は右端）＋ A2 数字入りのリード（図表の直前） -->
+<p class="fig-lead">製造<small>（42件）</small>と小売<small>（31件）</small>で全体の73%を占め、医療<small>（9件）</small>は前期から半減した。</p>
+<figure class="fig" aria-label="受注の7割は製造と小売で、医療は半減した">
+  <div class="fig-title"><span class="t">業種別の受注件数<small>（件・2026年4〜9月）</small></span><span class="lg"><span><i style="background:var(--accent)"></i>当期</span><span><i style="background:#C8C8C8"></i>前期</span></span></div>
+  <!-- 図の部品 -->
+  <div class="src-note"><div><span class="lbl">注</span>1. 取消済みの案件を除く</div><div><span class="lbl">出典</span>販売管理システムの受注データ（2026年9月25日抽出）; 当社分析</div></div>
+</figure>
+
+<!-- E6 アンケートの図は .fig-title に設問の原文・回答形式・n= を載せる -->
+<div class="fig-title"><span class="t">C-5 海外生産拠点を今後どうしますか<small>【単一選択】</small></span><span class="lg">全体 n=698</span></div>
+
+<!-- A2・A3 デッキの見出し帯: 答えの数字は見出しに1つ入れる（48字以内）。.sd-sum は見出しに入りきらない内訳だけ・表と同じ表示値・言い換えにしない。時点 .sd-asof・続き番号 .sd-cont・参考の札（.badge.muted。3枚以上続くなら付録へ）・考察だけの枚は .badge.brand「当社の考察」 -->
+<div class="sd-head">
+  <div class="sd-kicker"><span class="badge muted">参考</span>各国の規制<span class="sd-cont">（1 / 2）</span></div>
+  <h1 class="sd-h">2040年に事務職は437万人余る。現場人材は260万人足りない</h1>
+  <span class="sd-asof">2025年9月時点</span>
+  <p class="sd-sum">内訳: 専門職 −181万人 / うちAI・ロボット利活用 −339万人</p>
 </div>
 
-<!-- 半分幅の置き場（2カラムの片側等）は .chart.compact: リング130px・凡例は右で折り返さない -->
-<div class="chart compact">
-  <svg viewBox="0 0 42 42" role="img" aria-label="構成比"><circle cx="21" cy="21" r="15.9155" fill="none" stroke="#EAE2D6" stroke-width="2.4"></circle><circle cx="21" cy="21" r="15.9155" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-dasharray="70 30" stroke-dashoffset="25"></circle><text x="21" y="21" text-anchor="middle" class="big">70%</text></svg>
-  <div class="cl"><div><i style="background:var(--accent)"></i>系列A<strong>70%</strong></div><div><i style="background:#EAE2D6"></i>その他<strong>30%</strong></div></div>
+<!-- 第2弾（2026-09-29）: 順序のある軸の小札 .tags.chev（工程をミニ矢羽で・該当だけ .on）/ 再掲して沈める＝冒頭の一覧表を各論の1枚目で再掲し扱う行以外を tr.muted -->
+<div class="tags chev"><span>企画</span><span class="on">設計</span><span>調達</span><span class="on">加工</span><span>検査</span></div>
+<!-- 付録（別添）: section.slide.annex。ページ番号は「別添-n」の別系列（deck.html の送りスクリプトが振る）・40枚に数えない・題名型の見出し可。本文からは <a class="ref">→ 別添-12</a> -->
+<section class="slide annex" data-title="付録"><div class="sd-head"><div class="sd-kicker"><span class="badge muted">別添</span>各国の規定箇所</div><h1 class="sd-h">規定箇所の一覧</h1></div><div class="sd-body">…</div><div class="slide-ft"><span class="pg"></span></div></section>
+
+<!-- ######## 3 答え — 結論・答えの数字・意思決定 ######## -->
+
+<!-- ============ 統計カード列（KPIの見せ場。ラベル→特大→前月比の順・.d.up=緑/.d.down=紅） ============ -->
+<!-- 単価・内訳など「答えでない数字」は中サイズ .n.md（月額と同じ特大にすると固定料金と誤読される） -->
+<div class="stat-row">
+  <div class="stat"><span class="l">指標名</span><span class="n hot">11<small>件</small></span><span class="d up">+83.3%（前月比）</span></div>
+  <div class="stat"><span class="l">指標名</span><span class="n">¥75,443</span><span class="d down">-39.8%（前月比）</span></div>
+  <div class="stat"><span class="l">指標名</span><span class="n">41<small>人</small></span><span class="d up">+310.0%（前月比）</span></div>
 </div>
+
+<!-- 意思決定 -->
+<div class="decide">
+  <div><div class="k">推奨する意思決定</div><div class="d">決定を1文で<small>前提や注記</small></div></div>
+  <div>
+    <div class="decide-ask"><span class="n">1</span><span>依頼事項</span><span class="who">担当</span></div>
+    <div class="decide-ask"><span class="n">2</span><span>依頼事項</span><span class="who">担当</span></div>
+  </div>
+</div>
+
+<!-- E3 結論の答えの末尾に参照先 -->
+<td><strong>11月の定例から使えます。</strong>移行の手順は3段階です。<a class="ref" href="#next">→ 8章</a></td>
+
+<!-- ######## 4 数字 — グラフ・注目枠・確度の線種・伸び率 ######## -->
 
 <!-- ============ 横棒グラフ / 統計数字 ============ -->
 <div class="hbar"><div style="font-size: 13px; font-weight: 700;">勝った側</div><div class="track"><div class="fill" style="width: 100%;"></div></div><div class="val">10件</div></div>
@@ -409,10 +248,10 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
   <span><i style="background:#DE9873"></i>200〜</span>
   <span><i style="background:#EBC0A9"></i>100〜</span>
   <span><i style="background:#F3DDD1"></i>40〜</span>
-  <span><i style="background:#F0EBE3"></i>それ未満</span>
+  <span><i style="background:#F2F2F2"></i>それ未満</span>
 </div>
 
-<!-- ============ 100%積み上げ構成バー（全体の中身の内訳を1行で。s1=焦がし(主役)→s2=墨→s3=下地→s4=罫線色。
+<!-- ============ 100%積み上げ構成バー（全体の中身の内訳を1行で。s1=緑(主役)→s2=濃い緑→s3=下地→s4=罫線色。
      2本並べると「表示の中身」対「クリックの中身」のような対比が語れる。凡例は.sb-legend ============ -->
 <div class="stackbar">
   <div class="sb-title"><span>検索表示回数の中身</span><span class="sb-total">30,352<small>回</small></span></div>
@@ -426,22 +265,14 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
 <div class="sb-legend">
   <span><i style="background:var(--accent)"></i>一般キーワード（本命）</span>
   <span><i style="background:var(--ink)"></i>指名検索</span>
-  <span><i style="background:#EAE2D6"></i>同語ノイズ</span>
-  <span><i style="background:#DCD3C8"></i>内訳の出ない分</span>
+  <span><i style="background:#F2F2F2"></i>同語ノイズ</span>
+  <span><i style="background:#C8C8C8"></i>内訳の出ない分</span>
 </div>
 <div class="stat"><div class="l">ラベル（日付つき出典）</div><div class="n hot">433</div></div>
 
 <!-- 答えでない数字（単価・内訳・まだ測れていないもの）は中サイズ .n.md（30px）に落とす。
      単位の<small>も13pxに連動する。答えの数字と同じ特大にすると「これが料金（固定）」と誤読される -->
-<div class="stat"><div class="l">1件あたりの単価（2026年6月11日実測）</div><div class="n md">¥1,200<small>円</small></div></div>
-
-<!-- ============ 統計カード列（KPIの見せ場。ラベル→明朝特大→前月比の順・.d.up=緑/.d.down=紅） ============ -->
-<!-- 単価・内訳など「答えでない数字」は中サイズ .n.md（月額と同じ特大にすると固定料金と誤読される） -->
-<div class="stat-row">
-  <div class="stat"><span class="l">指標名</span><span class="n hot">11<small>件</small></span><span class="d up">+83.3%（前月比）</span></div>
-  <div class="stat"><span class="l">指標名</span><span class="n">¥75,443</span><span class="d down">-39.8%（前月比）</span></div>
-  <div class="stat"><span class="l">指標名</span><span class="n">41<small>人</small></span><span class="d up">+310.0%（前月比）</span></div>
-</div>
+<div class="stat"><div class="l">1件あたりの単価（2026年6月11日実測）</div><div class="n md">¥1,200</div></div>
 
 <!-- ============ 横棒ペア（当月×前月の2時点比較。棒の幅=ペア内最大を100%に） ============ -->
 <div class="bars">
@@ -450,7 +281,7 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
     <div class="bline"><div class="b prev" style="width:55%"></div><span class="bv">6件<small>前月</small></span></div>
   </div></div>
 </div>
-<div class="bars-legend"><span><i style="background:var(--accent)"></i>当月</span><span><i style="background:#EAE2D6"></i>前月</span></div>
+<div class="bars-legend"><span><i style="background:var(--accent)"></i>当月</span><span><i style="background:#F2F2F2"></i>前月</span></div>
 
 <!-- ============ ファネル（段階の絞り込み。段の濃さは上から素→.f2→.f3→.f4・段間に転換率。
      棒の幅=最上段比（右に数字を置くため最大82%に抑える）。ラベルは棒に収まる時だけ中・収まらない時は数字の後ろに.flで。
@@ -488,25 +319,317 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
   <div class="frow"><span class="fname">検索・店舗ページを見た（提携店サイトからの直接訪問も含む）</span><div class="fbar f2" style="width:41%"></div><span class="fv">2,725<small>セッション</small></span></div>
 </div>
 
-<!-- ============ 図の読み方ボックス（複雑な図の直下に1個だけ。alert-blueに「この図の読み方:」の太字ラベル。
-     ※注記(ul.notes)との使い分け: 図の解釈のしかた=このボックス／データの但し書き=※ ============ -->
-<div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>この図の読み方:</strong> 上3段は「訪問の回数」、下2段は「予約の件数」で、数えているものが違います。「参考」と付けた境目の率だけは規模感の目安です。</span></div>
+<!-- B1 注目枠（緑の実線＝点線は想定値・予定の専用。名札を必ず添える。1図2か所まで・位置は% か inset）と表の行の注目枠 tr.focus -->
+<figure class="fig" aria-label="2025年から件数が倍増した">
+  <div class="focus-wrap">
+    <!-- 図の部品 -->
+    <span class="focus" style="left:58%;top:-6px;width:41%;height:162px"></span>
+    <span class="focus-note" style="left:4%;top:-18px">2025年から倍増</span>
+  </div>
+</figure>
+<tr class="focus"><td class="label">中部</td><td class="num">31</td></tr>
 
-<!-- ============ 図の主張（原則11・全ての図に必須）
-     図の部品は <figure class="fig" aria-label="この図が言っていること"> で包む。
-     aria-label は見た目の説明でなく「読者に持ち帰ってほしい結論」を1文で書く。
-       ○ 「自転車が84%を占め、静的ページは1%に満たない」
-       × 「内訳の帯グラフ」「フローの図」
-     1文で書けない図は置く理由がない — 書く段階で気づくための仕掛け。
-     読者に見せる解説は従来どおり図の直下の読み方ボックス（.alert.alert-blue）。
-     主張はHTMLの中だけに置く（画面には出ない） ============ -->
-<figure class="fig" aria-label="予約から返却までで、お金が動くのは貸出時と返却時の2回だけ">
-  <!-- ここに図の部品（.lanes / .swim / .pflow / .funnel / .tilemap / .stackbar / .hbar / .bars / .chart / .phases）-->
-  <figcaption>数字の出どころ・集計日（任意。読者に見せる補足）</figcaption>
+<!-- B2 確定=塗り・想定=点線 .est（.hbar の track 内で fill の後ろに / .stackbar の区間 / .bars の棒） -->
+<div class="hbar"><div>事務型</div><div class="track"><div class="fill" style="width:32%"></div><div class="est" style="width:23%"></div></div><div class="val">32% +23%</div></div>
+<div class="legend"><span><i style="background:var(--accent)"></i>推計値</span><span><i class="est"></i>進展を仮定した場合の上乗せ</span></div>
+
+<!-- B3 伸び率 .delta と区間の括り .sb-brace（left/width は区間の位置%・b の left は括りの中央%） -->
+<span class="bv">11件<span class="delta">+83%</span></span>
+<div class="stackbar">
+  <div class="sb-brace"><i style="left:52%;width:48%"></i><b style="left:76%">導入済み 48%</b></div>
+  <div class="sb-track"><div class="sb-seg s3" style="width:32%">未検討</div><div class="sb-seg s4" style="width:20%">検討中</div><div class="sb-seg s2" style="width:26%">一部</div><div class="sb-seg s1" style="width:22%">全社</div></div>
+</div>
+
+<!-- D1 出来事つき時系列線 .tline（x=30+(年-起点)*80 のように年を等間隔に。svg は aria-hidden） -->
+<figure class="fig" aria-label="米国のインフレは利上げ開始の直前に9.1%で頭打ちになった">
+  <div class="tline"><svg viewBox="0 0 440 190" aria-hidden="true">
+    <line class="ax" x1="30" y1="160" x2="430" y2="160"/>
+    <g text-anchor="middle"><text x="30" y="176">2019</text><text x="110" y="176">2020</text><text x="190" y="176">2021</text><text x="270" y="176">2022</text><text x="350" y="176">2023</text><text x="430" y="176">2024</text></g>
+    <polyline class="sub" points="30,150 80,152 130,158 180,150 230,120 280,108 330,125 380,140 430,138"/>
+    <polyline class="main" points="30,138 80,135 130,152 180,120 230,60 280,50 330,95 380,120 430,122"/>
+    <line class="ev" x1="126" y1="30" x2="126" y2="160"/><line class="ev" x1="310" y1="30" x2="310" y2="160"/>
+    <text class="evl" x="130" y="26">① 感染拡大</text><text class="evl" x="306" y="26" text-anchor="end">② 利上げ開始</text>
+    <text class="hot" x="250" y="44" text-anchor="end">米国 9.1%</text><text x="432" y="133" text-anchor="end">日本</text>
+  </svg></div>
+</figure>
+
+<!-- D2 レンジバー .range（列数は --r-cols。位置は全列共通の目盛り: 例 p(v)=18+v/110*62 %。最終行の span に .last） -->
+<figure class="fig" aria-label="調達費の予測の幅は2050年に向けて大きく縮む">
+  <div class="range" style="--r-cols:2">
+    <span class="h">機関</span><span class="h">2024年</span><span class="h">2050年</span>
+    <span class="l last">機関A</span><span class="cell last"><b class="mn" style="left:43.4%">45</b><i style="left:43.4%;width:33.3%"></i><b class="mx" style="left:76.7%">104</b></span><span class="cell last"><b class="mn" style="left:33.2%">27</b><i style="left:33.2%;width:6.2%"></i><b class="mx" style="left:39.4%">38</b></span>
+  </div>
+</figure>
+
+<!-- 全体→内訳（2026-09-29 見直しで .drill から差し替え）: 上に全体の .stackbar、下に区分ごとの見出し .split2 .dh＋内訳の短い棒。引き出し線は引かない -->
+<figure class="fig" aria-label="米国の輸出は欧州向け、豪州の輸出は日本と中国向けが中心">
+  <div class="stackbar"><div class="sb-track"><div class="sb-seg s1" style="width:21%">米国</div><div class="sb-seg s2" style="width:20%">豪州</div><div class="sb-seg s3" style="width:59%">その他</div></div></div>
+  <div class="split2"><div><div class="dh">米国 85（21%）</div><div class="row"><i style="width:30%"></i>オランダ 12</div></div><div><div class="dh">豪州 80（20%）</div><div class="row"><i style="width:70%"></i>日本 28</div></div></div>
+</figure>
+<!-- 正と負に分かれる縦棒 .vbar.pn（中央が0・上=余剰・下=不足・.ax に向きの言葉） -->
+<div class="vbar pn" style="--n:3;--lw:60px"><span class="ax">余剰↑<br><br>不足↓</span><div class="c"><i class="up" style="height:40%"></i><i class="dn" style="height:10%"></i><b>+30</b></div></div>
+<!-- レンジバーの比べる相手: 各セルに同じ目盛りの細い帯 <span class="band" style="left:%;width:%"></span>（点で比べるなら .baseline） -->
+
+<!-- 図の部品（figure.fig で包み aria-label に主張） -->
+<figure class="fig" aria-label="主張"><div class="wfall"><div class="bar total" style="--b:0%;--h:50%"><span class="v">100</span><i></i><span class="l">現在</span></div><div class="bar" style="--b:50%;--h:12%"><span class="v">+24</span><i></i><span class="l">増</span></div><div class="bar neg" style="--b:60%;--h:12%"><span class="v">−4</span><i></i><span class="l">減</span></div></div></figure>
+<figure class="fig" aria-label="主張"><div class="dotgrid"><div><div class="v">58%</div><div class="dots"><!-- <i class="on"></i>×58 + <i></i>×42 --></div><div class="l">ラベル</div></div></div></figure>
+
+<!-- 第2弾: 基準線 .bl-wrap > .baseline（left:% で位置・名札は出所を主語に）-->
+<figure class="fig" aria-label="主張"><div class="bl-wrap"><span class="baseline" style="left:55%"><b>全体平均 55%</b></span><!-- .hbar 等 --></div></figure>
+<!-- 縦棒 .vbar と列にそろえた行 .colrow（同じ格子: --lw=行見出しの幅・--n=列数。行見出しを持たないなら .nolw。同じ値は grid-column:span n・変えた値は .chg・副指標は .h1〜.h3）。実数の積み上げは .c > .stack > span（flex:量） -->
+<figure class="fig" aria-label="主張">
+  <div class="vbar" style="--n:3"><span></span><div class="c"><b>120</b><i style="height:70%"></i></div><div class="c"><b>98</b><i style="height:57%"></i></div><div class="c"><b>140</b><i class="hot" style="height:82%"></i></div></div>
+  <div class="vbar-x" style="--n:3"><span></span><span>基本</span><span>低位</span><span>高位</span></div>
+  <div class="colrow" style="--n:3"><span class="h">稼働率</span><span>70%</span><span class="chg">60%</span><span class="chg">80%</span><span class="h">価格の年</span><span style="grid-column:span 3">2024年（共通）</span></div>
+</figure>
+<!-- 図の番号札（3か所以上を指すとき。注目枠は2か所まで）: .focus-wrap > .num-chip（left/top:%）＋右に番号つきリスト -->
+<div class="focus-wrap"><span class="num-chip sm brand" style="left:12%;top:18%">1</span></div>
+<!-- 背中合わせの横棒 .b2b（左右の単位を見出し行に） -->
+<div class="b2b"><span class="hd">企業数</span><span></span><span class="hd">付加価値額</span><span class="l"><i style="width:12%"></i>9千社</span><span class="m">中堅</span><span class="r"><i style="width:48%"></i>48%</span></div>
+<!-- 尺度の設問 .stackbar.likert（肯定 .p2 .p1 / 否定 .n1 .n2 / 該当しない .na） -->
+<div class="stackbar likert"><div class="sb-track"><div class="sb-seg p2" style="width:18%">よく</div><div class="sb-seg p1" style="width:30%">ときどき</div><div class="sb-seg n1" style="width:32%">あまり</div><div class="sb-seg n2" style="width:14%">全く</div><div class="sb-seg na" style="width:6%"></div></div></div>
+<!-- 2択の分かれ目 .split2 -->
+<div class="split2"><div><div class="big hot">54%<small>取り組んでいる</small></div><div class="row"><i style="width:70%"></i>後継者育成</div></div><div><div class="big">46%<small>取り組んでいない</small></div><div class="row dim"><i style="width:62%"></i>相談先がない</div></div></div>
+<!-- 距離・量の物差し .scale -->
+<div class="scale"><div class="scale-axis"><span style="left:0">0</span><span style="left:83%">30</span></div><div class="scale-zones"><span style="width:83%">影響あり</span><span class="dim" style="width:17%">ほぼ気づかれない</span></div></div>
+
+<!-- ######## 5 比べる — 表（緑の見出し文字・灰の通し罫・点線の行）・評価・対比・差分 ######## -->
+
+<!-- ============ 表（項目名=ゴシック td.label・数値=td.num・優先度バー）。
+     セル内バー（.pri右寄せ）を表の途中の列で使う時は、そのtdに右余白を足す（例: style="padding-right:40px"。
+     バーが右端いっぱいまで寄るため、標準余白だけだと隣の列と詰まって見える）。
+     主ラベルに原語・補足を薄く添えるときは <span class="label-sub">（例: 他サイト経由 <span class="label-sub">Referral</span>）。
+     平易な日本語を主・専門用語を副で併記する原則6の実践 ============ -->
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>ページ</th><th>URL</th><th style="text-align: right;">優先度</th></tr></thead>
+    <tbody>
+      <tr><td class="label">トップ</td><td><code>/</code></td><td class="num">1.0</td></tr>
+      <tr><td class="label">店舗詳細</td><td><code>/shop_detail?shop=ID</code></td>
+          <td class="num">0.8</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ 表・2段ヘッダー（列グループ）: 関連する列を1行目のグループ名（th.th-grp[colspan]）で束ねる。
+     グループ外の列は th[rowspan=2]。停止中・対象外の行は tr.muted で沈める。
+     比較表では選択肢ごとをグループにし、推奨は th.th-grp.std（+配下の各セルに td.std）で面を着せる — 面は1グループだけ ============ -->
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th rowspan="2">案件名</th>
+        <th class="th-grp" colspan="3">体制</th>
+        <th rowspan="2">状況</th>
+      </tr>
+      <tr><th>メインPM</th><th>サブPM</th><th>エンジニア</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="label">案件A</td><td>担当1</td><td>担当2</td><td>担当3・担当4</td><td>開発（請負）</td></tr>
+      <tr class="muted"><td class="label">案件B（停止中）</td><td>—</td><td>—</td><td>—</td><td>必要に応じて再開</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ 選択肢の表（td-sub=項目名の補足行 / std=推奨列の面〈1列だけ〉/ cnt=金額でない数は墨 / calc=内訳の式はグレー。差し色は答えの金額だけ） ============ -->
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>プラン</th><th class="num">回数</th><th class="num">月額の内訳</th><th class="num std">月額（標準）</th></tr></thead>
+    <tbody>
+      <tr><td class="label wrap">Standard — 隔週訪問（おすすめ）<span class="td-sub">項目名の下の1行補足（td-sub）。2行を超えるなら.termへ</span></td><td class="num cnt">2回</td><td class="num calc">20,000 ＋ 40,000×2</td><td class="num std">130,000</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ 前月比較表（.table-mom: グループ行で分節・当月=濃い灰/前月=グレー/増減=意味色。増えたら悪い指標は色を反転） ============ -->
+<div class="table-wrap">
+  <table class="table-mom">
+    <thead><tr><th>指標</th><th class="num">当月</th><th class="num">前月</th><th class="num">前月比</th></tr></thead>
+    <tbody>
+      <tr class="tgroup"><td colspan="4">グループ名</td></tr>
+      <tr><td class="label">良い指標</td><td class="num">11</td><td class="num prev">6</td><td class="num up">+83.3%</td></tr>
+      <tr><td class="label">悪化した指標</td><td class="num">6</td><td class="num prev">3</td><td class="num down">+100.0%</td></tr>
+      <!-- 親行の変種をぶら下げる時は td.label.ind。全角空白を項目名に直書きしないこと -->
+      <tr><td class="label ind">うち内訳</td><td class="num">2</td><td class="num prev">1</td><td class="num up">+100.0%</td></tr>
+      <!-- 長い項目名は td.label.wrap で折り返す（併用可: class="label wrap ind"） -->
+      <tr><td class="label wrap">折り返してほしい長い項目名をここに書く</td><td class="num">3</td><td class="num prev">3</td><td class="num">±0</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- C1〜C3 罫の軽い表（table.open は縦罫なし版。デッキの .sd-body table は既定で縦罫あり）＋ 1行目で言い切る .td-head/.td-body（状態なら語を3〜5個に固定）＋ 判定列 td.verdict（面なし・文字色だけ） -->
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>国</th><th class="verdict">判定</th><th>根拠</th></tr></thead>
+    <tbody>
+      <tr><td class="label">ドイツ</td><td class="verdict up">推進</td><td><span class="td-head">輸入水素の入札を2回目まで実施</span><span class="td-body">・第3回は2027年度の予定</span></td></tr>
+      <tr><td class="label">英国</td><td class="verdict flat">変化なし</td><td>支援制度の第2弾が審査中</td></tr>
+      <tr><td class="label">米国</td><td class="verdict down">後退</td><td>税額控除の適用期限を前倒し</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- C4 答えの行 tr.answer（面は1本だけ）＋ 符号色 td.pos（緑）/ td.neg（紅）。内訳の行は td.num.cnt の墨 -->
+<tr class="answer"><td class="label">過不足</td><td class="num pos">+437</td><td class="num neg">-181</td></tr>
+<tr><td class="label ind">需要</td><td class="num cnt">1,039</td><td class="num cnt">1,867</td></tr>
+
+<!-- 右端の解釈の列 td.so（複数行ぶんは td.so[rowspan]・何の列かは列見出しで）/ 変わった所 td.chg（面なし・緑の太字）・mark.chg（2列の対照なら現行側の対応句を灰の太字）/ 束の区切り tr.gend / 欠けのセル td.na / 結合セル td.merge -->
+<tr><td class="label">米国</td><td class="num">32</td><td class="num">48</td><td class="so">アジアへ振り向ける余地がある</td></tr>
+<tr><td class="label">スコープ3</td><td>任意</td><td class="chg">一部必須</td></tr>
+<p>変わった句だけ<mark class="chg">この色</mark>にする。</p>
+<tr><td class="label">証書の品質基準</td><td>厳格化</td><td class="so" rowspan="2">品質は厳しく、長期契約には逃げ道を用意</td></tr>
+<tr class="gend"><td class="label">長期契約</td><td>緩和</td></tr>
+<td class="na">情報なし</td>
+<td class="merge" rowspan="2">項目ごとには定めず、方針として記載を求める</td>
+
+<!-- 表の変種: ヒートマップ（td.h0〜h3）/ ハーベイボール（.hb.q0〜q4）/ 入れ子行（td.grp[rowspan]+td.sub）/ 効果の幅（.efx / .efx.down + width:%） -->
+<table class="heat"><tbody><tr><td class="label">項目</td><td class="h0">なし</td><td class="h1">低</td><td class="h2">中</td><td class="h3">高</td></tr></tbody></table>
+<td><span class="hb q2"></span>一部満たす</td>
+<table class="nest"><tbody><tr><td class="grp" rowspan="2">親</td><td class="sub">子1</td><td>値</td></tr><tr><td class="sub">子2</td><td>値</td></tr></tbody></table>
+<td><span class="efx" style="width:60%">+20〜30</span></td>
+<div class="legend"><span><i class="sq" style="background:var(--accent)"></i>増やす方向</span><span><i class="sq" style="background:#F2F2F2"></i>減らす方向</span></div>
+
+<!-- ============ ×○対比 ============ -->
+<div class="compare">
+  <div class="compare-box bad"><div class="cb-head"><span class="cb-mark">×</span>ダメな案</div><p>理由</p></div>
+  <div class="compare-box good"><div class="cb-head"><span class="cb-mark">○</span>採用案</div><p>理由</p></div>
+</div>
+
+<!-- 良し悪しでなく「現状 → あるべき姿」の対比は .asis/.tobe（○×マーク不要・tobe=緑枠） -->
+<div class="compare">
+  <div class="compare-box asis"><div class="cb-head">現状</div><p>いまの流れ</p></div>
+  <div class="compare-box tobe"><div class="cb-head">あるべき姿</div><p>変えた後の流れ</p></div>
+</div>
+
+<!-- ============ 選択肢と採否（.options / .option: 検討した案を横に並べ、採ったものを立たせ、捨てたものを沈める。
+     3案以上の採否＝決定の記録に使う〈2択の良し悪しは .compare-box〉。
+     状態は3つ: 素=中立 / .chosen=採用（緑の枠）/ .dim=不採用（グレーに沈める。opacityは使わない）。
+     結論バッジは既存の語彙で: 採用=.badge.good / 対抗案=.badge.plain / 不採用=.badge.muted。
+     記号丸（.num-chip）に案ごとの色は付けない — 採否は枠とバッジが示す ============ -->
+<div class="options">
+  <div class="option dim">
+    <span class="num-chip">A</span>
+    <h4>案Aの名前</h4>
+    <p>どういう案か（1〜2文）。</p>
+    <span class="badge muted">結論: やらない</span>
+  </div>
+  <div class="option">
+    <span class="num-chip">B</span>
+    <h4>案Bの名前</h4>
+    <p>どういう案か（1〜2文）。</p>
+    <span class="badge plain">対抗案</span>
+  </div>
+  <div class="option chosen">
+    <span class="num-chip brand">C</span>
+    <h4>案Cの名前</h4>
+    <p>どういう案か（1〜2文）。</p>
+    <span class="badge good">結論: これ（6月19日決定）</span>
+  </div>
+</div>
+
+<!-- ============ 差分表（.dtable: 正本の「現行版」と「修正案」を行単位で左右に並べる。文章の改訂レビュー用。
+     行の種別は4つのどれか1つ: eq=変更なし（文字グレー）/ rep=置換（左紅・右緑の罫+字単位の<del><ins>）/ del=左から消えた / ins=右に増えた。
+     原文は<pre>に入れて加工しない（空行は&nbsp;）。変更のない行が続く箇所は.dfoldの1行に畳み、畳んだ行数を書く。
+     凡例.dlegend+色の表示トグル#hlは読み方ボックスの中にページで1枚（トグルのscriptは下・</body>直前）。
+     図ではなく表の族なので<figure>で包まない。文字数などの規模は.dmeta（ラベルが上・ゴシック22px。答えの数字ではないので.statにしない）。
+     2段組で幅が要るページは .hero-inner,.flow,.flow-tabs,.container,footer の max-width を1320pxに揃えて広げてよい ============ -->
+<div class="dmeta"><div class="dm"><span class="l">現行版の文字数</span><span class="v">3,425</span></div><div class="dm"><span class="l">修正案の文字数</span><span class="v">3,641</span></div><div class="dm"><span class="l">増減</span><span class="v up">+216</span></div></div>
+<div class="alert alert-blue">
+  <svg class="icon a-icon"><use href="#i-info"/></svg>
+  <div><strong>この表の読み方:</strong> 左が現行版、右が修正案です。消した字は紅、足した字は緑で示します。変更のない行が続く箇所は畳んでいます。
+  <div class="dlegend"><span class="dl-del"><i></i>消した字・変更前</span><span class="dl-ins"><i></i>足した字・変更後</span><label><input type="checkbox" id="hl" checked> 差分の色を表示</label></div>
+  </div>
+</div>
+<div class="dtable">
+<div class="dhead"><div>現行版</div><div>修正案</div></div>
+<div class="dfold">変更のない12行を畳んでいます</div>
+<div class="drow eq"><div class="dcell l"><pre>変更のない行は左右に同じ文を置き、文字をグレーに落とす</pre></div><div class="dcell r"><pre>変更のない行は左右に同じ文を置き、文字をグレーに落とす</pre></div></div>
+<div class="drow rep"><div class="dcell l"><pre>決済は<del>予約時に前払い</del>とする</pre></div><div class="dcell r"><pre>決済は<ins>受け取り当日に店頭で</ins>とする</pre></div></div>
+<div class="drow del"><div class="dcell l"><pre><del>左からだけ消えた行は、右を&amp;nbsp;の空セルにする</del></pre></div><div class="dcell r"><pre>&nbsp;</pre></div></div>
+<div class="drow ins"><div class="dcell l"><pre>&nbsp;</pre></div><div class="dcell r"><pre><ins>右に増えた行は、左を&amp;nbsp;の空セルにする</ins></pre></div></div>
+</div>
+<!-- 差分の色トグル（差分表を置いたページのみ・</body>直前。チェックを外すと body.nohl が付いて紅緑と罫が消える） -->
+<script>
+(function(){
+  var hl = document.getElementById('hl');
+  if (hl) hl.addEventListener('change', function(e){ document.body.classList.toggle('nohl', !e.target.checked); });
+})();
+</script>
+
+<!-- 図の部品（figure.fig で包み aria-label に主張） -->
+<figure class="fig" aria-label="主張">
+  <div class="mx2"><span class="ax y">効果（上ほど大きい）</span><span class="ax x">手間（右ほど小さい）</span><span class="mx2-item hot" style="left:78%;top:22%">項目</span></div>
+</figure>
+
+<!-- 第2弾: 論点整理表＝table.open で「論点（疑問文・rowspan）/ 選択肢 / 評価軸 / 採用 td.verdict」。未決は「分析して決める」 -->
+<!-- 選び方の開示: 母集団を全部載せ、しきい値の区切り行 tr.gsep・選んだ行の頭に .num-chip.sm.brand・落とした行は tr.muted。段で絞るなら .funnel の段の下に ul.f-cond -->
+<tr class="gsep"><td colspan="2">↓ 2022年時点の設備容量が500MW未満</td></tr>
+<ul class="f-cond"><li>海外展開から30年以内</li></ul>
+<!-- 検算できる表: 行見出しに記号 span.sym・答えの行の見出しに式 .td-sub -->
+<tr class="answer"><td class="label wrap"><span class="sym">（c）</span>年間発電量<span class="td-sub">a × b × 8,760時間</span></td><td class="num pos">1,971</td></tr>
+<!-- 段を上がる一手の行 tr.bridge / 不利な理由 .td-sub.neg / 疎なコスト表の費用セル td.cost（琥珀） -->
+<tr class="bridge"><td>次へ</td><td>外部人材を月2回招いた</td></tr>
+<td>△<span class="td-sub neg">計測器が要る</span></td>
+<td class="num cost">¥120,000</td>
+
+<!-- ######## 6 流れと時間 — 手順・矢羽・工程・年表（技術資料向けの図は末尾） ######## -->
+
+<!-- ============ 番号つき手順 / 注意リスト ============ -->
+<ol class="steps">
+  <li>手順1</li>
+  <li>手順2</li>
+</ol>
+<ul class="notes">
+  <li>注意事項（※印で表示される）</li>
+</ul>
+
+<!-- 矢羽（工程・段階。現在地=.hot）: .sd-body の中に -->
+<div class="sd-steps">
+  <div class="sd-step"><span class="n">1</span><span class="k">9月</span><span class="t">要件</span></div>
+  <div class="sd-step hot"><span class="n">2</span><span class="k">10月前半</span><span class="t">設計</span></div>
+  <div class="sd-step"><span class="n">3</span><span class="k">10〜11月</span><span class="t">実装</span></div>
+</div>
+
+<!-- ============ 役割つき縦フロー（.pflow: 図の下の「詳細」に。番号丸=役割色の輪郭・注記は左罫） ============ -->
+<div class="pflow">
+  <div class="pflow-step">
+    <div class="pflow-dot user">1</div>
+    <div class="pflow-body">
+      <div class="pflow-actor user">役割名</div>
+      <div class="pflow-text">やること</div>
+      <div class="pflow-note">補足・条件分岐など</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 週割り工程表（.gantt: 期間の計画を「誰が・いつ」で見せる。1列=1週間・週数は style="--g-weeks:N"。
+     コンサル型（2026-09-25）: 外枠なし / 棒に文字を入れない（何の棒かは左の行見出し+small が語る）/ 色は own=緑・party=淡・joint=濃い灰・after=輪郭だけ /
+     動かない日付は最上段の .g-ms-row に▲（.g-ms）で集める / 定例などの繰り返しは棒にせず読み方ボックスへ / figure.fig で包み aria-label に主張 ============ -->
+<figure class="fig" aria-label="実装に6週間を確保し、納品・検収・振込を期限の内側に置く">
+  <div class="gantt-wrap">
+    <div class="gantt" style="--g-weeks:8">
+      <div class="g-row g-month"><div></div><div class="g-mo" style="grid-column:2 / 6">10月</div><div class="g-mo" style="grid-column:6 / 10">11月</div></div>
+      <div class="g-row g-head"><div></div><div class="g-wk">10.5</div><div class="g-wk">10.12</div><div class="g-wk">10.19</div><div class="g-wk">10.26</div><div class="g-wk">11.2</div><div class="g-wk">11.9</div><div class="g-wk">11.16</div><div class="g-wk">11.23</div></div>
+      <div class="g-row g-ms-row">
+        <div class="g-label">マイルストーン</div>
+        <div class="g-cell" style="grid-column:4 / 5"><div class="g-ms"><b></b>10.23 中間判断</div></div>
+        <div class="g-cell" style="grid-column:8 / 9"><div class="g-ms own"><b></b>11.18 納品</div><div class="g-ms"><b></b>11.20 検収</div></div>
+      </div>
+      <div class="g-row"><div class="g-label">作業名<small>担当・期間・中身の順序</small></div><div class="g-bar own" style="grid-column:2 / 8"></div></div>
+      <div class="g-row"><div class="g-label">相手方の作業<small>期間</small></div><div class="g-bar party" style="grid-column:2 / 4"></div></div>
+      <div class="g-row"><div class="g-label">期限の外<small>納品後</small></div><div class="g-bar after" style="grid-column:9 / 10"></div></div>
+    </div>
+  </div>
+  <div class="legend"><span><i class="sq" style="background:var(--accent)"></i>書き手側</span><span><i class="sq" style="background:#F2F2F2"></i>相手方</span><span><i class="sq" style="background:var(--ink)"></i>共同</span><span><i class="sq" style="background:none;border:1px solid var(--line)"></i>期限の外</span></div>
+</figure>
+
+<!-- D3 出来事の年表 .timeline（転機の1点だけ .hot） -->
+<figure class="fig" aria-label="方針は半年で撤回され、再合意まで5か月かかった">
+  <div class="timeline" style="--t-cols:3"><div><span class="d">2025.2</span>支援策を発表</div><div class="hot"><span class="d">2025.6</span>大臣が方針を撤回</div><div><span class="d">2025.11</span>与党と再合意</div></div>
 </figure>
 
 <!-- ============ スイムレーン（横=フェーズ/縦=役割。例外列=ex・お金の行=money。
-     人間の役割が3つある図（例: 生徒/先生/編集者）は3人目に .other（=墨）を使う。お金の琥珀・例外の紅を人間役割に流用しない ============ -->
+     人間の役割が3つある図（例: 生徒/先生/編集者）は3人目に .other（=濃い灰）を使う。お金の琥珀・例外の紅を人間役割に流用しない ============ -->
 <div class="lane-wrap">
   <div class="lanes" style="grid-template-columns: 96px repeat(3, minmax(0,1fr));">
     <div class="lane-corner">レーン</div>
@@ -519,7 +642,7 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
     <div class="lane-cell ex">オンラインで取消</div>
     <div class="lane-cell">来店して受付</div>
 
-    <!-- 人間が3者いる図の3人目の行は .other（=墨）。店舗（相手方）は .shop（=緑）。琥珀・紅は人間役割に使わない -->
+    <!-- 人間が3者いる図の3人目の行は .other（=濃い灰）。店舗（相手方）は .shop（=緑）。琥珀・紅は人間役割に使わない -->
     <div class="lane-label other"><i></i>第3の役割（例: 先生）</div>
     <div class="lane-cell">予約内容を確認</div>
     <div class="lane-cell ex">—</div>
@@ -563,87 +686,19 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
   </div>
 </div></div>
 
-<!-- ============ 役割つき縦フロー（.pflow: 図の下の「詳細」に。番号丸=役割色の輪郭・注記は左罫） ============ -->
-<div class="pflow">
-  <div class="pflow-step">
-    <div class="pflow-dot user">1</div>
-    <div class="pflow-body">
-      <div class="pflow-actor user">役割名</div>
-      <div class="pflow-text">やること</div>
-      <div class="pflow-note">補足・条件分岐など</div>
-    </div>
-  </div>
-</div>
+<!-- 図の部品（figure.fig で包み aria-label に主張） -->
+<figure class="fig" aria-label="主張"><div class="vchain"><span class="lbl">行</span><div class="sd-steps"><div class="sd-step hot"><span class="t">工程</span></div></div><span></span><div class="vchain-notes"><span>説明</span></div></div></figure>
+<figure class="fig" aria-label="主張"><div class="cycle" style="--n:4"><div class="cycle-item" style="--i:0"><span class="num-chip sm">1</span><span class="t">段</span><span class="d">説明</span></div></div></figure>
 
-<!-- ============ フェーズ帯 / 縦フロー（分岐） ============ -->
-<div class="phases">
-  <div class="phase done"><span class="pn">Phase 1</span><span class="pt">完了した工程</span><span class="ps">完了（7月）</span></div>
-  <div class="phase now"><span class="pn">Phase 2</span><span class="pt">今の工程</span><span class="ps">進行中</span></div>
-  <div class="phase"><span class="pn">Phase 3</span><span class="pt">次の工程</span><span class="ps">予定</span></div>
-</div>
+<!-- 第2弾: 制度の年表格子・粒度を変える工程表 table.rgrid（施行後・実施期間は td.on を colspan で1本に・予定は td.plan・段階は語で） -->
+<table class="rgrid"><thead><tr><th>制度</th><th>24</th><th>25</th><th>26</th></tr></thead><tbody><tr><td class="label">制度名</td><td>提案</td><td class="on" colspan="2">発効 →</td></tr><tr><td class="label">制度名</td><td>公布</td><td></td><td class="plan">適用予定</td></tr></tbody></table>
+<!-- 年表の転機の解釈 .tl-note（.timeline の .hot と番号で対応） -->
+<ol class="tl-note"><li><strong>転機① 輸出型へ</strong>: 解釈を1文</li></ol>
+<!-- 2段の矢羽: 上に括り帯 .step-band（--n・span）、下に工程列にそろえた行 .colrow.nolw（行見出しの列なし） -->
+<div class="step-band" style="--n:4"><span style="grid-column:span 2">大区分</span><span class="hot" style="grid-column:span 2">大区分</span></div>
 
-<!-- ============ 週割り工程表（.gantt: 期間の計画を「誰が・いつ」で見せる。1列=1週間・週数は style="--g-weeks:N"。
-     コンサル型（2026-09-25）: 外枠なし / 棒に文字を入れない（何の棒かは左の行見出し+small が語る）/ 色は own=焦がし・party=淡・joint=墨・after=輪郭だけ /
-     動かない日付は最上段の .g-ms-row に▲（.g-ms）で集める / 定例などの繰り返しは棒にせず読み方ボックスへ / figure.fig で包み aria-label に主張 ============ -->
-<figure class="fig" aria-label="実装に6週間を確保し、納品・検収・振込を期限の内側に置く">
-  <div class="gantt-wrap">
-    <div class="gantt" style="--g-weeks:8">
-      <div class="g-row g-month"><div></div><div class="g-mo" style="grid-column:2 / 6">10月</div><div class="g-mo" style="grid-column:6 / 10">11月</div></div>
-      <div class="g-row g-head"><div></div><div class="g-wk">10.5</div><div class="g-wk">10.12</div><div class="g-wk">10.19</div><div class="g-wk">10.26</div><div class="g-wk">11.2</div><div class="g-wk">11.9</div><div class="g-wk">11.16</div><div class="g-wk">11.23</div></div>
-      <div class="g-row g-ms-row">
-        <div class="g-label">マイルストーン</div>
-        <div class="g-cell" style="grid-column:4 / 5"><div class="g-ms"><b></b>10.23 中間判断</div></div>
-        <div class="g-cell" style="grid-column:8 / 9"><div class="g-ms own"><b></b>11.18 納品</div><div class="g-ms"><b></b>11.20 検収</div></div>
-      </div>
-      <div class="g-row"><div class="g-label">作業名<small>担当・期間・中身の順序</small></div><div class="g-bar own" style="grid-column:2 / 8"></div></div>
-      <div class="g-row"><div class="g-label">相手方の作業<small>期間</small></div><div class="g-bar party" style="grid-column:2 / 4"></div></div>
-      <div class="g-row"><div class="g-label">期限の外<small>納品後</small></div><div class="g-bar after" style="grid-column:9 / 10"></div></div>
-    </div>
-  </div>
-  <div class="legend"><span><i class="sq" style="background:var(--accent)"></i>書き手側</span><span><i class="sq" style="background:#EAE2D6"></i>相手方</span><span><i class="sq" style="background:var(--ink)"></i>共同</span><span><i class="sq" style="background:none;border:1px solid var(--line)"></i>期限の外</span></div>
-</figure>
+<!-- ######## 7 論理 — 並列カラム・前提→帰結・対応・主張パネル ######## -->
 
-<!-- ============ スライド（16:9・共通下枠=左ブランド/右ページ番号。1枚1メッセージ・表は5行まで） ============ -->
-<!-- 誌面の中に1枚だけ置く時は .slide の額（max-widthと font-size を指定）。デッキとして丸ごと投影する時は deck.html の器を使う（body.deck・1 section=1枚・.pg は自動記入） -->
-<div class="slide" style="max-width: 960px; font-size: 16px;">
-  <div class="sd-center">
-    <div class="sd-eyebrow">結論</div>
-    <div class="sd-msg">1枚に言いたいことは1つ</div>
-    <div class="sd-hair"></div>
-    <div class="sd-note">根拠の一言</div>
-  </div>
-  <div class="slide-ft"><span>BRAND</span><span>06 / 12</span></div>
-</div>
-<!-- 本文スライドの基本形（デッキの本文系8種はこの骨格。見出し=主張1文・常体・2行まで / 本文=箇条書き5本まで） -->
-<section class="slide" data-title="本文の基本形">
-  <div class="sd-head">
-    <div class="sd-kicker">現状</div>
-    <h1 class="sd-h">主張を1文・常体で書く</h1>
-  </div>
-  <div class="sd-body">
-    <ul><li>箇条書きは5本まで</li><li>語尾を揃える</li></ul>
-  </div>
-  <div class="slide-ft"><span>BRAND</span><span class="pg"></span></div>
-</section>
-<!-- 前提→帰結: .sd-body の中に -->
-<div class="sd-pc">
-  <div class="sd-pc-col"><h3>前提</h3><ul><li>前提1</li><li>前提2</li></ul></div>
-  <div class="sd-pc-arrow"></div>
-  <div class="sd-pc-col"><h3>帰結</h3><p>前提から導かれる結論を1文で。</p></div>
-</div>
-<!-- 矢羽（工程・段階。現在地=.hot）: .sd-body の中に -->
-<div class="sd-steps">
-  <div class="sd-step"><span class="n">1</span><span class="t">要件</span><span class="d">9月</span></div>
-  <div class="sd-step hot"><span class="n">2</span><span class="t">設計</span><span class="d">10月前半</span></div>
-  <div class="sd-step"><span class="n">3</span><span class="t">実装</span><span class="d">10〜11月</span></div>
-</div>
-<!-- 2カラム: <div class="sd-two"><div><h3>左</h3>…</div><div><h3>右</h3>…</div></div>
-     軸のある表: .sd-body に誌面の .table-wrap>table をそのまま（5行まで）
-     図解1枚: <figure class="fig sd-fig" aria-label="主張">誌面の図の部品</figure>
-     章とびら: <div class="ghost">02</div> を左に置き、右にCHAPTERキッカー+明朝章名
-     ビッグナンバー: .sd-nums / ×○比較: .sd-vs / 締め: .sd-todo（やること・担当・期日の3列）。全型の実物は deck.html -->
-
-<!-- ============ コンサル型の部品（2026-09-25。誌面の章にもデッキの1枚にも同じHTML。全型の実物は gallery.html 11章と deck.html） ============ -->
 <!-- 見出し付きの並列カラム（c2〜c5）。エグゼクティブサマリー・SCR・課題→原因→解決（.arrows）・提言の柱（.pillars）はこの器 -->
 <div class="cols c3">
   <div><h3>要件</h3><p class="col-lead">1文目は言い切り。</p><p>補足。</p></div>
@@ -651,19 +706,20 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
   <div><span class="num-chip brand">3</span><h3>柱の見出し</h3><p>.pillars を足すと上罫2px+番号丸</p><ul><li>要点</li></ul></div>
 </div>
 <div class="pillar-base"><span class="k">共通条件1</span><span>柱の下の共通条件（白面+罫線）</span></div>
-<!-- 意思決定 -->
-<div class="decide">
-  <div><div class="k">推奨する意思決定</div><div class="d">決定を1文で<small>前提や注記</small></div></div>
-  <div>
-    <div class="decide-ask"><span class="n">1</span><span>依頼事項</span><span class="who">担当</span></div>
-    <div class="decide-ask"><span class="n">2</span><span>依頼事項</span><span class="who">担当</span></div>
-  </div>
+
+<!-- 前提→帰結: .sd-body の中に -->
+<div class="sd-pc">
+  <div class="sd-pc-col"><h3>前提</h3><ul><li>前提1</li><li>前提2</li></ul></div>
+  <div class="sd-pc-arrow"></div>
+  <div class="sd-pc-col"><h3>帰結</h3><p>前提から導かれる結論を1文で。</p></div>
 </div>
+
 <!-- 主張パネル+図 -->
 <div class="claim-fig">
   <div class="claim-panel"><div class="n">2</div><div class="k">区分名</div><div class="c">この1枚の主張を1文で。</div></div>
   <div class="table-wrap"><table>…</table></div>
 </div>
+
 <!-- 課題→打ち手の対応（左右の行を対応付け・中央に三角1つ） -->
 <div class="map2">
   <div class="h l">課題</div><div class="h r">打ち手</div>
@@ -671,33 +727,251 @@ command --option <span class="hl">強調</span> <span class="hl2">二次強調</
   <div class="mid"></div>
   <div class="l">課題2</div><div class="r"><strong>打ち手2</strong><span>補足</span></div>
 </div>
-<!-- 全体マップ（→P.n）/ 目次（.cur=現在章）/ 右上タグチップ（.on=該当） -->
-<div class="omap"><div class="omap-row"><span class="l">論点1</span><span>一言</span><span class="p">P.5</span></div></div>
-<div class="toc"><div class="toc-row cur"><span class="n">01</span><span>章名</span><span class="p">P.5</span></div></div>
-<div class="tags"><span>結論</span><span class="on">進め方</span></div>
-<!-- 表の変種: ヒートマップ（td.h0〜h3）/ ハーベイボール（.hb.q0〜q4）/ 入れ子行（td.grp[rowspan]+td.sub）/ 効果の幅（.efx / .efx.down + width:%） -->
-<table class="heat"><tbody><tr><td class="label">項目</td><td class="h0">なし</td><td class="h1">低</td><td class="h2">中</td><td class="h3">高</td></tr></tbody></table>
-<td><span class="hb q2"></span>一部満たす</td>
-<table class="nest"><tbody><tr><td class="grp" rowspan="2">親</td><td class="sub">子1</td><td>値</td></tr><tr><td class="sub">子2</td><td>値</td></tr></tbody></table>
-<td><span class="efx" style="width:60%">+20〜30</span></td>
-<div class="legend"><span><i class="sq" style="background:var(--accent)"></i>増やす方向</span><span><i class="sq" style="background:#EAE2D6"></i>減らす方向</span></div>
-<!-- 図: 2×2 / イシューツリー / 矢羽レール / バリューチェーン / 対向シェブロン / 循環 / 増減ブリッジ / ドットマトリクス（すべて figure.fig で包み aria-label に主張） -->
-<figure class="fig" aria-label="主張">
-  <div class="mx2"><span class="ax y">効果（上ほど大きい）</span><span class="ax x">手間（右ほど小さい）</span><span class="mx2-item hot" style="left:78%;top:22%">項目</span></div>
-</figure>
+
+<!-- 図の部品（figure.fig で包み aria-label に主張） -->
 <figure class="fig" aria-label="主張"><div class="itree"><ul><li><span class="n">根</span><ul><li><span class="n">枝</span><ul><li><span class="n">葉</span></li></ul></li></ul></li></ul></div></figure>
-<div class="sd-steps rail"><div class="sd-step hot"><span class="num-chip sm brand">1</span><span><span class="t">段名</span><span class="d">時期</span></span></div></div>
-<figure class="fig" aria-label="主張"><div class="vchain"><span class="lbl">行</span><div class="sd-steps"><div class="sd-step hot"><span class="t">工程</span></div></div><span></span><div class="vchain-notes"><span>説明</span></div></div></figure>
 <figure class="fig" aria-label="主張"><div class="oppose"><div class="side"><div>要素</div></div><div class="mid"><div class="oppose-tag">狙い<br>1</div><div class="oppose-tag alt">狙い<br>2</div></div><div class="side"><div>要素</div></div></div></figure>
-<figure class="fig" aria-label="主張"><div class="cycle" style="--n:4"><div class="cycle-item" style="--i:0"><span class="num-chip sm">1</span><span class="t">段</span><span class="d">説明</span></div></div></figure>
-<figure class="fig" aria-label="主張"><div class="wfall"><div class="bar total" style="--b:0%;--h:50%"><span class="v">100</span><i></i><span class="l">現在</span></div><div class="bar" style="--b:50%;--h:12%"><span class="v">+24</span><i></i><span class="l">増</span></div><div class="bar neg" style="--b:60%;--h:12%"><span class="v">−4</span><i></i><span class="l">減</span></div></div></figure>
-<figure class="fig" aria-label="主張"><div class="dotgrid"><div><div class="v">58%</div><div class="dots"><!-- <i class="on"></i>×58 + <i></i>×42 --></div><div class="l">ラベル</div></div></div></figure>
-<!-- 裏表紙（デッキ専用・最終枚） -->
-<section class="slide" data-title="裏表紙"><div class="sd-back"><div class="co">会社名</div><div class="ct">連絡先</div></div><div class="slide-ft"><span>BRAND</span><span class="pg"></span></div></section>
+
+<!-- 第2弾: 評価の式 .eq（A × B = C） -->
+<div class="eq"><div class="eq-term"><h3>項A</h3><p>定義</p></div><span class="op">×</span><div class="eq-term"><h3>項B</h3><p>定義</p></div><span class="op">=</span><div class="eq-term ans"><h3>答え</h3><p>段階</p></div></div>
+<!-- 要因が合流する因果の鎖: 上に .chain-in（番号丸）、主系列は .sd-steps、段に .in「↓番号」 -->
+<div class="chain-in"><span class="num-chip sm brand">1</span>要因</div>
+<div class="sd-steps"><div class="sd-step"><span class="t">段<span class="in">↓1</span></span></div></div>
+
+<!-- ######## 8 補足と根拠 — 用語・アラート・読み方・引用・開発者向け ######## -->
+
+<!-- ============ 用語解説 ============ -->
+<div class="term">
+  <div class="term-name">Data API <span class="term-tag">— 用語</span></div>
+  <div class="t-body">日常語に開いた説明文。</div>
+</div>
+
+<!-- 用語が2〜3個セットの時は .term-row で横並び -->
+<div class="term-row">
+  <div class="term"><div class="term-name">訪問ユーザー数 <span class="term-tag">— 用語</span></div><div class="t-body">サイトに来た「人数」。同じ人が何回来ても1人と数える。</div></div>
+  <div class="term"><div class="term-name">セッション数 <span class="term-tag">— 用語</span></div><div class="t-body">サイトに来た「回数」。同じ人が日を改めて2回来れば2回。</div></div>
+</div>
+
+<!-- ============ アラート3種（色が意味を運ぶ。この3色以外は作らない）
+     緑=結論・決定 / 藍=読み方・補足 / 紅=リスク・注意。
+     琥珀（黄）のalertは作らない — 琥珀は「お金」の役割色。
+     「課題・やり残し」は ul.notes の※ か .compare-box.bad へ ============ -->
+<div class="alert alert-green"><svg class="a-icon icon"><use href="#i-check"/></svg><span><strong>結論:</strong> 本文（決まったこと・ページの答え）</span></div>
+<div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>補足:</strong> 本文（読み方・前提の補足）</span></div>
+<div class="alert alert-red"><svg class="a-icon icon"><use href="#i-alert"/></svg><span><strong>リスク:</strong> 本文（これから起こりうる悪いこと）</span></div>
+
+<!-- ============ 図の読み方ボックス（複雑な図の直下に1個だけ。alert-blueに「この図の読み方:」の太字ラベル。
+     ※注記(ul.notes)との使い分け: 図の解釈のしかた=このボックス／データの但し書き=※ ============ -->
+<div class="alert alert-blue"><svg class="a-icon icon"><use href="#i-info"/></svg><span><strong>この図の読み方:</strong> 上3段は「訪問の回数」、下2段は「予約の件数」で、数えているものが違います。「参考」と付けた境目の率だけは規模感の目安です。</span></div>
+
+<!-- D5 所見と原文引用 -->
+<p class="finding">米国の制度は、試作品の段階から政府調達に乗せられる点で日本と異なる。</p>
+<div class="quote"><p>「試作品の開発に成功した事業者とは、<u>競争入札を経ずに量産契約を結ぶことができる</u>」</p><cite>米国 OT制度（10 U.S.C. §4022）</cite></div>
+
+<!-- ============ コードブロック（唯一のダーク面） ============ -->
+<div class="codeblock"><pre><span class="cm"># コメント</span>
+command --option <span class="hl">強調</span> <span class="hl2">二次強調</span></pre></div>
+
+<!-- ============ APIメソッドバッジ（.method: GET / POST / DELETE / PUT。等幅・白面+役割色の輪郭。
+     クラスはドット記法で統一する — .method-get のようなハイフン記法は作らない） ============ -->
+<span class="method get">GET</span> <span class="method post">POST</span> <span class="method put">PUT</span> <span class="method delete">DELETE</span>
+
+<!-- ============ 開発者向け詳細（.dev-detail: 非エンジニア向けの本文と、開発者向けの詳細〈コード・API名・内部仕様〉を
+     同じ場所で分ける折りたたみ。読者は本文だけ読めばよく、実装者は開けば足りる。
+     中身は必ず .dd-body で包む（上罫+余白）。中の小見出しは h5 — 本文の見出しの階段には数えない） ============ -->
+<details class="dev-detail">
+  <summary>開発者向け: 実装の詳細</summary>
+  <div class="dd-body">
+    <h5>呼び出すAPI</h5>
+    <p><span class="method post">POST</span> <code>/v1/payment_intents</code> — 予約確定時に作成する。</p>
+    <ul>
+      <li>失敗時は 402 が返るので、その場で再入力を促す</li>
+    </ul>
+  </div>
+</details>
+
+<!-- 第2弾: 画像への引き出し注記 .annot（画像の上は .annot-box の実線の枠だけ・2か所まで。注記は右の余白 .annot-note に top:%） -->
+<div class="annot"><div class="annot-img"><img src="…" alt="現行の画面"><span class="annot-box" style="left:10%;top:15%;width:50%;height:30%"></span></div><div class="annot-notes"><div class="annot-note" style="top:18%"><b>① リード文</b>直す内容を1文</div></div></div>
+<!-- 前提条件表＝table.open「項目 / 値 / 設定方法」（値が決まらない行は「—」）・試算の図の上に .fig-title で「インプット: 〜」の1行 -->
+<!-- 網羅表＝table.heat で「作成済 .h2 / 情報なし・0件・— は .h0」。各論の前に1枚 -->
+
+<!-- ######## 付録A 誌面 — 縦に読むページの器（手順書・定型レポート・用語集） ######## -->
+
+<!-- ============ ヒーロー（全幅・上下の灰の罫線で締める。ロゴは任意: ロゴが無い案件は<img class="hero-logo">行を丸ごと省略する（全ページで有無を統一）。ロゴパスは階層に合わせる） ============ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-brand">
+        <img class="hero-logo" src="../assets/logo.png" alt="ブランド名">
+        <span class="hero-kicker">BRAND — カテゴリ</span>
+      </div>
+      <span class="hero-no">資料 07</span>
+    </div>
+    <h1>ページタイトル</h1>
+    <p class="lead">1〜2文のリード。誰向けに何をまとめた資料か。</p>
+    <div class="hero-meta">最終更新 2026-08-21（更新内容の一言）</div>
+  </div>
+</div>
+
+<!-- ============ 章ナビ（全ページ必須・アンカー版。項目最大8個。1〜6個は横一列・7〜8個は4列×2行〈CSSが自動で組む・7個は避ける〉。1番目は「結論」） ============ -->
+<nav class="flow">
+  <a href="#conclusion" class="cur"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">このページの答え</span></a>
+  <a href="#step1"><span class="fnum">2</span><span class="ft">章タイトル</span><span class="fd">一言説明</span></a>
+</nav>
+
+<!-- ============ 章ナビ型タブ（長いページ用。data-target=パネルid・scriptは末尾。タブ1は「結論」） ============ -->
+<nav class="flow-tabs">
+  <button class="tab-btn active" data-target="panel-conclusion"><span class="fnum">1</span><span class="ft">結論</span><span class="fd">このページの答え</span></button>
+  <button class="tab-btn" data-target="panel-b"><span class="fnum">2</span><span class="ft">タブ名B</span><span class="fd">一言説明</span></button>
+</nav>
+<div class="tab-panel active" id="panel-conclusion">...</div>
+<div class="tab-panel" id="panel-b">...</div>
+
+<!-- ============ 結論 = 最初の章（01章）。専用の箱は使わない（2026-09-04改定）
+     章ナビの1番目に「1 結論」を置き、本文の最初の .section を id="conclusion" の「結論」の章にする。
+     タブ式のページはタブ1を「結論」にする（開いた時に最初に見えるのがタブ1）。
+     中身は答えの性格で選ぶ: 数字が答え=.stat-row / 判断を求める資料=table.qa（問い→答え）/
+     一言で足りる=本文1段落。緑のアラート（決定事項）を1枚だけ添えるのは可。
+     補足（あわせて読む資料・この資料の読み方・進み具合）は ul.notes に※で1〜2行。
+     章の数は8が上限。超えるなら答えに近い既存の章（概要・まとめ・比較）と統合する ============ -->
+<div class="section" id="conclusion">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="sh-body"><h2>結論</h2><div class="sh-sub">このページの答えを1行で（本文から起こす。事実を新しく作らない）</div></div>
+  </div>
+  <p>決済はStripeに載せ替えます。今の予約の流れは変えず、当日の受け取り時に本決済へ切り替えます。</p>
+
+  <!-- 判断を求める資料は「問い→答え」の表（左=問い・右=答え。答えは1文目を<strong>で言い切る） -->
+  <div class="table-wrap">
+    <table class="qa">
+      <tbody>
+        <tr><td class="label wrap">① 領収書の発行元は誰か</td><td><strong>運営会社です。</strong> 理由を1〜2文で続けます（詳しくは5章）。</td></tr>
+        <tr><td class="label wrap">② いつまでに決めるか</td><td><strong>7月4日の定例までにお決めいただきます。</strong> 理由を1〜2文で続けます。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 補足はここに※で1〜2行だけ。箱やアラートを重ねない -->
+  <ul class="notes">
+    <li>あわせて読む資料: 手数料の内訳は「決済手数料の比較」をご覧ください。</li>
+    <li>この資料は7月4日時点の検討状況をまとめたものです。</li>
+  </ul>
+</div>
+
+<!-- ============ セクション見出し（薄い大番号+ゴシック。01は「結論」なので以降は02から） ============ -->
+<div class="section" id="step1">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="sh-body"><h2>章タイトル</h2><div class="sh-sub">この章の主張を1文で（02章以降。01章だけは「何を扱うか」）</div></div>
+  </div>
+  ...
+</div>
+
+<!-- ============ 小見出し分節（章内のテーマ区切り。キッカーは省略可。箱で囲うのは不可=用語解説と紛れる） ============ -->
+<div class="sub-item">
+  <div class="kick">テーマの予告の一言</div>
+  <h4>テーマの見出し</h4>
+  <p>本文。中に表・手順・アラートを入れてよい。</p>
+</div>
+
+<!-- ============ 読み進みバー（<body>先頭） ============ -->
+<div class="progress" aria-hidden="true"><i></i></div>
 
 <!-- ============ footer（書くのは正本のパスだけ。保守者向けの指示は読者に不要なのでコメントへ） ============ -->
 <!-- md更新時はこのHTMLも同期すること（正本: path/to/source.md） -->
 <footer>正本: path/to/source.md</footer>
+
+
+<!-- ######## 2026-09-29 新しい部品（BCGの報告書から。優先度: まず使う / 場面が合えば / 控え は gallery.html の札） ######## -->
+
+<!-- ============ 業務の全体図（まず使う・.scope: 大区分の枠>業務カード。依頼の範囲=.card・追加の提案=.card.add・全区分にまたがる業務=.band。章の入口で出し直すときは .scope.re と いまの区分に .grp.cur） ============ -->
+<div class="scope"><div class="lg"><span><i></i>仕様書記載</span><span><i class="add"></i>追加提案</span></div>
+<div class="grp-row"><div class="grp"><b>（1）市場動向の調査</b><div class="card"><span class="num-chip">1</span>国内外の市場規模の推計</div><div class="card add"><span class="num-chip">2</span>主要プレイヤーの比較</div></div>
+<div class="grp"><b>（2）必要なリソースの特定</b><div class="card"><span class="num-chip">3</span>計算資源・データ・人材</div><div class="card"><span class="num-chip">4</span>確保の方策</div></div>
+<div class="grp"><b>（3）成果の最大化</b><div class="card add"><span class="num-chip">5</span>活用の方策</div></div></div>
+<div class="band">⑥ 他の政府検討との連携（全区分にまたがる）</div></div>
+
+
+<!-- ============ 仕様書の原文→業務の対応（まず使う・.spec: 原文の段落 | 括弧 | 業務の箱。当社の独自提案は .bx.own〈オレンジ〉） ============ -->
+<div class="spec"><div class="h">仕様書の記載（原文）</div><div></div><div class="h">業務の内容（当社整理）</div>
+<div class="src">2050年のカーボンニュートラルに資する革新的技術の、国内外の研究開発の動向を調査する。</div><div class="br"></div><div class="boxes"><div class="bx"><b>①-a</b>国内の研究開発動向</div><div class="bx"><b>①-b</b>海外の研究開発動向</div></div>
+<div class="src">調査結果を踏まえ、社会実装に向けた課題を整理する。</div><div class="br"></div><div class="boxes"><div class="bx"><b>②-a</b>社会実装の課題の整理</div><div class="bx own"><b>②-b</b>特許から見た技術の成熟度</div></div></div>
+
+<!-- ============ 面の表（まず使う・table.field: 罫を引かず灰の面を白い溝で区切る。行見出し=淡い緑・行頭に番号丸。数値の比較には使わない） ============ -->
+<table class="field"><thead><tr><th rowspan="2">成長モデル</th><th rowspan="2">主な業種</th><th colspan="3" class="th-grp">売上段階ごとの課題（億円）</th></tr><tr><th>10–30</th><th>30–60</th><th>60–100</th></tr></thead><tbody>
+<tr><td class="label"><span class="num-chip">1</span>製品ドリブン型</td><td>食料品・電気機械</td><td><ul><li>自社企画製品の製造</li><li>販売先の拡大</li></ul></td><td><ul><li>製品ラインの拡充</li></ul></td><td><ul><li>海外M&amp;Aで市場拡大</li></ul></td></tr>
+<tr><td class="label"><span class="num-chip">2</span>店舗ドリブン型</td><td>小売・飲食・宿泊</td><td><ul><li>店舗運営体制の確立</li></ul></td><td><ul><li>新規出店エリアの開拓</li></ul></td><td><ul><li>経営機能の強化</li></ul></td></tr>
+<tr><td class="label"><span class="num-chip">3</span>テクノロジー型</td><td>ITサービス</td><td><ul><li>営業・マーケティングの強化</li></ul></td><td><ul><li>新サービスの開発</li></ul></td><td><ul><li>海外市場への進出</li></ul></td></tr></tbody></table>
+
+<!-- ============ 棒の列を持つ表（まず使う・td.bar=量の横棒 / td.share=100%の帯。主役の区分だけ .hot の緑。棒・帯の列は1表に3列まで） ============ -->
+<div class="table-wrap"><table><thead><tr><th>需要家</th><th>調達量（万t / 年）</th><th>長期契約の比率</th><th>方針</th></tr></thead><tbody>
+<tr><td class="label"><span class="num-chip sm">1</span>A社</td><td class="bar"><div class="b"><i style="width:9em"></i><span>3,500</span></div></td><td class="share"><div class="s"><i style="width:80%">80%</i><i style="width:20%">20%</i></div></td><td>長期契約を維持</td></tr>
+<tr><td class="label"><span class="num-chip sm">2</span>B社</td><td class="bar"><div class="b"><i style="width:4em"></i><span>1,500</span></div></td><td class="share"><div class="s"><i class="hot" style="width:55%">55%</i><i style="width:45%">45%</i></div></td><td>短期の比率を上げる</td></tr>
+<tr><td class="label"><span class="num-chip sm">3</span>C社</td><td class="bar"><div class="b dim"><i style="width:2em"></i><span>600</span></div></td><td class="share"><div class="s"><i style="width:90%">90%</i><i style="width:10%"></i></div></td><td>—</td></tr></tbody></table></div>
+
+<!-- ============ 縦1本の積み上げ＋区分色の縦帯（まず使う・.stack-note: 左=100%の縦棒 / 右=段落ごとに同じ色の縦帯 --c。引き出し線は引かない。区分は4つまで） ============ -->
+<div class="stack-note"><div class="col"><i style="flex-basis:62%;background:var(--accent-deep)">62%</i><i style="flex-basis:26%;background:var(--accent)">26%</i><i style="flex-basis:12%;background:var(--line-soft);color:var(--text)">12%</i></div>
+<div class="notes2"><div style="--c:var(--accent-deep)"><b>キャリア官僚（62%）</b>・任期はなく、政権交代で入れ替わらない</div><div style="--c:var(--accent)"><b>政治任用（26%）</b>・政権交代で約4,000のポストが交代する<br>・うち約100名は大統領が直接選ぶ</div><div style="--c:var(--line-soft)"><b>その他（12%）</b>・専門職の任期付き採用</div></div></div>
+
+<!-- ============ 縦の矢羽の工程表（場面が合えば・table.vsteps: 5段以上。いまの段は tr.now） ============ -->
+<div class="table-wrap"><table class="vsteps"><thead><tr><th></th><th>作業の概要</th><th>作業の内容</th></tr></thead><tbody>
+<tr><td class="vs"><span>STEP 1</span></td><td>現状の把握</td><td>業務と帳票を洗い出す</td></tr>
+<tr class="now"><td class="vs"><span>STEP 2</span></td><td>要件の定義</td><td>画面と権限を決め、見積を確定する</td></tr>
+<tr><td class="vs"><span>STEP 3</span></td><td>設計と実装</td><td>管理画面→店舗→利用者の順に作る</td></tr>
+<tr><td class="vs"><span>STEP 4</span></td><td>移行と検収</td><td>データを移したあと、検収と振込を終える</td></tr></tbody></table></div>
+
+<!-- ============ 状態の記号（場面が合えば・.mk.ok / .sub / .wip / .na / .ng。1表に3種まで） ============ -->
+<div class="table-wrap"><table><thead><tr><th>技術</th><th style="text-align:center">発電</th><th style="text-align:center">熱</th><th style="text-align:center">輸送</th><th style="text-align:center">原料</th></tr></thead><tbody>
+<tr><td class="label">水素</td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk sub"></span></td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk na"></span></td></tr>
+<tr><td class="label">アンモニア</td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk na"></span></td><td class="c"><span class="mk wip"></span></td><td class="c"><span class="mk sub"></span></td></tr>
+<tr><td class="label">合成燃料</td><td class="c"><span class="mk ng"></span></td><td class="c"><span class="mk sub"></span></td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk na"></span></td></tr></tbody></table></div>
+<div class="legend" style="font-size:.8em"><span><span class="mk ok"></span>主な用途</span><span><span class="mk sub"></span>副次的</span><span><span class="mk wip"></span>検証中</span><span><span class="mk na"></span>該当なし</span><span><span class="mk ng"></span>向かない</span></div>
+
+<!-- ============ 索引の表（場面が合えば・td.hit2 = チェックの丸＋紺の「P.n」） ============ -->
+<div class="table-wrap"><table><thead><tr><th rowspan="2">成功の要因</th><th colspan="3" class="th-grp">国内の拠点</th></tr><tr><th style="text-align:center">A拠点</th><th style="text-align:center">B拠点</th><th style="text-align:center">C拠点</th></tr></thead><tbody>
+<tr><td class="label"><span class="num-chip sm">1</span>経営層の関与</td><td class="hit2"><span class="mk ok"></span><a>P.35</a></td><td class="hit2"></td><td class="hit2"><span class="mk ok"></span><a>P.52</a></td></tr>
+<tr><td class="label"><span class="num-chip sm">2</span>専任の調整役</td><td class="hit2"></td><td class="hit2"><span class="mk ok"></span><a>P.44</a></td><td class="hit2"><span class="mk ok"></span><a>P.53</a></td></tr></tbody></table></div>
+
+<!-- ============ 表の縁の順序の軸（場面が合えば・table.axis + td.wedge[rowspan]） ============ -->
+<div class="table-wrap"><table class="axis"><thead><tr><th></th><th>技術</th><th>段階</th><th>課題</th></tr></thead><tbody>
+<tr><td class="wedge" rowspan="3"><b class="t">TRL3</b><b class="b">TRL6</b></td><td class="label">次世代膜の冷却</td><td>基礎研究</td><td>材料の耐久性</td></tr>
+<tr><td class="label">高効率の熱交換</td><td>実験室で実証</td><td>量産時のコスト</td></tr>
+<tr><td class="label">排熱の再利用</td><td>実環境で実証</td><td>設置場所の確保</td></tr></tbody></table></div>
+
+<!-- ============ 事例の型紙（場面が合えば・.case: 概要 › 所見 › 原典の抜粋 + 最下段の事実帯 .fact） ============ -->
+<div class="case"><div><div class="h">企業の概要</div><div class="kv"><span>設立</span><span>1998年</span><span>本社</span><span>ロンドン</span><span>従業員</span><span>約12,000人</span></div></div><div class="op">›</div>
+<div><div class="h">優れている項目と理由</div><span class="k">開示の内容</span>人材への投資額を事業別に開示<span class="k">投資家の評価</span><strong>比較できる数字</strong>が並ぶ</div><div class="op">›</div>
+<div><div class="h">原典の抜粋</div><div class="img">原典の画像（縮小）<i></i></div></div><div class="fact">2025年3月時点で、主要な投資家の8割がこの開示を参照している</div></div>
+
+<!-- ============ 聞き取り先の札（場面が合えば・dl.sd-meta。項目は3つまで・人名は書かない） ============ -->
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:1em;flex-wrap:wrap"><div><div style="font-size:.7em;color:var(--sub);letter-spacing:.15em">インタビュー</div><div style="font-size:1.3em;color:var(--accent-h);font-weight:500">評価の基準を先に公開して異動の納得感を上げた</div></div>
+<dl class="sd-meta"><b>対象企業の概要</b><span>従業員規模: 約1,000人<br>事業の展開: 国内<br>適用の範囲: 全社</span></dl></div>
+
+<!-- ============ 列の束ごとの示唆（場面が合えば・tr.col-so: 2段見出しの束の幅で colspan） ============ -->
+<div class="table-wrap"><table><thead><tr><th rowspan="2">取り組み</th><th colspan="2" class="th-grp">自動車</th><th colspan="2" class="th-grp">小売</th></tr><tr><th>A社</th><th>B社</th><th>C社</th><th>D社</th></tr></thead><tbody>
+<tr><td class="label">目標の公表</td><td>2030年に半減</td><td>2035年に半減</td><td>未公表</td><td>2040年に実質0</td></tr>
+<tr><td class="label">取引先への要請</td><td>一次取引先に報告を義務化</td><td>一次取引先に要請</td><td>—</td><td>主要な取引先だけ</td></tr>
+<tr class="col-so"><td></td><td colspan="2">取引先に数字を求める段階に入っている</td><td colspan="2">目標の公表が先で、取引先への波及はまだ</td></tr></tbody></table></div>
+
+<!-- ============ 控え: 縮小画像つきの章の地図 .thmap / 系列を並べた縦棒 .gbar / 行見出しと段の色で対応 .colormap / 層の三角 table.tier / 平均線つきの散布図 .scat（実物は gallery.html） ============ -->
+<div class="thmap"><div class="rows"><div class="r"><span class="num-chip sm">1</span><b>市場の全体像</b><div class="th"></div></div><div class="r"><span class="num-chip sm">2</span><b>経済への影響</b><div class="th"></div></div><div class="r"><span class="num-chip sm">3</span><b>日本の潜在力</b><div class="th"></div></div></div><div class="op">›</div><div class="th big"></div></div>
+<div class="gbar"><div class="lg"><span><i style="background:var(--sub)"></i>全件数</span><span><i style="background:var(--accent-pale)"></i>条件①</span><span><i style="background:var(--accent)"></i>条件②</span><span><i style="background:var(--accent-deep)"></i>条件③</span></div>
+<div class="plot"><div class="g"><i style="height:90%;background:var(--sub)"><b>120</b></i><i style="height:60%;background:var(--accent-pale)"><b>80</b></i><i style="height:38%;background:var(--accent)"><b>50</b></i><i style="height:15%;background:var(--accent-deep)"><b>20</b></i></div><div class="g"><i style="height:70%;background:var(--sub)"><b>95</b></i><i style="height:45%;background:var(--accent-pale)"><b>60</b></i><i style="height:22%;background:var(--accent)"><b>30</b></i><i style="height:8%;background:var(--accent-deep)"><b>10</b></i></div><div class="g"><i style="height:50%;background:var(--sub)"><b>66</b></i><i style="height:30%;background:var(--accent-pale)"><b>40</b></i><i style="height:15%;background:var(--accent)"><b>20</b></i><i style="height:6%;background:var(--accent-deep)"><b>8</b></i></div></div>
+<div class="x"><span>事業A</span><span>事業B</span><span>事業C</span></div></div>
+<div class="colormap"><div class="table-wrap"><table><thead><tr><th>区分</th><th>根拠</th><th>放出の基準</th></tr></thead><tbody>
+<tr><td class="label" style="background:var(--accent-deep)">国家備蓄</td><td>石油備蓄法</td><td>大規模な供給途絶のとき</td></tr>
+<tr><td class="label" style="background:var(--accent-h)">共同備蓄</td><td>産油国との協定</td><td>日本への優先供給</td></tr>
+<tr><td class="label" style="background:var(--accent-pale);color:var(--accent-deep)!important">民間備蓄</td><td>義務（70日分）</td><td>義務日数の引き下げ</td></tr></tbody></table></div>
+<div class="col"><i style="flex-basis:50%;background:var(--accent-deep)">50%</i><i style="flex-basis:15%;background:var(--accent-h)">15%</i><i style="flex-basis:35%;background:var(--accent-pale);color:var(--accent-deep)">35%</i></div></div>
+<div class="table-wrap"><table class="tier"><thead><tr><th></th><th>区分</th><th>規定の例</th></tr></thead><tbody>
+<tr><td class="tri" rowspan="3"><span style="top:.6em">国</span><span style="top:45%">組織</span><span style="bottom:1.2em">製品</span></td><td class="label">国の制度</td><td>算定ルールを法令で定める</td></tr>
+<tr><td class="label">組織の報告</td><td>Scope1〜3の開示を求める</td></tr><tr><td class="label">製品の表示</td><td>CFPの値をラベルで示す</td></tr></tbody></table></div>
+<div class="scat"><div class="pl"><div class="up"></div><div class="dn"></div><div class="avg"><b>平均 ¥11.2</b></div>
+<span class="d" style="left:10%;top:25%"></span><span class="d" style="left:18%;top:40%"></span><span class="d" style="left:25%;top:30%"></span><span class="d" style="left:40%;top:55%"></span><span class="d on" style="left:62%;top:68%"></span><span class="d on" style="left:78%;top:75%"></span><span class="d on" style="left:90%;top:82%"></span><span class="d" style="left:52%;top:45%"></span>
+<span class="ax" style="left:.4em;top:.2em">価格（高）</span><span class="ax" style="right:.3em;bottom:.2em">調達量（多）</span></div>
+<ol><li>大口の3社は平均より<strong>2割安く</strong>調達している</li><li>小口ほど価格のばらつきが大きい</li></ol></div>
+
+<!-- ######## スクリプト（</body>直前） ######## -->
 
 <!-- ============ 演出スクリプト（</body>直前・読み進みバー+ふわっと表示+章ナビ現在地） ============ -->
 <script>
