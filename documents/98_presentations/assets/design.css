@@ -1051,7 +1051,7 @@ tr.gend td{border-bottom:1px solid var(--line)}  /* 束の区切りは罫線色�
 /* D4 全体→内訳のドリルダウン .drill: 左=全体の縦積み（.drill-col の span に flex:量）→ 中=引き出し線（.drill-conn の i に top）→
    右=区分ごとの明細の横棒（.drill-rows）。明細の棒は1色 */
 
-/* D5 所見と原文引用: 所見1文（p.finding）→ 引用 .quote（墨の左罫2px・明朝・要所は焦がしの下線 u だけ・出所は cite の小行）。
+/* D5 所見と原文引用: 所見1文（p.finding。緑の文字・標準の太さ〈2026-09-29 末尾で上書き〉）→ 引用 .quote（灰の左罫2px・要所は緑の下線 u だけ・出所は cite の小行）。
    斜体＋色＋下線の重ねがけはしない */
 .finding{font-weight:700;color:var(--ink);font-size:14.5px;margin:0 0 8px}
 .quote{border-left:2px solid var(--ink);padding:4px 0 4px 18px;margin:12px 0}
@@ -1637,3 +1637,143 @@ table.field td.label .num-chip{position:static!important;display:inline-flex;ver
 .sd-body table.field td ul,table.field td ul{padding-left:0!important}   /* 面の表は1セル1〜2項目なので点を付けない（面の区切りで項目は分かる。点は項目が3つ以上並ぶ本文の箇条書きだけ） */
 table.field td li::before{content:none!important}
 table.field td,.sd-body table.field td{padding:.7em .9em!important}   /* 汎用の表の左余白0に負けないよう、全セルの余白をここで決める */
+
+/* =====================================================================
+   2026-09-29 BCG追加27本の取り込み（A1〜A12・B1〜B4。→ decisions.md 同日「追加27本」）
+   ===================================================================== */
+
+/* B1 本資料の構成は2段: いまの章だけ緑の文字、ほかの章は済んだ章もこれからの章も同じ灰（BCG 約45枚で例外なし）。.done は使わない */
+.sd-toc li:not(.cur),.sd-toc li:not(.cur) .p{color:var(--line)}
+.sd-toc li.done,.sd-toc li.done .p{color:var(--line)}
+/* B2 節: いまの章に節があるときだけ、その章の直下に字下げで並べる（ほかの章の節は出さない）。いまの節も .cur */
+.sd-toc li.sub{font-size:1em;padding-left:1.4em;line-height:1.55}
+.sd-toc li.sub .n{width:2.2em}
+.sd-toc li.sub.cur{font-weight:400}
+/* B2 部の板: 部が2段ある資料だけ、左の板に部の名前（上に小さく「第2部」） */
+.sd-toc.part .lp b{font-size:1.5em;right:1.2em}
+.sd-toc.part .lp small{position:absolute;left:1.565em;top:calc(50% - 3.6em);color:#fff;font-size:1em;letter-spacing:.05em}
+
+/* B3 所見の1文: 太字の灰をやめ、緑の文字・標準の太さ（原則「強調は太字でなく緑の文字」。BCG 000057 の32枚） */
+.finding{font-weight:500;color:var(--accent-h)}
+.quote{border-left-color:var(--line)}
+
+/* B4 白字を載せる塗りは濃い緑 --accent-h に揃える（#72B000 に白字は 2.65:1 で読めない。原則2） */
+.tags span.on,.tags.chev span.on{background:var(--accent-h);border-color:var(--accent-h)}
+.sd-step.hot{background:var(--accent-h)}
+
+/* A1 またぐ札の地図 .spanmap: 上に工程の矢羽、下に打ち手の札をかかる列の幅だけまたがせる（grid-column で指定）。前提=全幅の灰の帯 .full。
+   各論の入口で出し直すときは .spanmap.re + 札に .hot（ほかの札は白地・淡い灰に沈める）。列の数は --n */
+.spanmap{--n:4;display:grid;gap:.5em}
+.spanmap .steps{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:.25em}
+.spanmap .steps span{background:var(--off);color:var(--text);font-weight:500;text-align:center;padding:.5em 1.1em .5em 1.4em;clip-path:polygon(0 0,calc(100% - .8em) 0,100% 50%,calc(100% - .8em) 100%,0 100%,.8em 50%)}
+.spanmap .steps span:first-child{clip-path:polygon(0 0,calc(100% - .8em) 0,100% 50%,calc(100% - .8em) 100%,0 100%);padding-left:.8em}
+.spanmap .cards{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:.4em;grid-auto-flow:row dense}
+.spanmap .cd{background:var(--accent-faint);color:var(--text);padding:.5em .7em;display:flex;gap:.5em;align-items:center;line-height:1.5;font-size:.92em}
+.spanmap .cd .num-chip{width:1.6em;height:1.6em;font-size:.8em;margin:0;flex:none}
+.spanmap .cd.full{grid-column:1 / -1;background:var(--ground)}
+.spanmap .cd.full .num-chip{background:#fff;border-color:var(--line);color:var(--sub)}
+.spanmap .cd.hot{background:var(--accent-soft)}
+.spanmap.re .cd:not(.hot){background:#fff;color:var(--line-soft);box-shadow:inset 0 0 0 1px var(--off)}
+.spanmap.re .cd:not(.hot) .num-chip{background:var(--off);border-color:var(--off)}
+
+/* A2 層の行ラベルつき体制図 .org（控え）: 左に層、箱は役割で塗る（紺=発注・公的機関 / 緑=当社 / 淡い緑=実施する民間 / 灰=未定）。
+   層の間の矢印 .ar に動詞。1本の木の体制は体制表（2段ヘッダーの表）で足りるので、委託・資金・支援が横にも流れるときだけ使う */
+.org{display:grid;grid-template-columns:6em 1fr}
+.org .ly{color:var(--accent-h);font-weight:500;font-size:.9em;padding:.6em 0;border-top:1px dotted var(--line);display:flex;align-items:center}
+.org .row{display:flex;justify-content:center;gap:.8em;flex-wrap:wrap;padding:.6em 0;border-top:1px dotted var(--line)}
+.org .ly:first-child,.org .ly:first-child + .row{border-top:0}
+.org .gap{border-top:0;padding:0}
+.org .ar{display:flex;justify-content:center;gap:6em;font-size:.78em;color:var(--sub);height:2em;align-items:center}
+.org .ar span{position:relative;padding-left:1em}
+.org .ar span::before{content:"";position:absolute;left:0;top:-.6em;bottom:-.6em;border-left:1px solid var(--line)}
+.org .ar span::after{content:"";position:absolute;left:-.32em;bottom:-.95em;border:.32em solid transparent;border-top-color:var(--line)}
+.org .bx{font-size:.9em;padding:.45em .9em;min-width:7em;text-align:center;position:relative;background:var(--accent-soft);color:var(--text)}
+.org .bx.pub{background:var(--navy);color:#fff}
+.org .bx.own{background:var(--accent-h);color:#fff}
+.org .bx.tbd{background:var(--ground);color:var(--sub)}
+.org .bx .num-chip{position:absolute;left:-.6em;top:-.6em;width:1.5em;height:1.5em;font-size:.75em;margin:0;background:#fff;border:1px solid var(--accent-h);color:var(--accent-h)}
+
+/* A3 縦の現在地レール .sd-loc: 10区分を超える分類を本文の左に縦の矢羽で並べ、毎枚に運ぶ。いま=.cur（緑の塗り）/ 対象外=.out（淡い灰）。
+   .loc-wrap で「レール | 本文」の2列にする。4〜6語で足りるなら右上のタグチップ .tags */
+.loc-wrap{display:grid;grid-template-columns:9em minmax(0,1fr);gap:1.2em;align-items:start}
+.sd-loc{display:flex;flex-direction:column;gap:.18em}
+.sd-loc span{font-size:.82em;line-height:1.3;padding:.45em .6em .9em;background:var(--off);color:var(--sub);clip-path:polygon(0 0,100% 0,100% calc(100% - .5em),50% 100%,0 calc(100% - .5em))}
+.sd-loc span.cur{background:var(--accent-h);color:#fff;font-weight:500}
+.sd-loc span.out{background:var(--ground);color:var(--line-soft)}
+
+/* A4 掛け算の行の表 .mul: 区分ごとに因数を横に並べ、× でつないで右端で答え（000299 の20枚）。因数は7つまで。
+   列は「区分 | 子区分 | (値 | 演算子)×n | 答え」。--f に因数の数。根拠は見出しの ※n と直下の ul.notes */
+.mul{--f:3;display:grid;grid-template-columns:auto auto repeat(var(--f),minmax(0,1fr) 1.6em) minmax(0,1.3fr);align-items:stretch;row-gap:.3em;font-variant-numeric:tabular-nums}
+.mul > *{padding:.45em .5em;display:flex;align-items:center;justify-content:flex-end}
+.mul .h{background:var(--accent-faint);color:var(--text);justify-content:center;text-align:center;line-height:1.35;font-size:.9em}
+.mul .h.ans{background:var(--accent-h);color:#fff}
+.mul .h.sp{background:none}
+.mul .g{background:var(--off);color:var(--navy);justify-content:flex-start;font-weight:500}
+.mul .g2{color:var(--navy);justify-content:flex-start}
+.mul .v,.mul .g2,.mul .a{border-bottom:1px dotted var(--line)}
+.mul .a{color:var(--accent-h);font-weight:500}
+.mul .op{justify-content:center;padding:0}
+.mul .op i{font-style:normal;width:1.35em;height:1.35em;border-radius:50%;background:var(--sub);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.85em}
+
+/* A5 結論と根拠の2段カラム .cols.basis: 上=言い切り（.col-lead）、下=根拠の本体（.col-basis・灰の面）。段の間の緑の丸「^」は「下が上を支える」。
+   灰の面を敷いてよい5か所目（原則3「根拠の段」） */
+.cols.basis > div > h3.hd{background:var(--accent-soft);color:var(--text);font-size:.95em;font-weight:500;padding:.35em .9em .35em .5em;border:0;margin:0;display:flex;gap:.45em;align-items:center;clip-path:polygon(0 0,calc(100% - .6em) 0,100% 50%,calc(100% - .6em) 100%,0 100%)}
+.cols.basis > div > h3.hd .num-chip{width:1.6em;height:1.6em;font-size:.8em;margin:0}
+.cols.basis .col-lead{min-height:3.4em;margin:.6em 0 1em}
+.col-basis{background:var(--ground);padding:1.1em .9em .7em;position:relative;font-size:.9em;line-height:1.7}
+.col-basis::before{content:"";position:absolute;left:50%;top:-.8em;transform:translateX(-50%);width:1.55em;height:1.55em;border-radius:50%;background:var(--accent-h)}
+.col-basis::after{content:"";position:absolute;left:50%;top:-.28em;width:.42em;height:.42em;border-left:2px solid #fff;border-top:2px solid #fff;transform:translateX(-50%) rotate(45deg)}
+.col-basis ul{margin:0;padding-left:1.1em}
+
+/* A6 出所の括り線 tr.src: 2段ヘッダーのさらに上に1段。左の束=聞き取りに基づく整理、右の束=当社の仮説。仮説側のセルは td.hyp（灰の細い輪郭）。
+   点線は想定値の専用なので輪郭は実線 */
+tr.src th{border:0!important;padding:.2em .4em .5em!important;position:relative;text-align:center!important;color:var(--accent-h)!important;font-weight:500}
+tr.src th span{background:var(--surface);position:relative;z-index:1;padding:0 .5em}
+tr.src th:not(:empty)::before{content:"";position:absolute;left:.4em;right:.4em;top:.9em;border-top:1.5px solid var(--accent)}
+tr.src th:not(:empty)::after{content:"";position:absolute;left:.15em;right:.15em;top:.66em;height:.5em;background:radial-gradient(circle,var(--accent) 45%,transparent 50%) left/.5em .5em no-repeat,radial-gradient(circle,var(--accent) 45%,transparent 50%) right/.5em .5em no-repeat}
+td.hyp{box-shadow:inset 0 0 0 1px var(--line-soft)}
+
+/* A7 表のセルの中の段階の矢羽 .stg: 到達した段=.on（緑の塗りに白字）、まだの段=白地に淡い灰の輪郭 */
+.stg{display:inline-flex;gap:.12em;vertical-align:middle}
+.stg i{font-style:normal;font-size:.78em;white-space:nowrap;padding:.3em .9em .3em 1em;background:var(--line-soft);color:#fff;clip-path:polygon(0 0,calc(100% - .5em) 0,100% 50%,calc(100% - .5em) 100%,0 100%,.5em 50%)}
+.stg i:first-child{clip-path:polygon(0 0,calc(100% - .5em) 0,100% 50%,calc(100% - .5em) 100%,0 100%);padding-left:.7em}
+.stg i:not(.on){background:#fff;color:var(--sub);box-shadow:inset 0 0 0 1px var(--line-soft)}
+.stg i.on{background:var(--accent-h)}
+
+/* A9 共通の縦軸に所見を置く対応表 table.fmap: 1列目=固定の機能の一覧、列=事例、所見 td.fd は当たる行に rowspan でまたがる。
+   扱わない行は tr.muted で沈める。何もしていないセルは空けたまま */
+table.fmap td.fd{background:var(--accent-faint);vertical-align:middle}
+
+/* A10 クロス集計の表: ヒートマップ表の最下行に回答数 tr.n（列ごとの n を灰で）。設問の母集団は .fig-title の直下の .fig-pop に1行 */
+tr.n td{color:var(--sub);background:none!important;box-shadow:none!important;outline:0!important;font-weight:400;border-top:1px solid var(--line)!important}
+table.heat tr.n td:not(:first-child){text-align:center}
+.fig-pop{font-size:.85em;color:var(--text);margin:-.6em 0 .9em;line-height:1.6}
+.fig-pop b{color:var(--sub);font-weight:500;margin-right:.5em}
+
+/* A11 声→課題→該当欄のチェック表 table.voice: 声 td.vc（行頭に緑の“）→ 緑の丸の「›」td.arw → 課題 → 升目 td.bx（当たる升に .on。✓はCSSが描く） */
+table.voice td.vc{padding-left:1.2em!important;position:relative}
+table.voice td.vc::before{content:"\201C";position:absolute;left:0;top:.15em;color:var(--accent-h);font-size:1.4em;line-height:1}
+table.voice .arw{width:1.8em;padding-left:.2em!important;padding-right:.2em!important;text-align:center}
+table.voice td.arw i{font-style:normal;display:inline-flex;width:1.5em;height:1.5em;border-radius:50%;background:var(--accent-h);color:#fff;align-items:center;justify-content:center}
+table.voice td.bx.on::after{content:"\2713"}
+table.voice td.bx{text-align:center;color:var(--accent-h);font-weight:700;width:2.6em;box-shadow:inset 0 0 0 1px var(--line-soft);border-left:3px solid var(--surface)!important;background:var(--surface)}
+
+/* A12 3段の分解図 .decomp: 大項目・中項目・素材の3列に札を縦に積み、大項目は配下の行ぶん grid-row で伸ばす。
+   札の濃さ=成熟度（.t1 淡〜.t4 濃）、右端に数字。4列目 .so に塊ごとの解釈（左に灰の罫） */
+.decomp{display:grid;grid-template-columns:1fr 1fr 1fr 1.3fr;grid-auto-rows:minmax(2em,auto);gap:.25em .6em}
+.decomp .hd{color:var(--accent-h);border-bottom:1px solid var(--line);padding-bottom:.2em;font-weight:500}
+.decomp .c{display:flex;align-items:center;justify-content:space-between;gap:.5em;padding:0 .6em;color:var(--text);font-size:.92em}
+.decomp .c b{font-weight:500}
+.decomp .t1{background:var(--accent-faint)} .decomp .t2{background:var(--accent-soft)} .decomp .t3{background:var(--accent-pale)} .decomp .t4{background:var(--accent-h);color:#fff}
+.decomp .so{grid-column:4;border-left:1.5px solid var(--line);padding-left:.8em;display:flex;align-items:center;line-height:1.55;font-size:.92em}
+.decomp .hd.so{border-left:0}
+/* 追加27本の見た目の調整 */
+table.fmap td.fd{box-shadow:inset 0 0 0 .22em var(--surface)}          /* 隣り合う所見の面が1つの塊に見えないよう白い溝で切る */
+.stg i:not(.on){background:var(--off);color:var(--sub);box-shadow:none}  /* 輪郭は矢羽の斜辺で切れるので、まだの段は灰の面にする */
+table.voice td.vc::before{position:static;display:inline-block;width:1.2em;margin-left:-1.2em;vertical-align:-.25em}
+.sd-toc.part .lp b{left:2.087em}                                       /* 通常の板の題（2em・left 1.565em）と同じ左端に揃える */
+.sd-toc.part .lp small{left:3.13em}
+table.voice td.vc::before{font-family:Georgia,"Times New Roman",serif;font-size:1.9em;font-weight:700;line-height:0;vertical-align:-.42em;width:.65em;margin-left:-.75em}
+table.voice td.vc{padding-left:1.6em!important}
+/* C6 軸が2つあるときはタグチップを2組重ねてよい（BCG 000099・000149 の約70枚。A×B の格子の札は作らない）。2組目は1組目の真下 */
+.sd-head .tags + .tags{top:4.2em}

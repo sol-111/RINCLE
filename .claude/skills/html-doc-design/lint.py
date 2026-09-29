@@ -493,6 +493,11 @@ def lint_file(path, allow_emoji):
         used |= set(m.group(1).split())
     if re.search(r'<table[^>]*class="[^"]*\bopen\b', s):
         bad("WARN 廃止した部品: 罫の軽い表 table.open（既定の表と同じになった）")
+    # 2026-09-29 追加27本: 本資料の構成は2段（いまの章だけ緑・ほかは同じ灰）。済んだ章の .done は使わない
+    for m in re.finditer(r'class="sd-toc[^"]*".*?</ol>', s, re.S):
+        if re.search(r'<li[^>]*class="[^"]*\bdone\b', m.group(0)):
+            bad("WARN 本資料の構成の li.done は廃止（色は2段: いまの章 .cur だけ緑、ほかは済んだ章も同じ灰）")
+            break
     for c, why in RETIRED.items():
         if c in used:
             bad(f"WARN 廃止した部品 .{c}: {why}（既存の資料はCSSを中に持つので崩れないが、新しく使わない）")

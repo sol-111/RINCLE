@@ -330,7 +330,7 @@
       <div class="g-meta">
         <div class="g-no is-add">タグチップ .tags</div>
         <div class="g-nm">右上タグチップ（いまどの論点か） <span class="badge brand g-tier">まず使う</span></div>
-        <div class="g-ds">冒頭で立てた軸（論点1〜n）を全枚で運ぶ。該当だけ .on で墨に反転。軸に属さない枚（表紙・裏表紙）には置かない。</div>
+        <div class="g-ds">冒頭で立てた軸（論点1〜n）を全枚で運ぶ。<strong>軸が2つあるとき（テーマ×業界など）は2組を重ねてよい</strong>（2組目は1組目の真下に自動で並ぶ。A×B の格子の札は作らない）。該当だけ .on で墨に反転。軸に属さない枚（表紙・裏表紙）には置かない。</div>
       </div>
       <div class="tags"><span>結論</span><span>要件</span><span class="on">進め方</span><span>移行</span></div>
     </div>
@@ -354,10 +354,14 @@
 
 <div class="g-blk">
       <div class="g-meta"><div class="g-no is-add">新 .sd-toc</div><div class="g-nm">本資料の構成 <span class="badge brand g-tier">まず使う</span></div>
-        <div class="g-ds">章の頭で毎回出し直す（旧の目次・章とびら・全体マップを統合）。左の緑の板=幅の1/3・項目の左端=幅の42%・上下中央・点線でページ番号へ。済んだ章=灰・いまの章=緑・これからの章=本文の灰。呼び名は「目次」「Agenda」でなく「本資料の構成」（送るだけの資料でも使える）。10枚超のデッキは最初の1枚を2〜3枚目に置き、全体の案内を兼ねる。</div></div>
+        <div class="g-ds">章の頭で毎回出し直す（旧の目次・章とびら・全体マップを統合）。左の緑の板=幅の1/3・項目の左端=幅の42%・上下中央・点線でページ番号へ。色は2段: いまの章=緑の文字、ほかは済んだ章もこれからの章も同じ灰（BCGの約45枚で例外なし。旧の3段 <code>.done</code> は使わない）。いまの章に節があるときだけ、その章の直下に節 <code>li.sub</code> を並べる（ほかの章の節は出さない）。部が2段ある資料だけ、左の板に部の名前を置く <code>.sd-toc.part</code>。呼び名は「目次」「Agenda」でなく「本資料の構成」（送るだけの資料でも使える）。10枚超のデッキは最初の1枚を2〜3枚目に置き、全体の案内を兼ねる。</div></div>
       <div class="g-demo"><div class="slide" style="max-width:560px;font-size:calc(560px / 60)"><div class="sd-toc"><div class="lp"><b>本資料の構成</b></div><ol>
-<li class="done"><span class="n">1.</span>補助金の要件<span class="d"></span><span class="p">3</span></li><li class="cur"><span class="n">2.</span>進め方と判断日<span class="d"></span><span class="p">8</span></li>
-<li><span class="n">3.</span>データ移行<span class="d"></span><span class="p">15</span></li><li><span class="n">4.</span>決めていただくこと<span class="d"></span><span class="p">20</span></li><li><span class="n"></span>付録<span class="d"></span><span class="p">別添-1</span></li></ol></div><div class="slide-ft"><span class="pg">8</span></div></div></div>
+<li><span class="n">1.</span>補助金の要件<span class="d"></span><span class="p">3</span></li><li class="cur"><span class="n">2.</span>進め方と判断日<span class="d"></span><span class="p">8</span></li>
+<li class="sub cur"><span class="n">2-1</span>全体の工程<span class="d"></span><span class="p">9</span></li><li class="sub"><span class="n">2-2</span>判断日<span class="d"></span><span class="p">11</span></li>
+<li><span class="n">3.</span>データ移行<span class="d"></span><span class="p">15</span></li><li><span class="n">4.</span>決めていただくこと<span class="d"></span><span class="p">20</span></li><li><span class="n"></span>付録<span class="d"></span><span class="p">別添-1</span></li></ol></div><div class="slide-ft"><span class="pg">8</span></div></div>
+<p class="g-st" style="margin:.6em 0 .3em">部が2段ある資料だけ（.sd-toc.part）:</p>
+<div class="slide" style="max-width:560px;font-size:calc(560px / 60)"><div class="sd-toc part"><div class="lp"><small>第2部</small><b>海外の制度と<br>日本への示唆</b></div><ol>
+<li><span class="n">1.</span>米国<span class="d"></span><span class="p">30</span></li><li class="cur"><span class="n">2.</span>欧州<span class="d"></span><span class="p">38</span></li><li><span class="n">3.</span>日本への示唆<span class="d"></span><span class="p">52</span></li></ol></div><div class="slide-ft"><span class="pg">37</span></div></div></div>
     </div>
 
 <div class="g-blk">
@@ -381,7 +385,7 @@
     </div>
 
 <div class="g-blk">
-      <div class="g-meta"><div class="g-no is-add">F1 tr.muted の用法</div><div class="g-nm">再掲して沈める（各論の入口） <span class="badge mid g-tier">場面が合えば</span></div>
+      <div class="g-meta"><div class="g-no is-add">F1 tr.muted の用法</div><div class="g-nm">再掲して沈める（各論の入口） <span class="badge brand g-tier">まず使う</span></div>
         <div class="g-ds">冒頭の一覧表（論点×検証方法×結果）を各論の1枚目で再掲し、いま扱う行だけ墨で残して他を <code>tr.muted</code> で沈める。図なら対象外の列を <code>.fill.dim</code>。<code>.tags</code> より情報が多く、中扉を何度も挟む作りの代わりになる。</div></div>
       <div class="g-demo">
         <div class="table-wrap"><table><thead><tr><th>論点</th><th>検証方法</th><th>結果</th></tr></thead><tbody>
@@ -400,10 +404,37 @@
     </div>
 
 <div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .sd-loc</div><div class="g-nm">縦の現在地レール <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">10区分を超える分類を本文の左に縦の矢羽で並べ、毎枚に運ぶ（BCG 2本・105枚）。いま=<code>.cur</code>（緑の塗り）・対象外=<code>.out</code>（淡い灰）。<code>.loc-wrap</code> で「レール | 本文」の2列にする。4〜6語で足りるなら右上のタグチップ <code>.tags</code>。</div></div>
+      <div class="g-demo"><div class="loc-wrap"><div class="sd-loc"><span>燃料</span><span class="cur">圧力容器</span><span>蒸気発生器</span><span>配管</span><span>ポンプ</span><span>計装</span><span class="out">建屋（対象外）</span></div>
+<div class="table-wrap"><table><thead><tr><th>部材</th><th>国内の供給元</th><th>代わりの調達先</th></tr></thead><tbody><tr><td class="label">鍛造の胴</td><td>1社</td><td>海外2社（納期2年）</td></tr><tr><td class="label">溶接</td><td>3社</td><td>国内で可</td></tr><tr><td class="label">検査</td><td>2社</td><td>国内で可</td></tr></tbody></table></div></div></div>
+    </div>
+
+<div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">用法 .sd-loc + .spec</div><div class="g-nm">原典の3列読み（章立て・原文・当社の解釈） <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">公募要領・契約書・法令を数枚かけて章ごとに読み解くときの組み方（BCG 000057 の10枚）。左=原典の章立てを縦の現在地レールで、右=仕様書の原文→業務の対応 <code>.spec</code> の形で「原文 → 当社の解釈」。新しい部品は足さない。</div></div>
+      <div class="g-demo"><div class="loc-wrap"><div class="sd-loc"><span>1 目的</span><span>2 対象者</span><span class="cur">3 対象経費</span><span>4 補助率</span><span>5 手続</span></div>
+<div class="spec"><div class="h">公募要領（原文）</div><div></div><div class="h">当社の解釈</div>
+<div class="src">「補助対象経費は、交付決定日以降に発注・契約し、補助事業期間内に支払いを完了したものに限る。」</div><div class="br"></div><div class="boxes"><div class="bx"><b>見積りは取ってよいが、発注は待つ</b>交付決定は12月の見込み。それまでに発注した分は全額が自己負担</div></div></div></div></div>
+    </div>
+
+<div class="g-blk">
       <div class="g-meta"><div class="g-no is-add">新 .sd-meta</div><div class="g-nm">聞き取り先の札 <span class="badge mid g-tier">場面が合えば</span></div>
         <div class="g-ds">インタビューが3枚以上続く章で、見出し帯の右に相手の属性を3項目まで（規模・展開・範囲）。人名は書かない。</div></div>
       <div class="g-demo"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:1em;flex-wrap:wrap"><div><div style="font-size:.7em;color:var(--sub);letter-spacing:.15em">インタビュー</div><div style="font-size:1.3em;color:var(--accent-h);font-weight:500">評価の基準を先に公開して異動の納得感を上げた</div></div>
 <dl class="sd-meta"><b>対象企業の概要</b><span>従業員規模: 約1,000人<br>事業の展開: 国内<br>適用の範囲: 全社</span></dl></div></div>
+    </div>
+
+<div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .org</div><div class="g-nm">層の行ラベルつき体制図 <span class="badge plain g-tier">控え</span></div>
+        <div class="g-ds">誰が誰に発注・委託・協力するか。左に層、箱は役割で塗る（紺=発注・公的機関 <code>.pub</code> / 緑=当社 <code>.own</code> / 淡い緑=実施する民間 / 灰=未定 <code>.tbd</code>）。層の間の矢印に動詞。<strong>当社が元請けで2〜3社に再委託する1本の木なら、体制表（2段ヘッダーの表）で足りる</strong>。相手方の組織が4つ以上あり、委託・資金・支援が横にも流れるときだけ使う（BCG 000678 ほか22枚）。</div></div>
+      <div class="g-demo"><figure class="fig" aria-label="当社が取りまとめ、調査は現地の2社と大学に分けて委託する" style="margin:0;max-width:640px"><div class="org">
+<div class="ly">発注</div><div class="row"><span class="bx pub">経済産業省</span></div>
+<div class="ly gap"></div><div class="ar"><span>委託</span></div>
+<div class="ly">取りまとめ</div><div class="row"><span class="bx own"><span class="num-chip">a</span>当社（アイビス）</span></div>
+<div class="ly gap"></div><div class="ar"><span>再委託</span><span>協力</span></div>
+<div class="ly">実施</div><div class="row"><span class="bx"><span class="num-chip">b</span>現地調査会社</span><span class="bx">通訳会社</span><span class="bx tbd"><span class="num-chip">c</span>現地大学（調整中）</span></div>
+</div></figure></div>
     </div>
 
 <div class="g-blk">
@@ -423,7 +454,7 @@
       <div class="g-meta">
         <div class="g-no is-add">並列カラム .cols</div>
         <div class="g-nm">見出し付きの並列カラム（エグゼクティブサマリー） <span class="badge brand g-tier">まず使う</span></div>
-        <div class="g-ds">c2〜c5。各カラムはゴシック見出し+濃い灰の下罫+1文目 .col-lead の言い切り。粒度・主語・語尾を揃える。</div>
+        <div class="g-ds">c2〜c5。各カラムはゴシック見出し+濃い灰の下罫+1文目 .col-lead の言い切り。粒度・主語・語尾を揃える。<br><strong>依頼項目や論点が問いの形なら、3カラムでなく問い→答えの表 <code>table.qa</code></strong>（2026-09-29 追加。BCG 000224 の「サマリ」6枚。答えの1文目を太字で言い切り、末尾に → P.n）。</div>
       </div>
       <div>
     <div class="cols c3">
@@ -431,6 +462,9 @@
       <div><h3>進め方</h3><p class="col-lead">管理画面から実装して11月13日に最終判断する。</p><p>納品は11月24日、検収と振込を11月中に終える。</p></div>
       <div><h3>依頼</h3><p class="col-lead">契約形態と着手日を今週中に決めていただく。</p><p>デザインの初稿は10月9日までに受け取る。</p></div>
     </div>
+    <div class="table-wrap" style="margin-top:22px"><table class="qa"><tbody>
+      <tr><td class="label wrap">補助の対象になるか</td><td><strong>対象になる。</strong>補助率は3分の2で、支払済みの分だけが対象。→ P.5</td></tr>
+      <tr><td class="label wrap">いつまでに決めるか</td><td><strong>11月13日に最終判断する。</strong>納品は11月24日、検収と振込を11月中に終える。→ P.12</td></tr></tbody></table></div>
       </div>
     </div>
 
@@ -817,6 +851,30 @@
     </div>
 
 <div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .scat</div><div class="g-nm">平均線つきの散布図 <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">2つの量の関係と平均との位置。平均の点線に名札、上下を淡い紅と淡い緑で塗り分け、注目する点だけ緑。右に番号つきの所見。点は2色まで。</div></div>
+      <div class="g-demo"><div class="scat"><div class="pl"><div class="up"></div><div class="dn"></div><div class="avg"><b>平均 ¥11.2</b></div>
+<span class="d" style="left:10%;top:25%"></span><span class="d" style="left:18%;top:40%"></span><span class="d" style="left:25%;top:30%"></span><span class="d" style="left:40%;top:55%"></span><span class="d on" style="left:62%;top:68%"></span><span class="d on" style="left:78%;top:75%"></span><span class="d on" style="left:90%;top:82%"></span><span class="d" style="left:52%;top:45%"></span>
+<span class="ax" style="left:.4em;top:.2em">価格（高）</span><span class="ax" style="right:.3em;bottom:.2em">調達量（多）</span></div>
+<ol><li>大口の3社は平均より<strong>2割安く</strong>調達している</li><li>小口ほど価格のばらつきが大きい</li></ol></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="sh-body"><h2>比べる</h2><div class="sh-sub">表・評価・差。デッキの表の既定は罫の軽い表</div></div>
+    </div>
+
+<div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .gbar</div><div class="g-nm">系列を並べた縦棒 <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">同じ対象を3〜4条件で数えた比較。全件数=灰、条件は緑の淡→濃。凡例は左上に1行。4系列を超えるなら表にする。</div></div>
+      <div class="g-demo"><div class="gbar"><div class="lg"><span><i style="background:var(--sub)"></i>全件数</span><span><i style="background:var(--accent-pale)"></i>条件①</span><span><i style="background:var(--accent)"></i>条件②</span><span><i style="background:var(--accent-deep)"></i>条件③</span></div>
+<div class="plot"><div class="g"><i style="height:90%;background:var(--sub)"><b>120</b></i><i style="height:60%;background:var(--accent-pale)"><b>80</b></i><i style="height:38%;background:var(--accent)"><b>50</b></i><i style="height:15%;background:var(--accent-deep)"><b>20</b></i></div><div class="g"><i style="height:70%;background:var(--sub)"><b>95</b></i><i style="height:45%;background:var(--accent-pale)"><b>60</b></i><i style="height:22%;background:var(--accent)"><b>30</b></i><i style="height:8%;background:var(--accent-deep)"><b>10</b></i></div><div class="g"><i style="height:50%;background:var(--sub)"><b>66</b></i><i style="height:30%;background:var(--accent-pale)"><b>40</b></i><i style="height:15%;background:var(--accent)"><b>20</b></i><i style="height:6%;background:var(--accent-deep)"><b>8</b></i></div></div>
+<div class="x"><span>事業A</span><span>事業B</span><span>事業C</span></div></div></div>
+    </div>
+
+<div class="g-blk">
       <div class="g-meta">
         <div class="g-no is-add">.dotgrid / .dots</div>
         <div class="g-nm">割合のドットマトリクス <span class="badge plain g-tier">控え</span></div>
@@ -996,30 +1054,6 @@
     </div>
 
 <div class="g-blk">
-      <div class="g-meta"><div class="g-no is-add">新 .gbar</div><div class="g-nm">系列を並べた縦棒 <span class="badge plain g-tier">控え</span></div>
-        <div class="g-ds">同じ対象を3〜4条件で数えた比較。全件数=灰、条件は緑の淡→濃。凡例は左上に1行。4系列を超えるなら表にする。</div></div>
-      <div class="g-demo"><div class="gbar"><div class="lg"><span><i style="background:var(--sub)"></i>全件数</span><span><i style="background:var(--accent-pale)"></i>条件①</span><span><i style="background:var(--accent)"></i>条件②</span><span><i style="background:var(--accent-deep)"></i>条件③</span></div>
-<div class="plot"><div class="g"><i style="height:90%;background:var(--sub)"><b>120</b></i><i style="height:60%;background:var(--accent-pale)"><b>80</b></i><i style="height:38%;background:var(--accent)"><b>50</b></i><i style="height:15%;background:var(--accent-deep)"><b>20</b></i></div><div class="g"><i style="height:70%;background:var(--sub)"><b>95</b></i><i style="height:45%;background:var(--accent-pale)"><b>60</b></i><i style="height:22%;background:var(--accent)"><b>30</b></i><i style="height:8%;background:var(--accent-deep)"><b>10</b></i></div><div class="g"><i style="height:50%;background:var(--sub)"><b>66</b></i><i style="height:30%;background:var(--accent-pale)"><b>40</b></i><i style="height:15%;background:var(--accent)"><b>20</b></i><i style="height:6%;background:var(--accent-deep)"><b>8</b></i></div></div>
-<div class="x"><span>事業A</span><span>事業B</span><span>事業C</span></div></div></div>
-    </div>
-
-<div class="g-blk">
-      <div class="g-meta"><div class="g-no is-add">新 .scat</div><div class="g-nm">平均線つきの散布図 <span class="badge plain g-tier">控え</span></div>
-        <div class="g-ds">2つの量の関係と平均との位置。平均の点線に名札、上下を淡い紅と淡い緑で塗り分け、注目する点だけ緑。右に番号つきの所見。点は2色まで。</div></div>
-      <div class="g-demo"><div class="scat"><div class="pl"><div class="up"></div><div class="dn"></div><div class="avg"><b>平均 ¥11.2</b></div>
-<span class="d" style="left:10%;top:25%"></span><span class="d" style="left:18%;top:40%"></span><span class="d" style="left:25%;top:30%"></span><span class="d" style="left:40%;top:55%"></span><span class="d on" style="left:62%;top:68%"></span><span class="d on" style="left:78%;top:75%"></span><span class="d on" style="left:90%;top:82%"></span><span class="d" style="left:52%;top:45%"></span>
-<span class="ax" style="left:.4em;top:.2em">価格（高）</span><span class="ax" style="right:.3em;bottom:.2em">調達量（多）</span></div>
-<ol><li>大口の3社は平均より<strong>2割安く</strong>調達している</li><li>小口ほど価格のばらつきが大きい</li></ol></div></div>
-    </div>
-  </div>
-
-  <div class="section" id="s5">
-    <div class="section-header">
-      <div class="section-num">05</div>
-      <div class="sh-body"><h2>比べる</h2><div class="sh-sub">表・評価・差。デッキの表の既定は罫の軽い表</div></div>
-    </div>
-
-<div class="g-blk">
       <div class="g-meta"><div class="g-no is-add">C2 .td-head / C3 td.verdict</div><div class="g-nm">1行目で言い切り・判定列 <span class="badge brand g-tier">まず使う</span></div>
         <div class="g-ds">セルの1行目で言い切り、詳細は下に小さく（.td-head / .td-body）。判定列は語で示す（推進=紺・変化なし=灰・後退=紅）。罫の軽い表 table.open は既定の表と同じになったので廃止（2026-09-29）。</div></div>
       <div class="table-wrap"><table>
@@ -1154,6 +1188,16 @@
     </div>
 
 <div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .mk</div><div class="g-nm">状態の記号（チェック・−・×の丸） <span class="badge brand g-tier">まず使う</span></div>
+        <div class="g-ds">行×列の適用表・対応表。緑のチェック=主に該当・淡い緑のチェック=副次的・−=検証中・灰の−=該当なし・紅の×=向かない。1つの表で使う記号は3種まで。2値だけならハーベイボールで足りる。</div></div>
+      <div class="g-demo"><div class="table-wrap"><table><thead><tr><th>技術</th><th style="text-align:center">発電</th><th style="text-align:center">熱</th><th style="text-align:center">輸送</th><th style="text-align:center">原料</th></tr></thead><tbody>
+<tr><td class="label">水素</td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk sub"></span></td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk na"></span></td></tr>
+<tr><td class="label">アンモニア</td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk na"></span></td><td class="c"><span class="mk wip"></span></td><td class="c"><span class="mk sub"></span></td></tr>
+<tr><td class="label">合成燃料</td><td class="c"><span class="mk ng"></span></td><td class="c"><span class="mk sub"></span></td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk na"></span></td></tr></tbody></table></div>
+<div class="legend" style="font-size:.8em"><span><span class="mk ok"></span>主な用途</span><span><span class="mk sub"></span>副次的</span><span><span class="mk wip"></span>検証中</span><span><span class="mk na"></span>該当なし</span><span><span class="mk ng"></span>向かない</span></div></div>
+    </div>
+
+<div class="g-blk">
       <div class="g-meta"><div class="g-no is-add">N8 td.merge / N3 同じ入力で2方式</div><div class="g-nm">粒度の合わない列の結合・2つの方式を同じ数字で比べる <span class="badge mid g-tier">場面が合えば</span></div>
         <div class="g-ds">比べる相手の側に項目単位の定めがないときは、列を縦に結合して方針を文で書く（<code>td.merge</code>＝左に罫と余白。「—」で埋めると「求められていない」と誤読される）。2つの方式の違いは、同じ仮の入力で2つの表を <code>.cols.c2</code> に並べて見せる（見出しの行に方式名・途中の数字は墨 <code>td.num.cnt</code>・合計の <code>tr.answer</code> だけ緑・評価は <code>.col-note</code>）。</div></div>
       <div class="g-demo">
@@ -1272,7 +1316,7 @@
       <div class="g-meta">
         <div class="g-no is-add">table.heat</div>
         <div class="g-nm">ヒートマップ表（濃淡で強弱） <span class="badge mid g-tier">場面が合えば</span></div>
-        <div class="g-ds">td.h0〜h3 の4段。なし=白面・低=淡・中=薄・高=緑。凡例を直下に。行ホバーで色が変わらない。</div>
+        <div class="g-ds">td.h0〜h3 の4段。なし=白面・低=淡・中=薄・高=緑。凡例を直下に。行ホバーで色が変わらない。<br><strong>アンケートのクロス集計</strong>（2026-09-29 追加。BCG 000339 の約35枚）: 凡例にしきい値の語（70%以上 / 40〜70%未満 / 40%未満）を書き、最下行に回答数 <code>tr.n</code>（列ごとの n を灰で）。分岐のある設問は図表名の行の直下に母集団 <code>.fig-pop</code> を1行。</div>
       </div>
       <div>
     <div class="table-wrap"><table class="heat">
@@ -1285,6 +1329,13 @@
       </tbody>
     </table></div>
     <div class="legend"><span><i class="sq" style="background:var(--surface)"></i>なし</span><span><i class="sq" style="background:var(--accent-faint)"></i>低</span><span><i class="sq" style="background:var(--accent-soft)"></i>中</span><span><i class="sq" style="background:var(--accent)"></i>高</span></div>
+    <div class="fig-title" style="margin-top:28px"><span class="t">C-2 求める人材に、どの役職を求めますか<small>【複数選択】</small></span><span class="lg"><span><i style="background:var(--accent-h)"></i>70%以上</span><span><i style="background:var(--accent-soft)"></i>40〜70%未満</span><span><i style="background:#fff;outline:1px solid var(--line-soft)"></i>40%未満</span></span></div>
+    <p class="fig-pop"><b>母集団</b>外国人材を雇用している、または雇用のニーズがある企業のうち、経営人材以外を求める37社</p>
+    <div class="table-wrap"><table class="heat"><thead><tr><th>役職</th><th>研究開発</th><th>営業</th><th>貿易業務</th><th>通訳</th><th>全体</th></tr></thead><tbody>
+      <tr><td class="label">未経験</td><td class="h0">35%</td><td class="h0">17%</td><td class="h2">50%</td><td class="h0">20%</td><td class="h0">17%</td></tr>
+      <tr><td class="label">エキスパート</td><td class="h0">29%</td><td class="h0">39%</td><td class="h0">0%</td><td class="h2">40%</td><td class="h0">35%</td></tr>
+      <tr><td class="label">マネージャー</td><td class="h0">18%</td><td class="h0">26%</td><td class="h0">0%</td><td class="h3">75%</td><td class="h0">28%</td></tr>
+      <tr class="n"><td class="label">回答数</td><td>17</td><td>23</td><td>2</td><td>5</td><td>175</td></tr></tbody></table></div>
       </div>
     </div>
 
@@ -1421,13 +1472,13 @@
     </div>
 
 <div class="g-blk">
-      <div class="g-meta"><div class="g-no is-add">新 .mk</div><div class="g-nm">状態の記号（チェック・−・×の丸） <span class="badge mid g-tier">場面が合えば</span></div>
-        <div class="g-ds">行×列の適用表・対応表。緑のチェック=主に該当・淡い緑のチェック=副次的・−=検証中・灰の−=該当なし・紅の×=向かない。1つの表で使う記号は3種まで。2値だけならハーベイボールで足りる。</div></div>
-      <div class="g-demo"><div class="table-wrap"><table><thead><tr><th>技術</th><th style="text-align:center">発電</th><th style="text-align:center">熱</th><th style="text-align:center">輸送</th><th style="text-align:center">原料</th></tr></thead><tbody>
-<tr><td class="label">水素</td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk sub"></span></td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk na"></span></td></tr>
-<tr><td class="label">アンモニア</td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk na"></span></td><td class="c"><span class="mk wip"></span></td><td class="c"><span class="mk sub"></span></td></tr>
-<tr><td class="label">合成燃料</td><td class="c"><span class="mk ng"></span></td><td class="c"><span class="mk sub"></span></td><td class="c"><span class="mk ok"></span></td><td class="c"><span class="mk na"></span></td></tr></tbody></table></div>
-<div class="legend" style="font-size:.8em"><span><span class="mk ok"></span>主な用途</span><span><span class="mk sub"></span>副次的</span><span><span class="mk wip"></span>検証中</span><span><span class="mk na"></span>該当なし</span><span><span class="mk ng"></span>向かない</span></div></div>
+      <div class="g-meta"><div class="g-no is-add">新 .mul</div><div class="g-nm">掛け算の行の表（区分ごとに因数を × でつなぐ） <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">試算の中身を、区分ごとに同じ因数の並びで見せる（BCG 000299 の20枚）。前提の値・式・答えが1行で検算でき、区分どうしでどの因数が違うかも縦に比べられる。因数は7つまで（<code>--f</code>）。因数の根拠は見出しの※n と直下の <code>ul.notes</code>。区分が1つだけなら検算できる表 <code>span.sym</code>。</div></div>
+      <div class="g-demo"><figure class="fig" aria-label="欠勤による損失は、非正規より正規で約3倍大きい" style="margin:0"><div class="mul" style="--f:4">
+<div class="h sp"></div><div class="h sp"></div><div class="h">対象者※1</div><div></div><div class="h">欠勤日数※2<br><small>日 / 年</small></div><div></div><div class="h">日当※3</div><div></div><div class="h">損失の率※4</div><div></div><div class="h ans">損失額</div>
+<div class="g" style="grid-row:span 2">欠勤</div><div class="g2">正規</div><div class="v">12,000人</div><div class="op"><i>×</i></div><div class="v">2.1</div><div class="op"><i>×</i></div><div class="v">¥18,000</div><div class="op"><i>×</i></div><div class="v">100%</div><div class="op"><i>=</i></div><div class="a">¥453,600,000</div>
+<div class="g2">非正規</div><div class="v">6,000人</div><div class="op"><i>×</i></div><div class="v">1.8</div><div class="op"><i>×</i></div><div class="v">¥12,000</div><div class="op"><i>×</i></div><div class="v">100%</div><div class="op"><i>=</i></div><div class="a">¥129,600,000</div></div></figure>
+<ul class="notes"><li data-n="1">総務省「労働力調査」2025年平均</li><li data-n="2">当社アンケート（n=1,200・2026年8月）。※3・※4 も同じ</li></ul></div>
     </div>
 
 <div class="g-blk">
@@ -1454,6 +1505,46 @@
 <tr><td class="label">目標の公表</td><td>2030年に半減</td><td>2035年に半減</td><td>未公表</td><td>2040年に実質0</td></tr>
 <tr><td class="label">取引先への要請</td><td>一次取引先に報告を義務化</td><td>一次取引先に要請</td><td>—</td><td>主要な取引先だけ</td></tr>
 <tr class="col-so"><td></td><td colspan="2">取引先に数字を求める段階に入っている</td><td colspan="2">目標の公表が先で、取引先への波及はまだ</td></tr></tbody></table></div></div>
+    </div>
+
+<div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 tr.src / td.hyp</div><div class="g-nm">出所の括り線（事実の列 ｜ 当社の仮説の列） <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">1つの表の中で、どこまでが聞き取った事実で、どこからが当社の仮説かを列の束の上の線で分ける（BCG 000678 の14枚）。2段ヘッダーのさらに上に <code>tr.src</code>。仮説側のセルは <code>td.hyp</code>（灰の細い輪郭）。</div></div>
+      <div class="g-demo"><div class="table-wrap"><table><thead><tr class="src"><th></th><th colspan="2"><span>聞き取りに基づく整理</span></th><th colspan="2"><span>当社の仮説</span></th></tr><tr><th>分野</th><th>市のニーズ</th><th>現状の取組</th><th>提供できる技術</th><th>参画の形</th></tr></thead><tbody>
+<tr><td class="label">交通</td><td>渋滞の緩和</td><td>信号は手動</td><td class="hyp">信号の自動制御</td><td class="hyp">実証から</td></tr>
+<tr><td class="label">廃棄物</td><td>埋立地の延命</td><td>分別なし</td><td class="hyp">選別の機械化</td><td class="hyp">円借款</td></tr></tbody></table></div></div>
+    </div>
+
+<div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .stg</div><div class="g-nm">表のセルの中の段階の矢羽 <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">案件・企業が「開発 → 実証 → 商用」のどこまで進んだかを表の1列で比べる（BCG 000057 の20枚）。到達した段まで <code>.on</code>（緑の塗り）。状態の記号 <code>.mk</code> では段の順序が表せない。</div></div>
+      <div class="g-demo"><div class="table-wrap"><table><thead><tr><th>案件</th><th>段階</th><th class="num">規模</th></tr></thead><tbody>
+<tr><td class="label">英国 A</td><td><span class="stg"><i class="on">開発</i><i class="on">実証</i><i class="on">商用</i></span></td><td class="num">500MW</td></tr>
+<tr><td class="label">米国 B</td><td><span class="stg"><i class="on">開発</i><i class="on">実証</i><i>商用</i></span></td><td class="num">120MW</td></tr>
+<tr><td class="label">韓国 C</td><td><span class="stg"><i class="on">開発</i><i>実証</i><i>商用</i></span></td><td class="num">30MW</td></tr></tbody></table></div></div>
+    </div>
+
+<div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 table.fmap</div><div class="g-nm">共通の縦軸に所見を置く対応表 <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">複数の事例を同じ機能の一覧に照らし、どの機能で何をしているかを1枚で比べる（BCG 000653 の18枚）。1列目=固定の機能の一覧・列=事例・所見 <code>td.fd</code> は当たる行に rowspan でまたがる。扱わない行は <code>tr.muted</code>、何もしていないセルは空けたまま。軸の一覧は章の頭で1回見せ、各枚では扱う行だけ残す。</div></div>
+      <div class="g-demo"><div class="table-wrap"><table class="fmap"><thead><tr><th>機能</th><th>アニメ（日本）</th><th>ドラマ（韓国）</th><th>音楽（韓国）</th></tr></thead><tbody>
+<tr class="muted"><td class="label">人材育成</td><td></td><td></td><td></td></tr>
+<tr><td class="label">制作の資金</td><td class="fd" rowspan="2">製作委員会で集める</td><td class="fd">国の基金が3割</td><td></td></tr>
+<tr><td class="label">翻訳・字幕</td><td class="fd" rowspan="2">配信会社と国が分担</td><td class="fd" rowspan="2">事務所が自前で持つ</td></tr>
+<tr><td class="label">海外の配信</td><td class="fd">各社がばらばら</td></tr>
+<tr class="muted"><td class="label">知財の処理</td><td></td><td></td><td></td></tr></tbody></table></div></div>
+    </div>
+
+<div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .decomp</div><div class="g-nm">3段の分解図に成熟度の濃淡 <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">大項目 → 中項目 → 素材と分解した要素ごとの成熟度（BCG 202608181604 の約24枚）。3列に札を縦に積み、大項目は配下の行ぶん <code>grid-row</code> で伸ばす。札の濃さ=成熟度（<code>.t1</code> 淡〜<code>.t4</code> 濃）で右端に数字、4列目 <code>.so</code> に塊ごとの解釈。凡例を直下に。</div></div>
+      <div class="g-demo"><figure class="fig" aria-label="未成熟なのは、蒸気発生器の伝熱管の素材だけ" style="margin:0;max-width:760px"><div class="decomp">
+<div class="hd">大項目</div><div class="hd">中項目</div><div class="hd">素材</div><div class="hd so"></div>
+<div class="c t4" style="grid-row:2/4">圧力容器<b>9</b></div><div class="c t4">胴<b>9</b></div><div class="c t4">低合金鋼<b>9</b></div><div class="so" style="grid-row:2/4">既設炉の技術をそのまま使える</div>
+<div class="c t3">ふた<b>8</b></div><div></div>
+<div class="c t2" style="grid-row:4/6">蒸気発生器<b>4-8</b></div><div class="c t1">伝熱管<b>4</b></div><div class="c t1">新合金<b>4</b></div><div class="so" style="grid-row:4/6">伝熱管の新合金だけ実験段階で、量産の実績がない</div>
+<div class="c t3">胴<b>8</b></div><div></div></div></figure>
+<div class="legend"><span><i class="sq" style="background:var(--accent-faint)"></i>TRL 1〜4</span><span><i class="sq" style="background:var(--accent-soft)"></i>5〜6</span><span><i class="sq" style="background:var(--accent-pale)"></i>7〜8</span><span><i class="sq" style="background:var(--accent-h)"></i>9</span></div></div>
     </div>
 
 <div class="g-blk">
@@ -1790,6 +1881,16 @@
     </div>
 
 <div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .spanmap</div><div class="g-nm">またぐ札の地図（工程の列に打ち手の札） <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">どの打ち手が工程のどこからどこまでにかかるか、と、どの札もかからない穴の工程を1枚で見せる（BCG 000170 の13枚・000678 ほか7枚）。札は <code>grid-column</code> でかかる列の幅だけ置き、前提は全幅の灰の帯 <code>.cd.full</code>。各論の入口で出し直すときは <code>.spanmap.re</code> + いまの札に <code>.hot</code>（ほかは白地に沈める）。列の数は <code>--n</code>。</div></div>
+      <div class="g-demo"><figure class="fig" aria-label="案件形成と営業の間に、どの打ち手もかからない穴がある" style="margin:0"><div class="spanmap" style="--n:4"><div class="steps"><span>情報収集</span><span>案件形成</span><span>営業・提案</span><span>入札・契約</span></div>
+<div class="cards"><div class="cd full"><span class="num-chip">a</span>前提: 官民で案件情報を共有する場を置く</div><div class="cd" style="grid-column:1/3"><span class="num-chip">1</span>現地の案件情報を一元化する</div><div class="cd" style="grid-column:4/5"><span class="num-chip">2</span>入札の保証を肩代わりする</div><div class="cd" style="grid-column:1/2"><span class="num-chip">3</span>大使館の人脈を開放する</div><div class="cd" style="grid-column:3/5"><span class="num-chip">4</span>商談会を年2回開く</div></div></div></figure>
+<p class="g-st" style="margin:.6em 0 .3em">各論の入口で出し直す（.spanmap.re + .hot）:</p>
+<figure class="fig" aria-label="商談会は提案から入札までの2工程にかかる" style="margin:0"><div class="spanmap re" style="--n:4"><div class="steps"><span>情報収集</span><span>案件形成</span><span>営業・提案</span><span>入札・契約</span></div>
+<div class="cards"><div class="cd full"><span class="num-chip">a</span>前提: 官民で案件情報を共有する場を置く</div><div class="cd" style="grid-column:1/3"><span class="num-chip">1</span>現地の案件情報を一元化する</div><div class="cd" style="grid-column:4/5"><span class="num-chip">2</span>入札の保証を肩代わりする</div><div class="cd" style="grid-column:1/2"><span class="num-chip">3</span>大使館の人脈を開放する</div><div class="cd hot" style="grid-column:3/5"><span class="num-chip">4</span>商談会を年2回開く</div></div></div></figure></div>
+    </div>
+
+<div class="g-blk">
       <div class="g-meta">
         <div class="g-no is-add">.cycle</div>
         <div class="g-nm">循環サイクル <span class="badge plain g-tier">控え</span></div>
@@ -2037,6 +2138,15 @@
     </div>
 
 <div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .cols.basis</div><div class="g-nm">結論と根拠の2段カラム <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">観点ごと（Who / What / How など）に、上で結論を言い切り、下の灰の面に根拠の本体を置く（BCG 000678 ほか24枚）。段の間の緑の丸は「下が上を支える」。灰の面を敷いてよい5か所目（原則3「根拠の段」）。下が小さな補足なら、ふつうの並列カラムの <code>.col-note</code>。</div></div>
+      <div class="g-demo"><div class="cols c3 basis">
+<div><h3 class="hd"><span class="num-chip">A</span>Who 誰と</h3><p class="col-lead">市の交通局と組む。予算と路線の権限を持つ</p><div class="col-basis"><ul><li>市の予算の4割が交通</li><li>路線の認可は交通局</li></ul></div></div>
+<div><h3 class="hd"><span class="num-chip">B</span>What 何を</h3><p class="col-lead">既存のバス網の電動化から始める</p><div class="col-basis"><ul><li>車両の更新が2027年に集中</li><li>充電所の用地は市が持つ</li></ul></div></div>
+<div><h3 class="hd"><span class="num-chip">C</span>How どう</h3><p class="col-lead">円借款の枠で、3年で200台を入れる</p><div class="col-basis"><ul><li>JICAの枠が2026年度に空く</li><li>同規模の実績がタイにある</li></ul></div></div></div></div>
+    </div>
+
+<div class="g-blk">
       <div class="g-meta">
         <div class="g-no is-add">.oppose</div>
         <div class="g-nm">対向シェブロン <span class="badge plain g-tier">控え</span></div>
@@ -2155,6 +2265,14 @@
     </div>
 
 <div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 .case</div><div class="g-nm">事例の型紙 <span class="badge brand g-tier">まず使う</span></div>
+        <div class="g-ds">同じ観点で並べた事例の1件。概要の項目表 › 所見（淡い緑の小見出し）› 原典の抜粋（要所を緑の枠）。最下段の帯は「その事例の時点つきの事実1行」で、ページの結論帯ではない。事例が5件以上続く章の既定の型紙。</div></div>
+      <div class="g-demo"><div class="case"><div><div class="h">企業の概要</div><div class="kv"><span>設立</span><span>1998年</span><span>本社</span><span>ロンドン</span><span>従業員</span><span>約12,000人</span></div></div><div class="op">›</div>
+<div><div class="h">優れている項目と理由</div><span class="k">開示の内容</span>人材への投資額を事業別に開示<span class="k">投資家の評価</span><strong>比較できる数字</strong>が並ぶ</div><div class="op">›</div>
+<div><div class="h">原典の抜粋</div><div class="img">原典の画像（縮小）<i></i></div></div><div class="fact">2025年3月時点で、主要な投資家の8割がこの開示を参照している</div></div></div>
+    </div>
+
+<div class="g-blk">
       <div class="g-meta">
         <div class="g-no is-add">追加 — 2026-09-02新設</div>
         <div class="g-nm">用語の横並び（.term-row） <span class="badge mid g-tier">場面が合えば</span></div>
@@ -2168,11 +2286,20 @@
 
 <div class="g-blk">
       <div class="g-meta"><div class="g-no is-add">p.finding + .quote</div><div class="g-nm">所見と原文引用 <span class="badge mid g-tier">場面が合えば</span></div>
-        <div class="g-ds">所見1文の後に原文を引く。濃い灰の左罫2px・ゴシック・要所は緑の下線だけ（斜体＋色＋下線を重ねない）・出所は cite の小行。</div></div>
+        <div class="g-ds">所見1文（緑の文字・標準の太さ。太字にしない）の後に原文を引く。灰の左罫2px・要所は緑の下線だけ（斜体＋色＋下線を重ねない）・出所は cite の小行。</div></div>
       <div class="g-demo">
         <div><p class="finding">米国の制度は、試作品の段階から政府調達に乗せられる点で日本と異なる。</p>
           <div class="quote"><p>「試作品の開発に成功した事業者とは、<u>競争入札を経ずに量産契約を結ぶことができる</u>」</p><cite>米国 OT制度（10 U.S.C. §4022）</cite></div></div>
       </div>
+    </div>
+
+<div class="g-blk">
+      <div class="g-meta"><div class="g-no is-add">新 table.voice</div><div class="g-nm">声 → 課題 → 該当欄のチェック表 <span class="badge mid g-tier">場面が合えば</span></div>
+        <div class="g-ds">聞き取りの生の声を、どの課題・どの段階に当たるかで数えられる形にする（BCG 000224 の7枚）。声 <code>td.vc</code>（行頭に緑の“）→ 緑の丸の「›」<code>td.arw</code> → 課題の要約 → 段階×観点の升目 <code>td.bx</code>（当たる升に <code>.on</code>。印はCSSが描く）。見出しは2段ヘッダー。</div></div>
+      <div class="g-demo"><div class="table-wrap"><table class="voice"><thead><tr><th rowspan="2">実際の声（一例）</th><th rowspan="2" class="arw"></th><th rowspan="2">課題</th><th colspan="2" class="th-grp">デリバリー</th><th colspan="2" class="th-grp">保守</th></tr><tr><th>費用</th><th>時間</th><th>修理</th><th>返品</th></tr></thead><tbody>
+<tr><td class="vc">壊れたら日本に送り返すしかなく、2か月待たせた</td><td class="arw"><i>›</i></td><td>現地で直せない</td><td class="bx"></td><td class="bx on"></td><td class="bx on"></td><td class="bx"></td></tr>
+<tr><td class="vc">返品の送料がこちら持ちで、利益が消えた</td><td class="arw"><i>›</i></td><td>返品の費用が重い</td><td class="bx on"></td><td class="bx"></td><td class="bx"></td><td class="bx on"></td></tr>
+<tr><td class="vc">届くまで3週間かかると言うと、その場で断られた</td><td class="arw"><i>›</i></td><td>届くのが遅い</td><td class="bx"></td><td class="bx on"></td><td class="bx"></td><td class="bx"></td></tr></tbody></table></div></div>
     </div>
 
 <div class="g-blk">
@@ -2182,14 +2309,6 @@
         <div class="annot"><div class="annot-img" style="height:160px;background:#F2F2F2"><span class="annot-box" style="left:10%;top:15%;width:50%;height:30%"></span><span class="annot-box" style="left:10%;top:62%;width:70%;height:22%"></span></div>
           <div class="annot-notes"><div class="annot-note" style="top:18%"><b>① リード文</b>取り組みやすさを強調した文に変える</div><div class="annot-note" style="top:62%"><b>② ボタン</b>「申し込む」を1つに絞る</div></div></div>
       </div>
-    </div>
-
-<div class="g-blk">
-      <div class="g-meta"><div class="g-no is-add">新 .case</div><div class="g-nm">事例の型紙 <span class="badge mid g-tier">場面が合えば</span></div>
-        <div class="g-ds">同じ観点で並べた事例の1件。概要の項目表 › 所見（淡い緑の小見出し）› 原典の抜粋（要所を緑の枠）。最下段の帯は「その事例の時点つきの事実1行」で、ページの結論帯ではない。事例が5件以上続く章の既定の型紙。</div></div>
-      <div class="g-demo"><div class="case"><div><div class="h">企業の概要</div><div class="kv"><span>設立</span><span>1998年</span><span>本社</span><span>ロンドン</span><span>従業員</span><span>約12,000人</span></div></div><div class="op">›</div>
-<div><div class="h">優れている項目と理由</div><span class="k">開示の内容</span>人材への投資額を事業別に開示<span class="k">投資家の評価</span><strong>比較できる数字</strong>が並ぶ</div><div class="op">›</div>
-<div><div class="h">原典の抜粋</div><div class="img">原典の画像（縮小）<i></i></div></div><div class="fact">2025年3月時点で、主要な投資家の8割がこの開示を参照している</div></div></div>
     </div>
 
 <div class="g-blk">
