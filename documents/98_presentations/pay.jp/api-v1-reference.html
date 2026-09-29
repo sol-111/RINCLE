@@ -139,8 +139,8 @@ td{vertical-align:top}
           <tr><td><code>charge.updated</code></td><td>支払いの更新</td></tr>
           <tr><td><code>charge.refunded</code></td><td>支払いの返金</td></tr>
           <tr><td><code>charge.captured</code></td><td>支払いの確定</td></tr>
-          <tr><td class="label">チャージバック（dispute）</td><td><code>dispute.created</code></td><td>チャージバック発生</td></tr>
-          <tr><td class="label">トークン（token）</td><td><code>token.created</code></td><td>トークン作成</td></tr>
+          <tr><td class="label wrap">チャージバック（dispute）</td><td><code>dispute.created</code></td><td>チャージバック発生</td></tr>
+          <tr><td class="label wrap">トークン（token）</td><td><code>token.created</code></td><td>トークン作成</td></tr>
           <tr><td class="label" rowspan="6">顧客・カード（customer）</td><td><code>customer.created</code></td><td>顧客の作成</td></tr>
           <tr><td><code>customer.updated</code></td><td>顧客の更新</td></tr>
           <tr><td><code>customer.deleted</code></td><td>顧客の削除</td></tr>
@@ -150,7 +150,7 @@ td{vertical-align:top}
           <tr><td class="label" rowspan="3">プラン（plan）</td><td><code>plan.created</code></td><td>プランの作成</td></tr>
           <tr><td><code>plan.updated</code></td><td>プランの更新</td></tr>
           <tr><td><code>plan.deleted</code></td><td>プランの削除</td></tr>
-          <tr><td class="label">定期課金（subscription）</td><td><code>subscription.*</code></td><td>定期課金の各種操作</td></tr>
+          <tr><td class="label wrap">定期課金（subscription）</td><td><code>subscription.*</code></td><td>定期課金の各種操作</td></tr>
           <tr><td class="label">入金（transfer）</td><td><code>transfer.succeeded</code></td><td>入金内容の確定</td></tr>
           <tr><td class="label" rowspan="2">テナント（tenant）</td><td><code>tenant.*</code></td><td>Platform テナント操作</td></tr>
           <tr><td><code>tenant_transfer.succeeded</code></td><td>テナント入金の確定</td></tr>

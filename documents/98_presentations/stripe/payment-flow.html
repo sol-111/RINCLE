@@ -52,7 +52,6 @@
   .branch li{margin-bottom:4px}
 
   /* 表の細部（項目名は改行を許容・セル内の箇条書き） */
-  td.label{white-space:normal}
 </style>
 </head>
 <body>
@@ -256,7 +255,7 @@
             <td>返金オペが消える一方、<strong>回収リスクが発生</strong>（詳細は提案4-1）</td>
           </tr>
           <tr>
-            <td class="label">当日の変更・オプション</td>
+            <td class="label wrap">当日の変更・オプション</td>
             <td>別途追加決済<br><strong>※現行システムはそもそも当日変更ができず、システム外で処理</strong></td>
             <td><strong>当日変更の機能を新規開発</strong>して本決済に含めて1回で決済</td>
             <td>システム外で処理されていた売上を捕捉できるようになる＋決済回数が減ってユーザーに分かりやすい</td>
@@ -283,9 +282,9 @@
         <table>
           <thead><tr><th>対策</th><th>内容</th><th>種別</th></tr></thead>
           <tbody>
-            <tr><td class="label">同意の取り方が生命線</td><td>予約時に「登録カードへ請求されることがある」への<strong>明示的な同意</strong>を取る（構想STEP 1に既にあり）。Stripe上も「本人不在で請求してよいカード」として保存する設定にする — これで請求の成功率と正当性が大きく変わる</td><td><span class="badge good">実装</span></td></tr>
-            <tr><td class="label">前日リマインド通知 <span class="badge brand">弊社提案</span></td><td>前日にメール等で予約リマインドを自動送信。<strong>無断キャンセル自体を減らす</strong>のが一番の対策（キャンセル操作への導線も入れる）</td><td><span class="badge good">実装</span></td></tr>
-            <tr><td class="label">請求失敗時の逃げ道</td><td>①別カード案内 → ②請求書払い（Stripeの請求書リンクをメール送付）→ ③アカウント利用停止。それでも回収できない分は<strong>貸倒れとして許容する</strong>（回収に固執すると運用コストの方が高くつく）</td><td><span class="badge plain">運用</span></td></tr>
+            <tr><td class="label wrap">同意の取り方が生命線</td><td>予約時に「登録カードへ請求されることがある」への<strong>明示的な同意</strong>を取る（構想STEP 1に既にあり）。Stripe上も「本人不在で請求してよいカード」として保存する設定にする — これで請求の成功率と正当性が大きく変わる</td><td><span class="badge good">実装</span></td></tr>
+            <tr><td class="label wrap">前日リマインド通知 <span class="badge brand">弊社提案</span></td><td>前日にメール等で予約リマインドを自動送信。<strong>無断キャンセル自体を減らす</strong>のが一番の対策（キャンセル操作への導線も入れる）</td><td><span class="badge good">実装</span></td></tr>
+            <tr><td class="label wrap">請求失敗時の逃げ道</td><td>①別カード案内 → ②請求書払い（Stripeの請求書リンクをメール送付）→ ③アカウント利用停止。それでも回収できない分は<strong>貸倒れとして許容する</strong>（回収に固執すると運用コストの方が高くつく）</td><td><span class="badge plain">運用</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -344,15 +343,15 @@
       <table>
         <thead><tr><th>構想のSTEP</th><th>実現方法</th><th>可否</th></tr></thead>
         <tbody>
-          <tr><td class="label">1. 予約時のカード登録・有効性確認</td><td>Stripe標準機能（<code>SetupIntent</code>）。<strong>0円で検証・保存・本人認証まで完結</strong>。現行Pay.jpでは不完全だった有効性チェック（実質8割）がここで解消する</td><td><span class="badge good">○</span></td></tr>
-          <tr><td class="label">2. 販売店の予約確認</td><td>Bubble管理画面（既存の改修）</td><td><span class="badge good">○</span></td></tr>
-          <tr><td class="label">3. キャンセル料・無断キャンセル料の請求</td><td>登録カードへの請求（Stripe標準）。回収率100%ではない前提の運用が必要（詳細は提案4-1）。<strong>キャンセルポリシーの中身（何日前から何%）の確定が前提</strong></td><td><span class="badge plain">○ 条件付き</span></td></tr>
-          <tr><td class="label">4. 来店受付・本人確認</td><td>店舗管理画面の予約検索（既存の改修）で対応。<strong>QRチェックイン機能は作らない</strong>（7月3日合意）。決済失敗時のみ店舗画面に支払いQRを表示（Stripe標準機能）</td><td><span class="badge good">○</span></td></tr>
-          <tr><td class="label">5. 当日の内容確定（オプション・車両変更）</td><td>Bubbleの予約編集機能（新規開発・<strong>開発ボリュームはここが一番大きい</strong>）</td><td><span class="badge good">○</span></td></tr>
-          <tr><td class="label">6. 「決済して貸出開始」1アクション</td><td>Stripe決済＋成功時のみステータス変更。順序制御・二重決済防止を含めて実装可能。<strong>設計思想として正しく、弊社も推奨</strong></td><td><span class="badge good">○</span></td></tr>
-          <tr><td class="label">7. 決済失敗時の別カード対応</td><td>ユーザー自身のスマホでカード再登録→再決済。店員がカード番号を扱わない方針はStripeの標準的な使い方と完全に一致</td><td><span class="badge good">○</span></td></tr>
-          <tr><td class="label">8. 貸出中（説明・状態記録）</td><td>Bubbleで実装（写真アップロード・チェックリスト）。決済とは独立した画面開発</td><td><span class="badge good">○</span></td></tr>
-          <tr><td class="label">9-10. 返却確認・延長 / 追加決済</td><td>登録カードへの追加決済（Stripe標準）。破損だけは後日請求ルートを提案（詳細は提案4-2）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label wrap">1. 予約時のカード登録・有効性確認</td><td>Stripe標準機能（<code>SetupIntent</code>）。<strong>0円で検証・保存・本人認証まで完結</strong>。現行Pay.jpでは不完全だった有効性チェック（実質8割）がここで解消する</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label wrap">2. 販売店の予約確認</td><td>Bubble管理画面（既存の改修）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label wrap">3. キャンセル料・無断キャンセル料の請求</td><td>登録カードへの請求（Stripe標準）。回収率100%ではない前提の運用が必要（詳細は提案4-1）。<strong>キャンセルポリシーの中身（何日前から何%）の確定が前提</strong></td><td><span class="badge plain">○ 条件付き</span></td></tr>
+          <tr><td class="label wrap">4. 来店受付・本人確認</td><td>店舗管理画面の予約検索（既存の改修）で対応。<strong>QRチェックイン機能は作らない</strong>（7月3日合意）。決済失敗時のみ店舗画面に支払いQRを表示（Stripe標準機能）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label wrap">5. 当日の内容確定（オプション・車両変更）</td><td>Bubbleの予約編集機能（新規開発・<strong>開発ボリュームはここが一番大きい</strong>）</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label wrap">6. 「決済して貸出開始」1アクション</td><td>Stripe決済＋成功時のみステータス変更。順序制御・二重決済防止を含めて実装可能。<strong>設計思想として正しく、弊社も推奨</strong></td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label wrap">7. 決済失敗時の別カード対応</td><td>ユーザー自身のスマホでカード再登録→再決済。店員がカード番号を扱わない方針はStripeの標準的な使い方と完全に一致</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label wrap">8. 貸出中（説明・状態記録）</td><td>Bubbleで実装（写真アップロード・チェックリスト）。決済とは独立した画面開発</td><td><span class="badge good">○</span></td></tr>
+          <tr><td class="label wrap">9-10. 返却確認・延長 / 追加決済</td><td>登録カードへの追加決済（Stripe標準）。破損だけは後日請求ルートを提案（詳細は提案4-2）</td><td><span class="badge good">○</span></td></tr>
           <tr><td class="label">11. 返却完了</td><td>Bubbleステータス管理</td><td><span class="badge good">○</span></td></tr>
         </tbody>
       </table>

@@ -99,7 +99,7 @@
         <tr><td class="label">公開キー</td><td><code>pk_...</code> — Stripe.js / Elementsでカード情報を直接Stripeへ送る</td></tr>
         <tr><td class="label">バージョニング</td><td>日付ベース。アカウントに固定・<code>Stripe-Version</code>ヘッダで上書き可。後方互換が強い</td></tr>
         <tr><td class="label">冪等性</td><td><code>Idempotency-Key</code>ヘッダ対応（二重課金防止。決済系POSTでは必須運用に）</td></tr>
-        <tr><td class="label">Stripeの /v2 名前空間</td><td>イベント配信等の一部APIのみ。<strong>カード決済は引き続き /v1 が現行</strong>（2026年6月時点）</td></tr>
+        <tr><td class="label wrap">Stripeの /v2 名前空間</td><td>イベント配信等の一部APIのみ。<strong>カード決済は引き続き /v1 が現行</strong>（2026年6月時点）</td></tr>
         <tr><td class="label">Bubble連携</td><td>公式プラグインあり（Elements・PaymentIntent対応）。3DSは自動ハンドリング</td></tr>
         </tbody>
       </table>
@@ -115,11 +115,11 @@
         <tbody>
         <tr><td class="label">Charge</td><td>PaymentFlow</td><td><strong>PaymentIntent</strong></td><td>状態機械もほぼ同じ</td></tr>
         <tr><td class="label">Token / Card</td><td>PaymentMethod</td><td><strong>PaymentMethod</strong></td><td>登録時にCVC検証あり</td></tr>
-        <tr><td class="label">—（50円オーソリで代用）</td><td>SetupFlow</td><td><strong>SetupIntent</strong></td><td><strong>¥50オーソリ自体が不要に</strong>（0円で同等の検証）</td></tr>
+        <tr><td class="label wrap">—（50円オーソリで代用）</td><td>SetupFlow</td><td><strong>SetupIntent</strong></td><td><strong>¥50オーソリ自体が不要に</strong>（0円で同等の検証）</td></tr>
         <tr><td class="label">Checkout</td><td>Checkout Session</td><td><strong>Checkout Session</strong></td><td>ホスト型決済ページ</td></tr>
-        <tr><td class="label">Plan / Subscription</td><td>未提供（2026年中）</td><td><strong>Price + Subscription（Billing）</strong></td><td>店舗月額課金に使える</td></tr>
+        <tr><td class="label wrap">Plan / Subscription</td><td>未提供（2026年中）</td><td><strong>Price + Subscription（Billing）</strong></td><td>店舗月額課金に使える</td></tr>
         <tr><td class="label">Transfer（入金）</td><td>payment_transactions等</td><td><strong>Payout / BalanceTransaction</strong></td><td>自社口座への入金管理</td></tr>
-        <tr><td class="label">Platform API（テナント）</td><td>未対応（2027年）</td><td><strong>Connect</strong></td><td><strong>集約モデルでは不要</strong></td></tr>
+        <tr><td class="label wrap">Platform API（テナント）</td><td>未対応（2027年）</td><td><strong>Connect</strong></td><td><strong>集約モデルでは不要</strong></td></tr>
         <tr><td class="label">3DS（自前実装）</td><td>全カード必須</td><td><strong>自動</strong></td><td>リスクベースでPaymentIntentが要求</td></tr>
         </tbody>
       </table>

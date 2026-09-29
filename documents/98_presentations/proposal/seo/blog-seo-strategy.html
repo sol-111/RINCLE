@@ -222,13 +222,13 @@ td.center{text-align:center;white-space:nowrap}
       <table>
         <thead><tr><th>SEO要素</th><th>WordPress</th><th>BubbleのCMS記事</th></tr></thead>
         <tbody>
-          <tr><td class="label">title / description（可変）</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="o">○</span> 手動だが可能</td></tr>
-          <tr><td class="label">表示速度（Core Web Vitals）</td><td class="center"><span class="o">○〜◎</span></td><td><span class="x">×</span> <strong>Bubble本体はLCP49秒の実測</strong>・記事も遅い</td></tr>
-          <tr><td class="label">本文・見出し（h1 / h2）の構造</td><td class="center"><span class="o">◎</span></td><td><span class="t">△</span> JSレンダリングで初期HTMLに乗りにくい</td></tr>
-          <tr><td class="label">JS依存のインデックス</td><td class="center"><span class="o">◎</span> HTML即提供</td><td><span class="t">△</span> 描画はされるが遅延・取りこぼし</td></tr>
-          <tr><td class="label">構造化データ / canonical / sitemap</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="t">△</span> 弱い・手動</td></tr>
-          <tr><td class="label">内部リンク（クロール）</td><td class="center"><span class="o">◎</span> HTML出力</td><td><span class="t">△</span> JS生成でクロールされにくい</td></tr>
-          <tr><td class="label">立ち上げ工数・コスト</td><td class="center">サーバー＋構築</td><td><span class="o">◎</span> 既存Bubble内で完結・追加ほぼゼロ</td></tr>
+          <tr><td class="label wrap">title / description（可変）</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="o">○</span> 手動だが可能</td></tr>
+          <tr><td class="label wrap">表示速度（Core Web Vitals）</td><td class="center"><span class="o">○〜◎</span></td><td><span class="x">×</span> <strong>Bubble本体はLCP49秒の実測</strong>・記事も遅い</td></tr>
+          <tr><td class="label wrap">本文・見出し（h1 / h2）の構造</td><td class="center"><span class="o">◎</span></td><td><span class="t">△</span> JSレンダリングで初期HTMLに乗りにくい</td></tr>
+          <tr><td class="label wrap">JS依存のインデックス</td><td class="center"><span class="o">◎</span> HTML即提供</td><td><span class="t">△</span> 描画はされるが遅延・取りこぼし</td></tr>
+          <tr><td class="label wrap">構造化データ / canonical / sitemap</td><td class="center"><span class="o">◎</span> 自動</td><td><span class="t">△</span> 弱い・手動</td></tr>
+          <tr><td class="label wrap">内部リンク（クロール）</td><td class="center"><span class="o">◎</span> HTML出力</td><td><span class="t">△</span> JS生成でクロールされにくい</td></tr>
+          <tr><td class="label wrap">立ち上げ工数・コスト</td><td class="center">サーバー＋構築</td><td><span class="o">◎</span> 既存Bubble内で完結・追加ほぼゼロ</td></tr>
         </tbody>
       </table>
     </div>
@@ -247,9 +247,9 @@ td.center{text-align:center;white-space:nowrap}
         <thead><tr><th>コンテンツ</th><th>置き場所</th><th>理由</th></tr></thead>
         <tbody>
           <tr><td class="label">本命のSEO資産<br>（主要都市・観光ルートのコース記事）</td><td><strong>作り込んだ静的LP記事</strong>（自社サブドメイン。本格化時はWordPress）</td><td>上位を取りに行く＝速度・構造が要る（静的HTMLは両方満たす）</td></tr>
-          <tr><td class="label">店舗の地点 × レンタル（取引型KW）</td><td><strong>Bubble本体の店舗 / エリアページをSEO最適化</strong></td><td>§3の通り受け皿は本体ページ。記事を作るまでもない</td></tr>
+          <tr><td class="label wrap">店舗の地点 × レンタル（取引型KW）</td><td><strong>Bubble本体の店舗 / エリアページをSEO最適化</strong></td><td>§3の通り受け皿は本体ページ。記事を作るまでもない</td></tr>
           <tr><td class="label">加盟店の「お知らせレベル」発信<br>（6月19日要望 → 6月30日に<strong>この方向で合意</strong>）</td><td><strong>BubbleのCMS</strong>（Bubble内にCMSを実装）</td><td>SEOは二の次・手軽さ優先。ニッチKWならBubbleのSEOでも足りる</td></tr>
-          <tr><td class="label">運営の想い・ストーリー・拡散</td><td><strong>note（無料）</strong></td><td>検索資産にする必要がないもの</td></tr>
+          <tr><td class="label wrap">運営の想い・ストーリー・拡散</td><td><strong>note（無料）</strong></td><td>検索資産にする必要がないもの</td></tr>
         </tbody>
       </table>
     </div>
@@ -280,9 +280,9 @@ td.center{text-align:center;white-space:nowrap}
       <table>
         <thead><tr><th>KWの粒度</th><th>競合</th><th>取り方</th></tr></thead>
         <tbody>
-          <tr><td class="label">主要都市・観光大型KW（情報型）</td><td class="center">高</td><td><strong>静的LP記事</strong>（本命。本格化時はWordPress）</td></tr>
-          <tr><td class="label">店舗の地点 × レンタル（取引型）</td><td class="center">低</td><td><strong>Bubble本体ページをSEO最適化</strong>。記事を作るまでもない</td></tr>
-          <tr><td class="label">細かい地点 × コース情報（需要あれば）</td><td class="center">低</td><td>数が少なければBubble可。増えるなら静的LP / WordPress側に集約</td></tr>
+          <tr><td class="label wrap">主要都市・観光大型KW（情報型）</td><td class="center">高</td><td><strong>静的LP記事</strong>（本命。本格化時はWordPress）</td></tr>
+          <tr><td class="label wrap">店舗の地点 × レンタル（取引型）</td><td class="center">低</td><td><strong>Bubble本体ページをSEO最適化</strong>。記事を作るまでもない</td></tr>
+          <tr><td class="label wrap">細かい地点 × コース情報（需要あれば）</td><td class="center">低</td><td>数が少なければBubble可。増えるなら静的LP / WordPress側に集約</td></tr>
         </tbody>
       </table>
     </div>

@@ -15,11 +15,10 @@
   /* 表の細部（比較列の色分けは文字色のみ・塗りは使わない） */
   thead th.payjp{color:var(--info)}
   thead th.stripe{color:var(--accent)}
-  thead th.dim{color:#B0A79D;white-space:normal}
+  thead th.dim{color:#B0A79D}
   td.dim{color:#B0A79D}
   thead th.merit{color:var(--ok)}
   thead th.demerit{color:var(--danger)}
-  td.label{white-space:normal}
 
   /* カード内のリスト */
   .card ul{padding-left:20px;font-size:13.5px}
@@ -129,7 +128,7 @@
             <td class="demerit"><strong>80hはほぼ全額が掛け捨て</strong>（50円オーソリ相当のカード有効性チェックは、Stripeでは標準機能=SetupIntentで0円でできるため作り直しになる）。3DS・CVC・紙請求は未解決のまま</td>
           </tr>
           <tr>
-            <td class="label"><span class="num-chip sm brand">C</span>Stripeへ今すぐ載せ替え</td>
+            <td class="label wrap"><span class="num-chip sm brand">C</span>Stripeへ<br>今すぐ載せ替え</td>
             <td class="merit">作るものがそのまま最終形になる（捨てる実装ゼロ）</td>
             <td class="demerit">全体設計が先に必要で「今すぐ」に間に合わない。DB再構築と並走になり非現実的</td>
           </tr>
@@ -186,13 +185,13 @@
             <td>○（残額自動解放）</td>
           </tr>
           <tr>
-            <td class="label">解放（キャンセル）手数料</td>
+            <td class="label wrap">解放（キャンセル）手数料</td>
             <td>無料</td>
             <td>無料</td>
             <td>無料</td>
           </tr>
           <tr>
-            <td class="label">期限前の自動キャプチャ</td>
+            <td class="label wrap">期限前の自動キャプチャ</td>
             <td>×（自前バッチ）</td>
             <td>×</td>
             <td>○（プレビュー機能）</td>
@@ -251,7 +250,7 @@
           <tr><th>月間GMV</th><th class="payjp">Pay.jp 3.3%</th><th class="dim">Pay.jp ビジネス（2.78%+2万円・参考）</th><th class="stripe">Stripe 3.6%</th></tr>
         </thead>
         <tbody>
-          <tr><td class="label">21.5万円（2026年5月実績）</td><td>7,095円</td><td class="dim">—</td><td>7,740円</td></tr>
+          <tr><td class="label wrap">21.5万円（2026年5月実績）</td><td>7,095円</td><td class="dim">—</td><td>7,740円</td></tr>
           <tr><td class="label">100万円</td><td>33,000円</td><td class="dim">—</td><td>36,000円</td></tr>
           <tr><td class="label">400万円</td><td>132,000円</td><td class="dim">131,200円</td><td>144,000円</td></tr>
           <tr><td class="label">1,000万円</td><td>330,000円</td><td class="dim">298,000円</td><td>360,000円</td></tr>
@@ -283,7 +282,7 @@
             <td><span class="badge good">ほぼ自動</span><br>公式プラグイン+PaymentIntentに標準で組み込まれている</td>
           </tr>
           <tr>
-            <td class="label">カード登録時のCVCチェック</td>
+            <td class="label wrap">カード登録時のCVCチェック</td>
             <td><span class="badge bad">できない</span><br>仕様上、誤ったCVCでも登録できてしまう。5月15日に確認した決済失敗の温床が<strong>残り続ける</strong></td>
             <td><span class="badge good">できる</span><br>登録時に検証して間違いをその場で弾ける</td>
           </tr>
@@ -301,11 +300,11 @@
           <tr><th>機能</th><th class="payjp">Pay.jp</th><th class="stripe">Stripe</th><th>備考</th></tr>
         </thead>
         <tbody>
-          <tr><td class="label">カード保存・再利用</td><td>○</td><td>○</td><td></td></tr>
+          <tr><td class="label wrap">カード保存・再利用</td><td>○</td><td>○</td><td></td></tr>
           <tr><td class="label">部分返金</td><td>○</td><td>○</td><td>キャンセルポリシーで必要</td></tr>
-          <tr><td class="label">サブスク（店舗月額課金）</td><td>○（plan / subscription）</td><td>○（Billing・高機能）</td><td>6月12日の月額課金構想に関わる</td></tr>
-          <tr><td class="label"><strong>領収書の自動送信（重要）</strong></td><td><span class="badge bad">×</span> 自前で作るか手動運用</td><td><span class="badge good">○</span> receipt_email指定で自動送信</td><td><strong>集約モデルでは発行元がPEDALSTANDARDになる見込み = 全決済分の発行オペが発生</strong>。自動化の可否が運用コストに直結</td></tr>
-          <tr><td class="label">Apple Pay / PayPay等</td><td>×（v1）/ ○（<strong>v2</strong>はApple Pay・PayPay等を一元管理）</td><td>○（Apple Pay / Google Pay）</td><td>Pay.jpで将来機能を取るならv1→v2移行が前提</td></tr>
+          <tr><td class="label wrap">サブスク（店舗月額課金）</td><td>○（plan / subscription）</td><td>○（Billing・高機能）</td><td>6月12日の月額課金構想に関わる</td></tr>
+          <tr><td class="label wrap"><strong>領収書の自動送信（重要）</strong></td><td><span class="badge bad">×</span> 自前で作るか手動運用</td><td><span class="badge good">○</span> receipt_email指定で自動送信</td><td><strong>集約モデルでは発行元がPEDALSTANDARDになる見込み = 全決済分の発行オペが発生</strong>。自動化の可否が運用コストに直結</td></tr>
+          <tr><td class="label wrap">Apple Pay / PayPay等</td><td>×（v1）/ ○（<strong>v2</strong>はApple Pay・PayPay等を一元管理）</td><td>○（Apple Pay / Google Pay）</td><td>Pay.jpで将来機能を取るならv1→v2移行が前提</td></tr>
           <tr><td class="label">Bubble連携</td><td>△（API Connector手動）</td><td>○（公式プラグイン）</td><td></td></tr>
           <tr><td class="label">開発チームの慣れ</td><td>△</td><td>○</td><td>弊社はStripe経験あり</td></tr>
         </tbody>
@@ -326,11 +325,11 @@
       <table>
         <thead><tr><th>項目</th><th>状態</th></tr></thead>
         <tbody>
-          <tr><td class="label">一括回収の法的整理（収納代行・会計・責任所在）</td><td><span class="badge plain">弁護士回答待ち</span> どちらのサービスでも発生する論点</td></tr>
-          <tr><td class="label">Pay.jpテナント型→単一アカウント型の契約変更</td><td>ルートB採用時のみPay.jpに要確認</td></tr>
-          <tr><td class="label">カード情報のPSP間移行（Pay.jp→Stripe）</td><td>公開情報なし。<strong>再登録前提</strong>で計画（88人・現規模なら影響小）</td></tr>
-          <tr><td class="label">3DS未導入での運用継続</td><td><span class="badge bad">義務化超過</span> どのルートでも早期対応が必要</td></tr>
-          <tr><td class="label">Stripe日本特例30日の海外発行カードへの適用</td><td>インバウンド本格対応の前に要確認</td></tr>
+          <tr><td class="label wrap">一括回収の法的整理（収納代行・会計・責任所在）</td><td><span class="badge plain">弁護士回答待ち</span> どちらのサービスでも発生する論点</td></tr>
+          <tr><td class="label wrap">Pay.jpテナント型→単一アカウント型の契約変更</td><td>ルートB採用時のみPay.jpに要確認</td></tr>
+          <tr><td class="label wrap">カード情報のPSP間移行（Pay.jp→Stripe）</td><td>公開情報なし。<strong>再登録前提</strong>で計画（88人・現規模なら影響小）</td></tr>
+          <tr><td class="label wrap">3DS未導入での運用継続</td><td><span class="badge bad">義務化超過</span> どのルートでも早期対応が必要</td></tr>
+          <tr><td class="label wrap">Stripe日本特例30日の海外発行カードへの適用</td><td>インバウンド本格対応の前に要確認</td></tr>
         </tbody>
       </table>
     </div>
@@ -393,8 +392,8 @@
       <table>
         <thead><tr><th>Phase</th><th>内容</th><th>状態</th></tr></thead>
         <tbody>
-          <tr><td class="label">0: 現行の緊急修正</td><td>手数料10% → 15% / 延長決済不備・カード選択不具合・DBセキュリティ</td><td><span class="badge good">完了</span> 手数料15%は対応済み。残りはDB再構築に統合済み（DB再構築は完了・新サイトは7月上旬に本番リリース済み）</td></tr>
-          <tr><td class="label"><strong>1: 方針確定・設計</strong></td><td>決済サービスの最終決定 / 弁護士回答 / キャンセルポリシー確定 / 詳細設計</td><td><span class="badge good">完了</span> 調査を終えて6月19日定例でStripeに決定。キャンセルポリシーは設計中で、弁護士回答は待ちのまま</td></tr>
+          <tr><td class="label wrap">0: 現行の緊急修正</td><td>手数料10% → 15% / 延長決済不備・カード選択不具合・DBセキュリティ</td><td><span class="badge good">完了</span> 手数料15%は対応済み。残りはDB再構築に統合済み（DB再構築は完了・新サイトは7月上旬に本番リリース済み）</td></tr>
+          <tr><td class="label wrap"><strong>1: 方針確定・設計</strong></td><td>決済サービスの最終決定 / 弁護士回答 / キャンセルポリシー確定 / 詳細設計</td><td><span class="badge good">完了</span> 調査を終えて6月19日定例でStripeに決定。キャンセルポリシーは設計中で、弁護士回答は待ちのまま</td></tr>
           <tr><td class="label">2: 実装</td><td>予約時決済・返金・延長 / オプション決済・管理画面・（デポジット）</td><td><span class="badge muted">未着手</span> DB再構築は完了（7月上旬リリース済み）。全体設計を固めてからまとめて実装（6月12日合意・二度手間回避）</td></tr>
           <tr><td class="label">3: 切替</td><td>E2E検証 / カード再登録案内（88人） / 本番切替 / Pay.jpテナント廃止 / 振込運用開始</td><td><span class="badge muted">未着手</span> Phase 2の後</td></tr>
         </tbody>
